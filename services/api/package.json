@@ -1,0 +1,15 @@
+{
+  "name": "@medical-ai-qa/api",
+  "version": "0.1.0",
+  "private": true,
+  "main": "dist/services/api/src/index.js",
+  "types": "dist/services/api/src/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsx src/index.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@medical-ai-qa/shared-logging": "workspace:*"
+  }
+}

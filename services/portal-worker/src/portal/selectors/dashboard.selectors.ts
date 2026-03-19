@@ -1,0 +1,85 @@
+export const FINALE_TOP_NAV_ITEMS = [
+  "Dashboard",
+  "Admin",
+  "Payroll",
+  "Reports",
+  "Billing",
+  "Calendar",
+  "Visit Map",
+  "Applicants",
+  "Documents",
+  "Help Desk",
+  "QAPI Board",
+] as const;
+
+export const DASHBOARD_SELECTORS = {
+  navContainers: ["header nav", '[role="navigation"]', "nav"],
+  rootSelectors: ["main", '[role="main"]', "body"],
+  loadedMarkers: [
+    'text="Add New Patient"',
+    'text="Orders and QA Management"',
+    'text="OASIS & CAHPS Export"',
+    'text="Event Calendar"',
+  ],
+  ordersQaManagementTileSelectors: [
+    'a:has-text("Orders and QA Management")',
+    'a:has-text("Orders & QA Management")',
+    'button:has-text("Orders and QA Management")',
+    'button:has-text("Orders & QA Management")',
+    '[role="button"]:has-text("Orders and QA Management")',
+    '[role="button"]:has-text("Orders & QA Management")',
+    '[class*="tile"]:has-text("Orders and QA Management")',
+    '[class*="tile"]:has-text("Orders & QA Management")',
+    '[class*="card"]:has-text("Orders and QA Management")',
+    '[class*="card"]:has-text("Orders & QA Management")',
+  ],
+  navigationCandidateSelectors: [
+    'main a',
+    'main button',
+    'main [role="link"]',
+    'main [role="button"]',
+    'nav a',
+    'nav button',
+    '[class*="tile"]',
+    '[class*="Tile"]',
+    '[class*="card"]',
+    '[class*="Card"]',
+    '[class*="widget"]',
+    '[class*="Widget"]',
+    '[role="tab"]',
+  ],
+  safeDestinationMarkers: [
+    '[role="dialog"]',
+    '[aria-modal="true"]',
+    '[class*="split"]',
+    '[class*="Split"]',
+    'main h1',
+    'main h2',
+    '[role="tablist"]',
+    'table',
+    '[role="grid"]',
+  ],
+} as const;
+
+export const DASHBOARD_ENTRY_PRIORITIES = [
+  {
+    label: "Orders and QA Management",
+    patterns: [/orders and qa management/i, /orders\s*&\s*qa management/i],
+    priority: 100,
+  },
+  {
+    label: "Search Patient",
+    patterns: [/\bsearch patient\b/i, /\bpatient search\b/i],
+    priority: 90,
+  },
+  {
+    label: "Admission / Discharges",
+    patterns: [/admission\s*\/\s*discharges/i, /\badmission\b/i, /\bdischarges\b/i],
+    priority: 80,
+  },
+  {
+    label: "Workflow Review",
+    patterns: [/\bworkflow\b/i, /\breview\b/i, /\bdocuments?\b/i, /\bboard\b/i],
+    priority: 60,
+  },
+] as const;

@@ -1,0 +1,48 @@
+export const LOGIN_SELECTORS = {
+  brandMarkerSelectors: [
+    'text=/Finale Health/i',
+    'img[alt*="Finale"]',
+    '[class*="logo"]',
+    '[class*="brand"]',
+  ],
+  headingSelectors: [
+    'h1',
+    'h2',
+    '[role="heading"]',
+    'form legend',
+    '[class*="title"]',
+  ],
+  usernameInputSelectors: [
+    'input[name="username"]',
+    'input[name="email"]',
+    'input[id*="username"]',
+    'input[id*="email"]',
+    'input[autocomplete="username"]',
+    'input[type="email"]',
+    'input[type="text"]:not([name*="search"]):not([placeholder*="Search"])',
+  ],
+  passwordInputSelectors: [
+    'input[type="password"]',
+    'input[name*="password"]',
+    'input[id*="password"]',
+    'input[autocomplete="current-password"]',
+  ],
+  submitButtonSelectors: [
+    'button[type="submit"]',
+    'button:has-text("Login")',
+    'button:has-text("Log In")',
+    'button:has-text("Sign In")',
+    'input[type="submit"]',
+    '[role="button"]:has-text("Login")',
+    '[role="button"]:has-text("Log In")',
+    '[role="button"]:has-text("Sign In")',
+  ],
+  submitButtonNamePatterns: [/log\s*in/i, /login/i, /sign\s*in/i],
+  loginErrorSelectors: [
+    '[role="alert"]',
+    '[aria-live="assertive"]',
+    '.error',
+    '.alert',
+    'text=/invalid|incorrect|failed|unable|error/i',
+  ],
+} as const;

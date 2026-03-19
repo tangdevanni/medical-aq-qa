@@ -1,0 +1,17 @@
+{
+  "name": "@medical-ai-qa/orchestrator",
+  "version": "0.1.0",
+  "private": true,
+  "main": "dist/services/orchestrator/src/index.js",
+  "types": "dist/services/orchestrator/src/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsx src/index.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@medical-ai-qa/shared-config": "workspace:*",
+    "@medical-ai-qa/shared-logging": "workspace:*",
+    "@medical-ai-qa/shared-types": "workspace:*"
+  }
+}

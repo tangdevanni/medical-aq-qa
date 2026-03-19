@@ -1,0 +1,26 @@
+{
+  "name": "@medical-ai-qa/portal-worker",
+  "version": "0.1.0",
+  "private": true,
+  "main": "dist/services/portal-worker/src/index.js",
+  "types": "dist/services/portal-worker/src/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsx src/index.ts",
+    "dev:discover": "tsx src/run-discover.ts",
+    "dev:phase4": "tsx src/run-phase4-discover.ts",
+    "dev:phase5": "tsx src/run-phase5-orders-qa.ts",
+    "dev:phase6": "tsx src/run-phase6-orders-qa-forensics.ts",
+    "dev:phase7": "tsx src/run-phase7-tile-click.ts",
+    "dev:phase8": "tsx src/run-phase8-document-hub.ts",
+    "dev:local": "tsx src/run-local.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@medical-ai-qa/shared-config": "workspace:*",
+    "@medical-ai-qa/shared-logging": "workspace:*",
+    "@medical-ai-qa/shared-types": "workspace:*",
+    "@playwright/test": "^1.52.0",
+    "dotenv": "^16.4.7"
+  }
+}
