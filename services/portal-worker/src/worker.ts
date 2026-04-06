@@ -14,6 +14,9 @@ import {
   markWorkflowSucceeded,
 } from "./state/workflow-state";
 import { runDocumentTrackingHubDiscoveryWorkflow } from "./workflows/run-document-tracking-hub-discovery";
+import { runDocumentTrackingSubviewDiscoveryWorkflow } from "./workflows/run-document-tracking-subview-discovery";
+import { runPhase11QueueQaPipelineWorkflow } from "./workflows/run-phase11-queue-qa-pipeline-workflow";
+import { runQaQueueItemDiscoveryWorkflow } from "./workflows/run-qa-queue-item-discovery";
 import { runOrdersQaInteractionForensicsWorkflow } from "./workflows/run-orders-qa-interaction-forensics";
 import { runOrdersQaEntryWorkflow } from "./workflows/run-orders-qa-entry-workflow";
 import { runPhase7TileInteractionWorkflow } from "./workflows/run-phase7-tile-interaction-workflow";
@@ -50,7 +53,13 @@ export class PortalWorker {
           ? job.payload.workflow
           : PORTAL_WORKFLOW_NAMES.openQaItem;
       const workflowRunner =
-        workflowName === PORTAL_WORKFLOW_NAMES.documentTrackingHubDiscovery
+        workflowName === PORTAL_WORKFLOW_NAMES.phase11QueueQaPipeline
+          ? runPhase11QueueQaPipelineWorkflow
+          : workflowName === PORTAL_WORKFLOW_NAMES.qaQueueItemDiscovery
+          ? runQaQueueItemDiscoveryWorkflow
+          : workflowName === PORTAL_WORKFLOW_NAMES.documentTrackingSubviewDiscovery
+          ? runDocumentTrackingSubviewDiscoveryWorkflow
+          : workflowName === PORTAL_WORKFLOW_NAMES.documentTrackingHubDiscovery
           ? runDocumentTrackingHubDiscoveryWorkflow
           : workflowName === PORTAL_WORKFLOW_NAMES.phase7TileInteraction
           ? runPhase7TileInteractionWorkflow

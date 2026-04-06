@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "1",
+  "generatedAt": "2026-04-02T22:55:35.203Z",
+  "patientId": "CHRISTINE_YOUNG__a89bc267c323fb6a",
+  "batchId": "batch-2026-04-02T22-55-32-552Z",
+  "reasonForAdmission": null,
+  "diagnosisPhrases": [
+    "CHF",
+    "COPD",
+    "Condition exacerbation monitoring for CHF",
+    "COPD is included."
+  ],
+  "diagnosisCodePairs": [
+    {
+      "diagnosis": "CHF",
+      "code": null,
+      "codeSource": null
+    },
+    {
+      "diagnosis": "COPD",
+      "code": null,
+      "codeSource": null
+    }
+  ],
+  "icd10CodesFoundVerbatim": [],
+  "orderedServices": [],
+  "clinicalSummary": "Documentation supports billed services and remains consistent with OASIS diagnoses and plan of care.",
+  "sourceQuotes": [
+    "Plan of care diagnosis list includes ICD-10 codes and diagnoses.",
+    "Condition exacerbation monitoring for CHF and COPD is included.",
+    "Documentation supports billed services and remains consistent with OASIS diagnoses and plan of care."
+  ],
+  "uncertainItems": [],
+  "documentType": "Admission Order",
+  "extractionConfidence": "medium",
+  "validation": {
+    "validIcd10Only": true,
+    "invalidCodesRemoved": 0,
+    "warningCount": 0,
+    "warnings": []
+  }
+}

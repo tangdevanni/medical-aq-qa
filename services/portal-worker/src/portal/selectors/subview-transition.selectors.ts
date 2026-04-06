@@ -5,6 +5,21 @@ export const SUBVIEW_TRANSITION_SELECTORS = {
     '[class*="row"]',
     '[class*="Row"]',
   ],
+  filterSelectors: [
+    "select",
+    '[class*="filter"]',
+    '[class*="Filter"]',
+    '[class*="chip"]',
+    '[class*="Chip"]',
+  ],
+  statusLabelSelectors: [
+    '[class*="status"]',
+    '[class*="Status"]',
+    '[class*="badge"]',
+    '[class*="Badge"]',
+    '[class*="pill"]',
+    '[class*="Pill"]',
+  ],
   queueMarkers: [
     "table",
     '[role="grid"]',

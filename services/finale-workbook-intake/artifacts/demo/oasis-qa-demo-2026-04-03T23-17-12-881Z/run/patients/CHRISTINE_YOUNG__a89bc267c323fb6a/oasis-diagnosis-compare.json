@@ -1,0 +1,130 @@
+{
+  "schemaVersion": "1",
+  "comparedAt": "2026-04-03T23:20:32.037Z",
+  "patientId": "CHRISTINE_YOUNG__a89bc267c323fb6a",
+  "batchId": "batch-2026-04-03T23-17-12-958Z",
+  "summary": {
+    "extractedEntryCount": 0,
+    "portalRowCount": 8,
+    "exactMatchCount": 0,
+    "normalizedMatchCount": 0,
+    "mismatchCount": 0,
+    "missingOnPortalCount": 0,
+    "missingInExtractionCount": 8,
+    "suspiciousCaseCount": 0
+  },
+  "exactMatches": [],
+  "normalizedMatches": [],
+  "mismatches": [],
+  "missingOnPortal": [],
+  "missingInExtraction": [
+    {
+      "extractedIndex": null,
+      "portalRowIndex": 0,
+      "extractedDiagnosis": null,
+      "extractedCode": null,
+      "portalDescription": "PRIMARY DIAGNOSIS 🩺 ICD-10 CodeOnset Date",
+      "portalCode": "R13.10",
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "Portal row was not matched by extracted diagnosis entries."
+      ]
+    },
+    {
+      "extractedIndex": null,
+      "portalRowIndex": 1,
+      "extractedDiagnosis": null,
+      "extractedCode": null,
+      "portalDescription": "OTHER DIAGNOSIS - 1 ICD-10 CodeOnset Date",
+      "portalCode": "I11.0",
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "Portal row was not matched by extracted diagnosis entries."
+      ]
+    },
+    {
+      "extractedIndex": null,
+      "portalRowIndex": 2,
+      "extractedDiagnosis": null,
+      "extractedCode": null,
+      "portalDescription": "OTHER DIAGNOSIS - 2 ICD-10 CodeOnset Date",
+      "portalCode": "I50.9",
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "Portal row was not matched by extracted diagnosis entries."
+      ]
+    },
+    {
+      "extractedIndex": null,
+      "portalRowIndex": 3,
+      "extractedDiagnosis": null,
+      "extractedCode": null,
+      "portalDescription": "OTHER DIAGNOSIS - 3 ICD-10 CodeOnset Date",
+      "portalCode": "I48.20",
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "Portal row was not matched by extracted diagnosis entries."
+      ]
+    },
+    {
+      "extractedIndex": null,
+      "portalRowIndex": 4,
+      "extractedDiagnosis": null,
+      "extractedCode": null,
+      "portalDescription": "OTHER DIAGNOSIS - 4 ICD-10 CodeOnset Date",
+      "portalCode": "E03.9",
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "Portal row was not matched by extracted diagnosis entries."
+      ]
+    },
+    {
+      "extractedIndex": null,
+      "portalRowIndex": 5,
+      "extractedDiagnosis": null,
+      "extractedCode": null,
+      "portalDescription": "OTHER DIAGNOSIS - 5 ICD-10 CodeOnset Date",
+      "portalCode": "R53.1",
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "Portal row was not matched by extracted diagnosis entries."
+      ]
+    },
+    {
+      "extractedIndex": null,
+      "portalRowIndex": 6,
+      "extractedDiagnosis": null,
+      "extractedCode": null,
+      "portalDescription": "ICD-10 CodeOnset Date",
+      "portalCode": "F32.A",
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "Portal row was not matched by extracted diagnosis entries."
+      ]
+    },
+    {
+      "extractedIndex": null,
+      "portalRowIndex": 7,
+      "extractedDiagnosis": null,
+      "extractedCode": null,
+      "portalDescription": "ICD-10 CodeOnset Date",
+      "portalCode": "Z87.01",
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "Portal row was not matched by extracted diagnosis entries."
+      ]
+    }
+  ],
+  "suspiciousCases": [],
+  "confidenceNotes": [
+    "Missing mappings detected between extracted and portal diagnosis sets."
+  ]
+}

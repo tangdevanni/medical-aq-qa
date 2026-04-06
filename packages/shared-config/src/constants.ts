@@ -10,6 +10,9 @@ export const PORTAL_WORKFLOW_NAMES = {
   ordersQaInteractionForensics: "orders_qa_interaction_forensics",
   phase7TileInteraction: "phase7_tile_interaction",
   documentTrackingHubDiscovery: "document_tracking_hub_discovery",
+  documentTrackingSubviewDiscovery: "document_tracking_subview_discovery",
+  qaQueueItemDiscovery: "qa_queue_item_discovery",
+  phase11QueueQaPipeline: "phase11_queue_qa_pipeline",
 } as const;
 
 export const DEFAULT_SERVICE_SETTINGS = {

@@ -1,0 +1,108 @@
+{
+  "schemaVersion": "1",
+  "generatedAt": "2026-04-05T07:27:17.102Z",
+  "mode": "input_capable",
+  "lockState": "unlocked",
+  "availableSlotCount": 6,
+  "requiredDiagnosisCount": 10,
+  "insertDiagnosisClicksNeeded": 4,
+  "actions": [
+    {
+      "type": "insert_slot",
+      "targetIndex": 7
+    },
+    {
+      "type": "insert_slot",
+      "targetIndex": 8
+    },
+    {
+      "type": "insert_slot",
+      "targetIndex": 9
+    },
+    {
+      "type": "insert_slot",
+      "targetIndex": 10
+    },
+    {
+      "type": "fill_diagnosis",
+      "targetSlot": "primary",
+      "code": "J18.9",
+      "description": "PNEUMONIA, UNSPECIFIED ORGANISM",
+      "severity": 3,
+      "onsetType": "exacerbate"
+    },
+    {
+      "type": "fill_diagnosis",
+      "targetSlot": "1",
+      "code": "J96.01",
+      "description": "ACUTE RESPIRATORY FAILURE WITH HYPOXIA",
+      "severity": 3,
+      "onsetType": "exacerbate"
+    },
+    {
+      "type": "fill_diagnosis",
+      "targetSlot": "2",
+      "code": "I11.0",
+      "description": "HYPERTENSIVE HEART DISEASE WITH HEART FAILURE",
+      "severity": 3,
+      "onsetType": "exacerbate"
+    },
+    {
+      "type": "fill_diagnosis",
+      "targetSlot": "3",
+      "code": "E03.9",
+      "description": "HYPOTHYROIDISM, UNSPECIFIED",
+      "severity": 3,
+      "onsetType": "exacerbate"
+    },
+    {
+      "type": "fill_diagnosis",
+      "targetSlot": "4",
+      "code": "M62.81",
+      "description": "MUSCLE WEAKNESS (GENERALIZED)",
+      "severity": 3,
+      "onsetType": "exacerbate"
+    },
+    {
+      "type": "fill_diagnosis",
+      "targetSlot": "5",
+      "code": "I48.20",
+      "description": "CHRONIC ATRIAL FIBRILLATION, UNSPECIFIED",
+      "severity": 3,
+      "onsetType": "exacerbate"
+    },
+    {
+      "type": "fill_diagnosis",
+      "targetSlot": "6",
+      "code": "R13.12",
+      "description": "DYSPHAGIA, OROPHARYNGEAL PHASE",
+      "severity": 3,
+      "onsetType": "exacerbate"
+    },
+    {
+      "type": "fill_diagnosis",
+      "targetSlot": "7",
+      "code": "G93.41",
+      "description": "METABOLIC ENCEPHALOPATHY",
+      "severity": 3,
+      "onsetType": "exacerbate"
+    },
+    {
+      "type": "fill_diagnosis",
+      "targetSlot": "8",
+      "code": "I87.313",
+      "description": "CHRONIC VENOUS HYPERTENSION (IDIOPATHIC) WITH ULCER OF BILATERAL LOWER EXTREMITY",
+      "severity": 3,
+      "onsetType": "exacerbate"
+    },
+    {
+      "type": "fill_diagnosis",
+      "targetSlot": "9",
+      "code": "I50.33",
+      "description": "ACUTE ON CHRONIC DIASTOLIC (CONGESTIVE) HEART FAILURE",
+      "severity": 3,
+      "onsetType": "exacerbate"
+    }
+  ],
+  "warnings": []
+}

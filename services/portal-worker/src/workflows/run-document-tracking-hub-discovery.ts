@@ -17,11 +17,9 @@ import { launchBrowser } from "../browser/launch";
 import { type PortalWorkerEnv } from "../config/env";
 import { WORKFLOW_FAILURE_CODES } from "../errors/failure-codes";
 import { WorkflowError } from "../errors/workflow-error";
-import { formatLoginDiagnostics } from "../auth/login-diagnostics";
+import { executeLoginWorkflow } from "../auth/login-workflow";
 import { DashboardPage } from "../portal/pages/DashboardPage";
 import { DocumentTrackingHubPage } from "../portal/pages/DocumentTrackingHubPage";
-import { LandingPage } from "../portal/pages/LandingPage";
-import { LoginPage } from "../portal/pages/LoginPage";
 import { OrdersQaEntryPage } from "../portal/pages/OrdersQaEntryPage";
 import { PortalDiscoveryPage } from "../portal/pages/PortalDiscoveryPage";
 import { SubviewSurfacePage } from "../portal/pages/SubviewSurfacePage";
@@ -76,41 +74,18 @@ export async function runDocumentTrackingHubDiscoveryWorkflow(
   try {
     const context = await createPortalContext(browser, env);
     const page = await context.newPage();
-    const loginPage = new LoginPage(page);
-    const landingPage = new LandingPage(page);
     const dashboardPage = new DashboardPage(page);
     const discoveryPage = new PortalDiscoveryPage(page);
     const ordersQaEntryPage = new OrdersQaEntryPage(page);
 
-    await loginPage.goto(job.portalUrl || env.portalBaseUrl);
-    const loginDiagnostics = await loginPage.waitUntilLoaded();
-
-    if (!loginDiagnostics.isLikelyLoginPage) {
-      throw new WorkflowError(
-        WORKFLOW_FAILURE_CODES.pageUnexpected,
-        formatLoginDiagnostics("Finale Health login page was not detected.", loginDiagnostics),
-        true,
-      );
-    }
-
-    options.onCheckpoint?.(WORKFLOW_CHECKPOINTS.loginPageDetected);
-
-    const loginResult = await loginPage.login(env.portalUsername, env.portalPassword);
-    options.onCheckpoint?.(WORKFLOW_CHECKPOINTS.credentialsSubmitted);
-
-    if (loginResult.outcome !== "login_succeeded") {
-      throw new WorkflowError(
-        WORKFLOW_FAILURE_CODES.loginFailed,
-        formatLoginDiagnostics(
-          `Login did not complete: ${loginResult.outcome}.`,
-          loginResult.diagnostics,
-        ),
-        true,
-      );
-    }
-
-    await landingPage.waitForAuthenticatedShell();
-    options.onCheckpoint?.(WORKFLOW_CHECKPOINTS.authenticated);
+    await executeLoginWorkflow(
+      page,
+      job.portalUrl || env.portalBaseUrl,
+      env.portalUsername,
+      env.portalPassword,
+      logger,
+      { onCheckpoint: options.onCheckpoint },
+    );
 
     if (!(await dashboardPage.isLoaded())) {
       throw new WorkflowError(
@@ -159,7 +134,7 @@ export async function runDocumentTrackingHubDiscoveryWorkflow(
         logger.info("Document-tracking hub discovered.", {
           hubUrl: hub.url,
           hubTitle: hub.title,
-          cardCount: hub.cards.length,
+          navItemCount: hub.cards.length,
         });
 
         if (resolvedCards.length === 0) {
@@ -235,14 +210,14 @@ export async function runDocumentTrackingHubDiscoveryWorkflow(
       failures,
     });
 
-    options.onCheckpoint?.(WORKFLOW_CHECKPOINTS.documentTrackingHubDiscoveryComplete);
+    options.onCheckpoint?.(WORKFLOW_CHECKPOINTS.phase8SidebarNavComplete);
 
     return {
       jobId: job.jobId,
       portal: job.portal,
-      status: WORKFLOW_CHECKPOINTS.documentTrackingHubDiscoveryComplete,
+      status: WORKFLOW_CHECKPOINTS.phase8SidebarNavComplete,
       completedAt: new Date().toISOString(),
-      summary: "Document-tracking hub discovery completed.",
+      summary: "Phase 8 sidebar navigation completed.",
       landingPage: landingPageObservation,
       hub: payload.hub,
       selectedSubview: payload.selectedSubview,

@@ -1,0 +1,30 @@
+{
+  "name": "@medical-ai-qa/finale-workbook-intake",
+  "version": "0.1.0",
+  "private": true,
+  "main": "dist/services/finale-workbook-intake/src/index.js",
+  "types": "dist/services/finale-workbook-intake/src/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsx src/cli/run-finale-batch.ts",
+    "demo:oasis-qa": "pnpm run build && node dist/services/finale-workbook-intake/src/testing/run-oasis-demo.js",
+    "verify:oasis-demo-live": "pnpm run build && node dist/services/finale-workbook-intake/src/testing/verify-oasis-live-demo.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:oasis-demo": "pnpm run build && node dist/services/finale-workbook-intake/src/testing/run-oasis-demo.js --output-dir artifacts/test/oasis-qa-demo"
+  },
+  "dependencies": {
+    "@aws-sdk/client-bedrock-runtime": "^3.901.0",
+    "@aws-sdk/client-s3": "^3.901.0",
+    "@aws-sdk/client-textract": "^3.901.0",
+    "@playwright/test": "^1.52.0",
+    "@medical-ai-qa/shared-types": "workspace:*",
+    "dotenv": "^16.4.7",
+    "pino": "^9.7.0",
+    "xlsx": "^0.18.5",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "vitest": "^3.2.4"
+  }
+}

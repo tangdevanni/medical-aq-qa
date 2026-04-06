@@ -1,0 +1,68 @@
+{
+  "family": "medical-ai-qa-api-demo",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "1024",
+  "memory": "2048",
+  "executionRoleArn": "arn:aws:iam::<ACCOUNT_ID>:role/ecsTaskExecutionRole",
+  "taskRoleArn": "arn:aws:iam::<ACCOUNT_ID>:role/medical-ai-qa-api-task-role",
+  "containerDefinitions": [
+    {
+      "name": "api",
+      "image": "<ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/medical-ai-qa-api:demo",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 3000,
+          "protocol": "tcp"
+        }
+      ],
+      "environment": [
+        { "name": "API_PORT", "value": "3000" },
+        { "name": "API_HOST", "value": "0.0.0.0" },
+        { "name": "API_STORAGE_ROOT", "value": "/data/control-plane" },
+        { "name": "API_LOG_LEVEL", "value": "info" },
+        { "name": "API_CORS_ORIGIN", "value": "https://YOUR_ALB_DNS" },
+        { "name": "OASIS_WRITE_ENABLED", "value": "false" }
+      ],
+      "secrets": [
+        {
+          "name": "OPENAI_API_KEY",
+          "valueFrom": "arn:aws:secretsmanager:<REGION>:<ACCOUNT_ID>:secret:medical-ai-qa/openai-api-key"
+        },
+        {
+          "name": "PORTAL_USERNAME",
+          "valueFrom": "arn:aws:secretsmanager:<REGION>:<ACCOUNT_ID>:secret:medical-ai-qa/portal-username"
+        },
+        {
+          "name": "PORTAL_PASSWORD",
+          "valueFrom": "arn:aws:secretsmanager:<REGION>:<ACCOUNT_ID>:secret:medical-ai-qa/portal-password"
+        }
+      ],
+      "mountPoints": [
+        {
+          "sourceVolume": "control-plane-data",
+          "containerPath": "/data/control-plane",
+          "readOnly": false
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/medical-ai-qa-api-demo",
+          "awslogs-region": "<REGION>",
+          "awslogs-stream-prefix": "ecs"
+        }
+      }
+    }
+  ],
+  "volumes": [
+    {
+      "name": "control-plane-data",
+      "efsVolumeConfiguration": {
+        "fileSystemId": "<EFS_FILE_SYSTEM_ID>",
+        "rootDirectory": "/medical-ai-qa-demo"
+      }
+    }
+  ]
+}

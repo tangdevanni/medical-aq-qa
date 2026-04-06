@@ -1,0 +1,64 @@
+{
+  "primaryDiagnosis": {
+    "code": "J18.9",
+    "description": "PNEUMONIA, UNSPECIFIED ORGANISM",
+    "confidence": "high"
+  },
+  "otherDiagnoses": [
+    {
+      "code": "J96.01",
+      "description": "ACUTE RESPIRATORY FAILURE WITH HYPOXIA",
+      "confidence": "high"
+    },
+    {
+      "code": "E03.9",
+      "description": "HYPOTHYROIDISM, UNSPECIFIED",
+      "confidence": "high"
+    },
+    {
+      "code": "",
+      "description": "ACUTE ON CHRONIC DIASTOLIC (CONGESTIVE) HEART FAILURE",
+      "confidence": "medium"
+    },
+    {
+      "code": "G93.41",
+      "description": "METABOLIC ENCEPHALOPATHY",
+      "confidence": "high"
+    },
+    {
+      "code": "",
+      "description": "CHRONIC ATRIAL FIBRILLATION, UNSPECIFIED",
+      "confidence": "medium"
+    },
+    {
+      "code": "R13.12",
+      "description": "DYSPHAGIA, OROPHARYNGEAL PHASE",
+      "confidence": "high"
+    },
+    {
+      "code": "",
+      "description": "CHRONIC VENOUS HYPERTENSION (IDIOPATHIC) WITH ULCER OF BILATERAL LOWER EXTREMITY",
+      "confidence": "medium"
+    },
+    {
+      "code": "I11.0",
+      "description": "HYPERTENSIVE HEART DISEASE WITH HEART FAILURE",
+      "confidence": "high"
+    },
+    {
+      "code": "M62.81",
+      "description": "MUSCLE WEAKNESS (GENERALIZED)",
+      "confidence": "high"
+    }
+  ],
+  "suggestedOnsetType": "exacerbate",
+  "suggestedSeverity": 3,
+  "comorbidityFlags": {
+    "pvd_pad": false,
+    "diabetes": false,
+    "none": true
+  },
+  "notes": [
+    "Ordered services: Physical Therapy, Occupational Therapy, Speech Therapy"
+  ]
+}

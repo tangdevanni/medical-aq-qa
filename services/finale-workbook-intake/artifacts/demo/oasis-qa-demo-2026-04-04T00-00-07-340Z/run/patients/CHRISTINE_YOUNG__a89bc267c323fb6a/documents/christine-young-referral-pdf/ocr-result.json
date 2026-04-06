@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "1",
+  "generatedAt": "2026-04-04T00:01:57.097Z",
+  "sourcePath": "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-04T00-00-07-340Z\\run\\patients\\CHRISTINE_YOUNG__a89bc267c323fb6a\\documents\\christine-young-referral-pdf\\source.pdf",
+  "pdfType": "scanned_image_pdf",
+  "ocrUsed": true,
+  "ocrMode": "async_s3",
+  "ocrProvider": "textract",
+  "ocrSuccess": false,
+  "ocrTextLength": 0,
+  "configuredAwsRegion": "us-east-1",
+  "resolvedBucketRegion": null,
+  "textractRegion": "us-east-1",
+  "regionMatch": null,
+  "s3UploadSucceeded": false,
+  "s3UploadError": "Unable to resolve S3 bucket region for medical-qa-textract-docs-devanni: User: arn:aws:iam::824756205990:user/bedrock-automation-user is not authorized to perform: s3:GetBucketLocation on resource: \"arn:aws:s3:::medical-qa-textract-docs-devanni\" because no identity-based policy allows the s3:GetBucketLocation action",
+  "textractStartSucceeded": false,
+  "textractStartError": null,
+  "syncError": "Request has unsupported document format",
+  "textractS3Bucket": "medical-qa-textract-docs-devanni",
+  "textractS3Key": "finale-workbook-intake/textract/6f7fc5c59a328cb32ad6784ff9760eb574631d3c/source.pdf",
+  "error": "Unable to resolve S3 bucket region for medical-qa-textract-docs-devanni: User: arn:aws:iam::824756205990:user/bedrock-automation-user is not authorized to perform: s3:GetBucketLocation on resource: \"arn:aws:s3:::medical-qa-textract-docs-devanni\" because no identity-based policy allows the s3:GetBucketLocation action"
+}

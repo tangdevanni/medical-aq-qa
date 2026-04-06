@@ -1,0 +1,141 @@
+{
+  "schemaVersion": "1",
+  "generatedAt": "2026-04-05T07:27:17.026Z",
+  "mode": "verification_only",
+  "lockState": "locked",
+  "primaryDiagnosisMatch": false,
+  "matchedDiagnoses": [
+    {
+      "diagnosisType": "other",
+      "slotLabel": "2",
+      "portalRowIndex": 1,
+      "code": "I11.0",
+      "description": "HYPERTENSIVE HEART DISEASE WITH HEART FAILURE",
+      "portalCode": "I11.0",
+      "portalDescription": "OTHER DIAGNOSIS - 1 ICD-10 CodeOnset Date",
+      "matchType": "normalized",
+      "score": 0.65
+    },
+    {
+      "diagnosisType": "other",
+      "slotLabel": "3",
+      "portalRowIndex": 4,
+      "code": "E03.9",
+      "description": "HYPOTHYROIDISM, UNSPECIFIED",
+      "portalCode": "E03.9",
+      "portalDescription": "OTHER DIAGNOSIS - 4 ICD-10 CodeOnset Date",
+      "matchType": "normalized",
+      "score": 0.65
+    },
+    {
+      "diagnosisType": "other",
+      "slotLabel": "5",
+      "portalRowIndex": 3,
+      "code": "I48.20",
+      "description": "CHRONIC ATRIAL FIBRILLATION, UNSPECIFIED",
+      "portalCode": "I48.20",
+      "portalDescription": "OTHER DIAGNOSIS - 3 ICD-10 CodeOnset Date",
+      "matchType": "normalized",
+      "score": 0.65
+    }
+  ],
+  "missingInPortal": [
+    {
+      "diagnosisType": "primary",
+      "slotLabel": "primary",
+      "code": "J18.9",
+      "description": "PNEUMONIA, UNSPECIFIED ORGANISM"
+    },
+    {
+      "diagnosisType": "other",
+      "slotLabel": "1",
+      "code": "J96.01",
+      "description": "ACUTE RESPIRATORY FAILURE WITH HYPOXIA"
+    },
+    {
+      "diagnosisType": "other",
+      "slotLabel": "4",
+      "code": "M62.81",
+      "description": "MUSCLE WEAKNESS (GENERALIZED)"
+    },
+    {
+      "diagnosisType": "other",
+      "slotLabel": "6",
+      "code": "R13.12",
+      "description": "DYSPHAGIA, OROPHARYNGEAL PHASE"
+    },
+    {
+      "diagnosisType": "other",
+      "slotLabel": "7",
+      "code": "G93.41",
+      "description": "METABOLIC ENCEPHALOPATHY"
+    },
+    {
+      "diagnosisType": "other",
+      "slotLabel": "8",
+      "code": "I87.313",
+      "description": "CHRONIC VENOUS HYPERTENSION (IDIOPATHIC) WITH ULCER OF BILATERAL LOWER EXTREMITY"
+    },
+    {
+      "diagnosisType": "other",
+      "slotLabel": "9",
+      "code": "I50.33",
+      "description": "ACUTE ON CHRONIC DIASTOLIC (CONGESTIVE) HEART FAILURE"
+    }
+  ],
+  "extraInPortal": [
+    {
+      "portalRowIndex": 0,
+      "code": "R13.10",
+      "description": "PRIMARY DIAGNOSIS 🩺 ICD-10 CodeOnset Date"
+    },
+    {
+      "portalRowIndex": 2,
+      "code": "I50.9",
+      "description": "OTHER DIAGNOSIS - 2 ICD-10 CodeOnset Date"
+    },
+    {
+      "portalRowIndex": 5,
+      "code": "R53.1",
+      "description": "OTHER DIAGNOSIS - 5 ICD-10 CodeOnset Date"
+    },
+    {
+      "portalRowIndex": 6,
+      "code": "F32.A",
+      "description": "ICD-10 CodeOnset Date"
+    },
+    {
+      "portalRowIndex": 7,
+      "code": "Z87.01",
+      "description": "ICD-10 CodeOnset Date"
+    }
+  ],
+  "mismatchedDescriptions": [
+    {
+      "diagnosisType": "other",
+      "slotLabel": "2",
+      "portalRowIndex": 1,
+      "expected": "HYPERTENSIVE HEART DISEASE WITH HEART FAILURE",
+      "actual": "OTHER DIAGNOSIS - 1 ICD-10 CodeOnset Date"
+    },
+    {
+      "diagnosisType": "other",
+      "slotLabel": "3",
+      "portalRowIndex": 4,
+      "expected": "HYPOTHYROIDISM, UNSPECIFIED",
+      "actual": "OTHER DIAGNOSIS - 4 ICD-10 CodeOnset Date"
+    },
+    {
+      "diagnosisType": "other",
+      "slotLabel": "5",
+      "portalRowIndex": 3,
+      "expected": "CHRONIC ATRIAL FIBRILLATION, UNSPECIFIED",
+      "actual": "OTHER DIAGNOSIS - 3 ICD-10 CodeOnset Date"
+    }
+  ],
+  "mismatchedCodes": [],
+  "warnings": [
+    "7 structured diagnoses were not found on the portal.",
+    "5 portal diagnosis rows were not represented in oasis-ready-diagnosis.json."
+  ]
+}

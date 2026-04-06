@@ -1,0 +1,234 @@
+{
+  "batchId": "batch-2026-03-31T17-52-49-444Z",
+  "status": "COMPLETED_WITH_EXCEPTIONS",
+  "startedAt": "2026-03-31T17:52:49.449Z",
+  "completedAt": "2026-03-31T17:52:50.203Z",
+  "lastUpdatedAt": "2026-03-31T17:52:50.203Z",
+  "totalWorkItems": 20,
+  "automationEligible": 20,
+  "processed": 20,
+  "totalCompleted": 0,
+  "totalBlocked": 20,
+  "totalFailed": 0,
+  "totalNeedsHumanReview": 0,
+  "totalReadyForBillingPrep": 0,
+  "totalParserExceptions": 55,
+  "percentComplete": 100,
+  "currentlyRunningCount": 0,
+  "currentBatchStatus": "COMPLETED_WITH_EXCEPTIONS",
+  "complete": 0,
+  "blocked": 20,
+  "failed": 0,
+  "needsHumanReview": 0,
+  "parserExceptions": 55,
+  "qaOutcomes": {
+    "READY_FOR_BILLING_PREP": 0,
+    "INCOMPLETE": 0,
+    "MISSING_DOCUMENTS": 20,
+    "PORTAL_MISMATCH": 0,
+    "AMBIGUOUS_PATIENT": 0,
+    "NEEDS_MANUAL_QA": 0
+  },
+  "patientRuns": [
+    {
+      "workItemId": "DAVID_SESSLER__3d647e083a21c0c4",
+      "patientName": "David Sessler",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Extracted 9 document(s) for QA evaluation.",
+      "resultBundlePath": "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\test\\oasis-qa-demo-all\\run\\patient-results\\DAVID_SESSLER__3d647e083a21c0c4.json"
+    },
+    {
+      "workItemId": "DAVID_SESSLER__8c7e09367014dd2a",
+      "patientName": "David Sessler",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Extracted 9 document(s) for QA evaluation.",
+      "resultBundlePath": "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\test\\oasis-qa-demo-all\\run\\patient-results\\DAVID_SESSLER__8c7e09367014dd2a.json"
+    },
+    {
+      "workItemId": "DESIREE_WISE__3b6df59e1fd32d25",
+      "patientName": "Desiree Wise",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Extracted 9 document(s) for QA evaluation.",
+      "resultBundlePath": "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\test\\oasis-qa-demo-all\\run\\patient-results\\DESIREE_WISE__3b6df59e1fd32d25.json"
+    },
+    {
+      "workItemId": "FRANCA_GUERRIERI__6c05f552e45d5f9c",
+      "patientName": "Franca Guerrieri",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Extracted 9 document(s) for QA evaluation.",
+      "resultBundlePath": "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\test\\oasis-qa-demo-all\\run\\patient-results\\FRANCA_GUERRIERI__6c05f552e45d5f9c.json"
+    },
+    {
+      "workItemId": "JEAN_THOMPSON__5323dbcbecba7f65",
+      "patientName": "Jean Thompson",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Extracted 9 document(s) for QA evaluation.",
+      "resultBundlePath": "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\test\\oasis-qa-demo-all\\run\\patient-results\\JEAN_THOMPSON__5323dbcbecba7f65.json"
+    },
+    {
+      "workItemId": "JEAN_THOMPSON__2f431c77261ac8f6",
+      "patientName": "Jean Thompson",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Extracted 9 document(s) for QA evaluation.",
+      "resultBundlePath": "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\test\\oasis-qa-demo-all\\run\\patient-results\\JEAN_THOMPSON__2f431c77261ac8f6.json"
+    },
+    {
+      "workItemId": "JOHN_CHATFIELD__f712f0a9d0b9fd53",
+      "patientName": "John Chatfield",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Extracted 9 document(s) for QA evaluation.",
+      "resultBundlePath": "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\test\\oasis-qa-demo-all\\run\\patient-results\\JOHN_CHATFIELD__f712f0a9d0b9fd53.json"
+    },
+    {
+      "workItemId": "JOYCE_COWIE__5212066024aee19a",
+      "patientName": "Joyce Cowie",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Extracted 9 document(s) for QA evaluation.",
+      "resultBundlePath": "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\test\\oasis-qa-demo-all\\run\\patient-results\\JOYCE_COWIE__5212066024aee19a.json"
+    },
+    {
+      "workItemId": "JOYCE_COWIE__a518d421901c7334",
+      "patientName": "Joyce Cowie",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Extracted 9 document(s) for QA evaluation.",
+      "resultBundlePath": "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\test\\oasis-qa-demo-all\\run\\patient-results\\JOYCE_COWIE__a518d421901c7334.json"
+    },
+    {
+      "workItemId": "JUDITH_WILDE__1fb4093b2f93f0e0",
+      "patientName": "Judith Wilde",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Extracted 9 document(s) for QA evaluation.",
+      "resultBundlePath": "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\test\\oasis-qa-demo-all\\run\\patient-results\\JUDITH_WILDE__1fb4093b2f93f0e0.json"
+    },
+    {
+      "workItemId": "LANCE_BUSHNELL__cf42c4f0e39a9f75",
+      "patientName": "Lance Bushnell",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Extracted 9 document(s) for QA evaluation.",
+      "resultBundlePath": "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\test\\oasis-qa-demo-all\\run\\patient-results\\LANCE_BUSHNELL__cf42c4f0e39a9f75.json"
+    },
+    {
+      "workItemId": "LANCE_BUSHNELL__268ea87525908133",
+      "patientName": "Lance Bushnell",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Extracted 9 document(s) for QA evaluation.",
+      "resultBundlePath": "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\test\\oasis-qa-demo-all\\run\\patient-results\\LANCE_BUSHNELL__268ea87525908133.json"
+    },
+    {
+      "workItemId": "LEN_GRABOWSKI__27b2d518432c57c7",
+      "patientName": "Len Grabowski",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Extracted 9 document(s) for QA evaluation.",
+      "resultBundlePath": "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\test\\oasis-qa-demo-all\\run\\patient-results\\LEN_GRABOWSKI__27b2d518432c57c7.json"
+    },
+    {
+      "workItemId": "LEN_GRABOWSKI__873cc901b4f78a3f",
+      "patientName": "Len Grabowski",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Extracted 9 document(s) for QA evaluation.",
+      "resultBundlePath": "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\test\\oasis-qa-demo-all\\run\\patient-results\\LEN_GRABOWSKI__873cc901b4f78a3f.json"
+    },
+    {
+      "workItemId": "LINDA_KURZWEIL__b929c2ed7041a543",
+      "patientName": "Linda Kurzweil",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Extracted 9 document(s) for QA evaluation.",
+      "resultBundlePath": "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\test\\oasis-qa-demo-all\\run\\patient-results\\LINDA_KURZWEIL__b929c2ed7041a543.json"
+    },
+    {
+      "workItemId": "LINDA_KURZWEIL__d74af22704199bbf",
+      "patientName": "Linda Kurzweil",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Extracted 9 document(s) for QA evaluation.",
+      "resultBundlePath": "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\test\\oasis-qa-demo-all\\run\\patient-results\\LINDA_KURZWEIL__d74af22704199bbf.json"
+    },
+    {
+      "workItemId": "LOUIS_SMITH__68621d6dc2aa36aa",
+      "patientName": "Louis Smith",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Extracted 9 document(s) for QA evaluation.",
+      "resultBundlePath": "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\test\\oasis-qa-demo-all\\run\\patient-results\\LOUIS_SMITH__68621d6dc2aa36aa.json"
+    },
+    {
+      "workItemId": "LUCYNA_OLESNICKI__01a873baa06f78cf",
+      "patientName": "Lucyna Olesnicki",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Extracted 9 document(s) for QA evaluation.",
+      "resultBundlePath": "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\test\\oasis-qa-demo-all\\run\\patient-results\\LUCYNA_OLESNICKI__01a873baa06f78cf.json"
+    },
+    {
+      "workItemId": "WILLIAM_YELSH__d6bf0bb97b01d14d",
+      "patientName": "William Yelsh",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Extracted 9 document(s) for QA evaluation.",
+      "resultBundlePath": "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\test\\oasis-qa-demo-all\\run\\patient-results\\WILLIAM_YELSH__d6bf0bb97b01d14d.json"
+    },
+    {
+      "workItemId": "YVONNE_BARGER__718f84930c8155e8",
+      "patientName": "Yvonne Barger",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Extracted 9 document(s) for QA evaluation.",
+      "resultBundlePath": "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\test\\oasis-qa-demo-all\\run\\patient-results\\YVONNE_BARGER__718f84930c8155e8.json"
+    }
+  ]
+}

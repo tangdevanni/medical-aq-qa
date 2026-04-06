@@ -10,6 +10,13 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@medical-ai-qa/shared-logging": "workspace:*"
+    "@fastify/cors": "^10.1.0",
+    "@fastify/multipart": "^9.0.3",
+    "@medical-ai-qa/finale-workbook-intake": "workspace:*",
+    "@medical-ai-qa/shared-types": "workspace:*",
+    "dotenv": "^16.4.7",
+    "fastify": "^5.2.1",
+    "pino": "^9.7.0",
+    "zod": "^3.24.2"
   }
 }

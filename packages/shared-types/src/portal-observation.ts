@@ -1,4 +1,6 @@
 import { z } from "zod";
+import { documentExtractionSchema } from "./document-extraction";
+import { visitNoteQaReportSchema } from "./visit-note-qa";
 
 export const qaBoardCardSummarySchema = z.object({
   cardIndex: z.number().int().nonnegative(),
@@ -325,6 +327,179 @@ export const documentTrackingDestinationSurfaceSchema = z.object({
 
 export type DocumentTrackingDestinationSurface = z.infer<typeof documentTrackingDestinationSurfaceSchema>;
 
+export const documentTrackingTrustedLinkSchema = z.object({
+  label: z.string().min(1),
+  classification: z.literal("SAFE_NAV"),
+  selectorKind: z.literal("sidebar_anchor"),
+});
+
+export type DocumentTrackingTrustedLink = z.infer<typeof documentTrackingTrustedLinkSchema>;
+
+export const documentTrackingSubviewHubSchema = z.object({
+  url: z.string().min(1),
+  title: z.string().min(1).nullable(),
+  trustedLinks: z.array(documentTrackingTrustedLinkSchema),
+});
+
+export type DocumentTrackingSubviewHub = z.infer<typeof documentTrackingSubviewHubSchema>;
+
+export const documentTrackingSubviewSelectionSchema = z.object({
+  label: z.string().min(1),
+  classification: z.literal("SAFE_NAV"),
+  selectorKind: z.literal("sidebar_anchor"),
+  opened: z.boolean(),
+});
+
+export type DocumentTrackingSubviewSelection = z.infer<typeof documentTrackingSubviewSelectionSchema>;
+
+export const documentTrackingSubviewTransitionSchema = z.object({
+  resultType: z.enum([
+    "route_change",
+    "query_param_change",
+    "same_page_new_view",
+    "modal",
+    "split_view",
+    "no_change",
+    "unknown",
+  ]),
+  routeChanged: z.boolean(),
+  queryChanged: z.boolean(),
+  modalDetected: z.boolean(),
+  splitViewDetected: z.boolean(),
+  meaningfulStructureChanged: z.boolean(),
+});
+
+export type DocumentTrackingSubviewTransition = z.infer<typeof documentTrackingSubviewTransitionSchema>;
+
+export const documentTrackingSubviewDestinationSurfaceSchema = z.object({
+  detected: z.boolean(),
+  pageType: z.enum(["review_queue", "queue", "worklist", "statistics_view", "unknown"]),
+  url: z.string().min(1).nullable(),
+  title: z.string().min(1).nullable(),
+  filters: z.array(z.string().min(1)),
+  searchBars: z.array(z.string().min(1)),
+  tabs: z.array(z.string().min(1)),
+  sectionHeaders: z.array(z.string().min(1)),
+  tables: z.array(portalTableSummarySchema),
+  cards: z.array(z.string().min(1)),
+  statusLabels: z.array(z.string().min(1)),
+  layoutPatterns: z.array(z.string().min(1)),
+  hasVisibleRows: z.boolean(),
+});
+
+export type DocumentTrackingSubviewDestinationSurface = z.infer<typeof documentTrackingSubviewDestinationSurfaceSchema>;
+
+export const qaQueueTargetTypeSchema = z.enum([
+  "NOTE_OPEN_ACTION",
+  "DOCUMENT_LINK",
+  "PATIENT_LINK",
+  "OTHER_ACTION",
+]);
+
+export type QaQueueTargetType = z.infer<typeof qaQueueTargetTypeSchema>;
+
+export const qaQueueActionLabelSourceSchema = z.enum([
+  "text",
+  "ngbtooltip",
+  "title",
+  "aria-label",
+  "data-attribute",
+  "unknown",
+]);
+
+export type QaQueueActionLabelSource = z.infer<typeof qaQueueActionLabelSourceSchema>;
+
+export const qaQueueDocumentTypeSchema = z.enum([
+  "VISIT_NOTE",
+  "OASIS",
+  "ORDER",
+  "PLAN_OF_CARE",
+  "UNKNOWN",
+]);
+
+export type QaQueueDocumentType = z.infer<typeof qaQueueDocumentTypeSchema>;
+
+export const qaQueueAvailableActionSchema = z.object({
+  label: z.string().min(1),
+  labelSource: qaQueueActionLabelSourceSchema,
+  classification: qaQueueTargetTypeSchema,
+});
+
+export type QaQueueAvailableAction = z.infer<typeof qaQueueAvailableActionSchema>;
+
+export const qaQueueSummarySchema = z.object({
+  url: z.string().min(1),
+  rowCount: z.number().int().nonnegative(),
+});
+
+export type QaQueueSummary = z.infer<typeof qaQueueSummarySchema>;
+
+export const qaQueueItemSelectedRowSchema = z.object({
+  rowIndex: z.number().int().nonnegative(),
+  documentDescText: z.string().min(1).nullable(),
+  documentType: qaQueueDocumentTypeSchema,
+  availableActionLabels: z.array(qaQueueAvailableActionSchema),
+});
+
+export type QaQueueItemSelectedRow = z.infer<typeof qaQueueItemSelectedRowSchema>;
+
+export const qaQueueItemSelectedTargetSchema = z.object({
+  label: z.string().min(1),
+  labelSource: qaQueueActionLabelSourceSchema,
+  targetType: qaQueueTargetTypeSchema,
+  opened: z.boolean(),
+});
+
+export type QaQueueItemSelectedTarget = z.infer<typeof qaQueueItemSelectedTargetSchema>;
+
+export const qaQueueItemTransitionSchema = z.object({
+  resultType: z.enum([
+    "route_change",
+    "query_param_change",
+    "modal",
+    "split_view",
+    "new_tab",
+    "same_page_new_view",
+    "no_change",
+    "unknown",
+  ]),
+  routeChanged: z.boolean(),
+  queryChanged: z.boolean(),
+  newTabDetected: z.boolean(),
+  modalDetected: z.boolean(),
+  splitViewDetected: z.boolean(),
+  newUrl: z.string().min(1).nullable(),
+});
+
+export type QaQueueItemTransition = z.infer<typeof qaQueueItemTransitionSchema>;
+
+export const qaQueueItemDetailSurfaceSchema = z.object({
+  detected: z.boolean(),
+  pageType: z.enum([
+    "visit_note_detail",
+    "oasis_detail",
+    "plan_of_care_detail",
+    "admission_order_detail",
+    "physician_order_detail",
+    "order_detail",
+    "note_detail",
+    "document_detail",
+    "unknown",
+  ]),
+  url: z.string().min(1).nullable(),
+  title: z.string().min(1).nullable(),
+  tabs: z.array(z.string().min(1)),
+  sectionHeaders: z.array(z.string().min(1)),
+  fieldLabels: z.array(z.string().min(1)),
+  buttons: z.array(portalButtonSummarySchema),
+  attachmentsPresent: z.boolean(),
+  textareasPresent: z.boolean(),
+  statusAreasPresent: z.boolean(),
+  layoutPatterns: z.array(z.string().min(1)),
+});
+
+export type QaQueueItemDetailSurface = z.infer<typeof qaQueueItemDetailSurfaceSchema>;
+
 export const qaBoardObservationSchema = z.object({
   cardCount: z.number().int().nonnegative(),
   statusesSeen: z.array(z.string().min(1)),
@@ -423,3 +598,26 @@ export const documentTrackingHubDiscoveryPayloadSchema = z.object({
 });
 
 export type DocumentTrackingHubDiscoveryPayload = z.infer<typeof documentTrackingHubDiscoveryPayloadSchema>;
+
+export const documentTrackingSubviewDiscoveryPayloadSchema = z.object({
+  hub: documentTrackingSubviewHubSchema,
+  selectedSubview: documentTrackingSubviewSelectionSchema,
+  transition: documentTrackingSubviewTransitionSchema,
+  destinationSurface: documentTrackingSubviewDestinationSurfaceSchema,
+  failures: z.array(portalObservationFailureSchema),
+});
+
+export type DocumentTrackingSubviewDiscoveryPayload = z.infer<typeof documentTrackingSubviewDiscoveryPayloadSchema>;
+
+export const qaQueueItemDiscoveryPayloadSchema = z.object({
+  queue: qaQueueSummarySchema,
+  selectedRow: qaQueueItemSelectedRowSchema,
+  selectedTarget: qaQueueItemSelectedTargetSchema,
+  transition: qaQueueItemTransitionSchema,
+  detailSurface: qaQueueItemDetailSurfaceSchema,
+  documentExtraction: documentExtractionSchema.optional(),
+  visitNoteQa: visitNoteQaReportSchema.optional(),
+  failures: z.array(portalObservationFailureSchema),
+});
+
+export type QaQueueItemDiscoveryPayload = z.infer<typeof qaQueueItemDiscoveryPayloadSchema>;

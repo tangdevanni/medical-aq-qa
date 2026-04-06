@@ -1,0 +1,36 @@
+{
+  "family": "medical-ai-qa-dashboard-demo",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "512",
+  "memory": "1024",
+  "executionRoleArn": "arn:aws:iam::<ACCOUNT_ID>:role/ecsTaskExecutionRole",
+  "taskRoleArn": "arn:aws:iam::<ACCOUNT_ID>:role/medical-ai-qa-dashboard-task-role",
+  "containerDefinitions": [
+    {
+      "name": "dashboard",
+      "image": "<ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/medical-ai-qa-dashboard:demo",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 3001,
+          "protocol": "tcp"
+        }
+      ],
+      "environment": [
+        {
+          "name": "NEXT_PUBLIC_API_BASE_URL",
+          "value": "https://YOUR_ALB_DNS/api"
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/medical-ai-qa-dashboard-demo",
+          "awslogs-region": "<REGION>",
+          "awslogs-stream-prefix": "ecs"
+        }
+      }
+    }
+  ]
+}

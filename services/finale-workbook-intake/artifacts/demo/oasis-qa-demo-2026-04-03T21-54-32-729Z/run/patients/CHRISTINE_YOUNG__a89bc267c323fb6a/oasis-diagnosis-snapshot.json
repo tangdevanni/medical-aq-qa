@@ -1,0 +1,503 @@
+{
+  "schemaVersion": "1",
+  "capturedAt": "2026-04-03T21:57:53.354Z",
+  "page": {
+    "url": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/intake/699c7efee396a2d53a90c49c/documents/note/oasis/699c7f2404cd05d537d0204a",
+    "diagnosisContainerFound": true,
+    "diagnosisContainerSelector": "OASIS diagnosis card container by #diagnosis id",
+    "diagnosisFormSelector": "Diagnosis rows inferred from icdcode field anchors",
+    "sectionMarkers": [
+      "Active Diagnoses",
+      "(M1028) Active Diagnoses – Comorbidities and Co-existing Conditions – Check all that apply See OASIS Guidance Manual for a complete list of relevant ICD-10 codes."
+    ],
+    "insertDiagnosisVisible": true,
+    "rowCount": 8
+  },
+  "rows": [
+    {
+      "rowIndex": 0,
+      "diagnosisType": "PRIMARY DIAGNOSIS",
+      "sectionLabel": "PRIMARY DIAGNOSIS",
+      "icd10Code": "R13.10",
+      "onsetDate": "2026-02-27",
+      "description": null,
+      "severity": null,
+      "timingFlags": [],
+      "rawText": "PRIMARY DIAGNOSIS 🩺 ICD-10 CodeOnset Date",
+      "rawHtmlHints": [
+        "tag=div",
+        "class=row",
+        "formcontrolnames=icdcode,onSetDate"
+      ],
+      "extractionWarnings": [],
+      "selectorEvidence": [
+        {
+          "field": "icd10Code",
+          "selectorUsed": "[formcontrolname='icdcode']",
+          "found": true,
+          "valueSource": "value",
+          "disabled": true,
+          "readOnly": false
+        },
+        {
+          "field": "onsetDate",
+          "selectorUsed": "input[type='date']",
+          "found": true,
+          "valueSource": "value",
+          "disabled": true,
+          "readOnly": false
+        },
+        {
+          "field": "description",
+          "selectorUsed": null,
+          "found": false,
+          "valueSource": "none",
+          "disabled": null,
+          "readOnly": null
+        },
+        {
+          "field": "severity",
+          "selectorUsed": null,
+          "found": false,
+          "valueSource": "none",
+          "disabled": null,
+          "readOnly": null
+        },
+        {
+          "field": "timingFlags",
+          "selectorUsed": "input[type='radio']:checked + active timing toggles",
+          "found": false,
+          "valueSource": "none",
+          "disabled": null,
+          "readOnly": null
+        }
+      ]
+    },
+    {
+      "rowIndex": 1,
+      "diagnosisType": "OTHER DIAGNOSIS",
+      "sectionLabel": "OTHER DIAGNOSIS",
+      "icd10Code": "I11.0",
+      "onsetDate": "2026-02-27",
+      "description": null,
+      "severity": null,
+      "timingFlags": [],
+      "rawText": "OTHER DIAGNOSIS - 1 ICD-10 CodeOnset Date",
+      "rawHtmlHints": [
+        "tag=div",
+        "class=row",
+        "formcontrolnames=icdcode,onSetDate"
+      ],
+      "extractionWarnings": [],
+      "selectorEvidence": [
+        {
+          "field": "icd10Code",
+          "selectorUsed": "[formcontrolname='icdcode']",
+          "found": true,
+          "valueSource": "value",
+          "disabled": true,
+          "readOnly": false
+        },
+        {
+          "field": "onsetDate",
+          "selectorUsed": "input[type='date']",
+          "found": true,
+          "valueSource": "value",
+          "disabled": true,
+          "readOnly": false
+        },
+        {
+          "field": "description",
+          "selectorUsed": null,
+          "found": false,
+          "valueSource": "none",
+          "disabled": null,
+          "readOnly": null
+        },
+        {
+          "field": "severity",
+          "selectorUsed": null,
+          "found": false,
+          "valueSource": "none",
+          "disabled": null,
+          "readOnly": null
+        },
+        {
+          "field": "timingFlags",
+          "selectorUsed": "input[type='radio']:checked + active timing toggles",
+          "found": false,
+          "valueSource": "none",
+          "disabled": null,
+          "readOnly": null
+        }
+      ]
+    },
+    {
+      "rowIndex": 2,
+      "diagnosisType": "OTHER DIAGNOSIS",
+      "sectionLabel": "OTHER DIAGNOSIS",
+      "icd10Code": "I50.9",
+      "onsetDate": "2026-02-27",
+      "description": null,
+      "severity": null,
+      "timingFlags": [],
+      "rawText": "OTHER DIAGNOSIS - 2 ICD-10 CodeOnset Date",
+      "rawHtmlHints": [
+        "tag=div",
+        "class=row",
+        "formcontrolnames=icdcode,onSetDate"
+      ],
+      "extractionWarnings": [],
+      "selectorEvidence": [
+        {
+          "field": "icd10Code",
+          "selectorUsed": "[formcontrolname='icdcode']",
+          "found": true,
+          "valueSource": "value",
+          "disabled": true,
+          "readOnly": false
+        },
+        {
+          "field": "onsetDate",
+          "selectorUsed": "input[type='date']",
+          "found": true,
+          "valueSource": "value",
+          "disabled": true,
+          "readOnly": false
+        },
+        {
+          "field": "description",
+          "selectorUsed": null,
+          "found": false,
+          "valueSource": "none",
+          "disabled": null,
+          "readOnly": null
+        },
+        {
+          "field": "severity",
+          "selectorUsed": null,
+          "found": false,
+          "valueSource": "none",
+          "disabled": null,
+          "readOnly": null
+        },
+        {
+          "field": "timingFlags",
+          "selectorUsed": "input[type='radio']:checked + active timing toggles",
+          "found": false,
+          "valueSource": "none",
+          "disabled": null,
+          "readOnly": null
+        }
+      ]
+    },
+    {
+      "rowIndex": 3,
+      "diagnosisType": "OTHER DIAGNOSIS",
+      "sectionLabel": "OTHER DIAGNOSIS",
+      "icd10Code": "I48.20",
+      "onsetDate": "2026-02-27",
+      "description": null,
+      "severity": null,
+      "timingFlags": [],
+      "rawText": "OTHER DIAGNOSIS - 3 ICD-10 CodeOnset Date",
+      "rawHtmlHints": [
+        "tag=div",
+        "class=row",
+        "formcontrolnames=icdcode,onSetDate"
+      ],
+      "extractionWarnings": [],
+      "selectorEvidence": [
+        {
+          "field": "icd10Code",
+          "selectorUsed": "[formcontrolname='icdcode']",
+          "found": true,
+          "valueSource": "value",
+          "disabled": true,
+          "readOnly": false
+        },
+        {
+          "field": "onsetDate",
+          "selectorUsed": "input[type='date']",
+          "found": true,
+          "valueSource": "value",
+          "disabled": true,
+          "readOnly": false
+        },
+        {
+          "field": "description",
+          "selectorUsed": null,
+          "found": false,
+          "valueSource": "none",
+          "disabled": null,
+          "readOnly": null
+        },
+        {
+          "field": "severity",
+          "selectorUsed": null,
+          "found": false,
+          "valueSource": "none",
+          "disabled": null,
+          "readOnly": null
+        },
+        {
+          "field": "timingFlags",
+          "selectorUsed": "input[type='radio']:checked + active timing toggles",
+          "found": false,
+          "valueSource": "none",
+          "disabled": null,
+          "readOnly": null
+        }
+      ]
+    },
+    {
+      "rowIndex": 4,
+      "diagnosisType": "OTHER DIAGNOSIS",
+      "sectionLabel": "OTHER DIAGNOSIS",
+      "icd10Code": "E03.9",
+      "onsetDate": "2026-02-27",
+      "description": null,
+      "severity": null,
+      "timingFlags": [],
+      "rawText": "OTHER DIAGNOSIS - 4 ICD-10 CodeOnset Date",
+      "rawHtmlHints": [
+        "tag=div",
+        "class=row",
+        "formcontrolnames=icdcode,onSetDate"
+      ],
+      "extractionWarnings": [],
+      "selectorEvidence": [
+        {
+          "field": "icd10Code",
+          "selectorUsed": "[formcontrolname='icdcode']",
+          "found": true,
+          "valueSource": "value",
+          "disabled": true,
+          "readOnly": false
+        },
+        {
+          "field": "onsetDate",
+          "selectorUsed": "input[type='date']",
+          "found": true,
+          "valueSource": "value",
+          "disabled": true,
+          "readOnly": false
+        },
+        {
+          "field": "description",
+          "selectorUsed": null,
+          "found": false,
+          "valueSource": "none",
+          "disabled": null,
+          "readOnly": null
+        },
+        {
+          "field": "severity",
+          "selectorUsed": null,
+          "found": false,
+          "valueSource": "none",
+          "disabled": null,
+          "readOnly": null
+        },
+        {
+          "field": "timingFlags",
+          "selectorUsed": "input[type='radio']:checked + active timing toggles",
+          "found": false,
+          "valueSource": "none",
+          "disabled": null,
+          "readOnly": null
+        }
+      ]
+    },
+    {
+      "rowIndex": 5,
+      "diagnosisType": "OTHER DIAGNOSIS",
+      "sectionLabel": "OTHER DIAGNOSIS",
+      "icd10Code": "R53.1",
+      "onsetDate": "2026-02-27",
+      "description": null,
+      "severity": null,
+      "timingFlags": [],
+      "rawText": "OTHER DIAGNOSIS - 5 ICD-10 CodeOnset Date",
+      "rawHtmlHints": [
+        "tag=div",
+        "class=row",
+        "formcontrolnames=icdcode,onSetDate"
+      ],
+      "extractionWarnings": [],
+      "selectorEvidence": [
+        {
+          "field": "icd10Code",
+          "selectorUsed": "[formcontrolname='icdcode']",
+          "found": true,
+          "valueSource": "value",
+          "disabled": true,
+          "readOnly": false
+        },
+        {
+          "field": "onsetDate",
+          "selectorUsed": "input[type='date']",
+          "found": true,
+          "valueSource": "value",
+          "disabled": true,
+          "readOnly": false
+        },
+        {
+          "field": "description",
+          "selectorUsed": null,
+          "found": false,
+          "valueSource": "none",
+          "disabled": null,
+          "readOnly": null
+        },
+        {
+          "field": "severity",
+          "selectorUsed": null,
+          "found": false,
+          "valueSource": "none",
+          "disabled": null,
+          "readOnly": null
+        },
+        {
+          "field": "timingFlags",
+          "selectorUsed": "input[type='radio']:checked + active timing toggles",
+          "found": false,
+          "valueSource": "none",
+          "disabled": null,
+          "readOnly": null
+        }
+      ]
+    },
+    {
+      "rowIndex": 6,
+      "diagnosisType": null,
+      "sectionLabel": null,
+      "icd10Code": "F32.A",
+      "onsetDate": "2026-02-27",
+      "description": null,
+      "severity": null,
+      "timingFlags": [],
+      "rawText": "ICD-10 CodeOnset Date",
+      "rawHtmlHints": [
+        "tag=div",
+        "class=row",
+        "formcontrolnames=icdcode,onSetDate"
+      ],
+      "extractionWarnings": [],
+      "selectorEvidence": [
+        {
+          "field": "icd10Code",
+          "selectorUsed": "[formcontrolname='icdcode']",
+          "found": true,
+          "valueSource": "value",
+          "disabled": true,
+          "readOnly": false
+        },
+        {
+          "field": "onsetDate",
+          "selectorUsed": "input[type='date']",
+          "found": true,
+          "valueSource": "value",
+          "disabled": true,
+          "readOnly": false
+        },
+        {
+          "field": "description",
+          "selectorUsed": null,
+          "found": false,
+          "valueSource": "none",
+          "disabled": null,
+          "readOnly": null
+        },
+        {
+          "field": "severity",
+          "selectorUsed": null,
+          "found": false,
+          "valueSource": "none",
+          "disabled": null,
+          "readOnly": null
+        },
+        {
+          "field": "timingFlags",
+          "selectorUsed": "input[type='radio']:checked + active timing toggles",
+          "found": false,
+          "valueSource": "none",
+          "disabled": null,
+          "readOnly": null
+        }
+      ]
+    },
+    {
+      "rowIndex": 7,
+      "diagnosisType": null,
+      "sectionLabel": null,
+      "icd10Code": "Z87.01",
+      "onsetDate": "2026-02-27",
+      "description": null,
+      "severity": null,
+      "timingFlags": [],
+      "rawText": "ICD-10 CodeOnset Date",
+      "rawHtmlHints": [
+        "tag=div",
+        "class=row",
+        "formcontrolnames=icdcode,onSetDate"
+      ],
+      "extractionWarnings": [],
+      "selectorEvidence": [
+        {
+          "field": "icd10Code",
+          "selectorUsed": "[formcontrolname='icdcode']",
+          "found": true,
+          "valueSource": "value",
+          "disabled": true,
+          "readOnly": false
+        },
+        {
+          "field": "onsetDate",
+          "selectorUsed": "input[type='date']",
+          "found": true,
+          "valueSource": "value",
+          "disabled": true,
+          "readOnly": false
+        },
+        {
+          "field": "description",
+          "selectorUsed": null,
+          "found": false,
+          "valueSource": "none",
+          "disabled": null,
+          "readOnly": null
+        },
+        {
+          "field": "severity",
+          "selectorUsed": null,
+          "found": false,
+          "valueSource": "none",
+          "disabled": null,
+          "readOnly": null
+        },
+        {
+          "field": "timingFlags",
+          "selectorUsed": "input[type='radio']:checked + active timing toggles",
+          "found": false,
+          "valueSource": "none",
+          "disabled": null,
+          "readOnly": null
+        }
+      ]
+    }
+  ],
+  "selectorEvidence": [
+    "[matched] OASIS diagnosis card container by #diagnosis id count=1 visible=1 elapsedMs=23 samples=(M1021/1023) Diagnoses and Symptom ControlList each diagnosis for which the patient is receiving home care in Column 1, and enter its ICD-10-CM code at the level of highest specifi",
+    "[matched] Active Diagnoses section marker count=3 visible=2 elapsedMs=85 samples=Active Diagnoses | Active Diagnoses | (M1028) Active Diagnoses – Comorbidities and Co-existing Conditions – Check all that apply See OASIS Guidance Manual for a complete list of relevant ICD-10 codes.",
+    "[matched] Insert Diagnosis action button count=1 visible=1 elapsedMs=29 samples=Insert Diagnosis",
+    "[not_found] Diagnosis rows by formgroupname inside formarrayname=diagnosis count=0 visible=0 elapsedMs=10",
+    "[matched] Diagnosis rows inferred from icdcode field anchors count=8 visible=5 elapsedMs=70"
+  ],
+  "mappingNotes": [
+    "Prefer formcontrolname selectors for stable row/field mapping in Angular forms.",
+    "Fallback to row text heuristics only when direct control selectors are absent.",
+    "Snapshot is read-only and intended for QA comparison/autofill planning."
+  ],
+  "extractionWarnings": []
+}

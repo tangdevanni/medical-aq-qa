@@ -1,15 +1,16 @@
-import { type DocumentTrackingHub } from "@medical-ai-qa/shared-types";
-import { type Page } from "@playwright/test";
+import {
+  type DocumentTrackingHub,
+  type DocumentTrackingTrustedLink,
+  type DocumentTrackingSubviewHub,
+} from "@medical-ai-qa/shared-types";
+import { type Locator, type Page } from "@playwright/test";
 import { DOCUMENT_TRACKING_SELECTORS } from "../selectors/document-tracking.selectors";
-import { HUB_CARD_SELECTORS } from "../selectors/hub-card.selectors";
 import { type ResolvedHubCard, HubCardPage } from "./HubCardPage";
 import { normalizeText, waitForPageSettled } from "../utils/page-helpers";
 
 const PREFERRED_SUBVIEW_ORDER = [
   "QA Monitoring",
   "Physician's Order",
-  "Plan of Care",
-  "OASIS",
 ] as const;
 
 export class DocumentTrackingHubPage {
@@ -39,30 +40,27 @@ export class DocumentTrackingHubPage {
   async discoverResolvedCards(): Promise<ResolvedHubCard[]> {
     const resolvedCards: ResolvedHubCard[] = [];
     const seenLabels = new Set<string>();
+    const links = this.page.locator(DOCUMENT_TRACKING_SELECTORS.sidebarNavLinkSelectors.join(", "));
+    const count = Math.min(await links.count(), 32);
 
-    for (const selector of HUB_CARD_SELECTORS.cardCandidateSelectors) {
-      const candidates = this.page.locator(selector);
-      const count = Math.min(await candidates.count(), 24);
-
-      for (let index = 0; index < count; index += 1) {
-        const candidate = candidates.nth(index);
-        const summary = await new HubCardPage(candidate).summarize();
-        if (!summary?.summary.label) {
-          continue;
-        }
-
-        const labelKey = normalizeText(summary.summary.label);
-        if (!labelKey || seenLabels.has(labelKey)) {
-          continue;
-        }
-
-        if (!looksLikeDocumentTrackingCard(labelKey, summary.summary.clickable)) {
-          continue;
-        }
-
-        seenLabels.add(labelKey);
-        resolvedCards.push(summary);
+    for (let index = 0; index < count; index += 1) {
+      const candidate = links.nth(index);
+      const summary = await new HubCardPage(candidate).summarize();
+      if (!summary?.summary.label) {
+        continue;
       }
+
+      const labelKey = normalizeText(summary.summary.label);
+      if (!labelKey || seenLabels.has(labelKey)) {
+        continue;
+      }
+
+      if (!looksLikeDocumentTrackingNavLabel(labelKey)) {
+        continue;
+      }
+
+      seenLabels.add(labelKey);
+      resolvedCards.push(summary);
     }
 
     return resolvedCards;
@@ -93,14 +91,107 @@ export class DocumentTrackingHubPage {
 
     return null;
   }
-}
 
-function looksLikeDocumentTrackingCard(label: string, clickable: boolean): boolean {
-  if (/document statistics|physician'?s order|plan of care|\boasis\b|qa monitoring|need to send|need to receive/i.test(label)) {
-    return true;
+  async discoverTrustedSidebarLinks(): Promise<Array<{
+    summary: DocumentTrackingTrustedLink;
+    locator: Locator;
+  }>> {
+    const links = this.page.locator(DOCUMENT_TRACKING_SELECTORS.trustedSidebarAnchorSelectors.join(", "));
+    const count = Math.min(await links.count(), 32);
+    const trustedLinks: Array<{
+      summary: DocumentTrackingTrustedLink;
+      locator: Locator;
+    }> = [];
+    const seenLabels = new Set<string>();
+
+    for (let index = 0; index < count; index += 1) {
+      const locator = links.nth(index);
+      if (!(await locator.isVisible().catch(() => false))) {
+        continue;
+      }
+
+      const label = await this.readSidebarAnchorLabel(locator);
+      if (!label) {
+        continue;
+      }
+
+      const normalizedLabel = normalizeText(label);
+      if (!normalizedLabel || seenLabels.has(normalizedLabel.toLowerCase())) {
+        continue;
+      }
+
+      if (!isTrustedSidebarLabel(normalizedLabel)) {
+        continue;
+      }
+
+      seenLabels.add(normalizedLabel.toLowerCase());
+      trustedLinks.push({
+        summary: {
+          label: normalizedLabel,
+          classification: "SAFE_NAV",
+          selectorKind: "sidebar_anchor",
+        },
+        locator,
+      });
+    }
+
+    return trustedLinks;
   }
 
-  return clickable && label.split(" ").length <= 5;
+  async discoverTrustedSidebarHub(): Promise<DocumentTrackingSubviewHub> {
+    const trustedLinks = await this.discoverTrustedSidebarLinks();
+
+    return {
+      url: this.page.url(),
+      title: normalizeText(await this.page.title().catch(() => null)),
+      trustedLinks: trustedLinks.map((link) => link.summary),
+    };
+  }
+
+  selectPreferredTrustedSidebarLink(
+    links: Array<{
+      summary: DocumentTrackingTrustedLink;
+      locator: Locator;
+    }>,
+  ): { summary: DocumentTrackingTrustedLink; locator: Locator } | null {
+    const preferredLabels = new Set<string>(DOCUMENT_TRACKING_SELECTORS.preferredSidebarLabels);
+
+    for (const label of [
+      ...DOCUMENT_TRACKING_SELECTORS.preferredSidebarLabels,
+      ...DOCUMENT_TRACKING_SELECTORS.safeSidebarLabels.filter(
+        (candidate) => !preferredLabels.has(candidate),
+      ),
+    ]) {
+      const match = links.find((link) => matchesPreferredLabel(link.summary.label, label));
+      if (match) {
+        return match;
+      }
+    }
+
+    return null;
+  }
+
+  private async readSidebarAnchorLabel(locator: Locator): Promise<string | null> {
+    for (const selector of DOCUMENT_TRACKING_SELECTORS.sidebarLabelSelectors) {
+      const labelNode = locator.locator(selector).first();
+      if (!(await labelNode.isVisible().catch(() => false))) {
+        continue;
+      }
+
+      const value = normalizeText(await labelNode.innerText().catch(() => null));
+      if (value) {
+        return value;
+      }
+    }
+
+    return normalizeText(await locator.innerText().catch(() => null));
+  }
+}
+
+function looksLikeDocumentTrackingNavLabel(label: string): boolean {
+  return /document statistics|physician'?s order|plan of care|\boasis\b|qa monitoring|need to send|need to receive/i.test(
+    label,
+  );
 }
 
 function matchesPreferredLabel(
@@ -123,4 +214,11 @@ function matchesPreferredLabel(
   }
 
   return normalizedValue.includes(normalizedPreferred);
+}
+
+function isTrustedSidebarLabel(label: string): boolean {
+  return [
+    ...DOCUMENT_TRACKING_SELECTORS.safeSidebarLabels,
+    ...DOCUMENT_TRACKING_SELECTORS.optionalSidebarLabels,
+  ].some((candidate) => matchesPreferredLabel(label, candidate));
 }

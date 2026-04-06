@@ -1,0 +1,1121 @@
+{
+  "runId": "batch-2026-03-31T17-52-49-444Z-YVONNE_BARGER__718f84930c8155e8",
+  "batchId": "batch-2026-03-31T17-52-49-444Z",
+  "workItemId": "YVONNE_BARGER__718f84930c8155e8",
+  "patientName": "Yvonne Barger",
+  "processingStatus": "BLOCKED",
+  "executionStep": "BLOCKED",
+  "progressPercent": 100,
+  "startedAt": "2026-03-31T17:52:50.165Z",
+  "completedAt": "2026-03-31T17:52:50.197Z",
+  "lastUpdatedAt": "2026-03-31T17:52:50.188Z",
+  "matchResult": {
+    "status": "EXACT",
+    "searchQuery": "Yvonne Barger",
+    "portalPatientId": "PT-1001",
+    "portalDisplayName": "Yvonne Barger",
+    "candidateNames": [
+      "Yvonne Barger"
+    ],
+    "note": null
+  },
+  "artifacts": [
+    {
+      "artifactType": "OASIS",
+      "status": "DOWNLOADED",
+      "portalLabel": "OASIS Assessment",
+      "locatorUsed": "[data-testid=\"oasis-doc\"]",
+      "discoveredAt": "2026-03-31T17:52:50.188Z",
+      "downloadPath": "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\test\\oasis-qa-demo-all\\run\\evidence\\YVONNE_BARGER__718f84930c8155e8\\oasis.txt",
+      "extractedFields": {},
+      "notes": []
+    },
+    {
+      "artifactType": "PLAN_OF_CARE",
+      "status": "DOWNLOADED",
+      "portalLabel": "Plan of Care",
+      "locatorUsed": "[data-testid=\"poc-doc\"]",
+      "discoveredAt": "2026-03-31T17:52:50.188Z",
+      "downloadPath": "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\test\\oasis-qa-demo-all\\run\\evidence\\YVONNE_BARGER__718f84930c8155e8\\plan-of-care.txt",
+      "extractedFields": {},
+      "notes": []
+    },
+    {
+      "artifactType": "VISIT_NOTES",
+      "status": "DOWNLOADED",
+      "portalLabel": "SN Visit Note",
+      "locatorUsed": "[data-testid=\"visit-note-doc\"]",
+      "discoveredAt": "2026-03-31T17:52:50.188Z",
+      "downloadPath": "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\test\\oasis-qa-demo-all\\run\\evidence\\YVONNE_BARGER__718f84930c8155e8\\visit-note-sn.txt",
+      "extractedFields": {},
+      "notes": []
+    },
+    {
+      "artifactType": "PHYSICIAN_ORDERS",
+      "status": "DOWNLOADED",
+      "portalLabel": "Physician Order",
+      "locatorUsed": "[data-testid=\"order-doc\"]",
+      "discoveredAt": "2026-03-31T17:52:50.188Z",
+      "downloadPath": "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\test\\oasis-qa-demo-all\\run\\evidence\\YVONNE_BARGER__718f84930c8155e8\\physician-order.txt",
+      "extractedFields": {},
+      "notes": []
+    },
+    {
+      "artifactType": "COMMUNICATION_NOTES",
+      "status": "DOWNLOADED",
+      "portalLabel": "Communication Note",
+      "locatorUsed": "[data-testid=\"communication-doc\"]",
+      "discoveredAt": "2026-03-31T17:52:50.188Z",
+      "downloadPath": "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\test\\oasis-qa-demo-all\\run\\evidence\\YVONNE_BARGER__718f84930c8155e8\\communication-note.txt",
+      "extractedFields": {},
+      "notes": []
+    },
+    {
+      "artifactType": "THIRTY_SIXTY_DAY_SUMMARIES",
+      "status": "DOWNLOADED",
+      "portalLabel": "30-Day Summary",
+      "locatorUsed": "[data-testid=\"summary-doc\"]",
+      "discoveredAt": "2026-03-31T17:52:50.188Z",
+      "downloadPath": "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\test\\oasis-qa-demo-all\\run\\evidence\\YVONNE_BARGER__718f84930c8155e8\\summary-30.txt",
+      "extractedFields": {},
+      "notes": []
+    },
+    {
+      "artifactType": "SUPERVISORY_VISITS",
+      "status": "DOWNLOADED",
+      "portalLabel": "Supervisory Visit",
+      "locatorUsed": "[data-testid=\"supervisory-doc\"]",
+      "discoveredAt": "2026-03-31T17:52:50.188Z",
+      "downloadPath": "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\test\\oasis-qa-demo-all\\run\\evidence\\YVONNE_BARGER__718f84930c8155e8\\supervisory-note.txt",
+      "extractedFields": {},
+      "notes": []
+    },
+    {
+      "artifactType": "MISSED_VISITS",
+      "status": "DOWNLOADED",
+      "portalLabel": "Missed Visit",
+      "locatorUsed": "[data-testid=\"missed-visit-doc\"]",
+      "discoveredAt": "2026-03-31T17:52:50.188Z",
+      "downloadPath": "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\test\\oasis-qa-demo-all\\run\\evidence\\YVONNE_BARGER__718f84930c8155e8\\missed-visit.txt",
+      "extractedFields": {},
+      "notes": []
+    },
+    {
+      "artifactType": "INFECTION_AND_FALL_REPORTS",
+      "status": "DOWNLOADED",
+      "portalLabel": "Fall Report",
+      "locatorUsed": "[data-testid=\"fall-report-doc\"]",
+      "discoveredAt": "2026-03-31T17:52:50.188Z",
+      "downloadPath": "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\test\\oasis-qa-demo-all\\run\\evidence\\YVONNE_BARGER__718f84930c8155e8\\fall-report.txt",
+      "extractedFields": {},
+      "notes": []
+    }
+  ],
+  "artifactCount": 9,
+  "findings": [
+    {
+      "ruleId": "oasis-qa.timing.fail",
+      "stage": "FINAL_BILLING_PREP_READINESS",
+      "outcome": "MISSING_DOCUMENTS",
+      "message": "Timing / OASIS Due is fail.",
+      "evidence": [
+        "Days in the 30-day period captured",
+        "Days left before OASIS due date verified",
+        "Urgency bucket"
+      ]
+    },
+    {
+      "ruleId": "oasis-qa.coding.missing",
+      "stage": "CODING_REVIEW",
+      "outcome": "MISSING_DOCUMENTS",
+      "message": "Coding Review is missing.",
+      "evidence": [
+        "Coding review completed in workbook"
+      ]
+    },
+    {
+      "ruleId": "oasis-qa.oasis.needs_review",
+      "stage": "OASIS_QA",
+      "outcome": "MISSING_DOCUMENTS",
+      "message": "OASIS QA is needs review.",
+      "evidence": []
+    },
+    {
+      "ruleId": "oasis-qa.poc.missing",
+      "stage": "POC_QA",
+      "outcome": "MISSING_DOCUMENTS",
+      "message": "Plan Of Care QA is missing.",
+      "evidence": [
+        "POC QA completed in workbook"
+      ]
+    },
+    {
+      "ruleId": "oasis-qa.visit_notes.needs_review",
+      "stage": "VISIT_NOTES_REVIEW",
+      "outcome": "MISSING_DOCUMENTS",
+      "message": "Visit Notes Review is needs review.",
+      "evidence": []
+    },
+    {
+      "ruleId": "oasis-qa.final_check.fail",
+      "stage": "FINAL_BILLING_PREP_READINESS",
+      "outcome": "MISSING_DOCUMENTS",
+      "message": "Final Check is fail.",
+      "evidence": [
+        "Critical QA sections are complete before billing prep"
+      ]
+    }
+  ],
+  "hasFindings": false,
+  "qaOutcome": "MISSING_DOCUMENTS",
+  "oasisQaSummary": {
+    "overallStatus": "BLOCKED",
+    "urgency": "ON_TRACK",
+    "daysInPeriod": null,
+    "daysLeft": null,
+    "sections": [
+      {
+        "key": "timing",
+        "label": "Timing / OASIS Due",
+        "status": "FAIL",
+        "items": [
+          {
+            "key": "days_in_period",
+            "label": "Days in the 30-day period captured",
+            "status": "FAIL",
+            "notes": "Column H was not captured for this patient.",
+            "evidence": []
+          },
+          {
+            "key": "days_left",
+            "label": "Days left before OASIS due date verified",
+            "status": "FAIL",
+            "notes": "Column I or equivalent days-left value was not captured.",
+            "evidence": []
+          },
+          {
+            "key": "urgency_bucket",
+            "label": "Urgency bucket",
+            "status": "FAIL",
+            "notes": "ON TRACK",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "coding",
+        "label": "Coding Review",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "coding_review_complete",
+            "label": "Coding review completed in workbook",
+            "status": "MISSING",
+            "notes": "Workbook status: NOT_STARTED",
+            "evidence": [
+              "NOT_STARTED"
+            ]
+          },
+          {
+            "key": "coding_supported_by_oasis",
+            "label": "OASIS content is available to support coding review",
+            "status": "PASS",
+            "notes": "OASIS content extracted for coding review support.",
+            "evidence": [
+              "OASIS C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\test\\oasis-qa-demo-all\\run\\evidence\\YVONNE_BARGER__718f84930c8155e8\\oasis.txt"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "oasis",
+        "label": "OASIS QA",
+        "status": "NEEDS_REVIEW",
+        "items": [
+          {
+            "key": "oasis_document",
+            "label": "OASIS document content extracted",
+            "status": "PASS",
+            "notes": "1 supporting document(s) extracted.",
+            "evidence": [
+              "OASIS C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\test\\oasis-qa-demo-all\\run\\evidence\\YVONNE_BARGER__718f84930c8155e8\\oasis.txt"
+            ]
+          },
+          {
+            "key": "oasis_workbook_status",
+            "label": "OASIS QA completed in workbook",
+            "status": "NEEDS_REVIEW",
+            "notes": "Workbook status: IN_PROGRESS",
+            "evidence": [
+              "IN_PROGRESS"
+            ]
+          },
+          {
+            "key": "medical_necessity",
+            "label": "Medical necessity is stated",
+            "status": "PASS",
+            "notes": "Requirement confirmed from extracted document content.",
+            "evidence": [
+              "Found medical-necessity evidence: OASIS assessment confirms medical necessity for continued home health services. Patient is homebound due to weakness and requires assistance to le"
+            ]
+          },
+          {
+            "key": "homebound_reason",
+            "label": "Homebound reason is stated",
+            "status": "PASS",
+            "notes": "Requirement confirmed from extracted document content.",
+            "evidence": [
+              "Found homebound evidence: tinued home health services. Patient is homebound due to weakness and requires assistance to leave the home. Comprehensive health assessment completed during th"
+            ]
+          },
+          {
+            "key": "health_assessment",
+            "label": "Health assessment is documented",
+            "status": "PASS",
+            "notes": "Requirement confirmed from extracted document content.",
+            "evidence": [
+              "Found assessment evidence: stance to leave the home. Comprehensive health assessment completed during the visit. Skilled interventions performed by skilled nursing for wound care and medi",
+              "Found assessment evidence: to leave the home. Comprehensive health assessment completed during the visit. Skilled interventions performed by skilled nursing for wound care and medication"
+            ]
+          },
+          {
+            "key": "skilled_interventions",
+            "label": "Skilled interventions during the OASIS visit are documented",
+            "status": "PASS",
+            "notes": "Requirement confirmed from extracted document content.",
+            "evidence": [
+              "Found skilled-intervention evidence: assessment completed during the visit. Skilled interventions performed by skilled nursing for wound care and medication teaching.",
+              "Found skilled-intervention evidence: sit. Skilled interventions performed by skilled nursing for wound care and medication teaching.",
+              "Found skilled-intervention evidence: ent completed during the visit. Skilled interventions performed by skilled nursing for wound care and medication teaching."
+            ]
+          }
+        ]
+      },
+      {
+        "key": "poc",
+        "label": "Plan Of Care QA",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "poc_document",
+            "label": "Plan of care content extracted",
+            "status": "PASS",
+            "notes": "1 supporting document(s) extracted.",
+            "evidence": [
+              "POC C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\test\\oasis-qa-demo-all\\run\\evidence\\YVONNE_BARGER__718f84930c8155e8\\plan-of-care.txt"
+            ]
+          },
+          {
+            "key": "poc_workbook_status",
+            "label": "POC QA completed in workbook",
+            "status": "MISSING",
+            "notes": "Workbook status: NOT_STARTED",
+            "evidence": [
+              "NOT_STARTED"
+            ]
+          },
+          {
+            "key": "poc_diagnoses_codes",
+            "label": "Diagnoses or codes are present in the plan of care",
+            "status": "PASS",
+            "notes": "Requirement confirmed from extracted document content.",
+            "evidence": [
+              "Found diagnosis/code evidence: Plan of care diagnosis list includes ICD-10 codes and diagnoses. Goals and interventions reviewed. Visit frequency is SN 2W4. Conditi",
+              "Found diagnosis/code evidence: of care diagnosis list includes ICD-10 codes and diagnoses. Goals and interventions reviewed. Visit frequency is SN 2W4. Condition exacerbation monitoring for",
+              "Found diagnosis/code evidence: Plan of care diagnosis list includes ICD-10 codes and diagnoses. Goals and interventions reviewed. Visit frequency is SN 2W4. Condition exacerbation monitori"
+            ]
+          },
+          {
+            "key": "poc_interventions_goals_frequency",
+            "label": "Interventions, goals, and frequency are present in the plan of care",
+            "status": "PASS",
+            "notes": "Requirement confirmed from extracted document content.",
+            "evidence": [
+              "Found intervention/goal/frequency evidence: s ICD-10 codes and diagnoses. Goals and interventions reviewed. Visit frequency is SN 2W4. Condition exacerbation monitoring for CHF and COPD is included.",
+              "Found intervention/goal/frequency evidence: st includes ICD-10 codes and diagnoses. Goals and interventions reviewed. Visit frequency is SN 2W4. Condition exacerbation monitoring for CHF and COPD is inclu",
+              "Found intervention/goal/frequency evidence: Goals and interventions reviewed. Visit frequency is SN 2W4. Condition exacerbation monitoring for CHF and COPD is included.",
+              "Found intervention/goal/frequency evidence: oses. Goals and interventions reviewed. Visit frequency is SN 2W4. Condition exacerbation monitoring for CHF and COPD is included."
+            ]
+          },
+          {
+            "key": "poc_conditions_exacerbations",
+            "label": "Conditions or exacerbations are reflected in the plan of care",
+            "status": "PASS",
+            "notes": "Requirement confirmed from extracted document content.",
+            "evidence": [
+              "Found conditions/exacerbations evidence: ns reviewed. Visit frequency is SN 2W4. Condition exacerbation monitoring for CHF and COPD is included.",
+              "Found conditions/exacerbations evidence: d. Visit frequency is SN 2W4. Condition exacerbation monitoring for CHF and COPD is included."
+            ]
+          }
+        ]
+      },
+      {
+        "key": "visit_notes",
+        "label": "Visit Notes Review",
+        "status": "NEEDS_REVIEW",
+        "items": [
+          {
+            "key": "visit_notes_document",
+            "label": "Visit note content extracted",
+            "status": "PASS",
+            "notes": "1 supporting document(s) extracted.",
+            "evidence": [
+              "VISIT_NOTE C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\test\\oasis-qa-demo-all\\run\\evidence\\YVONNE_BARGER__718f84930c8155e8\\visit-note-sn.txt"
+            ]
+          },
+          {
+            "key": "visit_notes_workbook_status",
+            "label": "Visit notes review completed in workbook",
+            "status": "NEEDS_REVIEW",
+            "notes": "Workbook status: IN_PROGRESS",
+            "evidence": [
+              "IN_PROGRESS"
+            ]
+          },
+          {
+            "key": "visit_notes_skilled_need",
+            "label": "Skilled need is clearly documented",
+            "status": "PASS",
+            "notes": "Requirement confirmed from extracted document content.",
+            "evidence": [
+              "Found skilled-need evidence: Skilled nursing visit performed. Skilled need requires skilled nursing for wound care. Interventions performed: wound care and medication teaching provid",
+              "Found skilled-need evidence: Skilled nursing visit performed. Skilled need requires skilled nursing for wound care. Interventions performed: wound ca",
+              "Found skilled-need evidence: d nursing visit performed. Skilled need requires skilled nursing for wound care. Interventions performed: wound care and medication teaching provided. Patient r"
+            ]
+          },
+          {
+            "key": "visit_notes_intervention_detail",
+            "label": "Interventions performed are specific and detailed",
+            "status": "PASS",
+            "notes": "Requirement confirmed from extracted document content.",
+            "evidence": [
+              "Found intervention evidence: equires skilled nursing for wound care. Interventions performed: wound care and medication teaching provided. Patient response tolerated well. Progress toward g",
+              "Found intervention evidence: ns performed: wound care and medication teaching provided. Patient response tolerated well. Progress toward goals noted. Changes in condition addressed with imp",
+              "Found intervention evidence: illed need requires skilled nursing for wound care. Interventions performed: wound care and medication teaching provided. Patient response tolerated well. Progr"
+            ]
+          },
+          {
+            "key": "visit_notes_patient_response",
+            "label": "Patient response to interventions is documented",
+            "status": "PASS",
+            "notes": "Requirement confirmed from extracted document content.",
+            "evidence": [
+              "Found patient-response evidence: care and medication teaching provided. Patient response tolerated well. Progress toward goals noted. Changes in condition addressed with improvement documented",
+              "Found patient-response evidence: ion teaching provided. Patient response tolerated well. Progress toward goals noted. Changes in condition addressed with improvement documented. Vitals: blood p"
+            ]
+          },
+          {
+            "key": "visit_notes_progress",
+            "label": "Progress toward goals is noted",
+            "status": "PASS",
+            "notes": "Requirement confirmed from extracted document content.",
+            "evidence": [
+              "Found progress evidence: vided. Patient response tolerated well. Progress toward goals noted. Changes in condition addressed with improvement documented. Vitals: blood pressure and hear"
+            ]
+          },
+          {
+            "key": "visit_notes_vitals",
+            "label": "Vitals and focused assessment are documented",
+            "status": "PASS",
+            "notes": "Requirement confirmed from extracted document content.",
+            "evidence": [
+              "Found vitals evidence: addressed with improvement documented. Vitals: blood pressure and heart rate documented. Medications reviewed with no changes. Documentation supports billed se",
+              "Found vitals evidence: ed with improvement documented. Vitals: blood pressure and heart rate documented. Medications reviewed with no changes. Documentation supports billed services a",
+              "Found vitals evidence: documented. Vitals: blood pressure and heart rate documented. Medications reviewed with no changes. Documentation supports billed services and remains consiste"
+            ]
+          },
+          {
+            "key": "visit_notes_medication_review",
+            "label": "Medication review is documented",
+            "status": "PASS",
+            "notes": "Requirement confirmed from extracted document content.",
+            "evidence": [
+              "Found medication-review evidence: ood pressure and heart rate documented. Medications reviewed with no changes. Documentation supports billed services and remains consistent with OASIS diagnoses"
+            ]
+          },
+          {
+            "key": "visit_notes_condition_changes",
+            "label": "Changes in condition are clearly reported and addressed",
+            "status": "PASS",
+            "notes": "Requirement confirmed from extracted document content.",
+            "evidence": [
+              "Found condition-change evidence: ated well. Progress toward goals noted. Changes in condition addressed with improvement documented. Vitals: blood pressure and heart rate documented. Medication",
+              "Found condition-change evidence: ed. Changes in condition addressed with improvement documented. Vitals: blood pressure and heart rate documented. Medications reviewed with no changes. Document"
+            ]
+          },
+          {
+            "key": "visit_notes_billed_services_support",
+            "label": "Documentation supports billed services",
+            "status": "PASS",
+            "notes": "Requirement confirmed from extracted document content.",
+            "evidence": [
+              "Found billed-services support evidence: . Medications reviewed with no changes. Documentation supports billed services and remains consistent with OASIS diagnoses and plan of care. Physical therapy fo",
+              "Found billed-services support evidence: Skilled nursing visit performed. Skilled need requires skilled nursing for wound care. Interventions performed: wound ca",
+              "Found billed-services support evidence: Skilled nursing visit performed. Skilled need requires skilled nursing for wound care. Interventions performed: wound care and medicatio"
+            ]
+          },
+          {
+            "key": "visit_notes_consistency",
+            "label": "Documentation remains consistent with OASIS and diagnoses",
+            "status": "PASS",
+            "notes": "Requirement confirmed from extracted document content.",
+            "evidence": [
+              "Found consistency evidence: vices and remains consistent with OASIS diagnoses and plan of care. Physical therapy follow-up is coordinated for mobility support.",
+              "Found consistency evidence: on supports billed services and remains consistent with OASIS diagnoses and plan of care. Physical therapy follow-up is coordinated for mobility support.",
+              "Found consistency evidence: ed services and remains consistent with OASIS diagnoses and plan of care. Physical therapy follow-up is coordinated for mobility support.",
+              "Found consistency evidence: ins consistent with OASIS diagnoses and plan of care. Physical therapy follow-up is coordinated for mobility support."
+            ]
+          }
+        ]
+      },
+      {
+        "key": "technical_review",
+        "label": "Technical Review",
+        "status": "PASS",
+        "items": [
+          {
+            "key": "portal_patient_match",
+            "label": "Portal patient match resolved",
+            "status": "PASS",
+            "notes": "Portal match status: EXACT",
+            "evidence": [
+              "Yvonne Barger",
+              "Yvonne Barger",
+              "PT-1001"
+            ]
+          },
+          {
+            "key": "sn_visit_count",
+            "label": "SN visits were identified from visit-note content",
+            "status": "PASS",
+            "notes": "Detected 1 SN visit reference(s).",
+            "evidence": [
+              "Detected 1 SN visit reference(s) in visit notes."
+            ]
+          },
+          {
+            "key": "discipline_detection",
+            "label": "Applicable disciplines were detected",
+            "status": "PASS",
+            "notes": "Detected disciplines: PT",
+            "evidence": [
+              "Detected PT in visit-note content."
+            ]
+          },
+          {
+            "key": "physician_orders",
+            "label": "Physician orders were checked",
+            "status": "PASS",
+            "notes": "Orders evidence was discovered (1 candidate(s)).",
+            "evidence": [
+              "Physician orders artifact discovered.",
+              "Detected 1 order document candidate(s)."
+            ]
+          },
+          {
+            "key": "supporting_notes",
+            "label": "Supporting note categories were reviewed",
+            "status": "PASS",
+            "notes": "One or more supporting note categories were discovered.",
+            "evidence": [
+              "Summary artifact discovered.",
+              "Detected 1 summary document candidate(s).",
+              "Supervisory visit artifact discovered.",
+              "Detected 1 supervisory document candidate(s).",
+              "Communication notes artifact discovered.",
+              "Detected 1 communication document candidate(s).",
+              "Missed visits artifact discovered.",
+              "Detected 1 missed-visit document candidate(s).",
+              "Infection or fall report artifact discovered."
+            ]
+          }
+        ]
+      },
+      {
+        "key": "final_check",
+        "label": "Final Check",
+        "status": "FAIL",
+        "items": [
+          {
+            "key": "critical_sections_clear",
+            "label": "Critical QA sections are complete before billing prep",
+            "status": "FAIL",
+            "notes": "Blocking sections: Days in the 30-day period captured, Days left before OASIS due date verified, Urgency bucket, Coding review completed in workbook, POC QA completed in workbook",
+            "evidence": [
+              "Timing / OASIS Due: FAIL",
+              "Coding Review: MISSING",
+              "OASIS QA: NEEDS_REVIEW",
+              "Plan Of Care QA: MISSING",
+              "Visit Notes Review: NEEDS_REVIEW",
+              "Technical Review: PASS"
+            ]
+          },
+          {
+            "key": "billing_prep_status",
+            "label": "Billing prep status in workbook",
+            "status": "NEEDS_REVIEW",
+            "notes": "Workbook status: IN_PROGRESS",
+            "evidence": [
+              "IN_PROGRESS"
+            ]
+          }
+        ]
+      }
+    ],
+    "blockers": [
+      "Days in the 30-day period captured",
+      "Days left before OASIS due date verified",
+      "Urgency bucket",
+      "Coding review completed in workbook",
+      "POC QA completed in workbook"
+    ]
+  },
+  "documentInventory": [
+    {
+      "sourceLabel": "OASIS Assessment",
+      "normalizedType": "OASIS",
+      "discipline": "SN",
+      "confidence": 0.99,
+      "evidence": [
+        "Matched OASIS Assessment label and extracted OASIS text."
+      ],
+      "sourceUrl": "https://demo.portal/documents/oasis/1",
+      "sourcePath": "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\test\\oasis-qa-demo-all\\run\\evidence\\YVONNE_BARGER__718f84930c8155e8\\oasis.txt",
+      "discoveredAt": "2026-03-31T17:52:50.188Z",
+      "openBehavior": "DOWNLOAD"
+    },
+    {
+      "sourceLabel": "Plan of Care",
+      "normalizedType": "POC",
+      "discipline": "SN",
+      "confidence": 0.97,
+      "evidence": [
+        "Matched plan-of-care label and POC key phrases."
+      ],
+      "sourceUrl": "https://demo.portal/documents/poc/1",
+      "sourcePath": "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\test\\oasis-qa-demo-all\\run\\evidence\\YVONNE_BARGER__718f84930c8155e8\\plan-of-care.txt",
+      "discoveredAt": "2026-03-31T17:52:50.188Z",
+      "openBehavior": "DOWNLOAD"
+    },
+    {
+      "sourceLabel": "SN Visit Note",
+      "normalizedType": "VISIT_NOTE",
+      "discipline": "SN",
+      "confidence": 0.98,
+      "evidence": [
+        "Matched skilled nursing visit note with SN discipline cues."
+      ],
+      "sourceUrl": "https://demo.portal/documents/visit-note/1",
+      "sourcePath": "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\test\\oasis-qa-demo-all\\run\\evidence\\YVONNE_BARGER__718f84930c8155e8\\visit-note-sn.txt",
+      "discoveredAt": "2026-03-31T17:52:50.188Z",
+      "openBehavior": "DOWNLOAD"
+    },
+    {
+      "sourceLabel": "Physician Order",
+      "normalizedType": "ORDER",
+      "discipline": "UNKNOWN",
+      "confidence": 0.95,
+      "evidence": [
+        "Matched physician order label."
+      ],
+      "sourceUrl": "https://demo.portal/documents/order/1",
+      "sourcePath": "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\test\\oasis-qa-demo-all\\run\\evidence\\YVONNE_BARGER__718f84930c8155e8\\physician-order.txt",
+      "discoveredAt": "2026-03-31T17:52:50.188Z",
+      "openBehavior": "DOWNLOAD"
+    },
+    {
+      "sourceLabel": "Communication Note",
+      "normalizedType": "COMMUNICATION",
+      "discipline": "UNKNOWN",
+      "confidence": 0.93,
+      "evidence": [
+        "Matched communication note label."
+      ],
+      "sourceUrl": "https://demo.portal/documents/communication/1",
+      "sourcePath": "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\test\\oasis-qa-demo-all\\run\\evidence\\YVONNE_BARGER__718f84930c8155e8\\communication-note.txt",
+      "discoveredAt": "2026-03-31T17:52:50.188Z",
+      "openBehavior": "DOWNLOAD"
+    },
+    {
+      "sourceLabel": "30-Day Summary",
+      "normalizedType": "SUMMARY_30",
+      "discipline": "SN",
+      "confidence": 0.92,
+      "evidence": [
+        "Matched 30-day summary label."
+      ],
+      "sourceUrl": "https://demo.portal/documents/summary/30",
+      "sourcePath": "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\test\\oasis-qa-demo-all\\run\\evidence\\YVONNE_BARGER__718f84930c8155e8\\summary-30.txt",
+      "discoveredAt": "2026-03-31T17:52:50.188Z",
+      "openBehavior": "DOWNLOAD"
+    },
+    {
+      "sourceLabel": "Supervisory Visit",
+      "normalizedType": "SUPERVISORY",
+      "discipline": "HHA",
+      "confidence": 0.9,
+      "evidence": [
+        "Matched supervisory visit label."
+      ],
+      "sourceUrl": "https://demo.portal/documents/supervisory/1",
+      "sourcePath": "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\test\\oasis-qa-demo-all\\run\\evidence\\YVONNE_BARGER__718f84930c8155e8\\supervisory-note.txt",
+      "discoveredAt": "2026-03-31T17:52:50.188Z",
+      "openBehavior": "DOWNLOAD"
+    },
+    {
+      "sourceLabel": "Missed Visit",
+      "normalizedType": "MISSED_VISIT",
+      "discipline": "SN",
+      "confidence": 0.9,
+      "evidence": [
+        "Matched missed-visit note label."
+      ],
+      "sourceUrl": "https://demo.portal/documents/missed-visit/1",
+      "sourcePath": "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\test\\oasis-qa-demo-all\\run\\evidence\\YVONNE_BARGER__718f84930c8155e8\\missed-visit.txt",
+      "discoveredAt": "2026-03-31T17:52:50.188Z",
+      "openBehavior": "DOWNLOAD"
+    },
+    {
+      "sourceLabel": "Fall Report",
+      "normalizedType": "FALL_REPORT",
+      "discipline": "UNKNOWN",
+      "confidence": 0.88,
+      "evidence": [
+        "Matched fall-report label."
+      ],
+      "sourceUrl": "https://demo.portal/documents/fall-report/1",
+      "sourcePath": "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\test\\oasis-qa-demo-all\\run\\evidence\\YVONNE_BARGER__718f84930c8155e8\\fall-report.txt",
+      "discoveredAt": "2026-03-31T17:52:50.188Z",
+      "openBehavior": "DOWNLOAD"
+    }
+  ],
+  "resultBundlePath": "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\test\\oasis-qa-demo-all\\run\\patient-results\\YVONNE_BARGER__718f84930c8155e8.json",
+  "bundleAvailable": true,
+  "logPath": "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\test\\oasis-qa-demo-all\\run\\logs\\YVONNE_BARGER__718f84930c8155e8.json",
+  "logAvailable": true,
+  "retryEligible": false,
+  "errorSummary": "Extracted 9 document(s) for QA evaluation.",
+  "auditArtifacts": {
+    "tracePath": null,
+    "screenshotPaths": [],
+    "downloadPaths": []
+  },
+  "workItemSnapshot": {
+    "id": "YVONNE_BARGER__718f84930c8155e8",
+    "patientIdentity": {
+      "displayName": "Yvonne Barger",
+      "normalizedName": "YVONNE BARGER",
+      "medicareNumber": "3GT4K51FD94"
+    },
+    "episodeContext": {
+      "episodeDate": null,
+      "socDate": "2026-01-23",
+      "episodePeriod": "2026-01-23 to 2026-03-23",
+      "billingPeriod": "2026-01-23 to 2026-02-12",
+      "payer": "Medicare",
+      "assignedStaff": null,
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": null
+    },
+    "workflowTypes": [
+      "VISIT_NOTES",
+      "BILLING_PREP"
+    ],
+    "sourceSheets": [
+      "VISIT NOTES"
+    ],
+    "codingReviewStatus": "NOT_STARTED",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "IN_PROGRESS",
+    "billingPrepStatus": "IN_PROGRESS",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "STATUS",
+        "value": "Discharged"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "OASIS QA",
+        "value": "Faith"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "OASIS STATUS",
+        "value": "SOC 1/26 - Exported\r\nOasis DC 2/12  - In Progress"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "QA",
+        "value": "Rizalie"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "SN",
+        "value": "NA"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "PT/OT/ST",
+        "value": "PT - 5"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "HHA/MSW",
+        "value": "NA"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "BILLING STATUS",
+        "value": "For Billing"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "sourceRowNumber": 18
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "VISIT NOTES",
+        "sourceRowNumber": 18,
+        "values": {
+          "patientName": "BARGER, YVONNE",
+          "medicareNumber": "3GT4K51FD94",
+          "payer": "Medicare",
+          "socDate": "1/23/26",
+          "episodePeriod": "01/23/2026 - 03/23/2026",
+          "billingPeriod": "1 01/23/2026 - 02/12/2026",
+          "status": "Discharged",
+          "oasisQa": "Faith",
+          "oasisStatus": "SOC 1/26 - Exported\r\nOasis DC 2/12  - In Progress",
+          "qa": "Rizalie",
+          "sn": "NA",
+          "ptOtSt": "PT - 5",
+          "hhaMsw": "NA",
+          "billingStatus": "For Billing"
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  "automationStepLogs": [
+    {
+      "timestamp": "2026-03-31T17:52:50.166Z",
+      "step": "patient_search",
+      "message": "Resolved patient search for Yvonne Barger.",
+      "patientName": "Yvonne Barger",
+      "urlBefore": "https://demo.portal/dashboard",
+      "urlAfter": "https://demo.portal/search?query=Jane%20Doe",
+      "selectorUsed": "input[placeholder=\"Search patients\"]",
+      "found": [
+        "Yvonne Barger"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Search query: Yvonne Barger"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-03-31T17:52:50.166Z",
+      "step": "chart_open",
+      "message": "Opened the patient chart in read-only mode.",
+      "patientName": "Yvonne Barger",
+      "urlBefore": "https://demo.portal/search?query=Jane%20Doe",
+      "urlAfter": "https://demo.portal/patients/PT-1001/chart",
+      "selectorUsed": "[data-testid=\"patient-chart-link\"]",
+      "found": [
+        "chart_header",
+        "documents_tab"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Chart route resolved to patient PT-1001."
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-03-31T17:52:50.188Z",
+      "step": "document_discovery",
+      "message": "Discovered 9 document candidates in the chart.",
+      "patientName": "Yvonne Barger",
+      "urlBefore": "https://demo.portal/patients/PT-1001/chart",
+      "urlAfter": "https://demo.portal/patients/PT-1001/chart?tab=documents",
+      "selectorUsed": "[data-testid=\"documents-tab\"]",
+      "found": [
+        "OASIS:OASIS Assessment",
+        "POC:Plan of Care",
+        "VISIT_NOTE:SN Visit Note",
+        "ORDER:Physician Order",
+        "COMMUNICATION:Communication Note",
+        "SUMMARY_30:30-Day Summary",
+        "SUPERVISORY:Supervisory Visit",
+        "MISSED_VISIT:Missed Visit",
+        "FALL_REPORT:Fall Report"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Matched OASIS Assessment label and extracted OASIS text.",
+        "Matched plan-of-care label and POC key phrases.",
+        "Matched skilled nursing visit note with SN discipline cues.",
+        "Matched physician order label.",
+        "Matched communication note label.",
+        "Matched 30-day summary label.",
+        "Matched supervisory visit label.",
+        "Matched missed-visit note label.",
+        "Matched fall-report label."
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-03-31T17:52:50.188Z",
+      "step": "dangerous_controls_detected",
+      "message": "Detected write-capable controls and confirmed they were blocked by READ_ONLY enforcement.",
+      "patientName": "Yvonne Barger",
+      "urlBefore": "https://demo.portal/patients/PT-1001/chart?tab=documents",
+      "urlAfter": "https://demo.portal/patients/PT-1001/chart?tab=documents",
+      "selectorUsed": null,
+      "found": [
+        "Save",
+        "Validate",
+        "Mark Ready For Billing"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "WRITE_MUTATION action class was blocked before execution."
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-03-31T17:52:50.197Z",
+      "step": "document_extraction",
+      "message": "Extracted 9 document(s) for QA evaluation.",
+      "patientName": "Yvonne Barger",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "OASIS",
+        "POC",
+        "VISIT_NOTE",
+        "ORDER",
+        "OTHER",
+        "OTHER",
+        "OTHER",
+        "OTHER",
+        "OTHER"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "homebound",
+        "medical necessity",
+        "health assessment",
+        "skilled nursing",
+        "intervention",
+        "skilled nursing",
+        "intervention",
+        "patient response",
+        "progress toward goals",
+        "skilled nursing",
+        "physician order",
+        "medication",
+        "communication note",
+        "skilled nursing",
+        "supervisory visit"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-03-31T17:52:50.197Z",
+      "step": "oasis_extract",
+      "message": "Extracted 1 OASIS document(s).",
+      "patientName": "Yvonne Barger",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "OASIS Assessment"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "homebound",
+        "medical necessity",
+        "health assessment",
+        "skilled nursing"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-03-31T17:52:50.197Z",
+      "step": "poc_extract",
+      "message": "Extracted 1 plan-of-care document(s).",
+      "patientName": "Yvonne Barger",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "Plan of Care"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "intervention"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-03-31T17:52:50.197Z",
+      "step": "visit_note_extract",
+      "message": "Extracted 1 visit-note document(s).",
+      "patientName": "Yvonne Barger",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "SN Visit Note"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "skilled nursing",
+        "intervention",
+        "patient response",
+        "progress toward goals",
+        "vitals",
+        "medication"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-03-31T17:52:50.197Z",
+      "step": "technical_review_extract",
+      "message": "Aggregated technical-review evidence from document inventory and extracted content.",
+      "patientName": "Yvonne Barger",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "orders:1",
+        "summaries:1",
+        "supervisory:1",
+        "communication:1",
+        "missed_visits:1",
+        "sn_visits:1"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Detected 1 order document candidate(s).",
+        "Detected 1 summary document candidate(s).",
+        "Detected 1 supervisory document candidate(s).",
+        "Detected 1 communication document candidate(s).",
+        "Detected 1 missed-visit document candidate(s).",
+        "Detected 1 SN visit reference(s) in visit notes."
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-03-31T17:52:50.197Z",
+      "step": "qa_summary",
+      "message": "QA summary computed with overallStatus=BLOCKED.",
+      "patientName": "Yvonne Barger",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "timing:FAIL",
+        "coding:MISSING",
+        "oasis:NEEDS_REVIEW",
+        "poc:MISSING",
+        "visit_notes:NEEDS_REVIEW",
+        "technical_review:PASS",
+        "final_check:FAIL"
+      ],
+      "missing": [
+        "Days in the 30-day period captured",
+        "Days left before OASIS due date verified",
+        "Urgency bucket",
+        "Coding review completed in workbook",
+        "POC QA completed in workbook"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Days in the 30-day period captured",
+        "Days left before OASIS due date verified",
+        "Urgency bucket",
+        "Coding review completed in workbook",
+        "POC QA completed in workbook"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    }
+  ],
+  "notes": [
+    "Extracted 9 document(s) for QA evaluation."
+  ]
+}

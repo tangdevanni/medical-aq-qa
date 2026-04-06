@@ -1,0 +1,106 @@
+{
+  "version": 3,
+  "pages404": true,
+  "caseSensitive": false,
+  "basePath": "",
+  "redirects": [
+    {
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "internal": true,
+      "statusCode": 308,
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+    }
+  ],
+  "headers": [],
+  "rewrites": {
+    "beforeFiles": [],
+    "afterFiles": [],
+    "fallback": []
+  },
+  "dynamicRoutes": [
+    {
+      "page": "/batches/[batchId]",
+      "regex": "^/batches/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPbatchId": "nxtPbatchId"
+      },
+      "namedRegex": "^/batches/(?<nxtPbatchId>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/batches/[batchId]/patients/[patientId]",
+      "regex": "^/batches/([^/]+?)/patients/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPbatchId": "nxtPbatchId",
+        "nxtPpatientId": "nxtPpatientId"
+      },
+      "namedRegex": "^/batches/(?<nxtPbatchId>[^/]+?)/patients/(?<nxtPpatientId>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/runs/[runId]",
+      "regex": "^/runs/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPrunId": "nxtPrunId"
+      },
+      "namedRegex": "^/runs/(?<nxtPrunId>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/runs/[runId]/patients/[patientId]",
+      "regex": "^/runs/([^/]+?)/patients/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPrunId": "nxtPrunId",
+        "nxtPpatientId": "nxtPpatientId"
+      },
+      "namedRegex": "^/runs/(?<nxtPrunId>[^/]+?)/patients/(?<nxtPpatientId>[^/]+?)(?:/)?$"
+    }
+  ],
+  "staticRoutes": [
+    {
+      "page": "/",
+      "regex": "^/(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/(?:/)?$"
+    },
+    {
+      "page": "/_not-found",
+      "regex": "^/_not\\-found(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_not\\-found(?:/)?$"
+    },
+    {
+      "page": "/batches",
+      "regex": "^/batches(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/batches(?:/)?$"
+    },
+    {
+      "page": "/runs",
+      "regex": "^/runs(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/runs(?:/)?$"
+    },
+    {
+      "page": "/runs/new",
+      "regex": "^/runs/new(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/runs/new(?:/)?$"
+    }
+  ],
+  "dataRoutes": [],
+  "rsc": {
+    "header": "rsc",
+    "varyHeader": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+    "prefetchHeader": "next-router-prefetch",
+    "didPostponeHeader": "x-nextjs-postponed",
+    "contentTypeHeader": "text/x-component",
+    "suffix": ".rsc",
+    "prefetchSuffix": ".prefetch.rsc",
+    "prefetchSegmentHeader": "next-router-segment-prefetch",
+    "prefetchSegmentSuffix": ".segment.rsc",
+    "prefetchSegmentDirSuffix": ".segments"
+  },
+  "rewriteHeaders": {
+    "pathHeader": "x-nextjs-rewritten-path",
+    "queryHeader": "x-nextjs-rewritten-query"
+  }
+}

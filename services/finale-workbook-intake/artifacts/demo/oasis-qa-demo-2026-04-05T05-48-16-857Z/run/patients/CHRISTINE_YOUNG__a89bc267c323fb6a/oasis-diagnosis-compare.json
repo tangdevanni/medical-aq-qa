@@ -1,0 +1,631 @@
+{
+  "schemaVersion": "1",
+  "comparedAt": "2026-04-05T05:51:46.757Z",
+  "patientId": "CHRISTINE_YOUNG__a89bc267c323fb6a",
+  "batchId": "batch-2026-04-05T05-48-16-922Z",
+  "summary": {
+    "extractedEntryCount": 41,
+    "portalRowCount": 8,
+    "exactMatchCount": 0,
+    "normalizedMatchCount": 3,
+    "mismatchCount": 0,
+    "missingOnPortalCount": 38,
+    "missingInExtractionCount": 5,
+    "suspiciousCaseCount": 0
+  },
+  "exactMatches": [],
+  "normalizedMatches": [
+    {
+      "extractedIndex": 2,
+      "portalRowIndex": 1,
+      "extractedDiagnosis": "HYPERTENSIVE HEART DISEASE WITH HEART FAILURE",
+      "extractedCode": "I11.0",
+      "portalDescription": "OTHER DIAGNOSIS - 1 ICD-10 CodeOnset Date",
+      "portalCode": "I11.0",
+      "matchType": "normalized",
+      "score": 0.7,
+      "notes": [
+        "Exact ICD-10 code match.",
+        "Portal onset date present: 2026-02-27."
+      ]
+    },
+    {
+      "extractedIndex": 4,
+      "portalRowIndex": 4,
+      "extractedDiagnosis": "HYPOTHYROIDISM, UNSPECIFIED",
+      "extractedCode": "E03.9",
+      "portalDescription": "OTHER DIAGNOSIS - 4 ICD-10 CodeOnset Date",
+      "portalCode": "E03.9",
+      "matchType": "normalized",
+      "score": 0.7,
+      "notes": [
+        "Exact ICD-10 code match.",
+        "Portal onset date present: 2026-02-27."
+      ]
+    },
+    {
+      "extractedIndex": 7,
+      "portalRowIndex": 3,
+      "extractedDiagnosis": "CHRONIC ATRIAL FIBRILLATION, UNSPECIFIED",
+      "extractedCode": "I48.20",
+      "portalDescription": "OTHER DIAGNOSIS - 3 ICD-10 CodeOnset Date",
+      "portalCode": "I48.20",
+      "matchType": "normalized",
+      "score": 0.7,
+      "notes": [
+        "Exact ICD-10 code match.",
+        "Portal onset date present: 2026-02-27."
+      ]
+    }
+  ],
+  "mismatches": [],
+  "missingOnPortal": [
+    {
+      "extractedIndex": 0,
+      "portalRowIndex": null,
+      "extractedDiagnosis": "PNEUMONIA, UNSPECIFIED ORGANISM",
+      "extractedCode": "J18.9",
+      "portalDescription": null,
+      "portalCode": null,
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "No portal row reached comparison threshold."
+      ]
+    },
+    {
+      "extractedIndex": 1,
+      "portalRowIndex": null,
+      "extractedDiagnosis": "ACUTE RESPIRATORY FAILURE WITH HYPOXIA",
+      "extractedCode": "J96.01",
+      "portalDescription": null,
+      "portalCode": null,
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "No portal row reached comparison threshold."
+      ]
+    },
+    {
+      "extractedIndex": 3,
+      "portalRowIndex": null,
+      "extractedDiagnosis": "HEART FAILURE",
+      "extractedCode": "I11.0",
+      "portalDescription": null,
+      "portalCode": null,
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "No portal row reached comparison threshold."
+      ]
+    },
+    {
+      "extractedIndex": 5,
+      "portalRowIndex": null,
+      "extractedDiagnosis": "MUSCLE WEAKNESS (GENERALIZED)",
+      "extractedCode": "M62.81",
+      "portalDescription": null,
+      "portalCode": null,
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "No portal row reached comparison threshold."
+      ]
+    },
+    {
+      "extractedIndex": 6,
+      "portalRowIndex": null,
+      "extractedDiagnosis": "MUSCLE WEAKNESS",
+      "extractedCode": "M62.81",
+      "portalDescription": null,
+      "portalCode": null,
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "No portal row reached comparison threshold."
+      ]
+    },
+    {
+      "extractedIndex": 8,
+      "portalRowIndex": null,
+      "extractedDiagnosis": "ATRIAL FIBRILLATION",
+      "extractedCode": "I48.20",
+      "portalDescription": null,
+      "portalCode": null,
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "No portal row reached comparison threshold."
+      ]
+    },
+    {
+      "extractedIndex": 9,
+      "portalRowIndex": null,
+      "extractedDiagnosis": "CHRONIC ATRIAL FIBRILLATION",
+      "extractedCode": "I48.20",
+      "portalDescription": null,
+      "portalCode": null,
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "No portal row reached comparison threshold."
+      ]
+    },
+    {
+      "extractedIndex": 10,
+      "portalRowIndex": null,
+      "extractedDiagnosis": "DYSPHAGIA, OROPHARYNGEAL PHASE",
+      "extractedCode": "R13.12",
+      "portalDescription": null,
+      "portalCode": null,
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "No portal row reached comparison threshold."
+      ]
+    },
+    {
+      "extractedIndex": 11,
+      "portalRowIndex": null,
+      "extractedDiagnosis": "METABOLIC ENCEPHALOPATHY",
+      "extractedCode": "G93.41",
+      "portalDescription": null,
+      "portalCode": null,
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "No portal row reached comparison threshold."
+      ]
+    },
+    {
+      "extractedIndex": 12,
+      "portalRowIndex": null,
+      "extractedDiagnosis": "CHRONIC VENOUS HYPERTENSION (IDIOPATHIC) WITH ULCER OF BILATERAL LOWER EXTREMITY",
+      "extractedCode": "I87.313",
+      "portalDescription": null,
+      "portalCode": null,
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "No portal row reached comparison threshold."
+      ]
+    },
+    {
+      "extractedIndex": 13,
+      "portalRowIndex": null,
+      "extractedDiagnosis": "ACUTE ON CHRONIC DIASTOLIC (CONGESTIVE) HEART FAILURE",
+      "extractedCode": "I50.33",
+      "portalDescription": null,
+      "portalCode": null,
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "No portal row reached comparison threshold."
+      ]
+    },
+    {
+      "extractedIndex": 14,
+      "portalRowIndex": null,
+      "extractedDiagnosis": "HEART FAILURE",
+      "extractedCode": "I50.33",
+      "portalDescription": null,
+      "portalCode": null,
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "No portal row reached comparison threshold."
+      ]
+    },
+    {
+      "extractedIndex": 15,
+      "portalRowIndex": null,
+      "extractedDiagnosis": "ACUTE ON CHRONIC DIASTOLIC (CONGESTIVE) HEART FAILURE",
+      "extractedCode": null,
+      "portalDescription": null,
+      "portalCode": null,
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "No portal row reached comparison threshold."
+      ]
+    },
+    {
+      "extractedIndex": 16,
+      "portalRowIndex": null,
+      "extractedDiagnosis": "HEART FAILURE",
+      "extractedCode": null,
+      "portalDescription": null,
+      "portalCode": null,
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "No portal row reached comparison threshold."
+      ]
+    },
+    {
+      "extractedIndex": 17,
+      "portalRowIndex": null,
+      "extractedDiagnosis": "CHRONIC ATRIAL FIBRILLATION, UNSPECIFIED",
+      "extractedCode": null,
+      "portalDescription": null,
+      "portalCode": null,
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "No portal row reached comparison threshold."
+      ]
+    },
+    {
+      "extractedIndex": 18,
+      "portalRowIndex": null,
+      "extractedDiagnosis": "ATRIAL FIBRILLATION",
+      "extractedCode": null,
+      "portalDescription": null,
+      "portalCode": null,
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "No portal row reached comparison threshold."
+      ]
+    },
+    {
+      "extractedIndex": 19,
+      "portalRowIndex": null,
+      "extractedDiagnosis": "CHRONIC ATRIAL FIBRILLATION",
+      "extractedCode": null,
+      "portalDescription": null,
+      "portalCode": null,
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "No portal row reached comparison threshold."
+      ]
+    },
+    {
+      "extractedIndex": 20,
+      "portalRowIndex": null,
+      "extractedDiagnosis": "CHRONIC VENOUS HYPERTENSION (IDIOPATHIC) WITH ULCER OF BILATERAL LOWER EXTREMITY",
+      "extractedCode": null,
+      "portalDescription": null,
+      "portalCode": null,
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "No portal row reached comparison threshold."
+      ]
+    },
+    {
+      "extractedIndex": 21,
+      "portalRowIndex": null,
+      "extractedDiagnosis": "CHRONIC VENOUS HYPERTENSION (IDIOPATHIC) WITH ULCER OF BILATERAL",
+      "extractedCode": null,
+      "portalDescription": null,
+      "portalCode": null,
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "No portal row reached comparison threshold."
+      ]
+    },
+    {
+      "extractedIndex": 22,
+      "portalRowIndex": null,
+      "extractedDiagnosis": "HYPERTENSIVE HEART DISEASE WITH HEART FAILURE",
+      "extractedCode": null,
+      "portalDescription": null,
+      "portalCode": null,
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "No portal row reached comparison threshold."
+      ]
+    },
+    {
+      "extractedIndex": 23,
+      "portalRowIndex": null,
+      "extractedDiagnosis": "PNEUMONIA, UNSPECIFIED ORGANISM",
+      "extractedCode": null,
+      "portalDescription": null,
+      "portalCode": null,
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "No portal row reached comparison threshold."
+      ]
+    },
+    {
+      "extractedIndex": 24,
+      "portalRowIndex": null,
+      "extractedDiagnosis": "ACUTE RESPIRATORY FAILURE WITH HYPOXIA",
+      "extractedCode": null,
+      "portalDescription": null,
+      "portalCode": null,
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "No portal row reached comparison threshold."
+      ]
+    },
+    {
+      "extractedIndex": 25,
+      "portalRowIndex": null,
+      "extractedDiagnosis": "HYPERTENSIVE HEART DISEASE WITH HEART FAILURE",
+      "extractedCode": null,
+      "portalDescription": null,
+      "portalCode": null,
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "No portal row reached comparison threshold."
+      ]
+    },
+    {
+      "extractedIndex": 26,
+      "portalRowIndex": null,
+      "extractedDiagnosis": "HEART FAILURE",
+      "extractedCode": null,
+      "portalDescription": null,
+      "portalCode": null,
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "No portal row reached comparison threshold."
+      ]
+    },
+    {
+      "extractedIndex": 27,
+      "portalRowIndex": null,
+      "extractedDiagnosis": "HYPOTHYROIDISM, UNSPECIFIED",
+      "extractedCode": null,
+      "portalDescription": null,
+      "portalCode": null,
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "No portal row reached comparison threshold."
+      ]
+    },
+    {
+      "extractedIndex": 28,
+      "portalRowIndex": null,
+      "extractedDiagnosis": "MUSCLE WEAKNESS (GENERALIZED)",
+      "extractedCode": null,
+      "portalDescription": null,
+      "portalCode": null,
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "No portal row reached comparison threshold."
+      ]
+    },
+    {
+      "extractedIndex": 29,
+      "portalRowIndex": null,
+      "extractedDiagnosis": "MUSCLE WEAKNESS",
+      "extractedCode": null,
+      "portalDescription": null,
+      "portalCode": null,
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "No portal row reached comparison threshold."
+      ]
+    },
+    {
+      "extractedIndex": 30,
+      "portalRowIndex": null,
+      "extractedDiagnosis": "CHRONIC ATRIAL FIBRILLATION, UNSPECIFIED",
+      "extractedCode": null,
+      "portalDescription": null,
+      "portalCode": null,
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "No portal row reached comparison threshold."
+      ]
+    },
+    {
+      "extractedIndex": 31,
+      "portalRowIndex": null,
+      "extractedDiagnosis": "ATRIAL FIBRILLATION",
+      "extractedCode": null,
+      "portalDescription": null,
+      "portalCode": null,
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "No portal row reached comparison threshold."
+      ]
+    },
+    {
+      "extractedIndex": 32,
+      "portalRowIndex": null,
+      "extractedDiagnosis": "CHRONIC ATRIAL FIBRILLATION",
+      "extractedCode": null,
+      "portalDescription": null,
+      "portalCode": null,
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "No portal row reached comparison threshold."
+      ]
+    },
+    {
+      "extractedIndex": 33,
+      "portalRowIndex": null,
+      "extractedDiagnosis": "DYSPHAGIA, OROPHARYNGEAL PHASE",
+      "extractedCode": null,
+      "portalDescription": null,
+      "portalCode": null,
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "No portal row reached comparison threshold."
+      ]
+    },
+    {
+      "extractedIndex": 34,
+      "portalRowIndex": null,
+      "extractedDiagnosis": "METABOLIC ENCEPHALOPATHY",
+      "extractedCode": null,
+      "portalDescription": null,
+      "portalCode": null,
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "No portal row reached comparison threshold."
+      ]
+    },
+    {
+      "extractedIndex": 35,
+      "portalRowIndex": null,
+      "extractedDiagnosis": "CHRONIC VENOUS HYPERTENSION (IDIOPATHIC) WITH ULCER OF BILATERAL LOWER EXTREMITY",
+      "extractedCode": null,
+      "portalDescription": null,
+      "portalCode": null,
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "No portal row reached comparison threshold."
+      ]
+    },
+    {
+      "extractedIndex": 36,
+      "portalRowIndex": null,
+      "extractedDiagnosis": "ACUTE ON CHRONIC DIASTOLIC (CONGESTIVE) HEART FAILURE",
+      "extractedCode": null,
+      "portalDescription": null,
+      "portalCode": null,
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "No portal row reached comparison threshold."
+      ]
+    },
+    {
+      "extractedIndex": 37,
+      "portalRowIndex": null,
+      "extractedDiagnosis": "CHRONIC VENOUS HYPERTENSION (IDIOPATHIC) WITH ULCER OF BILATERAL",
+      "extractedCode": null,
+      "portalDescription": null,
+      "portalCode": null,
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "No portal row reached comparison threshold."
+      ]
+    },
+    {
+      "extractedIndex": 38,
+      "portalRowIndex": null,
+      "extractedDiagnosis": "Multifocal pneumonia",
+      "extractedCode": null,
+      "portalDescription": null,
+      "portalCode": null,
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "No portal row reached comparison threshold."
+      ]
+    },
+    {
+      "extractedIndex": 39,
+      "portalRowIndex": null,
+      "extractedDiagnosis": "Generalized weakness",
+      "extractedCode": null,
+      "portalDescription": null,
+      "portalCode": null,
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "No portal row reached comparison threshold."
+      ]
+    },
+    {
+      "extractedIndex": 40,
+      "portalRowIndex": null,
+      "extractedDiagnosis": "CHF",
+      "extractedCode": null,
+      "portalDescription": null,
+      "portalCode": null,
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "No portal row reached comparison threshold."
+      ]
+    }
+  ],
+  "missingInExtraction": [
+    {
+      "extractedIndex": null,
+      "portalRowIndex": 0,
+      "extractedDiagnosis": null,
+      "extractedCode": null,
+      "portalDescription": "PRIMARY DIAGNOSIS 🩺 ICD-10 CodeOnset Date",
+      "portalCode": "R13.10",
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "Portal row was not matched by extracted diagnosis entries."
+      ]
+    },
+    {
+      "extractedIndex": null,
+      "portalRowIndex": 2,
+      "extractedDiagnosis": null,
+      "extractedCode": null,
+      "portalDescription": "OTHER DIAGNOSIS - 2 ICD-10 CodeOnset Date",
+      "portalCode": "I50.9",
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "Portal row was not matched by extracted diagnosis entries."
+      ]
+    },
+    {
+      "extractedIndex": null,
+      "portalRowIndex": 5,
+      "extractedDiagnosis": null,
+      "extractedCode": null,
+      "portalDescription": "OTHER DIAGNOSIS - 5 ICD-10 CodeOnset Date",
+      "portalCode": "R53.1",
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "Portal row was not matched by extracted diagnosis entries."
+      ]
+    },
+    {
+      "extractedIndex": null,
+      "portalRowIndex": 6,
+      "extractedDiagnosis": null,
+      "extractedCode": null,
+      "portalDescription": "ICD-10 CodeOnset Date",
+      "portalCode": "F32.A",
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "Portal row was not matched by extracted diagnosis entries."
+      ]
+    },
+    {
+      "extractedIndex": null,
+      "portalRowIndex": 7,
+      "extractedDiagnosis": null,
+      "extractedCode": null,
+      "portalDescription": "ICD-10 CodeOnset Date",
+      "portalCode": "Z87.01",
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "Portal row was not matched by extracted diagnosis entries."
+      ]
+    }
+  ],
+  "suspiciousCases": [],
+  "confidenceNotes": [
+    "Extraction uncertain items: Multiple diagnoses present, prioritizing those justifying home health services. | Severity level set to 3 due to multiple significant conditions. | diagnosis code pairs diagnosis invalid: MELENA",
+    "Most mappings are normalized-text matches rather than exact field matches.",
+    "Missing mappings detected between extracted and portal diagnosis sets."
+  ]
+}

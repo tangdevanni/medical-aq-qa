@@ -1,0 +1,204 @@
+{
+  "fixtureLabel": "live-portal-read-only-oasis-demo",
+  "liveMode": true,
+  "workbookPath": "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\finale-export.xlsx",
+  "availablePatientCount": 16,
+  "eligiblePatientCount": 16,
+  "selectedPatientCount": 1,
+  "selectionReason": "Selected the highest-ranked demo-eligible patient(s) using identity completeness, workflow signals, and source-sheet coverage. Primary selection reason: patient identity present; episode context present; workflow signals: IN_PROGRESS, IN_PROGRESS; source sheets: OASIS Tracking Report.",
+  "parserExceptionCount": 0,
+  "patientName": "Christine Young",
+  "workItemId": "CHRISTINE_YOUNG__a89bc267c323fb6a",
+  "patientMatchStatus": "EXACT",
+  "urgency": "ON_TRACK",
+  "daysInPeriod": 30,
+  "daysLeft": 17,
+  "overallStatus": "BLOCKED",
+  "blockerCount": 22,
+  "blockers": [
+    "Medical necessity is stated",
+    "Homebound reason is stated",
+    "Health assessment is documented",
+    "Skilled interventions during the OASIS visit are documented",
+    "Plan of care content extracted",
+    "POC QA completed in workbook",
+    "Diagnoses or codes are present in the plan of care",
+    "Interventions, goals, and frequency are present in the plan of care",
+    "Conditions or exacerbations are reflected in the plan of care",
+    "Visit note content extracted",
+    "Visit notes review completed in workbook",
+    "Skilled need is clearly documented",
+    "Interventions performed are specific and detailed",
+    "Patient response to interventions is documented",
+    "Progress toward goals is noted",
+    "Vitals and focused assessment are documented",
+    "Medication review is documented",
+    "Changes in condition are clearly reported and addressed",
+    "Documentation supports billed services",
+    "Documentation remains consistent with OASIS and diagnoses",
+    "SN visits were identified from visit-note content",
+    "Applicable disciplines were detected"
+  ],
+  "documentInventory": [
+    {
+      "sourceLabel": "OASIS-OASIS E1 - PT SOC",
+      "normalizedType": "OASIS",
+      "discipline": "UNKNOWN",
+      "confidence": 0.9,
+      "evidence": [
+        "Workflow phase: oasis_diagnosis_only",
+        "Active OASIS workflow path: chart -> File Uploads/referral -> OASIS sidebar -> OASIS document table -> SOC document -> Active Diagnoses",
+        "Dangerous controls detected: none",
+        "oasisMenuClicked:true",
+        "oasisDocumentListDetected:true",
+        "socDocumentFound:true",
+        "socDocumentClicked:true",
+        "matchedSocRowText:OASIS-OASIS E1 - PT SOC 02/27/2026 00:00 Chua, Sean PT - Physical Therapy Exported e-Signed by Staff PRABHAKARAN, VINAY Manguiat, Allen",
+        "matchedSocAnchorText:OASIS-OASIS E1 - PT SOC",
+        "diagnosisSectionOpened:true",
+        "diagnosisListFound:false",
+        "diagnosisNavigationMethod:dropdown_active_diagnoses",
+        "diagnosisListSamples:none",
+        "diagnosisSnapshotRowCount:8",
+        "fileUploadsAccessible:false",
+        "fileUploadsUrl:none",
+        "visibleUploadedDocuments:none",
+        "admissionOrderAccessible:false",
+        "admissionOrderTitle:none",
+        "admissionReasonPrimary:none",
+        "admissionReasonSnippets:none",
+        "possibleIcd10Codes:none"
+      ]
+    }
+  ],
+  "qaSections": [
+    {
+      "key": "timing",
+      "status": "PASS",
+      "blockerCount": 0,
+      "evidenceSamples": [
+        "Workbook days in period: 30",
+        "Workbook days left: 17",
+        "Derived urgency from 17 day(s) left."
+      ]
+    },
+    {
+      "key": "coding",
+      "status": "NEEDS_REVIEW",
+      "blockerCount": 0,
+      "evidenceSamples": [
+        "IN_PROGRESS",
+        "OASIS OASIS documents page"
+      ]
+    },
+    {
+      "key": "oasis",
+      "status": "FAIL",
+      "blockerCount": 4,
+      "evidenceSamples": [
+        "OASIS OASIS documents page",
+        "IN_PROGRESS"
+      ]
+    },
+    {
+      "key": "poc",
+      "status": "MISSING",
+      "blockerCount": 5,
+      "evidenceSamples": [
+        "NOT_STARTED"
+      ]
+    },
+    {
+      "key": "visit_notes",
+      "status": "MISSING",
+      "blockerCount": 11,
+      "evidenceSamples": [
+        "NOT_STARTED"
+      ]
+    },
+    {
+      "key": "technical_review",
+      "status": "MISSING",
+      "blockerCount": 2,
+      "evidenceSamples": [
+        "young, christine",
+        "YOUNG, CHRISTINE MR# 84 Active SOC: 2/27/2026 / DOB: 5/30/1944 LOS: 36 days Medicare 16327 East Montrose Drive Fountain Hills AZ 85268 (480)388-5075 Last Visit Confirmed by PT : 03/16/2026 (18 days ago)"
+      ]
+    },
+    {
+      "key": "final_check",
+      "status": "FAIL",
+      "blockerCount": 2,
+      "evidenceSamples": [
+        "Timing / OASIS Due: PASS",
+        "Coding Review: NEEDS_REVIEW",
+        "OASIS QA: FAIL",
+        "Plan Of Care QA: MISSING"
+      ]
+    }
+  ],
+  "stepLogCount": 34,
+  "stepNames": [
+    "login",
+    "playwright_session",
+    "patient_lookup_entry",
+    "patient_lookup_entry",
+    "patient_search_start",
+    "global_patient_search_open",
+    "patient_search_input",
+    "patient_search",
+    "patient_search_match_resolution",
+    "chart_open",
+    "file_uploads_open",
+    "admission_order_open",
+    "qa_summary",
+    "document_text_export",
+    "document_extraction",
+    "admission_document_extract",
+    "oasis_extract",
+    "poc_extract",
+    "visit_note_extract",
+    "technical_review_extract",
+    "diagnosis_code_extract",
+    "coding_input_export",
+    "oasis_post_coding_verification",
+    "chart_route_restore",
+    "oasis_menu",
+    "qa_summary",
+    "oasis_soc_document",
+    "qa_summary",
+    "oasis_diagnosis_section",
+    "oasis_diagnosis_snapshot",
+    "qa_summary",
+    "oasis_diagnosis_snapshot_export",
+    "oasis_diagnosis_compare",
+    "qa_summary"
+  ],
+  "evidenceFiles": [
+    "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-03T21-29-07-307Z\\run\\patient-results\\CHRISTINE_YOUNG__a89bc267c323fb6a.json",
+    "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-03T21-29-07-307Z\\run\\logs\\CHRISTINE_YOUNG__a89bc267c323fb6a.json"
+  ],
+  "logPath": "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-03T21-29-07-307Z\\run\\logs\\CHRISTINE_YOUNG__a89bc267c323fb6a.json",
+  "resultBundlePath": "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-03T21-29-07-307Z\\run\\patient-results\\CHRISTINE_YOUNG__a89bc267c323fb6a.json",
+  "portal": {
+    "loginStatus": "SUCCESS",
+    "loginMessage": "Completed portal login flow in AUTH_ONLY mode.",
+    "patientSearchStatus": "EXACT",
+    "patientSearchNote": null,
+    "chartOpened": true,
+    "chartOpenMessage": "Opened the patient page from global search in read-only mode for YOUNG, CHRISTINE MR# 84 Active SOC: 2/27/2026 / DOB: 5/30/1944 LOS: 36 days Medicare 16327 East Montrose Drive Fountain Hills AZ 85268 (480)388-5075 Last Visit Confirmed by PT : 03/16/2026 (18 days ago)."
+  },
+  "futureWritePoints": [
+    "Reviewer note write point is documented only and not executed.",
+    "QA status update write point is documented only and not executed.",
+    "Ready-for-billing write point is documented only and not executed.",
+    "Follow-up task write point is documented only and not executed."
+  ],
+  "safety": {
+    "safetyMode": "READ_ONLY",
+    "dangerousControlsDetected": [],
+    "dangerousWriteAttemptBlocked": true,
+    "writeExecutorUsed": false,
+    "workflowExecutorUsed": false
+  }
+}

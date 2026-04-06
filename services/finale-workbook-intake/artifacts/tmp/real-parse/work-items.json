@@ -1,0 +1,2853 @@
+[
+  {
+    "id": "DAVID_SESSLER__3d647e083a21c0c4",
+    "patientIdentity": {
+      "displayName": "David Sessler",
+      "normalizedName": "DAVID SESSLER",
+      "medicareNumber": "6YW2VY9FY05"
+    },
+    "episodeContext": {
+      "episodeDate": null,
+      "socDate": "2025-12-12",
+      "episodePeriod": "2025-12-12 to 2026-02-09",
+      "billingPeriod": "2025-12-12 to 2026-01-10",
+      "payer": "Medicare",
+      "assignedStaff": null,
+      "clinician": "Townsend, Lakendra RN",
+      "qaSpecialist": "issues with the PT notes",
+      "rfa": null
+    },
+    "workflowTypes": [
+      "VISIT_NOTES",
+      "BILLING_PREP"
+    ],
+    "sourceSheets": [
+      "DIZ",
+      "VISIT NOTES"
+    ],
+    "timingMetadata": {
+      "trackingDays": null,
+      "daysInPeriod": null,
+      "daysLeft": null,
+      "rawTrackingValues": [],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "NOT_STARTED",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "REVIEW_REQUIRED",
+    "billingPrepStatus": "IN_PROGRESS",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "STATUS",
+        "value": "Discharged"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "OASIS QA",
+        "value": "Ediza"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "OASIS STATUS",
+        "value": "SOC 12/12 - Exported"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "QA",
+        "value": "Rizalie\r\nEdiza"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "SN",
+        "value": "SN - 6\r\nSNV 12/18, 12/20 - not started"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "PT/OT/ST",
+        "value": "PT - 13"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "HHA/MSW",
+        "value": "NA"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "BILLING STATUS",
+        "value": "For Billing"
+      },
+      {
+        "workflowTypes": [
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "DIZ",
+        "field": "SN",
+        "value": "SN - 5, MV - 1\r\n30 Days Summary 1/10"
+      },
+      {
+        "workflowTypes": [
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "DIZ",
+        "field": "REHAB",
+        "value": "PT - 13\r\nPT Eval Order 1/13"
+      },
+      {
+        "workflowTypes": [
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "DIZ",
+        "field": "HHA AND MSW",
+        "value": "N/A"
+      },
+      {
+        "workflowTypes": [
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "DIZ",
+        "field": "STATUS",
+        "value": "UNBILLED"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "sourceRowNumber": 9
+      },
+      {
+        "workflowTypes": [
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "DIZ",
+        "sourceRowNumber": 3
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "VISIT NOTES",
+        "sourceRowNumber": 9,
+        "values": {
+          "patientName": "Sessler, David",
+          "medicareNumber": "6YW2VY9FY05",
+          "payer": "Medicare",
+          "socDate": "12/12/25",
+          "episodePeriod": "12/12/2025 - 02/09/2026",
+          "billingPeriod": "1 12/12/2025 - 01/10/2026",
+          "status": "Discharged",
+          "oasisQa": "Ediza",
+          "oasisStatus": "SOC 12/12 - Exported",
+          "qa": "Rizalie\r\nEdiza",
+          "sn": "SN - 6\r\nSNV 12/18, 12/20 - not started",
+          "ptOtSt": "PT - 13",
+          "hhaMsw": "NA",
+          "billingStatus": "For Billing"
+        }
+      },
+      {
+        "sourceSheet": "DIZ",
+        "sourceRowNumber": 3,
+        "values": {
+          "patientName": "SESSLER, DAVID",
+          "episodeDateOrBillingPeriod": "12/12/2025 - 02/09/2026",
+          "clinician": "Townsend, Lakendra RN",
+          "qaSpecialist": "issues with the PT notes",
+          "sn": "SN - 5, MV - 1\r\n30 Days Summary 1/10",
+          "rehab": "PT - 13\r\nPT Eval Order 1/13",
+          "hhaAndMsw": "N/A",
+          "poAndOrder": null,
+          "status": "UNBILLED"
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "DAVID_SESSLER__8c7e09367014dd2a",
+    "patientIdentity": {
+      "displayName": "David Sessler",
+      "normalizedName": "DAVID SESSLER",
+      "medicareNumber": "6YW2VY9FY05"
+    },
+    "episodeContext": {
+      "episodeDate": null,
+      "socDate": "2025-12-12",
+      "episodePeriod": "2025-12-12 to 2026-02-09",
+      "billingPeriod": "2026-01-11 to 2026-02-09",
+      "payer": "Medicare",
+      "assignedStaff": null,
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": null
+    },
+    "workflowTypes": [
+      "VISIT_NOTES",
+      "BILLING_PREP"
+    ],
+    "sourceSheets": [
+      "VISIT NOTES"
+    ],
+    "timingMetadata": {
+      "trackingDays": null,
+      "daysInPeriod": null,
+      "daysLeft": null,
+      "rawTrackingValues": [],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "NOT_STARTED",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "REVIEW_REQUIRED",
+    "billingPrepStatus": "IN_PROGRESS",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "STATUS",
+        "value": "Discharged"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "OASIS QA",
+        "value": "SOC/DC -Ediza"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "OASIS STATUS",
+        "value": "Oasis DC PT 2/4 - EXPORTED 3/13"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "QA",
+        "value": "Rizalie"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "SN",
+        "value": "SN - 3\r\nSNV 1/14 - not started"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "PT/OT/ST",
+        "value": "PT - 10"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "HHA/MSW",
+        "value": "NA"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "BILLING STATUS",
+        "value": "For Billing"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "STATUS",
+        "value": "Discharged"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "OASIS STATUS",
+        "value": "DUPLICATE"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "sourceRowNumber": 10
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "sourceRowNumber": 13
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "VISIT NOTES",
+        "sourceRowNumber": 10,
+        "values": {
+          "patientName": "Sessler, David",
+          "medicareNumber": "6YW2VY9FY05",
+          "payer": "Medicare",
+          "socDate": "12/12/25",
+          "episodePeriod": "12/12/2025 - 02/09/2026",
+          "billingPeriod": "1 01/11/2026 - 02/09/2026",
+          "status": "Discharged",
+          "oasisQa": "SOC/DC -Ediza",
+          "oasisStatus": "Oasis DC PT 2/4 - EXPORTED 3/13",
+          "qa": "Rizalie",
+          "sn": "SN - 3\r\nSNV 1/14 - not started",
+          "ptOtSt": "PT - 10",
+          "hhaMsw": "NA",
+          "billingStatus": "For Billing"
+        }
+      },
+      {
+        "sourceSheet": "VISIT NOTES",
+        "sourceRowNumber": 13,
+        "values": {
+          "patientName": "Sessler, David",
+          "medicareNumber": "6YW2VY9FY05",
+          "payer": "Medicare",
+          "socDate": "12/12/25",
+          "episodePeriod": "12/12/2025 - 02/09/2026",
+          "billingPeriod": "2 01/11/2026 - 02/04/2026",
+          "status": "Discharged",
+          "oasisQa": null,
+          "oasisStatus": "DUPLICATE",
+          "qa": null,
+          "sn": null,
+          "ptOtSt": null,
+          "hhaMsw": null,
+          "billingStatus": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "DESIREE_WISE__3b6df59e1fd32d25",
+    "patientIdentity": {
+      "displayName": "Desiree Wise",
+      "normalizedName": "DESIREE WISE",
+      "medicareNumber": "3TV5YY0RE78"
+    },
+    "episodeContext": {
+      "episodeDate": null,
+      "socDate": "2025-12-18",
+      "episodePeriod": "2025-12-18 to 2026-02-15",
+      "billingPeriod": "2025-12-18 to 2026-01-15",
+      "payer": "Medicare",
+      "assignedStaff": null,
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": null
+    },
+    "workflowTypes": [
+      "VISIT_NOTES",
+      "BILLING_PREP"
+    ],
+    "sourceSheets": [
+      "VISIT NOTES"
+    ],
+    "codingReviewStatus": "NOT_STARTED",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "IN_PROGRESS",
+    "billingPrepStatus": "IN_PROGRESS",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "STATUS",
+        "value": "Discharged"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "OASIS QA",
+        "value": "Faith"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "OASIS STATUS",
+        "value": "SOC 12/19 - Exported\r\nOasis DC - Exported"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "QA",
+        "value": "Faith"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "SN",
+        "value": "NA"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "PT/OT/ST",
+        "value": "PT - 7"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "HHA/MSW",
+        "value": "NA"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "BILLING STATUS",
+        "value": "For Billing"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "sourceRowNumber": 15
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "VISIT NOTES",
+        "sourceRowNumber": 15,
+        "values": {
+          "patientName": "Wise, Desiree",
+          "medicareNumber": "3TV5YY0RE78",
+          "payer": "Medicare",
+          "socDate": "12/18/25",
+          "episodePeriod": "12/18/2025 - 02/15/2026",
+          "billingPeriod": "1 12/18/2025 - 01/15/2026",
+          "status": "Discharged",
+          "oasisQa": "Faith",
+          "oasisStatus": "SOC 12/19 - Exported\r\nOasis DC - Exported",
+          "qa": "Faith",
+          "sn": "NA",
+          "ptOtSt": "PT - 7",
+          "hhaMsw": "NA",
+          "billingStatus": "For Billing"
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "FRANCA_GUERRIERI__6c05f552e45d5f9c",
+    "patientIdentity": {
+      "displayName": "Franca Guerrieri",
+      "normalizedName": "FRANCA GUERRIERI",
+      "medicareNumber": "4JK4GY6YG82"
+    },
+    "episodeContext": {
+      "episodeDate": null,
+      "socDate": "2026-01-27",
+      "episodePeriod": "2026-01-27 to 2026-03-27",
+      "billingPeriod": "2026-01-27 to 2026-02-20",
+      "payer": "Medicare",
+      "assignedStaff": null,
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": null
+    },
+    "workflowTypes": [
+      "VISIT_NOTES",
+      "BILLING_PREP"
+    ],
+    "sourceSheets": [
+      "VISIT NOTES"
+    ],
+    "codingReviewStatus": "NOT_STARTED",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "IN_PROGRESS",
+    "billingPrepStatus": "IN_PROGRESS",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "STATUS",
+        "value": "Discharged"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "OASIS QA",
+        "value": "Ediza"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "OASIS STATUS",
+        "value": "SOC 01/27 - Exported\r\nDC 2/20 - Exported"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "QA",
+        "value": "Ediza"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "SN",
+        "value": "NA"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "PT/OT/ST",
+        "value": "PT - 6"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "HHA/MSW",
+        "value": "NA"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "BILLING STATUS",
+        "value": "For Billing"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "sourceRowNumber": 23
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "VISIT NOTES",
+        "sourceRowNumber": 23,
+        "values": {
+          "patientName": "GUERRIERI, FRANCA",
+          "medicareNumber": "4JK4GY6YG82",
+          "payer": "Medicare",
+          "socDate": "1/27/26",
+          "episodePeriod": "01/27/2026 - 03/27/2026",
+          "billingPeriod": "1 01/27/2026 - 02/20/2026",
+          "status": "Discharged",
+          "oasisQa": "Ediza",
+          "oasisStatus": "SOC 01/27 - Exported\r\nDC 2/20 - Exported",
+          "qa": "Ediza",
+          "sn": "NA",
+          "ptOtSt": "PT - 6",
+          "hhaMsw": "NA",
+          "billingStatus": "For Billing"
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "JEAN_THOMPSON__5323dbcbecba7f65",
+    "patientIdentity": {
+      "displayName": "Jean Thompson",
+      "normalizedName": "JEAN THOMPSON",
+      "medicareNumber": "3Q03E99DG13"
+    },
+    "episodeContext": {
+      "episodeDate": null,
+      "socDate": "2026-01-24",
+      "episodePeriod": "2026-01-24 to 2026-03-24",
+      "billingPeriod": "2026-01-24 to 2026-02-22",
+      "payer": "Medicare",
+      "assignedStaff": null,
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": null
+    },
+    "workflowTypes": [
+      "VISIT_NOTES",
+      "BILLING_PREP"
+    ],
+    "sourceSheets": [
+      "VISIT NOTES"
+    ],
+    "codingReviewStatus": "NOT_STARTED",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "IN_PROGRESS",
+    "billingPrepStatus": "IN_PROGRESS",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "STATUS",
+        "value": "Active"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "OASIS QA",
+        "value": "Ediza"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "OASIS STATUS",
+        "value": "SOC 01/24 - Exported"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "QA",
+        "value": "Rizalie"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "SN",
+        "value": "SN - 4"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "PT/OT/ST",
+        "value": "PT - 10"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "HHA/MSW",
+        "value": "HHA - 4\r\nvisits 1/31 onwards - unassigned"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "BILLING STATUS",
+        "value": "For Billing"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "sourceRowNumber": 21
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "VISIT NOTES",
+        "sourceRowNumber": 21,
+        "values": {
+          "patientName": "THOMPSON, JEAN",
+          "medicareNumber": "3Q03E99DG13",
+          "payer": "Medicare",
+          "socDate": "1/24/26",
+          "episodePeriod": "01/24/2026 - 03/24/2026",
+          "billingPeriod": "1 01/24/2026 - 02/22/2026",
+          "status": "Active",
+          "oasisQa": "Ediza",
+          "oasisStatus": "SOC 01/24 - Exported",
+          "qa": "Rizalie",
+          "sn": "SN - 4",
+          "ptOtSt": "PT - 10",
+          "hhaMsw": "HHA - 4\r\nvisits 1/31 onwards - unassigned",
+          "billingStatus": "For Billing"
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "JEAN_THOMPSON__2f431c77261ac8f6",
+    "patientIdentity": {
+      "displayName": "Jean Thompson",
+      "normalizedName": "JEAN THOMPSON",
+      "medicareNumber": "3Q03E99DG13"
+    },
+    "episodeContext": {
+      "episodeDate": null,
+      "socDate": "2026-01-24",
+      "episodePeriod": "2026-01-24 to 2026-03-24",
+      "billingPeriod": "2026-02-23 to 2026-03-24",
+      "payer": "Medicare",
+      "assignedStaff": null,
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": null
+    },
+    "workflowTypes": [
+      "VISIT_NOTES",
+      "BILLING_PREP"
+    ],
+    "sourceSheets": [
+      "VISIT NOTES"
+    ],
+    "codingReviewStatus": "NOT_STARTED",
+    "oasisQaStatus": "NOT_STARTED",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "IN_PROGRESS",
+    "billingPrepStatus": "IN_PROGRESS",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "STATUS",
+        "value": "Active"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "QA",
+        "value": "Rizalie"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "SN",
+        "value": "SN - 3\r\nSNV 3/13 onwards - NYD"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "PT/OT/ST",
+        "value": "PT - 10\r\nPT visit 3/23 onwards - NYD"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "HHA/MSW",
+        "value": "NA"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "BILLING STATUS",
+        "value": "For Billing"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "sourceRowNumber": 22
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "VISIT NOTES",
+        "sourceRowNumber": 22,
+        "values": {
+          "patientName": "THOMPSON, JEAN",
+          "medicareNumber": "3Q03E99DG13",
+          "payer": "Medicare",
+          "socDate": "1/24/26",
+          "episodePeriod": "01/24/2026 - 03/24/2026",
+          "billingPeriod": "2 02/23/2026 - 03/24/2026",
+          "status": "Active",
+          "oasisQa": null,
+          "oasisStatus": null,
+          "qa": "Rizalie",
+          "sn": "SN - 3\r\nSNV 3/13 onwards - NYD",
+          "ptOtSt": "PT - 10\r\nPT visit 3/23 onwards - NYD",
+          "hhaMsw": "NA",
+          "billingStatus": "For Billing"
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "JOHN_CHATFIELD__f712f0a9d0b9fd53",
+    "patientIdentity": {
+      "displayName": "John Chatfield",
+      "normalizedName": "JOHN CHATFIELD",
+      "medicareNumber": "2WK4R35ND79"
+    },
+    "episodeContext": {
+      "episodeDate": null,
+      "socDate": "2025-12-13",
+      "episodePeriod": "2025-12-13 to 2026-02-10",
+      "billingPeriod": "2025-12-13 to 2026-01-11",
+      "payer": "Medicare",
+      "assignedStaff": null,
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": null
+    },
+    "workflowTypes": [
+      "VISIT_NOTES",
+      "BILLING_PREP"
+    ],
+    "sourceSheets": [
+      "VISIT NOTES"
+    ],
+    "codingReviewStatus": "NOT_STARTED",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "IN_PROGRESS",
+    "billingPrepStatus": "IN_PROGRESS",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "STATUS",
+        "value": "Discharged"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "OASIS QA",
+        "value": "SOC - Faith\r\nTransfer - Ediza"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "OASIS STATUS",
+        "value": "SOC 12/22 - Exported\r\nTransfer - Exported\r\nOasis DC 1/11- In Progress"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "QA",
+        "value": "Rizalie"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "SN",
+        "value": "SN - 1, MV - 2"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "PT/OT/ST",
+        "value": "PT - 2"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "HHA/MSW",
+        "value": "NA"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "BILLING STATUS",
+        "value": "For Billing"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "sourceRowNumber": 14
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "VISIT NOTES",
+        "sourceRowNumber": 14,
+        "values": {
+          "patientName": "Chatfield, John",
+          "medicareNumber": "2WK4R35ND79",
+          "payer": "Medicare",
+          "socDate": "12/13/25",
+          "episodePeriod": "12/13/2025 - 02/10/2026",
+          "billingPeriod": "1 12/13/2025 - 01/11/2026",
+          "status": "Discharged",
+          "oasisQa": "SOC - Faith\r\nTransfer - Ediza",
+          "oasisStatus": "SOC 12/22 - Exported\r\nTransfer - Exported\r\nOasis DC 1/11- In Progress",
+          "qa": "Rizalie",
+          "sn": "SN - 1, MV - 2",
+          "ptOtSt": "PT - 2",
+          "hhaMsw": "NA",
+          "billingStatus": "For Billing"
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "JOYCE_COWIE__5212066024aee19a",
+    "patientIdentity": {
+      "displayName": "Joyce Cowie",
+      "normalizedName": "JOYCE COWIE",
+      "medicareNumber": "1WN0E44JW16"
+    },
+    "episodeContext": {
+      "episodeDate": null,
+      "socDate": "2025-12-12",
+      "episodePeriod": "2025-12-12 to 2026-02-09",
+      "billingPeriod": "2025-12-12 to 2026-01-10",
+      "payer": "Medicare",
+      "assignedStaff": null,
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": null
+    },
+    "workflowTypes": [
+      "VISIT_NOTES",
+      "BILLING_PREP"
+    ],
+    "sourceSheets": [
+      "VISIT NOTES"
+    ],
+    "codingReviewStatus": "NOT_STARTED",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "IN_PROGRESS",
+    "billingPrepStatus": "IN_PROGRESS",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "STATUS",
+        "value": "Discharged"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "OASIS QA",
+        "value": "RAMIL"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "OASIS STATUS",
+        "value": "SOC 12/12 - Exported"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "QA",
+        "value": "Rizalie"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "SN",
+        "value": "SN -4, MV - 3"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "PT/OT/ST",
+        "value": "PT - 3"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "HHA/MSW",
+        "value": "NA"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "BILLING STATUS",
+        "value": "For Billing"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "sourceRowNumber": 11
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "VISIT NOTES",
+        "sourceRowNumber": 11,
+        "values": {
+          "patientName": "Cowie, Joyce",
+          "medicareNumber": "1WN0E44JW16",
+          "payer": "Medicare",
+          "socDate": "12/12/25",
+          "episodePeriod": "12/12/2025 - 02/09/2026",
+          "billingPeriod": "1 12/12/2025 - 01/10/2026",
+          "status": "Discharged",
+          "oasisQa": "RAMIL",
+          "oasisStatus": "SOC 12/12 - Exported",
+          "qa": "Rizalie",
+          "sn": "SN -4, MV - 3",
+          "ptOtSt": "PT - 3",
+          "hhaMsw": "NA",
+          "billingStatus": "For Billing"
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "JOYCE_COWIE__a518d421901c7334",
+    "patientIdentity": {
+      "displayName": "Joyce Cowie",
+      "normalizedName": "JOYCE COWIE",
+      "medicareNumber": "1WN0E44JW16"
+    },
+    "episodeContext": {
+      "episodeDate": null,
+      "socDate": "2025-12-12",
+      "episodePeriod": "2025-12-12 to 2026-02-09",
+      "billingPeriod": "2026-01-11 to 2026-01-20",
+      "payer": "Medicare",
+      "assignedStaff": null,
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": null
+    },
+    "workflowTypes": [
+      "VISIT_NOTES",
+      "BILLING_PREP"
+    ],
+    "sourceSheets": [
+      "VISIT NOTES"
+    ],
+    "codingReviewStatus": "NOT_STARTED",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "IN_PROGRESS",
+    "billingPrepStatus": "IN_PROGRESS",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "STATUS",
+        "value": "Discharged"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "OASIS QA",
+        "value": "Faith"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "OASIS STATUS",
+        "value": "Oasis DC 1/20 - Exported"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "QA",
+        "value": "Rizalie"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "SN",
+        "value": "SN - 1"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "PT/OT/ST",
+        "value": "PT - 1"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "HHA/MSW",
+        "value": "NA"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "BILLING STATUS",
+        "value": "For Billing"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "sourceRowNumber": 12
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "VISIT NOTES",
+        "sourceRowNumber": 12,
+        "values": {
+          "patientName": "Cowie, Joyce",
+          "medicareNumber": "1WN0E44JW16",
+          "payer": "Medicare",
+          "socDate": "12/12/25",
+          "episodePeriod": "12/12/2025 - 02/09/2026",
+          "billingPeriod": "2 01/11/2026 - 01/20/2026",
+          "status": "Discharged",
+          "oasisQa": "Faith",
+          "oasisStatus": "Oasis DC 1/20 - Exported",
+          "qa": "Rizalie",
+          "sn": "SN - 1",
+          "ptOtSt": "PT - 1",
+          "hhaMsw": "NA",
+          "billingStatus": "For Billing"
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "JUDITH_WILDE__1fb4093b2f93f0e0",
+    "patientIdentity": {
+      "displayName": "Judith Wilde",
+      "normalizedName": "JUDITH WILDE",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": null,
+      "socDate": null,
+      "episodePeriod": "2026-02-05 to 2026-04-05",
+      "billingPeriod": "2026-02-05 to 2026-03-06",
+      "payer": null,
+      "assignedStaff": null,
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": null
+    },
+    "workflowTypes": [
+      "VISIT_NOTES",
+      "BILLING_PREP"
+    ],
+    "sourceSheets": [
+      "VISIT NOTES"
+    ],
+    "codingReviewStatus": "NOT_STARTED",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "REVIEW_REQUIRED",
+    "billingPrepStatus": "IN_PROGRESS",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "STATUS",
+        "value": "Active"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "OASIS QA",
+        "value": "Ediza"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "OASIS STATUS",
+        "value": "SOC 02/05 - Exported"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "QA",
+        "value": "Rizalie"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "SN",
+        "value": "NA"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "PT/OT/ST",
+        "value": "PT - 6\r\nPT reass 2/19- signed but empty; \r\nPTV 2/26 - not started"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "HHA/MSW",
+        "value": "NA"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "BILLING STATUS",
+        "value": "For Billing"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "sourceRowNumber": 24
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "VISIT NOTES",
+        "sourceRowNumber": 24,
+        "values": {
+          "patientName": "WILDE, JUDITH",
+          "medicareNumber": null,
+          "payer": null,
+          "socDate": null,
+          "episodePeriod": "02/05/2026 - 4/05/2026",
+          "billingPeriod": "1 2/05/2026 - 3/06/2026",
+          "status": "Active",
+          "oasisQa": "Ediza",
+          "oasisStatus": "SOC 02/05 - Exported",
+          "qa": "Rizalie",
+          "sn": "NA",
+          "ptOtSt": "PT - 6\r\nPT reass 2/19- signed but empty; \r\nPTV 2/26 - not started",
+          "hhaMsw": "NA",
+          "billingStatus": "For Billing"
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "LANCE_BUSHNELL__cf42c4f0e39a9f75",
+    "patientIdentity": {
+      "displayName": "Lance Bushnell",
+      "normalizedName": "LANCE BUSHNELL",
+      "medicareNumber": "3V24KH3CX79"
+    },
+    "episodeContext": {
+      "episodeDate": null,
+      "socDate": "2025-11-20",
+      "episodePeriod": "2025-11-20 to 2026-01-18",
+      "billingPeriod": "2025-11-20 to 2025-12-19",
+      "payer": "Medicare",
+      "assignedStaff": null,
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": null
+    },
+    "workflowTypes": [
+      "VISIT_NOTES",
+      "BILLING_PREP"
+    ],
+    "sourceSheets": [
+      "VISIT NOTES"
+    ],
+    "codingReviewStatus": "NOT_STARTED",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "IN_PROGRESS",
+    "billingPrepStatus": "IN_PROGRESS",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "STATUS",
+        "value": "Discharged"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "OASIS QA",
+        "value": "Ediza"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "OASIS STATUS",
+        "value": "SOC 11/20 - Exported"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "QA",
+        "value": "Rizalie"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "SN",
+        "value": "SN MV - 2"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "PT/OT/ST",
+        "value": "PT - 4"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "HHA/MSW",
+        "value": "NA"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "BILLING STATUS",
+        "value": "For Billing"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "sourceRowNumber": 7
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "VISIT NOTES",
+        "sourceRowNumber": 7,
+        "values": {
+          "patientName": "Bushnell, Lance",
+          "medicareNumber": "3V24KH3CX79",
+          "payer": "Medicare",
+          "socDate": "11/20/25",
+          "episodePeriod": "11/20/2025 - 01/18/2026",
+          "billingPeriod": "1 11/20/2025 - 12/19/2025",
+          "status": "Discharged",
+          "oasisQa": "Ediza",
+          "oasisStatus": "SOC 11/20 - Exported",
+          "qa": "Rizalie",
+          "sn": "SN MV - 2",
+          "ptOtSt": "PT - 4",
+          "hhaMsw": "NA",
+          "billingStatus": "For Billing"
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "LANCE_BUSHNELL__268ea87525908133",
+    "patientIdentity": {
+      "displayName": "Lance Bushnell",
+      "normalizedName": "LANCE BUSHNELL",
+      "medicareNumber": "3V24KH3CX79"
+    },
+    "episodeContext": {
+      "episodeDate": null,
+      "socDate": "2025-11-20",
+      "episodePeriod": "2025-11-20 to 2026-01-18",
+      "billingPeriod": "2025-12-20 to 2026-01-05",
+      "payer": "Medicare",
+      "assignedStaff": null,
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": null
+    },
+    "workflowTypes": [
+      "VISIT_NOTES",
+      "BILLING_PREP"
+    ],
+    "sourceSheets": [
+      "VISIT NOTES"
+    ],
+    "codingReviewStatus": "NOT_STARTED",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "IN_PROGRESS",
+    "billingPrepStatus": "IN_PROGRESS",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "STATUS",
+        "value": "Discharged"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "OASIS QA",
+        "value": "Ediza"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "OASIS STATUS",
+        "value": "Oasis DC 1/5 - Exported"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "QA",
+        "value": "Rizalie"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "SN",
+        "value": "NA"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "PT/OT/ST",
+        "value": "PT - 2, MV - 2\r\nPT visit 1/1: validated"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "HHA/MSW",
+        "value": "NA"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "BILLING STATUS",
+        "value": "For Billing"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "sourceRowNumber": 8
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "VISIT NOTES",
+        "sourceRowNumber": 8,
+        "values": {
+          "patientName": "Bushnell, Lance",
+          "medicareNumber": "3V24KH3CX79",
+          "payer": "Medicare",
+          "socDate": "11/20/25",
+          "episodePeriod": "11/20/2025 - 01/18/2026",
+          "billingPeriod": "2 12/20/2025 - 01/05/2026",
+          "status": "Discharged",
+          "oasisQa": "Ediza",
+          "oasisStatus": "Oasis DC 1/5 - Exported",
+          "qa": "Rizalie",
+          "sn": "NA",
+          "ptOtSt": "PT - 2, MV - 2\r\nPT visit 1/1: validated",
+          "hhaMsw": "NA",
+          "billingStatus": "For Billing"
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "LEN_GRABOWSKI__27b2d518432c57c7",
+    "patientIdentity": {
+      "displayName": "Len Grabowski",
+      "normalizedName": "LEN GRABOWSKI",
+      "medicareNumber": "1W64WU7RE70"
+    },
+    "episodeContext": {
+      "episodeDate": null,
+      "socDate": "2026-01-23",
+      "episodePeriod": "2026-01-23 to 2026-03-23",
+      "billingPeriod": "2026-01-23 to 2026-02-21",
+      "payer": "Medicare",
+      "assignedStaff": null,
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": null
+    },
+    "workflowTypes": [
+      "VISIT_NOTES",
+      "BILLING_PREP"
+    ],
+    "sourceSheets": [
+      "VISIT NOTES"
+    ],
+    "codingReviewStatus": "NOT_STARTED",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "IN_PROGRESS",
+    "billingPrepStatus": "IN_PROGRESS",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "STATUS",
+        "value": "Discharged"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "OASIS QA",
+        "value": "Faith"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "OASIS STATUS",
+        "value": "SOC 1/23 - Exported"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "QA",
+        "value": "Rizalie"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "SN",
+        "value": "SN - 4"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "PT/OT/ST",
+        "value": "PT - 6"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "HHA/MSW",
+        "value": "NA"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "BILLING STATUS",
+        "value": "For Billing"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "sourceRowNumber": 19
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "VISIT NOTES",
+        "sourceRowNumber": 19,
+        "values": {
+          "patientName": "GRABOWSKI, LEN",
+          "medicareNumber": "1W64WU7RE70",
+          "payer": "Medicare",
+          "socDate": "1/23/26",
+          "episodePeriod": "01/23/2026 - 03/23/2026",
+          "billingPeriod": "1 01/23/2026 - 02/21/2026",
+          "status": "Discharged",
+          "oasisQa": "Faith",
+          "oasisStatus": "SOC 1/23 - Exported",
+          "qa": "Rizalie",
+          "sn": "SN - 4",
+          "ptOtSt": "PT - 6",
+          "hhaMsw": "NA",
+          "billingStatus": "For Billing"
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "LEN_GRABOWSKI__873cc901b4f78a3f",
+    "patientIdentity": {
+      "displayName": "Len Grabowski",
+      "normalizedName": "LEN GRABOWSKI",
+      "medicareNumber": "1W64WU7RE70"
+    },
+    "episodeContext": {
+      "episodeDate": null,
+      "socDate": "2026-01-23",
+      "episodePeriod": "2026-01-23 to 2026-03-23",
+      "billingPeriod": "2026-02-23 to 2026-03-23",
+      "payer": "Medicare",
+      "assignedStaff": null,
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": null
+    },
+    "workflowTypes": [
+      "VISIT_NOTES",
+      "BILLING_PREP"
+    ],
+    "sourceSheets": [
+      "VISIT NOTES"
+    ],
+    "codingReviewStatus": "NOT_STARTED",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "IN_PROGRESS",
+    "billingPrepStatus": "IN_PROGRESS",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "STATUS",
+        "value": "Discharged"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "OASIS STATUS",
+        "value": "Oasis DC 3/12 - In Progress"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "QA",
+        "value": "Rizalie"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "SN",
+        "value": "SN - 2"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "PT/OT/ST",
+        "value": "PT - 3"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "HHA/MSW",
+        "value": "NA"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "BILLING STATUS",
+        "value": "For Billing"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "sourceRowNumber": 20
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "VISIT NOTES",
+        "sourceRowNumber": 20,
+        "values": {
+          "patientName": "GRABOWSKI, LEN",
+          "medicareNumber": "1W64WU7RE70",
+          "payer": "Medicare",
+          "socDate": "1/23/26",
+          "episodePeriod": "01/23/2026 - 03/23/2026",
+          "billingPeriod": "2 02/23/2026 - 03/23/2026",
+          "status": "Discharged",
+          "oasisQa": null,
+          "oasisStatus": "Oasis DC 3/12 - In Progress",
+          "qa": "Rizalie",
+          "sn": "SN - 2",
+          "ptOtSt": "PT - 3",
+          "hhaMsw": "NA",
+          "billingStatus": "For Billing"
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "LINDA_KURZWEIL__b929c2ed7041a543",
+    "patientIdentity": {
+      "displayName": "Linda Kurzweil",
+      "normalizedName": "LINDA KURZWEIL",
+      "medicareNumber": "3Y42VX6GR96"
+    },
+    "episodeContext": {
+      "episodeDate": null,
+      "socDate": "2025-11-13",
+      "episodePeriod": "2025-11-13 to 2026-01-11",
+      "billingPeriod": "2025-11-13 to 2025-12-12",
+      "payer": "Medicare",
+      "assignedStaff": null,
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": null
+    },
+    "workflowTypes": [
+      "VISIT_NOTES",
+      "BILLING_PREP"
+    ],
+    "sourceSheets": [
+      "VISIT NOTES"
+    ],
+    "codingReviewStatus": "NOT_STARTED",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "IN_PROGRESS",
+    "billingPrepStatus": "IN_PROGRESS",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "STATUS",
+        "value": "Discharged"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "OASIS QA",
+        "value": "SOC - Gerard\r\nOasis DC: Ediza"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "OASIS STATUS",
+        "value": "SOC 11/13 - Exported \r\nOasis DC 11/19 - Exported"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "QA",
+        "value": "Rizalie"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "SN",
+        "value": "SN - 1"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "PT/OT/ST",
+        "value": "NA"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "HHA/MSW",
+        "value": "NA"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "BILLING STATUS",
+        "value": "For Billing"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "sourceRowNumber": 4
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "VISIT NOTES",
+        "sourceRowNumber": 4,
+        "values": {
+          "patientName": "Kurzweil, Linda",
+          "medicareNumber": "3Y42VX6GR96",
+          "payer": "Medicare",
+          "socDate": "11/13/25",
+          "episodePeriod": "11/13/2025 - 01/11/2026",
+          "billingPeriod": "1 11/13/2025 - 12/12/2025",
+          "status": "Discharged",
+          "oasisQa": "SOC - Gerard\r\nOasis DC: Ediza",
+          "oasisStatus": "SOC 11/13 - Exported \r\nOasis DC 11/19 - Exported",
+          "qa": "Rizalie",
+          "sn": "SN - 1",
+          "ptOtSt": "NA",
+          "hhaMsw": "NA",
+          "billingStatus": "For Billing"
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "LINDA_KURZWEIL__d74af22704199bbf",
+    "patientIdentity": {
+      "displayName": "Linda Kurzweil",
+      "normalizedName": "LINDA KURZWEIL",
+      "medicareNumber": "3Y42VX6GR96"
+    },
+    "episodeContext": {
+      "episodeDate": null,
+      "socDate": "2025-11-13",
+      "episodePeriod": "2025-11-13 to 2026-01-11",
+      "billingPeriod": "2025-12-13 to 2026-01-11",
+      "payer": "Medicare",
+      "assignedStaff": null,
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": null
+    },
+    "workflowTypes": [
+      "VISIT_NOTES",
+      "BILLING_PREP"
+    ],
+    "sourceSheets": [
+      "VISIT NOTES"
+    ],
+    "codingReviewStatus": "NOT_STARTED",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "IN_PROGRESS",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "STATUS",
+        "value": "Discharged"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "OASIS STATUS",
+        "value": "No visits plotted"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "sourceRowNumber": 5
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "VISIT NOTES",
+        "sourceRowNumber": 5,
+        "values": {
+          "patientName": "Kurzweil, Linda",
+          "medicareNumber": "3Y42VX6GR96",
+          "payer": "Medicare",
+          "socDate": "11/13/25",
+          "episodePeriod": "11/13/2025 - 01/11/2026",
+          "billingPeriod": "2 12/13/2025 - 01/11/2026",
+          "status": "Discharged",
+          "oasisQa": null,
+          "oasisStatus": "No visits plotted",
+          "qa": null,
+          "sn": null,
+          "ptOtSt": null,
+          "hhaMsw": null,
+          "billingStatus": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "LOUIS_SMITH__68621d6dc2aa36aa",
+    "patientIdentity": {
+      "displayName": "Louis Smith",
+      "normalizedName": "LOUIS SMITH",
+      "medicareNumber": "5DH4Q20HR50"
+    },
+    "episodeContext": {
+      "episodeDate": null,
+      "socDate": "2025-11-15",
+      "episodePeriod": "2025-11-15 to 2026-01-13",
+      "billingPeriod": "2025-11-15 to 2025-11-28",
+      "payer": "Medicare",
+      "assignedStaff": null,
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": null
+    },
+    "workflowTypes": [
+      "VISIT_NOTES",
+      "BILLING_PREP"
+    ],
+    "sourceSheets": [
+      "VISIT NOTES"
+    ],
+    "codingReviewStatus": "NOT_STARTED",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "REVIEW_REQUIRED",
+    "billingPrepStatus": "IN_PROGRESS",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "STATUS",
+        "value": "Discharged"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "OASIS QA",
+        "value": "SOC - Faith\r\nOasis DC: Ediza"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "OASIS STATUS",
+        "value": "SOC 11/15 - Exported\r\nOasis DC - LOCKED"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "QA",
+        "value": "Rizalie"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "SN",
+        "value": "SN - 2, MV - 2\r\nSNV 11/25, 11/26 - not started"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "PT/OT/ST",
+        "value": "NA"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "HHA/MSW",
+        "value": "HHA: 2\r\nHHA visit 11/24 - Not started"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "BILLING STATUS",
+        "value": "For Billing"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "sourceRowNumber": 6
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "VISIT NOTES",
+        "sourceRowNumber": 6,
+        "values": {
+          "patientName": "Smith, Louis",
+          "medicareNumber": "5DH4Q20HR50",
+          "payer": "Medicare",
+          "socDate": "11/15/25",
+          "episodePeriod": "11/15/2025 - 01/13/2026",
+          "billingPeriod": "1 11/15/2025 - 11/28/2025",
+          "status": "Discharged",
+          "oasisQa": "SOC - Faith\r\nOasis DC: Ediza",
+          "oasisStatus": "SOC 11/15 - Exported\r\nOasis DC - LOCKED",
+          "qa": "Rizalie",
+          "sn": "SN - 2, MV - 2\r\nSNV 11/25, 11/26 - not started",
+          "ptOtSt": "NA",
+          "hhaMsw": "HHA: 2\r\nHHA visit 11/24 - Not started",
+          "billingStatus": "For Billing"
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "LUCYNA_OLESNICKI__01a873baa06f78cf",
+    "patientIdentity": {
+      "displayName": "Lucyna Olesnicki",
+      "normalizedName": "LUCYNA OLESNICKI",
+      "medicareNumber": "1JC0KV8VN29"
+    },
+    "episodeContext": {
+      "episodeDate": null,
+      "socDate": "2026-01-10",
+      "episodePeriod": "2026-01-10 to 2026-03-10",
+      "billingPeriod": "2026-01-10 to 2026-02-08",
+      "payer": "Medicare",
+      "assignedStaff": null,
+      "clinician": "Anaba, Ada RN",
+      "qaSpecialist": "EDIZA",
+      "rfa": null
+    },
+    "workflowTypes": [
+      "VISIT_NOTES",
+      "BILLING_PREP"
+    ],
+    "sourceSheets": [
+      "DIZ",
+      "VISIT NOTES"
+    ],
+    "timingMetadata": {
+      "trackingDays": null,
+      "daysInPeriod": null,
+      "daysLeft": null,
+      "rawTrackingValues": [],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "NOT_STARTED",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "REVIEW_REQUIRED",
+    "billingPrepStatus": "IN_PROGRESS",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "STATUS",
+        "value": "Active"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "OASIS QA",
+        "value": "Ediza"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "OASIS STATUS",
+        "value": "SOC 01/10 - Exported\r\nOasis DC - in Progress"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "QA",
+        "value": "Rizalie"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "SN",
+        "value": "SN - 3, MV - 1\r\nVisits not yet started"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "PT/OT/ST",
+        "value": "PT - 9\r\nvisits 1/17, 1/21 - not started"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "HHA/MSW",
+        "value": "NA"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "BILLING STATUS",
+        "value": "For Billing"
+      },
+      {
+        "workflowTypes": [
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "DIZ",
+        "field": "SN",
+        "value": "SN - 1 SN - 2 - ongoing"
+      },
+      {
+        "workflowTypes": [
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "DIZ",
+        "field": "REHAB",
+        "value": "PT Eval - 1 PTA - 2  PT 6 - ongoing"
+      },
+      {
+        "workflowTypes": [
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "DIZ",
+        "field": "HHA AND MSW",
+        "value": "NA"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "sourceRowNumber": 16
+      },
+      {
+        "workflowTypes": [
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "DIZ",
+        "sourceRowNumber": 4
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "VISIT NOTES",
+        "sourceRowNumber": 16,
+        "values": {
+          "patientName": "Olesnicki, Lucyna",
+          "medicareNumber": "1JC0KV8VN29",
+          "payer": "Medicare",
+          "socDate": "1/10/26",
+          "episodePeriod": "01/10/2026 - 03/10/2026",
+          "billingPeriod": "1 01/10/2026 - 02/08/2026",
+          "status": "Active",
+          "oasisQa": "Ediza",
+          "oasisStatus": "SOC 01/10 - Exported\r\nOasis DC - in Progress",
+          "qa": "Rizalie",
+          "sn": "SN - 3, MV - 1\r\nVisits not yet started",
+          "ptOtSt": "PT - 9\r\nvisits 1/17, 1/21 - not started",
+          "hhaMsw": "NA",
+          "billingStatus": "For Billing"
+        }
+      },
+      {
+        "sourceSheet": "DIZ",
+        "sourceRowNumber": 4,
+        "values": {
+          "patientName": "OLESNICKI, LUCYNA",
+          "episodeDateOrBillingPeriod": "01/10/2026 - 03/10/2026",
+          "clinician": "Anaba, Ada RN",
+          "qaSpecialist": "EDIZA",
+          "sn": "SN - 1 SN - 2 - ongoing",
+          "rehab": "PT Eval - 1 PTA - 2  PT 6 - ongoing",
+          "hhaAndMsw": "NA",
+          "poAndOrder": null,
+          "status": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "WILLIAM_YELSH__d6bf0bb97b01d14d",
+    "patientIdentity": {
+      "displayName": "William Yelsh",
+      "normalizedName": "WILLIAM YELSH",
+      "medicareNumber": "2MJ7YD2XY45"
+    },
+    "episodeContext": {
+      "episodeDate": null,
+      "socDate": "2026-01-18",
+      "episodePeriod": "2026-01-18 to 2026-03-18",
+      "billingPeriod": "2026-01-18 to 2026-02-16",
+      "payer": "Medicare",
+      "assignedStaff": null,
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": null
+    },
+    "workflowTypes": [
+      "VISIT_NOTES",
+      "BILLING_PREP"
+    ],
+    "sourceSheets": [
+      "VISIT NOTES"
+    ],
+    "codingReviewStatus": "NOT_STARTED",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "IN_PROGRESS",
+    "billingPrepStatus": "IN_PROGRESS",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "STATUS",
+        "value": "Active"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "OASIS QA",
+        "value": "SOC - Faith\r\nTransfer: Ediza"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "OASIS STATUS",
+        "value": "SOC 1/18 - Exported\r\nTransfer 1/28 - Exported\r\nDC 2/16 - In Progress"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "QA",
+        "value": "Rizalie"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "SN",
+        "value": "SN - 1"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "PT/OT/ST",
+        "value": "NA"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "HHA/MSW",
+        "value": "NA"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "BILLING STATUS",
+        "value": "For Billing"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "sourceRowNumber": 17
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "VISIT NOTES",
+        "sourceRowNumber": 17,
+        "values": {
+          "patientName": "YELSH, WILLIAM",
+          "medicareNumber": "2MJ7YD2XY45",
+          "payer": "Medicare",
+          "socDate": "1/18/26",
+          "episodePeriod": "01/18/2026 - 03/18/2026",
+          "billingPeriod": "1 01/18/2026 - 02/16/2026",
+          "status": "Active",
+          "oasisQa": "SOC - Faith\r\nTransfer: Ediza",
+          "oasisStatus": "SOC 1/18 - Exported\r\nTransfer 1/28 - Exported\r\nDC 2/16 - In Progress",
+          "qa": "Rizalie",
+          "sn": "SN - 1",
+          "ptOtSt": "NA",
+          "hhaMsw": "NA",
+          "billingStatus": "For Billing"
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "YVONNE_BARGER__718f84930c8155e8",
+    "patientIdentity": {
+      "displayName": "Yvonne Barger",
+      "normalizedName": "YVONNE BARGER",
+      "medicareNumber": "3GT4K51FD94"
+    },
+    "episodeContext": {
+      "episodeDate": null,
+      "socDate": "2026-01-23",
+      "episodePeriod": "2026-01-23 to 2026-03-23",
+      "billingPeriod": "2026-01-23 to 2026-02-12",
+      "payer": "Medicare",
+      "assignedStaff": null,
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": null
+    },
+    "workflowTypes": [
+      "VISIT_NOTES",
+      "BILLING_PREP"
+    ],
+    "sourceSheets": [
+      "VISIT NOTES"
+    ],
+    "codingReviewStatus": "NOT_STARTED",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "IN_PROGRESS",
+    "billingPrepStatus": "IN_PROGRESS",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "STATUS",
+        "value": "Discharged"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "OASIS QA",
+        "value": "Faith"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "OASIS STATUS",
+        "value": "SOC 1/26 - Exported\r\nOasis DC 2/12  - In Progress"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "QA",
+        "value": "Rizalie"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "SN",
+        "value": "NA"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "PT/OT/ST",
+        "value": "PT - 5"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "HHA/MSW",
+        "value": "NA"
+      },
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "field": "BILLING STATUS",
+        "value": "For Billing"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "VISIT_NOTES",
+          "BILLING_PREP"
+        ],
+        "sourceSheet": "VISIT NOTES",
+        "sourceRowNumber": 18
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "VISIT NOTES",
+        "sourceRowNumber": 18,
+        "values": {
+          "patientName": "BARGER, YVONNE",
+          "medicareNumber": "3GT4K51FD94",
+          "payer": "Medicare",
+          "socDate": "1/23/26",
+          "episodePeriod": "01/23/2026 - 03/23/2026",
+          "billingPeriod": "1 01/23/2026 - 02/12/2026",
+          "status": "Discharged",
+          "oasisQa": "Faith",
+          "oasisStatus": "SOC 1/26 - Exported\r\nOasis DC 2/12  - In Progress",
+          "qa": "Rizalie",
+          "sn": "NA",
+          "ptOtSt": "PT - 5",
+          "hhaMsw": "NA",
+          "billingStatus": "For Billing"
+        }
+      }
+    ],
+    "importWarnings": []
+  }
+]

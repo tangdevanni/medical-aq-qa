@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "1",
+  "generatedAt": "2026-04-02T22:33:42.537Z",
+  "patientId": "SMOKE_PATIENT_1",
+  "batchId": "batch-smoke",
+  "reasonForAdmission": "Admitted for weakness and diabetes management",
+  "diagnosisPhrases": [
+    "Type 2 diabetes mellitus",
+    "peripheral vascular disease and hypertension"
+  ],
+  "diagnosisCodePairs": [
+    {
+      "diagnosis": "Type 2 diabetes mellitus",
+      "code": "E11.9",
+      "codeSource": "admission order"
+    },
+    {
+      "diagnosis": "Peripheral vascular disease",
+      "code": "I73.9",
+      "codeSource": "oasis"
+    },
+    {
+      "diagnosis": "hypertension",
+      "code": null,
+      "codeSource": "referral"
+    }
+  ],
+  "icd10CodesFoundVerbatim": [
+    "E11.9",
+    "I73.9"
+  ],
+  "orderedServices": [
+    "Skilled Nursing",
+    "Physical Therapy"
+  ],
+  "clinicalSummary": "Home health needed for chronic condition management.",
+  "sourceQuotes": [
+    "Reason for admission: weakness due to chronic conditions."
+  ],
+  "uncertainItems": [
+    "Removed malformed diagnosis_code_pairs.code 'BADCODE' for diagnosis 'hypertension'.",
+    "Removed malformed icd10_codes_found_verbatim value 'XX123'."
+  ],
+  "documentType": "Admission Order",
+  "extractionConfidence": "medium",
+  "validation": {
+    "validIcd10Only": true,
+    "invalidCodesRemoved": 2,
+    "warningCount": 2,
+    "warnings": [
+      "Removed malformed diagnosis_code_pairs.code 'BADCODE' for diagnosis 'hypertension'.",
+      "Removed malformed icd10_codes_found_verbatim value 'XX123'."
+    ]
+  }
+}

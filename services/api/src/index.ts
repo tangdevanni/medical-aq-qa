@@ -1,16 +1,17 @@
-import { createServer } from "node:http";
-import { createLogger } from "@medical-ai-qa/shared-logging";
-import { getHealthPayload } from "./health";
+import { createApp } from "./app";
+import { loadEnv } from "./config/env";
 
-const port = Number(process.env.API_PORT ?? "3000");
-const logger = createLogger({ service: "api" });
+async function main(): Promise<void> {
+  const env = loadEnv();
+  const app = await createApp();
 
-const server = createServer((_request, response) => {
-  const payload = JSON.stringify(getHealthPayload());
-  response.writeHead(200, { "content-type": "application/json" });
-  response.end(payload);
-});
+  await app.listen({
+    host: env.API_HOST,
+    port: env.API_PORT,
+  });
+}
 
-server.listen(port, () => {
-  logger.info("API listening.", { port });
+main().catch((error: unknown) => {
+  console.error(error instanceof Error ? error.message : "Unknown API startup error.");
+  process.exitCode = 1;
 });

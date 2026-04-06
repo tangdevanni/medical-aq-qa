@@ -1,0 +1,236 @@
+{
+  "schemaVersion": "1",
+  "comparedAt": "2026-04-03T21:57:53.358Z",
+  "patientId": "CHRISTINE_YOUNG__a89bc267c323fb6a",
+  "batchId": "batch-2026-04-03T21-54-32-807Z",
+  "summary": {
+    "extractedEntryCount": 8,
+    "portalRowCount": 8,
+    "exactMatchCount": 0,
+    "normalizedMatchCount": 0,
+    "mismatchCount": 0,
+    "missingOnPortalCount": 8,
+    "missingInExtractionCount": 8,
+    "suspiciousCaseCount": 0
+  },
+  "exactMatches": [],
+  "normalizedMatches": [],
+  "mismatches": [],
+  "missingOnPortal": [
+    {
+      "extractedIndex": 0,
+      "portalRowIndex": null,
+      "extractedDiagnosis": "Type 2 diabetes mellitus",
+      "extractedCode": "E11.9",
+      "portalDescription": null,
+      "portalCode": null,
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "No portal row reached comparison threshold."
+      ]
+    },
+    {
+      "extractedIndex": 1,
+      "portalRowIndex": null,
+      "extractedDiagnosis": "diabetes mellitus",
+      "extractedCode": "E11.9",
+      "portalDescription": null,
+      "portalCode": null,
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "No portal row reached comparison threshold."
+      ]
+    },
+    {
+      "extractedIndex": 2,
+      "portalRowIndex": null,
+      "extractedDiagnosis": "Chronic obstructive pulmonary disease (COPD)",
+      "extractedCode": "J44.9",
+      "portalDescription": null,
+      "portalCode": null,
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "No portal row reached comparison threshold."
+      ]
+    },
+    {
+      "extractedIndex": 3,
+      "portalRowIndex": null,
+      "extractedDiagnosis": "COPD",
+      "extractedCode": "J44.9",
+      "portalDescription": null,
+      "portalCode": null,
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "No portal row reached comparison threshold."
+      ]
+    },
+    {
+      "extractedIndex": 4,
+      "portalRowIndex": null,
+      "extractedDiagnosis": "Type 2 diabetes mellitus",
+      "extractedCode": null,
+      "portalDescription": null,
+      "portalCode": null,
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "No portal row reached comparison threshold."
+      ]
+    },
+    {
+      "extractedIndex": 5,
+      "portalRowIndex": null,
+      "extractedDiagnosis": "diabetes mellitus",
+      "extractedCode": null,
+      "portalDescription": null,
+      "portalCode": null,
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "No portal row reached comparison threshold."
+      ]
+    },
+    {
+      "extractedIndex": 6,
+      "portalRowIndex": null,
+      "extractedDiagnosis": "Chronic obstructive pulmonary disease (COPD)",
+      "extractedCode": null,
+      "portalDescription": null,
+      "portalCode": null,
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "No portal row reached comparison threshold."
+      ]
+    },
+    {
+      "extractedIndex": 7,
+      "portalRowIndex": null,
+      "extractedDiagnosis": "COPD",
+      "extractedCode": null,
+      "portalDescription": null,
+      "portalCode": null,
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "No portal row reached comparison threshold."
+      ]
+    }
+  ],
+  "missingInExtraction": [
+    {
+      "extractedIndex": null,
+      "portalRowIndex": 0,
+      "extractedDiagnosis": null,
+      "extractedCode": null,
+      "portalDescription": "PRIMARY DIAGNOSIS 🩺 ICD-10 CodeOnset Date",
+      "portalCode": "R13.10",
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "Portal row was not matched by extracted diagnosis entries."
+      ]
+    },
+    {
+      "extractedIndex": null,
+      "portalRowIndex": 1,
+      "extractedDiagnosis": null,
+      "extractedCode": null,
+      "portalDescription": "OTHER DIAGNOSIS - 1 ICD-10 CodeOnset Date",
+      "portalCode": "I11.0",
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "Portal row was not matched by extracted diagnosis entries."
+      ]
+    },
+    {
+      "extractedIndex": null,
+      "portalRowIndex": 2,
+      "extractedDiagnosis": null,
+      "extractedCode": null,
+      "portalDescription": "OTHER DIAGNOSIS - 2 ICD-10 CodeOnset Date",
+      "portalCode": "I50.9",
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "Portal row was not matched by extracted diagnosis entries."
+      ]
+    },
+    {
+      "extractedIndex": null,
+      "portalRowIndex": 3,
+      "extractedDiagnosis": null,
+      "extractedCode": null,
+      "portalDescription": "OTHER DIAGNOSIS - 3 ICD-10 CodeOnset Date",
+      "portalCode": "I48.20",
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "Portal row was not matched by extracted diagnosis entries."
+      ]
+    },
+    {
+      "extractedIndex": null,
+      "portalRowIndex": 4,
+      "extractedDiagnosis": null,
+      "extractedCode": null,
+      "portalDescription": "OTHER DIAGNOSIS - 4 ICD-10 CodeOnset Date",
+      "portalCode": "E03.9",
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "Portal row was not matched by extracted diagnosis entries."
+      ]
+    },
+    {
+      "extractedIndex": null,
+      "portalRowIndex": 5,
+      "extractedDiagnosis": null,
+      "extractedCode": null,
+      "portalDescription": "OTHER DIAGNOSIS - 5 ICD-10 CodeOnset Date",
+      "portalCode": "R53.1",
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "Portal row was not matched by extracted diagnosis entries."
+      ]
+    },
+    {
+      "extractedIndex": null,
+      "portalRowIndex": 6,
+      "extractedDiagnosis": null,
+      "extractedCode": null,
+      "portalDescription": "ICD-10 CodeOnset Date",
+      "portalCode": "F32.A",
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "Portal row was not matched by extracted diagnosis entries."
+      ]
+    },
+    {
+      "extractedIndex": null,
+      "portalRowIndex": 7,
+      "extractedDiagnosis": null,
+      "extractedCode": null,
+      "portalDescription": "ICD-10 CodeOnset Date",
+      "portalCode": "Z87.01",
+      "matchType": "mismatch",
+      "score": 0,
+      "notes": [
+        "Portal row was not matched by extracted diagnosis entries."
+      ]
+    }
+  ],
+  "suspiciousCases": [],
+  "confidenceNotes": [
+    "Extraction uncertain items: diagnosis code pairs diagnosis invalid: Hypertension",
+    "Missing mappings detected between extracted and portal diagnosis sets."
+  ]
+}

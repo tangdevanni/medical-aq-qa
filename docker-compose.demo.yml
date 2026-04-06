@@ -1,0 +1,27 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: services/api/Dockerfile
+    environment:
+      API_PORT: 3000
+      API_HOST: 0.0.0.0
+      API_STORAGE_ROOT: /data/control-plane
+      API_LOG_LEVEL: info
+      API_CORS_ORIGIN: http://localhost:3001
+      OASIS_WRITE_ENABLED: "false"
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./demo-data/control-plane:/data/control-plane
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: apps/dashboard/Dockerfile
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: http://localhost:3000
+    ports:
+      - "3001:3001"
+    depends_on:
+      - api

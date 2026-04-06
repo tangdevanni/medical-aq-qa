@@ -15,10 +15,8 @@ import { launchBrowser } from "../browser/launch";
 import { type PortalWorkerEnv } from "../config/env";
 import { WORKFLOW_FAILURE_CODES } from "../errors/failure-codes";
 import { WorkflowError } from "../errors/workflow-error";
-import { formatLoginDiagnostics } from "../auth/login-diagnostics";
+import { executeLoginWorkflow } from "../auth/login-workflow";
 import { DashboardPage } from "../portal/pages/DashboardPage";
-import { LandingPage } from "../portal/pages/LandingPage";
-import { LoginPage } from "../portal/pages/LoginPage";
 import { PortalDiscoveryPage } from "../portal/pages/PortalDiscoveryPage";
 
 export interface PortalDiscoveryWorkflowOptions {
@@ -57,49 +55,17 @@ export async function runPortalDiscoveryWorkflow(
   try {
     const context = await createPortalContext(browser, env);
     const page = await context.newPage();
-    const loginPage = new LoginPage(page);
-    const landingPage = new LandingPage(page);
     const dashboardPage = new DashboardPage(page);
     const discoveryPage = new PortalDiscoveryPage(page);
 
-    await loginPage.goto(job.portalUrl || env.portalBaseUrl);
-    const loginDiagnostics = await loginPage.waitUntilLoaded();
-
-    if (!loginDiagnostics.isLikelyLoginPage) {
-      throw new WorkflowError(
-        WORKFLOW_FAILURE_CODES.pageUnexpected,
-        formatLoginDiagnostics("Finale Health login page was not detected.", loginDiagnostics),
-        true,
-      );
-    }
-
-    logger.info("Finale Health login page detected.", {
-      url: loginDiagnostics.currentUrl,
-      title: loginDiagnostics.title,
-      passwordInputFound: loginDiagnostics.passwordInputFound,
-      loginButtonFound: loginDiagnostics.loginButtonFound,
-      visibleInputCount: loginDiagnostics.visibleInputCount,
-      headingMarkers: loginDiagnostics.headingMarkers,
-    });
-
-    options.onCheckpoint?.(WORKFLOW_CHECKPOINTS.loginPageDetected);
-
-    const loginResult = await loginPage.login(env.portalUsername, env.portalPassword);
-    options.onCheckpoint?.(WORKFLOW_CHECKPOINTS.credentialsSubmitted);
-
-    if (loginResult.outcome !== "login_succeeded") {
-      throw new WorkflowError(
-        WORKFLOW_FAILURE_CODES.loginFailed,
-        formatLoginDiagnostics(
-          `Login did not complete: ${loginResult.outcome}.`,
-          loginResult.diagnostics,
-        ),
-        true,
-      );
-    }
-
-    await landingPage.waitForAuthenticatedShell();
-    options.onCheckpoint?.(WORKFLOW_CHECKPOINTS.authenticated);
+    await executeLoginWorkflow(
+      page,
+      job.portalUrl || env.portalBaseUrl,
+      env.portalUsername,
+      env.portalPassword,
+      logger,
+      { onCheckpoint: options.onCheckpoint },
+    );
 
     const isDashboardLoaded = await dashboardPage.isLoaded();
     if (!isDashboardLoaded) {

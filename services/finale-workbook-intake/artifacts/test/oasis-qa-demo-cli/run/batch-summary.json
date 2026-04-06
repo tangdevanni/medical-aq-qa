@@ -1,0 +1,44 @@
+{
+  "batchId": "batch-2026-03-31T18-12-49-291Z",
+  "status": "COMPLETED_WITH_EXCEPTIONS",
+  "startedAt": "2026-03-31T18:12:49.311Z",
+  "completedAt": "2026-03-31T18:12:49.357Z",
+  "lastUpdatedAt": "2026-03-31T18:12:49.357Z",
+  "totalWorkItems": 1,
+  "automationEligible": 1,
+  "processed": 1,
+  "totalCompleted": 0,
+  "totalBlocked": 1,
+  "totalFailed": 0,
+  "totalNeedsHumanReview": 0,
+  "totalReadyForBillingPrep": 0,
+  "totalParserExceptions": 55,
+  "percentComplete": 100,
+  "currentlyRunningCount": 0,
+  "currentBatchStatus": "COMPLETED_WITH_EXCEPTIONS",
+  "complete": 0,
+  "blocked": 1,
+  "failed": 0,
+  "needsHumanReview": 0,
+  "parserExceptions": 55,
+  "qaOutcomes": {
+    "READY_FOR_BILLING_PREP": 0,
+    "INCOMPLETE": 0,
+    "MISSING_DOCUMENTS": 1,
+    "PORTAL_MISMATCH": 0,
+    "AMBIGUOUS_PATIENT": 0,
+    "NEEDS_MANUAL_QA": 0
+  },
+  "patientRuns": [
+    {
+      "workItemId": "DAVID_SESSLER__3d647e083a21c0c4",
+      "patientName": "David Sessler",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Extracted 9 document(s) for QA evaluation.",
+      "resultBundlePath": "C:\\Users\\short\\OneDrive\\Desktop\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\test\\oasis-qa-demo-cli\\run\\patient-results\\DAVID_SESSLER__3d647e083a21c0c4.json"
+    }
+  ]
+}
