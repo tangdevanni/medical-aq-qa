@@ -74,6 +74,12 @@
       "namedRegex": "^/batches(?:/)?$"
     },
     {
+      "page": "/healthz",
+      "regex": "^/healthz(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/healthz(?:/)?$"
+    },
+    {
       "page": "/runs",
       "regex": "^/runs(?:/)?$",
       "routeKeys": {},

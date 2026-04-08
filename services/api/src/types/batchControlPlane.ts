@@ -12,11 +12,37 @@ const workbookSourceTypeSchema = z.enum(["socPoc", "dc", "visitNotes", "diz", "t
 
 export const batchRecordSchema = z.object({
   id: z.string().min(1),
+  subsidiary: z.object({
+    id: z.string().min(1).default("default"),
+    slug: z.string().min(1).default("default"),
+    name: z.string().min(1).default("Default Subsidiary"),
+  }).default({
+    id: "default",
+    slug: "default",
+    name: "Default Subsidiary",
+  }),
   createdAt: z.string().min(1),
   updatedAt: z.string().min(1),
+  runMode: z.literal("read_only").default("read_only"),
   billingPeriod: z.string().min(1).nullable(),
   status: batchStatusSchema,
+  schedule: z.object({
+    scheduledRunId: z.string().min(1).nullable().default(null),
+    active: z.boolean(),
+    rerunEnabled: z.boolean(),
+    intervalHours: z.number().int().positive(),
+    lastRunAt: z.string().min(1).nullable(),
+    nextScheduledRunAt: z.string().min(1).nullable(),
+  }).default({
+    scheduledRunId: null,
+    active: true,
+    rerunEnabled: true,
+    intervalHours: 24,
+    lastRunAt: null,
+    nextScheduledRunAt: null,
+  }),
   sourceWorkbook: z.object({
+    subsidiaryId: z.string().min(1).default("default"),
     acquisitionProvider: z.enum(["MANUAL_UPLOAD", "FINALE"]),
     acquisitionStatus: z.enum(["ACQUIRED", "FAILED", "PENDING"]),
     acquisitionReference: z.string().min(1).nullable(),
@@ -81,6 +107,7 @@ export const batchRecordSchema = z.object({
   patientRuns: z.array(
     z.object({
       runId: z.string().min(1),
+      subsidiaryId: z.string().min(1).default("default"),
       workItemId: z.string().min(1),
       patientName: z.string().min(1),
       processingStatus: patientProcessingStatusSchema,

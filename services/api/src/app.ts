@@ -8,9 +8,13 @@ import { WorkbookAcquisitionService } from "./acquisition/workbookAcquisitionSer
 import { loadEnv } from "./config/env";
 import { getHealthPayload } from "./health";
 import { FilesystemBatchRepository } from "./repositories/filesystemBatchRepository";
+import { FilesystemScheduledRunRepository } from "./repositories/filesystemScheduledRunRepository";
+import { FilesystemSubsidiaryRepository } from "./repositories/filesystemSubsidiaryRepository";
 import { registerBatchRoutes } from "./routes/batches";
 import { registerPatientRunRoutes } from "./routes/patientRuns";
 import { BatchControlPlaneService } from "./services/batchControlPlaneService";
+import { PortalCredentialProvider } from "./services/portalCredentialProvider";
+import { SubsidiaryConfigService } from "./services/subsidiaryConfigService";
 
 export async function createApp() {
   const env = loadEnv();
@@ -34,12 +38,27 @@ export async function createApp() {
   });
 
   const repository = new FilesystemBatchRepository(env.API_STORAGE_ROOT);
+  const scheduledRunRepository = new FilesystemScheduledRunRepository(env.API_STORAGE_ROOT);
+  const subsidiaryRepository = new FilesystemSubsidiaryRepository(env.API_STORAGE_ROOT);
+  const credentialProvider = new PortalCredentialProvider(env, logger);
+  const subsidiaryConfigService = new SubsidiaryConfigService(
+    subsidiaryRepository,
+    credentialProvider,
+    env,
+    logger,
+  );
   const acquisitionService = new WorkbookAcquisitionService(
     [new ManualUploadWorkbookProvider(), new FinaleWorkbookProvider()],
     repository,
     logger,
   );
-  const batchService = new BatchControlPlaneService(repository, acquisitionService, logger);
+  const batchService = new BatchControlPlaneService(
+    repository,
+    scheduledRunRepository,
+    acquisitionService,
+    subsidiaryConfigService,
+    logger,
+  );
   await batchService.initialize();
 
   app.get("/health", async () => getHealthPayload());

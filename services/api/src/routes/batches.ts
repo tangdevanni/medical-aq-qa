@@ -37,11 +37,13 @@ async function readUploadPayload(request: FastifyRequest): Promise<{
   fileName: string;
   fileBuffer: Buffer;
   billingPeriod: string | null;
+  subsidiaryId: string | null;
 }> {
   const parts = request.parts();
   let fileName: string | null = null;
   let fileBuffer: Buffer | null = null;
   let billingPeriod: string | null = null;
+  let subsidiaryId: string | null = null;
 
   for await (const part of parts) {
     if (part.type === "file") {
@@ -52,6 +54,11 @@ async function readUploadPayload(request: FastifyRequest): Promise<{
 
     if (part.fieldname === "billingPeriod") {
       billingPeriod = String(part.value).trim() || null;
+      continue;
+    }
+
+    if (part.fieldname === "subsidiaryId") {
+      subsidiaryId = String(part.value).trim() || null;
     }
   }
 
@@ -67,6 +74,7 @@ async function readUploadPayload(request: FastifyRequest): Promise<{
     fileName,
     fileBuffer,
     billingPeriod,
+    subsidiaryId,
   };
 }
 
@@ -80,15 +88,11 @@ async function buildDashboardPatientView(
     return null;
   }
 
-  const patientLog = await service.getBatchPatientLog(batchId, patientId);
   return {
-    batchId,
+    batch: knownArtifacts.batch,
     summary: knownArtifacts.summary,
-    detail: knownArtifacts.detail,
-    log: patientLog?.log ?? null,
     workItem: knownArtifacts.workItem,
     artifactContents: knownArtifacts.artifactContents,
-    artifactPaths: knownArtifacts.artifactPaths,
   };
 }
 
@@ -101,14 +105,12 @@ async function buildDashboardRunDetail(
     return null;
   }
 
-  const workItems = batch.storage.workItemsPath ? await service.getWorkItems(batchId) : [];
   const patientViews = await Promise.all(
     batch.patientRuns.map((patientRun) => buildDashboardPatientView(service, batchId, patientRun.workItemId)),
   );
 
   return toDashboardRunDetail({
     batch,
-    workItems,
     patients: patientViews
       .filter((patient): patient is NonNullable<typeof patient> => patient !== null)
       .map((patient) => toDashboardPatientSummary(patient)),
@@ -122,12 +124,10 @@ export async function registerBatchRoutes(
   app.post("/api/batches/upload", async (request, reply) => {
     const payload = await readUploadPayload(request);
     const batch = await service.createBatchUpload(payload);
+    await service.parseBatch(batch.id);
+    await service.startBatchRun(batch.id);
     reply.code(201);
-    return toDashboardRunDetail({
-      batch,
-      workItems: [],
-      patients: [],
-    });
+    return buildDashboardRunDetail(service, batch.id);
   });
 
   app.post("/api/batches/:id/parse", async (request) => {
@@ -147,6 +147,12 @@ export async function registerBatchRoutes(
     const batchId = await getBatchId(request);
     reply.code(202);
     await service.retryBlockedPatientRuns(batchId);
+    return buildDashboardRunDetail(service, batchId);
+  });
+
+  app.post("/api/batches/:id/deactivate", async (request) => {
+    const batchId = await getBatchId(request);
+    await service.deactivateBatch(batchId);
     return buildDashboardRunDetail(service, batchId);
   });
 
@@ -298,12 +304,10 @@ export async function registerBatchRoutes(
   app.post("/api/runs/upload", async (request, reply) => {
     const payload = await readUploadPayload(request);
     const batch = await service.createBatchUpload(payload);
+    await service.parseBatch(batch.id);
+    await service.startBatchRun(batch.id);
     reply.code(201);
-    return toDashboardRunDetail({
-      batch,
-      workItems: [],
-      patients: [],
-    });
+    return buildDashboardRunDetail(service, batch.id);
   });
 
   app.post("/api/runs/:id/parse", async (request) => {
@@ -316,6 +320,12 @@ export async function registerBatchRoutes(
     const batchId = await getBatchId(request);
     await service.startBatchRun(batchId);
     reply.code(202);
+    return buildDashboardRunDetail(service, batchId);
+  });
+
+  app.post("/api/runs/:id/deactivate", async (request) => {
+    const batchId = await getBatchId(request);
+    await service.deactivateBatch(batchId);
     return buildDashboardRunDetail(service, batchId);
   });
 

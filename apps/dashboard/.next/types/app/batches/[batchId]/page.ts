@@ -1,4 +1,4 @@
-// File: C:\Users\short\OneDrive\Desktop\medical-aq-qa\apps\dashboard\app\batches\[batchId]\page.tsx
+// File: C:\dev\medical-aq-qa\apps\dashboard\app\batches\[batchId]\page.tsx
 import * as entry from '../../../../../app/batches/[batchId]/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

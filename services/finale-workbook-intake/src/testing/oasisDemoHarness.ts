@@ -896,7 +896,6 @@ function assertDemoExpectations(input: {
   const { result, patientRun, expectedPatientRunCount } = input;
   const stepOrder = patientRun.automationStepLogs.map((log) => log.step);
   const stepNames = new Set(stepOrder);
-  const lastStepIndex = (step: string): number => stepOrder.lastIndexOf(step);
   const requiredSteps = [
     "login",
     "patient_search",
@@ -904,13 +903,23 @@ function assertDemoExpectations(input: {
     "qa_summary",
   ];
   const qaSummaryLogs = patientRun.automationStepLogs.filter((log) => log.step === "qa_summary");
-  const qaSummarySignals = new Set(qaSummaryLogs.flatMap((log) => [
-    ...log.found,
-    ...log.evidence,
-  ]));
-  const hasOasisWorkflowSummary = [...qaSummarySignals].some((entry) =>
-    /oasisMenuClicked:true|oasisDocumentListDetected:true|socDocumentClicked:true|socDocumentFound:true/i.test(entry),
+  const finalQaSummaryLog = qaSummaryLogs.at(-1);
+  const expectedQaSummaryFound = new Set(
+    patientRun.oasisQaSummary.sections.map((section) => `${section.key}:${section.status}`),
   );
+  const actualQaSummaryFound = new Set(finalQaSummaryLog?.found ?? []);
+  const expectedQaSummaryMissing = new Set(patientRun.oasisQaSummary.blockers);
+  const actualQaSummaryMissing = new Set(finalQaSummaryLog?.missing ?? []);
+  const exactWorkflowRequiredSteps = [
+    "document_extraction",
+    "admission_document_extract",
+    "oasis_extract",
+    "poc_extract",
+    "visit_note_extract",
+    "technical_review_extract",
+    "diagnosis_code_extract",
+    "coding_input_export",
+  ];
 
   assert.equal(input.expectedSafetyMode, "READ_ONLY");
   assert.equal(input.dangerousWriteAttemptBlocked, true);
@@ -936,44 +945,28 @@ function assertDemoExpectations(input: {
     });
     console.info("patient_search emitted", stepNames.has("patient_search"));
     console.info("chart_open emitted", stepNames.has("chart_open"));
-    assert.ok(
-      hasOasisWorkflowSummary,
-      "legacy documentInventory validation removed; qa_summary must include active OASIS workflow evidence.",
-    );
-    assert.ok(stepNames.has("oasis_menu"), "automationStepLogs missing required step 'oasis_menu'.");
-    assert.ok(stepNames.has("oasis_soc_document"), "automationStepLogs missing required step 'oasis_soc_document'.");
-    assert.ok(stepNames.has("oasis_diagnosis_section"), "automationStepLogs missing required step 'oasis_diagnosis_section'.");
-    assert.ok(stepNames.has("oasis_diagnosis_snapshot"), "automationStepLogs missing required step 'oasis_diagnosis_snapshot'.");
-    assert.ok(stepNames.has("oasis_diagnosis_compare"), "automationStepLogs missing required step 'oasis_diagnosis_compare'.");
-    assert.ok(
-      qaSummarySignals.has("oasisMenuClicked:true"),
-      "new OASIS workflow validation applied: qa_summary must confirm oasisMenuClicked:true.",
-    );
-    assert.ok(
-      qaSummarySignals.has("oasisDocumentListDetected:true"),
-      "new OASIS workflow validation applied: qa_summary must confirm oasisDocumentListDetected:true.",
-    );
     console.info("legacy documentInventory validation removed");
-    console.info("new OASIS workflow validation applied", {
-      qaSummarySignals: [...qaSummarySignals].filter((entry) =>
-        /oasisMenuClicked:|oasisDocumentListDetected:|socDocumentClicked:|socDocumentFound:/i.test(entry),
-      ),
-    });
-
-    const codingExportIndex = lastStepIndex("coding_input_export");
-    assert.ok(codingExportIndex >= 0, "automationStepLogs missing required step 'coding_input_export'.");
-    const requiredPostCodingSequence = [
-      "oasis_menu",
-      "oasis_soc_document",
-      "oasis_diagnosis_section",
-      "oasis_diagnosis_snapshot",
-      "oasis_diagnosis_compare",
-    ];
-    for (const step of requiredPostCodingSequence) {
-      const stepIndex = lastStepIndex(step);
+    if (!finalQaSummaryLog) {
+      assert.fail("automationStepLogs missing final qa_summary log.");
+    }
+    assert.deepEqual(
+      [...actualQaSummaryFound].sort(),
+      [...expectedQaSummaryFound].sort(),
+      "final qa_summary found signals must mirror oasisQaSummary section statuses.",
+    );
+    assert.deepEqual(
+      [...actualQaSummaryMissing].sort(),
+      [...expectedQaSummaryMissing].sort(),
+      "final qa_summary missing signals must mirror oasisQaSummary blockers.",
+    );
+    assert.ok(
+      patientRun.oasisQaSummary.blockers.every((blocker) => finalQaSummaryLog.evidence.includes(blocker)),
+      "final qa_summary evidence must include each reported blocker.",
+    );
+    for (const step of exactWorkflowRequiredSteps) {
       assert.ok(
-        stepIndex > codingExportIndex,
-        `expected '${step}' to execute after 'coding_input_export' in post-extraction OASIS diagnosis verification path.`,
+        stepNames.has(step),
+        `automationStepLogs missing required exact-match extraction step '${step}'.`,
       );
     }
   } else {

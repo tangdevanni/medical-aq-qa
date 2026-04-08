@@ -28,20 +28,31 @@ describe("oasis demo harness", () => {
       expect(result.demoSummary.portal.loginStatus).toBe("SUCCESS");
       expect(result.demoSummary.portal.chartOpened).toBe(true);
       const stepNames = result.patientRun.automationStepLogs.map((log) => log.step);
-      const qaSummaryLogs = result.patientRun.automationStepLogs.filter((log) => log.step === "qa_summary");
-      const qaSummarySignals = new Set(qaSummaryLogs.flatMap((log) => [...log.found, ...log.evidence]));
+      const finalQaSummaryLog = result.patientRun.automationStepLogs.filter((log) => log.step === "qa_summary").at(-1);
+      const expectedQaSummarySignals = new Set(
+        result.patientRun.oasisQaSummary.sections.map((section) => `${section.key}:${section.status}`),
+      );
       expect(result.patientRun.automationStepLogs.map((log) => log.step)).toEqual(
         expect.arrayContaining([
           "login",
           "patient_search",
           "chart_open",
-          "oasis_menu",
+          "document_discovery",
+          "document_extraction",
+          "admission_document_extract",
+          "oasis_extract",
+          "poc_extract",
+          "visit_note_extract",
+          "technical_review_extract",
+          "diagnosis_code_extract",
+          "coding_input_export",
           "qa_summary",
         ]),
       );
-      expect(stepNames).toContain("oasis_menu");
-      expect(qaSummarySignals.has("oasisMenuClicked:true")).toBe(true);
-      expect(qaSummarySignals.has("oasisDocumentListDetected:true")).toBe(true);
+      expect(stepNames).not.toContain("oasis_menu");
+      expect(finalQaSummaryLog).toBeDefined();
+      expect(new Set(finalQaSummaryLog?.found ?? [])).toEqual(expectedQaSummarySignals);
+      expect(new Set(finalQaSummaryLog?.missing ?? [])).toEqual(new Set(result.patientRun.oasisQaSummary.blockers));
       expect(existsSync(result.demoSummaryJsonPath)).toBe(true);
       expect(existsSync(result.demoSummaryMarkdownPath)).toBe(true);
       expect(result.demoSummary.evidenceFiles.every((filePath) => existsSync(filePath))).toBe(true);

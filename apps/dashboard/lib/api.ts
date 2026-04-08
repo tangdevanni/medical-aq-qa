@@ -73,27 +73,19 @@ export function getPatientArtifacts(
 export async function uploadWorkbook(input: {
   file: File;
   billingPeriod: string;
+  subsidiaryId?: string;
 }): Promise<RunDetail> {
   const formData = new FormData();
   formData.append("workbook", input.file);
   if (input.billingPeriod.trim()) {
     formData.append("billingPeriod", input.billingPeriod.trim());
   }
+  if (input.subsidiaryId?.trim()) {
+    formData.append("subsidiaryId", input.subsidiaryId.trim());
+  }
 
   return fetchJson<RunDetail>("/runs/upload", {
     method: "POST",
     body: formData,
-  });
-}
-
-export async function parseRun(runId: string): Promise<RunDetail> {
-  return fetchJson<RunDetail>(`/runs/${encodeURIComponent(runId)}/parse`, {
-    method: "POST",
-  });
-}
-
-export async function startRun(runId: string): Promise<RunDetail> {
-  return fetchJson<RunDetail>(`/runs/${encodeURIComponent(runId)}/start`, {
-    method: "POST",
   });
 }

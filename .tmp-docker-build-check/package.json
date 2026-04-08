@@ -1,0 +1,30 @@
+{
+  "name": "medical-ai-qa",
+  "private": true,
+  "version": "0.1.0",
+  "packageManager": "pnpm@10.6.2",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "build": "pnpm -r build",
+    "typecheck": "pnpm -r typecheck",
+    "dev:api": "pnpm --filter @medical-ai-qa/api dev",
+    "dev:dashboard": "pnpm --filter @medical-ai-qa/dashboard dev",
+    "clean:dashboard": "pnpm --filter @medical-ai-qa/dashboard clean",
+    "rebuild:dashboard": "pnpm --filter @medical-ai-qa/dashboard rebuild",
+    "docker:demo:up": "docker compose -f docker-compose.demo.yml up --build",
+    "docker:demo:down": "docker compose -f docker-compose.demo.yml down",
+    "demo:oasis-qa": "pnpm --filter @medical-ai-qa/finale-workbook-intake demo:oasis-qa",
+    "verify:oasis-demo-live": "pnpm --filter @medical-ai-qa/finale-workbook-intake verify:oasis-demo-live",
+    "test:oasis-demo": "pnpm --filter @medical-ai-qa/finale-workbook-intake test:oasis-demo",
+    "dev:finale-workbook-intake": "pnpm --filter @medical-ai-qa/finale-workbook-intake dev",
+    "dev:orchestrator": "pnpm --filter @medical-ai-qa/orchestrator dev",
+    "dev:portal-worker": "pnpm --filter @medical-ai-qa/portal-worker dev"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.8.2"
+  }
+}

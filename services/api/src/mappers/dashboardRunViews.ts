@@ -1,52 +1,22 @@
 import type {
-  AutomationStepLog,
   PatientEpisodeWorkItem,
-  PatientRun,
-  PatientRunLog,
 } from "@medical-ai-qa/shared-types";
 import type { BatchRecord } from "../types/batchControlPlane";
 import {
-  toBatchSummaryResponse,
-  toBatchDetail,
-  toBatchListItem,
   toPatientArtifactsResponse,
-  toPatientRunDetail,
   toPatientRunLogResponse,
-  toPatientRunSummary,
 } from "./controlPlaneViews";
 
 type KnownArtifactContents = {
   codingInput: unknown | null;
   documentText: unknown | null;
-  oasisDiagnosisCompare: unknown | null;
-  oasisDiagnosisSnapshot: unknown | null;
-  oasisDiagnosisVerification: unknown | null;
-  oasisExecutionResult: unknown | null;
-  oasisInputActions: unknown | null;
-  oasisLockState: unknown | null;
-  oasisReadyDiagnosis: unknown | null;
-};
-
-type KnownArtifactPaths = {
-  codingInput: string;
-  documentText: string;
-  oasisDiagnosisCompare: string;
-  oasisDiagnosisSnapshot: string;
-  oasisDiagnosisVerification: string;
-  oasisExecutionResult: string;
-  oasisInputActions: string;
-  oasisLockState: string;
-  oasisReadyDiagnosis: string;
 };
 
 type PatientViewInput = {
-  batchId: string;
+  batch: BatchRecord;
   summary: BatchRecord["patientRuns"][number];
-  detail: PatientRun | null;
-  log: PatientRunLog | null;
   workItem: PatientEpisodeWorkItem | null;
   artifactContents: KnownArtifactContents;
-  artifactPaths: KnownArtifactPaths;
 };
 
 function asRecord(value: unknown): Record<string, unknown> | null {
@@ -63,513 +33,245 @@ function asString(value: unknown): string | null {
   return typeof value === "string" && value.trim().length > 0 ? value : null;
 }
 
-function asBoolean(value: unknown): boolean | null {
-  return typeof value === "boolean" ? value : null;
-}
-
-function asNumber(value: unknown): number | null {
-  return typeof value === "number" && Number.isFinite(value) ? value : null;
-}
-
-function getLogs(input: PatientViewInput): AutomationStepLog[] {
-  return input.detail?.automationStepLogs ?? input.log?.automationStepLogs ?? [];
-}
-
-function hasAnyStep(logs: AutomationStepLog[], steps: string[]): boolean {
-  return logs.some((log) => steps.includes(log.step));
-}
-
-function findLastStepLog(logs: AutomationStepLog[], steps: string[]): AutomationStepLog | null {
-  for (let index = logs.length - 1; index >= 0; index -= 1) {
-    const log = logs[index];
-    if (log && steps.includes(log.step)) {
-      return log;
-    }
-  }
-  return null;
-}
-
-function didStepSucceed(
-  logs: AutomationStepLog[],
-  steps: string[],
-  fallback: boolean,
-): boolean {
-  const log = findLastStepLog(logs, steps);
-  if (!log) {
-    return fallback;
-  }
-
-  if (log.missing.length > 0) {
-    return false;
-  }
-
-  return !/(skipped|failed|could not|not confirmed|not available|stopped because)/i.test(log.message);
-}
-
-function deriveLockState(input: PatientViewInput): "locked" | "unlocked" | "unknown" {
-  const lockStateArtifact = asRecord(input.artifactContents.oasisLockState);
-  const executionArtifact = asRecord(input.artifactContents.oasisExecutionResult);
-  const lockState = asString(lockStateArtifact?.oasisLockState) ?? asString(executionArtifact?.lockState);
-  if (lockState === "locked" || lockState === "unlocked") {
-    return lockState;
-  }
-  return "unknown";
-}
-
-function deriveMode(input: PatientViewInput): "verification_only" | "input_capable" {
-  const inputActions = asRecord(input.artifactContents.oasisInputActions);
-  const verification = asRecord(input.artifactContents.oasisDiagnosisVerification);
-  const execution = asRecord(input.artifactContents.oasisExecutionResult);
-  const lockStateArtifact = asRecord(input.artifactContents.oasisLockState);
-  const mode =
-    asString(inputActions?.mode) ??
-    asString(verification?.mode) ??
-    asString(execution?.mode);
-
-  if (mode === "input_capable") {
-    return "input_capable";
-  }
-  if (mode === "verification_only") {
-    return "verification_only";
-  }
-  if (asBoolean(lockStateArtifact?.inputEligible)) {
-    return "input_capable";
-  }
-  return "verification_only";
-}
-
-function deriveDiagnosisSummary(input: PatientViewInput) {
-  const readyDiagnosisArtifact = asRecord(input.artifactContents.oasisReadyDiagnosis);
-  const readyDiagnosis = readyDiagnosisArtifact ?? asRecord(input.artifactContents.codingInput);
-  const primaryDiagnosis = asRecord(readyDiagnosis?.primaryDiagnosis);
-  const otherDiagnoses = asArray(readyDiagnosis?.otherDiagnoses)
-    .map((diagnosis) => asRecord(diagnosis))
-    .filter((diagnosis): diagnosis is Record<string, unknown> => Boolean(diagnosis));
-  const primary = primaryDiagnosis
-    ? {
-        code: asString(primaryDiagnosis.code),
-        description: asString(primaryDiagnosis.description),
-        confidence: asString(primaryDiagnosis.confidence),
-      }
-    : null;
-  const other = otherDiagnoses.map((diagnosis) => ({
-    code: asString(diagnosis.code),
-    description: asString(diagnosis.description),
-    confidence: asString(diagnosis.confidence),
-  }));
+function countPatientsByStatus(batch: BatchRecord) {
+  const totalWorkItems = batch.parse.workItemCount || batch.patientRuns.length;
+  const totalCompleted = batch.patientRuns.filter((patientRun) => patientRun.processingStatus === "COMPLETE").length;
+  const totalBlocked = batch.patientRuns.filter((patientRun) => patientRun.processingStatus === "BLOCKED").length;
+  const totalFailed = batch.patientRuns.filter((patientRun) => patientRun.processingStatus === "FAILED").length;
+  const totalNeedsHumanReview = batch.patientRuns.filter(
+    (patientRun) => patientRun.processingStatus === "NEEDS_HUMAN_REVIEW",
+  ).length;
+  const currentlyRunningCount = batch.patientRuns.filter((patientRun) =>
+    ["MATCHING_PATIENT", "DISCOVERING_CHART", "COLLECTING_EVIDENCE", "RUNNING_QA"].includes(
+      patientRun.processingStatus,
+    ),
+  ).length;
+  const processedCount = totalCompleted + totalBlocked + totalFailed + totalNeedsHumanReview;
 
   return {
-    primaryDiagnosis: primary,
-    otherDiagnoses: other,
-    primaryDiagnosisCode: primary?.code ?? null,
-    primaryDiagnosisDescription: primary?.description ?? null,
-    otherDiagnosisCount: other.length,
-    hasReadyDiagnosisArtifact: Boolean(readyDiagnosisArtifact),
-    primaryDiagnosisPresent: Boolean(primary?.code || primary?.description),
-    otherDiagnosesAvailable: Array.isArray(readyDiagnosis?.otherDiagnoses),
+    totalWorkItems,
+    totalCompleted,
+    totalBlocked,
+    totalFailed,
+    totalNeedsHumanReview,
+    currentlyRunningCount,
+    percentComplete:
+      totalWorkItems === 0 ? 0 : Math.round((processedCount / totalWorkItems) * 100),
   };
 }
 
-function deriveEligibility(input: PatientViewInput): {
-  inputEligible: boolean;
-  verificationOnly: boolean;
-} {
-  const lockStateArtifact = asRecord(input.artifactContents.oasisLockState);
-  const mode = deriveMode(input);
+function toSubsidiarySummary(batch: BatchRecord) {
   return {
-    inputEligible:
-      asBoolean(lockStateArtifact?.inputEligible) ??
-      mode === "input_capable",
-    verificationOnly:
-      asBoolean(lockStateArtifact?.verificationOnly) ??
-      mode === "verification_only",
+    subsidiaryId: batch.subsidiary.id,
+    subsidiarySlug: batch.subsidiary.slug,
+    subsidiaryName: batch.subsidiary.name,
   };
 }
 
-function deriveDiagnosisDetectionPassed(input: PatientViewInput): boolean {
-  const diagnosisSummary = deriveDiagnosisSummary(input);
-  const lockState = deriveLockState(input);
-  const logs = getLogs(input);
-  const oasisSocOpened = didStepSucceed(logs, ["oasis_soc_document"], false);
-  const lockStateDetected = lockState === "locked" || lockState === "unlocked";
+function deriveCurrentExecutionStep(batch: BatchRecord): string {
+  if (batch.status === "PARSING") {
+    return "PARSING_WORKBOOK";
+  }
 
+  if (batch.status === "RUNNING") {
+    const activeRun = [...batch.patientRuns]
+      .filter((patientRun) =>
+        ["MATCHING_PATIENT", "DISCOVERING_CHART", "COLLECTING_EVIDENCE", "RUNNING_QA"].includes(
+          patientRun.processingStatus,
+        ),
+      )
+      .sort((left, right) => right.lastUpdatedAt.localeCompare(left.lastUpdatedAt))[0];
+    return activeRun?.executionStep ?? "RUNNING_BATCH";
+  }
+
+  if (batch.status === "READY") {
+    return "READY_TO_RUN";
+  }
+
+  if (batch.status === "FAILED") {
+    return "FAILED";
+  }
+
+  if (batch.status === "COMPLETED" || batch.status === "COMPLETED_WITH_EXCEPTIONS") {
+    return "COMPLETE";
+  }
+
+  return "CREATED";
+}
+
+function deriveBatchErrorSummary(batch: BatchRecord): string | null {
   return (
-    oasisSocOpened &&
-    lockStateDetected &&
-    diagnosisSummary.hasReadyDiagnosisArtifact &&
-    diagnosisSummary.primaryDiagnosisPresent &&
-    diagnosisSummary.otherDiagnosesAvailable
+    batch.run.lastError ??
+    batch.parse.lastError ??
+    batch.patientRuns.find((patientRun) => patientRun.errorSummary)?.errorSummary ??
+    null
   );
 }
 
-function deriveExecutionSummary(input: PatientViewInput): {
-  status: "executed" | "skipped" | "locked" | "not_attempted";
-  reasons: string[];
-} {
-  const execution = asRecord(input.artifactContents.oasisExecutionResult);
-  const warnings = asArray(execution?.warnings)
-    .map((value) => asString(value))
-    .filter((value): value is string => Boolean(value));
-  const lockState = deriveLockState(input);
-
-  if (asBoolean(execution?.executed)) {
-    return {
-      status: "executed",
-      reasons: warnings.filter((warning) => warning.startsWith("executionSkipReason:") === false),
-    };
-  }
-
-  if (warnings.includes("executionSkipped")) {
-    const reasons = warnings
-      .filter((warning) => warning.startsWith("executionSkipReason:"))
-      .map((warning) => warning.replace("executionSkipReason:", ""));
-    return {
-      status: reasons.includes("lock_state_locked") || lockState === "locked" ? "locked" : "skipped",
-      reasons,
-    };
-  }
-
-  if (lockState === "locked") {
-    return {
-      status: "locked",
-      reasons: ["lock_state_locked"],
-    };
-  }
-
-  return {
-    status: "not_attempted",
-    reasons: [],
-  };
+function deriveDaysLeftBeforeOasisDueDate(input: PatientViewInput): number | null {
+  return (
+    input.workItem?.timingMetadata?.daysLeftBeforeOasisDueDate ??
+    input.workItem?.timingMetadata?.daysLeft ??
+    null
+  );
 }
 
-function deriveComparisonSummary(input: PatientViewInput) {
-  const verification = asRecord(input.artifactContents.oasisDiagnosisVerification);
-  if (verification) {
-    const matchedCount = asArray(verification.matchedDiagnoses).length;
-    const missingCount = asArray(verification.missingInPortal).length;
-    const extraCount = asArray(verification.extraInPortal).length;
-    const mismatchedDescriptionCount = asArray(verification.mismatchedDescriptions).length;
-    const mismatchedCodeCount = asArray(verification.mismatchedCodes).length;
-    const primaryDiagnosisMatch = asBoolean(verification.primaryDiagnosisMatch) ?? false;
-    return {
-      source: "verification" as const,
-      primaryDiagnosisMatch,
-      matchedCount,
-      missingCount,
-      extraCount,
-      mismatchedDescriptionCount,
-      mismatchedCodeCount,
-      passed:
-        primaryDiagnosisMatch &&
-        missingCount === 0 &&
-        extraCount === 0 &&
-        mismatchedDescriptionCount === 0 &&
-        mismatchedCodeCount === 0,
-    };
+function normalizeDiagnosisEntry(value: unknown) {
+  const record = asRecord(value);
+  if (!record) {
+    return null;
   }
 
-  const compare = asRecord(input.artifactContents.oasisDiagnosisCompare);
-  const summary = asRecord(compare?.summary);
-  if (!summary) {
+  const code = asString(record.code);
+  const description = asString(record.description);
+  const confidence = asString(record.confidence);
+  if (!code && !description) {
     return null;
   }
 
   return {
-    source: "comparison" as const,
-    primaryDiagnosisMatch: null,
-    matchedCount: (asNumber(summary.exactMatchCount) ?? 0) + (asNumber(summary.normalizedMatchCount) ?? 0),
-    missingCount: asNumber(summary.missingOnPortalCount) ?? 0,
-    extraCount: asNumber(summary.missingInExtractionCount) ?? 0,
-    mismatchedDescriptionCount: asNumber(summary.mismatchCount) ?? 0,
-    mismatchedCodeCount: 0,
-    passed:
-      (asNumber(summary.missingOnPortalCount) ?? 0) === 0 &&
-      (asNumber(summary.missingInExtractionCount) ?? 0) === 0 &&
-      (asNumber(summary.mismatchCount) ?? 0) === 0,
+    code,
+    description,
+    confidence,
   };
 }
 
-function deriveBlockReason(input: PatientViewInput): string | null {
-  const candidates = [
-    input.summary.errorSummary,
-    input.detail?.errorSummary ?? null,
-    input.log?.errorSummary ?? null,
-    input.summary.matchResult.note ?? null,
-  ].filter((value): value is string => Boolean(value));
-
-  for (const candidate of candidates) {
-    if (candidate.includes("dashboard_context_not_established")) {
-      return candidate;
-    }
-  }
-
-  return candidates[0] ?? null;
-}
-
-function deriveWorkflowStatuses(input: PatientViewInput) {
-  const logs = getLogs(input);
-  const lockState = deriveLockState(input);
-  const mode = deriveMode(input);
-
-  const statuses = [
-    {
-      key: "uploaded",
-      label: "Uploaded",
-      status: "complete",
-    },
-    {
-      key: "workbook_parsed",
-      label: "Workbook parsed",
-      status: "complete",
-    },
-    {
-      key: "run_started",
-      label: "Run started",
-      status: hasAnyStep(logs, ["run_started", "playwright_session", "login"]) ? "complete" : "pending",
-    },
-    {
-      key: "dashboard_ready",
-      label: "Dashboard ready",
-      status: didStepSucceed(logs, ["dashboard_ready"], false) ? "complete" : "pending",
-    },
-    {
-      key: "patient_search_started",
-      label: "Patient search started",
-      status: hasAnyStep(logs, ["patient_search_start"]) ? "complete" : "pending",
-    },
-    {
-      key: "chart_opened",
-      label: "Chart opened",
-      status: didStepSucceed(logs, ["chart_open"], false) ? "complete" : "pending",
-    },
-    {
-      key: "file_uploads_opened",
-      label: "File uploads opened",
-      status: didStepSucceed(logs, ["file_uploads_open"], false) ? "complete" : "pending",
-    },
-    {
-      key: "source_pdf_captured",
-      label: "Source PDF captured",
-      status:
-        input.summary.artifactCount > 0 ||
-        (input.detail?.artifacts.length ?? 0) > 0
-          ? "complete"
-          : "pending",
-    },
-    {
-      key: "ocr_complete",
-      label: "OCR complete",
-      status:
-        input.artifactContents.documentText ||
-        hasAnyStep(logs, ["document_extraction", "document_text_export"])
-          ? "complete"
-          : "pending",
-    },
-    {
-      key: "diagnosis_coding_complete",
-      label: "Diagnosis/coding complete",
-      status:
-        input.artifactContents.codingInput ||
-        hasAnyStep(logs, ["diagnosis_code_extract", "coding_input_export"])
-          ? "complete"
-          : "pending",
-    },
-    {
-      key: "oasis_soc_opened",
-      label: "OASIS SOC opened",
-      status: didStepSucceed(logs, ["oasis_soc_document"], false) ? "complete" : "pending",
-    },
-    {
-      key: "lock_state_detected",
-      label: "Lock state detected",
-      status:
-        input.artifactContents.oasisLockState ||
-        hasAnyStep(logs, ["oasis_lock_state_detected", "oasis_lock_state_export"])
-          ? "complete"
-          : "pending",
-    },
-    {
-      key: "diagnosis_snapshot_captured",
-      label: "Diagnosis snapshot captured",
-      status:
-        input.artifactContents.oasisDiagnosisSnapshot ||
-        hasAnyStep(logs, ["oasis_diagnosis_snapshot", "oasis_diagnosis_snapshot_export"])
-          ? "complete"
-          : "pending",
-    },
-    {
-      key: "diagnosis_compare_complete",
-      label: "Diagnosis compare complete",
-      status:
-        input.artifactContents.oasisDiagnosisCompare ||
-        hasAnyStep(logs, ["oasis_diagnosis_compare"])
-          ? "complete"
-          : "pending",
-    },
-    {
-      key: "verification_complete",
-      label: "Verification complete",
-      status:
-        input.artifactContents.oasisDiagnosisVerification ||
-        hasAnyStep(logs, ["oasis_diagnosis_verification"])
-          ? "complete"
-          : "pending",
-    },
-    {
-      key: "input_capable",
-      label: "Input-capable",
-      status: mode === "input_capable" && lockState === "unlocked" ? "complete" : "pending",
-    },
-    {
-      key: "blocked",
-      label: "Blocked",
-      status: ["BLOCKED", "FAILED", "NEEDS_HUMAN_REVIEW"].includes(input.summary.processingStatus)
-        ? "blocked"
-        : "pending",
-    },
-  ].map((item) => ({
-    ...item,
-    status:
-      ["BLOCKED", "FAILED", "NEEDS_HUMAN_REVIEW"].includes(input.summary.processingStatus) &&
-      item.status === "pending"
-        ? "blocked"
-        : item.status,
-  }));
-
-  const current =
-    input.summary.processingStatus === "FAILED"
-      ? "Failed"
-      : input.summary.processingStatus === "BLOCKED"
-        ? "Blocked"
-        : input.summary.processingStatus === "NEEDS_HUMAN_REVIEW"
-          ? "Needs human review"
-          : statuses.find((status) => status.status === "pending")?.label ??
-            statuses.at(-1)?.label ??
-            "Complete";
-
-  const lastEvidence = logs.slice(-5).map((log) => ({
-    timestamp: log.timestamp,
-    step: log.step,
-    message: log.message,
-    evidence: log.evidence,
-    found: log.found,
-    missing: log.missing,
-  }));
+function deriveDiagnosisSummary(input: PatientViewInput) {
+  const codingInput = asRecord(input.artifactContents.codingInput);
+  const primaryDiagnosis = normalizeDiagnosisEntry(codingInput?.primaryDiagnosis);
+  const otherDiagnoses = asArray(codingInput?.otherDiagnoses)
+    .map((diagnosis) => normalizeDiagnosisEntry(diagnosis))
+    .filter((diagnosis): diagnosis is NonNullable<typeof diagnosis> => diagnosis !== null);
 
   return {
-    workflowCurrentStep: current,
-    workflowStatuses: statuses,
-    stepEvidenceSummary: lastEvidence,
-    stepLogCount: logs.length,
+    primaryDiagnosis,
+    otherDiagnoses,
   };
+}
+
+function derivePatientStatusSummary(input: PatientViewInput, diagnosisCount: number): string {
+  switch (input.summary.processingStatus) {
+    case "COMPLETE":
+      return diagnosisCount > 0
+        ? "Diagnosis reference ready"
+        : "Completed without extracted diagnoses";
+    case "BLOCKED":
+      return input.summary.errorSummary ?? input.summary.matchResult.note ?? "Blocked during read-only extraction";
+    case "FAILED":
+      return input.summary.errorSummary ?? "Read-only extraction failed";
+    case "NEEDS_HUMAN_REVIEW":
+      return input.summary.errorSummary ?? "Needs manual diagnosis review";
+    default:
+      return "Read-only extraction in progress";
+  }
+}
+
+function sortPatientSummaries(patients: ReturnType<typeof toDashboardPatientSummary>[]) {
+  return [...patients].sort((left, right) => {
+    const leftDays = left.daysLeftBeforeOasisDueDate ?? Number.MAX_SAFE_INTEGER;
+    const rightDays = right.daysLeftBeforeOasisDueDate ?? Number.MAX_SAFE_INTEGER;
+    if (leftDays !== rightDays) {
+      return leftDays - rightDays;
+    }
+
+    return left.patientName.localeCompare(right.patientName);
+  });
 }
 
 export function toDashboardRunListItem(batch: BatchRecord) {
+  const counts = countPatientsByStatus(batch);
+
   return {
-    ...toBatchListItem(batch),
-    eligibleWorkItemCount: batch.parse.eligibleWorkItemCount,
+    ...toSubsidiarySummary(batch),
+    id: batch.id,
+    billingPeriod: batch.billingPeriod,
+    status: batch.status,
+    currentExecutionStep: deriveCurrentExecutionStep(batch),
+    percentComplete: counts.percentComplete,
+    currentlyRunningCount: counts.currentlyRunningCount,
+    totalWorkItems: counts.totalWorkItems,
+    totalCompleted: counts.totalCompleted,
+    totalBlocked: counts.totalBlocked,
+    totalFailed: counts.totalFailed,
+    totalNeedsHumanReview: counts.totalNeedsHumanReview,
+    createdAt: batch.createdAt,
+    lastUpdatedAt: batch.updatedAt,
+    errorSummary: deriveBatchErrorSummary(batch),
+    runMode: batch.runMode,
+    rerunEnabled: batch.schedule.rerunEnabled && batch.schedule.active,
+    lastRunAt: batch.schedule.lastRunAt,
+    nextScheduledRunAt: batch.schedule.nextScheduledRunAt,
   };
 }
 
 export function toDashboardPatientSummary(input: PatientViewInput) {
-  const summary = toPatientRunSummary(input.batchId, input.summary);
   const diagnosisSummary = deriveDiagnosisSummary(input);
-  const comparisonSummary = deriveComparisonSummary(input);
-  const workflow = deriveWorkflowStatuses(input);
-  const lockState = deriveLockState(input);
-  const mode = deriveMode(input);
-  const eligibility = deriveEligibility(input);
-  const diagnosisDetectionPassed = deriveDiagnosisDetectionPassed(input);
-  const executionSummary = deriveExecutionSummary(input);
-  const blockReason = deriveBlockReason(input);
+  const diagnosisCount =
+    (diagnosisSummary.primaryDiagnosis ? 1 : 0) + diagnosisSummary.otherDiagnoses.length;
 
   return {
-    ...summary,
-    workflowCurrentStep: workflow.workflowCurrentStep,
-    workflowStatuses: workflow.workflowStatuses,
-    stepEvidenceSummary: workflow.stepEvidenceSummary,
-    stepLogCount: workflow.stepLogCount,
-    lockState,
-    mode,
-    inputEligible: eligibility.inputEligible,
-    verificationOnly: eligibility.verificationOnly,
-    diagnosisDetectionPassed,
+    ...toSubsidiarySummary(input.batch),
+    runId: input.summary.runId,
+    batchId: input.batch.id,
+    subsidiaryId: input.summary.subsidiaryId ?? input.batch.subsidiary.id,
+    workItemId: input.summary.workItemId,
+    patientName: input.summary.patientName,
+    status: input.summary.processingStatus,
+    executionStep: input.summary.executionStep,
+    percentComplete: input.summary.progressPercent,
+    startedAt: input.summary.startedAt,
+    completedAt: input.summary.completedAt,
+    lastUpdatedAt: input.summary.lastUpdatedAt,
+    errorSummary: input.summary.errorSummary,
+    retryEligible: input.summary.retryEligible,
+    attemptCount: input.summary.attemptCount,
+    resultBundlePath: input.summary.resultBundlePath,
+    logPath: input.summary.logPath,
+    batchStatusSummary: derivePatientStatusSummary(input, diagnosisCount),
+    daysLeftBeforeOasisDueDate: deriveDaysLeftBeforeOasisDueDate(input),
     primaryDiagnosis: diagnosisSummary.primaryDiagnosis,
     otherDiagnoses: diagnosisSummary.otherDiagnoses,
-    primaryDiagnosisCode: diagnosisSummary.primaryDiagnosisCode,
-    primaryDiagnosisDescription: diagnosisSummary.primaryDiagnosisDescription,
-    otherDiagnosisCount: diagnosisSummary.otherDiagnosisCount,
-    comparisonSummary,
-    executionSummary,
-    blockReason,
+    runMode: input.batch.runMode,
+    rerunEnabled: input.batch.schedule.rerunEnabled && input.batch.schedule.active,
+    lastRunAt: input.batch.schedule.lastRunAt,
+    nextScheduledRunAt: input.batch.schedule.nextScheduledRunAt,
   };
 }
 
 export function toDashboardRunDetail(input: {
   batch: BatchRecord;
-  workItems: PatientEpisodeWorkItem[];
   patients: ReturnType<typeof toDashboardPatientSummary>[];
 }) {
-  const detail = toBatchDetail(input.batch);
+  const counts = countPatientsByStatus(input.batch);
+  const patients = sortPatientSummaries(input.patients);
 
   return {
-    ...detail,
-    eligibleWorkItemCount: input.batch.parse.eligibleWorkItemCount,
-    diagnosisDetectionPassedCount: input.patients.filter((patient) => patient.diagnosisDetectionPassed).length,
-    runLifecycle: [
-      {
-        key: "uploaded",
-        label: "Uploaded",
-        status: "complete" as const,
-      },
-      {
-        key: "parsed",
-        label: "Parsed",
-        status: input.batch.parse.completedAt ? "complete" as const : "pending" as const,
-      },
-      {
-        key: "run_started",
-        label: "Run started",
-        status: input.batch.run.requestedAt ? "complete" as const : "pending" as const,
-      },
-      {
-        key: "blocked",
-        label: "Blocked",
-        status: input.batch.patientRuns.some((patientRun) =>
-          ["BLOCKED", "FAILED", "NEEDS_HUMAN_REVIEW"].includes(patientRun.processingStatus),
-        )
-          ? "blocked" as const
-          : "pending" as const,
-      },
-    ],
-    parsePreview: {
-      detectedSources: input.batch.parse.sourceDetections,
-      sheetSummaries: input.batch.parse.sheetSummaries,
-      previewRows: input.workItems.map((workItem) => ({
-        workItemId: workItem.id,
-        patientName: workItem.patientIdentity.displayName,
-        billingPeriod: workItem.episodeContext.billingPeriod,
-        workflowTypes: workItem.workflowTypes,
-        sourceSheets: workItem.sourceSheets,
-        automationEligible: true,
-      })),
+    ...toDashboardRunListItem(input.batch),
+    sourceWorkbookName: input.batch.sourceWorkbook.originalFileName,
+    uploadedAt: input.batch.sourceWorkbook.uploadedAt,
+    canRetryBlockedPatients: input.batch.patientRuns.some((patientRun) => patientRun.retryEligible),
+    canDeactivate: input.batch.schedule.active,
+    patientStatusSummary: {
+      ready: counts.totalCompleted,
+      blocked: counts.totalBlocked,
+      failed: counts.totalFailed,
+      needsManualReview: counts.totalNeedsHumanReview,
+      inProgress: counts.currentlyRunningCount,
     },
-    patients: input.patients,
+    patients,
   };
 }
 
 export function toDashboardPatientDetail(input: PatientViewInput) {
-  const detail = toPatientRunDetail(input.batchId, input.summary, input.detail);
   const summary = toDashboardPatientSummary(input);
-  const logs = getLogs(input);
 
   return {
-    ...detail,
     ...summary,
-    workItemSnapshot: input.workItem ?? detail.workItemSnapshot,
-    automationStepLogs: logs,
-    artifactPaths: input.artifactPaths,
-    artifactContents: input.artifactContents,
+    workbookContext: {
+      billingPeriod: input.workItem?.episodeContext.billingPeriod ?? null,
+      workflowTypes: input.workItem?.workflowTypes ?? [],
+      rawDaysLeftValues: input.workItem?.timingMetadata?.rawDaysLeftValues ?? [],
+    },
   };
 }
 
@@ -578,29 +280,52 @@ export function toDashboardPatientStatus(input: PatientViewInput) {
   return {
     runId: summary.runId,
     batchId: summary.batchId,
+    subsidiaryId: summary.subsidiaryId,
+    subsidiarySlug: summary.subsidiarySlug,
+    subsidiaryName: summary.subsidiaryName,
     patientId: summary.workItemId,
     patientName: summary.patientName,
     status: summary.status,
     executionStep: summary.executionStep,
-    workflowCurrentStep: summary.workflowCurrentStep,
-    workflowStatuses: summary.workflowStatuses,
-    lockState: summary.lockState,
-    mode: summary.mode,
-    inputEligible: summary.inputEligible,
-    verificationOnly: summary.verificationOnly,
-    diagnosisDetectionPassed: summary.diagnosisDetectionPassed,
+    batchStatusSummary: summary.batchStatusSummary,
     primaryDiagnosis: summary.primaryDiagnosis,
     otherDiagnoses: summary.otherDiagnoses,
-    comparisonSummary: summary.comparisonSummary,
-    executionSummary: summary.executionSummary,
-    blockReason: summary.blockReason,
+    runMode: summary.runMode,
+    rerunEnabled: summary.rerunEnabled,
+    lastRunAt: summary.lastRunAt,
+    nextScheduledRunAt: summary.nextScheduledRunAt,
     lastUpdatedAt: summary.lastUpdatedAt,
   };
 }
 
+export function toBatchSummaryResponse(batch: BatchRecord) {
+  const counts = countPatientsByStatus(batch);
+
+  return {
+    ...toSubsidiarySummary(batch),
+    batchId: batch.id,
+    currentBatchStatus: batch.status,
+    currentExecutionStep: deriveCurrentExecutionStep(batch),
+    totalWorkItems: counts.totalWorkItems,
+    totalCompleted: counts.totalCompleted,
+    totalBlocked: counts.totalBlocked,
+    totalFailed: counts.totalFailed,
+    totalNeedsHumanReview: counts.totalNeedsHumanReview,
+    percentComplete: counts.percentComplete,
+    currentlyRunningCount: counts.currentlyRunningCount,
+    createdAt: batch.createdAt,
+    startedAt: batch.run.requestedAt ?? batch.parse.requestedAt ?? batch.createdAt,
+    completedAt: batch.run.completedAt,
+    lastUpdatedAt: batch.updatedAt,
+    errorSummary: deriveBatchErrorSummary(batch),
+    runMode: batch.runMode,
+    rerunEnabled: batch.schedule.rerunEnabled && batch.schedule.active,
+    lastRunAt: batch.schedule.lastRunAt,
+    nextScheduledRunAt: batch.schedule.nextScheduledRunAt,
+  };
+}
+
 export {
-  toBatchDetail,
-  toBatchSummaryResponse,
   toPatientArtifactsResponse,
   toPatientRunLogResponse,
 };

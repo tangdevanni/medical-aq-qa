@@ -1,0 +1,42 @@
+{
+  "family": "medical-ai-qa-api-task",
+  "requiresCompatibilities": ["FARGATE"],
+  "networkMode": "awsvpc",
+  "cpu": "1024",
+  "memory": "3072",
+  "executionRoleArn": "arn:aws:iam::824756205990:role/ecsTaskExecutionRole",
+  "containerDefinitions": [
+    {
+      "name": "api",
+      "image": "824756205990.dkr.ecr.us-east-2.amazonaws.com/medical-ai-qa-api:prod",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 3000,
+          "protocol": "tcp"
+        }
+      ],
+      "environment": [
+        { "name": "NODE_ENV", "value": "production" },
+        { "name": "API_PORT", "value": "3000" },
+        { "name": "API_HOST", "value": "0.0.0.0" },
+        { "name": "API_STORAGE_ROOT", "value": "/data/control-plane" },
+        { "name": "API_LOG_LEVEL", "value": "info" },
+        {
+          "name": "API_CORS_ORIGIN",
+          "value": "http://medical-ai-qa-dashboard-alb-1654314796.us-east-2.elb.amazonaws.com"
+        },
+        { "name": "OASIS_WRITE_ENABLED", "value": "false" }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/medical-ai-qa-api",
+          "awslogs-region": "us-east-2",
+          "awslogs-stream-prefix": "ecs"
+        }
+      }
+    }
+  ],
+  "volumes": []
+}

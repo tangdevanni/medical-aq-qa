@@ -4,26 +4,17 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { getRun } from "../../../lib/api";
-import {
-  batchStatusClass,
-  diagnosisDetectionClass,
-  executionStatusClass,
-  lockStateClass,
-  modeClass,
-  qaStatusClass,
-  workflowStatusClass,
-} from "../../../lib/qa";
-import type { RunDetail } from "../../../lib/types";
+import { batchStatusClass, formatDaysLeft } from "../../../lib/qa";
+import type { DiagnosisEntry, RunDetail } from "../../../lib/types";
 
-function renderDiagnosisLabel(input: {
-  code: string | null;
-  description: string | null;
-  confidence?: string | null;
-}): string {
+function renderDiagnosisLabel(input: DiagnosisEntry): string {
   const code = input.code?.trim() || "No code";
   const description = input.description?.trim() || "No description";
-  const confidence = input.confidence?.trim();
-  return confidence ? `${code} - ${description} (${confidence})` : `${code} - ${description}`;
+  return `${code} - ${description}`;
+}
+
+function formatTimestamp(value: string | null): string {
+  return value ? new Date(value).toLocaleString() : "Not available";
 }
 
 export default function RunDetailPage() {
@@ -47,7 +38,7 @@ export default function RunDetailPage() {
         if (!active) {
           return;
         }
-        setError(nextError instanceof Error ? nextError.message : "Failed to load run.");
+        setError(nextError instanceof Error ? nextError.message : "Failed to load batch.");
       }
     }
 
@@ -64,10 +55,15 @@ export default function RunDetailPage() {
 
   const metrics = useMemo(
     () => ({
-      verificationOnly: run?.patients.filter((patient) => patient.mode === "verification_only").length ?? 0,
-      inputCapable: run?.patients.filter((patient) => patient.mode === "input_capable").length ?? 0,
-      unlocked: run?.patients.filter((patient) => patient.lockState === "unlocked").length ?? 0,
-      diagnosisDetectionPassed: run?.patients.filter((patient) => patient.diagnosisDetectionPassed).length ?? 0,
+      dueNowOrOverdue:
+        run?.patients.filter((patient) => (patient.daysLeftBeforeOasisDueDate ?? Number.MAX_SAFE_INTEGER) <= 0)
+          .length ?? 0,
+      missingDaysLeft:
+        run?.patients.filter((patient) => patient.daysLeftBeforeOasisDueDate === null).length ?? 0,
+      withPrimaryDiagnosis:
+        run?.patients.filter((patient) => patient.primaryDiagnosis !== null).length ?? 0,
+      withOtherDiagnoses:
+        run?.patients.filter((patient) => patient.otherDiagnoses.length > 0).length ?? 0,
     }),
     [run],
   );
@@ -77,95 +73,74 @@ export default function RunDetailPage() {
       <div className="page-header">
         <div>
           <Link className="link" href="/runs">
-            Back to runs
+            Back to batches
           </Link>
           <h1 className="page-title">{runId}</h1>
           <p className="page-subtitle">
-            Live view of patient-by-patient QA execution, lock-state gating, verification, and planned OASIS actions.
+            Read-only patient diagnosis reference for QA staff.
           </p>
+          {run ? <p className="muted">Active subsidiary: {run.subsidiaryName}</p> : null}
         </div>
         <div className="actions">
           <Link className="button secondary" href="/runs/new">
-            New Run
+            Upload Workbook
           </Link>
         </div>
       </div>
 
       {error ? <div className="badge danger">{error}</div> : null}
-      {!run ? <div className="panel muted">Loading run...</div> : null}
+      {!run ? <div className="panel muted">Loading batch...</div> : null}
 
       {run ? (
         <>
           <section className="grid four">
             <div className="panel">
-              <div className="metric-label">Run status</div>
+              <div className="metric-label">Batch Status</div>
               <div className="metric-value">
                 <span className={batchStatusClass(run.status)}>{run.status}</span>
               </div>
-              <div className="muted">{run.currentExecutionStep}</div>
+              <div className="muted">{run.totalWorkItems} patients</div>
             </div>
             <div className="panel">
-              <div className="metric-label">Patients</div>
-              <div className="metric-value">{run.totalWorkItems}</div>
-              <div className="muted">{run.totalCompleted} completed</div>
+              <div className="metric-label">Days Left Attention</div>
+              <div className="metric-value">{metrics.dueNowOrOverdue}</div>
+              <div className="muted">{metrics.missingDaysLeft} patients missing workbook timing.</div>
             </div>
             <div className="panel">
-              <div className="metric-label">Diagnosis Detection</div>
-              <div className="metric-value">{run.diagnosisDetectionPassedCount}</div>
-              <div className="muted">{run.totalWorkItems - run.diagnosisDetectionPassedCount} pending or incomplete</div>
+              <div className="metric-label">Primary Diagnoses</div>
+              <div className="metric-value">{metrics.withPrimaryDiagnosis}</div>
+              <div className="muted">Patients with a primary diagnosis extracted.</div>
             </div>
             <div className="panel">
-              <div className="metric-label">Lock / Mode</div>
-              <div className="metric-value">{metrics.unlocked}</div>
+              <div className="metric-label">Other Diagnoses</div>
+              <div className="metric-value">{metrics.withOtherDiagnoses}</div>
+              <div className="muted">Patients with visible secondary diagnoses.</div>
+            </div>
+          </section>
+
+          <section className="grid four">
+            <div className="panel">
+              <div className="metric-label">Run Mode</div>
+              <div className="metric-value compact">{run.runMode.replace("_", " ")}</div>
+            </div>
+            <div className="panel">
+              <div className="metric-label">Last Run</div>
+              <div className="metric-value compact">{formatTimestamp(run.lastRunAt)}</div>
+            </div>
+            <div className="panel">
+              <div className="metric-label">Next Scheduled</div>
+              <div className="metric-value compact">
+                {run.rerunEnabled ? formatTimestamp(run.nextScheduledRunAt) : "Disabled"}
+              </div>
+            </div>
+            <div className="panel">
+              <div className="metric-label">Read-only Summary</div>
+              <div className="metric-value compact">
+                {run.patientStatusSummary.ready} ready
+              </div>
               <div className="muted">
-                {metrics.verificationOnly} verification-only, {metrics.inputCapable} input-capable
+                {run.patientStatusSummary.blocked + run.patientStatusSummary.failed + run.patientStatusSummary.needsManualReview} patients need attention
               </div>
-            </div>
-          </section>
-
-          <section className="panel stack">
-            <div>
-              <h2>Run Lifecycle</h2>
-              <p className="page-subtitle">
-                High-signal run checkpoints surfaced directly from the shared backend runner state.
-              </p>
-            </div>
-            <div className="section-status-grid">
-              {run.runLifecycle.map((status) => (
-                <div className="section-pill" key={status.key}>
-                  <span>{status.label}</span>
-                  <span className={workflowStatusClass(status.status)}>{status.status}</span>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          <section className="panel stack">
-            <div className="page-header">
-              <div>
-                <h2>Workbook Detection</h2>
-                <p className="page-subtitle">
-                  Parsed worksheet signatures retained with the run for demo traceability.
-                </p>
-              </div>
-            </div>
-
-            <div className="grid three">
-              {run.parsePreview.detectedSources.map((source) => (
-                <article className="signal-card" key={source.sourceType}>
-                  <div className="badge-row">
-                    <span className={workflowStatusClass(source.detectionStatus === "detected" ? "complete" : "blocked")}>
-                      {source.detectionStatus === "detected" ? "Detected" : "Missing"}
-                    </span>
-                    <span className="badge">{source.sourceType}</span>
-                  </div>
-                  <h3>{source.detectedSheetName ?? "No matching sheet"}</h3>
-                  <div className="signal-meta">
-                    <span>Header matches: {source.headerMatchCount}</span>
-                    <span>Rows: {source.extractedRowCount}</span>
-                  </div>
-                </article>
-              ))}
             </div>
           </section>
 
@@ -174,7 +149,7 @@ export default function RunDetailPage() {
               <div>
                 <h2>Patients</h2>
                 <p className="page-subtitle">
-                  Current workflow step, QA status, lock state, diagnosis outputs, and comparison results.
+                  Patient name, workbook timing, diagnosis reference data, and read-only run timestamps.
                 </p>
               </div>
             </div>
@@ -182,15 +157,13 @@ export default function RunDetailPage() {
             <table className="table">
               <thead>
                 <tr>
-                  <th>Patient</th>
-                  <th>QA step</th>
-                  <th>Diagnosis detection</th>
-                  <th>Execution</th>
-                  <th>Lock</th>
-                  <th>Mode</th>
-                  <th>Primary Dx</th>
+                  <th>Patient Name</th>
+                  <th>Days Left</th>
+                  <th>Primary Diagnosis</th>
                   <th>Other Diagnoses</th>
-                  <th>Comparison</th>
+                  <th>Last Run</th>
+                  <th>Next Scheduled</th>
+                  <th>Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -200,41 +173,15 @@ export default function RunDetailPage() {
                       <Link className="link" href={`/runs/${run.id}/patients/${patient.workItemId}`}>
                         {patient.patientName}
                       </Link>
-                      <div className="muted">{patient.workflowCurrentStep}</div>
-                      {patient.blockReason ? <div className="muted">{patient.blockReason}</div> : null}
+                      <div className="muted">{patient.subsidiaryName}</div>
                     </td>
+                    <td>{formatDaysLeft(patient.daysLeftBeforeOasisDueDate)}</td>
                     <td>
-                      {patient.executionStep}
-                      <div className="muted">{patient.stepLogCount} step log(s)</div>
-                    </td>
-                    <td>
-                      <span className={diagnosisDetectionClass(patient.diagnosisDetectionPassed)}>
-                        {patient.diagnosisDetectionPassed ? "PASS" : "Pending"}
-                      </span>
-                      <div className="muted">
-                        {patient.diagnosisDetectionPassed
-                          ? "SOC opened, lock state known, diagnoses stored"
-                          : "Waiting on SOC, lock state, or stored diagnoses"}
-                      </div>
-                    </td>
-                    <td>
-                      <span className={executionStatusClass(patient.executionSummary.status)}>
-                        {patient.executionSummary.status}
-                      </span>
-                      <div className="muted">
-                        {patient.executionSummary.reasons.join(", ") || patient.status}
-                      </div>
-                    </td>
-                    <td>
-                      <span className={lockStateClass(patient.lockState)}>{patient.lockState}</span>
-                    </td>
-                    <td>
-                      <span className={modeClass(patient.mode)}>{patient.mode}</span>
-                    </td>
-                    <td>
-                      {patient.primaryDiagnosis
-                        ? renderDiagnosisLabel(patient.primaryDiagnosis)
-                        : "No primary diagnosis selected"}
+                      {patient.primaryDiagnosis ? (
+                        renderDiagnosisLabel(patient.primaryDiagnosis)
+                      ) : (
+                        <span className="muted">No primary diagnosis</span>
+                      )}
                     </td>
                     <td>
                       {patient.otherDiagnoses.length > 0 ? (
@@ -244,23 +191,12 @@ export default function RunDetailPage() {
                           </div>
                         ))
                       ) : (
-                        <span className="muted">No additional diagnoses extracted</span>
+                        <span className="muted">No other diagnoses</span>
                       )}
                     </td>
-                    <td>
-                      {patient.comparisonSummary ? (
-                        <>
-                          <span className={workflowStatusClass(patient.comparisonSummary.passed ? "complete" : "blocked")}>
-                            {patient.comparisonSummary.passed ? "Passed" : "Needs review"}
-                          </span>
-                          <div className="muted">
-                            Missing {patient.comparisonSummary.missingCount}, extra {patient.comparisonSummary.extraCount}
-                          </div>
-                        </>
-                      ) : (
-                        <span className="badge">Pending</span>
-                      )}
-                    </td>
+                    <td>{formatTimestamp(patient.lastRunAt)}</td>
+                    <td>{patient.rerunEnabled ? formatTimestamp(patient.nextScheduledRunAt) : "Disabled"}</td>
+                    <td>{patient.batchStatusSummary}</td>
                   </tr>
                 ))}
               </tbody>
