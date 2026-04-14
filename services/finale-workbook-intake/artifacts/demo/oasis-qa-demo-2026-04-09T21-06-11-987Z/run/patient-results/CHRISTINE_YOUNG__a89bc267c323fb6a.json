@@ -1,0 +1,1938 @@
+{
+  "runId": "batch-2026-04-09T21-06-12-107Z-CHRISTINE_YOUNG__a89bc267c323fb6a",
+  "batchId": "batch-2026-04-09T21-06-12-107Z",
+  "subsidiaryId": "default",
+  "workItemId": "CHRISTINE_YOUNG__a89bc267c323fb6a",
+  "patientName": "Christine Young",
+  "processingStatus": "BLOCKED",
+  "executionStep": "BLOCKED",
+  "progressPercent": 100,
+  "startedAt": "2026-04-09T21:06:21.731Z",
+  "completedAt": "2026-04-09T21:09:19.415Z",
+  "lastUpdatedAt": "2026-04-09T21:09:19.389Z",
+  "matchResult": {
+    "status": "EXACT",
+    "searchQuery": "young, christine",
+    "portalPatientId": null,
+    "portalDisplayName": "YOUNG, CHRISTINE MR# 84 Active SOC: 2/27/2026 / DOB: 5/30/1944 LOS: 42 days Medicare 16327 East Montrose Drive Fountain Hills AZ 85268 (480)388-5075 Last Visit Confirmed by PT : 03/16/2026 (24 days ago)",
+    "candidateNames": [
+      "YOUNG, CHRISTINE MR# 84 Active SOC: 2/27/2026 / DOB: 5/30/1944 LOS: 42 days Medicare 16327 East Montrose Drive Fountain Hills AZ 85268 (480)388-5075 Last Visit Confirmed by PT : 03/16/2026 (24 days ago)"
+    ],
+    "note": null
+  },
+  "artifacts": [
+    {
+      "artifactType": "OASIS",
+      "status": "MISSING",
+      "portalLabel": "OASIS documents page",
+      "locatorUsed": null,
+      "discoveredAt": "2026-04-09T21:09:04.047Z",
+      "downloadPath": null,
+      "extractedFields": {
+        "oasisMenuClicked": "false",
+        "oasisDocumentListDetected": "false",
+        "socDocumentFound": "false",
+        "socDocumentClicked": "false",
+        "matchedSocRowText": null,
+        "matchedSocAnchorText": null,
+        "diagnosisSectionOpened": "false",
+        "diagnosisListFound": "false",
+        "diagnosisNavigationMethod": null,
+        "diagnosisListSamples": "",
+        "diagnosisSnapshotRowCount": "0",
+        "oasisReadyDiagnosisPath": null,
+        "primaryDiagnosisSelected": "none",
+        "otherDiagnosisCount": "0",
+        "codeConfidenceSummary": "high:0 medium:0 low:0",
+        "oasisLockState": null,
+        "unlockControlVisible": "false",
+        "unlockControlText": null,
+        "fieldsEditable": "false",
+        "verificationOnly": "true",
+        "inputEligible": "false",
+        "fileUploadsAccessible": "true",
+        "fileUploadsUrl": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/file-uploads",
+        "visibleUploadedDocuments": "📄 christine young referral.pdf | 📄 Young, Christine - HHO 03062026.jpg | 📄 christine young referral.pdf 📝 ✏️ 🗑️ 🔗 | 📄 Young, Christine - HHO 03062026.jpg 📝 ✏️ 🗑️ 🔗",
+        "admissionOrderAccessible": "true",
+        "admissionOrderTitle": "📄 christine young referral.pdf 📝 ✏️ 🗑️ 🔗",
+        "admissionReasonPrimary": null,
+        "admissionReasonSnippets": "",
+        "rawExtractedTextSource": "dom",
+        "domExtractionRejectedReasons": "viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS",
+        "possibleIcd10Codes": "I00 | I25 | I50",
+        "admissionOrderTextExcerpt": "of ⁨11⁩ Automatic Zoom Actual Size Page Fit Page Width ⁨50⁩% ⁨100⁩% ⁨125⁩% ⁨150⁩% ⁨200⁩% ⁨300⁩% ⁨400⁩% 90% Tools",
+        "admissionOrderSourcePdfPath": "C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T21-06-11-987Z\\run\\patients\\CHRISTINE_YOUNG__a89bc267c323fb6a\\documents\\christine-young-referral-pdf\\source.pdf",
+        "admissionOrderPrintedPdfPath": null,
+        "admissionOrderSourceMetaPath": "C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T21-06-11-987Z\\run\\patients\\CHRISTINE_YOUNG__a89bc267c323fb6a\\documents\\christine-young-referral-pdf\\source-meta.json",
+        "admissionOrderExtractedTextPath": "C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T21-06-11-987Z\\run\\patients\\CHRISTINE_YOUNG__a89bc267c323fb6a\\documents\\christine-young-referral-pdf\\extracted-text.txt",
+        "admissionOrderExtractionResultPath": "C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T21-06-11-987Z\\run\\patients\\CHRISTINE_YOUNG__a89bc267c323fb6a\\documents\\christine-young-referral-pdf\\extraction-result.json",
+        "diagnosisMentionCount": "18",
+        "diagnosisMentions": "PNEUMONIA, UNSPECIFIED ORGANISM | ACUTE RESPIRATORY FAILURE WITH HYPOXIA | HYPOTHYROIDISM, UNSPECIFIED | ACUTE ON CHRONIC DIASTOLIC (CONGESTIVE) HEART FAILURE | HEART FAILURE | METABOLIC ENCEPHALOPATHY | CHRONIC ATRIAL FIBRILLATION, UNSPECIFIED | ATRIAL FIBRILLATION | CHRONIC ATRIAL FIBRILLATION | DYSPHAGIA, OROPHARYNGEAL PHASE | CHRONIC VENOUS HYPERTENSION (IDIOPATHIC) WITH ULCER OF BILATERAL LOWER EXTREMITY | HYPERTENSIVE HEART DISEASE WITH HEART FAILURE | MUSCLE WEAKNESS (GENERALIZED) | MUSCLE WEAKNESS | CHRONIC VENOUS HYPERTENSION (IDIOPATHIC) WITH ULCER OF BILATERAL | Multifocal pneumonia | Generalized weakness | CHF",
+        "diagnosisCodeCount": "16",
+        "diagnosisCodes": "J18.9 | J96.01 | I11.0 | E03.9 | F32.A | M62 | R26.2 | I50.33 | N17.9 | G93.41 | I48.20 | R13.12 | R41.841 | K92.1 | I87.313 | M62.81",
+        "diagnosisCodeCategories": "J18.9:Diseases of the respiratory system | J96.01:Diseases of the respiratory system | I11.0:Diseases of the circulatory system | E03.9:Endocrine, nutritional and metabolic diseases | F32.A:Mental and behavioural disorders | M62:Diseases of the musculoskeletal system and connective tissue | R26.2:Symptoms, signs and abnormal findings | I50.33:Diseases of the circulatory system | N17.9:Diseases of the genitourinary system | G93.41:Diseases of the nervous system | I48.20:Diseases of the circulatory system | R13.12:Symptoms, signs and abnormal findings | R41.841:Symptoms, signs and abnormal findings | K92.1:Diseases of the digestive system | I87.313:Diseases of the circulatory system | M62.81:Diseases of the musculoskeletal system and connective tissue",
+        "diagnosisCanonicalJson": "{\"reason_for_admission\":null,\"diagnosis_phrases\":[\"PNEUMONIA, UNSPECIFIED ORGANISM\",\"ACUTE RESPIRATORY FAILURE WITH HYPOXIA\",\"HYPOTHYROIDISM, UNSPECIFIED\",\"ACUTE ON CHRONIC DIASTOLIC (CONGESTIVE) HEART FAILURE\",\"HEART FAILURE\",\"METABOLIC ENCEPHALOPATHY\",\"CHRONIC ATRIAL FIBRILLATION, UNSPECIFIED\",\"ATRIAL FIBRILLATION\",\"CHRONIC ATRIAL FIBRILLATION\",\"DYSPHAGIA, OROPHARYNGEAL PHASE\",\"CHRONIC VENOUS HYPERTENSION (IDIOPATHIC) WITH ULCER OF BILATERAL LOWER EXTREMITY\",\"HYPERTENSIVE HEART DISEASE WITH HEART FAILURE\",\"MUSCLE WEAKNESS (GENERALIZED)\",\"MUSCLE WEAKNESS\",\"CHRONIC VENOUS HYPERTENSION (IDIOPATHIC) WITH ULCER OF BILATERAL\",\"Multifocal pneumonia\",\"Generalized weakness\",\"CHF\"],\"diagnosis_code_pairs\":[{\"diagnosis\":\"PNEUMONIA, UNSPECIFIED ORGANISM\",\"code\":\"J18.9\",\"code_source\":\"ocr text explicit\"},{\"diagnosis\":\"ACUTE RESPIRATORY FAILURE WITH HYPOXIA\",\"code\":\"J96.01\",\"code_source\":\"ocr text explicit\"},{\"diagnosis\":\"HYPOTHYROIDISM, UNSPECIFIED\",\"code\":\"E03.9\",\"code_source\":\"ocr text explicit\"},{\"diagnosis\":\"ACUTE ON CHRONIC DIASTOLIC (CONGESTIVE) HEART FAILURE\",\"code\":\"I50.33\",\"code_source\":\"ocr text explicit\"},{\"diagnosis\":\"HEART FAILURE\",\"code\":\"I50.33\",\"code_source\":\"ocr text explicit\"},{\"diagnosis\":\"METABOLIC ENCEPHALOPATHY\",\"code\":\"G93.41\",\"code_source\":\"ocr text explicit\"},{\"diagnosis\":\"CHRONIC ATRIAL FIBRILLATION, UNSPECIFIED\",\"code\":\"I48.20\",\"code_source\":\"ocr text explicit\"},{\"diagnosis\":\"ATRIAL FIBRILLATION\",\"code\":\"I48.20\",\"code_source\":\"ocr text explicit\"},{\"diagnosis\":\"CHRONIC ATRIAL FIBRILLATION\",\"code\":\"I48.20\",\"code_source\":\"ocr text explicit\"},{\"diagnosis\":\"DYSPHAGIA, OROPHARYNGEAL PHASE\",\"code\":\"R13.12\",\"code_source\":\"ocr text explicit\"},{\"diagnosis\":\"CHRONIC VENOUS HYPERTENSION (IDIOPATHIC) WITH ULCER OF BILATERAL LOWER EXTREMITY\",\"code\":\"I87.313\",\"code_source\":\"ocr text explicit\"},{\"diagnosis\":\"HYPERTENSIVE HEART DISEASE WITH HEART FAILURE\",\"code\":\"I11.0\",\"code_source\":\"ocr text explicit\"},{\"diagnosis\":\"HEART FAILURE\",\"code\":\"I11.0\",\"code_source\":\"ocr text explicit\"},{\"diagnosis\":\"MUSCLE WEAKNESS (GENERALIZED)\",\"code\":\"M62.81\",\"code_source\":\"ocr text explicit\"},{\"diagnosis\":\"MUSCLE WEAKNESS\",\"code\":\"M62.81\",\"code_source\":\"ocr text explicit\"},{\"diagnosis\":\"CHRONIC VENOUS HYPERTENSION (IDIOPATHIC) WITH ULCER OF BILATERAL\",\"code\":\"I87.313\",\"code_source\":\"ocr text explicit\"}],\"icd10_codes_found_verbatim\":[\"J18.9\",\"J96.01\",\"I11.0\",\"E03.9\",\"F32.A\",\"M62\",\"R26.2\",\"I50.33\",\"N17.9\",\"G93.41\",\"I48.20\",\"R13.12\",\"R41.841\",\"K92.1\",\"I87.313\",\"M62.81\"],\"ordered_services\":[\"Physical Therapy\",\"Occupational Therapy\",\"Speech Therapy\"],\"clinical_summary\":\"Diagnosis Information: Code Description Onset Date Rank Classification J18.9 PNEUMONIA, UNSPECIFIED ORGANISM 12/23/2025 Primary J96.01 ACUTE RESPIRATORY FAILURE WITH HYPOXIA 12/23/2025 2 Fax Server 2/20/2026 1:17:59 PM PAGE 3/011 Fax Server YOUNG, CHRISTINE E.(41707)- Continued on Page 2 DIAGNOSIS INFORMATION R13.12 DY Dysphagia, did not clear speech therapy but refused tube feeding or G-tube placement..\",\"source_quotes\":[\"Diagnosis Information: Code Description Onset Date Rank Classification J18.9 PNEUMONIA, UNSPECIFIED ORGANISM 12/23/2025 Primary J96.01 ACUTE RESPIRATORY FAILURE WITH HYPOXIA 12/23/2025 2 Fax Server 2/20/2026 1:17:59 PM PAGE 3/011 Fax Server YOUNG, CHRISTINE E.(41707)- Continued on Page 2 DIAGNOSIS INFORMATION R13.12 DY\",\"Dysphagia, did not clear speech therapy but refused tube feeding or G-tube placement..\",\"Admitted to us for rehab Past medical history hypertension CHF hypothyroidism depression and chronic A-fib Physical examination Vital stable CVS S1-S2 irregular Lungs clear Extremities edema lower extremities stable Generalized weakness, improving Assessment: Multifocal pneumonia Dysphagia Chronic A-fib Acute on chroni\"],\"uncertain_items\":[\"diagnosis code pairs diagnosis invalid: MELENA\"],\"document_type\":\"Admission Order\",\"extraction_confidence\":\"medium\"}",
+        "codingInputPath": "C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T21-06-11-987Z\\run\\patients\\CHRISTINE_YOUNG__a89bc267c323fb6a\\coding-input.json",
+        "codingInputJson": "{\"primaryDiagnosis\":{\"code\":\"J18.9\",\"description\":\"PNEUMONIA, UNSPECIFIED ORGANISM\",\"confidence\":\"high\"},\"otherDiagnoses\":[{\"code\":\"J96.01\",\"description\":\"ACUTE RESPIRATORY FAILURE WITH HYPOXIA\",\"confidence\":\"high\"},{\"code\":\"E03.9\",\"description\":\"HYPOTHYROIDISM, UNSPECIFIED\",\"confidence\":\"high\"},{\"code\":\"I50.33\",\"description\":\"ACUTE ON CHRONIC DIASTOLIC (CONGESTIVE) HEART FAILURE\",\"confidence\":\"high\"},{\"code\":\"G93.41\",\"description\":\"METABOLIC ENCEPHALOPATHY\",\"confidence\":\"high\"},{\"code\":\"I48.20\",\"description\":\"CHRONIC ATRIAL FIBRILLATION, UNSPECIFIED\",\"confidence\":\"high\"},{\"code\":\"R13.12\",\"description\":\"DYSPHAGIA, OROPHARYNGEAL PHASE\",\"confidence\":\"high\"},{\"code\":\"I87.313\",\"description\":\"CHRONIC VENOUS HYPERTENSION (IDIOPATHIC) WITH ULCER OF BILATERAL LOWER EXTREMITY\",\"confidence\":\"high\"},{\"code\":\"I11.0\",\"description\":\"HYPERTENSIVE HEART DISEASE WITH HEART FAILURE\",\"confidence\":\"high\"},{\"code\":\"M62.81\",\"description\":\"MUSCLE WEAKNESS (GENERALIZED)\",\"confidence\":\"high\"}],\"suggestedOnsetType\":\"exacerbate\",\"suggestedSeverity\":3,\"comorbidityFlags\":{\"pvd_pad\":false,\"diabetes\":false,\"none\":true},\"notes\":[\"Ordered services: Physical Therapy, Occupational Therapy, Speech Therapy\"]}",
+        "reasonForAdmission": null,
+        "diagnosisCodePairs": "PNEUMONIA, UNSPECIFIED ORGANISM => J18.9 (ocr text explicit) | ACUTE RESPIRATORY FAILURE WITH HYPOXIA => J96.01 (ocr text explicit) | HYPOTHYROIDISM, UNSPECIFIED => E03.9 (ocr text explicit) | ACUTE ON CHRONIC DIASTOLIC (CONGESTIVE) HEART FAILURE => I50.33 (ocr text explicit) | HEART FAILURE => I50.33 (ocr text explicit) | METABOLIC ENCEPHALOPATHY => G93.41 (ocr text explicit) | CHRONIC ATRIAL FIBRILLATION, UNSPECIFIED => I48.20 (ocr text explicit) | ATRIAL FIBRILLATION => I48.20 (ocr text explicit) | CHRONIC ATRIAL FIBRILLATION => I48.20 (ocr text explicit) | DYSPHAGIA, OROPHARYNGEAL PHASE => R13.12 (ocr text explicit) | CHRONIC VENOUS HYPERTENSION (IDIOPATHIC) WITH ULCER OF BILATERAL LOWER EXTREMITY => I87.313 (ocr text explicit) | HYPERTENSIVE HEART DISEASE WITH HEART FAILURE => I11.0 (ocr text explicit) | HEART FAILURE => I11.0 (ocr text explicit) | MUSCLE WEAKNESS (GENERALIZED) => M62.81 (ocr text explicit) | MUSCLE WEAKNESS => M62.81 (ocr text explicit) | CHRONIC VENOUS HYPERTENSION (IDIOPATHIC) WITH ULCER OF BILATERAL => I87.313 (ocr text explicit)",
+        "primaryDiagnosis": "PNEUMONIA, UNSPECIFIED ORGANISM",
+        "primaryDiagnosisCode": "J18.9",
+        "otherDiagnoses": "ACUTE RESPIRATORY FAILURE WITH HYPOXIA (J96.01) | HYPOTHYROIDISM, UNSPECIFIED (E03.9) | ACUTE ON CHRONIC DIASTOLIC (CONGESTIVE) HEART FAILURE (I50.33) | METABOLIC ENCEPHALOPATHY (G93.41) | CHRONIC ATRIAL FIBRILLATION, UNSPECIFIED (I48.20) | DYSPHAGIA, OROPHARYNGEAL PHASE (R13.12) | CHRONIC VENOUS HYPERTENSION (IDIOPATHIC) WITH ULCER OF BILATERAL LOWER EXTREMITY (I87.313) | HYPERTENSIVE HEART DISEASE WITH HEART FAILURE (I11.0) | MUSCLE WEAKNESS (GENERALIZED) (M62.81)",
+        "suggestedOnsetType": "exacerbate",
+        "suggestedSeverity": "3",
+        "comorbidityFlags": "{\"pvd_pad\":false,\"diabetes\":false,\"none\":true}",
+        "orderedServices": "Physical Therapy | Occupational Therapy | Speech Therapy",
+        "extractionConfidence": "medium",
+        "uncertainDiagnosisItems": "diagnosis code pairs diagnosis invalid: MELENA",
+        "codingLlmUsed": "false",
+        "codingLlmModel": null,
+        "codingLlmError": null,
+        "documentTextPath": "C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T21-06-11-987Z\\run\\patients\\CHRISTINE_YOUNG__a89bc267c323fb6a\\document-text.json"
+      },
+      "notes": [
+        "Active OASIS workflow did not open the OASIS documents page."
+      ]
+    }
+  ],
+  "artifactCount": 1,
+  "findings": [
+    {
+      "ruleId": "oasis-qa.coding.needs_review",
+      "stage": "CODING_REVIEW",
+      "outcome": "MISSING_DOCUMENTS",
+      "message": "Coding Review is needs review.",
+      "evidence": []
+    },
+    {
+      "ruleId": "oasis-qa.oasis.fail",
+      "stage": "OASIS_QA",
+      "outcome": "MISSING_DOCUMENTS",
+      "message": "OASIS QA is fail.",
+      "evidence": [
+        "Medical necessity is stated",
+        "Homebound reason is stated",
+        "Health assessment is documented",
+        "Skilled interventions during the OASIS visit are documented"
+      ]
+    },
+    {
+      "ruleId": "oasis-qa.poc.missing",
+      "stage": "POC_QA",
+      "outcome": "MISSING_DOCUMENTS",
+      "message": "Plan Of Care QA is missing.",
+      "evidence": [
+        "Plan of care content extracted",
+        "POC QA completed in workbook",
+        "Diagnoses or codes are present in the plan of care",
+        "Interventions, goals, and frequency are present in the plan of care",
+        "Conditions or exacerbations are reflected in the plan of care"
+      ]
+    },
+    {
+      "ruleId": "oasis-qa.visit_notes.missing",
+      "stage": "VISIT_NOTES_REVIEW",
+      "outcome": "MISSING_DOCUMENTS",
+      "message": "Visit Notes Review is missing.",
+      "evidence": [
+        "Visit note content extracted",
+        "Visit notes review completed in workbook",
+        "Skilled need is clearly documented",
+        "Interventions performed are specific and detailed",
+        "Patient response to interventions is documented",
+        "Progress toward goals is noted",
+        "Vitals and focused assessment are documented",
+        "Medication review is documented",
+        "Changes in condition are clearly reported and addressed",
+        "Documentation supports billed services",
+        "Documentation remains consistent with OASIS and diagnoses"
+      ]
+    },
+    {
+      "ruleId": "oasis-qa.technical_review.missing",
+      "stage": "TECHNICAL_REVIEW",
+      "outcome": "MISSING_DOCUMENTS",
+      "message": "Technical Review is missing.",
+      "evidence": [
+        "SN visits were identified from visit-note content",
+        "Applicable disciplines were detected"
+      ]
+    },
+    {
+      "ruleId": "oasis-qa.final_check.fail",
+      "stage": "FINAL_BILLING_PREP_READINESS",
+      "outcome": "MISSING_DOCUMENTS",
+      "message": "Final Check is fail.",
+      "evidence": [
+        "Critical QA sections are complete before billing prep",
+        "Billing prep status in workbook"
+      ]
+    }
+  ],
+  "hasFindings": false,
+  "qaOutcome": "MISSING_DOCUMENTS",
+  "oasisQaSummary": {
+    "overallStatus": "BLOCKED",
+    "urgency": "ON_TRACK",
+    "daysInPeriod": 30,
+    "daysLeft": 17,
+    "sections": [
+      {
+        "key": "timing",
+        "label": "Timing / OASIS Due",
+        "status": "PASS",
+        "items": [
+          {
+            "key": "days_in_period",
+            "label": "Days in the 30-day period captured",
+            "status": "PASS",
+            "notes": "Workbook shows 30 days in period.",
+            "evidence": [
+              "Workbook days in period: 30"
+            ]
+          },
+          {
+            "key": "days_left",
+            "label": "Days left before OASIS due date verified",
+            "status": "PASS",
+            "notes": "17 day(s) remain before OASIS is due.",
+            "evidence": [
+              "Workbook days left: 17"
+            ]
+          },
+          {
+            "key": "urgency_bucket",
+            "label": "Urgency bucket",
+            "status": "PASS",
+            "notes": "ON TRACK",
+            "evidence": [
+              "Derived urgency from 17 day(s) left."
+            ]
+          }
+        ]
+      },
+      {
+        "key": "coding",
+        "label": "Coding Review",
+        "status": "NEEDS_REVIEW",
+        "items": [
+          {
+            "key": "coding_review_complete",
+            "label": "Coding review completed in workbook",
+            "status": "NEEDS_REVIEW",
+            "notes": "Workbook status: IN_PROGRESS",
+            "evidence": [
+              "IN_PROGRESS"
+            ]
+          },
+          {
+            "key": "coding_supported_by_oasis",
+            "label": "OASIS content is available to support coding review",
+            "status": "PASS",
+            "notes": "OASIS content extracted for coding review support.",
+            "evidence": [
+              "OASIS OASIS documents page"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "oasis",
+        "label": "OASIS QA",
+        "status": "FAIL",
+        "items": [
+          {
+            "key": "oasis_document",
+            "label": "OASIS document content extracted",
+            "status": "PASS",
+            "notes": "1 supporting document(s) extracted.",
+            "evidence": [
+              "OASIS OASIS documents page"
+            ]
+          },
+          {
+            "key": "oasis_workbook_status",
+            "label": "OASIS QA completed in workbook",
+            "status": "NEEDS_REVIEW",
+            "notes": "Workbook status: IN_PROGRESS",
+            "evidence": [
+              "IN_PROGRESS"
+            ]
+          },
+          {
+            "key": "medical_necessity",
+            "label": "Medical necessity is stated",
+            "status": "FAIL",
+            "notes": "OASIS text did not show medical necessity language.",
+            "evidence": []
+          },
+          {
+            "key": "homebound_reason",
+            "label": "Homebound reason is stated",
+            "status": "FAIL",
+            "notes": "OASIS text did not show a homebound reason.",
+            "evidence": []
+          },
+          {
+            "key": "health_assessment",
+            "label": "Health assessment is documented",
+            "status": "FAIL",
+            "notes": "OASIS text did not show a health assessment section or phrase.",
+            "evidence": []
+          },
+          {
+            "key": "skilled_interventions",
+            "label": "Skilled interventions during the OASIS visit are documented",
+            "status": "FAIL",
+            "notes": "OASIS text did not show skilled interventions performed during the visit.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "poc",
+        "label": "Plan Of Care QA",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "poc_document",
+            "label": "Plan of care content extracted",
+            "status": "MISSING",
+            "notes": "No plan-of-care content was available for extraction.",
+            "evidence": []
+          },
+          {
+            "key": "poc_workbook_status",
+            "label": "POC QA completed in workbook",
+            "status": "MISSING",
+            "notes": "Workbook status: NOT_STARTED",
+            "evidence": [
+              "NOT_STARTED"
+            ]
+          },
+          {
+            "key": "poc_diagnoses_codes",
+            "label": "Diagnoses or codes are present in the plan of care",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "poc_interventions_goals_frequency",
+            "label": "Interventions, goals, and frequency are present in the plan of care",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "poc_conditions_exacerbations",
+            "label": "Conditions or exacerbations are reflected in the plan of care",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "visit_notes",
+        "label": "Visit Notes Review",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "visit_notes_document",
+            "label": "Visit note content extracted",
+            "status": "MISSING",
+            "notes": "No visit-note content was available for extraction.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_workbook_status",
+            "label": "Visit notes review completed in workbook",
+            "status": "MISSING",
+            "notes": "Workbook status: NOT_STARTED",
+            "evidence": [
+              "NOT_STARTED"
+            ]
+          },
+          {
+            "key": "visit_notes_skilled_need",
+            "label": "Skilled need is clearly documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_intervention_detail",
+            "label": "Interventions performed are specific and detailed",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_patient_response",
+            "label": "Patient response to interventions is documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_progress",
+            "label": "Progress toward goals is noted",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_vitals",
+            "label": "Vitals and focused assessment are documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_medication_review",
+            "label": "Medication review is documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_condition_changes",
+            "label": "Changes in condition are clearly reported and addressed",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_billed_services_support",
+            "label": "Documentation supports billed services",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_consistency",
+            "label": "Documentation remains consistent with OASIS and diagnoses",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "technical_review",
+        "label": "Technical Review",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "portal_patient_match",
+            "label": "Portal patient match resolved",
+            "status": "PASS",
+            "notes": "Portal match status: EXACT",
+            "evidence": [
+              "young, christine",
+              "YOUNG, CHRISTINE MR# 84 Active SOC: 2/27/2026 / DOB: 5/30/1944 LOS: 42 days Medicare 16327 East Montrose Drive Fountain Hills AZ 85268 (480)388-5075 Last Visit Confirmed by PT : 03/16/2026 (24 days ago)"
+            ]
+          },
+          {
+            "key": "sn_visit_count",
+            "label": "SN visits were identified from visit-note content",
+            "status": "MISSING",
+            "notes": "Visit-note content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "discipline_detection",
+            "label": "Applicable disciplines were detected",
+            "status": "MISSING",
+            "notes": "Visit-note content is not available for discipline detection.",
+            "evidence": []
+          },
+          {
+            "key": "physician_orders",
+            "label": "Physician orders were checked",
+            "status": "NEEDS_REVIEW",
+            "notes": "Orders evidence was discovered (1 candidate(s)).",
+            "evidence": [
+              "Detected 1 order document candidate(s)."
+            ]
+          },
+          {
+            "key": "supporting_notes",
+            "label": "Supporting note categories were reviewed",
+            "status": "NOT_APPLICABLE",
+            "notes": "No additional supporting note categories were discovered for this patient.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "final_check",
+        "label": "Final Check",
+        "status": "FAIL",
+        "items": [
+          {
+            "key": "critical_sections_clear",
+            "label": "Critical QA sections are complete before billing prep",
+            "status": "FAIL",
+            "notes": "Blocking sections: Medical necessity is stated, Homebound reason is stated, Health assessment is documented, Skilled interventions during the OASIS visit are documented, Plan of care content extracted, POC QA completed in workbook, Diagnoses or codes are present in the plan of care, Interventions, goals, and frequency are present in the plan of care, Conditions or exacerbations are reflected in the plan of care, Visit note content extracted, Visit notes review completed in workbook, Skilled need is clearly documented, Interventions performed are specific and detailed, Patient response to interventions is documented, Progress toward goals is noted, Vitals and focused assessment are documented, Medication review is documented, Changes in condition are clearly reported and addressed, Documentation supports billed services, Documentation remains consistent with OASIS and diagnoses, SN visits were identified from visit-note content, Applicable disciplines were detected",
+            "evidence": [
+              "Timing / OASIS Due: PASS",
+              "Coding Review: NEEDS_REVIEW",
+              "OASIS QA: FAIL",
+              "Plan Of Care QA: MISSING",
+              "Visit Notes Review: MISSING",
+              "Technical Review: MISSING"
+            ]
+          },
+          {
+            "key": "billing_prep_status",
+            "label": "Billing prep status in workbook",
+            "status": "MISSING",
+            "notes": "Workbook status: NOT_STARTED",
+            "evidence": [
+              "NOT_STARTED"
+            ]
+          }
+        ]
+      }
+    ],
+    "blockers": [
+      "Medical necessity is stated",
+      "Homebound reason is stated",
+      "Health assessment is documented",
+      "Skilled interventions during the OASIS visit are documented",
+      "Plan of care content extracted",
+      "POC QA completed in workbook",
+      "Diagnoses or codes are present in the plan of care",
+      "Interventions, goals, and frequency are present in the plan of care",
+      "Conditions or exacerbations are reflected in the plan of care",
+      "Visit note content extracted",
+      "Visit notes review completed in workbook",
+      "Skilled need is clearly documented",
+      "Interventions performed are specific and detailed",
+      "Patient response to interventions is documented",
+      "Progress toward goals is noted",
+      "Vitals and focused assessment are documented",
+      "Medication review is documented",
+      "Changes in condition are clearly reported and addressed",
+      "Documentation supports billed services",
+      "Documentation remains consistent with OASIS and diagnoses",
+      "SN visits were identified from visit-note content",
+      "Applicable disciplines were detected"
+    ]
+  },
+  "documentInventory": [
+    {
+      "sourceLabel": "christine young referral.pdf",
+      "normalizedType": "ORDER",
+      "discipline": "UNKNOWN",
+      "confidence": 0.92,
+      "evidence": [
+        "Workflow phase: file_uploads_only",
+        "oasisReadyDiagnosisPath:none",
+        "primaryDiagnosisSelected:none",
+        "otherDiagnosisCount:0",
+        "codeConfidenceSummary:high:0 medium:0 low:0",
+        "oasisLockState:none",
+        "unlockControlVisible:false",
+        "unlockControlText:none",
+        "fieldsEditable:false",
+        "verificationOnly:true",
+        "inputEligible:false",
+        "Active OASIS workflow path: chart -> File Uploads/referral -> OASIS sidebar -> OASIS document table -> SOC document -> Active Diagnoses",
+        "Dangerous controls detected: none",
+        "oasisMenuClicked:false",
+        "oasisDocumentListDetected:false",
+        "socDocumentFound:false",
+        "socDocumentClicked:false",
+        "matchedSocRowText:none",
+        "matchedSocAnchorText:none",
+        "diagnosisSectionOpened:false",
+        "diagnosisListFound:false",
+        "diagnosisNavigationMethod:none",
+        "diagnosisListSamples:none",
+        "diagnosisSnapshotRowCount:0",
+        "fileUploadsAccessible:true",
+        "fileUploadsUrl:https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/file-uploads",
+        "visibleUploadedDocuments:📄 christine young referral.pdf | 📄 Young, Christine - HHO 03062026.jpg | 📄 christine young referral.pdf 📝 ✏️ 🗑️ 🔗 | 📄 Young, Christine - HHO 03062026.jpg 📝 ✏️ 🗑️ 🔗",
+        "admissionOrderAccessible:true",
+        "admissionOrderTitle:📄 christine young referral.pdf 📝 ✏️ 🗑️ 🔗",
+        "admissionReasonPrimary:none",
+        "admissionReasonSnippets:none",
+        "rawExtractedTextSource:dom",
+        "domExtractionRejectedReasons:viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS",
+        "possibleIcd10Codes:I00 | I25 | I50",
+        "sourceMetaPath:C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T21-06-11-987Z\\run\\patients\\CHRISTINE_YOUNG__a89bc267c323fb6a\\documents\\christine-young-referral-pdf\\source-meta.json",
+        "sourcePdfPath:C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T21-06-11-987Z\\run\\patients\\CHRISTINE_YOUNG__a89bc267c323fb6a\\documents\\christine-young-referral-pdf\\source.pdf",
+        "extractedTextPath:C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T21-06-11-987Z\\run\\patients\\CHRISTINE_YOUNG__a89bc267c323fb6a\\documents\\christine-young-referral-pdf\\extracted-text.txt",
+        "printedPdfPath:none"
+      ],
+      "sourceUrl": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/file-uploads",
+      "sourcePath": "C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T21-06-11-987Z\\run\\patients\\CHRISTINE_YOUNG__a89bc267c323fb6a\\documents\\christine-young-referral-pdf\\source.pdf",
+      "discoveredAt": "2026-04-09T21:09:04.047Z",
+      "openBehavior": "SAME_PAGE"
+    }
+  ],
+  "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T21-06-11-987Z\\run\\patient-results\\CHRISTINE_YOUNG__a89bc267c323fb6a.json",
+  "bundleAvailable": true,
+  "logPath": "C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T21-06-11-987Z\\run\\logs\\CHRISTINE_YOUNG__a89bc267c323fb6a.json",
+  "logAvailable": true,
+  "retryEligible": false,
+  "errorSummary": "Diagnosis code candidates: J18.9, J96.01, I11.0, E03.9, F32.A, M62, R26.2, I50.33, N17.9, G93.41, I48.20, R13.12, R41.841, K92.1, I87.313, M62.81",
+  "auditArtifacts": {
+    "tracePath": null,
+    "screenshotPaths": [],
+    "downloadPaths": []
+  },
+  "workflowRuns": [
+    {
+      "workflowRunId": "batch-2026-04-09T21-06-12-107Z-CHRISTINE_YOUNG__a89bc267c323fb6a:coding",
+      "workflowDomain": "coding",
+      "status": "BLOCKED",
+      "stepName": "BLOCKED",
+      "message": "Diagnosis code candidates: J18.9, J96.01, I11.0, E03.9, F32.A, M62, R26.2, I50.33, N17.9, G93.41, I48.20, R13.12, R41.841, K92.1, I87.313, M62.81",
+      "chartUrl": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/intake/699c7efee396a2d53a90c49c/calendar",
+      "startedAt": "2026-04-09T21:09:19.354Z",
+      "completedAt": "2026-04-09T21:09:19.411Z",
+      "lastUpdatedAt": "2026-04-09T21:09:19.411Z",
+      "workflowResultPath": "C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T21-06-11-987Z\\run\\patient-results\\CHRISTINE_YOUNG__a89bc267c323fb6a.json",
+      "workflowLogPath": null
+    },
+    {
+      "workflowRunId": "batch-2026-04-09T21-06-12-107Z-CHRISTINE_YOUNG__a89bc267c323fb6a:qa",
+      "workflowDomain": "qa",
+      "status": "NOT_STARTED",
+      "stepName": "NOT_STARTED",
+      "message": null,
+      "chartUrl": null,
+      "startedAt": null,
+      "completedAt": null,
+      "lastUpdatedAt": "2026-04-09T21:06:21.731Z",
+      "workflowResultPath": null,
+      "workflowLogPath": null
+    }
+  ],
+  "workItemSnapshot": {
+    "id": "CHRISTINE_YOUNG__a89bc267c323fb6a",
+    "subsidiaryId": "default",
+    "patientIdentity": {
+      "displayName": "Christine Young",
+      "normalizedName": "CHRISTINE YOUNG",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-02-27",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Lara, Toni RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "06-XFER"
+    },
+    "workflowTypes": [
+      "SOC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 17,
+      "daysInPeriod": null,
+      "daysLeft": 17,
+      "daysLeftBeforeOasisDueDate": 17,
+      "rawTrackingValues": [
+        "17"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "IN_PROGRESS",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "Validated"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "03/18/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 19
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 19,
+        "values": {
+          "patientName": "YOUNG, CHRISTINE",
+          "episodeDate": "02/27/2026",
+          "assignedStaff": "Lara, Toni RN",
+          "payer": "Medicare",
+          "rfa": "06-XFER",
+          "trackingDays": "17",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "Validated",
+          "oasisQaRemarks": "03/18/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  "automationStepLogs": [
+    {
+      "timestamp": "2026-04-09T21:06:21.730Z",
+      "step": "login",
+      "message": "Completed portal login flow in AUTH_ONLY mode.",
+      "patientName": null,
+      "urlBefore": "about:blank",
+      "urlAfter": "https://app.finalehealth.com/",
+      "selectorUsed": "login submit button by accessible role",
+      "found": [
+        "https://app.finalehealth.com/"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "[not_found] login username field by label count=0 visible=0 elapsedMs=44",
+        "[matched] login username field by placeholder count=1 visible=1 elapsedMs=24",
+        "[not_found] login password field by label count=0 visible=0 elapsedMs=8",
+        "[matched] login password field by placeholder count=1 visible=1 elapsedMs=15",
+        "[matched] login submit button by accessible role count=1 visible=1 elapsedMs=25 samples=Login"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-09T21:06:21.731Z",
+      "step": "playwright_session",
+      "message": "Initialized Playwright session for active workbook-driven QA flow.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com",
+      "urlAfter": "https://app.finalehealth.com/",
+      "selectorUsed": null,
+      "found": [
+        "https://app.finalehealth.com/"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "subsidiaryId=default",
+        "debugSelectors=false",
+        "saveDebugHtml=false",
+        "pauseOnFailure=false",
+        "stepTimeoutMs=6000",
+        "selectorRetryCount=2",
+        "configuredDashboardUrl=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+        "dashboardResetUrl=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-09T21:06:21.770Z",
+      "step": "run_started",
+      "message": "Patient run started from the shared Playwright portal runner.",
+      "patientName": "Christine Young",
+      "urlBefore": "https://app.finalehealth.com/",
+      "urlAfter": "https://app.finalehealth.com/",
+      "selectorUsed": null,
+      "found": [
+        "currentUrl=https://app.finalehealth.com/"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "subsidiaryId=default",
+        "portalBaseUrl=https://app.finalehealth.com",
+        "configuredDashboardUrl=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+        "resolvedDashboardUrl=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+        "currentContextRequiresReset=true"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-09T21:06:30.768Z",
+      "step": "dashboard_reset",
+      "message": "Reset the portal session to the provider dashboard before patient matching.",
+      "patientName": "Christine Young",
+      "urlBefore": "https://app.finalehealth.com/",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      "selectorUsed": null,
+      "found": [
+        "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Reset triggered: true",
+        "Current URL before patient: https://app.finalehealth.com/",
+        "Current URL after reset: https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+        "Dashboard reset target URL: https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+        "Dashboard markers found: true",
+        "goto_base_url: dashboardDetected=true currentUrl=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-09T21:06:30.767Z",
+      "step": "dashboard_ready",
+      "message": "Provider dashboard ready confirmed using 'button:has-text(\"Search Patient\")'.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      "selectorUsed": null,
+      "found": [
+        "button:has-text(\"Search Patient\")"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "attempt=1 signal=button:has-text(\"Search Patient\") stableDom=true url=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard title=Finale Health buttons=77 inputs=7 text=Star Home Health Care Inc Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notificationsMessages0 NewNo new messages found.View all messages Star Home Health Care Inc Star Home Health Care Inc View All Agenc"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-09T21:06:45.868Z",
+      "step": "patient_lookup_entry",
+      "message": "Global patient search is available from the current authenticated page context.",
+      "patientName": "Christine Young",
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      "selectorUsed": "getByText(/Search Patient/i) -> nearest clickable parent (present)",
+      "found": [
+        "getByText(/Search Patient/i) -> nearest clickable parent (present)"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Current URL before patient lookup: https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+        "Global search available in current context: true",
+        "Global search availability selector used: getByText(/Search Patient/i) -> nearest clickable parent (present)",
+        "Resolved global search trigger with present manual selector 'getByText(/Search Patient/i) -> nearest clickable parent (present)' even though Playwright visibility did not confirm it in the probe path.",
+        "[not_found] Global patient search button by accessible name count=0 visible=0 elapsedMs=29",
+        "[not_visible] Global patient search button containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=31 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=49 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search button containing Search Patient text count=1 visible=0 elapsedMs=32 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search visible control containing Search Patient text count=1 visible=0 elapsedMs=35 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search fin-button wrapper containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=31 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control inside fin-button wrapper count=1 visible=0 elapsedMs=36 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by shortcut hint count=0 visible=0 elapsedMs=21",
+        "[not_visible] Global patient search button containing search icon and patient-search text count=1 visible=0 elapsedMs=32 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by accessible name count=0 visible=0 elapsedMs=29",
+        "[not_visible] Global patient search button containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=37 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=47 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search button containing Search Patient text count=1 visible=0 elapsedMs=49 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search visible control containing Search Patient text count=1 visible=0 elapsedMs=61 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search fin-button wrapper containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=46 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control inside fin-button wrapper count=1 visible=0 elapsedMs=43 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by shortcut hint count=0 visible=0 elapsedMs=33",
+        "[not_visible] Global patient search button containing search icon and patient-search text count=1 visible=0 elapsedMs=43 samples=Search Patient...Ctrl K"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-09T21:06:45.868Z",
+      "step": "patient_lookup_entry",
+      "message": "Patient lookup will start after shared dashboard bootstrap confirmed provider dashboard readiness and global search availability.",
+      "patientName": "Christine Young",
+      "urlBefore": "https://app.finalehealth.com/",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      "selectorUsed": null,
+      "found": [
+        "patientLookupEntryContext=dashboard_reset_then_global_search",
+        "dashboard_context_established",
+        "globalSearchAvailable=true"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "currentUrlAfterLogin=https://app.finalehealth.com/",
+        "currentUrlBeforeSearch=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+        "resolvedDashboardUrl=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+        "globalSearchSelectorUsed=getByText(/Search Patient/i) -> nearest clickable parent (present)"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-09T21:06:45.870Z",
+      "step": "patient_search_start",
+      "message": "Starting patient search with 3 query variant(s).",
+      "patientName": "Christine Young",
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      "selectorUsed": null,
+      "found": [
+        "young, christine",
+        "YOUNG, CHRISTINE",
+        "Christine Young",
+        "CHRISTINE YOUNG",
+        "YOUNG, CHRISTINE"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Original workbook patient name: Christine Young",
+        "Normalized global search query: young, christine",
+        "Normalized expected display name: YOUNG, CHRISTINE",
+        "Workbook name variants: Christine Young | CHRISTINE YOUNG | YOUNG, CHRISTINE"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-09T21:07:17.559Z",
+      "step": "global_patient_search_open",
+      "message": "Clicked the global Search Patient trigger and found the visible search input.",
+      "patientName": "Christine Young",
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      "selectorUsed": "getByText(/Search Patient/i) -> nearest clickable parent (present)",
+      "found": [
+        "Search Patient trigger",
+        "search input"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Original workbook patient name: Christine Young",
+        "Normalized global search query: young, christine",
+        "Search trigger clicked: true",
+        "Trigger click method: dom_click",
+        "Search modal visible: true",
+        "Global search control selector used: getByText(/Search Patient/i) -> nearest clickable parent (present)",
+        "Global search surface selector used: Global patient search overlay/dialog containing an input",
+        "Global search modal selector used: div.search-header.open",
+        "Resolved global search trigger with present manual selector 'getByText(/Search Patient/i) -> nearest clickable parent (present)' even though Playwright visibility did not confirm it in the probe path.",
+        "[not_found] Global patient search button by accessible name count=0 visible=0 elapsedMs=42",
+        "[not_visible] Global patient search button containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=51 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=52 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search button containing Search Patient text count=1 visible=0 elapsedMs=49 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search visible control containing Search Patient text count=1 visible=0 elapsedMs=77 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search fin-button wrapper containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=46 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control inside fin-button wrapper count=1 visible=0 elapsedMs=59 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by shortcut hint count=0 visible=0 elapsedMs=30",
+        "[not_visible] Global patient search button containing search icon and patient-search text count=1 visible=0 elapsedMs=46 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by accessible name count=0 visible=0 elapsedMs=32",
+        "[not_visible] Global patient search button containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=42 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=43 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search button containing Search Patient text count=1 visible=0 elapsedMs=45 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search visible control containing Search Patient text count=1 visible=0 elapsedMs=47 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search fin-button wrapper containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=54 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control inside fin-button wrapper count=1 visible=0 elapsedMs=47 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by shortcut hint count=0 visible=0 elapsedMs=34",
+        "[not_visible] Global patient search button containing search icon and patient-search text count=1 visible=0 elapsedMs=45 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search dialog by accessible name count=0 visible=0 elapsedMs=30",
+        "[matched] Global patient search overlay/dialog containing an input count=1 visible=1 elapsedMs=56 samples=EscPatients Sort By 3Sort By×Full Name×asc×SOC Date×desc×Status×ascAdd another sort itemNo recent searchesSearch by:Status:ActivePendingOn-HoldLeadNon-AdmitDischarged",
+        "Search input found by confirmed Search patients placeholder selector.",
+        "[matched] Global patient search input by confirmed Search patients placeholder count=1 visible=1 elapsedMs=79"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-09T21:07:30.581Z",
+      "step": "patient_search_input",
+      "message": "Typed the normalized query into the global patient search and waited for results.",
+      "patientName": "Christine Young",
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      "selectorUsed": "input[type=\"text\"][placeholder*=\"Search patients\"]",
+      "found": [
+        "YOUNG, CHRISTINE MR# 84 Active SOC: 2/27/2026 / DOB: 5/30/1944 LOS: 42 daysMedicare16327 East Montrose Drive Fountain Hills AZ 85268(480)388-5075Last Visit Confirmed by PT : 03/16/2026 (24 days ago)"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Search trigger clicked: true",
+        "Search input found: true",
+        "Typing into focused field succeeded: true",
+        "Used direct input fallback: false",
+        "Search query typed: young, christine",
+        "Result count: 1",
+        "Candidate search result texts: YOUNG, CHRISTINE MR# 84 Active SOC: 2/27/2026 / DOB: 5/30/1944 LOS: 42 daysMedicare16327 East Montrose Drive Fountain Hills AZ 85268(480)388-5075Last Visit Confirmed by PT : 03/16/2026 (24 days ago)",
+        "attempt=1 rowCount=1 text=YOUNG, CHRISTINE MR# 84 Active SOC: 2/27/2026 / DOB: 5/30/1944 LOS: 42 daysMedicare16327 East Montrose Drive Fountain Hills AZ 85268(480)388-5075Last Visit Confirmed by PT : 03/16/2026 (24 days ago)"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-09T21:07:56.138Z",
+      "step": "patient_search",
+      "message": "Global patient search completed with 1 candidate(s).",
+      "patientName": "Christine Young",
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      "selectorUsed": "getByText(/Search Patient/i) -> nearest clickable parent (present) -> input[type=\"text\"][placeholder*=\"Search patients\"] -> Global patient search result tiles containing ngb-highlight",
+      "found": [
+        "YOUNG, CHRISTINE MR# 84 Active SOC: 2/27/2026 / DOB: 5/30/1944 LOS: 42 days Medicare 16327 East Montrose Drive Fountain Hills AZ 85268 (480)388-5075 Last Visit Confirmed by PT : 03/16/2026 (24 days ago)"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Original workbook patient name: Christine Young",
+        "Normalized global search query: young, christine",
+        "Normalized expected display name: YOUNG, CHRISTINE",
+        "Global search control selector used: getByText(/Search Patient/i) -> nearest clickable parent (present)",
+        "Global search surface selector used: Global patient search overlay/dialog containing an input",
+        "Global search input selector used: input[type=\"text\"][placeholder*=\"Search patients\"]",
+        "Result selector used: Global patient search result tiles containing ngb-highlight",
+        "Search results ready: true",
+        "Visible result row count: 1",
+        "No results marker visible: false",
+        "Candidate search result texts: YOUNG, CHRISTINE MR# 84 Active SOC: 2/27/2026 / DOB: 5/30/1944 LOS: 42 days Medicare 16327 East Montrose Drive Fountain Hills AZ 85268 (480)388-5075 Last Visit Confirmed by PT : 03/16/2026 (24 days ago)",
+        "Result text sample: YOUNG, CHRISTINE MR# 84 Active SOC: 2/27/2026 / DOB: 5/30/1944 LOS: 42 days Medicare 16327 East Montrose Drive Fountain Hills AZ 85268 (480)388-5075 Last Visit Confirmed by PT : 03/16/2026 (24 days ago)",
+        "attempt=1 rowCount=1 text=YOUNG, CHRISTINE MR# 84 Active SOC: 2/27/2026 / DOB: 5/30/1944 LOS: 42 daysMedicare16327 East Montrose Drive Fountain Hills AZ 85268(480)388-5075Last Visit Confirmed by PT : 03/16/2026 (24 days ago)",
+        "rowCount=1",
+        "noResultsVisible=false",
+        "Normalized query typed=young, christine",
+        "Normalized expected display name=YOUNG, CHRISTINE",
+        "candidate[1]=YOUNG, CHRISTINE MR# 84 Active SOC: 2/27/2026 / DOB: 5/30/1944 LOS: 42 days Medicare 16327 East Montrose Drive Fountain Hills AZ 85268 (480)388-5075 Last Visit Confirmed by PT : 03/16/2026 (24 days ago)",
+        "Candidate 'YOUNG, CHRISTINE MR# 84 Active SOC: 2/27/2026 / DOB: 5/30/1944 LOS: 42 days Medicare 16327 East Montrose Drive Fountain Hills AZ 85268 (480)388-5075 Last Visit Confirmed by PT : 03/16/2026 (24 days ago)' row='YOUNG, CHRISTINE MR# 84 Active SOC: 2/27/2026 / DOB: 5/30/1944 LOS: 42 days Medicare 16327 East Montrose Drive Fountain Hills AZ 85268 (480)388-5075 Last Visit Confirmed by PT : 03/16/2026 (24 days ago)' selector='Global patient search result tiles containing ngb-highlight' container='search-body__item ng-star-inserted' score=420 exact=true containsFullQuery=true containsFirstAndLast=true reasons=all patient name tokens present; ngb-highlight patient-name text starts with the normalized LAST, FIRST display name; row/card text contains both last and first name tokens; row text contains the full first-name segment"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-09T21:08:06.422Z",
+      "step": "patient_search_match_resolution",
+      "message": "Selected patient result 'YOUNG, CHRISTINE MR# 84 Active SOC: 2/27/2026 / DOB: 5/30/1944 LOS: 42 days Medicare 16327 East Montrose Drive Fountain Hills AZ 85268 (480)388-5075 Last Visit Confirmed by PT : 03/16/2026 (24 days ago)' from the global search.",
+      "patientName": "Christine Young",
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/intake/699c7efee396a2d53a90c49c/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/intake/699c7efee396a2d53a90c49c/calendar",
+      "selectorUsed": null,
+      "found": [
+        "YOUNG, CHRISTINE MR# 84 Active SOC: 2/27/2026 / DOB: 5/30/1944 LOS: 42 days Medicare 16327 East Montrose Drive Fountain Hills AZ 85268 (480)388-5075 Last Visit Confirmed by PT : 03/16/2026 (24 days ago)"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Matched patient result text: YOUNG, CHRISTINE MR# 84 Active SOC: 2/27/2026 / DOB: 5/30/1944 LOS: 42 days Medicare 16327 East Montrose Drive Fountain Hills AZ 85268 (480)388-5075 Last Visit Confirmed by PT : 03/16/2026 (24 days ago)",
+        "Matched row text: YOUNG, CHRISTINE MR# 84 Active SOC: 2/27/2026 / DOB: 5/30/1944 LOS: 42 days Medicare 16327 East Montrose Drive Fountain Hills AZ 85268 (480)388-5075 Last Visit Confirmed by PT : 03/16/2026 (24 days ago)",
+        "Normalized global search query: young, christine",
+        "Normalized expected display name: YOUNG, CHRISTINE",
+        "Clicked tile selector/container summary: Global patient search result tiles containing ngb-highlight :: search-body__item ng-star-inserted",
+        "all patient name tokens present",
+        "ngb-highlight patient-name text starts with the normalized LAST, FIRST display name",
+        "row/card text contains both last and first name tokens",
+        "row text contains the full first-name segment"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-09T21:08:06.422Z",
+      "step": "chart_open",
+      "message": "Opened the patient page from global search in read-only mode for YOUNG, CHRISTINE MR# 84 Active SOC: 2/27/2026 / DOB: 5/30/1944 LOS: 42 days Medicare 16327 East Montrose Drive Fountain Hills AZ 85268 (480)388-5075 Last Visit Confirmed by PT : 03/16/2026 (24 days ago).",
+      "patientName": "Christine Young",
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/intake/699c7efee396a2d53a90c49c/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/intake/699c7efee396a2d53a90c49c/calendar",
+      "selectorUsed": "Global patient search result tiles containing ngb-highlight :: nearest clickable parent around ngb-highlight",
+      "found": [
+        "Documents"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Matched patient result text: YOUNG, CHRISTINE MR# 84 Active SOC: 2/27/2026 / DOB: 5/30/1944 LOS: 42 days Medicare 16327 East Montrose Drive Fountain Hills AZ 85268 (480)388-5075 Last Visit Confirmed by PT : 03/16/2026 (24 days ago)",
+        "Clicked patient result text: YOUNG, CHRISTINE MR# 84 Active SOC: 2/27/2026 / DOB: 5/30/1944 LOS: 42 days Medicare 16327 East Montrose Drive Fountain Hills AZ 85268 (480)388-5075 Last Visit Confirmed by PT : 03/16/2026 (24 days ago)",
+        "Clicked tile selector/container summary: Global patient search result tiles containing ngb-highlight :: search-body__item ng-star-inserted",
+        "Click target summary: Global patient search result tiles containing ngb-highlight :: nearest clickable parent around ngb-highlight",
+        "URL after patient navigation: https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/intake/699c7efee396a2d53a90c49c/calendar",
+        "Used Enter retry: false",
+        "Dashboard URL changed: true",
+        "Chart/page markers found: Documents",
+        "Preferred click target was the nearest clickable parent around the highlighted patient name.",
+        "all patient name tokens present",
+        "ngb-highlight patient-name text starts with the normalized LAST, FIRST display name",
+        "row/card text contains both last and first name tokens",
+        "row text contains the full first-name segment",
+        "attempt=1 urlChanged=true dashboardUrlChanged=true urlLooksLikePatientIntakePage=true chartMarkersFound=true markers=Documents url=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/intake/699c7efee396a2d53a90c49c/calendar"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-09T21:08:06.423Z",
+      "step": "shared_portal_access",
+      "message": "Shared portal access reached the patient chart and produced 1 workflow context(s).",
+      "patientName": "Christine Young",
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/intake/699c7efee396a2d53a90c49c/calendar",
+      "selectorUsed": null,
+      "found": [
+        "coding:https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/intake/699c7efee396a2d53a90c49c/calendar"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "matchStatus=EXACT",
+        "portalPatientId=none",
+        "dashboardUrl=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+        "chartUrl=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/intake/699c7efee396a2d53a90c49c/calendar"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-09T21:08:06.424Z",
+      "step": "shared_evidence_discovery_start",
+      "message": "Shared evidence workflow started from the patient chart context.",
+      "patientName": "Christine Young",
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/intake/699c7efee396a2d53a90c49c/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/intake/699c7efee396a2d53a90c49c/calendar",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=coding",
+        "patientRunId=batch-2026-04-09T21-06-12-107Z-CHRISTINE_YOUNG__a89bc267c323fb6a",
+        "status=started",
+        "chartUrl=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/intake/699c7efee396a2d53a90c49c/calendar"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-09T21:09:04.046Z",
+      "step": "file_uploads_open",
+      "message": "Opened File Uploads section and enumerated available uploaded records.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/intake/699c7efee396a2d53a90c49c/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/file-uploads",
+      "selectorUsed": "patient File Uploads sidebar anchor by /file-uploads href",
+      "found": [
+        "fileUploadsAccessible:true",
+        "patientFileUploadsRouteDetected:true",
+        "genericProviderDocumentsRouteDetected:false",
+        "fileUploadsSidebarClickSucceeded:true",
+        "pageComponentDetected:true",
+        "traversalMode:file_list_view",
+        "usedChartDocumentsFallback:false",
+        "matchedFileUploadsLabel:File Uploads",
+        "matchedFileUploadsHref:/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/file-uploads",
+        "referralFolderSelected:true",
+        "referralFolderLabel:📁 Referral Files 🔀 ✏️ 🗑️",
+        "matchedReferralFileLabel:📄 christine young referral.pdf",
+        "normalizedFileLabels:christine young referral.pdf | young christine hho 03062026.jpg",
+        "matchedSourceDocuments:christine young referral.pdf | christine young referral.pdf | young christine hho 03062026.jpg | young christine hho 03062026.jpg",
+        "selectedSourceFile:christine young referral.pdf",
+        "viewerDetected:true",
+        "printButtonDetected:true",
+        "printButtonVisible:true",
+        "printClickSucceeded:false",
+        "pdfResponseDetected:true",
+        "pdfResponseUrl:https://api.finalehealth.com/api/v1/files/699c7df9d05aae59b565f4a8?index=documents",
+        "pdfContentType:application/pdf",
+        "pdfSavedPath:C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T21-06-11-987Z\\run\\patients\\CHRISTINE_YOUNG__a89bc267c323fb6a\\documents\\christine-young-referral-pdf\\source.pdf",
+        "pdfByteSize:2611584",
+        "printAcquisitionMethodUsed:network_pdf_response",
+        "sourcePdfPath:C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T21-06-11-987Z\\run\\patients\\CHRISTINE_YOUNG__a89bc267c323fb6a\\documents\\christine-young-referral-pdf\\source.pdf",
+        "printedPdfPath:none",
+        "extractionMethodUsed:click",
+        "rawExtractedTextSource:dom",
+        "domExtractionRejectedReasons:viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS",
+        "extractionSuccess:false",
+        "uploadedDocumentCount:4"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Sidebar container count: 5",
+        "Sidebar diagnostics: [{\"index\":0,\"visible\":true,\"fileUploadsLabelCount\":0,\"fileUploadsAnchorCount\":1}]",
+        "[matched] patient File Uploads sidebar anchor by /file-uploads href count=1 visible=1 elapsedMs=64 samples=File Uploads",
+        "Matched File Uploads sidebar label: File Uploads",
+        "Matched File Uploads sidebar href: /provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/file-uploads",
+        "File Uploads sidebar click succeeded: true",
+        "File Uploads URL after sidebar click: https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/file-uploads",
+        "File Uploads ready attempt=1 url=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/file-uploads urlChanged=true patientFileUploadsRouteDetected=true genericProviderDocumentsRouteDetected=false pageComponentDetected=true traversalMode=folder_view folderCount=3 fileCount=0 markers=Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root 📁 Referral Files 🔀 ✏️ 🗑️ 📁 Admission Packets 🔀 ✏️ 🗑️ 📁 Progress Notes 🔀 ✏️ 🗑️ Select FILE to view or a FOLDER to upload file into. anchorCount=3",
+        "[matched] File Uploads page root component app-client-file-upload count=1 visible=1 elapsedMs=36 samples=Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root 📁 Referral Files 🔀 ✏️ 🗑️ 📁 Admission Packets 🔀 ✏️ 🗑️ 📁 Progress Notes 🔀 ✏️ 🗑️ Select FILE",
+        "[not_found] File Uploads downloadable file rows by .file-item count=0 visible=0 elapsedMs=21",
+        "[not_found] File Uploads downloadable file labels by .file-label count=0 visible=0 elapsedMs=18",
+        "[not_found] File Uploads document row click targets count=0 visible=0 elapsedMs=30",
+        "[not_found] File Uploads referral click targets outside table rows count=0 visible=0 elapsedMs=19",
+        "[matched] Admission-related click targets count=3 visible=3 elapsedMs=76 samples=Admission 02-27-2026 | Admission Info | Admission Packets",
+        "[matched] File Uploads Referral folder row by .folder-item count=3 visible=3 elapsedMs=84 samples=📁 Referral Files 🔀 ✏️ 🗑️ | 📁 Admission Packets 🔀 ✏️ 🗑️ | 📁 Progress Notes 🔀 ✏️ 🗑️",
+        "Referral folder target clicked: 📁 Referral Files 🔀 ✏️ 🗑️ via File Uploads Referral folder row by .folder-item",
+        "File Uploads ready attempt=1 url=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/file-uploads urlChanged=true patientFileUploadsRouteDetected=true genericProviderDocumentsRouteDetected=false pageComponentDetected=true traversalMode=file_list_view folderCount=0 fileCount=2 markers=Patient File Uploads View All Uploaded Files View Logs Reorder Root / Referral Files⬅️ Back 🔄 ➕ ⬆️ 📄 christine young referral.pdf 📝 ✏️ 🗑️ 🔗 📄 Young, Christine - HHO 03062026.jpg 📝 ✏️ 🗑️ 🔗 Uploading file(s) to Referral FilesDRAG FIL anchorCount=2",
+        "[matched] File Uploads page root component app-client-file-upload count=1 visible=1 elapsedMs=33 samples=Patient File Uploads View All Uploaded Files View Logs Reorder Root / Referral Files⬅️ Back 🔄 ➕ ⬆️ 📄 christine young referral.pdf 📝 ✏️ 🗑️ 🔗 📄 Young, Christine - HHO 03062026.",
+        "[matched] File Uploads downloadable file rows by .file-item count=2 visible=2 elapsedMs=58 samples=📄 christine young referral.pdf 📝 ✏️ 🗑️ 🔗 | 📄 Young, Christine - HHO 03062026.jpg 📝 ✏️ 🗑️ 🔗",
+        "File Uploads accessible: true",
+        "Patient-specific File Uploads route detected: true",
+        "Generic provider Documents route detected: false",
+        "Matched File Uploads sidebar label: File Uploads",
+        "Matched File Uploads sidebar href: /provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/file-uploads",
+        "File Uploads sidebar click succeeded: true",
+        "File Uploads page component detected: true",
+        "File Uploads traversal mode: file_list_view",
+        "Used chart Documents fallback: false",
+        "File Uploads URL: https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/file-uploads",
+        "File Uploads URL changed from prior page: true",
+        "File Uploads ready attempt count: 1",
+        "File Uploads page markers: Patient File Uploads View All Uploaded Files View Logs Reorder Root / Referral Files⬅️ Back 🔄 ➕ ⬆️ 📄 christine young referral.pdf 📝 ✏️ 🗑️ 🔗 📄 Young, Christine - HHO 03062026.jpg 📝 ✏️ 🗑️ 🔗 Uploading file(s) to Referral FilesDRAG FIL",
+        "Referral folder selected: true",
+        "Referral folder label: 📁 Referral Files 🔀 ✏️ 🗑️",
+        "Referral file label (if resolved instead of folder): 📄 christine young referral.pdf",
+        "Discovered folder labels: none",
+        "Discovered file labels: 📄 christine young referral.pdf | 📄 Young, Christine - HHO 03062026.jpg",
+        "Normalized file labels: christine young referral.pdf | young christine hho 03062026.jpg",
+        "Matched source documents: 📄 christine young referral.pdf [normalized=christine young referral.pdf] [score=150] | 📄 christine young referral.pdf 📝 ✏️ 🗑️ 🔗 [normalized=christine young referral.pdf] [score=150] | 📄 Young, Christine - HHO 03062026.jpg [normalized=young christine hho 03062026.jpg] [score=10] | 📄 Young, Christine - HHO 03062026.jpg 📝 ✏️ 🗑️ 🔗 [normalized=young christine hho 03062026.jpg] [score=10]",
+        "Visible uploaded documents: 📄 christine young referral.pdf | 📄 Young, Christine - HHO 03062026.jpg | 📄 christine young referral.pdf 📝 ✏️ 🗑️ 🔗 | 📄 Young, Christine - HHO 03062026.jpg 📝 ✏️ 🗑️ 🔗",
+        "Admission Order candidate count: 2",
+        "Admission Order candidate labels: 📄 christine young referral.pdf 📝 ✏️ 🗑️ 🔗 [score=340] | 📄 Young, Christine - HHO 03062026.jpg 📝 ✏️ 🗑️ 🔗 [score=109]",
+        "[matched] embedded PDF viewer toolbar and print controls count=5 visible=4 elapsedMs=208 samples=of ⁨11⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools | of ⁨11⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools | Tools",
+        "[not_found] Admission Order text marker count=0 visible=0 elapsedMs=39",
+        "[not_found] Admission clinical reason/diagnosis text markers count=0 visible=0 elapsedMs=37",
+        "[not_found] Admission order wrapper by class/id count=0 visible=0 elapsedMs=29",
+        "Selected source file: christine young referral.pdf",
+        "Selected source file normalized: christine young referral.pdf",
+        "Viewer detected: true",
+        "Viewer marker samples: of ⁨11⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools | Tools | Print",
+        "Print button detected: true",
+        "Print button visible: true",
+        "Print button selector used: pdf-print #printButton, #printButton, pdf-shy-button[primarytoolbarid='printButton'] button",
+        "Print click succeeded: false",
+        "PDF response detected: true",
+        "PDF response URL: https://api.finalehealth.com/api/v1/files/699c7df9d05aae59b565f4a8?index=documents",
+        "PDF content type: application/pdf",
+        "PDF saved path: C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T21-06-11-987Z\\run\\patients\\CHRISTINE_YOUNG__a89bc267c323fb6a\\documents\\christine-young-referral-pdf\\source.pdf",
+        "PDF byte size: 2611584",
+        "Print acquisition method used: network_pdf_response",
+        "Printed PDF saved: false",
+        "Printed PDF path: none",
+        "Source meta path: C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T21-06-11-987Z\\run\\patients\\CHRISTINE_YOUNG__a89bc267c323fb6a\\documents\\christine-young-referral-pdf\\source-meta.json",
+        "Extracted text path: C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T21-06-11-987Z\\run\\patients\\CHRISTINE_YOUNG__a89bc267c323fb6a\\documents\\christine-young-referral-pdf\\extracted-text.txt",
+        "Extraction result path: C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T21-06-11-987Z\\run\\patients\\CHRISTINE_YOUNG__a89bc267c323fb6a\\documents\\christine-young-referral-pdf\\extraction-result.json",
+        "Extracted text length: 112",
+        "Raw extracted text source: dom",
+        "DOM extraction rejected reasons: viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS",
+        "Extraction method used: click",
+        "Extraction success: false",
+        "Queued for LLM: true",
+        "Admission Order title: 📄 christine young referral.pdf 📝 ✏️ 🗑️ 🔗",
+        "Admission Order URL after click: https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/file-uploads",
+        "Admission Order markers: none",
+        "Admission text candidates ranked: [1] score=2.8 text=of ⁨11⁩ Automatic Zoom Actual Size Page Fit Page Width ⁨50⁩% ⁨100⁩% ⁨125⁩% ⁨150⁩% ⁨200⁩% ⁨300⁩% ⁨400⁩% 90% Tools || [2] score=1.1 text=📄 christine young referral.pdf 📝 ✏️ 🗑️ 🔗",
+        "Admission reason primary: none",
+        "Admission reason snippets: none",
+        "Possible ICD-10 codes: I00 | I25 | I50",
+        "Admission order text excerpt: of ⁨11⁩ Automatic Zoom Actual Size Page Fit Page Width ⁨50⁩% ⁨100⁩% ⁨125⁩% ⁨150⁩% ⁨200⁩% ⁨300⁩% ⁨400⁩% 90% Tools"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-09T21:09:04.046Z",
+      "step": "admission_order_open",
+      "message": "Opened Admission Order from File Uploads for coding-reference verification.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/intake/699c7efee396a2d53a90c49c/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/file-uploads",
+      "selectorUsed": "File Uploads source document row by .file-item/.file-label or table row",
+      "found": [
+        "fileUploadsAccessible:true",
+        "patientFileUploadsRouteDetected:true",
+        "genericProviderDocumentsRouteDetected:false",
+        "fileUploadsSidebarClickSucceeded:true",
+        "pageComponentDetected:true",
+        "traversalMode:file_list_view",
+        "usedChartDocumentsFallback:false",
+        "referralFolderSelected:true",
+        "admissionOrderAccessible:true",
+        "admissionOrderTitle:📄 christine young referral.pdf 📝 ✏️ 🗑️ 🔗",
+        "selectedSourceFile:christine young referral.pdf",
+        "viewerDetected:true",
+        "printButtonDetected:true",
+        "printClickSucceeded:false",
+        "pdfResponseDetected:true",
+        "pdfResponseUrl:https://api.finalehealth.com/api/v1/files/699c7df9d05aae59b565f4a8?index=documents",
+        "pdfContentType:application/pdf",
+        "pdfSavedPath:C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T21-06-11-987Z\\run\\patients\\CHRISTINE_YOUNG__a89bc267c323fb6a\\documents\\christine-young-referral-pdf\\source.pdf",
+        "pdfByteSize:2611584",
+        "printAcquisitionMethodUsed:network_pdf_response",
+        "sourcePdfPath:C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T21-06-11-987Z\\run\\patients\\CHRISTINE_YOUNG__a89bc267c323fb6a\\documents\\christine-young-referral-pdf\\source.pdf",
+        "printedPdfPath:none",
+        "extractionMethodUsed:click",
+        "rawExtractedTextSource:dom",
+        "domExtractionRejectedReasons:viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS",
+        "extractionSuccess:false",
+        "admissionReasonPrimary:none",
+        "possibleIcd10Codes:I00 | I25 | I50"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Sidebar container count: 5",
+        "Sidebar diagnostics: [{\"index\":0,\"visible\":true,\"fileUploadsLabelCount\":0,\"fileUploadsAnchorCount\":1}]",
+        "[matched] patient File Uploads sidebar anchor by /file-uploads href count=1 visible=1 elapsedMs=64 samples=File Uploads",
+        "Matched File Uploads sidebar label: File Uploads",
+        "Matched File Uploads sidebar href: /provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/file-uploads",
+        "File Uploads sidebar click succeeded: true",
+        "File Uploads URL after sidebar click: https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/file-uploads",
+        "File Uploads ready attempt=1 url=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/file-uploads urlChanged=true patientFileUploadsRouteDetected=true genericProviderDocumentsRouteDetected=false pageComponentDetected=true traversalMode=folder_view folderCount=3 fileCount=0 markers=Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root 📁 Referral Files 🔀 ✏️ 🗑️ 📁 Admission Packets 🔀 ✏️ 🗑️ 📁 Progress Notes 🔀 ✏️ 🗑️ Select FILE to view or a FOLDER to upload file into. anchorCount=3",
+        "[matched] File Uploads page root component app-client-file-upload count=1 visible=1 elapsedMs=36 samples=Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root 📁 Referral Files 🔀 ✏️ 🗑️ 📁 Admission Packets 🔀 ✏️ 🗑️ 📁 Progress Notes 🔀 ✏️ 🗑️ Select FILE",
+        "[not_found] File Uploads downloadable file rows by .file-item count=0 visible=0 elapsedMs=21",
+        "[not_found] File Uploads downloadable file labels by .file-label count=0 visible=0 elapsedMs=18",
+        "[not_found] File Uploads document row click targets count=0 visible=0 elapsedMs=30",
+        "[not_found] File Uploads referral click targets outside table rows count=0 visible=0 elapsedMs=19",
+        "[matched] Admission-related click targets count=3 visible=3 elapsedMs=76 samples=Admission 02-27-2026 | Admission Info | Admission Packets",
+        "[matched] File Uploads Referral folder row by .folder-item count=3 visible=3 elapsedMs=84 samples=📁 Referral Files 🔀 ✏️ 🗑️ | 📁 Admission Packets 🔀 ✏️ 🗑️ | 📁 Progress Notes 🔀 ✏️ 🗑️",
+        "Referral folder target clicked: 📁 Referral Files 🔀 ✏️ 🗑️ via File Uploads Referral folder row by .folder-item",
+        "File Uploads ready attempt=1 url=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/file-uploads urlChanged=true patientFileUploadsRouteDetected=true genericProviderDocumentsRouteDetected=false pageComponentDetected=true traversalMode=file_list_view folderCount=0 fileCount=2 markers=Patient File Uploads View All Uploaded Files View Logs Reorder Root / Referral Files⬅️ Back 🔄 ➕ ⬆️ 📄 christine young referral.pdf 📝 ✏️ 🗑️ 🔗 📄 Young, Christine - HHO 03062026.jpg 📝 ✏️ 🗑️ 🔗 Uploading file(s) to Referral FilesDRAG FIL anchorCount=2",
+        "[matched] File Uploads page root component app-client-file-upload count=1 visible=1 elapsedMs=33 samples=Patient File Uploads View All Uploaded Files View Logs Reorder Root / Referral Files⬅️ Back 🔄 ➕ ⬆️ 📄 christine young referral.pdf 📝 ✏️ 🗑️ 🔗 📄 Young, Christine - HHO 03062026.",
+        "[matched] File Uploads downloadable file rows by .file-item count=2 visible=2 elapsedMs=58 samples=📄 christine young referral.pdf 📝 ✏️ 🗑️ 🔗 | 📄 Young, Christine - HHO 03062026.jpg 📝 ✏️ 🗑️ 🔗",
+        "File Uploads accessible: true",
+        "Patient-specific File Uploads route detected: true",
+        "Generic provider Documents route detected: false",
+        "Matched File Uploads sidebar label: File Uploads",
+        "Matched File Uploads sidebar href: /provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/file-uploads",
+        "File Uploads sidebar click succeeded: true",
+        "File Uploads page component detected: true",
+        "File Uploads traversal mode: file_list_view",
+        "Used chart Documents fallback: false",
+        "File Uploads URL: https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/file-uploads",
+        "File Uploads URL changed from prior page: true",
+        "File Uploads ready attempt count: 1",
+        "File Uploads page markers: Patient File Uploads View All Uploaded Files View Logs Reorder Root / Referral Files⬅️ Back 🔄 ➕ ⬆️ 📄 christine young referral.pdf 📝 ✏️ 🗑️ 🔗 📄 Young, Christine - HHO 03062026.jpg 📝 ✏️ 🗑️ 🔗 Uploading file(s) to Referral FilesDRAG FIL",
+        "Referral folder selected: true",
+        "Referral folder label: 📁 Referral Files 🔀 ✏️ 🗑️",
+        "Referral file label (if resolved instead of folder): 📄 christine young referral.pdf",
+        "Discovered folder labels: none",
+        "Discovered file labels: 📄 christine young referral.pdf | 📄 Young, Christine - HHO 03062026.jpg",
+        "Normalized file labels: christine young referral.pdf | young christine hho 03062026.jpg",
+        "Matched source documents: 📄 christine young referral.pdf [normalized=christine young referral.pdf] [score=150] | 📄 christine young referral.pdf 📝 ✏️ 🗑️ 🔗 [normalized=christine young referral.pdf] [score=150] | 📄 Young, Christine - HHO 03062026.jpg [normalized=young christine hho 03062026.jpg] [score=10] | 📄 Young, Christine - HHO 03062026.jpg 📝 ✏️ 🗑️ 🔗 [normalized=young christine hho 03062026.jpg] [score=10]",
+        "Visible uploaded documents: 📄 christine young referral.pdf | 📄 Young, Christine - HHO 03062026.jpg | 📄 christine young referral.pdf 📝 ✏️ 🗑️ 🔗 | 📄 Young, Christine - HHO 03062026.jpg 📝 ✏️ 🗑️ 🔗",
+        "Admission Order candidate count: 2",
+        "Admission Order candidate labels: 📄 christine young referral.pdf 📝 ✏️ 🗑️ 🔗 [score=340] | 📄 Young, Christine - HHO 03062026.jpg 📝 ✏️ 🗑️ 🔗 [score=109]",
+        "[matched] embedded PDF viewer toolbar and print controls count=5 visible=4 elapsedMs=208 samples=of ⁨11⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools | of ⁨11⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools | Tools",
+        "[not_found] Admission Order text marker count=0 visible=0 elapsedMs=39",
+        "[not_found] Admission clinical reason/diagnosis text markers count=0 visible=0 elapsedMs=37",
+        "[not_found] Admission order wrapper by class/id count=0 visible=0 elapsedMs=29",
+        "Selected source file: christine young referral.pdf",
+        "Selected source file normalized: christine young referral.pdf",
+        "Viewer detected: true",
+        "Viewer marker samples: of ⁨11⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools | Tools | Print",
+        "Print button detected: true",
+        "Print button visible: true",
+        "Print button selector used: pdf-print #printButton, #printButton, pdf-shy-button[primarytoolbarid='printButton'] button",
+        "Print click succeeded: false",
+        "PDF response detected: true",
+        "PDF response URL: https://api.finalehealth.com/api/v1/files/699c7df9d05aae59b565f4a8?index=documents",
+        "PDF content type: application/pdf",
+        "PDF saved path: C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T21-06-11-987Z\\run\\patients\\CHRISTINE_YOUNG__a89bc267c323fb6a\\documents\\christine-young-referral-pdf\\source.pdf",
+        "PDF byte size: 2611584",
+        "Print acquisition method used: network_pdf_response",
+        "Printed PDF saved: false",
+        "Printed PDF path: none",
+        "Source meta path: C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T21-06-11-987Z\\run\\patients\\CHRISTINE_YOUNG__a89bc267c323fb6a\\documents\\christine-young-referral-pdf\\source-meta.json",
+        "Extracted text path: C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T21-06-11-987Z\\run\\patients\\CHRISTINE_YOUNG__a89bc267c323fb6a\\documents\\christine-young-referral-pdf\\extracted-text.txt",
+        "Extraction result path: C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T21-06-11-987Z\\run\\patients\\CHRISTINE_YOUNG__a89bc267c323fb6a\\documents\\christine-young-referral-pdf\\extraction-result.json",
+        "Extracted text length: 112",
+        "Raw extracted text source: dom",
+        "DOM extraction rejected reasons: viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS",
+        "Extraction method used: click",
+        "Extraction success: false",
+        "Queued for LLM: true",
+        "Admission Order title: 📄 christine young referral.pdf 📝 ✏️ 🗑️ 🔗",
+        "Admission Order URL after click: https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/file-uploads",
+        "Admission Order markers: none",
+        "Admission text candidates ranked: [1] score=2.8 text=of ⁨11⁩ Automatic Zoom Actual Size Page Fit Page Width ⁨50⁩% ⁨100⁩% ⁨125⁩% ⁨150⁩% ⁨200⁩% ⁨300⁩% ⁨400⁩% 90% Tools || [2] score=1.1 text=📄 christine young referral.pdf 📝 ✏️ 🗑️ 🔗",
+        "Admission reason primary: none",
+        "Admission reason snippets: none",
+        "Possible ICD-10 codes: I00 | I25 | I50",
+        "Admission order text excerpt: of ⁨11⁩ Automatic Zoom Actual Size Page Fit Page Width ⁨50⁩% ⁨100⁩% ⁨125⁩% ⁨150⁩% ⁨200⁩% ⁨300⁩% ⁨400⁩% 90% Tools"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-09T21:09:04.046Z",
+      "step": "qa_summary",
+      "message": "File Uploads and Admission Order were successfully accessed for coding reference.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/intake/699c7efee396a2d53a90c49c/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/file-uploads",
+      "selectorUsed": "File Uploads source document row by .file-item/.file-label or table row",
+      "found": [
+        "fileUploadsAccessible:true",
+        "patientFileUploadsRouteDetected:true",
+        "genericProviderDocumentsRouteDetected:false",
+        "fileUploadsSidebarClickSucceeded:true",
+        "pageComponentDetected:true",
+        "traversalMode:file_list_view",
+        "usedChartDocumentsFallback:false",
+        "referralFolderSelected:true",
+        "admissionOrderAccessible:true",
+        "admissionOrderTitle:📄 christine young referral.pdf 📝 ✏️ 🗑️ 🔗",
+        "selectedSourceFile:christine young referral.pdf",
+        "viewerDetected:true",
+        "printButtonDetected:true",
+        "printClickSucceeded:false",
+        "pdfResponseDetected:true",
+        "pdfResponseUrl:https://api.finalehealth.com/api/v1/files/699c7df9d05aae59b565f4a8?index=documents",
+        "pdfContentType:application/pdf",
+        "pdfSavedPath:C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T21-06-11-987Z\\run\\patients\\CHRISTINE_YOUNG__a89bc267c323fb6a\\documents\\christine-young-referral-pdf\\source.pdf",
+        "pdfByteSize:2611584",
+        "printAcquisitionMethodUsed:network_pdf_response",
+        "sourcePdfPath:C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T21-06-11-987Z\\run\\patients\\CHRISTINE_YOUNG__a89bc267c323fb6a\\documents\\christine-young-referral-pdf\\source.pdf",
+        "printedPdfPath:none",
+        "extractionMethodUsed:click",
+        "rawExtractedTextSource:dom",
+        "domExtractionRejectedReasons:viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS",
+        "extractionSuccess:false",
+        "admissionReasonPrimary:none",
+        "possibleIcd10Codes:I00 | I25 | I50"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Sidebar container count: 5",
+        "Sidebar diagnostics: [{\"index\":0,\"visible\":true,\"fileUploadsLabelCount\":0,\"fileUploadsAnchorCount\":1}]",
+        "[matched] patient File Uploads sidebar anchor by /file-uploads href count=1 visible=1 elapsedMs=64 samples=File Uploads",
+        "Matched File Uploads sidebar label: File Uploads",
+        "Matched File Uploads sidebar href: /provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/file-uploads",
+        "File Uploads sidebar click succeeded: true",
+        "File Uploads URL after sidebar click: https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/file-uploads",
+        "File Uploads ready attempt=1 url=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/file-uploads urlChanged=true patientFileUploadsRouteDetected=true genericProviderDocumentsRouteDetected=false pageComponentDetected=true traversalMode=folder_view folderCount=3 fileCount=0 markers=Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root 📁 Referral Files 🔀 ✏️ 🗑️ 📁 Admission Packets 🔀 ✏️ 🗑️ 📁 Progress Notes 🔀 ✏️ 🗑️ Select FILE to view or a FOLDER to upload file into. anchorCount=3",
+        "[matched] File Uploads page root component app-client-file-upload count=1 visible=1 elapsedMs=36 samples=Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root 📁 Referral Files 🔀 ✏️ 🗑️ 📁 Admission Packets 🔀 ✏️ 🗑️ 📁 Progress Notes 🔀 ✏️ 🗑️ Select FILE",
+        "[not_found] File Uploads downloadable file rows by .file-item count=0 visible=0 elapsedMs=21",
+        "[not_found] File Uploads downloadable file labels by .file-label count=0 visible=0 elapsedMs=18",
+        "[not_found] File Uploads document row click targets count=0 visible=0 elapsedMs=30",
+        "[not_found] File Uploads referral click targets outside table rows count=0 visible=0 elapsedMs=19",
+        "[matched] Admission-related click targets count=3 visible=3 elapsedMs=76 samples=Admission 02-27-2026 | Admission Info | Admission Packets",
+        "[matched] File Uploads Referral folder row by .folder-item count=3 visible=3 elapsedMs=84 samples=📁 Referral Files 🔀 ✏️ 🗑️ | 📁 Admission Packets 🔀 ✏️ 🗑️ | 📁 Progress Notes 🔀 ✏️ 🗑️",
+        "Referral folder target clicked: 📁 Referral Files 🔀 ✏️ 🗑️ via File Uploads Referral folder row by .folder-item",
+        "File Uploads ready attempt=1 url=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/file-uploads urlChanged=true patientFileUploadsRouteDetected=true genericProviderDocumentsRouteDetected=false pageComponentDetected=true traversalMode=file_list_view folderCount=0 fileCount=2 markers=Patient File Uploads View All Uploaded Files View Logs Reorder Root / Referral Files⬅️ Back 🔄 ➕ ⬆️ 📄 christine young referral.pdf 📝 ✏️ 🗑️ 🔗 📄 Young, Christine - HHO 03062026.jpg 📝 ✏️ 🗑️ 🔗 Uploading file(s) to Referral FilesDRAG FIL anchorCount=2",
+        "[matched] File Uploads page root component app-client-file-upload count=1 visible=1 elapsedMs=33 samples=Patient File Uploads View All Uploaded Files View Logs Reorder Root / Referral Files⬅️ Back 🔄 ➕ ⬆️ 📄 christine young referral.pdf 📝 ✏️ 🗑️ 🔗 📄 Young, Christine - HHO 03062026.",
+        "[matched] File Uploads downloadable file rows by .file-item count=2 visible=2 elapsedMs=58 samples=📄 christine young referral.pdf 📝 ✏️ 🗑️ 🔗 | 📄 Young, Christine - HHO 03062026.jpg 📝 ✏️ 🗑️ 🔗",
+        "File Uploads accessible: true",
+        "Patient-specific File Uploads route detected: true",
+        "Generic provider Documents route detected: false",
+        "Matched File Uploads sidebar label: File Uploads",
+        "Matched File Uploads sidebar href: /provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/file-uploads",
+        "File Uploads sidebar click succeeded: true",
+        "File Uploads page component detected: true",
+        "File Uploads traversal mode: file_list_view",
+        "Used chart Documents fallback: false",
+        "File Uploads URL: https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/file-uploads",
+        "File Uploads URL changed from prior page: true",
+        "File Uploads ready attempt count: 1",
+        "File Uploads page markers: Patient File Uploads View All Uploaded Files View Logs Reorder Root / Referral Files⬅️ Back 🔄 ➕ ⬆️ 📄 christine young referral.pdf 📝 ✏️ 🗑️ 🔗 📄 Young, Christine - HHO 03062026.jpg 📝 ✏️ 🗑️ 🔗 Uploading file(s) to Referral FilesDRAG FIL",
+        "Referral folder selected: true",
+        "Referral folder label: 📁 Referral Files 🔀 ✏️ 🗑️",
+        "Referral file label (if resolved instead of folder): 📄 christine young referral.pdf",
+        "Discovered folder labels: none",
+        "Discovered file labels: 📄 christine young referral.pdf | 📄 Young, Christine - HHO 03062026.jpg",
+        "Normalized file labels: christine young referral.pdf | young christine hho 03062026.jpg",
+        "Matched source documents: 📄 christine young referral.pdf [normalized=christine young referral.pdf] [score=150] | 📄 christine young referral.pdf 📝 ✏️ 🗑️ 🔗 [normalized=christine young referral.pdf] [score=150] | 📄 Young, Christine - HHO 03062026.jpg [normalized=young christine hho 03062026.jpg] [score=10] | 📄 Young, Christine - HHO 03062026.jpg 📝 ✏️ 🗑️ 🔗 [normalized=young christine hho 03062026.jpg] [score=10]",
+        "Visible uploaded documents: 📄 christine young referral.pdf | 📄 Young, Christine - HHO 03062026.jpg | 📄 christine young referral.pdf 📝 ✏️ 🗑️ 🔗 | 📄 Young, Christine - HHO 03062026.jpg 📝 ✏️ 🗑️ 🔗",
+        "Admission Order candidate count: 2",
+        "Admission Order candidate labels: 📄 christine young referral.pdf 📝 ✏️ 🗑️ 🔗 [score=340] | 📄 Young, Christine - HHO 03062026.jpg 📝 ✏️ 🗑️ 🔗 [score=109]",
+        "[matched] embedded PDF viewer toolbar and print controls count=5 visible=4 elapsedMs=208 samples=of ⁨11⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools | of ⁨11⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools | Tools",
+        "[not_found] Admission Order text marker count=0 visible=0 elapsedMs=39",
+        "[not_found] Admission clinical reason/diagnosis text markers count=0 visible=0 elapsedMs=37",
+        "[not_found] Admission order wrapper by class/id count=0 visible=0 elapsedMs=29",
+        "Selected source file: christine young referral.pdf",
+        "Selected source file normalized: christine young referral.pdf",
+        "Viewer detected: true",
+        "Viewer marker samples: of ⁨11⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools | Tools | Print",
+        "Print button detected: true",
+        "Print button visible: true",
+        "Print button selector used: pdf-print #printButton, #printButton, pdf-shy-button[primarytoolbarid='printButton'] button",
+        "Print click succeeded: false",
+        "PDF response detected: true",
+        "PDF response URL: https://api.finalehealth.com/api/v1/files/699c7df9d05aae59b565f4a8?index=documents",
+        "PDF content type: application/pdf",
+        "PDF saved path: C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T21-06-11-987Z\\run\\patients\\CHRISTINE_YOUNG__a89bc267c323fb6a\\documents\\christine-young-referral-pdf\\source.pdf",
+        "PDF byte size: 2611584",
+        "Print acquisition method used: network_pdf_response",
+        "Printed PDF saved: false",
+        "Printed PDF path: none",
+        "Source meta path: C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T21-06-11-987Z\\run\\patients\\CHRISTINE_YOUNG__a89bc267c323fb6a\\documents\\christine-young-referral-pdf\\source-meta.json",
+        "Extracted text path: C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T21-06-11-987Z\\run\\patients\\CHRISTINE_YOUNG__a89bc267c323fb6a\\documents\\christine-young-referral-pdf\\extracted-text.txt",
+        "Extraction result path: C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T21-06-11-987Z\\run\\patients\\CHRISTINE_YOUNG__a89bc267c323fb6a\\documents\\christine-young-referral-pdf\\extraction-result.json",
+        "Extracted text length: 112",
+        "Raw extracted text source: dom",
+        "DOM extraction rejected reasons: viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS",
+        "Extraction method used: click",
+        "Extraction success: false",
+        "Queued for LLM: true",
+        "Admission Order title: 📄 christine young referral.pdf 📝 ✏️ 🗑️ 🔗",
+        "Admission Order URL after click: https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/file-uploads",
+        "Admission Order markers: none",
+        "Admission text candidates ranked: [1] score=2.8 text=of ⁨11⁩ Automatic Zoom Actual Size Page Fit Page Width ⁨50⁩% ⁨100⁩% ⁨125⁩% ⁨150⁩% ⁨200⁩% ⁨300⁩% ⁨400⁩% 90% Tools || [2] score=1.1 text=📄 christine young referral.pdf 📝 ✏️ 🗑️ 🔗",
+        "Admission reason primary: none",
+        "Admission reason snippets: none",
+        "Possible ICD-10 codes: I00 | I25 | I50",
+        "Admission order text excerpt: of ⁨11⁩ Automatic Zoom Actual Size Page Fit Page Width ⁨50⁩% ⁨100⁩% ⁨125⁩% ⁨150⁩% ⁨200⁩% ⁨300⁩% ⁨400⁩% 90% Tools"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-09T21:09:19.232Z",
+      "step": "document_text_export",
+      "message": "Wrote normalized extracted document text for read-only dashboard reference and troubleshooting.",
+      "patientName": "Christine Young",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "documentTextPath:C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T21-06-11-987Z\\run\\patients\\CHRISTINE_YOUNG__a89bc267c323fb6a\\document-text.json",
+        "documentCount:2",
+        "orderDocumentCount:1",
+        "hasAdmissionOrderText:true"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "[0] type=OASIS source=artifact_fallback effectiveTextSource=viewer_text_fallback textLength=1555",
+        "[0] rawExtractedTextSource=dom textSelectionReason=artifact_fallback_text",
+        "[0] domExtractionRejectedReasons=none",
+        "[0] preview=OASIS documents page false false false false false false 0 none 0 high:0 medium:0 low:0 false false true false true https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/file-uploads 📄 christine young referral.pdf | 📄 Young, Christine - HHO 03062026.jpg | 📄 christine young referral.pdf 📝 ✏️ 🗑️ 🔗 | 📄 Young, Christine - HHO 03062026.jpg 📝 ✏️ 🗑️ 🔗 true 📄 christine young referral.pdf 📝 ✏️ 🗑️ 🔗 dom viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PA",
+        "[1] type=ORDER source=printed_pdf effectiveTextSource=ocr_text textLength=19467",
+        "[1] rawExtractedTextSource=ocr textSelectionReason=preferred_ocr_for_scanned_image_pdf",
+        "[1] domExtractionRejectedReasons=none",
+        "[1] preview=Fax Server 2/20/2026 1:17:59 PM PAGE 1/011 Fax Server From: Fountain Hills Post Acute 16300 E. Keith McMahan Drive Printed Date: Feb 20, 2026 09:57:47 MT Page 1 of 1 Fountain Hills, AZ, 85268-8307 (480) 836-4800 Fax: (480) 836-4876 Ordered By: Prabhakaran, Vinay National Provider ID #1720004393 7975 N HAYDEN RD Scottsdale, AZ, 85258 (480) 836-4800 Resident: YOUNG, CHRISTINE E (41707) DOB: 05/30/1944 To: Prescriber Location: 300 Hall 305 A Prabhakaran, Vinay 7975 N HAYDEN RD Scottsdale, AZ, 85258"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-09T21:09:19.352Z",
+      "step": "diagnosis_code_extract",
+      "message": "Extracted 16 diagnosis code candidate(s) from admission/referral/OASIS text.",
+      "patientName": "Christine Young",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "icd10CodeCount:16",
+        "diagnosisMentionCount:18",
+        "diagnosisCodePairCount:16",
+        "extractionConfidence:medium",
+        "llmUsed:false"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "selectedOrderDocumentCount:1",
+        "bestOrderEffectiveTextSource:ocr_text",
+        "[0] type=ORDER effectiveTextSource=ocr_text source=printed_pdf textLength=19467 pdfType=scanned_image_pdf ocrSuccess=true ocrTextLength=19467",
+        "[1] type=OASIS effectiveTextSource=viewer_text_fallback source=artifact_fallback textLength=1555 pdfType=none ocrSuccess=false ocrTextLength=0",
+        "sourceDocumentCount:2",
+        "sourceCharacterCount:4648",
+        "sourceTextPreview:Diagnoses: PNEUMONIA, UNSPECIFIED ORGANISM(J18.9), ACUTE RESPIRATORY FAILURE WITH HYPOXIA(J96.01), HYPERTENSIVE HEART DISEASE WITH HEART FAILURE(|11.0), HYPOTHYROIDISM, UNSPECIFIED(E03.9), DEPRESSION, UNSPECIFIED(F32.A), MUSCLE WEAKNESS (GENERALIZED)(M62.. 4/011 81), DIFFICULTY IN WALKING, NOT ELSEWHERE CLASSIFIED(R26.2), ACUTE ON CHRONIC DIASTOLIC (CONGESTIVE) HEART FAILURE(150.33), ACUTE KIDNEY FAILURE, UNSPECIFIED(N17.9), METABOLIC ENCEPHALOPATHY(G93.41), CHRONIC ATRIAL FIBRILLATION, UNSPECIF",
+        "llmProvider:bedrock",
+        "llmUsed:false",
+        "llmModel:none",
+        "llmError:none",
+        "reasonForAdmission:none",
+        "diagnosisPhraseCount:18",
+        "diagnosisCodePairCount:16",
+        "icd10Codes:J18.9 | J96.01 | I11.0 | E03.9 | F32.A | M62 | R26.2 | I50.33 | N17.9 | G93.41 | I48.20 | R13.12 | R41.841 | K92.1 | I87.313 | M62.81",
+        "orderedServices:Physical Therapy | Occupational Therapy | Speech Therapy",
+        "documentType:Admission Order",
+        "extractionConfidence:medium",
+        "uncertainItems:diagnosis code pairs diagnosis invalid: MELENA",
+        "codeCategories:J18.9:Diseases of the respiratory system | J96.01:Diseases of the respiratory system | I11.0:Diseases of the circulatory system | E03.9:Endocrine, nutritional and metabolic diseases | F32.A:Mental and behavioural disorders | M62:Diseases of the musculoskeletal system and connective tissue | R26.2:Symptoms, signs and abnormal findings | I50.33:Diseases of the circulatory system | N17.9:Diseases of the genitourinary system | G93.41:Diseases of the nervous system | I48.20:Diseases of the circulatory system | R13.12:Symptoms, signs and abnormal findings | R41.841:Symptoms, signs and abnormal findings | K92.1:Diseases of the digestive system | I87.313:Diseases of the circulatory system | M62.81:Diseases of the musculoskeletal system and connective tissue"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-09T21:09:19.353Z",
+      "step": "shared_evidence_discovery_complete",
+      "message": "Shared evidence workflow completed and produced reusable extracted chart evidence.",
+      "patientName": "Christine Young",
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/intake/699c7efee396a2d53a90c49c/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/intake/699c7efee396a2d53a90c49c/calendar",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=coding",
+        "patientRunId=batch-2026-04-09T21-06-12-107Z-CHRISTINE_YOUNG__a89bc267c323fb6a",
+        "status=completed",
+        "chartUrl=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/intake/699c7efee396a2d53a90c49c/calendar",
+        "artifactCount=1",
+        "documentInventoryCount=1",
+        "extractedDocumentCount=2",
+        "diagnosisCodeCount=16"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-09T21:09:19.355Z",
+      "step": "coding_workflow_start",
+      "message": "Coding workflow branch started from the shared patient chart context.",
+      "patientName": "Christine Young",
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/intake/699c7efee396a2d53a90c49c/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/intake/699c7efee396a2d53a90c49c/calendar",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=coding",
+        "patientRunId=batch-2026-04-09T21-06-12-107Z-CHRISTINE_YOUNG__a89bc267c323fb6a",
+        "status=started",
+        "chartUrl=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/intake/699c7efee396a2d53a90c49c/calendar"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-09T21:09:19.398Z",
+      "step": "document_extraction",
+      "message": "Extracted 2 document(s) for QA evaluation.",
+      "patientName": "Christine Young",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "0:OASIS:viewer_text_fallback:artifact_fallback:1555",
+        "1:ORDER:ocr_text:printed_pdf:19467"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "[0] type=OASIS source=artifact_fallback effectiveTextSource=viewer_text_fallback portalLabel=OASIS documents page textLength=1555",
+        "[0] rawExtractedTextSource=dom textSelectionReason=artifact_fallback_text",
+        "[0] domExtractionRejectedReasons=none",
+        "[0] preview=OASIS documents page false false false false false false 0 none 0 high:0 medium:0 low:0 false false true false true https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/file-uploads 📄 christine young referral.pdf | 📄 Young, Christine - HHO 03062026.jpg | 📄 christine young referral.pdf 📝 ✏️ 🗑️ 🔗 | 📄 Young, Christine - HHO 03062026.jpg 📝 ✏️ 🗑️ 🔗 true 📄 christine young referral.pdf 📝 ✏️ 🗑️ 🔗 dom viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PA",
+        "[1] type=ORDER source=printed_pdf effectiveTextSource=ocr_text portalLabel=📄 christine young referral.pdf 📝 ✏️ 🗑️ 🔗 textLength=19467",
+        "[1] rawExtractedTextSource=ocr textSelectionReason=preferred_ocr_for_scanned_image_pdf",
+        "[1] domExtractionRejectedReasons=none",
+        "[1] preview=Fax Server 2/20/2026 1:17:59 PM PAGE 1/011 Fax Server From: Fountain Hills Post Acute 16300 E. Keith McMahan Drive Printed Date: Feb 20, 2026 09:57:47 MT Page 1 of 1 Fountain Hills, AZ, 85268-8307 (480) 836-4800 Fax: (480) 836-4876 Ordered By: Prabhakaran, Vinay National Provider ID #1720004393 7975 N HAYDEN RD Scottsdale, AZ, 85258 (480) 836-4800 Resident: YOUNG, CHRISTINE E (41707) DOB: 05/30/1944 To: Prescriber Location: 300 Hall 305 A Prabhakaran, Vinay 7975 N HAYDEN RD Scottsdale, AZ, 85258",
+        "[1] admissionReasonPrimary=none",
+        "[1] admissionReasonSnippets=none",
+        "[1] possibleIcd10Codes=I02 | I32 | I03 | J18.9 | J96.01 | R13.12 | I48.20 | I50.33 | G93.41 | I87.313 | R41.841 | M62.81 | R26.2 | E03.9 | F32.A | I11.0 | K92.1 | N17.9 | K14 | M62 | I00 | I12 | I00.0 | I50 | I25",
+        "[1] possibleIcd10CodeCount=25"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-09T21:09:19.398Z",
+      "step": "admission_document_extract",
+      "message": "Extracted 1 Admission Order/referral document text block(s).",
+      "patientName": "Christine Young",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "📄 christine young referral.pdf 📝 ✏️ 🗑️ 🔗:19467"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "[0] source=printed_pdf",
+        "[0] effectiveTextSource=ocr_text",
+        "[0] rawExtractedTextSource=ocr",
+        "[0] textSelectionReason=preferred_ocr_for_scanned_image_pdf",
+        "[0] domExtractionRejectedReasons=none",
+        "[0] preview=Fax Server 2/20/2026 1:17:59 PM PAGE 1/011 Fax Server From: Fountain Hills Post Acute 16300 E. Keith McMahan Drive Printed Date: Feb 20, 2026 09:57:47 MT Page 1 of 1 Fountain Hills, AZ, 85268-8307 (480) 836-4800 Fax: (480) 836-4876 Ordered By: Prabhakaran, Vinay National Provider ID #1720004393 7975 N HAYDEN RD Scottsdale, AZ, 85258 (480) 836-4800 Resident: YOUNG, CHRISTINE E (41707) DOB: 05/30/1944 To: Prescriber Location: 300 Hall 305 A Prabhakaran, Vinay 7975 N HAYDEN RD Scottsdale, AZ, 85258",
+        "[0] admissionReasonPrimary=none",
+        "[0] admissionReasonSnippets=none",
+        "[0] possibleIcd10Codes=I02 | I32 | I03 | J18.9 | J96.01 | R13.12 | I48.20 | I50.33 | G93.41 | I87.313 | R41.841 | M62.81 | R26.2 | E03.9 | F32.A | I11.0 | K92.1 | N17.9 | K14 | M62 | I00 | I12 | I00.0 | I50 | I25"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-09T21:09:19.398Z",
+      "step": "oasis_extract",
+      "message": "Extracted 1 OASIS document(s).",
+      "patientName": "Christine Young",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "OASIS documents page"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-09T21:09:19.398Z",
+      "step": "poc_extract",
+      "message": "No plan-of-care content was extracted.",
+      "patientName": "Christine Young",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [],
+      "missing": [
+        "POC"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-09T21:09:19.398Z",
+      "step": "visit_note_extract",
+      "message": "No visit-note content was extracted.",
+      "patientName": "Christine Young",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [],
+      "missing": [
+        "VISIT_NOTE"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-09T21:09:19.398Z",
+      "step": "technical_review_extract",
+      "message": "Aggregated technical-review evidence from document inventory and extracted content.",
+      "patientName": "Christine Young",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "orders:1",
+        "summaries:0",
+        "supervisory:0",
+        "communication:0",
+        "missed_visits:0",
+        "sn_visits:0"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Detected 1 order document candidate(s)."
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-09T21:09:19.406Z",
+      "step": "coding_input_export",
+      "message": "Wrote read-only diagnosis reference output for dashboard consumption.",
+      "patientName": "Christine Young",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "codingInputPath:C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T21-06-11-987Z\\run\\patients\\CHRISTINE_YOUNG__a89bc267c323fb6a\\coding-input.json",
+        "diagnosisCount:10",
+        "primaryDiagnosisSelected:J18.9 PNEUMONIA, UNSPECIFIED ORGANISM",
+        "otherDiagnosisCount:9",
+        "codeConfidenceSummary:high:10 medium:0 low:0",
+        "noteCount:1",
+        "primaryDiagnosisCode:J18.9"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "primaryDiagnosisDescription:PNEUMONIA, UNSPECIFIED ORGANISM",
+        "suggestedOnsetType:exacerbate",
+        "suggestedSeverity:3",
+        "comorbidityFlags:{\"pvd_pad\":false,\"diabetes\":false,\"none\":true}"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-09T21:09:19.411Z",
+      "step": "qa_summary",
+      "message": "QA summary computed with overallStatus=BLOCKED.",
+      "patientName": "Christine Young",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "timing:PASS",
+        "coding:NEEDS_REVIEW",
+        "oasis:FAIL",
+        "poc:MISSING",
+        "visit_notes:MISSING",
+        "technical_review:MISSING",
+        "final_check:FAIL"
+      ],
+      "missing": [
+        "Medical necessity is stated",
+        "Homebound reason is stated",
+        "Health assessment is documented",
+        "Skilled interventions during the OASIS visit are documented",
+        "Plan of care content extracted",
+        "POC QA completed in workbook",
+        "Diagnoses or codes are present in the plan of care",
+        "Interventions, goals, and frequency are present in the plan of care",
+        "Conditions or exacerbations are reflected in the plan of care",
+        "Visit note content extracted",
+        "Visit notes review completed in workbook",
+        "Skilled need is clearly documented",
+        "Interventions performed are specific and detailed",
+        "Patient response to interventions is documented",
+        "Progress toward goals is noted",
+        "Vitals and focused assessment are documented",
+        "Medication review is documented",
+        "Changes in condition are clearly reported and addressed",
+        "Documentation supports billed services",
+        "Documentation remains consistent with OASIS and diagnoses",
+        "SN visits were identified from visit-note content",
+        "Applicable disciplines were detected"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Medical necessity is stated",
+        "Homebound reason is stated",
+        "Health assessment is documented",
+        "Skilled interventions during the OASIS visit are documented",
+        "Plan of care content extracted",
+        "POC QA completed in workbook",
+        "Diagnoses or codes are present in the plan of care",
+        "Interventions, goals, and frequency are present in the plan of care",
+        "Conditions or exacerbations are reflected in the plan of care",
+        "Visit note content extracted",
+        "Visit notes review completed in workbook",
+        "Skilled need is clearly documented",
+        "Interventions performed are specific and detailed",
+        "Patient response to interventions is documented",
+        "Progress toward goals is noted",
+        "Vitals and focused assessment are documented",
+        "Medication review is documented",
+        "Changes in condition are clearly reported and addressed",
+        "Documentation supports billed services",
+        "Documentation remains consistent with OASIS and diagnoses",
+        "SN visits were identified from visit-note content",
+        "Applicable disciplines were detected"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-09T21:09:19.411Z",
+      "step": "coding_workflow_complete",
+      "message": "Coding workflow branch completed.",
+      "patientName": "Christine Young",
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/intake/699c7efee396a2d53a90c49c/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/intake/699c7efee396a2d53a90c49c/calendar",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=coding",
+        "patientRunId=batch-2026-04-09T21-06-12-107Z-CHRISTINE_YOUNG__a89bc267c323fb6a",
+        "status=completed",
+        "chartUrl=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/intake/699c7efee396a2d53a90c49c/calendar"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-09T21:09:19.415Z",
+      "step": "coding_input_export",
+      "message": "Wrote fallback coding-input.json for downstream read-only diagnosis consumers.",
+      "patientName": "Christine Young",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "codingInputPath:C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T21-06-11-987Z\\run\\patients\\CHRISTINE_YOUNG__a89bc267c323fb6a\\coding-input.json",
+        "diagnosisCount:0",
+        "primaryDiagnosisSelected:none",
+        "otherDiagnosisCount:0",
+        "codeConfidenceSummary:high:0 medium:0 low:0"
+      ],
+      "missing": [
+        "primary diagnosis"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "suggestedOnsetType:onset",
+        "matchStatus:EXACT"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    }
+  ],
+  "notes": [
+    "Document inventory exported: C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T21-06-11-987Z\\run\\patients\\CHRISTINE_YOUNG__a89bc267c323fb6a\\document-inventory.json",
+    "Document text exported: C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T21-06-11-987Z\\run\\patients\\CHRISTINE_YOUNG__a89bc267c323fb6a\\document-text.json",
+    "Document inventory exported: C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T21-06-11-987Z\\run\\patients\\CHRISTINE_YOUNG__a89bc267c323fb6a\\document-inventory.json",
+    "Document text exported: C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T21-06-11-987Z\\run\\patients\\CHRISTINE_YOUNG__a89bc267c323fb6a\\document-text.json",
+    "Extracted 2 document(s) for QA evaluation.",
+    "Coding input exported: C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T21-06-11-987Z\\run\\patients\\CHRISTINE_YOUNG__a89bc267c323fb6a\\coding-input.json",
+    "Diagnosis code candidates: J18.9, J96.01, I11.0, E03.9, F32.A, M62, R26.2, I50.33, N17.9, G93.41, I48.20, R13.12, R41.841, K92.1, I87.313, M62.81",
+    "Fallback coding input exported: C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T21-06-11-987Z\\run\\patients\\CHRISTINE_YOUNG__a89bc267c323fb6a\\coding-input.json"
+  ]
+}

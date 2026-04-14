@@ -4,18 +4,14 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { getRun } from "../../../lib/api";
-import { batchStatusClass, formatDaysLeft } from "../../../lib/qa";
-import type { DiagnosisEntry, RunDetail } from "../../../lib/types";
-
-function renderDiagnosisLabel(input: DiagnosisEntry): string {
-  const code = input.code?.trim() || "No code";
-  const description = input.description?.trim() || "No description";
-  return `${code} - ${description}`;
-}
-
-function formatTimestamp(value: string | null): string {
-  return value ? new Date(value).toLocaleString() : "Not available";
-}
+import {
+  batchStatusClass,
+  discrepancyBadgeClass,
+  discrepancyLabel,
+  formatDaysLeft,
+  formatTimestamp,
+} from "../../../lib/qa";
+import type { RunDetail } from "../../../lib/types";
 
 export default function RunDetailPage() {
   const params = useParams<{ runId: string }>();
@@ -58,12 +54,12 @@ export default function RunDetailPage() {
       dueNowOrOverdue:
         run?.patients.filter((patient) => (patient.daysLeftBeforeOasisDueDate ?? Number.MAX_SAFE_INTEGER) <= 0)
           .length ?? 0,
-      missingDaysLeft:
-        run?.patients.filter((patient) => patient.daysLeftBeforeOasisDueDate === null).length ?? 0,
-      withPrimaryDiagnosis:
-        run?.patients.filter((patient) => patient.primaryDiagnosis !== null).length ?? 0,
-      withOtherDiagnoses:
-        run?.patients.filter((patient) => patient.otherDiagnoses.length > 0).length ?? 0,
+      referralDataReady:
+        run?.patients.filter((patient) => patient.referralQa.referralDataAvailable).length ?? 0,
+      redDiscrepancies:
+        run?.patients.filter((patient) => patient.referralQa.discrepancyRating === "red").length ?? 0,
+      yellowDiscrepancies:
+        run?.patients.filter((patient) => patient.referralQa.discrepancyRating === "yellow").length ?? 0,
     }),
     [run],
   );
@@ -73,11 +69,11 @@ export default function RunDetailPage() {
       <div className="page-header">
         <div>
           <Link className="link" href="/runs">
-            Back to batches
+            Back to runs
           </Link>
           <h1 className="page-title">{runId}</h1>
           <p className="page-subtitle">
-            Read-only patient diagnosis reference for QA staff.
+            Patient queue for referral-vs-portal review. Open a patient to see what the referral supports, what the portal is missing, and where human review is still required.
           </p>
           {run ? <p className="muted">Active subsidiary: {run.subsidiaryName}</p> : null}
         </div>
@@ -89,13 +85,13 @@ export default function RunDetailPage() {
       </div>
 
       {error ? <div className="badge danger">{error}</div> : null}
-      {!run ? <div className="panel muted">Loading batch...</div> : null}
+      {!run ? <div className="panel muted">Loading run...</div> : null}
 
       {run ? (
         <>
           <section className="grid four">
             <div className="panel">
-              <div className="metric-label">Batch Status</div>
+                <div className="metric-label">Batch Status</div>
               <div className="metric-value">
                 <span className={batchStatusClass(run.status)}>{run.status}</span>
               </div>
@@ -104,17 +100,21 @@ export default function RunDetailPage() {
             <div className="panel">
               <div className="metric-label">Days Left Attention</div>
               <div className="metric-value">{metrics.dueNowOrOverdue}</div>
-              <div className="muted">{metrics.missingDaysLeft} patients missing workbook timing.</div>
+              <div className="muted">Patients due now or overdue for OASIS timing.</div>
             </div>
             <div className="panel">
-              <div className="metric-label">Primary Diagnoses</div>
-              <div className="metric-value">{metrics.withPrimaryDiagnosis}</div>
-              <div className="muted">Patients with a primary diagnosis extracted.</div>
+              <div className="metric-label">Referral Data Acquired</div>
+              <div className="metric-value">{metrics.referralDataReady}</div>
+              <div className="muted">Patients with usable referral QA data available.</div>
             </div>
             <div className="panel">
-              <div className="metric-label">Other Diagnoses</div>
-              <div className="metric-value">{metrics.withOtherDiagnoses}</div>
-              <div className="muted">Patients with visible secondary diagnoses.</div>
+              <div className="metric-label">Discrepancy Queue</div>
+              <div className="metric-value">
+                {metrics.redDiscrepancies + metrics.yellowDiscrepancies}
+              </div>
+              <div className="muted">
+                {metrics.redDiscrepancies} high-risk, {metrics.yellowDiscrepancies} moderate-risk patients.
+              </div>
             </div>
           </section>
 
@@ -139,7 +139,7 @@ export default function RunDetailPage() {
                 {run.patientStatusSummary.ready} ready
               </div>
               <div className="muted">
-                {run.patientStatusSummary.blocked + run.patientStatusSummary.failed + run.patientStatusSummary.needsManualReview} patients need attention
+                {run.patientStatusSummary.blocked + run.patientStatusSummary.failed + run.patientStatusSummary.needsManualReview} backend processing exceptions
               </div>
             </div>
           </section>
@@ -149,7 +149,7 @@ export default function RunDetailPage() {
               <div>
                 <h2>Patients</h2>
                 <p className="page-subtitle">
-                  Patient name, workbook timing, diagnosis reference data, and read-only run timestamps.
+                  Patient-level triage for comparison quality, portal gaps, and referral-backed correction candidates.
                 </p>
               </div>
             </div>
@@ -159,11 +159,10 @@ export default function RunDetailPage() {
                 <tr>
                   <th>Patient Name</th>
                   <th>Days Left</th>
-                  <th>Primary Diagnosis</th>
-                  <th>Other Diagnoses</th>
-                  <th>Last Run</th>
-                  <th>Next Scheduled</th>
-                  <th>Status</th>
+                  <th>Referral Data</th>
+                  <th>QA Status</th>
+                  <th>Discrepancies</th>
+                  <th>Open</th>
                 </tr>
               </thead>
               <tbody>
@@ -177,26 +176,48 @@ export default function RunDetailPage() {
                     </td>
                     <td>{formatDaysLeft(patient.daysLeftBeforeOasisDueDate)}</td>
                     <td>
-                      {patient.primaryDiagnosis ? (
-                        renderDiagnosisLabel(patient.primaryDiagnosis)
-                      ) : (
-                        <span className="muted">No primary diagnosis</span>
-                      )}
+                      <span
+                        className={
+                          patient.referralQa.referralDataAvailable &&
+                          patient.referralQa.extractionUsabilityStatus === "usable"
+                            ? "badge success"
+                            : patient.referralQa.referralDataAvailable
+                              ? "badge warning"
+                              : "badge danger"
+                        }
+                      >
+                        {patient.referralQa.referralDataAvailable
+                          ? patient.referralQa.extractionUsabilityStatus === "usable"
+                            ? "Acquired"
+                            : patient.referralQa.extractionUsabilityStatus
+                          : "Missing"}
+                      </span>
+                      <div className="muted">
+                        {patient.referralQa.availableSectionCount}/{patient.referralQa.totalSectionCount} sections organized
+                      </div>
                     </td>
                     <td>
-                      {patient.otherDiagnoses.length > 0 ? (
-                        patient.otherDiagnoses.map((diagnosis, index) => (
-                          <div className="muted" key={`${patient.workItemId}:other:${index}`}>
-                            {renderDiagnosisLabel(diagnosis)}
-                          </div>
-                        ))
-                      ) : (
-                        <span className="muted">No other diagnoses</span>
-                      )}
+                      <div>{patient.referralQa.qaStatus}</div>
+                      <div className="muted">
+                        {patient.batchStatusSummary} | Updated {formatTimestamp(patient.lastUpdatedAt)}
+                      </div>
                     </td>
-                    <td>{formatTimestamp(patient.lastRunAt)}</td>
-                    <td>{patient.rerunEnabled ? formatTimestamp(patient.nextScheduledRunAt) : "Disabled"}</td>
-                    <td>{patient.batchStatusSummary}</td>
+                    <td>
+                      <span className={discrepancyBadgeClass(patient.referralQa.discrepancyRating)}>
+                        {discrepancyLabel(patient.referralQa.discrepancyRating)}
+                      </span>
+                      <div className="muted">
+                        {patient.referralQa.discrepancyCounts.total} flagged | {patient.referralQa.discrepancyCounts.critical} critical
+                      </div>
+                    </td>
+                    <td className="table-action-cell">
+                      <Link
+                        className="button secondary compact"
+                        href={`/runs/${run.id}/patients/${patient.workItemId}`}
+                      >
+                        Open
+                      </Link>
+                    </td>
                   </tr>
                 ))}
               </tbody>

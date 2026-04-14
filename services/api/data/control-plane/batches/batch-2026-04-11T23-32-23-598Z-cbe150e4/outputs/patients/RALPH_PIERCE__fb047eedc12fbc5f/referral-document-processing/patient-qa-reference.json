@@ -1,0 +1,4076 @@
+{
+  "patientContext": {
+    "patientId": "RALPH_PIERCE__fb047eedc12fbc5f",
+    "patientName": "Ralph Pierce",
+    "dob": null,
+    "socDate": null,
+    "referralDate": null
+  },
+  "fieldRegistry": [
+    {
+      "fieldKey": "primary_reason_for_home_health_medical_necessity",
+      "label": "Primary Reason For Home Health / Medical Necessity",
+      "groupKey": "medical_necessity_and_homebound",
+      "sectionKey": "patient_summary_and_clinical_narrative",
+      "oasisItemId": null,
+      "fieldType": "narrative",
+      "controlType": "ai_narrative",
+      "qaPriority": "critical",
+      "dashboardVisibility": "default",
+      "reviewMode": "qa_readback_and_confirm",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": false,
+      "narrativeField": true,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "admit_reason_to_home_health",
+      "label": "Admit Reason To Home Health",
+      "groupKey": "medical_necessity_and_homebound",
+      "sectionKey": "patient_summary_and_clinical_narrative",
+      "oasisItemId": null,
+      "fieldType": "narrative",
+      "controlType": "ai_narrative",
+      "qaPriority": "critical",
+      "dashboardVisibility": "default",
+      "reviewMode": "qa_readback_and_confirm",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": false,
+      "narrativeField": true,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "homebound_narrative",
+      "label": "Homebound Narrative",
+      "groupKey": "medical_necessity_and_homebound",
+      "sectionKey": "functional_assessment_mobility_and_musculoskeletal",
+      "oasisItemId": null,
+      "fieldType": "narrative",
+      "controlType": "ai_narrative",
+      "qaPriority": "critical",
+      "dashboardVisibility": "default",
+      "reviewMode": "qa_readback_and_confirm",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": false,
+      "narrativeField": true,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "homebound_supporting_factors",
+      "label": "Homebound Supporting Factors",
+      "groupKey": "medical_necessity_and_homebound",
+      "sectionKey": "functional_assessment_mobility_and_musculoskeletal",
+      "oasisItemId": null,
+      "fieldType": "multi_select",
+      "controlType": "checkbox",
+      "qaPriority": "high",
+      "dashboardVisibility": "default",
+      "reviewMode": "compare_referral_to_chart",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": false,
+      "narrativeField": false,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "recent_hospitalization_discharge_date",
+      "label": "Recent Hospitalization Discharge Date",
+      "groupKey": "medical_necessity_and_homebound",
+      "sectionKey": "administrative_information",
+      "oasisItemId": null,
+      "fieldType": "date",
+      "controlType": "input",
+      "qaPriority": "high",
+      "dashboardVisibility": "default",
+      "reviewMode": "compare_referral_to_chart",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": false,
+      "narrativeField": false,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "recent_hospitalization_facility",
+      "label": "Recent Hospitalization Facility",
+      "groupKey": "medical_necessity_and_homebound",
+      "sectionKey": "administrative_information",
+      "oasisItemId": null,
+      "fieldType": "text",
+      "controlType": "input",
+      "qaPriority": "high",
+      "dashboardVisibility": "default",
+      "reviewMode": "compare_referral_to_chart",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": false,
+      "narrativeField": false,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "diagnosis_candidates",
+      "label": "Diagnosis Candidates",
+      "groupKey": "diagnosis_and_coding",
+      "sectionKey": "active_diagnoses",
+      "oasisItemId": null,
+      "fieldType": "diagnosis_row",
+      "controlType": "table",
+      "qaPriority": "critical",
+      "dashboardVisibility": "default",
+      "reviewMode": "coding_review_required",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": true,
+      "narrativeField": false,
+      "medicationField": false,
+      "diagnosisField": true,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "primary_diagnosis",
+      "label": "Primary Diagnosis",
+      "groupKey": "diagnosis_and_coding",
+      "sectionKey": "active_diagnoses",
+      "oasisItemId": "M1021",
+      "fieldType": "diagnosis_row",
+      "controlType": "table",
+      "qaPriority": "critical",
+      "dashboardVisibility": "default",
+      "reviewMode": "coding_review_required",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": true,
+      "narrativeField": false,
+      "medicationField": false,
+      "diagnosisField": true,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "secondary_diagnoses",
+      "label": "Secondary Diagnoses",
+      "groupKey": "diagnosis_and_coding",
+      "sectionKey": "active_diagnoses",
+      "oasisItemId": "M1023",
+      "fieldType": "diagnosis_row",
+      "controlType": "table",
+      "qaPriority": "high",
+      "dashboardVisibility": "default",
+      "reviewMode": "coding_review_required",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": true,
+      "narrativeField": false,
+      "medicationField": false,
+      "diagnosisField": true,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "diagnosis_supporting_evidence",
+      "label": "Diagnosis Supporting Evidence",
+      "groupKey": "diagnosis_and_coding",
+      "sectionKey": "active_diagnoses",
+      "oasisItemId": null,
+      "fieldType": "narrative",
+      "controlType": "reference_only",
+      "qaPriority": "high",
+      "dashboardVisibility": "default",
+      "reviewMode": "coding_review_required",
+      "canInferFromReferral": false,
+      "compareAgainstChart": false,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": true,
+      "narrativeField": true,
+      "medicationField": false,
+      "diagnosisField": true,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "coding_escalation_flags",
+      "label": "Coding Escalation Flags",
+      "groupKey": "diagnosis_and_coding",
+      "sectionKey": "active_diagnoses",
+      "oasisItemId": null,
+      "fieldType": "array",
+      "controlType": "reference_only",
+      "qaPriority": "high",
+      "dashboardVisibility": "default",
+      "reviewMode": "coding_review_required",
+      "canInferFromReferral": false,
+      "compareAgainstChart": false,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": true,
+      "narrativeField": false,
+      "medicationField": false,
+      "diagnosisField": true,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "medication_list",
+      "label": "Medication List",
+      "groupKey": "medications_allergies_and_special_treatments",
+      "sectionKey": "medication_allergies_and_injectables",
+      "oasisItemId": null,
+      "fieldType": "medication_row",
+      "controlType": "table",
+      "qaPriority": "critical",
+      "dashboardVisibility": "default",
+      "reviewMode": "compare_referral_to_chart",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": false,
+      "narrativeField": false,
+      "medicationField": true,
+      "diagnosisField": false,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "allergy_list",
+      "label": "Allergies",
+      "groupKey": "medications_allergies_and_special_treatments",
+      "sectionKey": "medication_allergies_and_injectables",
+      "oasisItemId": null,
+      "fieldType": "array",
+      "controlType": "table",
+      "qaPriority": "critical",
+      "dashboardVisibility": "default",
+      "reviewMode": "compare_referral_to_chart",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": false,
+      "narrativeField": false,
+      "medicationField": true,
+      "diagnosisField": false,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "special_treatments_o0110",
+      "label": "Special Treatments / Procedures / Programs",
+      "groupKey": "medications_allergies_and_special_treatments",
+      "sectionKey": "medication_allergies_and_injectables",
+      "oasisItemId": "O0110",
+      "fieldType": "multi_select",
+      "controlType": "checkbox",
+      "qaPriority": "critical",
+      "dashboardVisibility": "default",
+      "reviewMode": "compare_referral_to_chart",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": false,
+      "narrativeField": false,
+      "medicationField": true,
+      "diagnosisField": false,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "injectable_medications",
+      "label": "Injectable Medications",
+      "groupKey": "medications_allergies_and_special_treatments",
+      "sectionKey": "medication_allergies_and_injectables",
+      "oasisItemId": null,
+      "fieldType": "medication_row",
+      "controlType": "table",
+      "qaPriority": "high",
+      "dashboardVisibility": "default",
+      "reviewMode": "compare_referral_to_chart",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": false,
+      "narrativeField": false,
+      "medicationField": true,
+      "diagnosisField": false,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "high_risk_medication_notes",
+      "label": "High-Risk Medication Notes",
+      "groupKey": "medications_allergies_and_special_treatments",
+      "sectionKey": "medication_allergies_and_injectables",
+      "oasisItemId": null,
+      "fieldType": "narrative",
+      "controlType": "textarea",
+      "qaPriority": "high",
+      "dashboardVisibility": "default",
+      "reviewMode": "qa_readback_and_confirm",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": false,
+      "narrativeField": true,
+      "medicationField": true,
+      "diagnosisField": false,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "prior_functioning",
+      "label": "Prior Functioning",
+      "groupKey": "functional_and_therapy_status",
+      "sectionKey": "functional_assessment_mobility_and_musculoskeletal",
+      "oasisItemId": "GG0100",
+      "fieldType": "score",
+      "controlType": "matrix",
+      "qaPriority": "high",
+      "dashboardVisibility": "default",
+      "reviewMode": "compare_referral_to_chart",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": false,
+      "narrativeField": false,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "gg_self_care",
+      "label": "GG Self Care",
+      "groupKey": "functional_and_therapy_status",
+      "sectionKey": "functional_assessment_self_care",
+      "oasisItemId": "GG0130",
+      "fieldType": "score",
+      "controlType": "matrix",
+      "qaPriority": "high",
+      "dashboardVisibility": "default",
+      "reviewMode": "compare_referral_to_chart",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": false,
+      "narrativeField": false,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "gg_mobility",
+      "label": "GG Mobility",
+      "groupKey": "functional_and_therapy_status",
+      "sectionKey": "functional_assessment_mobility_and_musculoskeletal",
+      "oasisItemId": "GG0170",
+      "fieldType": "score",
+      "controlType": "matrix",
+      "qaPriority": "high",
+      "dashboardVisibility": "default",
+      "reviewMode": "compare_referral_to_chart",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": false,
+      "narrativeField": false,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "functional_limitations",
+      "label": "Functional Limitations",
+      "groupKey": "functional_and_therapy_status",
+      "sectionKey": "functional_assessment_mobility_and_musculoskeletal",
+      "oasisItemId": null,
+      "fieldType": "multi_select",
+      "controlType": "checkbox",
+      "qaPriority": "high",
+      "dashboardVisibility": "default",
+      "reviewMode": "compare_referral_to_chart",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": false,
+      "narrativeField": false,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "therapy_need",
+      "label": "Therapy Need",
+      "groupKey": "functional_and_therapy_status",
+      "sectionKey": "plan_of_care_and_physical_therapy_evaluation",
+      "oasisItemId": null,
+      "fieldType": "narrative",
+      "controlType": "ai_narrative",
+      "qaPriority": "high",
+      "dashboardVisibility": "default",
+      "reviewMode": "qa_readback_and_confirm",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": false,
+      "narrativeField": true,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "discipline_frequencies",
+      "label": "Discipline Frequencies",
+      "groupKey": "functional_and_therapy_status",
+      "sectionKey": "plan_of_care_and_physical_therapy_evaluation",
+      "oasisItemId": null,
+      "fieldType": "array",
+      "controlType": "table",
+      "qaPriority": "high",
+      "dashboardVisibility": "default",
+      "reviewMode": "qa_readback_and_confirm",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": false,
+      "narrativeField": false,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "patient_caregiver_goals",
+      "label": "Patient / Caregiver Goals",
+      "groupKey": "functional_and_therapy_status",
+      "sectionKey": "care_plan_problems_goals_interventions",
+      "oasisItemId": null,
+      "fieldType": "narrative",
+      "controlType": "textarea",
+      "qaPriority": "medium",
+      "dashboardVisibility": "expanded",
+      "reviewMode": "qa_readback_and_confirm",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": false,
+      "narrativeField": true,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "plan_for_next_visit",
+      "label": "Plan For Next Visit",
+      "groupKey": "functional_and_therapy_status",
+      "sectionKey": "care_plan_problems_goals_interventions",
+      "oasisItemId": null,
+      "fieldType": "narrative",
+      "controlType": "textarea",
+      "qaPriority": "medium",
+      "dashboardVisibility": "expanded",
+      "reviewMode": "qa_readback_and_confirm",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": false,
+      "narrativeField": true,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "neurological_status",
+      "label": "Neurological Status",
+      "groupKey": "symptom_and_body_system_review",
+      "sectionKey": "neurological_head_mood_eyes_ears",
+      "oasisItemId": null,
+      "fieldType": "multi_select",
+      "controlType": "checkbox",
+      "qaPriority": "high",
+      "dashboardVisibility": "default",
+      "reviewMode": "chart_completeness_check",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": false,
+      "narrativeField": false,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "eyes_ears_status",
+      "label": "Eyes & Ears Status",
+      "groupKey": "symptom_and_body_system_review",
+      "sectionKey": "neurological_head_mood_eyes_ears",
+      "oasisItemId": null,
+      "fieldType": "multi_select",
+      "controlType": "checkbox",
+      "qaPriority": "medium",
+      "dashboardVisibility": "expanded",
+      "reviewMode": "chart_completeness_check",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": false,
+      "narrativeField": false,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "cardiovascular_status",
+      "label": "Cardiovascular Status",
+      "groupKey": "symptom_and_body_system_review",
+      "sectionKey": "cardiopulmonary_chest_thorax",
+      "oasisItemId": null,
+      "fieldType": "multi_select",
+      "controlType": "checkbox",
+      "qaPriority": "medium",
+      "dashboardVisibility": "expanded",
+      "reviewMode": "chart_completeness_check",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": false,
+      "narrativeField": false,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "respiratory_status",
+      "label": "Respiratory Status",
+      "groupKey": "symptom_and_body_system_review",
+      "sectionKey": "cardiopulmonary_chest_thorax",
+      "oasisItemId": "M1400",
+      "fieldType": "multi_select",
+      "controlType": "checkbox",
+      "qaPriority": "critical",
+      "dashboardVisibility": "default",
+      "reviewMode": "chart_completeness_check",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": false,
+      "narrativeField": false,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "gastrointestinal_status",
+      "label": "Gastrointestinal Status",
+      "groupKey": "symptom_and_body_system_review",
+      "sectionKey": "gastrointestinal_and_genitourinary_assessment",
+      "oasisItemId": null,
+      "fieldType": "multi_select",
+      "controlType": "checkbox",
+      "qaPriority": "high",
+      "dashboardVisibility": "default",
+      "reviewMode": "chart_completeness_check",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": false,
+      "narrativeField": false,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "genitourinary_status",
+      "label": "Genitourinary Status",
+      "groupKey": "symptom_and_body_system_review",
+      "sectionKey": "gastrointestinal_and_genitourinary_assessment",
+      "oasisItemId": null,
+      "fieldType": "multi_select",
+      "controlType": "checkbox",
+      "qaPriority": "high",
+      "dashboardVisibility": "default",
+      "reviewMode": "chart_completeness_check",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": false,
+      "narrativeField": false,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "integumentary_wound_status",
+      "label": "Integumentary / Wound Status",
+      "groupKey": "symptom_and_body_system_review",
+      "sectionKey": "integumentary_skin_and_wound",
+      "oasisItemId": null,
+      "fieldType": "narrative",
+      "controlType": "textarea",
+      "qaPriority": "critical",
+      "dashboardVisibility": "default",
+      "reviewMode": "qa_readback_and_confirm",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": false,
+      "narrativeField": true,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "pain_assessment_narrative",
+      "label": "Pain Assessment Narrative",
+      "groupKey": "symptom_and_body_system_review",
+      "sectionKey": "vital_signs_and_pain_assessment",
+      "oasisItemId": null,
+      "fieldType": "narrative",
+      "controlType": "textarea",
+      "qaPriority": "high",
+      "dashboardVisibility": "default",
+      "reviewMode": "qa_readback_and_confirm",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": false,
+      "narrativeField": true,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "emotional_behavioral_status",
+      "label": "Emotional / Behavioral Status",
+      "groupKey": "symptom_and_body_system_review",
+      "sectionKey": "neurological_head_mood_eyes_ears",
+      "oasisItemId": null,
+      "fieldType": "multi_select",
+      "controlType": "checkbox",
+      "qaPriority": "high",
+      "dashboardVisibility": "default",
+      "reviewMode": "chart_completeness_check",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": false,
+      "narrativeField": false,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "mahc10_fall_risk",
+      "label": "MAHC 10 Fall Risk",
+      "groupKey": "risk_and_safety_assessments",
+      "sectionKey": "safety_and_risk_assessment",
+      "oasisItemId": null,
+      "fieldType": "score",
+      "controlType": "matrix",
+      "qaPriority": "high",
+      "dashboardVisibility": "default",
+      "reviewMode": "chart_completeness_check",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": false,
+      "narrativeField": false,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "norton_scale",
+      "label": "Norton Scale",
+      "groupKey": "risk_and_safety_assessments",
+      "sectionKey": "integumentary_skin_and_wound",
+      "oasisItemId": null,
+      "fieldType": "score",
+      "controlType": "matrix",
+      "qaPriority": "high",
+      "dashboardVisibility": "default",
+      "reviewMode": "chart_completeness_check",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": false,
+      "narrativeField": false,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "wound_risk_review",
+      "label": "Wound / Pressure Risk Review",
+      "groupKey": "risk_and_safety_assessments",
+      "sectionKey": "integumentary_skin_and_wound",
+      "oasisItemId": null,
+      "fieldType": "narrative",
+      "controlType": "textarea",
+      "qaPriority": "high",
+      "dashboardVisibility": "default",
+      "reviewMode": "qa_readback_and_confirm",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": false,
+      "narrativeField": true,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "fall_risk_narrative",
+      "label": "Fall Risk Narrative",
+      "groupKey": "risk_and_safety_assessments",
+      "sectionKey": "safety_and_risk_assessment",
+      "oasisItemId": null,
+      "fieldType": "narrative",
+      "controlType": "textarea",
+      "qaPriority": "high",
+      "dashboardVisibility": "default",
+      "reviewMode": "qa_readback_and_confirm",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": false,
+      "narrativeField": true,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "hospitalization_risk_summary",
+      "label": "Hospitalization Risk Summary",
+      "groupKey": "risk_and_safety_assessments",
+      "sectionKey": "safety_and_risk_assessment",
+      "oasisItemId": null,
+      "fieldType": "narrative",
+      "controlType": "textarea",
+      "qaPriority": "medium",
+      "dashboardVisibility": "expanded",
+      "reviewMode": "qa_readback_and_confirm",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": false,
+      "narrativeField": true,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "patient_summary_narrative",
+      "label": "Patient Summary / Clinical Narrative",
+      "groupKey": "care_plan_and_coordination",
+      "sectionKey": "patient_summary_and_clinical_narrative",
+      "oasisItemId": null,
+      "fieldType": "narrative",
+      "controlType": "ai_narrative",
+      "qaPriority": "high",
+      "dashboardVisibility": "default",
+      "reviewMode": "qa_readback_and_confirm",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": false,
+      "narrativeField": true,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "skilled_interventions",
+      "label": "Skilled Interventions",
+      "groupKey": "care_plan_and_coordination",
+      "sectionKey": "plan_of_care_and_physical_therapy_evaluation",
+      "oasisItemId": null,
+      "fieldType": "narrative",
+      "controlType": "ai_narrative",
+      "qaPriority": "high",
+      "dashboardVisibility": "default",
+      "reviewMode": "qa_readback_and_confirm",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": false,
+      "narrativeField": true,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "care_plan_problems_goals_interventions",
+      "label": "Care Plan Problems / Goals / Interventions",
+      "groupKey": "care_plan_and_coordination",
+      "sectionKey": "care_plan_problems_goals_interventions",
+      "oasisItemId": null,
+      "fieldType": "array",
+      "controlType": "table",
+      "qaPriority": "high",
+      "dashboardVisibility": "default",
+      "reviewMode": "qa_readback_and_confirm",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": false,
+      "narrativeField": false,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "patient_coordination_orders",
+      "label": "Patient Coordination Orders",
+      "groupKey": "care_plan_and_coordination",
+      "sectionKey": "plan_of_care_and_physical_therapy_evaluation",
+      "oasisItemId": null,
+      "fieldType": "array",
+      "controlType": "table",
+      "qaPriority": "medium",
+      "dashboardVisibility": "expanded",
+      "reviewMode": "qa_readback_and_confirm",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": false,
+      "narrativeField": false,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "past_medical_history",
+      "label": "Past Medical History",
+      "groupKey": "supplementals_and_history",
+      "sectionKey": "patient_summary_and_clinical_narrative",
+      "oasisItemId": null,
+      "fieldType": "array",
+      "controlType": "table",
+      "qaPriority": "high",
+      "dashboardVisibility": "default",
+      "reviewMode": "compare_referral_to_chart",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": false,
+      "narrativeField": false,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "living_situation",
+      "label": "Living Situation",
+      "groupKey": "supplementals_and_history",
+      "sectionKey": "administrative_information",
+      "oasisItemId": null,
+      "fieldType": "text",
+      "controlType": "input",
+      "qaPriority": "high",
+      "dashboardVisibility": "default",
+      "reviewMode": "compare_referral_to_chart",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": false,
+      "requiresCodingTeamReview": false,
+      "narrativeField": false,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "caregiver_name",
+      "label": "Caregiver Name",
+      "groupKey": "supplementals_and_history",
+      "sectionKey": "administrative_information",
+      "oasisItemId": null,
+      "fieldType": "text",
+      "controlType": "input",
+      "qaPriority": "medium",
+      "dashboardVisibility": "expanded",
+      "reviewMode": "compare_referral_to_chart",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": false,
+      "requiresCodingTeamReview": false,
+      "narrativeField": false,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "caregiver_relationship",
+      "label": "Caregiver Relationship",
+      "groupKey": "supplementals_and_history",
+      "sectionKey": "administrative_information",
+      "oasisItemId": null,
+      "fieldType": "single_select",
+      "controlType": "dropdown",
+      "qaPriority": "medium",
+      "dashboardVisibility": "expanded",
+      "reviewMode": "compare_referral_to_chart",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": false,
+      "requiresCodingTeamReview": false,
+      "narrativeField": false,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "caregiver_phone",
+      "label": "Caregiver Phone",
+      "groupKey": "supplementals_and_history",
+      "sectionKey": "administrative_information",
+      "oasisItemId": null,
+      "fieldType": "phone",
+      "controlType": "input",
+      "qaPriority": "medium",
+      "dashboardVisibility": "expanded",
+      "reviewMode": "compare_referral_to_chart",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": false,
+      "narrativeField": false,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "preferred_language",
+      "label": "Preferred Language",
+      "groupKey": "supplementals_and_history",
+      "sectionKey": "administrative_information",
+      "oasisItemId": null,
+      "fieldType": "single_select",
+      "controlType": "dropdown",
+      "qaPriority": "medium",
+      "dashboardVisibility": "expanded",
+      "reviewMode": "compare_referral_to_chart",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": false,
+      "requiresCodingTeamReview": false,
+      "narrativeField": false,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "interpreter_needed",
+      "label": "Interpreter Needed",
+      "groupKey": "supplementals_and_history",
+      "sectionKey": "administrative_information",
+      "oasisItemId": null,
+      "fieldType": "boolean",
+      "controlType": "checkbox",
+      "qaPriority": "medium",
+      "dashboardVisibility": "expanded",
+      "reviewMode": "compare_referral_to_chart",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": false,
+      "narrativeField": false,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "immunization_status",
+      "label": "Immunization / Vaccination Status",
+      "groupKey": "supplementals_and_history",
+      "sectionKey": "administrative_information",
+      "oasisItemId": null,
+      "fieldType": "multi_select",
+      "controlType": "checkbox",
+      "qaPriority": "medium",
+      "dashboardVisibility": "expanded",
+      "reviewMode": "chart_completeness_check",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": false,
+      "narrativeField": false,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "soc_date",
+      "label": "Start Of Care Date",
+      "groupKey": "low_priority_admin_reference",
+      "sectionKey": "administrative_information",
+      "oasisItemId": "M0030",
+      "fieldType": "date",
+      "controlType": "input",
+      "qaPriority": "medium",
+      "dashboardVisibility": "expanded",
+      "reviewMode": "compare_referral_to_chart",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": false,
+      "requiresCodingTeamReview": false,
+      "narrativeField": false,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": true,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "referral_date",
+      "label": "Referral Date",
+      "groupKey": "low_priority_admin_reference",
+      "sectionKey": "administrative_information",
+      "oasisItemId": null,
+      "fieldType": "date",
+      "controlType": "input",
+      "qaPriority": "medium",
+      "dashboardVisibility": "expanded",
+      "reviewMode": "compare_referral_to_chart",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": false,
+      "requiresCodingTeamReview": false,
+      "narrativeField": false,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": true,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "code_status",
+      "label": "Code Status",
+      "groupKey": "risk_and_safety_assessments",
+      "sectionKey": "safety_and_risk_assessment",
+      "oasisItemId": null,
+      "fieldType": "single_select",
+      "controlType": "dropdown",
+      "qaPriority": "high",
+      "dashboardVisibility": "default",
+      "reviewMode": "qa_readback_and_confirm",
+      "canInferFromReferral": true,
+      "compareAgainstChart": true,
+      "requiresHumanReview": true,
+      "requiresCodingTeamReview": false,
+      "narrativeField": false,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": false,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "patient_name",
+      "label": "Patient Name",
+      "groupKey": "low_priority_admin_reference",
+      "sectionKey": "administrative_information",
+      "oasisItemId": "M0040",
+      "fieldType": "text",
+      "controlType": "reference_only",
+      "qaPriority": "low",
+      "dashboardVisibility": "hidden",
+      "reviewMode": "reference_only",
+      "canInferFromReferral": true,
+      "compareAgainstChart": false,
+      "requiresHumanReview": false,
+      "requiresCodingTeamReview": false,
+      "narrativeField": false,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": true,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "dob",
+      "label": "Date Of Birth",
+      "groupKey": "low_priority_admin_reference",
+      "sectionKey": "administrative_information",
+      "oasisItemId": "M0066",
+      "fieldType": "date",
+      "controlType": "reference_only",
+      "qaPriority": "low",
+      "dashboardVisibility": "hidden",
+      "reviewMode": "reference_only",
+      "canInferFromReferral": true,
+      "compareAgainstChart": false,
+      "requiresHumanReview": false,
+      "requiresCodingTeamReview": false,
+      "narrativeField": false,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": true,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "patient_address",
+      "label": "Patient Address",
+      "groupKey": "low_priority_admin_reference",
+      "sectionKey": "administrative_information",
+      "oasisItemId": null,
+      "fieldType": "text",
+      "controlType": "reference_only",
+      "qaPriority": "low",
+      "dashboardVisibility": "hidden",
+      "reviewMode": "reference_only",
+      "canInferFromReferral": false,
+      "compareAgainstChart": false,
+      "requiresHumanReview": false,
+      "requiresCodingTeamReview": false,
+      "narrativeField": false,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": true,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "patient_phone",
+      "label": "Patient Phone",
+      "groupKey": "low_priority_admin_reference",
+      "sectionKey": "administrative_information",
+      "oasisItemId": null,
+      "fieldType": "phone",
+      "controlType": "reference_only",
+      "qaPriority": "low",
+      "dashboardVisibility": "hidden",
+      "reviewMode": "reference_only",
+      "canInferFromReferral": false,
+      "compareAgainstChart": false,
+      "requiresHumanReview": false,
+      "requiresCodingTeamReview": false,
+      "narrativeField": false,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": true,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "attending_physician",
+      "label": "Attending Physician",
+      "groupKey": "low_priority_admin_reference",
+      "sectionKey": "administrative_information",
+      "oasisItemId": "M0018",
+      "fieldType": "text",
+      "controlType": "reference_only",
+      "qaPriority": "low",
+      "dashboardVisibility": "hidden",
+      "reviewMode": "reference_only",
+      "canInferFromReferral": false,
+      "compareAgainstChart": false,
+      "requiresHumanReview": false,
+      "requiresCodingTeamReview": false,
+      "narrativeField": false,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": true,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    },
+    {
+      "fieldKey": "agency_provider_number",
+      "label": "Agency Provider Number",
+      "groupKey": "low_priority_admin_reference",
+      "sectionKey": "administrative_information",
+      "oasisItemId": "M0010",
+      "fieldType": "text",
+      "controlType": "reference_only",
+      "qaPriority": "low",
+      "dashboardVisibility": "hidden",
+      "reviewMode": "reference_only",
+      "canInferFromReferral": false,
+      "compareAgainstChart": false,
+      "requiresHumanReview": false,
+      "requiresCodingTeamReview": false,
+      "narrativeField": false,
+      "medicationField": false,
+      "diagnosisField": false,
+      "lowValueAdminField": true,
+      "supportedEvidenceSources": [
+        "referral_document",
+        "hospital_discharge",
+        "chart"
+      ],
+      "notes": null
+    }
+  ],
+  "fieldGroups": [
+    {
+      "groupKey": "medical_necessity_and_homebound",
+      "label": "Medical Necessity And Homebound",
+      "description": "Narratives and evidence for home health need and homebound status.",
+      "dashboardOrder": 1
+    },
+    {
+      "groupKey": "diagnosis_and_coding",
+      "label": "Diagnosis And Coding",
+      "description": "Diagnosis evidence, coding-sensitive rows, and escalation flags.",
+      "dashboardOrder": 2
+    },
+    {
+      "groupKey": "medications_allergies_and_special_treatments",
+      "label": "Medications, Allergies, And Special Treatments",
+      "description": "Medication safety, allergies, injectables, and O0110 special treatments.",
+      "dashboardOrder": 3
+    },
+    {
+      "groupKey": "functional_and_therapy_status",
+      "label": "Functional And Therapy Status",
+      "description": "GG/M functional scoring, therapy need, discipline frequency, and goals.",
+      "dashboardOrder": 4
+    },
+    {
+      "groupKey": "symptom_and_body_system_review",
+      "label": "Symptom And Body System Review",
+      "description": "Body-system review sections that QA checks for consistency and completeness.",
+      "dashboardOrder": 5
+    },
+    {
+      "groupKey": "risk_and_safety_assessments",
+      "label": "Risk And Safety Assessments",
+      "description": "Fall, wound, hospitalization, and safety-related risk tools.",
+      "dashboardOrder": 6
+    },
+    {
+      "groupKey": "care_plan_and_coordination",
+      "label": "Care Plan And Coordination",
+      "description": "Plan-of-care orders, patient summary, skilled interventions, and care plan content.",
+      "dashboardOrder": 7
+    },
+    {
+      "groupKey": "supplementals_and_history",
+      "label": "Supplementals And History",
+      "description": "Past medical history, caregiver support, living situation, immunizations, and supplementals.",
+      "dashboardOrder": 8
+    },
+    {
+      "groupKey": "low_priority_admin_reference",
+      "label": "Low Priority Admin Reference",
+      "description": "Identity, agency, physician, and demographic reference values that should not dominate QA.",
+      "dashboardOrder": 9
+    }
+  ],
+  "sectionMetadata": [
+    {
+      "sectionKey": "administrative_information",
+      "label": "Administrative Information",
+      "groupKey": "low_priority_admin_reference",
+      "reviewStyle": "completeness_driven",
+      "aiSupportExpected": false,
+      "codingReviewPossible": false,
+      "notes": "Mostly low-value admin/reference data."
+    },
+    {
+      "sectionKey": "active_diagnoses",
+      "label": "Active Diagnoses",
+      "groupKey": "diagnosis_and_coding",
+      "reviewStyle": "coding_sensitive",
+      "aiSupportExpected": true,
+      "codingReviewPossible": true
+    },
+    {
+      "sectionKey": "vital_signs_and_pain_assessment",
+      "label": "Vital Signs & Pain Assessment",
+      "groupKey": "symptom_and_body_system_review",
+      "reviewStyle": "compare_driven",
+      "aiSupportExpected": false,
+      "codingReviewPossible": false
+    },
+    {
+      "sectionKey": "medication_allergies_and_injectables",
+      "label": "Medication & Allergies (Injectables Medications)",
+      "groupKey": "medications_allergies_and_special_treatments",
+      "reviewStyle": "medication_safety",
+      "aiSupportExpected": true,
+      "codingReviewPossible": false
+    },
+    {
+      "sectionKey": "neurological_head_mood_eyes_ears",
+      "label": "Neurological (Head, Mood, Eyes, Ears)",
+      "groupKey": "symptom_and_body_system_review",
+      "reviewStyle": "compare_driven",
+      "aiSupportExpected": false,
+      "codingReviewPossible": false
+    },
+    {
+      "sectionKey": "cardiopulmonary_chest_thorax",
+      "label": "Cardiopulmonary (Chest & Thorax)",
+      "groupKey": "symptom_and_body_system_review",
+      "reviewStyle": "compare_driven",
+      "aiSupportExpected": false,
+      "codingReviewPossible": false
+    },
+    {
+      "sectionKey": "gastrointestinal_and_genitourinary_assessment",
+      "label": "Gastrointestinal & Genitourinary Assessment",
+      "groupKey": "symptom_and_body_system_review",
+      "reviewStyle": "compare_driven",
+      "aiSupportExpected": false,
+      "codingReviewPossible": false
+    },
+    {
+      "sectionKey": "integumentary_skin_and_wound",
+      "label": "Integumentary (Skin & Wound)",
+      "groupKey": "symptom_and_body_system_review",
+      "reviewStyle": "compare_driven",
+      "aiSupportExpected": false,
+      "codingReviewPossible": false
+    },
+    {
+      "sectionKey": "safety_and_risk_assessment",
+      "label": "Safety & Risk Assessment",
+      "groupKey": "risk_and_safety_assessments",
+      "reviewStyle": "compare_driven",
+      "aiSupportExpected": true,
+      "codingReviewPossible": false
+    },
+    {
+      "sectionKey": "functional_assessment_self_care",
+      "label": "Functional Assessment (Self Care)",
+      "groupKey": "functional_and_therapy_status",
+      "reviewStyle": "compare_driven",
+      "aiSupportExpected": true,
+      "codingReviewPossible": false
+    },
+    {
+      "sectionKey": "functional_assessment_mobility_and_musculoskeletal",
+      "label": "Functional Assessment (Mobility & Musculoskeletal)",
+      "groupKey": "functional_and_therapy_status",
+      "reviewStyle": "compare_driven",
+      "aiSupportExpected": true,
+      "codingReviewPossible": false
+    },
+    {
+      "sectionKey": "endocrine_diabetic_management",
+      "label": "Endocrine (Diabetic Management)",
+      "groupKey": "symptom_and_body_system_review",
+      "reviewStyle": "compare_driven",
+      "aiSupportExpected": false,
+      "codingReviewPossible": false
+    },
+    {
+      "sectionKey": "plan_of_care_and_physical_therapy_evaluation",
+      "label": "Plan of Care and Physical Therapy Evaluation",
+      "groupKey": "care_plan_and_coordination",
+      "reviewStyle": "narrative_driven",
+      "aiSupportExpected": true,
+      "codingReviewPossible": false
+    },
+    {
+      "sectionKey": "patient_summary_and_clinical_narrative",
+      "label": "Patient Summary & Clinical Narrative",
+      "groupKey": "care_plan_and_coordination",
+      "reviewStyle": "narrative_driven",
+      "aiSupportExpected": true,
+      "codingReviewPossible": false
+    },
+    {
+      "sectionKey": "care_plan_problems_goals_interventions",
+      "label": "Care Plan (Problems / Goals / Interventions)",
+      "groupKey": "care_plan_and_coordination",
+      "reviewStyle": "narrative_driven",
+      "aiSupportExpected": true,
+      "codingReviewPossible": false
+    },
+    {
+      "sectionKey": "footer_non_print_preview",
+      "label": "Footer (Not Visible in Print Preview)",
+      "groupKey": "low_priority_admin_reference",
+      "reviewStyle": "completeness_driven",
+      "aiSupportExpected": false,
+      "codingReviewPossible": false,
+      "notes": "Fax server headers, signatures, and page chrome should stay out of the printable review surface."
+    }
+  ],
+  "referralDashboardSections": [
+    {
+      "sectionKey": "administrative_information",
+      "label": "Administrative Information",
+      "dashboardOrder": 1,
+      "printVisibility": "visible",
+      "fieldKeys": [
+        "recent_hospitalization_discharge_date",
+        "recent_hospitalization_facility",
+        "living_situation",
+        "caregiver_name",
+        "caregiver_relationship",
+        "caregiver_phone",
+        "preferred_language",
+        "interpreter_needed",
+        "immunization_status",
+        "soc_date",
+        "referral_date",
+        "patient_name",
+        "dob",
+        "patient_address",
+        "patient_phone",
+        "attending_physician",
+        "agency_provider_number"
+      ],
+      "textSpans": [
+        {
+          "text": "Appointment: 03/02/2026 11:00 AM OrthoArizona Orthoarizona South Gilbert Therapy Provider: Tatsumi, PT, Emily Patient Information Name: Ralph E Pierce Home Phone: (480) 313-5193 D.O.B: 11/12/1947 Work Phone: Sex: Male Mobile Phone: (480) 313-5193 SSN: XXX-XX-8739 Email: chevyed2@yahoo.com MRN: X601322 Preferred Contact Method: Phone PMS ID: X601322 Language: English Marital Status: Married Emergency Contact: Race: White Emergency Contact Phone: Ethnicity: Not Hispanic or Latino Employer: Address: 2073 E Kempton Rd Chandler, AZ 85225 Primary Care Provider: Referring Providers: Lee, Ronald MD Primary Insurance Information Carrier: Medicare of Arizona Address: PO BOX 6704 FARGO, ND 58108 Policy #: 2CN6YA9YF53 Group ID/Name: Phone Number: (877) 908-8431 Secondary Insurance Information Carrier: WPS TRICARE FOR LIFE Address: PO BOX 7890 MADISON, WI 537077890 Policy #: 326388739 Group ID/Name: Phone Number: (866) 773-0404",
+          "sourceSectionNames": [],
+          "relatedFieldKeys": [],
+          "lineReferences": []
+        },
+        {
+          "text": "DOB: Phone: MRN: X601322 Male 11/12/1947 (480) 313-5193 X601322 LAB INFORMATION PHONE ACCOUNT # LAB NAME TheraOffice BILL TYPE ORDER # STREET ADDRESS Patient Bill 290936 PATIENT INFORMATION GUARANTOR INFORMATION FIRST NAME M.I.",
+          "sourceSectionNames": [
+            "patient_identity"
+          ],
+          "relatedFieldKeys": [],
+          "lineReferences": [
+            {
+              "lineStart": 3,
+              "lineEnd": 3,
+              "charStart": 1213,
+              "charEnd": 1440
+            },
+            {
+              "lineStart": 9,
+              "lineEnd": 9,
+              "charStart": 1980,
+              "charEnd": 2121
+            },
+            {
+              "lineStart": 12,
+              "lineEnd": 12,
+              "charStart": 2259,
+              "charEnd": 2399
+            },
+            {
+              "lineStart": 18,
+              "lineEnd": 18,
+              "charStart": 3424,
+              "charEnd": 3543
+            }
+          ]
+        },
+        {
+          "text": "RELATIONSHIP TO PATIENT XXX-XX-8739 11/12/1947 Male X601322 Other STREET ADDRESS STREET ADDRESS 2073 E Kempton Rd 2073 E Kempton Rd STREET ADDRESS CONTD.",
+          "sourceSectionNames": [
+            "caregiver_support"
+          ],
+          "relatedFieldKeys": [],
+          "lineReferences": [
+            {
+              "lineStart": 6,
+              "lineEnd": 6,
+              "charStart": 1533,
+              "charEnd": 1686
+            },
+            {
+              "lineStart": 8,
+              "lineEnd": 8,
+              "charStart": 1962,
+              "charEnd": 1979
+            },
+            {
+              "lineStart": 11,
+              "lineEnd": 11,
+              "charStart": 2241,
+              "charEnd": 2258
+            }
+          ]
+        },
+        {
+          "text": "STREET ADDRESS CONTD CITY STATE ZIP CODE CITY STATE ZIP CODE Chandler AZ 85225 Chandler AZ 85225 HOME PHONE CELL PHONE EMPLOYER NAME HOME PHONE WORK PHONE 4803135193 4803135193 4803135193 EMAIL EMAIL chevyed2@yahoo.com PRIMARY BILLING / INSURANCE INFORMATION SUBSCRIBER NAME",
+          "sourceSectionNames": [],
+          "relatedFieldKeys": [],
+          "lineReferences": []
+        },
+        {
+          "text": "RELATIONSHIP SUB.",
+          "sourceSectionNames": [
+            "caregiver_support"
+          ],
+          "relatedFieldKeys": [],
+          "lineReferences": [
+            {
+              "lineStart": 6,
+              "lineEnd": 6,
+              "charStart": 1533,
+              "charEnd": 1686
+            },
+            {
+              "lineStart": 8,
+              "lineEnd": 8,
+              "charStart": 1962,
+              "charEnd": 1979
+            },
+            {
+              "lineStart": 11,
+              "lineEnd": 11,
+              "charStart": 2241,
+              "charEnd": 2258
+            }
+          ]
+        },
+        {
+          "text": "DOB COMPANY NAME GRP/CONTRACT # MEMBER ID # Ralph Pierce Self 11/12/1947 Medicare of Arizona 2CN6YA9YF53 STREET ADDRESS STREET ADDRESS CONTD.",
+          "sourceSectionNames": [
+            "patient_identity"
+          ],
+          "relatedFieldKeys": [],
+          "lineReferences": [
+            {
+              "lineStart": 3,
+              "lineEnd": 3,
+              "charStart": 1213,
+              "charEnd": 1440
+            },
+            {
+              "lineStart": 9,
+              "lineEnd": 9,
+              "charStart": 1980,
+              "charEnd": 2121
+            },
+            {
+              "lineStart": 12,
+              "lineEnd": 12,
+              "charStart": 2259,
+              "charEnd": 2399
+            },
+            {
+              "lineStart": 18,
+              "lineEnd": 18,
+              "charStart": 3424,
+              "charEnd": 3543
+            }
+          ]
+        },
+        {
+          "text": "PO BOX 6704 CITY STATE ZIP CODE EMPLOYER NAME FARGO ND 58108 SECONDARY BILLING / INSURANCE INFORMATION SUBSCRIBER NAME",
+          "sourceSectionNames": [],
+          "relatedFieldKeys": [],
+          "lineReferences": []
+        },
+        {
+          "text": "DOB COMPANY NAME GRP/CONTRACT # MEMBER ID # Ralph Pierce Self 11/12/1947 WPS TRICARE FOR LIFE 326388739 STREET ADDRESS STREET ADDRESS CONTD.",
+          "sourceSectionNames": [
+            "patient_identity"
+          ],
+          "relatedFieldKeys": [],
+          "lineReferences": [
+            {
+              "lineStart": 3,
+              "lineEnd": 3,
+              "charStart": 1213,
+              "charEnd": 1440
+            },
+            {
+              "lineStart": 9,
+              "lineEnd": 9,
+              "charStart": 1980,
+              "charEnd": 2121
+            },
+            {
+              "lineStart": 12,
+              "lineEnd": 12,
+              "charStart": 2259,
+              "charEnd": 2399
+            },
+            {
+              "lineStart": 18,
+              "lineEnd": 18,
+              "charStart": 3424,
+              "charEnd": 3543
+            }
+          ]
+        },
+        {
+          "text": "Provider: Karlene Gonzales, PA-C Perform at: TheraOffice Priority: normal Electronically Signed By: Karlene Gonzales, PA-C, 02/27/2026 12:10 PM MST Karlene Gonzales, PA-C Orthoarizona Arcadia Page 1 (602) 631-3161 Work 3033 N 44Th St Suite 100 NPI: 1265837843 Phoenix, AZ 85018-7226 Pierce, Ralph OrthoArizona Visit Note February 16, 2026 PMS ID: Sex:",
+          "sourceSectionNames": [
+            "referring_provider",
+            "other_clinical_notes"
+          ],
+          "relatedFieldKeys": [],
+          "lineReferences": [
+            {
+              "lineStart": 17,
+              "lineEnd": 17,
+              "charStart": 3072,
+              "charEnd": 3423
+            },
+            {
+              "lineStart": 17,
+              "lineEnd": 17,
+              "charStart": 3072,
+              "charEnd": 3423
+            },
+            {
+              "lineStart": 24,
+              "lineEnd": 24,
+              "charStart": 4092,
+              "charEnd": 4237
+            },
+            {
+              "lineStart": 26,
+              "lineEnd": 26,
+              "charStart": 4385,
+              "charEnd": 4657
+            },
+            {
+              "lineStart": 36,
+              "lineEnd": 36,
+              "charStart": 5300,
+              "charEnd": 5405
+            },
+            {
+              "lineStart": 45,
+              "lineEnd": 45,
+              "charStart": 6411,
+              "charEnd": 6669
+            }
+          ]
+        },
+        {
+          "text": "DOB: Phone: MRN: X601322 Male 11/12/1947 (480) 313-5193 X601322 Allergies Chief Complaints: Reviewed February 16, 2026.",
+          "sourceSectionNames": [
+            "patient_identity",
+            "medications"
+          ],
+          "relatedFieldKeys": [],
+          "lineReferences": [
+            {
+              "lineStart": 3,
+              "lineEnd": 3,
+              "charStart": 1213,
+              "charEnd": 1440
+            },
+            {
+              "lineStart": 9,
+              "lineEnd": 9,
+              "charStart": 1980,
+              "charEnd": 2121
+            },
+            {
+              "lineStart": 12,
+              "lineEnd": 12,
+              "charStart": 2259,
+              "charEnd": 2399
+            },
+            {
+              "lineStart": 18,
+              "lineEnd": 18,
+              "charStart": 3424,
+              "charEnd": 3543
+            },
+            {
+              "lineStart": 2,
+              "lineEnd": 2,
+              "charStart": 929,
+              "charEnd": 1212
+            },
+            {
+              "lineStart": 18,
+              "lineEnd": 18,
+              "charStart": 3424,
+              "charEnd": 3543
+            },
+            {
+              "lineStart": 19,
+              "lineEnd": 19,
+              "charStart": 3544,
+              "charEnd": 3570
+            }
+          ]
+        },
+        {
+          "text": "Eliquis 2.5 mg Oral - tablet Frequency: BID gabapentin 300 mg Oral - capsule Patient is coming in for his preop exam.",
+          "sourceSectionNames": [],
+          "relatedFieldKeys": [],
+          "lineReferences": []
+        },
+        {
+          "text": "Risks and benefits of the proposed procedure were discussed in detail with the patient.",
+          "sourceSectionNames": [],
+          "relatedFieldKeys": [],
+          "lineReferences": []
+        },
+        {
+          "text": "The patient did express understanding, all questions were answered.",
+          "sourceSectionNames": [],
+          "relatedFieldKeys": [],
+          "lineReferences": []
+        },
+        {
+          "text": "February 16, 2026.",
+          "sourceSectionNames": [
+            "patient_identity",
+            "medications",
+            "other_clinical_notes"
+          ],
+          "relatedFieldKeys": [],
+          "lineReferences": [
+            {
+              "lineStart": 3,
+              "lineEnd": 3,
+              "charStart": 1213,
+              "charEnd": 1440
+            },
+            {
+              "lineStart": 9,
+              "lineEnd": 9,
+              "charStart": 1980,
+              "charEnd": 2121
+            },
+            {
+              "lineStart": 12,
+              "lineEnd": 12,
+              "charStart": 2259,
+              "charEnd": 2399
+            },
+            {
+              "lineStart": 18,
+              "lineEnd": 18,
+              "charStart": 3424,
+              "charEnd": 3543
+            },
+            {
+              "lineStart": 2,
+              "lineEnd": 2,
+              "charStart": 929,
+              "charEnd": 1212
+            },
+            {
+              "lineStart": 18,
+              "lineEnd": 18,
+              "charStart": 3424,
+              "charEnd": 3543
+            },
+            {
+              "lineStart": 19,
+              "lineEnd": 19,
+              "charStart": 3544,
+              "charEnd": 3570
+            },
+            {
+              "lineStart": 17,
+              "lineEnd": 17,
+              "charStart": 3072,
+              "charEnd": 3423
+            },
+            {
+              "lineStart": 24,
+              "lineEnd": 24,
+              "charStart": 4092,
+              "charEnd": 4237
+            },
+            {
+              "lineStart": 26,
+              "lineEnd": 26,
+              "charStart": 4385,
+              "charEnd": 4657
+            },
+            {
+              "lineStart": 36,
+              "lineEnd": 36,
+              "charStart": 5300,
+              "charEnd": 5405
+            },
+            {
+              "lineStart": 45,
+              "lineEnd": 45,
+              "charStart": 6411,
+              "charEnd": 6669
+            }
+          ]
+        },
+        {
+          "text": "Single Question Alcohol Screening: 1 Clearance has been received and reviewed today on patient.",
+          "sourceSectionNames": [],
+          "relatedFieldKeys": [],
+          "lineReferences": []
+        }
+      ]
+    },
+    {
+      "sectionKey": "active_diagnoses",
+      "label": "Active Diagnoses",
+      "dashboardOrder": 2,
+      "printVisibility": "visible",
+      "fieldKeys": [
+        "diagnosis_candidates",
+        "primary_diagnosis",
+        "secondary_diagnoses",
+        "diagnosis_supporting_evidence",
+        "coding_escalation_flags"
+      ],
+      "textSpans": [
+        {
+          "text": "DIAGNOSES Diagnosis ICD Code Description 1 M16.11 Unilateral primary osteoarthritis, right hip PT/OT Rx Physical and/or",
+          "sourceSectionNames": [
+            "diagnoses",
+            "therapy_need"
+          ],
+          "relatedFieldKeys": [],
+          "lineReferences": [
+            {
+              "lineStart": 14,
+              "lineEnd": 14,
+              "charStart": 2467,
+              "charEnd": 2586
+            },
+            {
+              "lineStart": 15,
+              "lineEnd": 15,
+              "charStart": 2587,
+              "charEnd": 3037
+            },
+            {
+              "lineStart": 14,
+              "lineEnd": 14,
+              "charStart": 2467,
+              "charEnd": 2586
+            },
+            {
+              "lineStart": 15,
+              "lineEnd": 15,
+              "charStart": 2587,
+              "charEnd": 3037
+            }
+          ]
+        },
+        {
+          "text": "Occupational Therapy Prescription Indication: Hip Osteoarthritis, Right - right hip joint - M.16.11 Instructions: evaluate and treat per diagnosis/objective exam, post-operative protocol, and home health Date of Surgery: 02/26/2026 Recommend frequency of 2-3 times per week for 6-8;weeks. - Therapeutic Exercises: All exercises prn per therapist. - Manual Therapy: All manual therapy prn per therapist. - Modalities: All modalities prn per therapist.",
+          "sourceSectionNames": [
+            "diagnoses",
+            "therapy_need"
+          ],
+          "relatedFieldKeys": [],
+          "lineReferences": [
+            {
+              "lineStart": 14,
+              "lineEnd": 14,
+              "charStart": 2467,
+              "charEnd": 2586
+            },
+            {
+              "lineStart": 15,
+              "lineEnd": 15,
+              "charStart": 2587,
+              "charEnd": 3037
+            },
+            {
+              "lineStart": 14,
+              "lineEnd": 14,
+              "charStart": 2467,
+              "charEnd": 2586
+            },
+            {
+              "lineStart": 15,
+              "lineEnd": 15,
+              "charStart": 2587,
+              "charEnd": 3037
+            }
+          ]
+        },
+        {
+          "text": "All modalities prn per therapist.",
+          "sourceSectionNames": [
+            "diagnoses",
+            "therapy_need"
+          ],
+          "relatedFieldKeys": [],
+          "lineReferences": [
+            {
+              "lineStart": 14,
+              "lineEnd": 14,
+              "charStart": 2467,
+              "charEnd": 2586
+            },
+            {
+              "lineStart": 15,
+              "lineEnd": 15,
+              "charStart": 2587,
+              "charEnd": 3037
+            },
+            {
+              "lineStart": 14,
+              "lineEnd": 14,
+              "charStart": 2467,
+              "charEnd": 2586
+            },
+            {
+              "lineStart": 15,
+              "lineEnd": 15,
+              "charStart": 2587,
+              "charEnd": 3037
+            }
+          ]
+        },
+        {
+          "text": "M16.11) Exercise",
+          "sourceSectionNames": [],
+          "relatedFieldKeys": [
+            "diagnosis_candidates",
+            "primary_diagnosis",
+            "secondary_diagnoses"
+          ],
+          "lineReferences": []
+        },
+        {
+          "text": "days Unilateral primary osteoarthritis, right hip (M16.11)",
+          "sourceSectionNames": [],
+          "relatedFieldKeys": [
+            "diagnosis_candidates",
+            "primary_diagnosis",
+            "secondary_diagnoses"
+          ],
+          "lineReferences": []
+        }
+      ]
+    },
+    {
+      "sectionKey": "vital_signs_and_pain_assessment",
+      "label": "Vital Signs & Pain Assessment",
+      "dashboardOrder": 3,
+      "printVisibility": "visible",
+      "fieldKeys": [
+        "pain_assessment_narrative"
+      ],
+      "textSpans": [
+        {
+          "text": "Blood clot: In lung Exam Chronic pain: Back Diabetes mellitus Alert and oriented to person, place and time.",
+          "sourceSectionNames": [],
+          "relatedFieldKeys": [],
+          "lineReferences": []
+        },
+        {
+          "text": "Vital signs are stable.",
+          "sourceSectionNames": [],
+          "relatedFieldKeys": [],
+          "lineReferences": []
+        },
+        {
+          "text": "No obvious Elevated blood pressure Hypercholesterolemia lymphedema is present.",
+          "sourceSectionNames": [],
+          "relatedFieldKeys": [],
+          "lineReferences": []
+        },
+        {
+          "text": "L3-L5 Laminectomy Complications can include infection, blood clots, nerve artery vein tendon or bone injury, continued pain, the need Spacer in L3 & L4 for further surgery amongst other things.",
+          "sourceSectionNames": [],
+          "relatedFieldKeys": [],
+          "lineReferences": []
+        }
+      ]
+    },
+    {
+      "sectionKey": "medication_allergies_and_injectables",
+      "label": "Medication & Allergies (Injectables Medications)",
+      "dashboardOrder": 4,
+      "printVisibility": "visible",
+      "fieldKeys": [
+        "medication_list",
+        "allergy_list",
+        "special_treatments_o0110",
+        "injectable_medications",
+        "high_risk_medication_notes"
+      ],
+      "textSpans": [
+        {
+          "text": "Pharmacy Information Name: WALGREENS DRUG STORE #03726 1985 E CHANDLER BLVD CHANDLER, AZ Phone Number: 4808998050 Address: 852255110 Fax Number: 4809638551 Printed on 2/27/26, 12:08 PM - Alexis Perez Pierce, Ralph OrthoArizona EMA ID: 34581002 Orders - February 27, 2026 PMS ID: Sex:",
+          "sourceSectionNames": [
+            "medications"
+          ],
+          "relatedFieldKeys": [],
+          "lineReferences": [
+            {
+              "lineStart": 2,
+              "lineEnd": 2,
+              "charStart": 929,
+              "charEnd": 1212
+            },
+            {
+              "lineStart": 18,
+              "lineEnd": 18,
+              "charStart": 3424,
+              "charEnd": 3543
+            },
+            {
+              "lineStart": 19,
+              "lineEnd": 19,
+              "charStart": 3544,
+              "charEnd": 3570
+            }
+          ]
+        },
+        {
+          "text": "No known drug allergies 1.",
+          "sourceSectionNames": [
+            "medications"
+          ],
+          "relatedFieldKeys": [],
+          "lineReferences": [
+            {
+              "lineStart": 2,
+              "lineEnd": 2,
+              "charStart": 929,
+              "charEnd": 1212
+            },
+            {
+              "lineStart": 18,
+              "lineEnd": 18,
+              "charStart": 3424,
+              "charEnd": 3543
+            },
+            {
+              "lineStart": 19,
+              "lineEnd": 19,
+              "charStart": 3544,
+              "charEnd": 3570
+            }
+          ]
+        },
+        {
+          "text": "He is scheduled for a right mako assisted anterior total hip allopurinol 300 mg Oral - tablet atorvastatin 10 mg Oral - tablet arthroplasty on 02/26/2026, at Ash.",
+          "sourceSectionNames": [],
+          "relatedFieldKeys": [],
+          "lineReferences": []
+        },
+        {
+          "text": "He has previously metoprolol tartrate 25 mg Oral - tablet tried and failed conservative treatment and wishes to proceed with surgery as scheduled.",
+          "sourceSectionNames": [],
+          "relatedFieldKeys": [],
+          "lineReferences": []
+        }
+      ]
+    },
+    {
+      "sectionKey": "neurological_head_mood_eyes_ears",
+      "label": "Neurological (Head, Mood, Eyes, Ears)",
+      "dashboardOrder": 5,
+      "printVisibility": "visible",
+      "fieldKeys": [
+        "neurological_status",
+        "eyes_ears_status",
+        "emotional_behavioral_status"
+      ],
+      "textSpans": []
+    },
+    {
+      "sectionKey": "cardiopulmonary_chest_thorax",
+      "label": "Cardiopulmonary (Chest & Thorax)",
+      "dashboardOrder": 6,
+      "printVisibility": "visible",
+      "fieldKeys": [
+        "cardiovascular_status",
+        "respiratory_status"
+      ],
+      "textSpans": [
+        {
+          "text": "Left handed: operation HEENT: Normal Heart: Normal Musculoskeletal Surgery Repair of meniscus: Rt & Lt knee Lungs: Normal Other: Rt & Lt shoulder rotary cup operation Skin: normal Neurological: Sensation grossly intact/ Normal.",
+          "sourceSectionNames": [],
+          "relatedFieldKeys": [],
+          "lineReferences": []
+        }
+      ]
+    },
+    {
+      "sectionKey": "gastrointestinal_and_genitourinary_assessment",
+      "label": "Gastrointestinal & Genitourinary Assessment",
+      "dashboardOrder": 7,
+      "printVisibility": "visible",
+      "fieldKeys": [
+        "gastrointestinal_status",
+        "genitourinary_status"
+      ],
+      "textSpans": []
+    },
+    {
+      "sectionKey": "integumentary_skin_and_wound",
+      "label": "Integumentary (Skin & Wound)",
+      "dashboardOrder": 8,
+      "printVisibility": "visible",
+      "fieldKeys": [
+        "integumentary_wound_status",
+        "norton_scale",
+        "wound_risk_review"
+      ],
+      "textSpans": []
+    },
+    {
+      "sectionKey": "safety_and_risk_assessment",
+      "label": "Safety & Risk Assessment",
+      "dashboardOrder": 9,
+      "printVisibility": "visible",
+      "fieldKeys": [
+        "mahc10_fall_risk",
+        "fall_risk_narrative",
+        "hospitalization_risk_summary",
+        "code_status"
+      ],
+      "textSpans": [
+        {
+          "text": "Hip Osteoarthritis, Right (Patient Management Risk Level: Low) Repair of multiple tears of rotator cuff / feel the patient's right hip symptoms and previous imaging are severe enough to proceed with a right total hip of right shoulder Other: Left & Right Meniscus Repair arthroplasty as scheduled.",
+          "sourceSectionNames": [
+            "risk_factors"
+          ],
+          "relatedFieldKeys": [
+            "fall_risk_narrative"
+          ],
+          "lineReferences": [
+            {
+              "lineStart": 37,
+              "lineEnd": 37,
+              "charStart": 5406,
+              "charEnd": 5703
+            },
+            {
+              "lineStart": 42,
+              "lineEnd": 42,
+              "charStart": 6131,
+              "charEnd": 6295
+            }
+          ]
+        },
+        {
+          "text": "Patient has increased VTE risk and will be placed back on his Eliquis following surgery for DVT and prior heart Social History Reviewed and no changes noted issues.",
+          "sourceSectionNames": [
+            "risk_factors"
+          ],
+          "relatedFieldKeys": [],
+          "lineReferences": [
+            {
+              "lineStart": 37,
+              "lineEnd": 37,
+              "charStart": 5406,
+              "charEnd": 5703
+            },
+            {
+              "lineStart": 42,
+              "lineEnd": 42,
+              "charStart": 6131,
+              "charEnd": 6295
+            }
+          ]
+        },
+        {
+          "text": "Hip Osteoarthritis, Right (Patient Management Risk Level: Low) Repair of multiple tears of rotator cuff / feel the patient's right hip symptoms and previous imaging are severe enough to proceed with a right total hip of right shoulder Other: Left & Right Meniscus Repair arthroplasty as scheduled. Patient has increased VTE risk and will be placed back on his Eliquis following surgery for DVT and prior heart Social His",
+          "sourceSectionNames": [],
+          "relatedFieldKeys": [
+            "fall_risk_narrative"
+          ],
+          "lineReferences": []
+        }
+      ]
+    },
+    {
+      "sectionKey": "functional_assessment_self_care",
+      "label": "Functional Assessment (Self Care)",
+      "dashboardOrder": 10,
+      "printVisibility": "visible",
+      "fieldKeys": [
+        "gg_self_care"
+      ],
+      "textSpans": []
+    },
+    {
+      "sectionKey": "functional_assessment_mobility_and_musculoskeletal",
+      "label": "Functional Assessment (Mobility & Musculoskeletal)",
+      "dashboardOrder": 11,
+      "printVisibility": "visible",
+      "fieldKeys": [
+        "homebound_narrative",
+        "homebound_supporting_factors",
+        "prior_functioning",
+        "gg_mobility",
+        "functional_limitations"
+      ],
+      "textSpans": [
+        {
+          "text": "Ambulates.",
+          "sourceSectionNames": [],
+          "relatedFieldKeys": [],
+          "lineReferences": []
+        },
+        {
+          "text": "Musculoskeletal History No changes from previous exam.",
+          "sourceSectionNames": [],
+          "relatedFieldKeys": [],
+          "lineReferences": []
+        }
+      ]
+    },
+    {
+      "sectionKey": "endocrine_diabetic_management",
+      "label": "Endocrine (Diabetic Management)",
+      "dashboardOrder": 12,
+      "printVisibility": "visible",
+      "fieldKeys": [],
+      "textSpans": []
+    },
+    {
+      "sectionKey": "plan_of_care_and_physical_therapy_evaluation",
+      "label": "Plan of Care and Physical Therapy Evaluation",
+      "dashboardOrder": 13,
+      "printVisibility": "visible",
+      "fieldKeys": [
+        "therapy_need",
+        "discipline_frequencies",
+        "skilled_interventions",
+        "patient_coordination_orders"
+      ],
+      "textSpans": [
+        {
+          "text": "PT/OT Rx Physical and/or Occupational Therapy Prescription Indication: Hip Osteoarthritis, Right - right hip joint - M",
+          "sourceSectionNames": [],
+          "relatedFieldKeys": [
+            "therapy_need"
+          ],
+          "lineReferences": []
+        }
+      ]
+    },
+    {
+      "sectionKey": "patient_summary_and_clinical_narrative",
+      "label": "Patient Summary & Clinical Narrative",
+      "dashboardOrder": 14,
+      "printVisibility": "visible",
+      "fieldKeys": [
+        "primary_reason_for_home_health_medical_necessity",
+        "admit_reason_to_home_health",
+        "patient_summary_narrative",
+        "past_medical_history"
+      ],
+      "textSpans": [
+        {
+          "text": "LAST NAME FIRST NAME M.I.",
+          "sourceSectionNames": [],
+          "relatedFieldKeys": [],
+          "lineReferences": []
+        },
+        {
+          "text": "LAST NAME Pierce Ralph E Pierce Ralph E SSN DATE OF BIRTH SEX MRN",
+          "sourceSectionNames": [],
+          "relatedFieldKeys": [],
+          "lineReferences": []
+        },
+        {
+          "text": "PO BOX 7890 CITY STATE ZIP CODE EMPLOYER NAME MADISON Wi 537077890",
+          "sourceSectionNames": [],
+          "relatedFieldKeys": [],
+          "lineReferences": []
+        },
+        {
+          "text": "Preoperative Assessment Medications Reviewed and no changes noted HPI: This is a 78 year old male who: February 16, 2026. 1. is being seen for a preoperative evaluation.",
+          "sourceSectionNames": [],
+          "relatedFieldKeys": [],
+          "lineReferences": []
+        },
+        {
+          "text": "He is scheduled proceed with a right anterior total hip arthroplasty.",
+          "sourceSectionNames": [],
+          "relatedFieldKeys": [],
+          "lineReferences": []
+        },
+        {
+          "text": "Patient lisinopril 10 mg Oral tablet notes that he continues to have significant right hip pain that is affecting his activities of daily living.",
+          "sourceSectionNames": [
+            "other_clinical_notes"
+          ],
+          "relatedFieldKeys": [],
+          "lineReferences": [
+            {
+              "lineStart": 17,
+              "lineEnd": 17,
+              "charStart": 3072,
+              "charEnd": 3423
+            },
+            {
+              "lineStart": 24,
+              "lineEnd": 24,
+              "charStart": 4092,
+              "charEnd": 4237
+            },
+            {
+              "lineStart": 26,
+              "lineEnd": 26,
+              "charStart": 4385,
+              "charEnd": 4657
+            },
+            {
+              "lineStart": 36,
+              "lineEnd": 36,
+              "charStart": 5300,
+              "charEnd": 5405
+            },
+            {
+              "lineStart": 45,
+              "lineEnd": 45,
+              "charStart": 6411,
+              "charEnd": 6669
+            }
+          ]
+        },
+        {
+          "text": "Of note patient he is on omeprazole 20 mg Oral - Eliquis and is to stop it 48 hours prior to surgery per his primary care. capsule,delayed release (e.c.) Wegovy 2.4 mg/0.75 mL Subcutaneous Pen Injector Exam: Medical History Reviewed and no changes noted February 16, 2026.",
+          "sourceSectionNames": [
+            "other_clinical_notes"
+          ],
+          "relatedFieldKeys": [],
+          "lineReferences": [
+            {
+              "lineStart": 17,
+              "lineEnd": 17,
+              "charStart": 3072,
+              "charEnd": 3423
+            },
+            {
+              "lineStart": 24,
+              "lineEnd": 24,
+              "charStart": 4092,
+              "charEnd": 4237
+            },
+            {
+              "lineStart": 26,
+              "lineEnd": 26,
+              "charStart": 4385,
+              "charEnd": 4657
+            },
+            {
+              "lineStart": 36,
+              "lineEnd": 36,
+              "charStart": 5300,
+              "charEnd": 5405
+            },
+            {
+              "lineStart": 45,
+              "lineEnd": 45,
+              "charStart": 6411,
+              "charEnd": 6669
+            }
+          ]
+        },
+        {
+          "text": "In no acute distress.",
+          "sourceSectionNames": [],
+          "relatedFieldKeys": [],
+          "lineReferences": []
+        },
+        {
+          "text": "Reviewed and no changes noted February 16, 2026.",
+          "sourceSectionNames": [
+            "other_clinical_notes"
+          ],
+          "relatedFieldKeys": [],
+          "lineReferences": [
+            {
+              "lineStart": 17,
+              "lineEnd": 17,
+              "charStart": 3072,
+              "charEnd": 3423
+            },
+            {
+              "lineStart": 24,
+              "lineEnd": 24,
+              "charStart": 4092,
+              "charEnd": 4237
+            },
+            {
+              "lineStart": 26,
+              "lineEnd": 26,
+              "charStart": 4385,
+              "charEnd": 4657
+            },
+            {
+              "lineStart": 36,
+              "lineEnd": 36,
+              "charStart": 5300,
+              "charEnd": 5405
+            },
+            {
+              "lineStart": 45,
+              "lineEnd": 45,
+              "charStart": 6411,
+              "charEnd": 6669
+            }
+          ]
+        },
+        {
+          "text": "Surgical History Reviewed and no changes noted February 16, 2026.",
+          "sourceSectionNames": [],
+          "relatedFieldKeys": [],
+          "lineReferences": []
+        },
+        {
+          "text": "Cataract surgery: Both eyes Repair of multiple tears of rotator cuff Impression/Plan: of left shoulder 1.",
+          "sourceSectionNames": [
+            "other_clinical_notes"
+          ],
+          "relatedFieldKeys": [],
+          "lineReferences": [
+            {
+              "lineStart": 17,
+              "lineEnd": 17,
+              "charStart": 3072,
+              "charEnd": 3423
+            },
+            {
+              "lineStart": 24,
+              "lineEnd": 24,
+              "charStart": 4092,
+              "charEnd": 4237
+            },
+            {
+              "lineStart": 26,
+              "lineEnd": 26,
+              "charStart": 4385,
+              "charEnd": 4657
+            },
+            {
+              "lineStart": 36,
+              "lineEnd": 36,
+              "charStart": 5300,
+              "charEnd": 5405
+            },
+            {
+              "lineStart": 45,
+              "lineEnd": 45,
+              "charStart": 6411,
+              "charEnd": 6669
+            }
+          ]
+        },
+        {
+          "text": "We Right Carpal Tunnel Release discussed what type of implants will be used.",
+          "sourceSectionNames": [],
+          "relatedFieldKeys": [],
+          "lineReferences": []
+        },
+        {
+          "text": "He is able to proceed with surgery as scheduled. days Unilateral primary osteoarthritis, right hip (M16.11) Exercise: Unspecified Status: Worsening Occupation: Retired EtOH less than 1 drink per day: Occasionally Plan: Counseling - Preoperative Instructions.",
+          "sourceSectionNames": [
+            "other_clinical_notes"
+          ],
+          "relatedFieldKeys": [
+            "diagnosis_candidates",
+            "primary_diagnosis",
+            "secondary_diagnoses"
+          ],
+          "lineReferences": [
+            {
+              "lineStart": 17,
+              "lineEnd": 17,
+              "charStart": 3072,
+              "charEnd": 3423
+            },
+            {
+              "lineStart": 24,
+              "lineEnd": 24,
+              "charStart": 4092,
+              "charEnd": 4237
+            },
+            {
+              "lineStart": 26,
+              "lineEnd": 26,
+              "charStart": 4385,
+              "charEnd": 4657
+            },
+            {
+              "lineStart": 36,
+              "lineEnd": 36,
+              "charStart": 5300,
+              "charEnd": 5405
+            },
+            {
+              "lineStart": 45,
+              "lineEnd": 45,
+              "charStart": 6411,
+              "charEnd": 6669
+            }
+          ]
+        },
+        {
+          "text": "Smoking status Former smoker Please refer to the education handout for detailed counseling.",
+          "sourceSectionNames": [],
+          "relatedFieldKeys": [],
+          "lineReferences": []
+        }
+      ]
+    },
+    {
+      "sectionKey": "care_plan_problems_goals_interventions",
+      "label": "Care Plan (Problems / Goals / Interventions)",
+      "dashboardOrder": 15,
+      "printVisibility": "visible",
+      "fieldKeys": [
+        "patient_caregiver_goals",
+        "plan_for_next_visit",
+        "care_plan_problems_goals_interventions"
+      ],
+      "textSpans": []
+    },
+    {
+      "sectionKey": "footer_non_print_preview",
+      "label": "Footer (Not Visible in Print Preview)",
+      "dashboardOrder": 16,
+      "printVisibility": "hidden_in_print",
+      "fieldKeys": [],
+      "textSpans": [
+        {
+          "text": "Packs per day: 1 Years smoking: 35 Driving status: Drives in the Daytime: Grocery doctor Staff: appointment Karlene Gonzales, PA-C (Primary Provider) (Bill Under) Shoe Size Shoe size: 10.5 eee Electronically Signed By: Karlene Gonzales, PA-C, 02/16/2026 02:41 PM MST Karlene Gonzales, PA-C (Primary Provider) (Bill Under) Orthoarizona Arcadia Page 1 3033 N 44Th St Suite 100 (602) 631-3161 Work Phoenix, AZ 85018-7226",
+          "sourceSectionNames": [],
+          "relatedFieldKeys": [],
+          "lineReferences": []
+        }
+      ]
+    }
+  ],
+  "chartSnapshot": {
+    "patient_name": "Ralph Pierce",
+    "dob": null,
+    "soc_date": null,
+    "referral_date": null,
+    "preferred_language": null,
+    "interpreter_needed": null,
+    "primary_reason_for_home_health_medical_necessity": null,
+    "admit_reason_to_home_health": null,
+    "homebound_narrative": null,
+    "homebound_supporting_factors": null,
+    "recent_hospitalization_discharge_date": null,
+    "recent_hospitalization_facility": null,
+    "caregiver_name": null,
+    "caregiver_relationship": null,
+    "caregiver_phone": null,
+    "living_situation": null,
+    "functional_limitations": null,
+    "therapy_need": null,
+    "fall_risk_narrative": null,
+    "diagnosis_candidates": null,
+    "code_status": null
+  },
+  "documentEvidence": {
+    "therapy_need": [
+      {
+        "sourceType": "REFERRAL_ORDER",
+        "sourceLabel": "📄 Ralph pierce new referral .pdf 📝 ✏️ 🗑️ 🔗",
+        "textSpan": "PT/OT Rx Physical and/or Occupational Therapy Prescription Indication: Hip Osteoarthritis, Right - right hip joint - M",
+        "confidence": 0.77
+      }
+    ],
+    "fall_risk_narrative": [
+      {
+        "sourceType": "REFERRAL_ORDER",
+        "sourceLabel": "📄 Ralph pierce new referral .pdf 📝 ✏️ 🗑️ 🔗",
+        "textSpan": "Hip Osteoarthritis, Right (Patient Management Risk Level: Low) Repair of multiple tears of rotator cuff / feel the patient's right hip symptoms and previous imaging are severe enough to proceed with a right total hip of right shoulder Other: Left & Right Meniscus Repair arthroplasty as scheduled. Patient has increased VTE risk and will be placed back on his Eliquis following surgery for DVT and prior heart Social His",
+        "confidence": 0.7
+      }
+    ],
+    "diagnosis_candidates": [
+      {
+        "sourceType": "REFERRAL_ORDER",
+        "sourceLabel": "📄 Ralph pierce new referral .pdf 📝 ✏️ 🗑️ 🔗",
+        "textSpan": "M16.11) Exercise",
+        "confidence": 0.74
+      },
+      {
+        "sourceType": "REFERRAL_ORDER",
+        "sourceLabel": "📄 Ralph pierce new referral .pdf 📝 ✏️ 🗑️ 🔗",
+        "textSpan": "days Unilateral primary osteoarthritis, right hip (M16.11)",
+        "confidence": 0.74
+      }
+    ],
+    "primary_diagnosis": [
+      {
+        "sourceType": "REFERRAL_ORDER",
+        "sourceLabel": "📄 Ralph pierce new referral .pdf 📝 ✏️ 🗑️ 🔗",
+        "textSpan": "M16.11) Exercise",
+        "confidence": 0.74
+      },
+      {
+        "sourceType": "REFERRAL_ORDER",
+        "sourceLabel": "📄 Ralph pierce new referral .pdf 📝 ✏️ 🗑️ 🔗",
+        "textSpan": "days Unilateral primary osteoarthritis, right hip (M16.11)",
+        "confidence": 0.74
+      }
+    ],
+    "secondary_diagnoses": [
+      {
+        "sourceType": "REFERRAL_ORDER",
+        "sourceLabel": "📄 Ralph pierce new referral .pdf 📝 ✏️ 🗑️ 🔗",
+        "textSpan": "M16.11) Exercise",
+        "confidence": 0.74
+      },
+      {
+        "sourceType": "REFERRAL_ORDER",
+        "sourceLabel": "📄 Ralph pierce new referral .pdf 📝 ✏️ 🗑️ 🔗",
+        "textSpan": "days Unilateral primary osteoarthritis, right hip (M16.11)",
+        "confidence": 0.74
+      }
+    ]
+  },
+  "proposedReferenceValues": {
+    "therapy_need": {
+      "value": "PT/OT Rx Physical and/or Occupational Therapy Prescription Indication: Hip Osteoarthritis, Right - right hip joint - M",
+      "confidence": 0.77,
+      "rationale": "Therapy need was summarized from referral text.",
+      "requiresHumanReview": true
+    },
+    "fall_risk_narrative": {
+      "value": "Hip Osteoarthritis, Right (Patient Management Risk Level: Low) Repair of multiple tears of rotator cuff / feel the patient's right hip symptoms and previous imaging are severe enough to proceed with a right total hip of right shoulder Other: Left & Right Meniscus Repair arthroplasty as scheduled. Patient has increased VTE risk and will be placed back on his Eliquis following surgery for DVT and prior heart Social His",
+      "confidence": 0.7,
+      "rationale": "Risk and safety narrative was summarized from referral text.",
+      "requiresHumanReview": true
+    },
+    "diagnosis_candidates": {
+      "value": [
+        {
+          "description": "Exercise",
+          "icd10_code": "M16.11",
+          "is_primary_candidate": true,
+          "requires_human_review": true
+        },
+        {
+          "description": "M16.11",
+          "icd10_code": "DAYS UNILATERAL PRIMARY OSTEOARTHRITIS, RIGHT HIP",
+          "is_primary_candidate": false,
+          "requires_human_review": true
+        }
+      ],
+      "confidence": 0.74,
+      "rationale": "Diagnosis candidates extracted from referral evidence.",
+      "requiresHumanReview": true
+    },
+    "primary_diagnosis": {
+      "value": {
+        "description": "Exercise",
+        "icd10_code": "M16.11",
+        "is_primary_candidate": true,
+        "requires_human_review": true
+      },
+      "confidence": 0.74,
+      "rationale": "Primary diagnosis candidate extracted from referral evidence.",
+      "requiresHumanReview": true
+    },
+    "secondary_diagnoses": {
+      "value": [
+        {
+          "description": "M16.11",
+          "icd10_code": "DAYS UNILATERAL PRIMARY OSTEOARTHRITIS, RIGHT HIP",
+          "is_primary_candidate": false,
+          "requires_human_review": true
+        }
+      ],
+      "confidence": 0.74,
+      "rationale": "Secondary diagnosis candidates extracted from referral evidence.",
+      "requiresHumanReview": true
+    }
+  },
+  "comparisonResults": {
+    "primary_reason_for_home_health_medical_necessity": {
+      "fieldKey": "primary_reason_for_home_health_medical_necessity",
+      "label": "Primary Reason For Home Health / Medical Necessity",
+      "groupKey": "medical_necessity_and_homebound",
+      "qaPriority": "critical",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "missing_in_chart",
+      "workflowState": "missing_in_chart",
+      "recommendedAction": "review_in_chart",
+      "sourceEvidence": [],
+      "requiresHumanReview": true
+    },
+    "admit_reason_to_home_health": {
+      "fieldKey": "admit_reason_to_home_health",
+      "label": "Admit Reason To Home Health",
+      "groupKey": "medical_necessity_and_homebound",
+      "qaPriority": "critical",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "missing_in_chart",
+      "workflowState": "missing_in_chart",
+      "recommendedAction": "review_in_chart",
+      "sourceEvidence": [],
+      "requiresHumanReview": true
+    },
+    "homebound_narrative": {
+      "fieldKey": "homebound_narrative",
+      "label": "Homebound Narrative",
+      "groupKey": "medical_necessity_and_homebound",
+      "qaPriority": "critical",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "missing_in_chart",
+      "workflowState": "missing_in_chart",
+      "recommendedAction": "review_in_chart",
+      "sourceEvidence": [],
+      "requiresHumanReview": true
+    },
+    "homebound_supporting_factors": {
+      "fieldKey": "homebound_supporting_factors",
+      "label": "Homebound Supporting Factors",
+      "groupKey": "medical_necessity_and_homebound",
+      "qaPriority": "high",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "not_relevant_for_dashboard",
+      "workflowState": "not_relevant_for_dashboard",
+      "recommendedAction": "reference_only",
+      "sourceEvidence": [],
+      "requiresHumanReview": true
+    },
+    "recent_hospitalization_discharge_date": {
+      "fieldKey": "recent_hospitalization_discharge_date",
+      "label": "Recent Hospitalization Discharge Date",
+      "groupKey": "medical_necessity_and_homebound",
+      "qaPriority": "high",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "not_relevant_for_dashboard",
+      "workflowState": "not_relevant_for_dashboard",
+      "recommendedAction": "reference_only",
+      "sourceEvidence": [],
+      "requiresHumanReview": true
+    },
+    "recent_hospitalization_facility": {
+      "fieldKey": "recent_hospitalization_facility",
+      "label": "Recent Hospitalization Facility",
+      "groupKey": "medical_necessity_and_homebound",
+      "qaPriority": "high",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "not_relevant_for_dashboard",
+      "workflowState": "not_relevant_for_dashboard",
+      "recommendedAction": "reference_only",
+      "sourceEvidence": [],
+      "requiresHumanReview": true
+    },
+    "diagnosis_candidates": {
+      "fieldKey": "diagnosis_candidates",
+      "label": "Diagnosis Candidates",
+      "groupKey": "diagnosis_and_coding",
+      "qaPriority": "critical",
+      "currentChartValue": null,
+      "documentSupportedValue": [
+        {
+          "description": "Exercise",
+          "icd10_code": "M16.11",
+          "is_primary_candidate": true,
+          "requires_human_review": true
+        },
+        {
+          "description": "M16.11",
+          "icd10_code": "DAYS UNILATERAL PRIMARY OSTEOARTHRITIS, RIGHT HIP",
+          "is_primary_candidate": false,
+          "requires_human_review": true
+        }
+      ],
+      "comparisonStatus": "needs_coding_review",
+      "workflowState": "needs_coding_review",
+      "recommendedAction": "escalate_to_coding",
+      "sourceEvidence": [
+        {
+          "sourceType": "REFERRAL_ORDER",
+          "sourceLabel": "📄 Ralph pierce new referral .pdf 📝 ✏️ 🗑️ 🔗",
+          "textSpan": "M16.11) Exercise",
+          "confidence": 0.74
+        },
+        {
+          "sourceType": "REFERRAL_ORDER",
+          "sourceLabel": "📄 Ralph pierce new referral .pdf 📝 ✏️ 🗑️ 🔗",
+          "textSpan": "days Unilateral primary osteoarthritis, right hip (M16.11)",
+          "confidence": 0.74
+        }
+      ],
+      "requiresHumanReview": true
+    },
+    "primary_diagnosis": {
+      "fieldKey": "primary_diagnosis",
+      "label": "Primary Diagnosis",
+      "groupKey": "diagnosis_and_coding",
+      "qaPriority": "critical",
+      "currentChartValue": null,
+      "documentSupportedValue": {
+        "description": "Exercise",
+        "icd10_code": "M16.11",
+        "is_primary_candidate": true,
+        "requires_human_review": true
+      },
+      "comparisonStatus": "needs_coding_review",
+      "workflowState": "needs_coding_review",
+      "recommendedAction": "escalate_to_coding",
+      "sourceEvidence": [
+        {
+          "sourceType": "REFERRAL_ORDER",
+          "sourceLabel": "📄 Ralph pierce new referral .pdf 📝 ✏️ 🗑️ 🔗",
+          "textSpan": "M16.11) Exercise",
+          "confidence": 0.74
+        },
+        {
+          "sourceType": "REFERRAL_ORDER",
+          "sourceLabel": "📄 Ralph pierce new referral .pdf 📝 ✏️ 🗑️ 🔗",
+          "textSpan": "days Unilateral primary osteoarthritis, right hip (M16.11)",
+          "confidence": 0.74
+        }
+      ],
+      "requiresHumanReview": true
+    },
+    "secondary_diagnoses": {
+      "fieldKey": "secondary_diagnoses",
+      "label": "Secondary Diagnoses",
+      "groupKey": "diagnosis_and_coding",
+      "qaPriority": "high",
+      "currentChartValue": null,
+      "documentSupportedValue": [
+        {
+          "description": "M16.11",
+          "icd10_code": "DAYS UNILATERAL PRIMARY OSTEOARTHRITIS, RIGHT HIP",
+          "is_primary_candidate": false,
+          "requires_human_review": true
+        }
+      ],
+      "comparisonStatus": "needs_coding_review",
+      "workflowState": "needs_coding_review",
+      "recommendedAction": "escalate_to_coding",
+      "sourceEvidence": [
+        {
+          "sourceType": "REFERRAL_ORDER",
+          "sourceLabel": "📄 Ralph pierce new referral .pdf 📝 ✏️ 🗑️ 🔗",
+          "textSpan": "M16.11) Exercise",
+          "confidence": 0.74
+        },
+        {
+          "sourceType": "REFERRAL_ORDER",
+          "sourceLabel": "📄 Ralph pierce new referral .pdf 📝 ✏️ 🗑️ 🔗",
+          "textSpan": "days Unilateral primary osteoarthritis, right hip (M16.11)",
+          "confidence": 0.74
+        }
+      ],
+      "requiresHumanReview": true
+    },
+    "diagnosis_supporting_evidence": {
+      "fieldKey": "diagnosis_supporting_evidence",
+      "label": "Diagnosis Supporting Evidence",
+      "groupKey": "diagnosis_and_coding",
+      "qaPriority": "high",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "missing_in_chart",
+      "workflowState": "missing_in_chart",
+      "recommendedAction": "review_in_chart",
+      "sourceEvidence": [],
+      "requiresHumanReview": true
+    },
+    "coding_escalation_flags": {
+      "fieldKey": "coding_escalation_flags",
+      "label": "Coding Escalation Flags",
+      "groupKey": "diagnosis_and_coding",
+      "qaPriority": "high",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "missing_in_chart",
+      "workflowState": "missing_in_chart",
+      "recommendedAction": "review_in_chart",
+      "sourceEvidence": [],
+      "requiresHumanReview": true
+    },
+    "medication_list": {
+      "fieldKey": "medication_list",
+      "label": "Medication List",
+      "groupKey": "medications_allergies_and_special_treatments",
+      "qaPriority": "critical",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "missing_in_chart",
+      "workflowState": "missing_in_chart",
+      "recommendedAction": "review_in_chart",
+      "sourceEvidence": [],
+      "requiresHumanReview": true
+    },
+    "allergy_list": {
+      "fieldKey": "allergy_list",
+      "label": "Allergies",
+      "groupKey": "medications_allergies_and_special_treatments",
+      "qaPriority": "critical",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "missing_in_chart",
+      "workflowState": "missing_in_chart",
+      "recommendedAction": "review_in_chart",
+      "sourceEvidence": [],
+      "requiresHumanReview": true
+    },
+    "special_treatments_o0110": {
+      "fieldKey": "special_treatments_o0110",
+      "label": "Special Treatments / Procedures / Programs",
+      "groupKey": "medications_allergies_and_special_treatments",
+      "qaPriority": "critical",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "missing_in_chart",
+      "workflowState": "missing_in_chart",
+      "recommendedAction": "review_in_chart",
+      "sourceEvidence": [],
+      "requiresHumanReview": true
+    },
+    "injectable_medications": {
+      "fieldKey": "injectable_medications",
+      "label": "Injectable Medications",
+      "groupKey": "medications_allergies_and_special_treatments",
+      "qaPriority": "high",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "not_relevant_for_dashboard",
+      "workflowState": "not_relevant_for_dashboard",
+      "recommendedAction": "reference_only",
+      "sourceEvidence": [],
+      "requiresHumanReview": true
+    },
+    "high_risk_medication_notes": {
+      "fieldKey": "high_risk_medication_notes",
+      "label": "High-Risk Medication Notes",
+      "groupKey": "medications_allergies_and_special_treatments",
+      "qaPriority": "high",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "not_relevant_for_dashboard",
+      "workflowState": "not_relevant_for_dashboard",
+      "recommendedAction": "reference_only",
+      "sourceEvidence": [],
+      "requiresHumanReview": true
+    },
+    "prior_functioning": {
+      "fieldKey": "prior_functioning",
+      "label": "Prior Functioning",
+      "groupKey": "functional_and_therapy_status",
+      "qaPriority": "high",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "not_relevant_for_dashboard",
+      "workflowState": "not_relevant_for_dashboard",
+      "recommendedAction": "reference_only",
+      "sourceEvidence": [],
+      "requiresHumanReview": true
+    },
+    "gg_self_care": {
+      "fieldKey": "gg_self_care",
+      "label": "GG Self Care",
+      "groupKey": "functional_and_therapy_status",
+      "qaPriority": "high",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "not_relevant_for_dashboard",
+      "workflowState": "not_relevant_for_dashboard",
+      "recommendedAction": "reference_only",
+      "sourceEvidence": [],
+      "requiresHumanReview": true
+    },
+    "gg_mobility": {
+      "fieldKey": "gg_mobility",
+      "label": "GG Mobility",
+      "groupKey": "functional_and_therapy_status",
+      "qaPriority": "high",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "not_relevant_for_dashboard",
+      "workflowState": "not_relevant_for_dashboard",
+      "recommendedAction": "reference_only",
+      "sourceEvidence": [],
+      "requiresHumanReview": true
+    },
+    "functional_limitations": {
+      "fieldKey": "functional_limitations",
+      "label": "Functional Limitations",
+      "groupKey": "functional_and_therapy_status",
+      "qaPriority": "high",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "not_relevant_for_dashboard",
+      "workflowState": "not_relevant_for_dashboard",
+      "recommendedAction": "reference_only",
+      "sourceEvidence": [],
+      "requiresHumanReview": true
+    },
+    "therapy_need": {
+      "fieldKey": "therapy_need",
+      "label": "Therapy Need",
+      "groupKey": "functional_and_therapy_status",
+      "qaPriority": "high",
+      "currentChartValue": null,
+      "documentSupportedValue": "PT/OT Rx Physical and/or Occupational Therapy Prescription Indication: Hip Osteoarthritis, Right - right hip joint - M",
+      "comparisonStatus": "supported_by_referral",
+      "workflowState": "needs_qa_readback",
+      "recommendedAction": "qa_readback_and_confirm",
+      "sourceEvidence": [
+        {
+          "sourceType": "REFERRAL_ORDER",
+          "sourceLabel": "📄 Ralph pierce new referral .pdf 📝 ✏️ 🗑️ 🔗",
+          "textSpan": "PT/OT Rx Physical and/or Occupational Therapy Prescription Indication: Hip Osteoarthritis, Right - right hip joint - M",
+          "confidence": 0.77
+        }
+      ],
+      "requiresHumanReview": true
+    },
+    "discipline_frequencies": {
+      "fieldKey": "discipline_frequencies",
+      "label": "Discipline Frequencies",
+      "groupKey": "functional_and_therapy_status",
+      "qaPriority": "high",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "not_relevant_for_dashboard",
+      "workflowState": "not_relevant_for_dashboard",
+      "recommendedAction": "reference_only",
+      "sourceEvidence": [],
+      "requiresHumanReview": true
+    },
+    "patient_caregiver_goals": {
+      "fieldKey": "patient_caregiver_goals",
+      "label": "Patient / Caregiver Goals",
+      "groupKey": "functional_and_therapy_status",
+      "qaPriority": "medium",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "not_relevant_for_dashboard",
+      "workflowState": "not_relevant_for_dashboard",
+      "recommendedAction": "reference_only",
+      "sourceEvidence": [],
+      "requiresHumanReview": true
+    },
+    "plan_for_next_visit": {
+      "fieldKey": "plan_for_next_visit",
+      "label": "Plan For Next Visit",
+      "groupKey": "functional_and_therapy_status",
+      "qaPriority": "medium",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "not_relevant_for_dashboard",
+      "workflowState": "not_relevant_for_dashboard",
+      "recommendedAction": "reference_only",
+      "sourceEvidence": [],
+      "requiresHumanReview": true
+    },
+    "neurological_status": {
+      "fieldKey": "neurological_status",
+      "label": "Neurological Status",
+      "groupKey": "symptom_and_body_system_review",
+      "qaPriority": "high",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "missing_in_chart",
+      "workflowState": "missing_in_chart",
+      "recommendedAction": "review_in_chart",
+      "sourceEvidence": [],
+      "requiresHumanReview": true
+    },
+    "eyes_ears_status": {
+      "fieldKey": "eyes_ears_status",
+      "label": "Eyes & Ears Status",
+      "groupKey": "symptom_and_body_system_review",
+      "qaPriority": "medium",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "missing_in_chart",
+      "workflowState": "missing_in_chart",
+      "recommendedAction": "review_in_chart",
+      "sourceEvidence": [],
+      "requiresHumanReview": true
+    },
+    "cardiovascular_status": {
+      "fieldKey": "cardiovascular_status",
+      "label": "Cardiovascular Status",
+      "groupKey": "symptom_and_body_system_review",
+      "qaPriority": "medium",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "missing_in_chart",
+      "workflowState": "missing_in_chart",
+      "recommendedAction": "review_in_chart",
+      "sourceEvidence": [],
+      "requiresHumanReview": true
+    },
+    "respiratory_status": {
+      "fieldKey": "respiratory_status",
+      "label": "Respiratory Status",
+      "groupKey": "symptom_and_body_system_review",
+      "qaPriority": "critical",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "missing_in_chart",
+      "workflowState": "missing_in_chart",
+      "recommendedAction": "review_in_chart",
+      "sourceEvidence": [],
+      "requiresHumanReview": true
+    },
+    "gastrointestinal_status": {
+      "fieldKey": "gastrointestinal_status",
+      "label": "Gastrointestinal Status",
+      "groupKey": "symptom_and_body_system_review",
+      "qaPriority": "high",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "missing_in_chart",
+      "workflowState": "missing_in_chart",
+      "recommendedAction": "review_in_chart",
+      "sourceEvidence": [],
+      "requiresHumanReview": true
+    },
+    "genitourinary_status": {
+      "fieldKey": "genitourinary_status",
+      "label": "Genitourinary Status",
+      "groupKey": "symptom_and_body_system_review",
+      "qaPriority": "high",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "missing_in_chart",
+      "workflowState": "missing_in_chart",
+      "recommendedAction": "review_in_chart",
+      "sourceEvidence": [],
+      "requiresHumanReview": true
+    },
+    "integumentary_wound_status": {
+      "fieldKey": "integumentary_wound_status",
+      "label": "Integumentary / Wound Status",
+      "groupKey": "symptom_and_body_system_review",
+      "qaPriority": "critical",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "missing_in_chart",
+      "workflowState": "missing_in_chart",
+      "recommendedAction": "review_in_chart",
+      "sourceEvidence": [],
+      "requiresHumanReview": true
+    },
+    "pain_assessment_narrative": {
+      "fieldKey": "pain_assessment_narrative",
+      "label": "Pain Assessment Narrative",
+      "groupKey": "symptom_and_body_system_review",
+      "qaPriority": "high",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "not_relevant_for_dashboard",
+      "workflowState": "not_relevant_for_dashboard",
+      "recommendedAction": "reference_only",
+      "sourceEvidence": [],
+      "requiresHumanReview": true
+    },
+    "emotional_behavioral_status": {
+      "fieldKey": "emotional_behavioral_status",
+      "label": "Emotional / Behavioral Status",
+      "groupKey": "symptom_and_body_system_review",
+      "qaPriority": "high",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "missing_in_chart",
+      "workflowState": "missing_in_chart",
+      "recommendedAction": "review_in_chart",
+      "sourceEvidence": [],
+      "requiresHumanReview": true
+    },
+    "mahc10_fall_risk": {
+      "fieldKey": "mahc10_fall_risk",
+      "label": "MAHC 10 Fall Risk",
+      "groupKey": "risk_and_safety_assessments",
+      "qaPriority": "high",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "missing_in_chart",
+      "workflowState": "missing_in_chart",
+      "recommendedAction": "review_in_chart",
+      "sourceEvidence": [],
+      "requiresHumanReview": true
+    },
+    "norton_scale": {
+      "fieldKey": "norton_scale",
+      "label": "Norton Scale",
+      "groupKey": "risk_and_safety_assessments",
+      "qaPriority": "high",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "missing_in_chart",
+      "workflowState": "missing_in_chart",
+      "recommendedAction": "review_in_chart",
+      "sourceEvidence": [],
+      "requiresHumanReview": true
+    },
+    "wound_risk_review": {
+      "fieldKey": "wound_risk_review",
+      "label": "Wound / Pressure Risk Review",
+      "groupKey": "risk_and_safety_assessments",
+      "qaPriority": "high",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "not_relevant_for_dashboard",
+      "workflowState": "not_relevant_for_dashboard",
+      "recommendedAction": "reference_only",
+      "sourceEvidence": [],
+      "requiresHumanReview": true
+    },
+    "fall_risk_narrative": {
+      "fieldKey": "fall_risk_narrative",
+      "label": "Fall Risk Narrative",
+      "groupKey": "risk_and_safety_assessments",
+      "qaPriority": "high",
+      "currentChartValue": null,
+      "documentSupportedValue": "Hip Osteoarthritis, Right (Patient Management Risk Level: Low) Repair of multiple tears of rotator cuff / feel the patient's right hip symptoms and previous imaging are severe enough to proceed with a right total hip of right shoulder Other: Left & Right Meniscus Repair arthroplasty as scheduled. Patient has increased VTE risk and will be placed back on his Eliquis following surgery for DVT and prior heart Social His",
+      "comparisonStatus": "supported_by_referral",
+      "workflowState": "needs_qa_readback",
+      "recommendedAction": "qa_readback_and_confirm",
+      "sourceEvidence": [
+        {
+          "sourceType": "REFERRAL_ORDER",
+          "sourceLabel": "📄 Ralph pierce new referral .pdf 📝 ✏️ 🗑️ 🔗",
+          "textSpan": "Hip Osteoarthritis, Right (Patient Management Risk Level: Low) Repair of multiple tears of rotator cuff / feel the patient's right hip symptoms and previous imaging are severe enough to proceed with a right total hip of right shoulder Other: Left & Right Meniscus Repair arthroplasty as scheduled. Patient has increased VTE risk and will be placed back on his Eliquis following surgery for DVT and prior heart Social His",
+          "confidence": 0.7
+        }
+      ],
+      "requiresHumanReview": true
+    },
+    "hospitalization_risk_summary": {
+      "fieldKey": "hospitalization_risk_summary",
+      "label": "Hospitalization Risk Summary",
+      "groupKey": "risk_and_safety_assessments",
+      "qaPriority": "medium",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "not_relevant_for_dashboard",
+      "workflowState": "not_relevant_for_dashboard",
+      "recommendedAction": "reference_only",
+      "sourceEvidence": [],
+      "requiresHumanReview": true
+    },
+    "patient_summary_narrative": {
+      "fieldKey": "patient_summary_narrative",
+      "label": "Patient Summary / Clinical Narrative",
+      "groupKey": "care_plan_and_coordination",
+      "qaPriority": "high",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "not_relevant_for_dashboard",
+      "workflowState": "not_relevant_for_dashboard",
+      "recommendedAction": "reference_only",
+      "sourceEvidence": [],
+      "requiresHumanReview": true
+    },
+    "skilled_interventions": {
+      "fieldKey": "skilled_interventions",
+      "label": "Skilled Interventions",
+      "groupKey": "care_plan_and_coordination",
+      "qaPriority": "high",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "not_relevant_for_dashboard",
+      "workflowState": "not_relevant_for_dashboard",
+      "recommendedAction": "reference_only",
+      "sourceEvidence": [],
+      "requiresHumanReview": true
+    },
+    "care_plan_problems_goals_interventions": {
+      "fieldKey": "care_plan_problems_goals_interventions",
+      "label": "Care Plan Problems / Goals / Interventions",
+      "groupKey": "care_plan_and_coordination",
+      "qaPriority": "high",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "not_relevant_for_dashboard",
+      "workflowState": "not_relevant_for_dashboard",
+      "recommendedAction": "reference_only",
+      "sourceEvidence": [],
+      "requiresHumanReview": true
+    },
+    "patient_coordination_orders": {
+      "fieldKey": "patient_coordination_orders",
+      "label": "Patient Coordination Orders",
+      "groupKey": "care_plan_and_coordination",
+      "qaPriority": "medium",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "not_relevant_for_dashboard",
+      "workflowState": "not_relevant_for_dashboard",
+      "recommendedAction": "reference_only",
+      "sourceEvidence": [],
+      "requiresHumanReview": true
+    },
+    "past_medical_history": {
+      "fieldKey": "past_medical_history",
+      "label": "Past Medical History",
+      "groupKey": "supplementals_and_history",
+      "qaPriority": "high",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "not_relevant_for_dashboard",
+      "workflowState": "not_relevant_for_dashboard",
+      "recommendedAction": "reference_only",
+      "sourceEvidence": [],
+      "requiresHumanReview": true
+    },
+    "living_situation": {
+      "fieldKey": "living_situation",
+      "label": "Living Situation",
+      "groupKey": "supplementals_and_history",
+      "qaPriority": "high",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "not_relevant_for_dashboard",
+      "workflowState": "not_relevant_for_dashboard",
+      "recommendedAction": "reference_only",
+      "sourceEvidence": [],
+      "requiresHumanReview": false
+    },
+    "caregiver_name": {
+      "fieldKey": "caregiver_name",
+      "label": "Caregiver Name",
+      "groupKey": "supplementals_and_history",
+      "qaPriority": "medium",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "not_relevant_for_dashboard",
+      "workflowState": "not_relevant_for_dashboard",
+      "recommendedAction": "reference_only",
+      "sourceEvidence": [],
+      "requiresHumanReview": false
+    },
+    "caregiver_relationship": {
+      "fieldKey": "caregiver_relationship",
+      "label": "Caregiver Relationship",
+      "groupKey": "supplementals_and_history",
+      "qaPriority": "medium",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "not_relevant_for_dashboard",
+      "workflowState": "not_relevant_for_dashboard",
+      "recommendedAction": "reference_only",
+      "sourceEvidence": [],
+      "requiresHumanReview": false
+    },
+    "caregiver_phone": {
+      "fieldKey": "caregiver_phone",
+      "label": "Caregiver Phone",
+      "groupKey": "supplementals_and_history",
+      "qaPriority": "medium",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "not_relevant_for_dashboard",
+      "workflowState": "not_relevant_for_dashboard",
+      "recommendedAction": "reference_only",
+      "sourceEvidence": [],
+      "requiresHumanReview": true
+    },
+    "preferred_language": {
+      "fieldKey": "preferred_language",
+      "label": "Preferred Language",
+      "groupKey": "supplementals_and_history",
+      "qaPriority": "medium",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "not_relevant_for_dashboard",
+      "workflowState": "not_relevant_for_dashboard",
+      "recommendedAction": "reference_only",
+      "sourceEvidence": [],
+      "requiresHumanReview": false
+    },
+    "interpreter_needed": {
+      "fieldKey": "interpreter_needed",
+      "label": "Interpreter Needed",
+      "groupKey": "supplementals_and_history",
+      "qaPriority": "medium",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "not_relevant_for_dashboard",
+      "workflowState": "not_relevant_for_dashboard",
+      "recommendedAction": "reference_only",
+      "sourceEvidence": [],
+      "requiresHumanReview": true
+    },
+    "immunization_status": {
+      "fieldKey": "immunization_status",
+      "label": "Immunization / Vaccination Status",
+      "groupKey": "supplementals_and_history",
+      "qaPriority": "medium",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "missing_in_chart",
+      "workflowState": "missing_in_chart",
+      "recommendedAction": "review_in_chart",
+      "sourceEvidence": [],
+      "requiresHumanReview": true
+    },
+    "soc_date": {
+      "fieldKey": "soc_date",
+      "label": "Start Of Care Date",
+      "groupKey": "low_priority_admin_reference",
+      "qaPriority": "medium",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "not_relevant_for_dashboard",
+      "workflowState": "not_relevant_for_dashboard",
+      "recommendedAction": "reference_only",
+      "sourceEvidence": [],
+      "requiresHumanReview": false
+    },
+    "referral_date": {
+      "fieldKey": "referral_date",
+      "label": "Referral Date",
+      "groupKey": "low_priority_admin_reference",
+      "qaPriority": "medium",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "not_relevant_for_dashboard",
+      "workflowState": "not_relevant_for_dashboard",
+      "recommendedAction": "reference_only",
+      "sourceEvidence": [],
+      "requiresHumanReview": false
+    },
+    "code_status": {
+      "fieldKey": "code_status",
+      "label": "Code Status",
+      "groupKey": "risk_and_safety_assessments",
+      "qaPriority": "high",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "not_relevant_for_dashboard",
+      "workflowState": "not_relevant_for_dashboard",
+      "recommendedAction": "reference_only",
+      "sourceEvidence": [],
+      "requiresHumanReview": true
+    },
+    "patient_name": {
+      "fieldKey": "patient_name",
+      "label": "Patient Name",
+      "groupKey": "low_priority_admin_reference",
+      "qaPriority": "low",
+      "currentChartValue": "Ralph Pierce",
+      "documentSupportedValue": null,
+      "comparisonStatus": "not_relevant_for_dashboard",
+      "workflowState": "not_relevant_for_dashboard",
+      "recommendedAction": "reference_only",
+      "sourceEvidence": [],
+      "requiresHumanReview": false
+    },
+    "dob": {
+      "fieldKey": "dob",
+      "label": "Date Of Birth",
+      "groupKey": "low_priority_admin_reference",
+      "qaPriority": "low",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "not_relevant_for_dashboard",
+      "workflowState": "not_relevant_for_dashboard",
+      "recommendedAction": "reference_only",
+      "sourceEvidence": [],
+      "requiresHumanReview": false
+    },
+    "patient_address": {
+      "fieldKey": "patient_address",
+      "label": "Patient Address",
+      "groupKey": "low_priority_admin_reference",
+      "qaPriority": "low",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "not_relevant_for_dashboard",
+      "workflowState": "not_relevant_for_dashboard",
+      "recommendedAction": "reference_only",
+      "sourceEvidence": [],
+      "requiresHumanReview": false
+    },
+    "patient_phone": {
+      "fieldKey": "patient_phone",
+      "label": "Patient Phone",
+      "groupKey": "low_priority_admin_reference",
+      "qaPriority": "low",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "not_relevant_for_dashboard",
+      "workflowState": "not_relevant_for_dashboard",
+      "recommendedAction": "reference_only",
+      "sourceEvidence": [],
+      "requiresHumanReview": false
+    },
+    "attending_physician": {
+      "fieldKey": "attending_physician",
+      "label": "Attending Physician",
+      "groupKey": "low_priority_admin_reference",
+      "qaPriority": "low",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "not_relevant_for_dashboard",
+      "workflowState": "not_relevant_for_dashboard",
+      "recommendedAction": "reference_only",
+      "sourceEvidence": [],
+      "requiresHumanReview": false
+    },
+    "agency_provider_number": {
+      "fieldKey": "agency_provider_number",
+      "label": "Agency Provider Number",
+      "groupKey": "low_priority_admin_reference",
+      "qaPriority": "low",
+      "currentChartValue": null,
+      "documentSupportedValue": null,
+      "comparisonStatus": "not_relevant_for_dashboard",
+      "workflowState": "not_relevant_for_dashboard",
+      "recommendedAction": "reference_only",
+      "sourceEvidence": [],
+      "requiresHumanReview": false
+    }
+  },
+  "qaReviewQueue": [
+    {
+      "fieldKey": "diagnosis_candidates",
+      "groupKey": "diagnosis_and_coding",
+      "sectionKey": "active_diagnoses",
+      "qaPriority": "critical",
+      "comparisonStatus": "needs_coding_review",
+      "workflowState": "needs_coding_review",
+      "recommendedAction": "escalate_to_coding"
+    },
+    {
+      "fieldKey": "primary_diagnosis",
+      "groupKey": "diagnosis_and_coding",
+      "sectionKey": "active_diagnoses",
+      "qaPriority": "critical",
+      "comparisonStatus": "needs_coding_review",
+      "workflowState": "needs_coding_review",
+      "recommendedAction": "escalate_to_coding"
+    },
+    {
+      "fieldKey": "secondary_diagnoses",
+      "groupKey": "diagnosis_and_coding",
+      "sectionKey": "active_diagnoses",
+      "qaPriority": "high",
+      "comparisonStatus": "needs_coding_review",
+      "workflowState": "needs_coding_review",
+      "recommendedAction": "escalate_to_coding"
+    },
+    {
+      "fieldKey": "therapy_need",
+      "groupKey": "functional_and_therapy_status",
+      "sectionKey": "plan_of_care_and_physical_therapy_evaluation",
+      "qaPriority": "high",
+      "comparisonStatus": "supported_by_referral",
+      "workflowState": "needs_qa_readback",
+      "recommendedAction": "qa_readback_and_confirm"
+    },
+    {
+      "fieldKey": "fall_risk_narrative",
+      "groupKey": "risk_and_safety_assessments",
+      "sectionKey": "safety_and_risk_assessment",
+      "qaPriority": "high",
+      "comparisonStatus": "supported_by_referral",
+      "workflowState": "needs_qa_readback",
+      "recommendedAction": "qa_readback_and_confirm"
+    },
+    {
+      "fieldKey": "primary_reason_for_home_health_medical_necessity",
+      "groupKey": "medical_necessity_and_homebound",
+      "sectionKey": "patient_summary_and_clinical_narrative",
+      "qaPriority": "critical",
+      "comparisonStatus": "missing_in_chart",
+      "workflowState": "missing_in_chart",
+      "recommendedAction": "review_in_chart"
+    },
+    {
+      "fieldKey": "admit_reason_to_home_health",
+      "groupKey": "medical_necessity_and_homebound",
+      "sectionKey": "patient_summary_and_clinical_narrative",
+      "qaPriority": "critical",
+      "comparisonStatus": "missing_in_chart",
+      "workflowState": "missing_in_chart",
+      "recommendedAction": "review_in_chart"
+    },
+    {
+      "fieldKey": "homebound_narrative",
+      "groupKey": "medical_necessity_and_homebound",
+      "sectionKey": "functional_assessment_mobility_and_musculoskeletal",
+      "qaPriority": "critical",
+      "comparisonStatus": "missing_in_chart",
+      "workflowState": "missing_in_chart",
+      "recommendedAction": "review_in_chart"
+    },
+    {
+      "fieldKey": "medication_list",
+      "groupKey": "medications_allergies_and_special_treatments",
+      "sectionKey": "medication_allergies_and_injectables",
+      "qaPriority": "critical",
+      "comparisonStatus": "missing_in_chart",
+      "workflowState": "missing_in_chart",
+      "recommendedAction": "review_in_chart"
+    },
+    {
+      "fieldKey": "allergy_list",
+      "groupKey": "medications_allergies_and_special_treatments",
+      "sectionKey": "medication_allergies_and_injectables",
+      "qaPriority": "critical",
+      "comparisonStatus": "missing_in_chart",
+      "workflowState": "missing_in_chart",
+      "recommendedAction": "review_in_chart"
+    },
+    {
+      "fieldKey": "special_treatments_o0110",
+      "groupKey": "medications_allergies_and_special_treatments",
+      "sectionKey": "medication_allergies_and_injectables",
+      "qaPriority": "critical",
+      "comparisonStatus": "missing_in_chart",
+      "workflowState": "missing_in_chart",
+      "recommendedAction": "review_in_chart"
+    },
+    {
+      "fieldKey": "respiratory_status",
+      "groupKey": "symptom_and_body_system_review",
+      "sectionKey": "cardiopulmonary_chest_thorax",
+      "qaPriority": "critical",
+      "comparisonStatus": "missing_in_chart",
+      "workflowState": "missing_in_chart",
+      "recommendedAction": "review_in_chart"
+    },
+    {
+      "fieldKey": "integumentary_wound_status",
+      "groupKey": "symptom_and_body_system_review",
+      "sectionKey": "integumentary_skin_and_wound",
+      "qaPriority": "critical",
+      "comparisonStatus": "missing_in_chart",
+      "workflowState": "missing_in_chart",
+      "recommendedAction": "review_in_chart"
+    },
+    {
+      "fieldKey": "diagnosis_supporting_evidence",
+      "groupKey": "diagnosis_and_coding",
+      "sectionKey": "active_diagnoses",
+      "qaPriority": "high",
+      "comparisonStatus": "missing_in_chart",
+      "workflowState": "missing_in_chart",
+      "recommendedAction": "review_in_chart"
+    },
+    {
+      "fieldKey": "coding_escalation_flags",
+      "groupKey": "diagnosis_and_coding",
+      "sectionKey": "active_diagnoses",
+      "qaPriority": "high",
+      "comparisonStatus": "missing_in_chart",
+      "workflowState": "missing_in_chart",
+      "recommendedAction": "review_in_chart"
+    },
+    {
+      "fieldKey": "neurological_status",
+      "groupKey": "symptom_and_body_system_review",
+      "sectionKey": "neurological_head_mood_eyes_ears",
+      "qaPriority": "high",
+      "comparisonStatus": "missing_in_chart",
+      "workflowState": "missing_in_chart",
+      "recommendedAction": "review_in_chart"
+    },
+    {
+      "fieldKey": "gastrointestinal_status",
+      "groupKey": "symptom_and_body_system_review",
+      "sectionKey": "gastrointestinal_and_genitourinary_assessment",
+      "qaPriority": "high",
+      "comparisonStatus": "missing_in_chart",
+      "workflowState": "missing_in_chart",
+      "recommendedAction": "review_in_chart"
+    },
+    {
+      "fieldKey": "genitourinary_status",
+      "groupKey": "symptom_and_body_system_review",
+      "sectionKey": "gastrointestinal_and_genitourinary_assessment",
+      "qaPriority": "high",
+      "comparisonStatus": "missing_in_chart",
+      "workflowState": "missing_in_chart",
+      "recommendedAction": "review_in_chart"
+    },
+    {
+      "fieldKey": "emotional_behavioral_status",
+      "groupKey": "symptom_and_body_system_review",
+      "sectionKey": "neurological_head_mood_eyes_ears",
+      "qaPriority": "high",
+      "comparisonStatus": "missing_in_chart",
+      "workflowState": "missing_in_chart",
+      "recommendedAction": "review_in_chart"
+    },
+    {
+      "fieldKey": "mahc10_fall_risk",
+      "groupKey": "risk_and_safety_assessments",
+      "sectionKey": "safety_and_risk_assessment",
+      "qaPriority": "high",
+      "comparisonStatus": "missing_in_chart",
+      "workflowState": "missing_in_chart",
+      "recommendedAction": "review_in_chart"
+    },
+    {
+      "fieldKey": "norton_scale",
+      "groupKey": "risk_and_safety_assessments",
+      "sectionKey": "integumentary_skin_and_wound",
+      "qaPriority": "high",
+      "comparisonStatus": "missing_in_chart",
+      "workflowState": "missing_in_chart",
+      "recommendedAction": "review_in_chart"
+    },
+    {
+      "fieldKey": "eyes_ears_status",
+      "groupKey": "symptom_and_body_system_review",
+      "sectionKey": "neurological_head_mood_eyes_ears",
+      "qaPriority": "medium",
+      "comparisonStatus": "missing_in_chart",
+      "workflowState": "missing_in_chart",
+      "recommendedAction": "review_in_chart"
+    },
+    {
+      "fieldKey": "cardiovascular_status",
+      "groupKey": "symptom_and_body_system_review",
+      "sectionKey": "cardiopulmonary_chest_thorax",
+      "qaPriority": "medium",
+      "comparisonStatus": "missing_in_chart",
+      "workflowState": "missing_in_chart",
+      "recommendedAction": "review_in_chart"
+    },
+    {
+      "fieldKey": "immunization_status",
+      "groupKey": "supplementals_and_history",
+      "sectionKey": "administrative_information",
+      "qaPriority": "medium",
+      "comparisonStatus": "missing_in_chart",
+      "workflowState": "missing_in_chart",
+      "recommendedAction": "review_in_chart"
+    }
+  ]
+}

@@ -1,0 +1,1801 @@
+{
+  "id": "batch-2026-04-11T23-53-15-894Z-5f66345c",
+  "subsidiary": {
+    "id": "default",
+    "slug": "default",
+    "name": "Default Subsidiary"
+  },
+  "createdAt": "2026-04-11T23:53:15.895Z",
+  "updatedAt": "2026-04-13T01:45:57.933Z",
+  "runMode": "read_only",
+  "billingPeriod": null,
+  "status": "COMPLETED",
+  "schedule": {
+    "scheduledRunId": "schedule-batch-2026-04-11T23-53-15-894Z-5f66345c",
+    "active": false,
+    "rerunEnabled": false,
+    "intervalHours": 24,
+    "lastRunAt": "2026-04-13T00:14:04.624Z",
+    "nextScheduledRunAt": null
+  },
+  "sourceWorkbook": {
+    "subsidiaryId": "default",
+    "acquisitionProvider": "MANUAL_UPLOAD",
+    "acquisitionStatus": "ACQUIRED",
+    "acquisitionReference": null,
+    "acquisitionNotes": [
+      "Workbook acquired from manual upload."
+    ],
+    "originalFileName": "finale-export-christine.xlsx",
+    "storedPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T23-53-15-894Z-5f66345c\\source\\finale-export-christine.xlsx",
+    "uploadedAt": "2026-04-11T23:53:15.922Z"
+  },
+  "storage": {
+    "batchRoot": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T23-53-15-894Z-5f66345c",
+    "outputRoot": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T23-53-15-894Z-5f66345c\\outputs",
+    "manifestPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T23-53-15-894Z-5f66345c\\outputs\\batch-manifest.json",
+    "workItemsPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T23-53-15-894Z-5f66345c\\outputs\\work-items.json",
+    "parserExceptionsPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T23-53-15-894Z-5f66345c\\outputs\\parser-exceptions.json",
+    "batchSummaryPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T23-53-15-894Z-5f66345c\\outputs\\batch-summary.json",
+    "patientResultsDirectory": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T23-53-15-894Z-5f66345c\\outputs\\patient-results",
+    "evidenceDirectory": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T23-53-15-894Z-5f66345c\\outputs\\evidence"
+  },
+  "parse": {
+    "requestedAt": "2026-04-11T23:53:15.979Z",
+    "completedAt": "2026-04-11T23:53:16.182Z",
+    "workItemCount": 4,
+    "eligibleWorkItemCount": 4,
+    "parserExceptionCount": 0,
+    "sourceDetections": [
+      {
+        "sourceType": "socPoc",
+        "detectedSheetName": null,
+        "detectionStatus": "missing",
+        "headerRowNumber": null,
+        "headerMatchCount": 0,
+        "minimumHeaderMatches": 5,
+        "extractedRowCount": 0
+      },
+      {
+        "sourceType": "dc",
+        "detectedSheetName": null,
+        "detectionStatus": "missing",
+        "headerRowNumber": null,
+        "headerMatchCount": 0,
+        "minimumHeaderMatches": 5,
+        "extractedRowCount": 0
+      },
+      {
+        "sourceType": "visitNotes",
+        "detectedSheetName": null,
+        "detectionStatus": "missing",
+        "headerRowNumber": null,
+        "headerMatchCount": 0,
+        "minimumHeaderMatches": 6,
+        "extractedRowCount": 0
+      },
+      {
+        "sourceType": "diz",
+        "detectedSheetName": null,
+        "detectionStatus": "missing",
+        "headerRowNumber": null,
+        "headerMatchCount": 0,
+        "minimumHeaderMatches": 5,
+        "extractedRowCount": 0
+      },
+      {
+        "sourceType": "trackingReport",
+        "detectedSheetName": "OASIS Tracking Report",
+        "detectionStatus": "detected",
+        "headerRowNumber": 6,
+        "headerMatchCount": 8,
+        "minimumHeaderMatches": 6,
+        "extractedRowCount": 4
+      }
+    ],
+    "sheetSummaries": [
+      {
+        "sheetName": "OASIS Tracking Report",
+        "detectedSourceType": "trackingReport",
+        "rowCount": 125,
+        "headerRowNumber": 6,
+        "headerMatchCount": 8,
+        "detectedHeaders": {
+          "patientName": "Patient Name (MR#)",
+          "episodeDate": "SOC Date",
+          "coding": "Status",
+          "rfa": "RFA",
+          "assignedStaff": "Assigned Staff",
+          "payer": "Payer",
+          "oasisQaRemarks": "Completed Date",
+          "trackingDays": "30 Days Tracking"
+        },
+        "extractedRowCount": 4,
+        "excludedRows": [
+          {
+            "sourceRowNumber": 7,
+            "reason": "Tracking report document marker row.",
+            "sample": "Document: 30 Days Tracking"
+          },
+          {
+            "sourceRowNumber": 25,
+            "reason": "Tracking report footer row.",
+            "sample": "Printed on 03/31/2026 | Powered by: Finale Health"
+          }
+        ]
+      }
+    ],
+    "lastError": null
+  },
+  "run": {
+    "requestedAt": "2026-04-13T00:04:04.029Z",
+    "completedAt": "2026-04-13T00:14:04.624Z",
+    "patientRunCount": 4,
+    "lastError": "Diagnosis code candidates: I00, I25, I50"
+  },
+  "patientRuns": [
+    {
+      "runId": "batch-2026-04-11T23-53-15-894Z-5f66345c-CHRISTINE_YOUNG__a89bc267c323fb6a",
+      "subsidiaryId": "default",
+      "workItemId": "CHRISTINE_YOUNG__a89bc267c323fb6a",
+      "patientName": "Christine Young",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "startedAt": "2026-04-13T00:04:13.276Z",
+      "completedAt": "2026-04-13T00:06:53.694Z",
+      "lastUpdatedAt": "2026-04-13T00:06:53.706Z",
+      "matchResult": {
+        "status": "EXACT",
+        "searchQuery": "young, christine",
+        "portalPatientId": null,
+        "portalDisplayName": "YOUNG, CHRISTINE MR# 84 Active SOC: 2/27/2026 / DOB: 5/30/1944 LOS: 42 days Medicare 16327 East Montrose Drive Fountain Hills AZ 85268 (480)388-5075 Last Visit Confirmed by PT : 03/16/2026 (25 days ago)",
+        "candidateNames": [
+          "YOUNG, CHRISTINE MR# 84 Active SOC: 2/27/2026 / DOB: 5/30/1944 LOS: 42 days Medicare 16327 East Montrose Drive Fountain Hills AZ 85268 (480)388-5075 Last Visit Confirmed by PT : 03/16/2026 (25 days ago)"
+        ],
+        "note": null
+      },
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "oasisQaSummary": {
+        "overallStatus": "BLOCKED",
+        "urgency": "ON_TRACK",
+        "daysInPeriod": 30,
+        "daysLeft": 17,
+        "sections": [
+          {
+            "key": "timing",
+            "label": "Timing / OASIS Due",
+            "status": "PASS",
+            "items": [
+              {
+                "key": "days_in_period",
+                "label": "Days in the 30-day period captured",
+                "status": "PASS",
+                "notes": "Workbook shows 30 days in period.",
+                "evidence": [
+                  "Workbook days in period: 30"
+                ]
+              },
+              {
+                "key": "days_left",
+                "label": "Days left before OASIS due date verified",
+                "status": "PASS",
+                "notes": "17 day(s) remain before OASIS is due.",
+                "evidence": [
+                  "Workbook days left: 17"
+                ]
+              },
+              {
+                "key": "urgency_bucket",
+                "label": "Urgency bucket",
+                "status": "PASS",
+                "notes": "ON TRACK",
+                "evidence": [
+                  "Derived urgency from 17 day(s) left."
+                ]
+              }
+            ]
+          },
+          {
+            "key": "coding",
+            "label": "Coding Review",
+            "status": "NEEDS_REVIEW",
+            "items": [
+              {
+                "key": "coding_review_complete",
+                "label": "Coding review completed in workbook",
+                "status": "NEEDS_REVIEW",
+                "notes": "Workbook status: IN_PROGRESS",
+                "evidence": [
+                  "IN_PROGRESS"
+                ]
+              },
+              {
+                "key": "coding_supported_by_oasis",
+                "label": "OASIS content is available to support coding review",
+                "status": "PASS",
+                "notes": "OASIS content extracted for coding review support.",
+                "evidence": [
+                  "OASIS OASIS documents page"
+                ]
+              }
+            ]
+          },
+          {
+            "key": "oasis",
+            "label": "OASIS QA",
+            "status": "FAIL",
+            "items": [
+              {
+                "key": "oasis_document",
+                "label": "OASIS document content extracted",
+                "status": "PASS",
+                "notes": "1 supporting document(s) extracted.",
+                "evidence": [
+                  "OASIS OASIS documents page"
+                ]
+              },
+              {
+                "key": "oasis_workbook_status",
+                "label": "OASIS QA completed in workbook",
+                "status": "NEEDS_REVIEW",
+                "notes": "Workbook status: IN_PROGRESS",
+                "evidence": [
+                  "IN_PROGRESS"
+                ]
+              },
+              {
+                "key": "medical_necessity",
+                "label": "Medical necessity is stated",
+                "status": "FAIL",
+                "notes": "OASIS text did not show medical necessity language.",
+                "evidence": []
+              },
+              {
+                "key": "homebound_reason",
+                "label": "Homebound reason is stated",
+                "status": "FAIL",
+                "notes": "OASIS text did not show a homebound reason.",
+                "evidence": []
+              },
+              {
+                "key": "health_assessment",
+                "label": "Health assessment is documented",
+                "status": "FAIL",
+                "notes": "OASIS text did not show a health assessment section or phrase.",
+                "evidence": []
+              },
+              {
+                "key": "skilled_interventions",
+                "label": "Skilled interventions during the OASIS visit are documented",
+                "status": "FAIL",
+                "notes": "OASIS text did not show skilled interventions performed during the visit.",
+                "evidence": []
+              }
+            ]
+          },
+          {
+            "key": "poc",
+            "label": "Plan Of Care QA",
+            "status": "MISSING",
+            "items": [
+              {
+                "key": "poc_document",
+                "label": "Plan of care content extracted",
+                "status": "MISSING",
+                "notes": "No plan-of-care content was available for extraction.",
+                "evidence": []
+              },
+              {
+                "key": "poc_workbook_status",
+                "label": "POC QA completed in workbook",
+                "status": "MISSING",
+                "notes": "Workbook status: NOT_STARTED",
+                "evidence": [
+                  "NOT_STARTED"
+                ]
+              },
+              {
+                "key": "poc_diagnoses_codes",
+                "label": "Diagnoses or codes are present in the plan of care",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "poc_interventions_goals_frequency",
+                "label": "Interventions, goals, and frequency are present in the plan of care",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "poc_conditions_exacerbations",
+                "label": "Conditions or exacerbations are reflected in the plan of care",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              }
+            ]
+          },
+          {
+            "key": "visit_notes",
+            "label": "Visit Notes Review",
+            "status": "MISSING",
+            "items": [
+              {
+                "key": "visit_notes_document",
+                "label": "Visit note content extracted",
+                "status": "MISSING",
+                "notes": "No visit-note content was available for extraction.",
+                "evidence": []
+              },
+              {
+                "key": "visit_notes_workbook_status",
+                "label": "Visit notes review completed in workbook",
+                "status": "MISSING",
+                "notes": "Workbook status: NOT_STARTED",
+                "evidence": [
+                  "NOT_STARTED"
+                ]
+              },
+              {
+                "key": "visit_notes_skilled_need",
+                "label": "Skilled need is clearly documented",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "visit_notes_intervention_detail",
+                "label": "Interventions performed are specific and detailed",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "visit_notes_patient_response",
+                "label": "Patient response to interventions is documented",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "visit_notes_progress",
+                "label": "Progress toward goals is noted",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "visit_notes_vitals",
+                "label": "Vitals and focused assessment are documented",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "visit_notes_medication_review",
+                "label": "Medication review is documented",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "visit_notes_condition_changes",
+                "label": "Changes in condition are clearly reported and addressed",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "visit_notes_billed_services_support",
+                "label": "Documentation supports billed services",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "visit_notes_consistency",
+                "label": "Documentation remains consistent with OASIS and diagnoses",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              }
+            ]
+          },
+          {
+            "key": "technical_review",
+            "label": "Technical Review",
+            "status": "MISSING",
+            "items": [
+              {
+                "key": "portal_patient_match",
+                "label": "Portal patient match resolved",
+                "status": "PASS",
+                "notes": "Portal match status: EXACT",
+                "evidence": [
+                  "young, christine",
+                  "YOUNG, CHRISTINE MR# 84 Active SOC: 2/27/2026 / DOB: 5/30/1944 LOS: 42 days Medicare 16327 East Montrose Drive Fountain Hills AZ 85268 (480)388-5075 Last Visit Confirmed by PT : 03/16/2026 (25 days ago)"
+                ]
+              },
+              {
+                "key": "sn_visit_count",
+                "label": "SN visits were identified from visit-note content",
+                "status": "MISSING",
+                "notes": "Visit-note content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "discipline_detection",
+                "label": "Applicable disciplines were detected",
+                "status": "MISSING",
+                "notes": "Visit-note content is not available for discipline detection.",
+                "evidence": []
+              },
+              {
+                "key": "physician_orders",
+                "label": "Physician orders were checked",
+                "status": "NEEDS_REVIEW",
+                "notes": "Orders evidence was discovered (1 candidate(s)).",
+                "evidence": [
+                  "Detected 1 order document candidate(s)."
+                ]
+              },
+              {
+                "key": "supporting_notes",
+                "label": "Supporting note categories were reviewed",
+                "status": "NOT_APPLICABLE",
+                "notes": "No additional supporting note categories were discovered for this patient.",
+                "evidence": []
+              }
+            ]
+          },
+          {
+            "key": "final_check",
+            "label": "Final Check",
+            "status": "FAIL",
+            "items": [
+              {
+                "key": "critical_sections_clear",
+                "label": "Critical QA sections are complete before billing prep",
+                "status": "FAIL",
+                "notes": "Blocking sections: Medical necessity is stated, Homebound reason is stated, Health assessment is documented, Skilled interventions during the OASIS visit are documented, Plan of care content extracted, POC QA completed in workbook, Diagnoses or codes are present in the plan of care, Interventions, goals, and frequency are present in the plan of care, Conditions or exacerbations are reflected in the plan of care, Visit note content extracted, Visit notes review completed in workbook, Skilled need is clearly documented, Interventions performed are specific and detailed, Patient response to interventions is documented, Progress toward goals is noted, Vitals and focused assessment are documented, Medication review is documented, Changes in condition are clearly reported and addressed, Documentation supports billed services, Documentation remains consistent with OASIS and diagnoses, SN visits were identified from visit-note content, Applicable disciplines were detected",
+                "evidence": [
+                  "Timing / OASIS Due: PASS",
+                  "Coding Review: NEEDS_REVIEW",
+                  "OASIS QA: FAIL",
+                  "Plan Of Care QA: MISSING",
+                  "Visit Notes Review: MISSING",
+                  "Technical Review: MISSING"
+                ]
+              },
+              {
+                "key": "billing_prep_status",
+                "label": "Billing prep status in workbook",
+                "status": "MISSING",
+                "notes": "Workbook status: NOT_STARTED",
+                "evidence": [
+                  "NOT_STARTED"
+                ]
+              }
+            ]
+          }
+        ],
+        "blockers": [
+          "Medical necessity is stated",
+          "Homebound reason is stated",
+          "Health assessment is documented",
+          "Skilled interventions during the OASIS visit are documented",
+          "Plan of care content extracted",
+          "POC QA completed in workbook",
+          "Diagnoses or codes are present in the plan of care",
+          "Interventions, goals, and frequency are present in the plan of care",
+          "Conditions or exacerbations are reflected in the plan of care",
+          "Visit note content extracted",
+          "Visit notes review completed in workbook",
+          "Skilled need is clearly documented",
+          "Interventions performed are specific and detailed",
+          "Patient response to interventions is documented",
+          "Progress toward goals is noted",
+          "Vitals and focused assessment are documented",
+          "Medication review is documented",
+          "Changes in condition are clearly reported and addressed",
+          "Documentation supports billed services",
+          "Documentation remains consistent with OASIS and diagnoses",
+          "SN visits were identified from visit-note content",
+          "Applicable disciplines were detected"
+        ]
+      },
+      "artifactCount": 1,
+      "hasFindings": true,
+      "bundleAvailable": true,
+      "logPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T23-53-15-894Z-5f66345c\\outputs\\logs\\CHRISTINE_YOUNG__a89bc267c323fb6a.json",
+      "logAvailable": true,
+      "retryEligible": true,
+      "errorSummary": "Diagnosis code candidates: I00, I25, I50",
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T23-53-15-894Z-5f66345c\\outputs\\patient-results\\CHRISTINE_YOUNG__a89bc267c323fb6a.json",
+      "evidenceDirectory": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T23-53-15-894Z-5f66345c\\outputs\\evidence\\CHRISTINE_YOUNG__a89bc267c323fb6a",
+      "tracePath": null,
+      "screenshotPaths": [],
+      "downloadPaths": [],
+      "workflowRuns": [
+        {
+          "workflowRunId": "batch-2026-04-11T23-53-15-894Z-5f66345c-CHRISTINE_YOUNG__a89bc267c323fb6a:coding",
+          "workflowDomain": "coding",
+          "status": "BLOCKED",
+          "stepName": "BLOCKED",
+          "message": "Diagnosis code candidates: I00, I25, I50",
+          "chartUrl": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/intake/699c7efee396a2d53a90c49c/calendar",
+          "startedAt": "2026-04-13T00:06:53.612Z",
+          "completedAt": "2026-04-13T00:06:53.690Z",
+          "lastUpdatedAt": "2026-04-13T00:06:53.690Z",
+          "workflowResultPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T23-53-15-894Z-5f66345c\\outputs\\patient-results\\CHRISTINE_YOUNG__a89bc267c323fb6a.json",
+          "workflowLogPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T23-53-15-894Z-5f66345c\\outputs\\logs\\CHRISTINE_YOUNG__a89bc267c323fb6a.json"
+        },
+        {
+          "workflowRunId": "batch-2026-04-11T23-53-15-894Z-5f66345c-CHRISTINE_YOUNG__a89bc267c323fb6a:qa",
+          "workflowDomain": "qa",
+          "status": "NOT_STARTED",
+          "stepName": "NOT_STARTED",
+          "message": null,
+          "chartUrl": null,
+          "startedAt": null,
+          "completedAt": null,
+          "lastUpdatedAt": "2026-04-13T00:04:13.276Z",
+          "workflowResultPath": null,
+          "workflowLogPath": null
+        }
+      ],
+      "lastAttemptAt": "2026-04-13T00:06:53.694Z",
+      "attemptCount": 10
+    },
+    {
+      "runId": "batch-2026-04-11T23-53-15-894Z-5f66345c-NANCY_HAUG__c5da97e5a7ad213f",
+      "subsidiaryId": "default",
+      "workItemId": "NANCY_HAUG__c5da97e5a7ad213f",
+      "patientName": "Nancy Haug",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "startedAt": "2026-04-13T00:06:53.722Z",
+      "completedAt": "2026-04-13T00:09:29.034Z",
+      "lastUpdatedAt": "2026-04-13T00:09:29.045Z",
+      "matchResult": {
+        "status": "EXACT",
+        "searchQuery": "haug, nancy",
+        "portalPatientId": null,
+        "portalDisplayName": "HAUG, NANCY MR# 83 Discharged SOC: 2/19/2026 / DOB: 12/15/1934 LOS: 39 days DC: 3/30/2026 Medicare 7550 North 16th Street APT 7118 Phoenix AZ 85020 (602)570-5836",
+        "candidateNames": [
+          "HAUG, NANCY MR# 83 Discharged SOC: 2/19/2026 / DOB: 12/15/1934 LOS: 39 days DC: 3/30/2026 Medicare 7550 North 16th Street APT 7118 Phoenix AZ 85020 (602)570-5836"
+        ],
+        "note": null
+      },
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "oasisQaSummary": {
+        "overallStatus": "BLOCKED",
+        "urgency": "ON_TRACK",
+        "daysInPeriod": 30,
+        "daysLeft": 29,
+        "sections": [
+          {
+            "key": "timing",
+            "label": "Timing / OASIS Due",
+            "status": "PASS",
+            "items": [
+              {
+                "key": "days_in_period",
+                "label": "Days in the 30-day period captured",
+                "status": "PASS",
+                "notes": "Workbook shows 30 days in period.",
+                "evidence": [
+                  "Workbook days in period: 30"
+                ]
+              },
+              {
+                "key": "days_left",
+                "label": "Days left before OASIS due date verified",
+                "status": "PASS",
+                "notes": "29 day(s) remain before OASIS is due.",
+                "evidence": [
+                  "Workbook days left: 29"
+                ]
+              },
+              {
+                "key": "urgency_bucket",
+                "label": "Urgency bucket",
+                "status": "PASS",
+                "notes": "ON TRACK",
+                "evidence": [
+                  "Derived urgency from 29 day(s) left."
+                ]
+              }
+            ]
+          },
+          {
+            "key": "coding",
+            "label": "Coding Review",
+            "status": "NEEDS_REVIEW",
+            "items": [
+              {
+                "key": "coding_review_complete",
+                "label": "Coding review completed in workbook",
+                "status": "NEEDS_REVIEW",
+                "notes": "Workbook status: IN_PROGRESS",
+                "evidence": [
+                  "IN_PROGRESS"
+                ]
+              },
+              {
+                "key": "coding_supported_by_oasis",
+                "label": "OASIS content is available to support coding review",
+                "status": "PASS",
+                "notes": "OASIS content extracted for coding review support.",
+                "evidence": [
+                  "OASIS OASIS documents page"
+                ]
+              }
+            ]
+          },
+          {
+            "key": "oasis",
+            "label": "OASIS QA",
+            "status": "FAIL",
+            "items": [
+              {
+                "key": "oasis_document",
+                "label": "OASIS document content extracted",
+                "status": "PASS",
+                "notes": "1 supporting document(s) extracted.",
+                "evidence": [
+                  "OASIS OASIS documents page"
+                ]
+              },
+              {
+                "key": "oasis_workbook_status",
+                "label": "OASIS QA completed in workbook",
+                "status": "NEEDS_REVIEW",
+                "notes": "Workbook status: IN_PROGRESS",
+                "evidence": [
+                  "IN_PROGRESS"
+                ]
+              },
+              {
+                "key": "medical_necessity",
+                "label": "Medical necessity is stated",
+                "status": "FAIL",
+                "notes": "OASIS text did not show medical necessity language.",
+                "evidence": []
+              },
+              {
+                "key": "homebound_reason",
+                "label": "Homebound reason is stated",
+                "status": "FAIL",
+                "notes": "OASIS text did not show a homebound reason.",
+                "evidence": []
+              },
+              {
+                "key": "health_assessment",
+                "label": "Health assessment is documented",
+                "status": "FAIL",
+                "notes": "OASIS text did not show a health assessment section or phrase.",
+                "evidence": []
+              },
+              {
+                "key": "skilled_interventions",
+                "label": "Skilled interventions during the OASIS visit are documented",
+                "status": "FAIL",
+                "notes": "OASIS text did not show skilled interventions performed during the visit.",
+                "evidence": []
+              }
+            ]
+          },
+          {
+            "key": "poc",
+            "label": "Plan Of Care QA",
+            "status": "MISSING",
+            "items": [
+              {
+                "key": "poc_document",
+                "label": "Plan of care content extracted",
+                "status": "MISSING",
+                "notes": "No plan-of-care content was available for extraction.",
+                "evidence": []
+              },
+              {
+                "key": "poc_workbook_status",
+                "label": "POC QA completed in workbook",
+                "status": "MISSING",
+                "notes": "Workbook status: NOT_STARTED",
+                "evidence": [
+                  "NOT_STARTED"
+                ]
+              },
+              {
+                "key": "poc_diagnoses_codes",
+                "label": "Diagnoses or codes are present in the plan of care",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "poc_interventions_goals_frequency",
+                "label": "Interventions, goals, and frequency are present in the plan of care",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "poc_conditions_exacerbations",
+                "label": "Conditions or exacerbations are reflected in the plan of care",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              }
+            ]
+          },
+          {
+            "key": "visit_notes",
+            "label": "Visit Notes Review",
+            "status": "MISSING",
+            "items": [
+              {
+                "key": "visit_notes_document",
+                "label": "Visit note content extracted",
+                "status": "MISSING",
+                "notes": "No visit-note content was available for extraction.",
+                "evidence": []
+              },
+              {
+                "key": "visit_notes_workbook_status",
+                "label": "Visit notes review completed in workbook",
+                "status": "MISSING",
+                "notes": "Workbook status: NOT_STARTED",
+                "evidence": [
+                  "NOT_STARTED"
+                ]
+              },
+              {
+                "key": "visit_notes_skilled_need",
+                "label": "Skilled need is clearly documented",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "visit_notes_intervention_detail",
+                "label": "Interventions performed are specific and detailed",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "visit_notes_patient_response",
+                "label": "Patient response to interventions is documented",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "visit_notes_progress",
+                "label": "Progress toward goals is noted",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "visit_notes_vitals",
+                "label": "Vitals and focused assessment are documented",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "visit_notes_medication_review",
+                "label": "Medication review is documented",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "visit_notes_condition_changes",
+                "label": "Changes in condition are clearly reported and addressed",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "visit_notes_billed_services_support",
+                "label": "Documentation supports billed services",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "visit_notes_consistency",
+                "label": "Documentation remains consistent with OASIS and diagnoses",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              }
+            ]
+          },
+          {
+            "key": "technical_review",
+            "label": "Technical Review",
+            "status": "MISSING",
+            "items": [
+              {
+                "key": "portal_patient_match",
+                "label": "Portal patient match resolved",
+                "status": "PASS",
+                "notes": "Portal match status: EXACT",
+                "evidence": [
+                  "haug, nancy",
+                  "HAUG, NANCY MR# 83 Discharged SOC: 2/19/2026 / DOB: 12/15/1934 LOS: 39 days DC: 3/30/2026 Medicare 7550 North 16th Street APT 7118 Phoenix AZ 85020 (602)570-5836"
+                ]
+              },
+              {
+                "key": "sn_visit_count",
+                "label": "SN visits were identified from visit-note content",
+                "status": "MISSING",
+                "notes": "Visit-note content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "discipline_detection",
+                "label": "Applicable disciplines were detected",
+                "status": "MISSING",
+                "notes": "Visit-note content is not available for discipline detection.",
+                "evidence": []
+              },
+              {
+                "key": "physician_orders",
+                "label": "Physician orders were checked",
+                "status": "NEEDS_REVIEW",
+                "notes": "Orders evidence was discovered (1 candidate(s)).",
+                "evidence": [
+                  "Detected 1 order document candidate(s)."
+                ]
+              },
+              {
+                "key": "supporting_notes",
+                "label": "Supporting note categories were reviewed",
+                "status": "NOT_APPLICABLE",
+                "notes": "No additional supporting note categories were discovered for this patient.",
+                "evidence": []
+              }
+            ]
+          },
+          {
+            "key": "final_check",
+            "label": "Final Check",
+            "status": "FAIL",
+            "items": [
+              {
+                "key": "critical_sections_clear",
+                "label": "Critical QA sections are complete before billing prep",
+                "status": "FAIL",
+                "notes": "Blocking sections: Medical necessity is stated, Homebound reason is stated, Health assessment is documented, Skilled interventions during the OASIS visit are documented, Plan of care content extracted, POC QA completed in workbook, Diagnoses or codes are present in the plan of care, Interventions, goals, and frequency are present in the plan of care, Conditions or exacerbations are reflected in the plan of care, Visit note content extracted, Visit notes review completed in workbook, Skilled need is clearly documented, Interventions performed are specific and detailed, Patient response to interventions is documented, Progress toward goals is noted, Vitals and focused assessment are documented, Medication review is documented, Changes in condition are clearly reported and addressed, Documentation supports billed services, Documentation remains consistent with OASIS and diagnoses, SN visits were identified from visit-note content, Applicable disciplines were detected",
+                "evidence": [
+                  "Timing / OASIS Due: PASS",
+                  "Coding Review: NEEDS_REVIEW",
+                  "OASIS QA: FAIL",
+                  "Plan Of Care QA: MISSING",
+                  "Visit Notes Review: MISSING",
+                  "Technical Review: MISSING"
+                ]
+              },
+              {
+                "key": "billing_prep_status",
+                "label": "Billing prep status in workbook",
+                "status": "MISSING",
+                "notes": "Workbook status: NOT_STARTED",
+                "evidence": [
+                  "NOT_STARTED"
+                ]
+              }
+            ]
+          }
+        ],
+        "blockers": [
+          "Medical necessity is stated",
+          "Homebound reason is stated",
+          "Health assessment is documented",
+          "Skilled interventions during the OASIS visit are documented",
+          "Plan of care content extracted",
+          "POC QA completed in workbook",
+          "Diagnoses or codes are present in the plan of care",
+          "Interventions, goals, and frequency are present in the plan of care",
+          "Conditions or exacerbations are reflected in the plan of care",
+          "Visit note content extracted",
+          "Visit notes review completed in workbook",
+          "Skilled need is clearly documented",
+          "Interventions performed are specific and detailed",
+          "Patient response to interventions is documented",
+          "Progress toward goals is noted",
+          "Vitals and focused assessment are documented",
+          "Medication review is documented",
+          "Changes in condition are clearly reported and addressed",
+          "Documentation supports billed services",
+          "Documentation remains consistent with OASIS and diagnoses",
+          "SN visits were identified from visit-note content",
+          "Applicable disciplines were detected"
+        ]
+      },
+      "artifactCount": 1,
+      "hasFindings": true,
+      "bundleAvailable": true,
+      "logPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T23-53-15-894Z-5f66345c\\outputs\\logs\\NANCY_HAUG__c5da97e5a7ad213f.json",
+      "logAvailable": true,
+      "retryEligible": true,
+      "errorSummary": "Diagnosis code candidates: I00, I25, I50",
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T23-53-15-894Z-5f66345c\\outputs\\patient-results\\NANCY_HAUG__c5da97e5a7ad213f.json",
+      "evidenceDirectory": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T23-53-15-894Z-5f66345c\\outputs\\evidence\\NANCY_HAUG__c5da97e5a7ad213f",
+      "tracePath": null,
+      "screenshotPaths": [],
+      "downloadPaths": [],
+      "workflowRuns": [
+        {
+          "workflowRunId": "batch-2026-04-11T23-53-15-894Z-5f66345c-NANCY_HAUG__c5da97e5a7ad213f:coding",
+          "workflowDomain": "coding",
+          "status": "BLOCKED",
+          "stepName": "BLOCKED",
+          "message": "Diagnosis code candidates: I00, I25, I50",
+          "chartUrl": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/6994c88bfc6c240c57c42bd6/intake/6994c935c9f2156f7fc429b1/calendar",
+          "startedAt": "2026-04-13T00:09:28.966Z",
+          "completedAt": "2026-04-13T00:09:29.030Z",
+          "lastUpdatedAt": "2026-04-13T00:09:29.030Z",
+          "workflowResultPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T23-53-15-894Z-5f66345c\\outputs\\patient-results\\NANCY_HAUG__c5da97e5a7ad213f.json",
+          "workflowLogPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T23-53-15-894Z-5f66345c\\outputs\\logs\\NANCY_HAUG__c5da97e5a7ad213f.json"
+        },
+        {
+          "workflowRunId": "batch-2026-04-11T23-53-15-894Z-5f66345c-NANCY_HAUG__c5da97e5a7ad213f:qa",
+          "workflowDomain": "qa",
+          "status": "NOT_STARTED",
+          "stepName": "NOT_STARTED",
+          "message": null,
+          "chartUrl": null,
+          "startedAt": null,
+          "completedAt": null,
+          "lastUpdatedAt": "2026-04-13T00:06:53.722Z",
+          "workflowResultPath": null,
+          "workflowLogPath": null
+        }
+      ],
+      "lastAttemptAt": "2026-04-13T00:09:29.034Z",
+      "attemptCount": 10
+    },
+    {
+      "runId": "batch-2026-04-11T23-53-15-894Z-5f66345c-RALPH_PIERCE__fb047eedc12fbc5f",
+      "subsidiaryId": "default",
+      "workItemId": "RALPH_PIERCE__fb047eedc12fbc5f",
+      "patientName": "Ralph Pierce",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "startedAt": "2026-04-13T00:09:29.062Z",
+      "completedAt": "2026-04-13T00:12:04.978Z",
+      "lastUpdatedAt": "2026-04-13T00:12:04.986Z",
+      "matchResult": {
+        "status": "EXACT",
+        "searchQuery": "pierce, ralph",
+        "portalPatientId": null,
+        "portalDisplayName": "PIERCE, RALPH MR# 96 Discharged SOC: 2/28/2026 / DOB: 11/12/1947 LOS: 31 days DC: 3/31/2026 Medicare 2073 East Kempton Road Chandler AZ 85225 (480)313-5193",
+        "candidateNames": [
+          "PIERCE, RALPH MR# 96 Discharged SOC: 2/28/2026 / DOB: 11/12/1947 LOS: 31 days DC: 3/31/2026 Medicare 2073 East Kempton Road Chandler AZ 85225 (480)313-5193"
+        ],
+        "note": null
+      },
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "oasisQaSummary": {
+        "overallStatus": "BLOCKED",
+        "urgency": "ON_TRACK",
+        "daysInPeriod": 30,
+        "daysLeft": 30,
+        "sections": [
+          {
+            "key": "timing",
+            "label": "Timing / OASIS Due",
+            "status": "PASS",
+            "items": [
+              {
+                "key": "days_in_period",
+                "label": "Days in the 30-day period captured",
+                "status": "PASS",
+                "notes": "Workbook shows 30 days in period.",
+                "evidence": [
+                  "Workbook days in period: 30"
+                ]
+              },
+              {
+                "key": "days_left",
+                "label": "Days left before OASIS due date verified",
+                "status": "PASS",
+                "notes": "30 day(s) remain before OASIS is due.",
+                "evidence": [
+                  "Workbook days left: 30"
+                ]
+              },
+              {
+                "key": "urgency_bucket",
+                "label": "Urgency bucket",
+                "status": "PASS",
+                "notes": "ON TRACK",
+                "evidence": [
+                  "Derived urgency from 30 day(s) left."
+                ]
+              }
+            ]
+          },
+          {
+            "key": "coding",
+            "label": "Coding Review",
+            "status": "NEEDS_REVIEW",
+            "items": [
+              {
+                "key": "coding_review_complete",
+                "label": "Coding review completed in workbook",
+                "status": "NEEDS_REVIEW",
+                "notes": "Workbook status: IN_PROGRESS",
+                "evidence": [
+                  "IN_PROGRESS"
+                ]
+              },
+              {
+                "key": "coding_supported_by_oasis",
+                "label": "OASIS content is available to support coding review",
+                "status": "PASS",
+                "notes": "OASIS content extracted for coding review support.",
+                "evidence": [
+                  "OASIS OASIS documents page"
+                ]
+              }
+            ]
+          },
+          {
+            "key": "oasis",
+            "label": "OASIS QA",
+            "status": "FAIL",
+            "items": [
+              {
+                "key": "oasis_document",
+                "label": "OASIS document content extracted",
+                "status": "PASS",
+                "notes": "1 supporting document(s) extracted.",
+                "evidence": [
+                  "OASIS OASIS documents page"
+                ]
+              },
+              {
+                "key": "oasis_workbook_status",
+                "label": "OASIS QA completed in workbook",
+                "status": "NEEDS_REVIEW",
+                "notes": "Workbook status: IN_PROGRESS",
+                "evidence": [
+                  "IN_PROGRESS"
+                ]
+              },
+              {
+                "key": "medical_necessity",
+                "label": "Medical necessity is stated",
+                "status": "FAIL",
+                "notes": "OASIS text did not show medical necessity language.",
+                "evidence": []
+              },
+              {
+                "key": "homebound_reason",
+                "label": "Homebound reason is stated",
+                "status": "FAIL",
+                "notes": "OASIS text did not show a homebound reason.",
+                "evidence": []
+              },
+              {
+                "key": "health_assessment",
+                "label": "Health assessment is documented",
+                "status": "FAIL",
+                "notes": "OASIS text did not show a health assessment section or phrase.",
+                "evidence": []
+              },
+              {
+                "key": "skilled_interventions",
+                "label": "Skilled interventions during the OASIS visit are documented",
+                "status": "FAIL",
+                "notes": "OASIS text did not show skilled interventions performed during the visit.",
+                "evidence": []
+              }
+            ]
+          },
+          {
+            "key": "poc",
+            "label": "Plan Of Care QA",
+            "status": "MISSING",
+            "items": [
+              {
+                "key": "poc_document",
+                "label": "Plan of care content extracted",
+                "status": "MISSING",
+                "notes": "No plan-of-care content was available for extraction.",
+                "evidence": []
+              },
+              {
+                "key": "poc_workbook_status",
+                "label": "POC QA completed in workbook",
+                "status": "MISSING",
+                "notes": "Workbook status: NOT_STARTED",
+                "evidence": [
+                  "NOT_STARTED"
+                ]
+              },
+              {
+                "key": "poc_diagnoses_codes",
+                "label": "Diagnoses or codes are present in the plan of care",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "poc_interventions_goals_frequency",
+                "label": "Interventions, goals, and frequency are present in the plan of care",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "poc_conditions_exacerbations",
+                "label": "Conditions or exacerbations are reflected in the plan of care",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              }
+            ]
+          },
+          {
+            "key": "visit_notes",
+            "label": "Visit Notes Review",
+            "status": "MISSING",
+            "items": [
+              {
+                "key": "visit_notes_document",
+                "label": "Visit note content extracted",
+                "status": "MISSING",
+                "notes": "No visit-note content was available for extraction.",
+                "evidence": []
+              },
+              {
+                "key": "visit_notes_workbook_status",
+                "label": "Visit notes review completed in workbook",
+                "status": "MISSING",
+                "notes": "Workbook status: NOT_STARTED",
+                "evidence": [
+                  "NOT_STARTED"
+                ]
+              },
+              {
+                "key": "visit_notes_skilled_need",
+                "label": "Skilled need is clearly documented",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "visit_notes_intervention_detail",
+                "label": "Interventions performed are specific and detailed",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "visit_notes_patient_response",
+                "label": "Patient response to interventions is documented",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "visit_notes_progress",
+                "label": "Progress toward goals is noted",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "visit_notes_vitals",
+                "label": "Vitals and focused assessment are documented",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "visit_notes_medication_review",
+                "label": "Medication review is documented",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "visit_notes_condition_changes",
+                "label": "Changes in condition are clearly reported and addressed",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "visit_notes_billed_services_support",
+                "label": "Documentation supports billed services",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "visit_notes_consistency",
+                "label": "Documentation remains consistent with OASIS and diagnoses",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              }
+            ]
+          },
+          {
+            "key": "technical_review",
+            "label": "Technical Review",
+            "status": "MISSING",
+            "items": [
+              {
+                "key": "portal_patient_match",
+                "label": "Portal patient match resolved",
+                "status": "PASS",
+                "notes": "Portal match status: EXACT",
+                "evidence": [
+                  "pierce, ralph",
+                  "PIERCE, RALPH MR# 96 Discharged SOC: 2/28/2026 / DOB: 11/12/1947 LOS: 31 days DC: 3/31/2026 Medicare 2073 East Kempton Road Chandler AZ 85225 (480)313-5193"
+                ]
+              },
+              {
+                "key": "sn_visit_count",
+                "label": "SN visits were identified from visit-note content",
+                "status": "MISSING",
+                "notes": "Visit-note content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "discipline_detection",
+                "label": "Applicable disciplines were detected",
+                "status": "MISSING",
+                "notes": "Visit-note content is not available for discipline detection.",
+                "evidence": []
+              },
+              {
+                "key": "physician_orders",
+                "label": "Physician orders were checked",
+                "status": "NEEDS_REVIEW",
+                "notes": "Orders evidence was discovered (1 candidate(s)).",
+                "evidence": [
+                  "Detected 1 order document candidate(s)."
+                ]
+              },
+              {
+                "key": "supporting_notes",
+                "label": "Supporting note categories were reviewed",
+                "status": "NOT_APPLICABLE",
+                "notes": "No additional supporting note categories were discovered for this patient.",
+                "evidence": []
+              }
+            ]
+          },
+          {
+            "key": "final_check",
+            "label": "Final Check",
+            "status": "FAIL",
+            "items": [
+              {
+                "key": "critical_sections_clear",
+                "label": "Critical QA sections are complete before billing prep",
+                "status": "FAIL",
+                "notes": "Blocking sections: Medical necessity is stated, Homebound reason is stated, Health assessment is documented, Skilled interventions during the OASIS visit are documented, Plan of care content extracted, POC QA completed in workbook, Diagnoses or codes are present in the plan of care, Interventions, goals, and frequency are present in the plan of care, Conditions or exacerbations are reflected in the plan of care, Visit note content extracted, Visit notes review completed in workbook, Skilled need is clearly documented, Interventions performed are specific and detailed, Patient response to interventions is documented, Progress toward goals is noted, Vitals and focused assessment are documented, Medication review is documented, Changes in condition are clearly reported and addressed, Documentation supports billed services, Documentation remains consistent with OASIS and diagnoses, SN visits were identified from visit-note content, Applicable disciplines were detected",
+                "evidence": [
+                  "Timing / OASIS Due: PASS",
+                  "Coding Review: NEEDS_REVIEW",
+                  "OASIS QA: FAIL",
+                  "Plan Of Care QA: MISSING",
+                  "Visit Notes Review: MISSING",
+                  "Technical Review: MISSING"
+                ]
+              },
+              {
+                "key": "billing_prep_status",
+                "label": "Billing prep status in workbook",
+                "status": "MISSING",
+                "notes": "Workbook status: NOT_STARTED",
+                "evidence": [
+                  "NOT_STARTED"
+                ]
+              }
+            ]
+          }
+        ],
+        "blockers": [
+          "Medical necessity is stated",
+          "Homebound reason is stated",
+          "Health assessment is documented",
+          "Skilled interventions during the OASIS visit are documented",
+          "Plan of care content extracted",
+          "POC QA completed in workbook",
+          "Diagnoses or codes are present in the plan of care",
+          "Interventions, goals, and frequency are present in the plan of care",
+          "Conditions or exacerbations are reflected in the plan of care",
+          "Visit note content extracted",
+          "Visit notes review completed in workbook",
+          "Skilled need is clearly documented",
+          "Interventions performed are specific and detailed",
+          "Patient response to interventions is documented",
+          "Progress toward goals is noted",
+          "Vitals and focused assessment are documented",
+          "Medication review is documented",
+          "Changes in condition are clearly reported and addressed",
+          "Documentation supports billed services",
+          "Documentation remains consistent with OASIS and diagnoses",
+          "SN visits were identified from visit-note content",
+          "Applicable disciplines were detected"
+        ]
+      },
+      "artifactCount": 1,
+      "hasFindings": true,
+      "bundleAvailable": true,
+      "logPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T23-53-15-894Z-5f66345c\\outputs\\logs\\RALPH_PIERCE__fb047eedc12fbc5f.json",
+      "logAvailable": true,
+      "retryEligible": true,
+      "errorSummary": "Diagnosis code candidates: I00, I25, I50",
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T23-53-15-894Z-5f66345c\\outputs\\patient-results\\RALPH_PIERCE__fb047eedc12fbc5f.json",
+      "evidenceDirectory": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T23-53-15-894Z-5f66345c\\outputs\\evidence\\RALPH_PIERCE__fb047eedc12fbc5f",
+      "tracePath": null,
+      "screenshotPaths": [],
+      "downloadPaths": [],
+      "workflowRuns": [
+        {
+          "workflowRunId": "batch-2026-04-11T23-53-15-894Z-5f66345c-RALPH_PIERCE__fb047eedc12fbc5f:coding",
+          "workflowDomain": "coding",
+          "status": "BLOCKED",
+          "stepName": "BLOCKED",
+          "message": "Diagnosis code candidates: I00, I25, I50",
+          "chartUrl": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699e205bc6f125bced408d8c/intake/699e2094431b810c5eae07db/calendar",
+          "startedAt": "2026-04-13T00:12:04.894Z",
+          "completedAt": "2026-04-13T00:12:04.974Z",
+          "lastUpdatedAt": "2026-04-13T00:12:04.974Z",
+          "workflowResultPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T23-53-15-894Z-5f66345c\\outputs\\patient-results\\RALPH_PIERCE__fb047eedc12fbc5f.json",
+          "workflowLogPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T23-53-15-894Z-5f66345c\\outputs\\logs\\RALPH_PIERCE__fb047eedc12fbc5f.json"
+        },
+        {
+          "workflowRunId": "batch-2026-04-11T23-53-15-894Z-5f66345c-RALPH_PIERCE__fb047eedc12fbc5f:qa",
+          "workflowDomain": "qa",
+          "status": "NOT_STARTED",
+          "stepName": "NOT_STARTED",
+          "message": null,
+          "chartUrl": null,
+          "startedAt": null,
+          "completedAt": null,
+          "lastUpdatedAt": "2026-04-13T00:09:29.062Z",
+          "workflowResultPath": null,
+          "workflowLogPath": null
+        }
+      ],
+      "lastAttemptAt": "2026-04-13T00:12:04.978Z",
+      "attemptCount": 10
+    },
+    {
+      "runId": "batch-2026-04-11T23-53-15-894Z-5f66345c-WILLIAM_YELSH__f169db082dcb1a1f",
+      "subsidiaryId": "default",
+      "workItemId": "WILLIAM_YELSH__f169db082dcb1a1f",
+      "patientName": "William Yelsh",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "startedAt": "2026-04-13T00:12:05.003Z",
+      "completedAt": "2026-04-13T00:14:02.548Z",
+      "lastUpdatedAt": "2026-04-13T00:14:02.554Z",
+      "matchResult": {
+        "status": "AMBIGUOUS",
+        "searchQuery": "yelsh, william",
+        "portalPatientId": null,
+        "portalDisplayName": null,
+        "candidateNames": [
+          "YELSH, WILLIAM MR# 153 Active SOC: 3/31/2026 / DOB: 4/26/1941 LOS: 10 days Medicare 9335 Morning Glory Road Paradise Valley AZ 85253 (302)528-0228 Last Visit Confirmed by HHA: 04/09/2026 (1 days ago)",
+          "YELSH, WILLIAM MR# 47 Discharged SOC: 1/18/2026 / DOB: 4/26/1941 LOS: 29 days DC: 2/16/2026 Medicare 9335 Morning Glory Road Paradise Valley AZ 85253 (302)528-0228"
+        ],
+        "note": "Multiple exact patient matches were returned by the global search."
+      },
+      "qaOutcome": "AMBIGUOUS_PATIENT",
+      "oasisQaSummary": {
+        "overallStatus": "BLOCKED",
+        "urgency": "ON_TRACK",
+        "daysInPeriod": 30,
+        "daysLeft": 30,
+        "sections": [
+          {
+            "key": "timing",
+            "label": "Timing / OASIS Due",
+            "status": "PASS",
+            "items": [
+              {
+                "key": "days_in_period",
+                "label": "Days in the 30-day period captured",
+                "status": "PASS",
+                "notes": "Workbook shows 30 days in period.",
+                "evidence": [
+                  "Workbook days in period: 30"
+                ]
+              },
+              {
+                "key": "days_left",
+                "label": "Days left before OASIS due date verified",
+                "status": "PASS",
+                "notes": "30 day(s) remain before OASIS is due.",
+                "evidence": [
+                  "Workbook days left: 30"
+                ]
+              },
+              {
+                "key": "urgency_bucket",
+                "label": "Urgency bucket",
+                "status": "PASS",
+                "notes": "ON TRACK",
+                "evidence": [
+                  "Derived urgency from 30 day(s) left."
+                ]
+              }
+            ]
+          },
+          {
+            "key": "coding",
+            "label": "Coding Review",
+            "status": "MISSING",
+            "items": [
+              {
+                "key": "coding_review_complete",
+                "label": "Coding review completed in workbook",
+                "status": "NEEDS_REVIEW",
+                "notes": "Workbook status: IN_PROGRESS",
+                "evidence": [
+                  "IN_PROGRESS"
+                ]
+              },
+              {
+                "key": "coding_supported_by_oasis",
+                "label": "OASIS content is available to support coding review",
+                "status": "MISSING",
+                "notes": "No OASIS content was extracted for coding validation.",
+                "evidence": []
+              }
+            ]
+          },
+          {
+            "key": "oasis",
+            "label": "OASIS QA",
+            "status": "MISSING",
+            "items": [
+              {
+                "key": "oasis_document",
+                "label": "OASIS document content extracted",
+                "status": "MISSING",
+                "notes": "No OASIS document content was available for extraction.",
+                "evidence": []
+              },
+              {
+                "key": "oasis_workbook_status",
+                "label": "OASIS QA completed in workbook",
+                "status": "NEEDS_REVIEW",
+                "notes": "Workbook status: IN_PROGRESS",
+                "evidence": [
+                  "IN_PROGRESS"
+                ]
+              },
+              {
+                "key": "medical_necessity",
+                "label": "Medical necessity is stated",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "homebound_reason",
+                "label": "Homebound reason is stated",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "health_assessment",
+                "label": "Health assessment is documented",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "skilled_interventions",
+                "label": "Skilled interventions during the OASIS visit are documented",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              }
+            ]
+          },
+          {
+            "key": "poc",
+            "label": "Plan Of Care QA",
+            "status": "MISSING",
+            "items": [
+              {
+                "key": "poc_document",
+                "label": "Plan of care content extracted",
+                "status": "MISSING",
+                "notes": "No plan-of-care content was available for extraction.",
+                "evidence": []
+              },
+              {
+                "key": "poc_workbook_status",
+                "label": "POC QA completed in workbook",
+                "status": "MISSING",
+                "notes": "Workbook status: NOT_STARTED",
+                "evidence": [
+                  "NOT_STARTED"
+                ]
+              },
+              {
+                "key": "poc_diagnoses_codes",
+                "label": "Diagnoses or codes are present in the plan of care",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "poc_interventions_goals_frequency",
+                "label": "Interventions, goals, and frequency are present in the plan of care",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "poc_conditions_exacerbations",
+                "label": "Conditions or exacerbations are reflected in the plan of care",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              }
+            ]
+          },
+          {
+            "key": "visit_notes",
+            "label": "Visit Notes Review",
+            "status": "MISSING",
+            "items": [
+              {
+                "key": "visit_notes_document",
+                "label": "Visit note content extracted",
+                "status": "MISSING",
+                "notes": "No visit-note content was available for extraction.",
+                "evidence": []
+              },
+              {
+                "key": "visit_notes_workbook_status",
+                "label": "Visit notes review completed in workbook",
+                "status": "MISSING",
+                "notes": "Workbook status: NOT_STARTED",
+                "evidence": [
+                  "NOT_STARTED"
+                ]
+              },
+              {
+                "key": "visit_notes_skilled_need",
+                "label": "Skilled need is clearly documented",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "visit_notes_intervention_detail",
+                "label": "Interventions performed are specific and detailed",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "visit_notes_patient_response",
+                "label": "Patient response to interventions is documented",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "visit_notes_progress",
+                "label": "Progress toward goals is noted",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "visit_notes_vitals",
+                "label": "Vitals and focused assessment are documented",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "visit_notes_medication_review",
+                "label": "Medication review is documented",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "visit_notes_condition_changes",
+                "label": "Changes in condition are clearly reported and addressed",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "visit_notes_billed_services_support",
+                "label": "Documentation supports billed services",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "visit_notes_consistency",
+                "label": "Documentation remains consistent with OASIS and diagnoses",
+                "status": "MISSING",
+                "notes": "Supporting document content is not available.",
+                "evidence": []
+              }
+            ]
+          },
+          {
+            "key": "technical_review",
+            "label": "Technical Review",
+            "status": "FAIL",
+            "items": [
+              {
+                "key": "portal_patient_match",
+                "label": "Portal patient match resolved",
+                "status": "FAIL",
+                "notes": "Multiple exact patient matches were returned by the global search.",
+                "evidence": [
+                  "yelsh, william",
+                  "YELSH, WILLIAM MR# 153 Active SOC: 3/31/2026 / DOB: 4/26/1941 LOS: 10 days Medicare 9335 Morning Glory Road Paradise Valley AZ 85253 (302)528-0228 Last Visit Confirmed by HHA: 04/09/2026 (1 days ago)",
+                  "YELSH, WILLIAM MR# 47 Discharged SOC: 1/18/2026 / DOB: 4/26/1941 LOS: 29 days DC: 2/16/2026 Medicare 9335 Morning Glory Road Paradise Valley AZ 85253 (302)528-0228"
+                ]
+              },
+              {
+                "key": "sn_visit_count",
+                "label": "SN visits were identified from visit-note content",
+                "status": "MISSING",
+                "notes": "Visit-note content is not available.",
+                "evidence": []
+              },
+              {
+                "key": "discipline_detection",
+                "label": "Applicable disciplines were detected",
+                "status": "MISSING",
+                "notes": "Visit-note content is not available for discipline detection.",
+                "evidence": []
+              },
+              {
+                "key": "physician_orders",
+                "label": "Physician orders were checked",
+                "status": "NOT_APPLICABLE",
+                "notes": "No additional physician orders were discovered for this patient.",
+                "evidence": []
+              },
+              {
+                "key": "supporting_notes",
+                "label": "Supporting note categories were reviewed",
+                "status": "NOT_APPLICABLE",
+                "notes": "No additional supporting note categories were discovered for this patient.",
+                "evidence": []
+              }
+            ]
+          },
+          {
+            "key": "final_check",
+            "label": "Final Check",
+            "status": "FAIL",
+            "items": [
+              {
+                "key": "critical_sections_clear",
+                "label": "Critical QA sections are complete before billing prep",
+                "status": "FAIL",
+                "notes": "Blocking sections: OASIS content is available to support coding review, OASIS document content extracted, Medical necessity is stated, Homebound reason is stated, Health assessment is documented, Skilled interventions during the OASIS visit are documented, Plan of care content extracted, POC QA completed in workbook, Diagnoses or codes are present in the plan of care, Interventions, goals, and frequency are present in the plan of care, Conditions or exacerbations are reflected in the plan of care, Visit note content extracted, Visit notes review completed in workbook, Skilled need is clearly documented, Interventions performed are specific and detailed, Patient response to interventions is documented, Progress toward goals is noted, Vitals and focused assessment are documented, Medication review is documented, Changes in condition are clearly reported and addressed, Documentation supports billed services, Documentation remains consistent with OASIS and diagnoses, Portal patient match resolved, SN visits were identified from visit-note content, Applicable disciplines were detected",
+                "evidence": [
+                  "Timing / OASIS Due: PASS",
+                  "Coding Review: MISSING",
+                  "OASIS QA: MISSING",
+                  "Plan Of Care QA: MISSING",
+                  "Visit Notes Review: MISSING",
+                  "Technical Review: FAIL"
+                ]
+              },
+              {
+                "key": "billing_prep_status",
+                "label": "Billing prep status in workbook",
+                "status": "MISSING",
+                "notes": "Workbook status: NOT_STARTED",
+                "evidence": [
+                  "NOT_STARTED"
+                ]
+              }
+            ]
+          }
+        ],
+        "blockers": [
+          "OASIS content is available to support coding review",
+          "OASIS document content extracted",
+          "Medical necessity is stated",
+          "Homebound reason is stated",
+          "Health assessment is documented",
+          "Skilled interventions during the OASIS visit are documented",
+          "Plan of care content extracted",
+          "POC QA completed in workbook",
+          "Diagnoses or codes are present in the plan of care",
+          "Interventions, goals, and frequency are present in the plan of care",
+          "Conditions or exacerbations are reflected in the plan of care",
+          "Visit note content extracted",
+          "Visit notes review completed in workbook",
+          "Skilled need is clearly documented",
+          "Interventions performed are specific and detailed",
+          "Patient response to interventions is documented",
+          "Progress toward goals is noted",
+          "Vitals and focused assessment are documented",
+          "Medication review is documented",
+          "Changes in condition are clearly reported and addressed",
+          "Documentation supports billed services",
+          "Documentation remains consistent with OASIS and diagnoses",
+          "Portal patient match resolved",
+          "SN visits were identified from visit-note content",
+          "Applicable disciplines were detected"
+        ]
+      },
+      "artifactCount": 0,
+      "hasFindings": true,
+      "bundleAvailable": true,
+      "logPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T23-53-15-894Z-5f66345c\\outputs\\logs\\WILLIAM_YELSH__f169db082dcb1a1f.json",
+      "logAvailable": true,
+      "retryEligible": true,
+      "errorSummary": "Multiple exact patient matches were returned by the global search.",
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T23-53-15-894Z-5f66345c\\outputs\\patient-results\\WILLIAM_YELSH__f169db082dcb1a1f.json",
+      "evidenceDirectory": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T23-53-15-894Z-5f66345c\\outputs\\evidence\\WILLIAM_YELSH__f169db082dcb1a1f",
+      "tracePath": null,
+      "screenshotPaths": [],
+      "downloadPaths": [],
+      "workflowRuns": [
+        {
+          "workflowRunId": "batch-2026-04-11T23-53-15-894Z-5f66345c-WILLIAM_YELSH__f169db082dcb1a1f:coding",
+          "workflowDomain": "coding",
+          "status": "NOT_STARTED",
+          "stepName": "NOT_STARTED",
+          "message": null,
+          "chartUrl": null,
+          "startedAt": null,
+          "completedAt": null,
+          "lastUpdatedAt": "2026-04-13T00:12:05.003Z",
+          "workflowResultPath": null,
+          "workflowLogPath": null
+        },
+        {
+          "workflowRunId": "batch-2026-04-11T23-53-15-894Z-5f66345c-WILLIAM_YELSH__f169db082dcb1a1f:qa",
+          "workflowDomain": "qa",
+          "status": "NOT_STARTED",
+          "stepName": "NOT_STARTED",
+          "message": null,
+          "chartUrl": null,
+          "startedAt": null,
+          "completedAt": null,
+          "lastUpdatedAt": "2026-04-13T00:12:05.003Z",
+          "workflowResultPath": null,
+          "workflowLogPath": null
+        }
+      ],
+      "lastAttemptAt": "2026-04-13T00:14:02.548Z",
+      "attemptCount": 6
+    }
+  ]
+}

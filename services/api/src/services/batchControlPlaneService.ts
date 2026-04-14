@@ -13,6 +13,7 @@ import type {
 import {
   buildOasisQaSummary,
   createBatchSummary,
+  createDefaultWorkflowRuns,
   executePatientWorkItems,
   intakeWorkbook,
   persistBatchSummary,
@@ -64,13 +65,14 @@ function createPendingPatientRunState(
   workItem: PatientEpisodeWorkItem,
   previous?: BatchRecord["patientRuns"][number],
 ): BatchRecord["patientRuns"][number] {
+  const runId = createRunId(batch.id, workItem.id);
   const resultBundlePath = path.join(
     batch.storage.patientResultsDirectory,
     `${workItem.id}.json`,
   );
 
   return {
-    runId: createRunId(batch.id, workItem.id),
+    runId,
     subsidiaryId: workItem.subsidiaryId ?? batch.subsidiary.id,
     workItemId: workItem.id,
     patientName: workItem.patientIdentity.displayName,
@@ -100,6 +102,7 @@ function createPendingPatientRunState(
     tracePath: null,
     screenshotPaths: [],
     downloadPaths: [],
+    workflowRuns: createDefaultWorkflowRuns(runId, batch.updatedAt),
     lastAttemptAt: previous?.lastAttemptAt ?? null,
     attemptCount: previous?.attemptCount ?? 0,
   };
@@ -138,6 +141,7 @@ function toPersistedPatientRun(
     tracePath: patientRun.auditArtifacts.tracePath,
     screenshotPaths: patientRun.auditArtifacts.screenshotPaths,
     downloadPaths: patientRun.auditArtifacts.downloadPaths,
+    workflowRuns: patientRun.workflowRuns,
     lastAttemptAt: patientRun.completedAt ?? patientRun.lastUpdatedAt,
     attemptCount: previous ? previous.attemptCount + 1 : 1,
   };
@@ -591,7 +595,15 @@ export class BatchControlPlaneService {
     batch: BatchRecord;
     summary: BatchRecord["patientRuns"][number];
     artifacts: Array<{
-      kind: "bundle" | "log" | "failure_trace" | "failure_screenshot" | "download" | "evidence";
+      kind:
+        | "bundle"
+        | "log"
+        | "failure_trace"
+        | "failure_screenshot"
+        | "download"
+        | "evidence"
+        | "workflow_result"
+        | "workflow_log";
       name: string;
       path: string;
       exists: boolean;
@@ -605,7 +617,7 @@ export class BatchControlPlaneService {
     }
 
     const artifacts: Array<{
-      kind: "bundle" | "log" | "failure_trace" | "failure_screenshot" | "download" | "evidence";
+      kind: "bundle" | "log" | "failure_trace" | "failure_screenshot" | "download" | "evidence" | "workflow_result" | "workflow_log";
       name: string;
       path: string;
       exists: boolean;
@@ -614,7 +626,7 @@ export class BatchControlPlaneService {
     }> = [];
 
     const pushFileArtifact = async (
-      kind: "bundle" | "log" | "failure_trace" | "failure_screenshot" | "download",
+      kind: "bundle" | "log" | "failure_trace" | "failure_screenshot" | "download" | "workflow_result" | "workflow_log",
       filePath: string | null,
     ): Promise<void> => {
       if (!filePath) {
@@ -649,6 +661,14 @@ export class BatchControlPlaneService {
     await pushFileArtifact("bundle", patient.summary.resultBundlePath);
     await pushFileArtifact("log", patient.summary.logPath);
     await pushFileArtifact("failure_trace", patient.summary.tracePath);
+    for (const workflowRun of patient.summary.workflowRuns) {
+      if (workflowRun.workflowResultPath && workflowRun.workflowResultPath !== patient.summary.resultBundlePath) {
+        await pushFileArtifact("workflow_result", workflowRun.workflowResultPath);
+      }
+      if (workflowRun.workflowLogPath && workflowRun.workflowLogPath !== patient.summary.logPath) {
+        await pushFileArtifact("workflow_log", workflowRun.workflowLogPath);
+      }
+    }
 
     for (const screenshotPath of patient.summary.screenshotPaths) {
       await pushFileArtifact("failure_screenshot", screenshotPath);
@@ -697,10 +717,16 @@ export class BatchControlPlaneService {
     artifactPaths: {
       codingInput: string;
       documentText: string;
+      qaPrefetch: string | null;
+      patientQaReference: string;
+      qaDocumentSummary: string;
     };
     artifactContents: {
       codingInput: unknown | null;
       documentText: unknown | null;
+      qaPrefetch: unknown | null;
+      patientQaReference: unknown | null;
+      qaDocumentSummary: unknown | null;
     };
   } | null> {
     const patient = await this.getBatchPatient(batchId, patientId);
@@ -710,9 +736,21 @@ export class BatchControlPlaneService {
 
     const workItem = await this.getBatchWorkItem(batchId, patientId);
     const patientArtifactsDirectory = path.join(patient.batch.storage.outputRoot, "patients", patientId);
+    const qaWorkflowRun = patient.summary.workflowRuns.find((workflowRun) => workflowRun.workflowDomain === "qa");
     const artifactPaths = {
       codingInput: path.join(patientArtifactsDirectory, "coding-input.json"),
       documentText: path.join(patientArtifactsDirectory, "document-text.json"),
+      qaPrefetch: qaWorkflowRun?.workflowResultPath ?? null,
+      patientQaReference: path.join(
+        patientArtifactsDirectory,
+        "referral-document-processing",
+        "patient-qa-reference.json",
+      ),
+      qaDocumentSummary: path.join(
+        patientArtifactsDirectory,
+        "referral-document-processing",
+        "qa-document-summary.json",
+      ),
     };
 
     return {
@@ -725,6 +763,11 @@ export class BatchControlPlaneService {
       artifactContents: {
         codingInput: await this.repository.readJsonIfExists(artifactPaths.codingInput),
         documentText: await this.repository.readJsonIfExists(artifactPaths.documentText),
+        qaPrefetch: artifactPaths.qaPrefetch
+          ? await this.repository.readJsonIfExists(artifactPaths.qaPrefetch)
+          : null,
+        patientQaReference: await this.repository.readJsonIfExists(artifactPaths.patientQaReference),
+        qaDocumentSummary: await this.repository.readJsonIfExists(artifactPaths.qaDocumentSummary),
       },
     };
   }

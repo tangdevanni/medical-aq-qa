@@ -1,0 +1,45 @@
+{
+  "batchId": "batch-2026-04-09T21-43-45-369Z",
+  "status": "COMPLETED",
+  "startedAt": "2026-04-09T21:43:45.390Z",
+  "completedAt": "2026-04-09T21:46:46.111Z",
+  "lastUpdatedAt": "2026-04-09T21:46:46.111Z",
+  "totalWorkItems": 1,
+  "automationEligible": 1,
+  "processed": 1,
+  "totalCompleted": 0,
+  "totalBlocked": 1,
+  "totalFailed": 0,
+  "totalNeedsHumanReview": 0,
+  "totalReadyForBillingPrep": 0,
+  "totalParserExceptions": 0,
+  "percentComplete": 100,
+  "currentlyRunningCount": 0,
+  "currentBatchStatus": "COMPLETED",
+  "complete": 0,
+  "blocked": 1,
+  "failed": 0,
+  "needsHumanReview": 0,
+  "parserExceptions": 0,
+  "qaOutcomes": {
+    "READY_FOR_BILLING_PREP": 0,
+    "INCOMPLETE": 0,
+    "MISSING_DOCUMENTS": 1,
+    "PORTAL_NOT_FOUND": 0,
+    "PORTAL_MISMATCH": 0,
+    "AMBIGUOUS_PATIENT": 0,
+    "NEEDS_MANUAL_QA": 0
+  },
+  "patientRuns": [
+    {
+      "workItemId": "CHRISTINE_YOUNG__a89bc267c323fb6a",
+      "patientName": "Christine Young",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Diagnosis code candidates: J18.9, J96.01, I11.0, E03.9, F32.A, M62, R26.2, I50.33, N17.9, G93.41, I48.20, R13.12, R41.841, K92.1, I87.313, M62.81",
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T21-43-45-222Z\\run\\patient-results\\CHRISTINE_YOUNG__a89bc267c323fb6a.json"
+    }
+  ]
+}

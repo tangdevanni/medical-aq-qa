@@ -31,6 +31,7 @@ function buildPatientRunLogRecord(patientRun: PatientRun): PatientRunLog {
       screenshotPaths: [...patientRun.auditArtifacts.screenshotPaths],
       downloadPaths: [...patientRun.auditArtifacts.downloadPaths],
     },
+    workflowRuns: [...patientRun.workflowRuns],
   };
 }
 

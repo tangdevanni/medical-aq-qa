@@ -1,0 +1,9415 @@
+{
+  "schemaVersion": "1",
+  "generatedAt": "2026-04-11T23:05:46.676Z",
+  "sourcePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\documents\\new-referral-julianne-ficzeri-pdf\\source.pdf",
+  "pdfType": "scanned_image_pdf",
+  "ocrUsed": true,
+  "ocrMode": "async_s3",
+  "ocrProvider": "textract",
+  "ocrSuccess": true,
+  "ocrTextLength": 8966,
+  "configuredAwsRegion": "us-east-2",
+  "resolvedBucketRegion": "us-east-2",
+  "textractRegion": "us-east-2",
+  "regionMatch": true,
+  "regionOverrideUsed": true,
+  "s3UploadSucceeded": true,
+  "s3UploadError": null,
+  "textractStartSucceeded": true,
+  "textractStartError": null,
+  "ocrErrorCategory": null,
+  "syncError": "Request has unsupported document format",
+  "textractS3Bucket": "medical-qa-textract-docs-devanni",
+  "textractS3Key": "finale-workbook-intake/textract/05f93fac82b7a8416eadeaa63b246764c98be0ee/source.pdf",
+  "textractJobId": "ed89e79e8bba2c6f0bd92ca5559abad3ef76d9c59b200f6fedc448b4b06e19e3",
+  "textractJobStatus": "SUCCEEDED",
+  "textractStatusMessage": null,
+  "textractPollAttemptCount": 5,
+  "blockCount": 1564,
+  "blocks": [
+    {
+      "blockType": "PAGE",
+      "text": null,
+      "confidence": null,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "East Mesa Orthopedics & Sports Medicine",
+      "confidence": 99.9378890991211,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Stephen Hatfield, DO",
+      "confidence": 99.904541015625,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "4850 E Baseline Rd, Suite #118",
+      "confidence": 99.22323608398438,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Mesa, AZ 85206",
+      "confidence": 90.63290405273438,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Phone 480-461-0047 Fax 480-461-1103",
+      "confidence": 99.76318359375,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Patient Name: Julianne Ficzeri",
+      "confidence": 99.94325256347656,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "DOB: 10/22/1957",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Surgery/ Date: DOS: 03/12/2026 Right Total Knee Arthroplasty",
+      "confidence": 99.02824401855469,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Homebound: medically restricted, taxing effort to leave the home due to surgical intervention as",
+      "confidence": 99.96327209472656,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "documented in hospital and clinical visit notes. Pt needs the use of assistance device and/or help from",
+      "confidence": 99.97635650634766,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "another person in order to leave home.",
+      "confidence": 99.98604583740234,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "I certify this patient is confined to home and needs intermittent skilled nursing care and or therapy",
+      "confidence": 97.75401306152344,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "services.",
+      "confidence": 99.7608413696289,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "The patient is under my care & I have authorized the services on this plan",
+      "confidence": 99.90343475341797,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "**SERVICES TO BEGIN ON 03/12/2026 (date)",
+      "confidence": 99.79627990722656,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Home Care and Home Infusion Orders",
+      "confidence": 99.9755859375,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "PT - pre-operative patient/home evaluation (up to 14 days in advance of the procedure)",
+      "confidence": 99.33380126953125,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Provide anaphylactic kit per pharmacist recommendations as needed.",
+      "confidence": 99.91213989257812,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "RN - standing orders for home infusion medication administration protocol x2 on POD 0.",
+      "confidence": 99.16336822509766,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "RN - assessment and skilled intervention/care related to infusion therapy, vascular access site and",
+      "confidence": 99.43140411376953,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "multisystem assessment. Monitor patient's response to therapy and for side effects/complications to",
+      "confidence": 99.86834716796875,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "include, medication, pain and incision monitoring.",
+      "confidence": 99.84407806396484,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "RN - to start/maintain IV catheter per protocol and remove at the conclusion of therapy.",
+      "confidence": 99.4073486328125,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "RN - has patient start oral pain meds as soon as patient tolerates PO intake.",
+      "confidence": 99.42720794677734,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "RN - may straight cath PRN inability to void post op",
+      "confidence": 99.33447265625,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "RN - Remove dressing POD 3 and 7, may clean with hydrogen peroxide prn. Apply dry dressing, may",
+      "confidence": 99.02931213378906,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "repeat as needed for saturation. Leave dry dressing in place after POD 7 until MD f/u appt.",
+      "confidence": 99.94921875,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "RN - per protocol to assess for pain, incision monitoring and post op complications.",
+      "confidence": 99.34217071533203,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "RN - to instruct patient to take ASA 325mg PO BID x4-6 wks starting POD 1, unless otherwise stated",
+      "confidence": 99.47563171386719,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "PT - eval and treat",
+      "confidence": 98.3235855102539,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "OT - eval and treat",
+      "confidence": 93.94123077392578,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "WBAT",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "FWW",
+      "confidence": 99.912109375,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Physician Signature:",
+      "confidence": 99.9255599975586,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "or",
+      "confidence": 44.3939323425293,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Date: 03-06-2026",
+      "confidence": 99.9609375,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "DEA#: BH3145908",
+      "confidence": 99.9609375,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Refill:",
+      "confidence": 99.93083953857422,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "0",
+      "confidence": 99.57369995117188,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Page 1",
+      "confidence": 99.11461639404297,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "East",
+      "confidence": 99.93083953857422,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Mesa",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Orthopedics",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "&",
+      "confidence": 99.814453125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Sports",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Medicine",
+      "confidence": 99.95037078857422,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Stephen",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Hatfield,",
+      "confidence": 99.81205749511719,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "DO",
+      "confidence": 99.91131591796875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "4850",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "E",
+      "confidence": 99.68590545654297,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Baseline",
+      "confidence": 99.93083953857422,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Rd,",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Suite",
+      "confidence": 99.931640625,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "#118",
+      "confidence": 95.849609375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Mesa,",
+      "confidence": 72.36746215820312,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "AZ",
+      "confidence": 99.658203125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "85206",
+      "confidence": 99.873046875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Phone",
+      "confidence": 99.931640625,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "480-461-0047",
+      "confidence": 99.482421875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Fax",
+      "confidence": 99.873046875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "480-461-1103",
+      "confidence": 99.765625,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Patient",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Name:",
+      "confidence": 99.9609375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Julianne",
+      "confidence": 99.95037078857422,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Ficzeri",
+      "confidence": 99.89098358154297,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "DOB:",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "10/22/1957",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Surgery/",
+      "confidence": 98.79644012451172,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Date:",
+      "confidence": 94.013671875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "DOS:",
+      "confidence": 99.91131591796875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "03/12/2026",
+      "confidence": 99.9609375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Right",
+      "confidence": 99.951171875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Total",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Knee",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Arthroplasty",
+      "confidence": 99.6314926147461,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Homebound:",
+      "confidence": 99.88121795654297,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "medically",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "restricted,",
+      "confidence": 99.88042449951172,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "taxing",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "effort",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "to",
+      "confidence": 99.9609375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "leave",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "the",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "home",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "due",
+      "confidence": 99.95037078857422,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "to",
+      "confidence": 99.9609375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "surgical",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "intervention",
+      "confidence": 99.92028045654297,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "as",
+      "confidence": 99.951171875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "documented",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "in",
+      "confidence": 99.9609375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "hospital",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "and",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "clinical",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "visit",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "notes.",
+      "confidence": 99.96014404296875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Pt",
+      "confidence": 99.85271453857422,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "needs",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "the",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "use",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "of",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "assistance",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "device",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "and/or",
+      "confidence": 99.951171875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "help",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "from",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "another",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "person",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "in",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "order",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "to",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "leave",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "home.",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "I",
+      "confidence": 62.220985412597656,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "certify",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "this",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "patient",
+      "confidence": 99.96014404296875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "is",
+      "confidence": 99.9609375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "confined",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "to",
+      "confidence": 99.951171875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "home",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "and",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "needs",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "intermittent",
+      "confidence": 99.92028045654297,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "skilled",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "nursing",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "care",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "and",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "or",
+      "confidence": 99.892578125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "therapy",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "services.",
+      "confidence": 99.7608413696289,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "The",
+      "confidence": 99.755859375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "patient",
+      "confidence": 99.96014404296875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "is",
+      "confidence": 99.951171875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "under",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "my",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "care",
+      "confidence": 99.873046875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "&",
+      "confidence": 99.892578125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "I",
+      "confidence": 99.26519012451172,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "have",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "authorized",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "the",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "services",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "on",
+      "confidence": 99.921875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "this",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "plan",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "**SERVICES",
+      "confidence": 99.716796875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "TO",
+      "confidence": 99.84215545654297,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "BEGIN",
+      "confidence": 99.8046875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "ON",
+      "confidence": 99.580078125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "03/12/2026",
+      "confidence": 99.912109375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "(date)",
+      "confidence": 99.921875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Home",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Care",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "and",
+      "confidence": 99.951171875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Home",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Infusion",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Orders",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "PT",
+      "confidence": 97.275390625,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "-",
+      "confidence": 94.45073699951172,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "pre-operative",
+      "confidence": 99.84375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "patient/home",
+      "confidence": 99.52567291259766,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "evaluation",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "(up",
+      "confidence": 99.892578125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "to",
+      "confidence": 99.9609375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "14",
+      "confidence": 99.931640625,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "days",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "in",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "advance",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "of",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "the",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "procedure)",
+      "confidence": 99.87065887451172,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Provide",
+      "confidence": 99.95037078857422,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "anaphylactic",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "kit",
+      "confidence": 99.76164245605469,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "per",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "pharmacist",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "recommendations",
+      "confidence": 99.83079528808594,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "as",
+      "confidence": 99.921875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "needed.",
+      "confidence": 99.92028045654297,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "RN",
+      "confidence": 99.53125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "-",
+      "confidence": 93.8721694946289,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "standing",
+      "confidence": 99.931640625,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "orders",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "for",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "home",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "infusion",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "medication",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "administration",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "protocol",
+      "confidence": 99.88042449951172,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "x2",
+      "confidence": 99.75347137451172,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "on",
+      "confidence": 99.912109375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "POD",
+      "confidence": 99.9609375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "0.",
+      "confidence": 95.45499420166016,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "RN",
+      "confidence": 99.541015625,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "-",
+      "confidence": 92.9615707397461,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "assessment",
+      "confidence": 99.921875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "and",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "skilled",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "intervention/care",
+      "confidence": 99.85192108154297,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "related",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "to",
+      "confidence": 99.951171875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "infusion",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "therapy,",
+      "confidence": 99.96014404296875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "vascular",
+      "confidence": 99.92028045654297,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "access",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "site",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "and",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "multisystem",
+      "confidence": 99.93083953857422,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "assessment.",
+      "confidence": 99.59163665771484,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Monitor",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "patient's",
+      "confidence": 99.72098541259766,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "response",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "to",
+      "confidence": 99.9609375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "therapy",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "and",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "for",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "side",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "effects/complications",
+      "confidence": 99.31341552734375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "to",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "include,",
+      "confidence": 99.80069732666016,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "medication,",
+      "confidence": 99.84056091308594,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "pain",
+      "confidence": 99.95037078857422,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "and",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "incision",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "monitoring.",
+      "confidence": 99.51191711425781,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "RN",
+      "confidence": 99.6875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "-",
+      "confidence": 91.88416290283203,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "to",
+      "confidence": 99.853515625,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "start/maintain",
+      "confidence": 99.92107391357422,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "IV",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "catheter",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "per",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "protocol",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "and",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "remove",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "at",
+      "confidence": 99.951171875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "the",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "conclusion",
+      "confidence": 99.92028045654297,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "of",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "therapy.",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "RN",
+      "confidence": 99.716796875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "-",
+      "confidence": 92.0948257446289,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "has",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "patient",
+      "confidence": 99.96014404296875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "start",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "oral",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "pain",
+      "confidence": 99.95037078857422,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "meds",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "as",
+      "confidence": 99.951171875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "soon",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "as",
+      "confidence": 99.9609375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "patient",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "tolerates",
+      "confidence": 99.95037078857422,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "PO",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "intake.",
+      "confidence": 99.95037078857422,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "RN",
+      "confidence": 99.6875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "-",
+      "confidence": 93.32688903808594,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "may",
+      "confidence": 99.931640625,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "straight",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "cath",
+      "confidence": 99.91051483154297,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "PRN",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "inability",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "to",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "void",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "post",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "op",
+      "confidence": 99.89098358154297,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "RN",
+      "confidence": 99.736328125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "-",
+      "confidence": 91.35423278808594,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Remove",
+      "confidence": 99.951171875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "dressing",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "POD",
+      "confidence": 99.921875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "3",
+      "confidence": 99.765625,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "and",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "7,",
+      "confidence": 99.6875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "may",
+      "confidence": 99.9609375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "clean",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "with",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "hydrogen",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "peroxide",
+      "confidence": 99.79093933105469,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "prn.",
+      "confidence": 92.67637634277344,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Apply",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "dry",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "dressing,",
+      "confidence": 99.7608413696289,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "may",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "repeat",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "as",
+      "confidence": 99.951171875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "needed",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "for",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "saturation.",
+      "confidence": 99.92028045654297,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Leave",
+      "confidence": 99.95037078857422,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "dry",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "dressing",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "in",
+      "confidence": 99.9609375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "place",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "after",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "POD",
+      "confidence": 99.853515625,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "7",
+      "confidence": 99.814453125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "until",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "MD",
+      "confidence": 99.921875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "f/u",
+      "confidence": 99.85271453857422,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "appt.",
+      "confidence": 99.96014404296875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "RN",
+      "confidence": 99.736328125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "-",
+      "confidence": 91.68705749511719,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "per",
+      "confidence": 99.921875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "protocol",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "to",
+      "confidence": 99.9609375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "assess",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "for",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "pain,",
+      "confidence": 99.96014404296875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "incision",
+      "confidence": 99.95037078857422,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "monitoring",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "and",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "post",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "op",
+      "confidence": 99.93083953857422,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "complications.",
+      "confidence": 99.72098541259766,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "RN",
+      "confidence": 99.8046875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "-",
+      "confidence": 93.08274841308594,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "to",
+      "confidence": 99.892578125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "instruct",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "patient",
+      "confidence": 99.96014404296875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "to",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "take",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "ASA",
+      "confidence": 99.921875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "325mg",
+      "confidence": 99.765625,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "PO",
+      "confidence": 99.951171875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "BID",
+      "confidence": 99.912109375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "x4-6",
+      "confidence": 99.11412048339844,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "wks",
+      "confidence": 99.93083953857422,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "starting",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "POD",
+      "confidence": 99.951171875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "1,",
+      "confidence": 98.798828125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "unless",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "otherwise",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "stated",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "PT",
+      "confidence": 99.0625,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "-",
+      "confidence": 92.99645233154297,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "eval",
+      "confidence": 99.57848358154297,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "and",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "treat",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "OT",
+      "confidence": 81.65338134765625,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "-",
+      "confidence": 88.62155151367188,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "eval",
+      "confidence": 99.46050262451172,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "and",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "treat",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "WBAT",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "FWW",
+      "confidence": 99.912109375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Physician",
+      "confidence": 99.93083953857422,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Signature:",
+      "confidence": 99.92028045654297,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "or",
+      "confidence": 44.3939323425293,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Date:",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "03-06-2026",
+      "confidence": 99.951171875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "DEA#:",
+      "confidence": 99.951171875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "BH3145908",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Refill:",
+      "confidence": 99.93083953857422,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "0",
+      "confidence": 99.57369995117188,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Page",
+      "confidence": 99.921875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "1",
+      "confidence": 98.30735778808594,
+      "page": 1
+    },
+    {
+      "blockType": "PAGE",
+      "text": null,
+      "confidence": null,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Patient #: :25642-1",
+      "confidence": 98.13994598388672,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Date:03/06/2026",
+      "confidence": 98.662109375,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Current Balance:",
+      "confidence": 99.9853515625,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "30 Days:",
+      "confidence": 99.98046875,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "60 Days:",
+      "confidence": 99.9609375,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "90 Days:",
+      "confidence": 99.921875,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "120 Days:",
+      "confidence": 99.9462890625,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "150 Days:",
+      "confidence": 99.951171875,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "150+ Days:",
+      "confidence": 99.88241577148438,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "$0.00",
+      "confidence": 99.9609375,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "$0.00",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "$0.00",
+      "confidence": 99.990234375,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "$0.00",
+      "confidence": 99.990234375,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "$0.00",
+      "confidence": 99.990234375,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "$0.00",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "$0.00",
+      "confidence": 99.990234375,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Primary",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Employer",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Primary's Insurance",
+      "confidence": 99.82421875,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Carrier 1: MEDICARE PART B",
+      "confidence": 95.09733581542969,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Julianne Ficzeri",
+      "confidence": 99.90035247802734,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Group 1#:",
+      "confidence": 99.77499389648438,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "10220 E Apache Tr #70",
+      "confidence": 99.79802703857422,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Subscriber 1#: 9JF2EM3YA13",
+      "confidence": 99.83697509765625,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Apache Junction, AZ 85120",
+      "confidence": 99.83074951171875,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Carrier 2: AARP HEALTH CARE",
+      "confidence": 99.875,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "612-387-3633 (Mobile)",
+      "confidence": 99.90194702148438,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "OPTIONS",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Group 2#: Plan G",
+      "confidence": 99.92900085449219,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Subscriber 2#: 351044292-11",
+      "confidence": 99.8727798461914,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "DOB: 10/22/1957",
+      "confidence": 95.126953125,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "No signature on file",
+      "confidence": 99.98291015625,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Secondary",
+      "confidence": 99.96014404296875,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Employer",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Secondary's Insurance",
+      "confidence": 98.70575714111328,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Patient #25642-1",
+      "confidence": 99.921875,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Referrals",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Statement Message",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Julianne Ficzeri",
+      "confidence": 99.91539764404297,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "10220 E Apache Tr #70",
+      "confidence": 99.82764434814453,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Apache Junction, AZ 85120",
+      "confidence": 99.75835418701172,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "612-387-3633 (Mobile)",
+      "confidence": 99.93124389648438,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Patient Insurance 1",
+      "confidence": 99.91536712646484,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Patient Insurance 2",
+      "confidence": 99.91536712646484,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "MEDICARE PART B",
+      "confidence": 98.94816589355469,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "AARP HEALTH CARE OPTIONS",
+      "confidence": 99.90234375,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "P.O. BOX 6704",
+      "confidence": 99.40193176269531,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "PO BOX 13999",
+      "confidence": 99.92513275146484,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "FARGO, ND 58108-6704",
+      "confidence": 99.85869598388672,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "PHILADELPHIA, PA 19187",
+      "confidence": 99.78874206542969,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "877-908-8431",
+      "confidence": 99.970703125,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "800-227-7789",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Subscriber #:9JF2EM3YA13",
+      "confidence": 99.78396606445312,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Subscriber #:351044292-11",
+      "confidence": 99.86248779296875,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Misc Patient Information",
+      "confidence": 99.97721099853516,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Custom Reference Info.",
+      "confidence": 99.9704360961914,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Birth Date: 10/22/1957",
+      "confidence": 99.98697662353516,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Sex: Female",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "SSN:",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Prov: Stephen Hatfield",
+      "confidence": 99.990234375,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Chart#:",
+      "confidence": 99.990234375,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Email: jmficzeri@gmail.com",
+      "confidence": 99.9402084350586,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Relation to Primary",
+      "confidence": 99.990234375,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Relation to Secondary",
+      "confidence": 99.98371887207031,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Self",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Unknown",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Patient",
+      "confidence": 99.765625,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "#:",
+      "confidence": 95.31169891357422,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": ":25642-1",
+      "confidence": 99.34251403808594,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Date:03/06/2026",
+      "confidence": 98.662109375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Current",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Balance:",
+      "confidence": 99.970703125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "30",
+      "confidence": 99.9609375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Days:",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "60",
+      "confidence": 99.921875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Days:",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "90",
+      "confidence": 99.84375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Days:",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "120",
+      "confidence": 99.921875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Days:",
+      "confidence": 99.970703125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "150",
+      "confidence": 99.931640625,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Days:",
+      "confidence": 99.970703125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "150+",
+      "confidence": 99.81365966796875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Days:",
+      "confidence": 99.951171875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "$0.00",
+      "confidence": 99.9609375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "$0.00",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "$0.00",
+      "confidence": 99.990234375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "$0.00",
+      "confidence": 99.990234375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "$0.00",
+      "confidence": 99.990234375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "$0.00",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "$0.00",
+      "confidence": 99.990234375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Primary",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Employer",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Primary's",
+      "confidence": 99.814453125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Insurance",
+      "confidence": 99.833984375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Carrier",
+      "confidence": 99.970703125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "1:",
+      "confidence": 99.326171875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "MEDICARE",
+      "confidence": 99.990234375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "PART",
+      "confidence": 99.921875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "B",
+      "confidence": 76.27770233154297,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Julianne",
+      "confidence": 99.88042449951172,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Ficzeri",
+      "confidence": 99.92028045654297,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Group",
+      "confidence": 99.990234375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "1#:",
+      "confidence": 99.55974578857422,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "10220",
+      "confidence": 99.970703125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "E",
+      "confidence": 99.43936920166016,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Apache",
+      "confidence": 99.970703125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Tr",
+      "confidence": 99.794921875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "#70",
+      "confidence": 99.814453125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Subscriber",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "1#:",
+      "confidence": 99.54021453857422,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "9JF2EM3YA13",
+      "confidence": 99.970703125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Apache",
+      "confidence": 99.96014404296875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Junction,",
+      "confidence": 99.87065887451172,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "AZ",
+      "confidence": 99.775390625,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "85120",
+      "confidence": 99.716796875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Carrier",
+      "confidence": 99.970703125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "2:",
+      "confidence": 99.794921875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "AARP",
+      "confidence": 99.833984375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "HEALTH",
+      "confidence": 99.84375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "CARE",
+      "confidence": 99.931640625,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "612-387-3633",
+      "confidence": 99.892578125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "(Mobile)",
+      "confidence": 99.91131591796875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "OPTIONS",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Group",
+      "confidence": 99.970703125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "2#:",
+      "confidence": 99.931640625,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Plan",
+      "confidence": 99.85271453857422,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "G",
+      "confidence": 99.9609375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Subscriber",
+      "confidence": 99.93083953857422,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "2#:",
+      "confidence": 99.716796875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "351044292-11",
+      "confidence": 99.970703125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "DOB:",
+      "confidence": 91.943359375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "10/22/1957",
+      "confidence": 98.310546875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "No",
+      "confidence": 99.990234375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "signature",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "on",
+      "confidence": 99.951171875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "file",
+      "confidence": 99.990234375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Secondary",
+      "confidence": 99.96014404296875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Employer",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Secondary's",
+      "confidence": 99.92107391357422,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Insurance",
+      "confidence": 97.49043273925781,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Patient",
+      "confidence": 99.931640625,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "#25642-1",
+      "confidence": 99.912109375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Referrals",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Statement",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Message",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Julianne",
+      "confidence": 99.92028045654297,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Ficzeri",
+      "confidence": 99.91051483154297,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "10220",
+      "confidence": 99.970703125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "E",
+      "confidence": 99.56791687011719,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Apache",
+      "confidence": 99.970703125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Tr",
+      "confidence": 99.814453125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "#70",
+      "confidence": 99.814453125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Apache",
+      "confidence": 99.990234375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Junction,",
+      "confidence": 99.52168273925781,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "AZ",
+      "confidence": 99.7265625,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "85120",
+      "confidence": 99.794921875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "612-387-3633",
+      "confidence": 99.951171875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "(Mobile)",
+      "confidence": 99.91131591796875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Patient",
+      "confidence": 99.990234375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Insurance",
+      "confidence": 99.951171875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "1",
+      "confidence": 99.8046875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Patient",
+      "confidence": 99.970703125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Insurance",
+      "confidence": 99.921875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "2",
+      "confidence": 99.853515625,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "MEDICARE",
+      "confidence": 99.990234375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "PART",
+      "confidence": 99.9609375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "B",
+      "confidence": 96.8933334350586,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "AARP",
+      "confidence": 99.853515625,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "HEALTH",
+      "confidence": 99.951171875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "CARE",
+      "confidence": 99.853515625,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "OPTIONS",
+      "confidence": 99.951171875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "P.O.",
+      "confidence": 98.51829528808594,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "BOX",
+      "confidence": 99.716796875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "6704",
+      "confidence": 99.970703125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "PO",
+      "confidence": 99.921875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "BOX",
+      "confidence": 99.9609375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "13999",
+      "confidence": 99.892578125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "FARGO,",
+      "confidence": 99.77140808105469,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "ND",
+      "confidence": 99.892578125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "58108-6704",
+      "confidence": 99.912109375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "PHILADELPHIA,",
+      "confidence": 99.5517807006836,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "PA",
+      "confidence": 99.892578125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "19187",
+      "confidence": 99.921875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "877-908-8431",
+      "confidence": 99.970703125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "800-227-7789",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Subscriber",
+      "confidence": 99.814453125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "#:9JF2EM3YA13",
+      "confidence": 99.75347137451172,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Subscriber",
+      "confidence": 99.84295654296875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "#:351044292-11",
+      "confidence": 99.88201141357422,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Misc",
+      "confidence": 99.9609375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Patient",
+      "confidence": 99.970703125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Information",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Custom",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Reference",
+      "confidence": 99.990234375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Info.",
+      "confidence": 99.92107391357422,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Birth",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Date:",
+      "confidence": 99.970703125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "10/22/1957",
+      "confidence": 99.990234375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Sex:",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Female",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "SSN:",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Prov:",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Stephen",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Hatfield",
+      "confidence": 99.970703125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Chart#:",
+      "confidence": 99.990234375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Email:",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "jmficzeri@gmail.com",
+      "confidence": 99.88042449951172,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Relation",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "to",
+      "confidence": 99.970703125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Primary",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Relation",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "to",
+      "confidence": 99.951171875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Secondary",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Self",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Unknown",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "PAGE",
+      "text": null,
+      "confidence": null,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "MEDICARE HEALTH INSURANCE",
+      "confidence": 99.892578125,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "You may be asked to show this card when you get health care",
+      "confidence": 99.90585327148438,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "services. Only give your personal Medicare information to health",
+      "confidence": 99.82183074951172,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "care providers, your insurers, or people you trust who work with",
+      "confidence": 98.4949722290039,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Medicare on your behalf. WARNING: Intentionally misusing this card",
+      "confidence": 99.60343933105469,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Name/Nombre",
+      "confidence": 99.13006591796875,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "may be considered fraud and/or other violation of federal law and is",
+      "confidence": 99.9001235961914,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "punishable by law.",
+      "confidence": 99.79578399658203,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "JULIANNE M FICZERI",
+      "confidence": 99.67666625976562,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Es posible que le pidan que muestre esta tarjeta cuando reciba",
+      "confidence": 99.70628356933594,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "servicios de cuidado médico. Solamente dé su información personal",
+      "confidence": 97.85432434082031,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Medicare Number/Número de Medicare",
+      "confidence": 93.05594635009766,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "de Medicare a los proveedores de salud, sus aseguradores O",
+      "confidence": 96.60931396484375,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "9JF2-EM3-YA13",
+      "confidence": 98.90465545654297,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "personas de su confianza que trabajan con Medicare en su nombre.",
+      "confidence": 99.42259979248047,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "¡ADVERTENCIA! El mal uso intencional de esta tarjeta puede ser",
+      "confidence": 98.21228790283203,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Entitled to/Con derecho a",
+      "confidence": 98.54701232910156,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Coverage starts/Cobertura empieza",
+      "confidence": 99.38875579833984,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "considerado como fraude y/u otra violación de la ley federal y es",
+      "confidence": 99.38484954833984,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "HOSPITAL (PART A)",
+      "confidence": 99.10295867919922,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "10-01-2022",
+      "confidence": 99.892578125,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "sancionada por la ley.",
+      "confidence": 99.36787414550781,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "MEDICAL (PART B)",
+      "confidence": 95.92382049560547,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "10-01-2022",
+      "confidence": 99.84375,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "1-800-MEDICARE (1-800-633-4227 /",
+      "confidence": 95.88116455078125,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "TTY: 1-877-486-2048) Medicare.gov",
+      "confidence": 83.6292953491211,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "17357C001/21546",
+      "confidence": 78.80899047851562,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "AARP",
+      "confidence": 83.671875,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Medicare Supplement",
+      "confidence": 99.66717529296875,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Claim Address:",
+      "confidence": 99.70384216308594,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Electronic Payer ID 36273",
+      "confidence": 99.75810241699219,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "UnitedHealthcare",
+      "confidence": 99.45970153808594,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "UnitedHealthcare Claim Division",
+      "confidence": 99.7165298461914,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "PO BOX 740819",
+      "confidence": 99.7165298461914,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "MEMBERSHIP ID: 351044292-11",
+      "confidence": 99.78840637207031,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Atlanta, GA 30374-0819",
+      "confidence": 99.59642028808594,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "JULIANNE M FICZERI",
+      "confidence": 99.7130126953125,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "EFFECTIVE DATE: 10-01-2022",
+      "confidence": 99.82720947265625,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "If you have questions, please call UnitedHealthcare Customer",
+      "confidence": 99.59395599365234,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Service at 1-800-523-5800, TTY 711, weekdays",
+      "confidence": 99.2249984741211,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "AARP MEDICARE SUPPLEMENT PLAN G",
+      "confidence": 99.66194915771484,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "7 a.m. to 11 p.m., or Saturday 9 a.m. to 5 p.m., Eastern Time.",
+      "confidence": 98.84384155273438,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "www.myAARPMedicare.com",
+      "confidence": 98.99772644042969,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Providers: 1-800-227-7789",
+      "confidence": 99.64764404296875,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "This card does not guarantee payment of benefits.",
+      "confidence": 99.87775421142578,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Insured by UnitedHealthcare Insurance Company or an affiliate (collectively known as",
+      "confidence": 99.48053741455078,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "\"UnitedHealthcare\").",
+      "confidence": 96.72891235351562,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "MEDICARE",
+      "confidence": 99.951171875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "HEALTH",
+      "confidence": 99.775390625,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "INSURANCE",
+      "confidence": 99.951171875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "You",
+      "confidence": 99.931640625,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "may",
+      "confidence": 99.931640625,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "be",
+      "confidence": 99.83318328857422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "asked",
+      "confidence": 99.990234375,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "to",
+      "confidence": 99.7265625,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "show",
+      "confidence": 99.9609375,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "this",
+      "confidence": 99.951171875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "card",
+      "confidence": 99.970703125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "when",
+      "confidence": 99.970703125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "you",
+      "confidence": 99.88201141357422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "get",
+      "confidence": 99.91131591796875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "health",
+      "confidence": 99.990234375,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "care",
+      "confidence": 99.72576141357422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "services.",
+      "confidence": 99.01406860351562,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Only",
+      "confidence": 99.970703125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "give",
+      "confidence": 99.990234375,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "your",
+      "confidence": 99.951171875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "personal",
+      "confidence": 99.970703125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Medicare",
+      "confidence": 99.970703125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "information",
+      "confidence": 99.85112762451172,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "to",
+      "confidence": 99.716796875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "health",
+      "confidence": 99.9609375,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "care",
+      "confidence": 99.69647216796875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "providers,",
+      "confidence": 97.73855590820312,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "your",
+      "confidence": 99.921875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "insurers,",
+      "confidence": 87.09602355957031,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "or",
+      "confidence": 99.37340545654297,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "people",
+      "confidence": 99.990234375,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "you",
+      "confidence": 99.931640625,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "trust",
+      "confidence": 99.9609375,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "who",
+      "confidence": 99.892578125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "work",
+      "confidence": 99.92107391357422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "with",
+      "confidence": 99.921875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Medicare",
+      "confidence": 99.93083953857422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "on",
+      "confidence": 99.40350341796875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "your",
+      "confidence": 99.921875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "behalf.",
+      "confidence": 99.04496002197266,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "WARNING:",
+      "confidence": 99.6021957397461,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Intentionally",
+      "confidence": 98.65533447265625,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "misusing",
+      "confidence": 99.93083953857422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "this",
+      "confidence": 99.951171875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "card",
+      "confidence": 99.990234375,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Name/Nombre",
+      "confidence": 99.13006591796875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "may",
+      "confidence": 99.931640625,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "be",
+      "confidence": 99.76403045654297,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "considered",
+      "confidence": 99.93083953857422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "fraud",
+      "confidence": 99.79173278808594,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "and/or",
+      "confidence": 99.9609375,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "other",
+      "confidence": 99.990234375,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "violation",
+      "confidence": 99.93083953857422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "of",
+      "confidence": 99.873046875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "federal",
+      "confidence": 99.93083953857422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "law",
+      "confidence": 99.931640625,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "and",
+      "confidence": 99.921875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "is",
+      "confidence": 99.84375,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "punishable",
+      "confidence": 99.9609375,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "by",
+      "confidence": 99.892578125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "law.",
+      "confidence": 99.5338363647461,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "JULIANNE",
+      "confidence": 99.88201141357422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "M",
+      "confidence": 99.29528045654297,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "FICZERI",
+      "confidence": 99.85271453857422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Es",
+      "confidence": 99.12767028808594,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "posible",
+      "confidence": 99.970703125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "que",
+      "confidence": 99.71520233154297,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "le",
+      "confidence": 99.59402465820312,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "pidan",
+      "confidence": 99.87065887451172,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "que",
+      "confidence": 99.83318328857422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "muestre",
+      "confidence": 99.95037078857422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "esta",
+      "confidence": 99.88121795654297,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "tarjeta",
+      "confidence": 99.77140808105469,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "cuando",
+      "confidence": 99.48262023925781,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "reciba",
+      "confidence": 99.57210540771484,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "servicios",
+      "confidence": 99.84135437011719,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "de",
+      "confidence": 99.4850082397461,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "cuidado",
+      "confidence": 99.57210540771484,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "médico.",
+      "confidence": 96.94136047363281,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Solamente",
+      "confidence": 99.87065887451172,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "dé",
+      "confidence": 87.15621185302734,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "su",
+      "confidence": 99.61515808105469,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "información",
+      "confidence": 98.21688079833984,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "personal",
+      "confidence": 99.990234375,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Medicare",
+      "confidence": 99.77379608154297,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Number/Número",
+      "confidence": 72.91294860839844,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "de",
+      "confidence": 99.56632995605469,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Medicare",
+      "confidence": 99.970703125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "de",
+      "confidence": 99.51510620117188,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Medicare",
+      "confidence": 99.93083953857422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "a",
+      "confidence": 99.12926483154297,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "los",
+      "confidence": 99.83159637451172,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "proveedores",
+      "confidence": 99.23369598388672,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "de",
+      "confidence": 99.44674682617188,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "salud,",
+      "confidence": 99.87065887451172,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "sus",
+      "confidence": 99.41346740722656,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "aseguradores",
+      "confidence": 99.5517807006836,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "O",
+      "confidence": 70.17000579833984,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "9JF2-EM3-YA13",
+      "confidence": 98.90465545654297,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "personas",
+      "confidence": 99.83238983154297,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "de",
+      "confidence": 98.1590805053711,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "su",
+      "confidence": 99.27913665771484,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "confianza",
+      "confidence": 99.20440673828125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "que",
+      "confidence": 99.79412841796875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "trabajan",
+      "confidence": 99.89098358154297,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "con",
+      "confidence": 99.52567291259766,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Medicare",
+      "confidence": 100,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "en",
+      "confidence": 99.63707733154297,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "su",
+      "confidence": 98.6437759399414,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "nombre.",
+      "confidence": 99.68192291259766,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "¡ADVERTENCIA!",
+      "confidence": 98.7683334350586,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "El",
+      "confidence": 88.58737182617188,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "mal",
+      "confidence": 98.61528015136719,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "uso",
+      "confidence": 97.81090545654297,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "intencional",
+      "confidence": 99.59163665771484,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "de",
+      "confidence": 99.83159637451172,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "esta",
+      "confidence": 99.88121795654297,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "tarjeta",
+      "confidence": 99.7315444946289,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "puede",
+      "confidence": 99.93083953857422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "ser",
+      "confidence": 99.37420654296875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Entitled",
+      "confidence": 99.85271453857422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "to/Con",
+      "confidence": 99.18785858154297,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "derecho",
+      "confidence": 99.49557495117188,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "a",
+      "confidence": 95.65190887451172,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Coverage",
+      "confidence": 99.970703125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "starts/Cobertura",
+      "confidence": 98.6023178100586,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "empieza",
+      "confidence": 99.59323120117188,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "considerado",
+      "confidence": 99.57210540771484,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "como",
+      "confidence": 99.48580932617188,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "fraude",
+      "confidence": 99.85112762451172,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "y/u",
+      "confidence": 99.80388641357422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "otra",
+      "confidence": 99.2149658203125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "violación",
+      "confidence": 98.51542663574219,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "de",
+      "confidence": 99.6729507446289,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "la",
+      "confidence": 99.61355590820312,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "ley",
+      "confidence": 99.85192108154297,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "federal",
+      "confidence": 99.89098358154297,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "y",
+      "confidence": 98.2838363647461,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "es",
+      "confidence": 98.86160278320312,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "HOSPITAL",
+      "confidence": 99.931640625,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "(PART",
+      "confidence": 98.59215545654297,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "A)",
+      "confidence": 98.78507995605469,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "10-01-2022",
+      "confidence": 99.892578125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "sancionada",
+      "confidence": 99.363037109375,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "por",
+      "confidence": 99.77300262451172,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "la",
+      "confidence": 99.33932495117188,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "ley.",
+      "confidence": 98.99613189697266,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "MEDICAL",
+      "confidence": 99.921875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "(PART",
+      "confidence": 89.49079895019531,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "B)",
+      "confidence": 98.35877227783203,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "10-01-2022",
+      "confidence": 99.84375,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "1-800-MEDICARE",
+      "confidence": 98.59634399414062,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "(1-800-633-4227",
+      "confidence": 95.90401458740234,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "/",
+      "confidence": 93.14313507080078,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "TTY:",
+      "confidence": 99.63707733154297,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "1-877-486-2048)",
+      "confidence": 51.84729766845703,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Medicare.gov",
+      "confidence": 99.40350341796875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "17357C001/21546",
+      "confidence": 78.80899047851562,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "AARP",
+      "confidence": 83.671875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Medicare",
+      "confidence": 99.42223358154297,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Supplement",
+      "confidence": 99.912109375,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Claim",
+      "confidence": 99.794921875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Address:",
+      "confidence": 99.61276245117188,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Electronic",
+      "confidence": 99.892578125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Payer",
+      "confidence": 99.931640625,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "ID",
+      "confidence": 99.6875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "36273",
+      "confidence": 99.52069091796875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "UnitedHealthcare",
+      "confidence": 99.45970153808594,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "UnitedHealthcare",
+      "confidence": 99.22772216796875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Claim",
+      "confidence": 99.951171875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Division",
+      "confidence": 99.970703125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "PO",
+      "confidence": 99.853515625,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "BOX",
+      "confidence": 99.72576141357422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "740819",
+      "confidence": 99.5703125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "MEMBERSHIP",
+      "confidence": 99.8828125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "ID:",
+      "confidence": 99.560546875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "351044292-11",
+      "confidence": 99.921875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Atlanta,",
+      "confidence": 99.47285461425781,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "GA",
+      "confidence": 99.716796875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "30374-0819",
+      "confidence": 99.599609375,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "JULIANNE",
+      "confidence": 99.91131591796875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "M",
+      "confidence": 99.423828125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "FICZERI",
+      "confidence": 99.80388641357422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "EFFECTIVE",
+      "confidence": 99.921875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "DATE:",
+      "confidence": 99.87224578857422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "10-01-2022",
+      "confidence": 99.6875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "If",
+      "confidence": 98.17144012451172,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "you",
+      "confidence": 99.84375,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "have",
+      "confidence": 99.9609375,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "questions,",
+      "confidence": 99.48262023925781,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "please",
+      "confidence": 99.970703125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "call",
+      "confidence": 99.91131591796875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "UnitedHealthcare",
+      "confidence": 99.44017028808594,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Customer",
+      "confidence": 99.970703125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Service",
+      "confidence": 99.951171875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "at",
+      "confidence": 99.41326141357422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "1-800-523-5800,",
+      "confidence": 98.00043487548828,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "TTY",
+      "confidence": 99.30504608154297,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "711,",
+      "confidence": 98.82732391357422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "weekdays",
+      "confidence": 99.85271453857422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "AARP",
+      "confidence": 99.873046875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "MEDICARE",
+      "confidence": 99.951171875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "SUPPLEMENT",
+      "confidence": 99.9609375,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "PLAN",
+      "confidence": 99.7265625,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "G",
+      "confidence": 98.79802703857422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "7",
+      "confidence": 98.310546875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "a.m.",
+      "confidence": 98.486328125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "to",
+      "confidence": 99.736328125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "11",
+      "confidence": 99.50035858154297,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "p.m.,",
+      "confidence": 99.06987762451172,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "or",
+      "confidence": 99.638671875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Saturday",
+      "confidence": 99.93083953857422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "9",
+      "confidence": 97.11675262451172,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "a.m.",
+      "confidence": 98.8671875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "to",
+      "confidence": 99.921875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "5",
+      "confidence": 98.89568328857422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "p.m.,",
+      "confidence": 98.63201141357422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Eastern",
+      "confidence": 95.86595153808594,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Time.",
+      "confidence": 99.84135437011719,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "www.myAARPMedicare.com",
+      "confidence": 98.99772644042969,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Providers:",
+      "confidence": 99.42223358154297,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "1-800-227-7789",
+      "confidence": 99.873046875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "This",
+      "confidence": 99.921875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "card",
+      "confidence": 99.951171875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "does",
+      "confidence": 99.92107391357422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "not",
+      "confidence": 99.921875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "guarantee",
+      "confidence": 99.7315444946289,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "payment",
+      "confidence": 99.970703125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "of",
+      "confidence": 99.892578125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "benefits.",
+      "confidence": 99.71121215820312,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Insured",
+      "confidence": 99.0555191040039,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "by",
+      "confidence": 99.892578125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "UnitedHealthcare",
+      "confidence": 99.6534194946289,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Insurance",
+      "confidence": 98.99453735351562,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Company",
+      "confidence": 99.91131591796875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "or",
+      "confidence": 99.5557632446289,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "an",
+      "confidence": 99.85271453857422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "affiliate",
+      "confidence": 99.64205932617188,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "(collectively",
+      "confidence": 99.60379791259766,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "known",
+      "confidence": 99.951171875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "as",
+      "confidence": 98.17302703857422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "\"UnitedHealthcare\").",
+      "confidence": 96.72891235351562,
+      "page": 3
+    },
+    {
+      "blockType": "PAGE",
+      "text": null,
+      "confidence": null,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "East Mesa Orthopedics & Sports Medicine",
+      "confidence": 99.91171264648438,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "4850 E Baseline Road, Suite 118 Mesa AZ 85206",
+      "confidence": 99.79476928710938,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Tel: 480-461-0047 Fax: 480-461-1103",
+      "confidence": 99.79472351074219,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Patient: Ficzeri, Julianne DOB: 10/22/1957",
+      "confidence": 99.84283447265625,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Exam Date: 02/12/2026",
+      "confidence": 99.98046875,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Insurance Carrier: MEDICARE PART B",
+      "confidence": 99.77411651611328,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Claim # 9JF2EM3YA13",
+      "confidence": 99.6644515991211,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Patient Status",
+      "confidence": 99.9658203125,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Since last exam, this patient's condition has: Worsened.",
+      "confidence": 99.97518920898438,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Subjective Complaints:",
+      "confidence": 99.83079528808594,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Knee Pain",
+      "confidence": 99.9609375,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Reevaluation of right",
+      "confidence": 99.86088562011719,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Continues to complain of ; Pain.",
+      "confidence": 98.87020874023438,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Subjective Findings:",
+      "confidence": 99.71121215820312,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "A review of systems was performed and was all negative except for the system as documented on",
+      "confidence": 99.9146728515625,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "the initial visit, those systems associated with the injury, and any changes noted below.",
+      "confidence": 99.98721313476562,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "R knee OA, pain continues, no significant relief W conservative, management W NSAIDS<",
+      "confidence": 98.39520263671875,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "injections steroid and HA series, had arthroscopic surgery 2 yrs ago , MM tear and OA noted, has",
+      "confidence": 99.04703521728516,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "failed conservative management",
+      "confidence": 99.95037078857422,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Julianne returns for a Recheck and the condition has; Worsened.",
+      "confidence": 99.96150970458984,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Location",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "The right Knee",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Changes in Medical History",
+      "confidence": 99.96826171875,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Past Medical History: Unchanged Since Last Visit.",
+      "confidence": 99.9761734008789,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Past Surgical History: Unchanged Since Last Visit.",
+      "confidence": 99.98035430908203,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Family History: Unchanged Since Last Visit.",
+      "confidence": 99.9753189086914,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Social History: Unchanged Since Last Visit.",
+      "confidence": 99.98521423339844,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Allergies: NKDA. Unchanged Since Last Visit.",
+      "confidence": 99.96027374267578,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Medication: Unchanged Since Last Visit.",
+      "confidence": 99.97023010253906,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Review of Systems: Unchanged Since Last Visit.",
+      "confidence": 99.97884368896484,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Physical Exam",
+      "confidence": 99.9609375,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Constitutional: The patient appears to be stated age, cooperative and in no distress. The patient",
+      "confidence": 99.94033813476562,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "is able to answer questions and carry on a conversation without use of accessory muscles of",
+      "confidence": 99.96170806884766,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "respiration. The patient is well nourished and hydrated with moist mucous membranes.",
+      "confidence": 99.9544448852539,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Head and Face: Normocephalic/Atraumatic.",
+      "confidence": 91.17880249023438,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "East",
+      "confidence": 99.93083953857422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Mesa",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Orthopedics",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "&",
+      "confidence": 99.638671875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Sports",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Medicine",
+      "confidence": 99.92028045654297,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "4850",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "E",
+      "confidence": 99.45491790771484,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Baseline",
+      "confidence": 99.84056091308594,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Road,",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Suite",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "118",
+      "confidence": 99.296875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Mesa",
+      "confidence": 99.9609375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "AZ",
+      "confidence": 99.736328125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "85206",
+      "confidence": 99.912109375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Tel:",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "480-461-0047",
+      "confidence": 99.580078125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Fax:",
+      "confidence": 99.83318328857422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "480-461-1103",
+      "confidence": 99.794921875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Patient:",
+      "confidence": 99.92028045654297,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Ficzeri,",
+      "confidence": 99.44196319580078,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Julianne",
+      "confidence": 99.91051483154297,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "DOB:",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "10/22/1957",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Exam",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Date:",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "02/12/2026",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Insurance",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Carrier:",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "MEDICARE",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "PART",
+      "confidence": 99.736328125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "B",
+      "confidence": 99.18307495117188,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Claim",
+      "confidence": 99.794921875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "#",
+      "confidence": 99.287109375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "9JF2EM3YA13",
+      "confidence": 99.91131591796875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Patient",
+      "confidence": 99.9609375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Status",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Since",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "last",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "exam,",
+      "confidence": 99.95037078857422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "this",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "patient's",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "condition",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "has:",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Worsened.",
+      "confidence": 99.88042449951172,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Subjective",
+      "confidence": 99.91051483154297,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Complaints:",
+      "confidence": 99.7510757446289,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Knee",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Pain",
+      "confidence": 99.951171875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Reevaluation",
+      "confidence": 99.64126586914062,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "of",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "right",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Continues",
+      "confidence": 99.7608413696289,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "to",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "complain",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "of",
+      "confidence": 99.716796875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": ";",
+      "confidence": 93.81198120117188,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Pain.",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Subjective",
+      "confidence": 99.79093933105469,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Findings:",
+      "confidence": 99.6314926147461,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "A",
+      "confidence": 98.81477355957031,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "review",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "of",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "systems",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "was",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "performed",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "and",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "was",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "all",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "negative",
+      "confidence": 99.92028045654297,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "except",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "for",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "the",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "system",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "as",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "documented",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "on",
+      "confidence": 99.931640625,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "the",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "initial",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "visit,",
+      "confidence": 99.92028045654297,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "those",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "systems",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "associated",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "with",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "the",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "injury,",
+      "confidence": 99.95037078857422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "and",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "any",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "changes",
+      "confidence": 99.96014404296875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "noted",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "below.",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "R",
+      "confidence": 99.75505828857422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "knee",
+      "confidence": 99.95037078857422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "OA,",
+      "confidence": 99.67135620117188,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "pain",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "continues,",
+      "confidence": 99.72098541259766,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "no",
+      "confidence": 99.92107391357422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "significant",
+      "confidence": 99.92028045654297,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "relief",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "W",
+      "confidence": 98.57880401611328,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "conservative,",
+      "confidence": 84.06668090820312,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "management",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "W",
+      "confidence": 97.6026382446289,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "NSAIDS<",
+      "confidence": 99.95037078857422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "injections",
+      "confidence": 99.92028045654297,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "steroid",
+      "confidence": 99.96014404296875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "and",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "HA",
+      "confidence": 96.84131622314453,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "series,",
+      "confidence": 99.88042449951172,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "had",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "arthroscopic",
+      "confidence": 99.84056091308594,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "surgery",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "2",
+      "confidence": 99.853515625,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "yrs",
+      "confidence": 99.91131591796875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "ago",
+      "confidence": 99.88121795654297,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": ",",
+      "confidence": 87.00444793701172,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "MM",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "tear",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "and",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "OA",
+      "confidence": 99.93083953857422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "noted,",
+      "confidence": 99.91051483154297,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "has",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "failed",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "conservative",
+      "confidence": 99.85112762451172,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "management",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Julianne",
+      "confidence": 99.92028045654297,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "returns",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "for",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "a",
+      "confidence": 99.83318328857422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Recheck",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "and",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "the",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "condition",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "has;",
+      "confidence": 99.92107391357422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Worsened.",
+      "confidence": 99.96014404296875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Location",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "The",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "right",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Knee",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Changes",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "in",
+      "confidence": 99.921875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Medical",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "History",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Past",
+      "confidence": 99.951171875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Medical",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "History:",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Unchanged",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Since",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Last",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Visit.",
+      "confidence": 99.96014404296875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Past",
+      "confidence": 99.951171875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Surgical",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "History:",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Unchanged",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Since",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Last",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Visit.",
+      "confidence": 99.96014404296875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Family",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "History:",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Unchanged",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Since",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Last",
+      "confidence": 99.93083953857422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Visit.",
+      "confidence": 99.95037078857422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Social",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "History:",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Unchanged",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Since",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Last",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Visit.",
+      "confidence": 99.96014404296875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Allergies:",
+      "confidence": 99.96014404296875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "NKDA.",
+      "confidence": 99.91051483154297,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Unchanged",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Since",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Last",
+      "confidence": 99.95037078857422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Visit.",
+      "confidence": 99.95037078857422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Medication:",
+      "confidence": 99.96014404296875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Unchanged",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Since",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Last",
+      "confidence": 99.95037078857422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Visit.",
+      "confidence": 99.95037078857422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Review",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "of",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Systems:",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Unchanged",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Since",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Last",
+      "confidence": 99.93083953857422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Visit.",
+      "confidence": 99.96014404296875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Physical",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Exam",
+      "confidence": 99.951171875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Constitutional:",
+      "confidence": 99.72098541259766,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "The",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "patient",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "appears",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "to",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "be",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "stated",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "age,",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "cooperative",
+      "confidence": 99.96014404296875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "and",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "in",
+      "confidence": 99.92107391357422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "no",
+      "confidence": 99.87145233154297,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "distress.",
+      "confidence": 99.68112182617188,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "The",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "patient",
+      "confidence": 99.96014404296875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "is",
+      "confidence": 99.88121795654297,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "able",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "to",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "answer",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "questions",
+      "confidence": 99.88042449951172,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "and",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "carry",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "on",
+      "confidence": 99.951171875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "a",
+      "confidence": 99.77300262451172,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "conversation",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "without",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "use",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "of",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "accessory",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "muscles",
+      "confidence": 99.96014404296875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "of",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "respiration.",
+      "confidence": 99.92028045654297,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "The",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "patient",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "is",
+      "confidence": 99.9609375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "well",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "nourished",
+      "confidence": 99.88042449951172,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "and",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "hydrated",
+      "confidence": 99.95037078857422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "with",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "moist",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "mucous",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "membranes.",
+      "confidence": 99.7608413696289,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Head",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "and",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Face:",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Normocephalic/Atraumatic.",
+      "confidence": 64.72496795654297,
+      "page": 4
+    },
+    {
+      "blockType": "PAGE",
+      "text": null,
+      "confidence": null,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "Eye: Externally: Normal appearance of the conjunctiva, eyelids with normal ocular symmetry.",
+      "confidence": 99.84483337402344,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "Sclera are normal without hemorrhage or icterus. Pupils are equal round and reactive to light and",
+      "confidence": 99.93867492675781,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "accommodation. Extraoccular movements are intact.",
+      "confidence": 99.42031860351562,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "Ears, Nose, Mouth, Throat: Normal external appearance of the ears and nose. Normal bilateral",
+      "confidence": 99.97180938720703,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "auditory acuity. Normal appearance of the oropharynx without pallor or cyanosis and with moist",
+      "confidence": 99.96391296386719,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "mucosa. Normal appearance of the teeth and gums without and dental caries. Normal appearance",
+      "confidence": 99.98163604736328,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "of the palate with normal appearance rise of the uvula.",
+      "confidence": 99.96835327148438,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "Neck: No jugular venous elevation. Normal thyroid exam without enlargement, tenderness or",
+      "confidence": 99.94142150878906,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "nodules. Normal parotid exam without enlargement, tenderness or nodules. No palpable masses",
+      "confidence": 99.91477966308594,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "or nodules. No palpable No palpable lymphadenopathy in the anterior cervical, posterior cervical,",
+      "confidence": 99.78179931640625,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "submandibular or supraclavicular areas.",
+      "confidence": 99.34046936035156,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "Respiratory: Normal respiratory effort without use of accessory muscles of respiration or pursed",
+      "confidence": 99.97727966308594,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "lip breathing. Normal external appearance of the chest without barrel chest, pectus, kyphosis or",
+      "confidence": 97.14978790283203,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "scoliosis. Normal breath sounds without wheezing, rhonchi or rales. Normal percussive exam",
+      "confidence": 99.93220520019531,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "without dullness or evidence of consolidation.",
+      "confidence": 99.90739440917969,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "Lymphatics: Lymph Nodes Normal. No evidence of cervical, supraclavicular, axillary, or inguinal",
+      "confidence": 99.60491943359375,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "adenopathy.",
+      "confidence": 99.83079528808594,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "Musculoskeletal: R knee MJL pain, spurring painful, no laxity, good AROM, no effusion, antalgic",
+      "confidence": 99.88603973388672,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "gait",
+      "confidence": 99.96014404296875,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "Extremities: Normal appearance of the upper and lower extremities without obvious deformity.",
+      "confidence": 99.9404067993164,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "There is no digital clubbing, cyanosis or edema.",
+      "confidence": 99.9306411743164,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "Skin: Externally there is no evidence of xanthomas or cellulitis. This is no dermatitis or rash. There are no",
+      "confidence": 99.91323852539062,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "ulcers or wounds present. There is no evidence of venous stasis changes. The capillary refill is < 5 seconds.",
+      "confidence": 99.56356811523438,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "Neurological/Psychiatric: Externally the face is symmetrical. There is normal sharp and dull",
+      "confidence": 97.68765258789062,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "sensation in the hands and feet bilaterally. The cranial nerves are intact II - XII. The patient moves",
+      "confidence": 98.89732360839844,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "the upper and lower extremities equally. The finger to nose exam is normal. Appropriate mood and",
+      "confidence": 99.97040557861328,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "affect. Alert and oriented to person, time and place. Patient appears to have intact judgement and",
+      "confidence": 99.95591735839844,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "insight into the current health issues.",
+      "confidence": 99.9753189086914,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "Objective",
+      "confidence": 99.95037078857422,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "MRI R knee W tricompartmental OA,",
+      "confidence": 99.62371826171875,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "Impression",
+      "confidence": 99.56153869628906,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "R knee OA",
+      "confidence": 99.56977844238281,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "Plan",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "RTKA, risks discussed",
+      "confidence": 97.38440704345703,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "Signed Electronically By: Stephen E. Hatfield, D.O., 02/12/2026",
+      "confidence": 99.7970199584961,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "Careslip ICD10",
+      "confidence": 99.83279418945312,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "Encounter Diagnosis:",
+      "confidence": 99.84095764160156,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Eye:",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Externally:",
+      "confidence": 99.91051483154297,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Normal",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "appearance",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "of",
+      "confidence": 99.970703125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "the",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "conjunctiva,",
+      "confidence": 98.56505584716797,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "eyelids",
+      "confidence": 99.96014404296875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "with",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "normal",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "ocular",
+      "confidence": 99.80069732666016,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "symmetry.",
+      "confidence": 99.96014404296875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Sclera",
+      "confidence": 99.88042449951172,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "are",
+      "confidence": 99.9609375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "normal",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "without",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "hemorrhage",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "or",
+      "confidence": 99.931640625,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "icterus.",
+      "confidence": 99.44196319580078,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Pupils",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "are",
+      "confidence": 99.9609375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "equal",
+      "confidence": 99.96014404296875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "round",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "and",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "reactive",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "to",
+      "confidence": 99.970703125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "light",
+      "confidence": 99.970703125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "and",
+      "confidence": 99.970703125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "accommodation.",
+      "confidence": 98.84407043457031,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Extraoccular",
+      "confidence": 98.35598754882812,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "movements",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "are",
+      "confidence": 99.9609375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "intact.",
+      "confidence": 99.95037078857422,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Ears,",
+      "confidence": 99.93083953857422,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Nose,",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Mouth,",
+      "confidence": 99.91051483154297,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Throat:",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Normal",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "external",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "appearance",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "of",
+      "confidence": 99.970703125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "the",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "ears",
+      "confidence": 99.9609375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "and",
+      "confidence": 99.970703125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "nose.",
+      "confidence": 99.970703125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Normal",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "bilateral",
+      "confidence": 99.92028045654297,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "auditory",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "acuity.",
+      "confidence": 99.96014404296875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Normal",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "appearance",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "of",
+      "confidence": 99.970703125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "the",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "oropharynx",
+      "confidence": 99.84056091308594,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "without",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "pallor",
+      "confidence": 99.92028045654297,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "or",
+      "confidence": 99.921875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "cyanosis",
+      "confidence": 99.96014404296875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "and",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "with",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "moist",
+      "confidence": 99.95037078857422,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "mucosa.",
+      "confidence": 99.93083953857422,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Normal",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "appearance",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "of",
+      "confidence": 99.970703125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "the",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "teeth",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "and",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "gums",
+      "confidence": 99.95037078857422,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "without",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "and",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "dental",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "caries.",
+      "confidence": 99.92028045654297,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Normal",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "appearance",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "of",
+      "confidence": 99.970703125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "the",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "palate",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "with",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "normal",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "appearance",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "rise",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "of",
+      "confidence": 99.970703125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "the",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "uvula.",
+      "confidence": 99.79093933105469,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Neck:",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "No",
+      "confidence": 99.970703125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "jugular",
+      "confidence": 99.95037078857422,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "venous",
+      "confidence": 99.9609375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "elevation.",
+      "confidence": 99.92028045654297,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Normal",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "thyroid",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "exam",
+      "confidence": 99.9609375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "without",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "enlargement,",
+      "confidence": 99.72098541259766,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "tenderness",
+      "confidence": 99.92028045654297,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "or",
+      "confidence": 99.921875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "nodules.",
+      "confidence": 99.92028045654297,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Normal",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "parotid",
+      "confidence": 99.87065887451172,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "exam",
+      "confidence": 99.970703125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "without",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "enlargement,",
+      "confidence": 99.56153869628906,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "tenderness",
+      "confidence": 99.96014404296875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "or",
+      "confidence": 99.921875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "nodules.",
+      "confidence": 99.92028045654297,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "No",
+      "confidence": 99.970703125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "palpable",
+      "confidence": 99.92028045654297,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "masses",
+      "confidence": 99.970703125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "or",
+      "confidence": 99.951171875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "nodules.",
+      "confidence": 99.92028045654297,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "No",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "palpable",
+      "confidence": 99.92028045654297,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "No",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "palpable",
+      "confidence": 99.91051483154297,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "lymphadenopathy",
+      "confidence": 98.23640441894531,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "in",
+      "confidence": 99.91131591796875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "the",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "anterior",
+      "confidence": 99.91051483154297,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "cervical,",
+      "confidence": 99.84056091308594,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "posterior",
+      "confidence": 99.7510757446289,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "cervical,",
+      "confidence": 99.84056091308594,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "submandibular",
+      "confidence": 99.43219757080078,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "or",
+      "confidence": 99.921875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "supraclavicular",
+      "confidence": 98.037109375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "areas.",
+      "confidence": 99.970703125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Respiratory:",
+      "confidence": 99.96014404296875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Normal",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "respiratory",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "effort",
+      "confidence": 99.93083953857422,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "without",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "use",
+      "confidence": 99.9609375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "of",
+      "confidence": 99.970703125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "accessory",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "muscles",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "of",
+      "confidence": 99.970703125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "respiration",
+      "confidence": 99.96014404296875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "or",
+      "confidence": 99.951171875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "pursed",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "lip",
+      "confidence": 99.81365966796875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "breathing.",
+      "confidence": 99.88042449951172,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Normal",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "external",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "appearance",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "of",
+      "confidence": 99.970703125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "the",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "chest",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "without",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "barrel",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "chest,",
+      "confidence": 99.96014404296875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "pectus,",
+      "confidence": 61.80464553833008,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "kyphosis",
+      "confidence": 98.80421447753906,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "or",
+      "confidence": 99.912109375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "scoliosis.",
+      "confidence": 99.52168273925781,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Normal",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "breath",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "sounds",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "without",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "wheezing,",
+      "confidence": 99.91051483154297,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "rhonchi",
+      "confidence": 99.93083953857422,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "or",
+      "confidence": 99.921875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "rales.",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Normal",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "percussive",
+      "confidence": 99.96014404296875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "exam",
+      "confidence": 99.970703125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "without",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "dullness",
+      "confidence": 99.91051483154297,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "or",
+      "confidence": 99.921875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "evidence",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "of",
+      "confidence": 99.970703125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "consolidation.",
+      "confidence": 99.64126586914062,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Lymphatics:",
+      "confidence": 99.79093933105469,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Lymph",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Nodes",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Normal.",
+      "confidence": 99.96014404296875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "No",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "evidence",
+      "confidence": 99.88042449951172,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "of",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "cervical,",
+      "confidence": 99.88042449951172,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "supraclavicular,",
+      "confidence": 96.13360595703125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "axillary,",
+      "confidence": 99.88042449951172,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "or",
+      "confidence": 99.921875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "inguinal",
+      "confidence": 99.83079528808594,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "adenopathy.",
+      "confidence": 99.83079528808594,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Musculoskeletal:",
+      "confidence": 99.56153869628906,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "R",
+      "confidence": 99.77458953857422,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "knee",
+      "confidence": 99.95037078857422,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "MJL",
+      "confidence": 99.9609375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "pain,",
+      "confidence": 99.970703125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "spurring",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "painful,",
+      "confidence": 99.95037078857422,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "no",
+      "confidence": 99.921875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "laxity,",
+      "confidence": 99.96014404296875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "good",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "AROM,",
+      "confidence": 99.87065887451172,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "no",
+      "confidence": 99.89178466796875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "effusion,",
+      "confidence": 99.64126586914062,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "antalgic",
+      "confidence": 99.96014404296875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "gait",
+      "confidence": 99.96014404296875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Extremities:",
+      "confidence": 99.80069732666016,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Normal",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "appearance",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "of",
+      "confidence": 99.9609375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "the",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "upper",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "and",
+      "confidence": 99.970703125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "lower",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "extremities",
+      "confidence": 99.71121215820312,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "without",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "obvious",
+      "confidence": 99.96014404296875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "deformity.",
+      "confidence": 99.92028045654297,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "There",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "is",
+      "confidence": 99.951171875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "no",
+      "confidence": 99.91131591796875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "digital",
+      "confidence": 99.92028045654297,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "clubbing,",
+      "confidence": 99.96014404296875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "cyanosis",
+      "confidence": 99.83079528808594,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "or",
+      "confidence": 99.951171875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "edema.",
+      "confidence": 99.92028045654297,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Skin:",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Externally",
+      "confidence": 99.96014404296875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "there",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "is",
+      "confidence": 99.931640625,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "no",
+      "confidence": 99.892578125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "evidence",
+      "confidence": 99.95037078857422,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "of",
+      "confidence": 99.970703125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "xanthomas",
+      "confidence": 99.5517807006836,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "or",
+      "confidence": 99.8828125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "cellulitis.",
+      "confidence": 99.88042449951172,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "This",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "is",
+      "confidence": 99.951171875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "no",
+      "confidence": 99.91131591796875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "dermatitis",
+      "confidence": 99.88042449951172,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "or",
+      "confidence": 99.921875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "rash.",
+      "confidence": 99.95037078857422,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "There",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "are",
+      "confidence": 99.931640625,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "no",
+      "confidence": 99.80388641357422,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "ulcers",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "or",
+      "confidence": 99.8828125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "wounds",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "present.",
+      "confidence": 99.96014404296875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "There",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "is",
+      "confidence": 99.951171875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "no",
+      "confidence": 99.912109375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "evidence",
+      "confidence": 99.96014404296875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "of",
+      "confidence": 99.970703125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "venous",
+      "confidence": 99.951171875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "stasis",
+      "confidence": 99.96014404296875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "changes.",
+      "confidence": 99.80069732666016,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "The",
+      "confidence": 99.970703125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "capillary",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "refill",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "is",
+      "confidence": 99.814453125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "<",
+      "confidence": 95.72943115234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "5",
+      "confidence": 96.953125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "seconds.",
+      "confidence": 99.91051483154297,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Neurological/Psychiatric:",
+      "confidence": 73.20531463623047,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Externally",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "the",
+      "confidence": 99.970703125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "face",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "is",
+      "confidence": 99.951171875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "symmetrical.",
+      "confidence": 99.7608413696289,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "There",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "is",
+      "confidence": 99.951171875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "normal",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "sharp",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "and",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "dull",
+      "confidence": 99.43219757080078,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "sensation",
+      "confidence": 99.7608413696289,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "in",
+      "confidence": 99.9609375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "the",
+      "confidence": 99.970703125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "hands",
+      "confidence": 99.970703125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "and",
+      "confidence": 99.970703125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "feet",
+      "confidence": 99.970703125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "bilaterally.",
+      "confidence": 99.87065887451172,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "The",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "cranial",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "nerves",
+      "confidence": 99.970703125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "are",
+      "confidence": 99.970703125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "intact",
+      "confidence": 99.970703125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "II",
+      "confidence": 89.5948257446289,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "-",
+      "confidence": 91.90110778808594,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "XII.",
+      "confidence": 99.3271713256836,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "The",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "patient",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "moves",
+      "confidence": 99.970703125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "the",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "upper",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "and",
+      "confidence": 99.970703125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "lower",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "extremities",
+      "confidence": 99.91051483154297,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "equally.",
+      "confidence": 99.96014404296875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "The",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "finger",
+      "confidence": 99.96014404296875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "to",
+      "confidence": 99.970703125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "nose",
+      "confidence": 99.970703125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "exam",
+      "confidence": 99.951171875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "is",
+      "confidence": 99.951171875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "normal.",
+      "confidence": 99.96014404296875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Appropriate",
+      "confidence": 99.96014404296875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "mood",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "and",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "affect.",
+      "confidence": 99.96014404296875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Alert",
+      "confidence": 99.970703125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "and",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "oriented",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "to",
+      "confidence": 99.970703125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "person,",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "time",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "and",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "place.",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Patient",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "appears",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "to",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "have",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "intact",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "judgement",
+      "confidence": 99.44196319580078,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "and",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "insight",
+      "confidence": 99.95037078857422,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "into",
+      "confidence": 99.970703125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "the",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "current",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "health",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "issues.",
+      "confidence": 99.96014404296875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Objective",
+      "confidence": 99.95037078857422,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "MRI",
+      "confidence": 99.970703125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "R",
+      "confidence": 99.64764404296875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "knee",
+      "confidence": 99.95037078857422,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "W",
+      "confidence": 99.32876586914062,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "tricompartmental",
+      "confidence": 99.3126220703125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "OA,",
+      "confidence": 99.5322494506836,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Impression",
+      "confidence": 99.56153869628906,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "R",
+      "confidence": 99.02263641357422,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "knee",
+      "confidence": 99.80388641357422,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "OA",
+      "confidence": 99.8828125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Plan",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "RTKA,",
+      "confidence": 92.2215805053711,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "risks",
+      "confidence": 99.9609375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "discussed",
+      "confidence": 99.970703125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Signed",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Electronically",
+      "confidence": 100,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "By:",
+      "confidence": 99.93083953857422,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Stephen",
+      "confidence": 99.990234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "E.",
+      "confidence": 99.08880615234375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Hatfield,",
+      "confidence": 99.69168090820312,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "D.O.,",
+      "confidence": 99.71360778808594,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "02/12/2026",
+      "confidence": 99.9609375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Careslip",
+      "confidence": 99.89098358154297,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "ICD10",
+      "confidence": 99.77458953857422,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Encounter",
+      "confidence": 99.7315444946289,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Diagnosis:",
+      "confidence": 99.95037078857422,
+      "page": 5
+    },
+    {
+      "blockType": "PAGE",
+      "text": null,
+      "confidence": null,
+      "page": 6
+    },
+    {
+      "blockType": "LINE",
+      "text": "Unilateral primary osteoarthritis, right knee (ICD10CM - M17.11)",
+      "confidence": 98.87725067138672,
+      "page": 6
+    },
+    {
+      "blockType": "LINE",
+      "text": "Procedures Applied on 02/12/2026:",
+      "confidence": 99.86312866210938,
+      "page": 6
+    },
+    {
+      "blockType": "LINE",
+      "text": "Procedure code: office/outpatient visit est (99214) Units: 1.00 Date: 02/12/2026",
+      "confidence": 99.60407257080078,
+      "page": 6
+    },
+    {
+      "blockType": "LINE",
+      "text": "Unilateral primary osteoarthritis, right knee (ICD10CM - M17.11)",
+      "confidence": 97.98942565917969,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "Unilateral",
+      "confidence": 99.19303894042969,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "primary",
+      "confidence": 100,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "osteoarthritis,",
+      "confidence": 99.3223876953125,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "right",
+      "confidence": 99.990234375,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "knee",
+      "confidence": 99.990234375,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "(ICD10CM",
+      "confidence": 99.55895233154297,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "-",
+      "confidence": 96.71715545654297,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "M17.11)",
+      "confidence": 96.24601745605469,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "Procedures",
+      "confidence": 99.80069732666016,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "Applied",
+      "confidence": 100,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "on",
+      "confidence": 99.970703125,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "02/12/2026:",
+      "confidence": 99.68112182617188,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "Procedure",
+      "confidence": 96.90150451660156,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "code:",
+      "confidence": 100,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "office/outpatient",
+      "confidence": 99.37440490722656,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "visit",
+      "confidence": 99.96014404296875,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "est",
+      "confidence": 99.990234375,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "(99214)",
+      "confidence": 99.892578125,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "Units:",
+      "confidence": 100,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "1.00",
+      "confidence": 99.951171875,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "Date:",
+      "confidence": 99.970703125,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "02/12/2026",
+      "confidence": 100,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "Unilateral",
+      "confidence": 91.06166076660156,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "primary",
+      "confidence": 100,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "osteoarthritis,",
+      "confidence": 99.20280456542969,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "right",
+      "confidence": 100,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "knee",
+      "confidence": 100,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "(ICD10CM",
+      "confidence": 99.68590545654297,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "-",
+      "confidence": 96.62528228759766,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "M17.11)",
+      "confidence": 97.33975982666016,
+      "page": 6
+    }
+  ]
+}

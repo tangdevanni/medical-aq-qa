@@ -63,10 +63,10 @@ export default function RunsPage() {
     <main className="page-shell stack">
       <div className="page-header">
         <div>
-          <p className="eyebrow">Reference Dashboard</p>
-          <h1 className="page-title">Workbook Batches</h1>
+          <p className="eyebrow">Referral QA Dashboard</p>
+          <h1 className="page-title">Referral Comparison Runs</h1>
           <p className="page-subtitle">
-            Read-only diagnosis extraction batches from uploaded Finale workbooks. The newest active workbook reruns every 24 hours.
+            Read-only runs that pull referral evidence, compare it against the portal, and surface patient charts that need correction or manual review.
           </p>
         </div>
         <div className="actions">
@@ -78,28 +78,28 @@ export default function RunsPage() {
 
       <section className="grid three">
         <div className="panel">
-          <div className="metric-label">Total batches</div>
+          <div className="metric-label">Total runs</div>
           <div className="metric-value">{runs.length}</div>
-          <div className="muted">Workbook uploads retained for diagnosis reference.</div>
+          <div className="muted">Comparison runs retained for referral-vs-portal review.</div>
         </div>
         <div className="panel">
-          <div className="metric-label">Active reruns</div>
+          <div className="metric-label">Scheduled reruns</div>
           <div className="metric-value">{summary.activeSchedules}</div>
-          <div className="muted">Batches scheduled to rerun every 24 hours.</div>
+          <div className="muted">Runs configured to refresh referral comparison automatically.</div>
         </div>
         <div className="panel">
-          <div className="metric-label">Needs attention</div>
+          <div className="metric-label">Flagged patients</div>
           <div className="metric-value">{summary.dueAttention}</div>
-          <div className="muted">Patients blocked, failed, or needing manual review.</div>
+          <div className="muted">Patients blocked, failed, or still requiring human reconciliation.</div>
         </div>
       </section>
 
       <section className="panel stack">
         <div className="page-header">
           <div>
-            <h2>Batch List</h2>
+            <h2>Run Queue</h2>
             <p className="page-subtitle">
-              Each batch shows read-only extraction status, run cadence, and diagnosis-reference timing.
+              Each run shows the current comparison cycle, the patient volume under review, and when the next refresh will occur.
             </p>
           </div>
         </div>
@@ -149,7 +149,7 @@ export default function RunsPage() {
           </table>
         ) : null}
 
-        {!loading && runs.length === 0 ? <div className="muted">No workbook batches have been created yet.</div> : null}
+        {!loading && runs.length === 0 ? <div className="muted">No referral comparison runs have been created yet.</div> : null}
       </section>
     </main>
   );

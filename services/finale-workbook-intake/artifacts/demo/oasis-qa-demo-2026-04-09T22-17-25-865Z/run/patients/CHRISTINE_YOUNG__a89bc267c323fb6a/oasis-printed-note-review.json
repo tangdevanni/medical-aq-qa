@@ -1,0 +1,141 @@
+{
+  "assessmentType": "SOC",
+  "matchedAssessmentLabel": "OASIS-OASIS E1 - PT SOC",
+  "reviewSource": "printed_note_ocr",
+  "overallStatus": "PARTIAL",
+  "capture": {
+    "assessmentType": "SOC",
+    "printProfileKey": "soc_foundation_sections_v1",
+    "printProfileLabel": "Administrative + Vital Signs/Pain + Medications/Allergies",
+    "printButtonDetected": true,
+    "printButtonVisible": false,
+    "printButtonSelectorUsed": "fin-button[title='Print Preview'] > button, fin-button[title*='Print'] > button, fin-button[icon='ft-printer'] > button, button:has(.ft-printer), button:has-text('Print')",
+    "printClickSucceeded": false,
+    "printModalDetected": false,
+    "printModalSelectorUsed": null,
+    "printModalConfirmSelectorUsed": null,
+    "printModalConfirmSucceeded": false,
+    "selectedSectionLabels": [],
+    "currentUrl": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/intake/699c7efee396a2d53a90c49c/documents/note/oasis/699c7f2404cd05d537d0204a",
+    "printedPdfPath": null,
+    "sourcePdfPath": null,
+    "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T22-17-25-865Z\\run\\evidence\\CHRISTINE_YOUNG__a89bc267c323fb6a\\oasis-printed-note\\extracted-text.txt",
+    "extractionResultPath": "C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T22-17-25-865Z\\run\\evidence\\CHRISTINE_YOUNG__a89bc267c323fb6a\\oasis-printed-note\\extraction-result.json",
+    "ocrResultPath": null,
+    "textLength": 5725,
+    "extractionMethod": "visible_text_fallback",
+    "warnings": [
+      "Print button could not be located on the OASIS assessment page.",
+      "Fell back to visible page text because printed-note OCR text was unavailable."
+    ]
+  },
+  "sections": [
+    {
+      "key": "administrative_information",
+      "label": "Administrative Information",
+      "status": "PARTIAL",
+      "filledFieldCount": 1,
+      "missingFieldCount": 3,
+      "evidence": [
+        "ission 02-27-2026 Admission Info Admission Packets Calendar Insurance/Payer Diagnosis Physicians Care Team Documentations AllPhysician OrdersVisit NotesOASISCommunication NotesOther Notes Care Plan Summary Plan of Care Medication AllSnapsho"
+      ],
+      "missingFields": [
+        "patient name",
+        "address",
+        "physician"
+      ],
+      "suggestions": [
+        "Confirm demographic and payer fields against referral/intake artifacts.",
+        "Use shared referral/hospital evidence before escalating any diagnosis changes to coding."
+      ],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T22-17-25-865Z\\run\\patients\\CHRISTINE_YOUNG__a89bc267c323fb6a\\documents\\christine-young-referral-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "vital_signs",
+      "label": "Vital Signs",
+      "status": "MISSING",
+      "filledFieldCount": 0,
+      "missingFieldCount": 4,
+      "evidence": [],
+      "missingFields": [
+        "blood pressure",
+        "heart rate",
+        "temperature",
+        "respiratory rate"
+      ],
+      "suggestions": [
+        "Check whether visit notes contain vitals that can support missing fields.",
+        "Use shared referral/hospital evidence before escalating any diagnosis changes to coding."
+      ],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T22-17-25-865Z\\run\\patients\\CHRISTINE_YOUNG__a89bc267c323fb6a\\documents\\christine-young-referral-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "pain_assessment",
+      "label": "Pain Assessment",
+      "status": "MISSING",
+      "filledFieldCount": 0,
+      "missingFieldCount": 3,
+      "evidence": [],
+      "missingFields": [
+        "pain",
+        "pain scale",
+        "pain location"
+      ],
+      "suggestions": [
+        "Review clinician notes for pain frequency, scale, and location details.",
+        "Use shared referral/hospital evidence before escalating any diagnosis changes to coding."
+      ],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T22-17-25-865Z\\run\\patients\\CHRISTINE_YOUNG__a89bc267c323fb6a\\documents\\christine-young-referral-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "medications_allergies",
+      "label": "Medications and Allergies",
+      "status": "PARTIAL",
+      "filledFieldCount": 1,
+      "missingFieldCount": 3,
+      "evidence": [
+        "mmunication NotesOther Notes Care Plan Summary Plan of Care Medication AllSnapshotsInteractions Hospitalization Billing Supplies Vital Graphs Wound History Care Coordination Intake File Uploads Alerts File Uploads Notifications RCD Tracking"
+      ],
+      "missingFields": [
+        "allerg",
+        "oxygen therapy",
+        "dialysis"
+      ],
+      "suggestions": [
+        "Check referral and hospital documents for medication, allergy, and special-treatment references.",
+        "Use shared referral/hospital evidence before escalating any diagnosis changes to coding."
+      ],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-09T22-17-25-865Z\\run\\patients\\CHRISTINE_YOUNG__a89bc267c323fb6a\\documents\\christine-young-referral-pdf\\source.pdf"
+      ]
+    }
+  ],
+  "warningCount": 2,
+  "topWarning": "Print button could not be located on the OASIS assessment page.",
+  "warnings": [
+    "Print button could not be located on the OASIS assessment page.",
+    "Fell back to visible page text because printed-note OCR text was unavailable."
+  ]
+}

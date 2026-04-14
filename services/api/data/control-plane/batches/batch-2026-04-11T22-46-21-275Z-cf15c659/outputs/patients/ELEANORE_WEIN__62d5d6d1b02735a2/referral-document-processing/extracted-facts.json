@@ -1,0 +1,118 @@
+{
+  "patient_context": {
+    "patient_name": "Wein, Eleanore",
+    "dob": "01/23/1931",
+    "soc_date": null,
+    "referral_date": null
+  },
+  "facts": [
+    {
+      "fact_key": "medical_necessity_summary",
+      "category": "medical_necessity",
+      "value": "Order Date Order Time Ordering User Authorizing Provider Department Mar 5, 2026 11:40 AM Connor D Yost, DO Rahul M Patel, DO Valleywise Health Medical Center: Critical Care Skilled Nursing & Therapy Services [NUR608] (#175758921) Priority: Routine Class: Clinic Performed Qty: 1 Resulting Agency: None Home Health Therapy Services: PT Eval & Treat Home Health Therapy Services: OT Eval & Treat Nursing Medication Managem",
+      "confidence": 0.78,
+      "evidence_spans": [
+        "Order Date Order Time Ordering User Authorizing Provider Department Mar 5, 2026 11:40 AM Connor D Yost, DO Rahul M Patel, DO Valleywise Health Medical Center: Critical Care Skilled Nursing & Therapy Services [NUR608] (#175758921) Priority: Routine Class: Clinic Performed Qty: 1 Resulting Agency: None Home Health Therapy Services: PT Eval & Treat Home Health Therapy Services: OT Eval & Treat Nursing Medication Managem"
+      ],
+      "rationale": "Medical necessity was summarized from referral narrative and skilled-need evidence.",
+      "source_sections": [
+        "primary_reason_for_home_health",
+        "medical_necessity"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "homebound_narrative",
+      "category": "homebound",
+      "value": "Physical Therapy Recommendation: Home Health Equipment Recommended: Walker (4WW - pt owns) VHMC PLOF/DME: Type of Home: Apartment (Kivel ILF) Home Layout: Two level (elevator access) Home Equipment: Walker; Pain: 0/10 (reports burning with urination) OBJECTIVE Cognition: Overall Cognitive Status: Within Functional Limits Responsiveness: Awake Orientation Level: Oriented X4 Sensation: Deficits: No Apparent Deficits Light Touch: No apparent deficits Range of motion: (B) UE see OT note (B) LE WFL Strength:(B) UE grossly see OT note (B) LE grossly WFL Mobility: Supine to Sit: Contact/Guard Sit to Supine: Unable to assess (Comment) (left seated in recliner at end of session) Sit to Stand: Contact/Guard Bed to Chair: Contact/Guard Gait Assistance: Contact/Guard Assistive Device: Front wheeled walker Distance: 3 Sitting - Static: Good Sitting - Dynamic: Good Standing - Static: Good (w/ FWW) Standing - Dynamic: Fair (w/ FWW) Printed by Nicole D Haralson [CNH105903] 3/5/2026 11:49 AM 4/5 3/5/2eMa r. 5. 2026 12:20PM Wein, Eleanore (MRN 0108655762) Printed by Nicole D Haralson [CNH105903]N 0. 39465 11:2P. 11/12 Today's Treatment: PT eval and mobility above performed. Cues required for sequencing, hand placement and walker management. ASSESSMENT Patient Response to Treatment: Tolerated well Rehab Potential: Good Recommendation: Home Health Equipment Recommended: Walker (4WW - pt owns) Requires follow up: Yes Goals: Goal Formulation: With patient Time For Goal Achievement: 7 days Supine Sit: Independent Sit Stand: Independent Amb: Independent Distance: 50 Device: walker Patient/Family Goals: none stated Patient/Caregiver Education provided: PT POC, goals and d/c recommendations PLAN Therapy Frequency: Daily. 3 days a week Eleanor G Johnson, PT 3/3/2026 Printed by Nicole D Haralson [CNH105903] 3/5/2026 11:49 AM 5/5 Mar. 5.2026 12:21PM No. 3946 P. 12/12",
+      "confidence": 0.8,
+      "evidence_spans": [
+        "Physical Therapy Recommendation: Home Health Equipment Recommended: Walker (4WW - pt owns) VHMC PLOF/DME: Type of Home: Apartment (Kivel ILF) Home Layout: Two level (elevator access) Home Equipment: Walker; Pain: 0/10 (reports burning with urination) OBJECTIVE Cognition: Overall Cognitive Status: Within Functional Limits Responsiveness: Awake Orientation Level: Oriented X4 Sensation: Deficits: No Apparent Deficits Light Touch: No apparent deficits Range of motion: (B) UE see OT note (B) LE WFL Strength:(B) UE grossly see OT note (B) LE grossly WFL Mobility: Supine to Sit: Contact/Guard Sit to Supine: Unable to assess (Comment) (left seated in recliner at end of session) Sit to Stand: Contact/Guard Bed to Chair: Contact/Guard Gait Assistance: Contact/Guard Assistive Device: Front wheeled walker Distance: 3 Sitting - Static: Good Sitting - Dynamic: Good Standing - Static: Good (w/ FWW) Standing - Dynamic: Fair (w/ FWW) Printed by Nicole D Haralson [CNH105903] 3/5/2026 11:49 AM 4/5 3/5/2eMa r. 5. 2026 12:20PM Wein, Eleanore (MRN 0108655762) Printed by Nicole D Haralson [CNH105903]N 0. 39465 11:2P. 11/12 Today's Treatment: PT eval and mobility above performed. Cues required for sequencing, hand placement and walker management. ASSESSMENT Patient Response to Treatment: Tolerated well Rehab Potential: Good Recommendation: Home Health Equipment Recommended: Walker (4WW - pt owns) Requires follow up: Yes Goals: Goal Formulation: With patient Time For Goal Achievement: 7 days Supine Sit: Independent Sit Stand: Independent Amb: Independent Distance: 50 Device: walker Patient/Family Goals: none stated Patient/Caregiver Education provided: PT POC, goals and d/c recommendations PLAN Therapy Frequency: Daily. 3 days a week Eleanor G Johnson, PT 3/3/2026 Printed by Nicole D Haralson [CNH105903] 3/5/2026 11:49 AM 5/5 Mar. 5.2026 12:21PM No. 3946 P. 12/12"
+      ],
+      "rationale": "Homebound evidence was summarized from referral text.",
+      "source_sections": [
+        "homebound_evidence"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "homebound_supporting_factors",
+      "category": "homebound",
+      "value": [
+        "uses_walker"
+      ],
+      "confidence": 0.73,
+      "evidence_spans": [
+        "Physical Therapy Recommendation: Home Health Equipment Recommended: Walker (4WW - pt owns) VHMC PLOF/DME: Type of Home: Apartment (Kivel ILF) Home Layout: Two level (elevator access) Home Equipment: Walker; Pain: 0/10 (reports burning with urination) OBJECTIVE Cognition: Overall Cognitive Status: Within Functional Limits Responsiveness: Awake Orientation Level: Oriented X4 Sensation: Deficits: No Apparent Deficits Light Touch: No apparent deficits Range of motion: (B) UE see OT note (B) LE WFL Strength:(B) UE grossly see OT note (B) LE grossly WFL Mobility: Supine to Sit: Contact/Guard Sit to Supine: Unable to assess (Comment) (left seated in recliner at end of session) Sit to Stand: Contact/Guard Bed to Chair: Contact/Guard Gait Assistance: Contact/Guard Assistive Device: Front wheeled walker Distance: 3 Sitting - Static: Good Sitting - Dynamic: Good Standing - Static: Good (w/ FWW) Standing - Dynamic: Fair (w/ FWW) Printed by Nicole D Haralson [CNH105903] 3/5/2026 11:49 AM 4/5 3/5/2eMa r. 5. 2026 12:20PM Wein, Eleanore (MRN 0108655762) Printed by Nicole D Haralson [CNH105903]N 0. 39465 11:2P. 11/12 Today's Treatment: PT eval and mobility above performed. Cues required for sequencing, hand placement and walker management. ASSESSMENT Patient Response to Treatment: Tolerated well Rehab Potential: Good Recommendation: Home Health Equipment Recommended: Walker (4WW - pt owns) Requires follow up: Yes Goals: Goal Formulation: With patient Time For Goal Achievement: 7 days Supine Sit: Independent Sit Stand: Independent Amb: Independent Distance: 50 Device: walker Patient/Family Goals: none stated Patient/Caregiver Education provided: PT POC, goals and d/c recommendations PLAN Therapy Frequency: Daily. 3 days a week Eleanor G Johnson, PT 3/3/2026 Printed by Nicole D Haralson [CNH105903] 3/5/2026 11:49 AM 5/5 Mar. 5.2026 12:21PM No. 3946 P. 12/12"
+      ],
+      "rationale": "Homebound supporting factors were extracted from referral text.",
+      "source_sections": [
+        "homebound_evidence"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "living_situation",
+      "category": "living_situation",
+      "value": "Alone Receives Help From",
+      "confidence": 0.72,
+      "evidence_spans": [
+        "Alone Receives Help From"
+      ],
+      "rationale": "Living situation was summarized from referral text.",
+      "source_sections": [
+        "living_situation"
+      ],
+      "requires_human_review": false
+    },
+    {
+      "fact_key": "therapy_need",
+      "category": "therapy",
+      "value": "PT/OT completed co-tx for comprehensive assessment, pt and staff safety, and to maintain optimal treatment environment",
+      "confidence": 0.77,
+      "evidence_spans": [
+        "PT/OT completed co-tx for comprehensive assessment, pt and staff safety, and to maintain optimal treatment environment"
+      ],
+      "rationale": "Therapy need was summarized from referral text.",
+      "source_sections": [
+        "therapy_need"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "fall_risk_narrative",
+      "category": "risk",
+      "value": "Order Date Order Time Ordering User Authorizing Provider Department Mar 5, 2026 11:40 AM Connor D Yost, DO Rahul M Patel, DO Valleywise Health Medical Center: Critical Care Skilled Nursing & Therapy Services [NUR608] (#175758921) Priority: Routine Class: Clinic Performed Qty: 1 Resulting Agency: None Home Health Therapy Services: PT Eval & Treat Home Health Therapy Services: OT Eval & Treat Nursing Medication Managem",
+      "confidence": 0.7,
+      "evidence_spans": [
+        "Order Date Order Time Ordering User Authorizing Provider Department Mar 5, 2026 11:40 AM Connor D Yost, DO Rahul M Patel, DO Valleywise Health Medical Center: Critical Care Skilled Nursing & Therapy Services [NUR608] (#175758921) Priority: Routine Class: Clinic Performed Qty: 1 Resulting Agency: None Home Health Therapy Services: PT Eval & Treat Home Health Therapy Services: OT Eval & Treat Nursing Medication Managem"
+      ],
+      "rationale": "Risk and safety narrative was summarized from referral text.",
+      "source_sections": [
+        "risk_factors",
+        "functional_limitations"
+      ],
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "preferred_language",
+    "interpreter_needed",
+    "recent_hospitalization_discharge_date",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "code_status",
+    "order_summary",
+    "functional_limitations",
+    "primary_reason_for_home_health_medical_necessity",
+    "admit_reason_to_home_health"
+  ],
+  "warnings": [
+    "Deterministic referral facts extraction was used."
+  ]
+}

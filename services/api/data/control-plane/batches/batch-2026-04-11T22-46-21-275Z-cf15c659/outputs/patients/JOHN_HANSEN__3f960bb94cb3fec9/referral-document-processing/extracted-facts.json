@@ -1,0 +1,118 @@
+{
+  "patient_context": {
+    "patient_name": null,
+    "dob": "03/04/1947",
+    "soc_date": null,
+    "referral_date": null
+  },
+  "facts": [
+    {
+      "fact_key": "code_status",
+      "category": "directive",
+      "value": "full_code",
+      "confidence": 0.75,
+      "evidence_spans": [
+        "Code status: full_code"
+      ],
+      "rationale": "Code status was explicitly stated in referral text.",
+      "source_sections": [
+        "code_status",
+        "advance_directives"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "homebound_narrative",
+      "category": "homebound",
+      "value": "Diagnoses and Clinical condition(s) contributing to the need for Home Health Care (specify): R hip fracture, fall, L foot surgery The patient is confined to the home for the following reason(s): [x] Unable to anbul [] Unable to anbul at e : > feet without rest periods [x] Requires assistive device: wheel chair, walker and/ or assistance of another person to leave home [] Requires the use of special transportation [] Confusion/ Cognitive limitations make it unsafe for patient to leave home [x] Paininterferes with outside mobility [] SOB with exertion/activity, requires rest periods [] Medically restricted to home (reason if not specified above): [] Prescriptive needs: [x] Medication Management [x] Pain assessment and management [x] Disease Process Education [x] Gait Training [x] ADL training [x] Fal I Risk/Bal ance Assessment and training Report Request ID: 646633958 Page 5 of 6 Print Date/Time: 3/18/2026 17:36 CDT Ensocare Notification ID: 4876469 Mar 18, 2026 04:37:47 PM MDT Encompass Health Rehabilitation Hospital of Scottsdale Patient: HANSEN JR, JOHN MRN: 875005438 Admit Date: 3/11/2026 FIN#: 501402829 homebound status and need for skilled care.",
+      "confidence": 0.8,
+      "evidence_spans": [
+        "Diagnoses and Clinical condition(s) contributing to the need for Home Health Care (specify): R hip fracture, fall, L foot surgery The patient is confined to the home for the following reason(s): [x] Unable to anbul [] Unable to anbul at e : > feet without rest periods [x] Requires assistive device: wheel chair, walker and/ or assistance of another person to leave home [] Requires the use of special transportation [] Confusion/ Cognitive limitations make it unsafe for patient to leave home [x] Paininterferes with outside mobility [] SOB with exertion/activity, requires rest periods [] Medically restricted to home (reason if not specified above): [] Prescriptive needs: [x] Medication Management [x] Pain assessment and management [x] Disease Process Education [x] Gait Training [x] ADL training [x] Fal I Risk/Bal ance Assessment and training Report Request ID: 646633958 Page 5 of 6 Print Date/Time: 3/18/2026 17:36 CDT Ensocare Notification ID: 4876469 Mar 18, 2026 04:37:47 PM MDT Encompass Health Rehabilitation Hospital of Scottsdale Patient: HANSEN JR, JOHN MRN: 875005438 Admit Date: 3/11/2026 FIN#: 501402829 homebound status and need for skilled care."
+      ],
+      "rationale": "Homebound evidence was summarized from referral text.",
+      "source_sections": [
+        "homebound_evidence"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "homebound_supporting_factors",
+      "category": "homebound",
+      "value": [
+        "uses_walker"
+      ],
+      "confidence": 0.73,
+      "evidence_spans": [
+        "Diagnoses and Clinical condition(s) contributing to the need for Home Health Care (specify): R hip fracture, fall, L foot surgery The patient is confined to the home for the following reason(s): [x] Unable to anbul [] Unable to anbul at e : > feet without rest periods [x] Requires assistive device: wheel chair, walker and/ or assistance of another person to leave home [] Requires the use of special transportation [] Confusion/ Cognitive limitations make it unsafe for patient to leave home [x] Paininterferes with outside mobility [] SOB with exertion/activity, requires rest periods [] Medically restricted to home (reason if not specified above): [] Prescriptive needs: [x] Medication Management [x] Pain assessment and management [x] Disease Process Education [x] Gait Training [x] ADL training [x] Fal I Risk/Bal ance Assessment and training Report Request ID: 646633958 Page 5 of 6 Print Date/Time: 3/18/2026 17:36 CDT Ensocare Notification ID: 4876469 Mar 18, 2026 04:37:47 PM MDT Encompass Health Rehabilitation Hospital of Scottsdale Patient: HANSEN JR, JOHN MRN: 875005438 Admit Date: 3/11/2026 FIN#: 501402829 homebound status and need for skilled care."
+      ],
+      "rationale": "Homebound supporting factors were extracted from referral text.",
+      "source_sections": [
+        "homebound_evidence"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "living_situation",
+      "category": "living_situation",
+      "value": "his family. FAMILY HI STORY",
+      "confidence": 0.72,
+      "evidence_spans": [
+        "his family. FAMILY HI STORY"
+      ],
+      "rationale": "Living situation was summarized from referral text.",
+      "source_sections": [
+        "living_situation"
+      ],
+      "requires_human_review": false
+    },
+    {
+      "fact_key": "therapy_need",
+      "category": "therapy",
+      "value": "PT/OT will continue to work with patient",
+      "confidence": 0.77,
+      "evidence_spans": [
+        "PT/OT will continue to work with patient"
+      ],
+      "rationale": "Therapy need was summarized from referral text.",
+      "source_sections": [
+        "therapy_need"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "fall_risk_narrative",
+      "category": "risk",
+      "value": "Jasser MD ADM TTI NG PHYSI a AN: DO John Yu DO CHI EF COMPLAI NT: Fall, right hip pain. Diagnoses and Clinical condition(s) contributing to the need for Home Health Care (specify): R hip fracture, fall, L foot surgery The patient is confined to the home for the following reason(s): [x] Unable to anbul [] Unable to anbul at e : > feet without rest periods [x] Requires assistive device: wheel chair, walker and/ or assi",
+      "confidence": 0.7,
+      "evidence_spans": [
+        "Jasser MD ADM TTI NG PHYSI a AN: DO John Yu DO CHI EF COMPLAI NT: Fall, right hip pain. Diagnoses and Clinical condition(s) contributing to the need for Home Health Care (specify): R hip fracture, fall, L foot surgery The patient is confined to the home for the following reason(s): [x] Unable to anbul [] Unable to anbul at e : > feet without rest periods [x] Requires assistive device: wheel chair, walker and/ or assi"
+      ],
+      "rationale": "Risk and safety narrative was summarized from referral text.",
+      "source_sections": [
+        "risk_factors",
+        "functional_limitations"
+      ],
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "preferred_language",
+    "interpreter_needed",
+    "recent_hospitalization_discharge_date",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "order_summary",
+    "medical_necessity_summary",
+    "functional_limitations",
+    "primary_reason_for_home_health_medical_necessity",
+    "admit_reason_to_home_health"
+  ],
+  "warnings": [
+    "Deterministic referral facts extraction was used."
+  ]
+}

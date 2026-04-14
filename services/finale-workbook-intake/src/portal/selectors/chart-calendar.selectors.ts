@@ -13,6 +13,11 @@ export const chartCalendarSelectors: {
   calendarRootSelectors: [
     {
       strategy: "css",
+      selector: "app-client-calendar app-calendar .cdk-drop-list, app-client-calendar app-calendar .cdk-overlay-pane",
+      description: "Calendar root by client calendar overlay/list container",
+    },
+    {
+      strategy: "css",
       selector: '[class*="calendar"], [class*="client_calendar"], [role="grid"], table',
       description: "Calendar root by grid/calendar container selectors",
     },
@@ -59,6 +64,11 @@ export const chartCalendarSelectors: {
   weekRowSelectors: [
     {
       strategy: "css",
+      selector: ".cdk-drop-list",
+      description: "Calendar week row fallback by drag-drop list container",
+    },
+    {
+      strategy: "css",
       selector: '[class*="week"][class*="row"], [class*="week-row"], [role="rowgroup"] [role="row"]',
       description: "Calendar week rows by class fragments or ARIA rows",
     },
@@ -74,6 +84,11 @@ export const chartCalendarSelectors: {
     },
   ],
   dayCellSelectors: [
+    {
+      strategy: "css",
+      selector: "li.cdk-drop-list-item[id]",
+      description: "Calendar day cells by ISO-date li identifiers",
+    },
     {
       strategy: "css",
       selector: '[role="gridcell"], td, [class*="day"][class*="cell"], [class*="day-column"], [class*="calendar-day"]',
@@ -100,6 +115,16 @@ export const chartCalendarSelectors: {
     },
   ],
   tileSelectors: [
+    {
+      strategy: "css",
+      selector: '[class*="plot-event-card"]',
+      description: "Calendar event tiles by plot-event-card class",
+    },
+    {
+      strategy: "css",
+      selector: '[class*="card-drag"], [class*="popoverclass-client-calendar"]',
+      description: "Calendar event tiles by card-drag / popover wrappers",
+    },
     {
       strategy: "css",
       selector: '[class*="card-wrap"][class*="ng-star-inserted"]',

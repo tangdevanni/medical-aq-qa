@@ -337,7 +337,15 @@ export function toPatientArtifactsResponse(input: {
   batchId: string;
   patientRunSummary: BatchRecord["patientRuns"][number];
   artifacts: Array<{
-    kind: "bundle" | "log" | "failure_trace" | "failure_screenshot" | "download" | "evidence";
+    kind:
+      | "bundle"
+      | "log"
+      | "failure_trace"
+      | "failure_screenshot"
+      | "download"
+      | "evidence"
+      | "workflow_result"
+      | "workflow_log";
     name: string;
     path: string;
     exists: boolean;

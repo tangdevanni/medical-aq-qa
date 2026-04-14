@@ -1,0 +1,2217 @@
+{
+  "runId": "batch-2026-04-11T22-46-21-275Z-cf15c659-JULIANNE_FICZERI__8724d9f1aee6e2e3",
+  "batchId": "batch-2026-04-11T22-46-21-275Z-cf15c659",
+  "subsidiaryId": "default",
+  "workItemId": "JULIANNE_FICZERI__8724d9f1aee6e2e3",
+  "patientName": "Julianne Ficzeri",
+  "processingStatus": "BLOCKED",
+  "executionStep": "BLOCKED",
+  "progressPercent": 100,
+  "startedAt": "2026-04-11T23:03:02.900Z",
+  "completedAt": "2026-04-11T23:05:46.949Z",
+  "lastUpdatedAt": "2026-04-11T23:05:46.910Z",
+  "matchResult": {
+    "status": "EXACT",
+    "searchQuery": "ficzeri, julianne",
+    "portalPatientId": null,
+    "portalDisplayName": "FICZERI, JULIANNE MR# 125 Active SOC: 3/13/2026 / DOB: 10/22/1957 LOS: 28 days Medicare 10220 East Apache Trail #70 Apache Junction AZ 85120 (612)387-3633 Last Visit Confirmed by PT : 04/08/2026 (2 days ago)",
+    "candidateNames": [
+      "FICZERI, JULIANNE MR# 125 Active SOC: 3/13/2026 / DOB: 10/22/1957 LOS: 28 days Medicare 10220 East Apache Trail #70 Apache Junction AZ 85120 (612)387-3633 Last Visit Confirmed by PT : 04/08/2026 (2 days ago)"
+    ],
+    "note": null
+  },
+  "artifacts": [
+    {
+      "artifactType": "OASIS",
+      "status": "MISSING",
+      "portalLabel": "OASIS documents page",
+      "locatorUsed": null,
+      "discoveredAt": "2026-04-11T23:05:37.428Z",
+      "downloadPath": null,
+      "extractedFields": {
+        "oasisMenuClicked": "false",
+        "oasisDocumentListDetected": "false",
+        "socDocumentFound": "false",
+        "socDocumentClicked": "false",
+        "matchedSocRowText": null,
+        "matchedSocAnchorText": null,
+        "diagnosisSectionOpened": "false",
+        "diagnosisListFound": "false",
+        "diagnosisNavigationMethod": null,
+        "diagnosisListSamples": "",
+        "diagnosisSnapshotRowCount": "0",
+        "oasisReadyDiagnosisPath": null,
+        "primaryDiagnosisSelected": "none",
+        "otherDiagnosisCount": "0",
+        "codeConfidenceSummary": "high:0 medium:0 low:0",
+        "oasisLockState": null,
+        "unlockControlVisible": "false",
+        "unlockControlText": null,
+        "fieldsEditable": "false",
+        "verificationOnly": "true",
+        "inputEligible": "false",
+        "fileUploadsAccessible": "true",
+        "fileUploadsUrl": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/file-uploads",
+        "visibleUploadedDocuments": "📄 New Referral Julianne Ficzeri.pdf | 📄 New Referral Julianne Ficzeri.pdf 📝 ✏️ 🗑️ 🔗",
+        "admissionOrderAccessible": "true",
+        "admissionOrderTitle": "📄 New Referral Julianne Ficzeri.pdf 📝 ✏️ 🗑️ 🔗",
+        "admissionReasonPrimary": null,
+        "admissionReasonSnippets": "",
+        "rawExtractedTextSource": "dom",
+        "domExtractionRejectedReasons": "viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS",
+        "possibleIcd10Codes": "I00 | I25 | I50",
+        "admissionOrderTextExcerpt": "of ⁨6⁩ Automatic Zoom Actual Size Page Fit Page Width ⁨50⁩% ⁨100⁩% ⁨125⁩% ⁨150⁩% ⁨200⁩% ⁨300⁩% ⁨400⁩% 90% Tools",
+        "admissionOrderSourcePdfPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\documents\\new-referral-julianne-ficzeri-pdf\\source.pdf",
+        "admissionOrderPrintedPdfPath": null,
+        "admissionOrderSourceMetaPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\documents\\new-referral-julianne-ficzeri-pdf\\source-meta.json",
+        "admissionOrderExtractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\documents\\new-referral-julianne-ficzeri-pdf\\extracted-text.txt",
+        "admissionOrderExtractionResultPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\documents\\new-referral-julianne-ficzeri-pdf\\extraction-result.json",
+        "diagnosisMentionCount": "6",
+        "diagnosisMentions": "complications to include, medication, pain | RN - has patient start oral pain meds as soon as patient tolerates PO intake. | RN - per protocol to assess for pain, incision monitoring | Subjective Complaints: Knee Pain Reevaluation of right Continues to complain of | R knee OA, pain continues, no significant relief W conservative, management W NSAIDS< injections steroid | Musculoskeletal: R knee MJL pain, spurring painful, no laxity, good AROM, no effusion, antalgic gait Extremities: Normal appearance of the upper",
+        "diagnosisCodeCount": "0",
+        "diagnosisCodes": "",
+        "diagnosisCodeCategories": "",
+        "diagnosisCanonicalJson": "{\"reason_for_admission\":null,\"diagnosis_phrases\":[\"complications to include, medication, pain\",\"RN - has patient start oral pain meds as soon as patient tolerates PO intake.\",\"RN - per protocol to assess for pain, incision monitoring\",\"Subjective Complaints: Knee Pain Reevaluation of right Continues to complain of\",\"R knee OA, pain continues, no significant relief W conservative, management W NSAIDS< injections steroid\",\"Musculoskeletal: R knee MJL pain, spurring painful, no laxity, good AROM, no effusion, antalgic gait Extremities: Normal appearance of the upper\"],\"diagnosis_code_pairs\":[{\"diagnosis\":\"complications to include, medication, pain\",\"code\":null,\"code_source\":null},{\"diagnosis\":\"RN - has patient start oral pain meds as soon as patient tolerates PO intake.\",\"code\":null,\"code_source\":null},{\"diagnosis\":\"RN - per protocol to assess for pain, incision monitoring\",\"code\":null,\"code_source\":null},{\"diagnosis\":\"Subjective Complaints: Knee Pain Reevaluation of right Continues to complain of\",\"code\":null,\"code_source\":null},{\"diagnosis\":\"R knee OA, pain continues, no significant relief W conservative, management W NSAIDS< injections steroid\",\"code\":null,\"code_source\":null},{\"diagnosis\":\"Musculoskeletal: R knee MJL pain, spurring painful, no laxity, good AROM, no effusion, antalgic gait Extremities: Normal appearance of the upper\",\"code\":null,\"code_source\":null}],\"icd10_codes_found_verbatim\":[],\"ordered_services\":[],\"clinical_summary\":\"Monitor patient's response to therapy and for side effects/complications to include, medication, pain and incision monitoring..\",\"source_quotes\":[\"Monitor patient's response to therapy and for side effects/complications to include, medication, pain and incision monitoring..\"],\"uncertain_items\":[],\"document_type\":\"Admission Order\",\"extraction_confidence\":\"medium\"}",
+        "codingInputPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\coding-input.json",
+        "codingInputJson": "{\"primaryDiagnosis\":{\"code\":\"\",\"description\":\"complications to include, medication, pain\",\"confidence\":\"medium\"},\"otherDiagnoses\":[{\"code\":\"\",\"description\":\"RN - has patient start oral pain meds as soon as patient tolerates PO intake.\",\"confidence\":\"medium\"},{\"code\":\"\",\"description\":\"RN - per protocol to assess for pain, incision monitoring\",\"confidence\":\"medium\"},{\"code\":\"\",\"description\":\"Subjective Complaints: Knee Pain Reevaluation of right Continues to complain of\",\"confidence\":\"medium\"},{\"code\":\"\",\"description\":\"R knee OA, pain continues, no significant relief W conservative, management W NSAIDS< injections steroid\",\"confidence\":\"medium\"},{\"code\":\"\",\"description\":\"Musculoskeletal: R knee MJL pain, spurring painful, no laxity, good AROM, no effusion, antalgic gait Extremities: Normal appearance of the upper\",\"confidence\":\"medium\"}],\"suggestedOnsetType\":\"onset\",\"suggestedSeverity\":1,\"comorbidityFlags\":{\"pvd_pad\":false,\"diabetes\":false,\"none\":true},\"notes\":[\"Primary diagnosis code left blank because no explicit or strongly inferable ICD-10 mapping was retained.\"]}",
+        "reasonForAdmission": null,
+        "diagnosisCodePairs": "complications to include, medication, pain => null (null) | RN - has patient start oral pain meds as soon as patient tolerates PO intake. => null (null) | RN - per protocol to assess for pain, incision monitoring => null (null) | Subjective Complaints: Knee Pain Reevaluation of right Continues to complain of => null (null) | R knee OA, pain continues, no significant relief W conservative, management W NSAIDS< injections steroid => null (null) | Musculoskeletal: R knee MJL pain, spurring painful, no laxity, good AROM, no effusion, antalgic gait Extremities: Normal appearance of the upper => null (null)",
+        "primaryDiagnosis": "complications to include, medication, pain",
+        "primaryDiagnosisCode": "",
+        "otherDiagnoses": "RN - has patient start oral pain meds as soon as patient tolerates PO intake. | RN - per protocol to assess for pain, incision monitoring | Subjective Complaints: Knee Pain Reevaluation of right Continues to complain of | R knee OA, pain continues, no significant relief W conservative, management W NSAIDS< injections steroid | Musculoskeletal: R knee MJL pain, spurring painful, no laxity, good AROM, no effusion, antalgic gait Extremities: Normal appearance of the upper",
+        "suggestedOnsetType": "onset",
+        "suggestedSeverity": "1",
+        "comorbidityFlags": "{\"pvd_pad\":false,\"diabetes\":false,\"none\":true}",
+        "orderedServices": "",
+        "extractionConfidence": "medium",
+        "uncertainDiagnosisItems": "",
+        "codingLlmUsed": "false",
+        "codingLlmModel": null,
+        "codingLlmError": null,
+        "documentTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\document-text.json"
+      },
+      "notes": [
+        "Active OASIS workflow did not open the OASIS documents page."
+      ]
+    }
+  ],
+  "artifactCount": 1,
+  "findings": [
+    {
+      "ruleId": "oasis-qa.coding.needs_review",
+      "stage": "CODING_REVIEW",
+      "outcome": "MISSING_DOCUMENTS",
+      "message": "Coding Review is needs review.",
+      "evidence": []
+    },
+    {
+      "ruleId": "oasis-qa.oasis.fail",
+      "stage": "OASIS_QA",
+      "outcome": "MISSING_DOCUMENTS",
+      "message": "OASIS QA is fail.",
+      "evidence": [
+        "Medical necessity is stated",
+        "Homebound reason is stated",
+        "Health assessment is documented",
+        "Skilled interventions during the OASIS visit are documented"
+      ]
+    },
+    {
+      "ruleId": "oasis-qa.poc.missing",
+      "stage": "POC_QA",
+      "outcome": "MISSING_DOCUMENTS",
+      "message": "Plan Of Care QA is missing.",
+      "evidence": [
+        "Plan of care content extracted",
+        "POC QA completed in workbook",
+        "Diagnoses or codes are present in the plan of care",
+        "Interventions, goals, and frequency are present in the plan of care",
+        "Conditions or exacerbations are reflected in the plan of care"
+      ]
+    },
+    {
+      "ruleId": "oasis-qa.visit_notes.missing",
+      "stage": "VISIT_NOTES_REVIEW",
+      "outcome": "MISSING_DOCUMENTS",
+      "message": "Visit Notes Review is missing.",
+      "evidence": [
+        "Visit note content extracted",
+        "Visit notes review completed in workbook",
+        "Skilled need is clearly documented",
+        "Interventions performed are specific and detailed",
+        "Patient response to interventions is documented",
+        "Progress toward goals is noted",
+        "Vitals and focused assessment are documented",
+        "Medication review is documented",
+        "Changes in condition are clearly reported and addressed",
+        "Documentation supports billed services",
+        "Documentation remains consistent with OASIS and diagnoses"
+      ]
+    },
+    {
+      "ruleId": "oasis-qa.technical_review.missing",
+      "stage": "TECHNICAL_REVIEW",
+      "outcome": "MISSING_DOCUMENTS",
+      "message": "Technical Review is missing.",
+      "evidence": [
+        "SN visits were identified from visit-note content",
+        "Applicable disciplines were detected"
+      ]
+    },
+    {
+      "ruleId": "oasis-qa.final_check.fail",
+      "stage": "FINAL_BILLING_PREP_READINESS",
+      "outcome": "MISSING_DOCUMENTS",
+      "message": "Final Check is fail.",
+      "evidence": [
+        "Critical QA sections are complete before billing prep",
+        "Billing prep status in workbook"
+      ]
+    }
+  ],
+  "hasFindings": false,
+  "qaOutcome": "MISSING_DOCUMENTS",
+  "oasisQaSummary": {
+    "overallStatus": "BLOCKED",
+    "urgency": "ON_TRACK",
+    "daysInPeriod": 30,
+    "daysLeft": 12,
+    "sections": [
+      {
+        "key": "timing",
+        "label": "Timing / OASIS Due",
+        "status": "PASS",
+        "items": [
+          {
+            "key": "days_in_period",
+            "label": "Days in the 30-day period captured",
+            "status": "PASS",
+            "notes": "Workbook shows 30 days in period.",
+            "evidence": [
+              "Workbook days in period: 30"
+            ]
+          },
+          {
+            "key": "days_left",
+            "label": "Days left before OASIS due date verified",
+            "status": "PASS",
+            "notes": "12 day(s) remain before OASIS is due.",
+            "evidence": [
+              "Workbook days left: 12"
+            ]
+          },
+          {
+            "key": "urgency_bucket",
+            "label": "Urgency bucket",
+            "status": "PASS",
+            "notes": "ON TRACK",
+            "evidence": [
+              "Derived urgency from 12 day(s) left."
+            ]
+          }
+        ]
+      },
+      {
+        "key": "coding",
+        "label": "Coding Review",
+        "status": "NEEDS_REVIEW",
+        "items": [
+          {
+            "key": "coding_review_complete",
+            "label": "Coding review completed in workbook",
+            "status": "NEEDS_REVIEW",
+            "notes": "Workbook status: IN_PROGRESS",
+            "evidence": [
+              "IN_PROGRESS"
+            ]
+          },
+          {
+            "key": "coding_supported_by_oasis",
+            "label": "OASIS content is available to support coding review",
+            "status": "PASS",
+            "notes": "OASIS content extracted for coding review support.",
+            "evidence": [
+              "OASIS OASIS documents page"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "oasis",
+        "label": "OASIS QA",
+        "status": "FAIL",
+        "items": [
+          {
+            "key": "oasis_document",
+            "label": "OASIS document content extracted",
+            "status": "PASS",
+            "notes": "1 supporting document(s) extracted.",
+            "evidence": [
+              "OASIS OASIS documents page"
+            ]
+          },
+          {
+            "key": "oasis_workbook_status",
+            "label": "OASIS QA completed in workbook",
+            "status": "NEEDS_REVIEW",
+            "notes": "Workbook status: IN_PROGRESS",
+            "evidence": [
+              "IN_PROGRESS"
+            ]
+          },
+          {
+            "key": "medical_necessity",
+            "label": "Medical necessity is stated",
+            "status": "FAIL",
+            "notes": "OASIS text did not show medical necessity language.",
+            "evidence": []
+          },
+          {
+            "key": "homebound_reason",
+            "label": "Homebound reason is stated",
+            "status": "FAIL",
+            "notes": "OASIS text did not show a homebound reason.",
+            "evidence": []
+          },
+          {
+            "key": "health_assessment",
+            "label": "Health assessment is documented",
+            "status": "FAIL",
+            "notes": "OASIS text did not show a health assessment section or phrase.",
+            "evidence": []
+          },
+          {
+            "key": "skilled_interventions",
+            "label": "Skilled interventions during the OASIS visit are documented",
+            "status": "FAIL",
+            "notes": "OASIS text did not show skilled interventions performed during the visit.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "poc",
+        "label": "Plan Of Care QA",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "poc_document",
+            "label": "Plan of care content extracted",
+            "status": "MISSING",
+            "notes": "No plan-of-care content was available for extraction.",
+            "evidence": []
+          },
+          {
+            "key": "poc_workbook_status",
+            "label": "POC QA completed in workbook",
+            "status": "MISSING",
+            "notes": "Workbook status: NOT_STARTED",
+            "evidence": [
+              "NOT_STARTED"
+            ]
+          },
+          {
+            "key": "poc_diagnoses_codes",
+            "label": "Diagnoses or codes are present in the plan of care",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "poc_interventions_goals_frequency",
+            "label": "Interventions, goals, and frequency are present in the plan of care",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "poc_conditions_exacerbations",
+            "label": "Conditions or exacerbations are reflected in the plan of care",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "visit_notes",
+        "label": "Visit Notes Review",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "visit_notes_document",
+            "label": "Visit note content extracted",
+            "status": "MISSING",
+            "notes": "No visit-note content was available for extraction.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_workbook_status",
+            "label": "Visit notes review completed in workbook",
+            "status": "MISSING",
+            "notes": "Workbook status: NOT_STARTED",
+            "evidence": [
+              "NOT_STARTED"
+            ]
+          },
+          {
+            "key": "visit_notes_skilled_need",
+            "label": "Skilled need is clearly documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_intervention_detail",
+            "label": "Interventions performed are specific and detailed",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_patient_response",
+            "label": "Patient response to interventions is documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_progress",
+            "label": "Progress toward goals is noted",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_vitals",
+            "label": "Vitals and focused assessment are documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_medication_review",
+            "label": "Medication review is documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_condition_changes",
+            "label": "Changes in condition are clearly reported and addressed",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_billed_services_support",
+            "label": "Documentation supports billed services",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_consistency",
+            "label": "Documentation remains consistent with OASIS and diagnoses",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "technical_review",
+        "label": "Technical Review",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "portal_patient_match",
+            "label": "Portal patient match resolved",
+            "status": "PASS",
+            "notes": "Portal match status: EXACT",
+            "evidence": [
+              "ficzeri, julianne",
+              "FICZERI, JULIANNE MR# 125 Active SOC: 3/13/2026 / DOB: 10/22/1957 LOS: 28 days Medicare 10220 East Apache Trail #70 Apache Junction AZ 85120 (612)387-3633 Last Visit Confirmed by PT : 04/08/2026 (2 days ago)"
+            ]
+          },
+          {
+            "key": "sn_visit_count",
+            "label": "SN visits were identified from visit-note content",
+            "status": "MISSING",
+            "notes": "Visit-note content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "discipline_detection",
+            "label": "Applicable disciplines were detected",
+            "status": "MISSING",
+            "notes": "Visit-note content is not available for discipline detection.",
+            "evidence": []
+          },
+          {
+            "key": "physician_orders",
+            "label": "Physician orders were checked",
+            "status": "NEEDS_REVIEW",
+            "notes": "Orders evidence was discovered (1 candidate(s)).",
+            "evidence": [
+              "Detected 1 order document candidate(s)."
+            ]
+          },
+          {
+            "key": "supporting_notes",
+            "label": "Supporting note categories were reviewed",
+            "status": "NOT_APPLICABLE",
+            "notes": "No additional supporting note categories were discovered for this patient.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "final_check",
+        "label": "Final Check",
+        "status": "FAIL",
+        "items": [
+          {
+            "key": "critical_sections_clear",
+            "label": "Critical QA sections are complete before billing prep",
+            "status": "FAIL",
+            "notes": "Blocking sections: Medical necessity is stated, Homebound reason is stated, Health assessment is documented, Skilled interventions during the OASIS visit are documented, Plan of care content extracted, POC QA completed in workbook, Diagnoses or codes are present in the plan of care, Interventions, goals, and frequency are present in the plan of care, Conditions or exacerbations are reflected in the plan of care, Visit note content extracted, Visit notes review completed in workbook, Skilled need is clearly documented, Interventions performed are specific and detailed, Patient response to interventions is documented, Progress toward goals is noted, Vitals and focused assessment are documented, Medication review is documented, Changes in condition are clearly reported and addressed, Documentation supports billed services, Documentation remains consistent with OASIS and diagnoses, SN visits were identified from visit-note content, Applicable disciplines were detected",
+            "evidence": [
+              "Timing / OASIS Due: PASS",
+              "Coding Review: NEEDS_REVIEW",
+              "OASIS QA: FAIL",
+              "Plan Of Care QA: MISSING",
+              "Visit Notes Review: MISSING",
+              "Technical Review: MISSING"
+            ]
+          },
+          {
+            "key": "billing_prep_status",
+            "label": "Billing prep status in workbook",
+            "status": "MISSING",
+            "notes": "Workbook status: NOT_STARTED",
+            "evidence": [
+              "NOT_STARTED"
+            ]
+          }
+        ]
+      }
+    ],
+    "blockers": [
+      "Medical necessity is stated",
+      "Homebound reason is stated",
+      "Health assessment is documented",
+      "Skilled interventions during the OASIS visit are documented",
+      "Plan of care content extracted",
+      "POC QA completed in workbook",
+      "Diagnoses or codes are present in the plan of care",
+      "Interventions, goals, and frequency are present in the plan of care",
+      "Conditions or exacerbations are reflected in the plan of care",
+      "Visit note content extracted",
+      "Visit notes review completed in workbook",
+      "Skilled need is clearly documented",
+      "Interventions performed are specific and detailed",
+      "Patient response to interventions is documented",
+      "Progress toward goals is noted",
+      "Vitals and focused assessment are documented",
+      "Medication review is documented",
+      "Changes in condition are clearly reported and addressed",
+      "Documentation supports billed services",
+      "Documentation remains consistent with OASIS and diagnoses",
+      "SN visits were identified from visit-note content",
+      "Applicable disciplines were detected"
+    ]
+  },
+  "documentInventory": [
+    {
+      "sourceLabel": "New Referral Julianne Ficzeri.pdf",
+      "normalizedType": "ORDER",
+      "discipline": "UNKNOWN",
+      "confidence": 0.92,
+      "evidence": [
+        "Workflow phase: file_uploads_only",
+        "oasisReadyDiagnosisPath:none",
+        "primaryDiagnosisSelected:none",
+        "otherDiagnosisCount:0",
+        "codeConfidenceSummary:high:0 medium:0 low:0",
+        "oasisLockState:none",
+        "unlockControlVisible:false",
+        "unlockControlText:none",
+        "fieldsEditable:false",
+        "verificationOnly:true",
+        "inputEligible:false",
+        "Active OASIS workflow path: chart -> File Uploads/referral -> OASIS sidebar -> OASIS document table -> SOC document -> Active Diagnoses",
+        "Dangerous controls detected: none",
+        "oasisMenuClicked:false",
+        "oasisDocumentListDetected:false",
+        "socDocumentFound:false",
+        "socDocumentClicked:false",
+        "matchedSocRowText:none",
+        "matchedSocAnchorText:none",
+        "diagnosisSectionOpened:false",
+        "diagnosisListFound:false",
+        "diagnosisNavigationMethod:none",
+        "diagnosisListSamples:none",
+        "diagnosisSnapshotRowCount:0",
+        "fileUploadsAccessible:true",
+        "fileUploadsUrl:https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/file-uploads",
+        "visibleUploadedDocuments:📄 New Referral Julianne Ficzeri.pdf | 📄 New Referral Julianne Ficzeri.pdf 📝 ✏️ 🗑️ 🔗",
+        "admissionOrderAccessible:true",
+        "admissionOrderTitle:📄 New Referral Julianne Ficzeri.pdf 📝 ✏️ 🗑️ 🔗",
+        "admissionReasonPrimary:none",
+        "admissionReasonSnippets:none",
+        "rawExtractedTextSource:dom",
+        "domExtractionRejectedReasons:viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS",
+        "possibleIcd10Codes:I00 | I25 | I50",
+        "sourceMetaPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\documents\\new-referral-julianne-ficzeri-pdf\\source-meta.json",
+        "sourcePdfPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\documents\\new-referral-julianne-ficzeri-pdf\\source.pdf",
+        "extractedTextPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\documents\\new-referral-julianne-ficzeri-pdf\\extracted-text.txt",
+        "printedPdfPath:none"
+      ],
+      "sourceUrl": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/file-uploads",
+      "sourcePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\documents\\new-referral-julianne-ficzeri-pdf\\source.pdf",
+      "discoveredAt": "2026-04-11T23:05:37.428Z",
+      "openBehavior": "SAME_PAGE"
+    }
+  ],
+  "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patient-results\\JULIANNE_FICZERI__8724d9f1aee6e2e3.json",
+  "bundleAvailable": true,
+  "logPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\logs\\JULIANNE_FICZERI__8724d9f1aee6e2e3.json",
+  "logAvailable": true,
+  "retryEligible": false,
+  "errorSummary": "Coding input exported: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\coding-input.json",
+  "auditArtifacts": {
+    "tracePath": null,
+    "screenshotPaths": [],
+    "downloadPaths": []
+  },
+  "workflowRuns": [
+    {
+      "workflowRunId": "batch-2026-04-11T22-46-21-275Z-cf15c659-JULIANNE_FICZERI__8724d9f1aee6e2e3:coding",
+      "workflowDomain": "coding",
+      "status": "BLOCKED",
+      "stepName": "BLOCKED",
+      "message": "Coding input exported: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\coding-input.json",
+      "chartUrl": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/intake/69ab086262ad95579a2040b9/calendar",
+      "startedAt": "2026-04-11T23:05:46.842Z",
+      "completedAt": "2026-04-11T23:05:46.945Z",
+      "lastUpdatedAt": "2026-04-11T23:05:46.945Z",
+      "workflowResultPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patient-results\\JULIANNE_FICZERI__8724d9f1aee6e2e3.json",
+      "workflowLogPath": null
+    },
+    {
+      "workflowRunId": "batch-2026-04-11T22-46-21-275Z-cf15c659-JULIANNE_FICZERI__8724d9f1aee6e2e3:qa",
+      "workflowDomain": "qa",
+      "status": "NOT_STARTED",
+      "stepName": "NOT_STARTED",
+      "message": null,
+      "chartUrl": null,
+      "startedAt": null,
+      "completedAt": null,
+      "lastUpdatedAt": "2026-04-11T23:03:02.900Z",
+      "workflowResultPath": null,
+      "workflowLogPath": null
+    }
+  ],
+  "workItemSnapshot": {
+    "id": "JULIANNE_FICZERI__8724d9f1aee6e2e3",
+    "subsidiaryId": "default",
+    "patientIdentity": {
+      "displayName": "Julianne Ficzeri",
+      "normalizedName": "JULIANNE FICZERI",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-03-13",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Chua, Sean  PT",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "01-SOC"
+    },
+    "workflowTypes": [
+      "SOC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 12,
+      "daysInPeriod": null,
+      "daysLeft": 12,
+      "daysLeftBeforeOasisDueDate": 12,
+      "rawTrackingValues": [
+        "12"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "IN_PROGRESS",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "Validated"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "03/13/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 21
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 21,
+        "values": {
+          "patientName": "FICZERI, JULIANNE",
+          "episodeDate": "03/13/2026",
+          "assignedStaff": "Chua, Sean  PT",
+          "payer": "Medicare",
+          "rfa": "01-SOC",
+          "trackingDays": "12",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "Validated",
+          "oasisQaRemarks": "03/13/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  "automationStepLogs": [
+    {
+      "timestamp": "2026-04-11T23:04:45.388Z",
+      "step": "login",
+      "message": "Reused the authenticated portal session established for this batch.",
+      "patientName": "Julianne Ficzeri",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-11T23:03:02.916Z",
+      "step": "run_started",
+      "message": "Patient run started from the shared Playwright portal runner.",
+      "patientName": "Julianne Ficzeri",
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69c578fab3640246f6ba0847/file-uploads",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69c578fab3640246f6ba0847/file-uploads",
+      "selectorUsed": null,
+      "found": [
+        "currentUrl=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69c578fab3640246f6ba0847/file-uploads"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "subsidiaryId=default",
+        "portalBaseUrl=https://app.finalehealth.com",
+        "configuredDashboardUrl=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+        "resolvedDashboardUrl=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+        "currentContextRequiresReset=true"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-11T23:03:11.052Z",
+      "step": "dashboard_reset",
+      "message": "Reset the portal session to the provider dashboard before patient matching.",
+      "patientName": "Julianne Ficzeri",
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69c578fab3640246f6ba0847/file-uploads",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      "selectorUsed": null,
+      "found": [
+        "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Reset triggered: true",
+        "Current URL before patient: https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69c578fab3640246f6ba0847/file-uploads",
+        "Current URL after reset: https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+        "Dashboard reset target URL: https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+        "Dashboard markers found: true",
+        "goto_base_url: dashboardDetected=true currentUrl=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-11T23:03:11.052Z",
+      "step": "dashboard_ready",
+      "message": "Provider dashboard ready confirmed using 'button:has-text(\"Search Patient\")'.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      "selectorUsed": null,
+      "found": [
+        "button:has-text(\"Search Patient\")"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "attempt=1 signal=button:has-text(\"Search Patient\") stableDom=false url=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard title=Finale Health buttons=58 inputs=7 text=Star Home Health Care Inc Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notificationsMessages0 NewNo new messages found.View all messages Star Home Health Care Inc Star Home Health Care Inc View All Agenc"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-11T23:03:25.900Z",
+      "step": "patient_lookup_entry",
+      "message": "Global patient search is available from the current authenticated page context.",
+      "patientName": "Julianne Ficzeri",
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      "selectorUsed": "getByText(/Search Patient/i) -> nearest clickable parent (present)",
+      "found": [
+        "getByText(/Search Patient/i) -> nearest clickable parent (present)"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Current URL before patient lookup: https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+        "Global search available in current context: true",
+        "Global search availability selector used: getByText(/Search Patient/i) -> nearest clickable parent (present)",
+        "Resolved global search trigger with present manual selector 'getByText(/Search Patient/i) -> nearest clickable parent (present)' even though Playwright visibility did not confirm it in the probe path.",
+        "[not_found] Global patient search button by accessible name count=0 visible=0 elapsedMs=24",
+        "[not_visible] Global patient search button containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=32 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=32 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search button containing Search Patient text count=1 visible=0 elapsedMs=38 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search visible control containing Search Patient text count=1 visible=0 elapsedMs=32 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search fin-button wrapper containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=32 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control inside fin-button wrapper count=1 visible=0 elapsedMs=55 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by shortcut hint count=0 visible=0 elapsedMs=19",
+        "[not_visible] Global patient search button containing search icon and patient-search text count=1 visible=0 elapsedMs=30 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by accessible name count=0 visible=0 elapsedMs=18",
+        "[not_visible] Global patient search button containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=35 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=64 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search button containing Search Patient text count=1 visible=0 elapsedMs=34 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search visible control containing Search Patient text count=1 visible=0 elapsedMs=38 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search fin-button wrapper containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=38 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control inside fin-button wrapper count=1 visible=0 elapsedMs=37 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by shortcut hint count=0 visible=0 elapsedMs=27",
+        "[not_visible] Global patient search button containing search icon and patient-search text count=1 visible=0 elapsedMs=38 samples=Search Patient...Ctrl K"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-11T23:03:25.900Z",
+      "step": "patient_lookup_entry",
+      "message": "Patient lookup will start after shared dashboard bootstrap confirmed provider dashboard readiness and global search availability.",
+      "patientName": "Julianne Ficzeri",
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69c578fab3640246f6ba0847/file-uploads",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      "selectorUsed": null,
+      "found": [
+        "patientLookupEntryContext=dashboard_reset_then_global_search",
+        "dashboard_context_established",
+        "globalSearchAvailable=true"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "currentUrlAfterLogin=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69c578fab3640246f6ba0847/file-uploads",
+        "currentUrlBeforeSearch=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+        "resolvedDashboardUrl=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+        "globalSearchSelectorUsed=getByText(/Search Patient/i) -> nearest clickable parent (present)"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-11T23:03:25.901Z",
+      "step": "patient_search_start",
+      "message": "Starting patient search with 3 query variant(s).",
+      "patientName": "Julianne Ficzeri",
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      "selectorUsed": null,
+      "found": [
+        "ficzeri, julianne",
+        "FICZERI, JULIANNE",
+        "Julianne Ficzeri",
+        "JULIANNE FICZERI",
+        "FICZERI, JULIANNE"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Original workbook patient name: Julianne Ficzeri",
+        "Normalized global search query: ficzeri, julianne",
+        "Normalized expected display name: FICZERI, JULIANNE",
+        "Workbook name variants: Julianne Ficzeri | JULIANNE FICZERI | FICZERI, JULIANNE"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-11T23:03:56.689Z",
+      "step": "global_patient_search_open",
+      "message": "Clicked the global Search Patient trigger and found the visible search input.",
+      "patientName": "Julianne Ficzeri",
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      "selectorUsed": "getByText(/Search Patient/i) -> nearest clickable parent (present)",
+      "found": [
+        "Search Patient trigger",
+        "search input"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Original workbook patient name: Julianne Ficzeri",
+        "Normalized global search query: ficzeri, julianne",
+        "Search trigger clicked: true",
+        "Trigger click method: dom_click",
+        "Search modal visible: true",
+        "Global search control selector used: getByText(/Search Patient/i) -> nearest clickable parent (present)",
+        "Global search surface selector used: Global patient search overlay/dialog containing an input",
+        "Global search modal selector used: div.search-header.open",
+        "Resolved global search trigger with present manual selector 'getByText(/Search Patient/i) -> nearest clickable parent (present)' even though Playwright visibility did not confirm it in the probe path.",
+        "[not_found] Global patient search button by accessible name count=0 visible=0 elapsedMs=17",
+        "[not_visible] Global patient search button containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=47 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=33 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search button containing Search Patient text count=1 visible=0 elapsedMs=32 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search visible control containing Search Patient text count=1 visible=0 elapsedMs=42 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search fin-button wrapper containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=32 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control inside fin-button wrapper count=1 visible=0 elapsedMs=33 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by shortcut hint count=0 visible=0 elapsedMs=25",
+        "[not_visible] Global patient search button containing search icon and patient-search text count=1 visible=0 elapsedMs=31 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by accessible name count=0 visible=0 elapsedMs=20",
+        "[not_visible] Global patient search button containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=44 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=39 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search button containing Search Patient text count=1 visible=0 elapsedMs=46 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search visible control containing Search Patient text count=1 visible=0 elapsedMs=35 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search fin-button wrapper containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=35 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control inside fin-button wrapper count=1 visible=0 elapsedMs=31 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by shortcut hint count=0 visible=0 elapsedMs=27",
+        "[not_visible] Global patient search button containing search icon and patient-search text count=1 visible=0 elapsedMs=42 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search dialog by accessible name count=0 visible=0 elapsedMs=27",
+        "[matched] Global patient search overlay/dialog containing an input count=1 visible=1 elapsedMs=73 samples=EscPatients Sort By 3Sort By×Full Name×asc×SOC Date×desc×Status×ascAdd another sort itemNo recent searchesSearch by:Status:ActivePendingOn-HoldLeadNon-AdmitDischarged",
+        "Search input found by confirmed Search patients placeholder selector.",
+        "[matched] Global patient search input by confirmed Search patients placeholder count=1 visible=1 elapsedMs=41"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-11T23:04:09.465Z",
+      "step": "patient_search_input",
+      "message": "Typed the normalized query into the global patient search and waited for results.",
+      "patientName": "Julianne Ficzeri",
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      "selectorUsed": "input[type=\"text\"][placeholder*=\"Search patients\"]",
+      "found": [
+        "FICZERI, JULIANNE MR# 125 Active SOC: 3/13/2026 / DOB: 10/22/1957 LOS: 28 daysMedicare10220 East Apache Trail #70 Apache Junction AZ 85120(612)387-3633Last Visit Confirmed by PT : 04/08/2026 (2 days ago)"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Search trigger clicked: true",
+        "Search input found: true",
+        "Typing into focused field succeeded: true",
+        "Used direct input fallback: false",
+        "Search query typed: ficzeri, julianne",
+        "Result count: 1",
+        "Candidate search result texts: FICZERI, JULIANNE MR# 125 Active SOC: 3/13/2026 / DOB: 10/22/1957 LOS: 28 daysMedicare10220 East Apache Trail #70 Apache Junction AZ 85120(612)387-3633Last Visit Confirmed by PT : 04/08/2026 (2 days ago)",
+        "attempt=1 rowCount=1 text=FICZERI, JULIANNE MR# 125 Active SOC: 3/13/2026 / DOB: 10/22/1957 LOS: 28 daysMedicare10220 East Apache Trail #70 Apache Junction AZ 85120(612)387-3633Last Visit Confirmed by PT : 04/08/2026 (2 days ago)"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-11T23:04:34.966Z",
+      "step": "patient_search",
+      "message": "Global patient search completed with 1 candidate(s).",
+      "patientName": "Julianne Ficzeri",
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      "selectorUsed": "getByText(/Search Patient/i) -> nearest clickable parent (present) -> input[type=\"text\"][placeholder*=\"Search patients\"] -> Global patient search result tiles containing ngb-highlight",
+      "found": [
+        "FICZERI, JULIANNE MR# 125 Active SOC: 3/13/2026 / DOB: 10/22/1957 LOS: 28 days Medicare 10220 East Apache Trail #70 Apache Junction AZ 85120 (612)387-3633 Last Visit Confirmed by PT : 04/08/2026 (2 days ago)"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Original workbook patient name: Julianne Ficzeri",
+        "Normalized global search query: ficzeri, julianne",
+        "Normalized expected display name: FICZERI, JULIANNE",
+        "Global search control selector used: getByText(/Search Patient/i) -> nearest clickable parent (present)",
+        "Global search surface selector used: Global patient search overlay/dialog containing an input",
+        "Global search input selector used: input[type=\"text\"][placeholder*=\"Search patients\"]",
+        "Result selector used: Global patient search result tiles containing ngb-highlight",
+        "Search results ready: true",
+        "Visible result row count: 1",
+        "No results marker visible: false",
+        "Candidate search result texts: FICZERI, JULIANNE MR# 125 Active SOC: 3/13/2026 / DOB: 10/22/1957 LOS: 28 days Medicare 10220 East Apache Trail #70 Apache Junction AZ 85120 (612)387-3633 Last Visit Confirmed by PT : 04/08/2026 (2 days ago)",
+        "Result text sample: FICZERI, JULIANNE MR# 125 Active SOC: 3/13/2026 / DOB: 10/22/1957 LOS: 28 days Medicare 10220 East Apache Trail #70 Apache Junction AZ 85120 (612)387-3633 Last Visit Confirmed by PT : 04/08/2026 (2 days ago)",
+        "attempt=1 rowCount=1 text=FICZERI, JULIANNE MR# 125 Active SOC: 3/13/2026 / DOB: 10/22/1957 LOS: 28 daysMedicare10220 East Apache Trail #70 Apache Junction AZ 85120(612)387-3633Last Visit Confirmed by PT : 04/08/2026 (2 days ago)",
+        "rowCount=1",
+        "noResultsVisible=false",
+        "Normalized query typed=ficzeri, julianne",
+        "Normalized expected display name=FICZERI, JULIANNE",
+        "candidate[1]=FICZERI, JULIANNE MR# 125 Active SOC: 3/13/2026 / DOB: 10/22/1957 LOS: 28 days Medicare 10220 East Apache Trail #70 Apache Junction AZ 85120 (612)387-3633 Last Visit Confirmed by PT : 04/08/2026 (2 days ago)",
+        "Candidate 'FICZERI, JULIANNE MR# 125 Active SOC: 3/13/2026 / DOB: 10/22/1957 LOS: 28 days Medicare 10220 East Apache Trail #70 Apache Junction AZ 85120 (612)387-3633 Last Visit Confirmed by PT : 04/08/2026 (2 days ago)' row='FICZERI, JULIANNE MR# 125 Active SOC: 3/13/2026 / DOB: 10/22/1957 LOS: 28 days Medicare 10220 East Apache Trail #70 Apache Junction AZ 85120 (612)387-3633 Last Visit Confirmed by PT : 04/08/2026 (2 days ago)' selector='Global patient search result tiles containing ngb-highlight' container='search-body__item ng-star-inserted' score=420 exact=true containsFullQuery=true containsFirstAndLast=true reasons=all patient name tokens present; ngb-highlight patient-name text starts with the normalized LAST, FIRST display name; row/card text contains both last and first name tokens; row text contains the full first-name segment"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-11T23:04:45.387Z",
+      "step": "patient_search_match_resolution",
+      "message": "Selected patient result 'FICZERI, JULIANNE MR# 125 Active SOC: 3/13/2026 / DOB: 10/22/1957 LOS: 28 days Medicare 10220 East Apache Trail #70 Apache Junction AZ 85120 (612)387-3633 Last Visit Confirmed by PT : 04/08/2026 (2 days ago)' from the global search.",
+      "patientName": "Julianne Ficzeri",
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/intake/69ab086262ad95579a2040b9/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/intake/69ab086262ad95579a2040b9/calendar",
+      "selectorUsed": null,
+      "found": [
+        "FICZERI, JULIANNE MR# 125 Active SOC: 3/13/2026 / DOB: 10/22/1957 LOS: 28 days Medicare 10220 East Apache Trail #70 Apache Junction AZ 85120 (612)387-3633 Last Visit Confirmed by PT : 04/08/2026 (2 days ago)"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Matched patient result text: FICZERI, JULIANNE MR# 125 Active SOC: 3/13/2026 / DOB: 10/22/1957 LOS: 28 days Medicare 10220 East Apache Trail #70 Apache Junction AZ 85120 (612)387-3633 Last Visit Confirmed by PT : 04/08/2026 (2 days ago)",
+        "Matched row text: FICZERI, JULIANNE MR# 125 Active SOC: 3/13/2026 / DOB: 10/22/1957 LOS: 28 days Medicare 10220 East Apache Trail #70 Apache Junction AZ 85120 (612)387-3633 Last Visit Confirmed by PT : 04/08/2026 (2 days ago)",
+        "Normalized global search query: ficzeri, julianne",
+        "Normalized expected display name: FICZERI, JULIANNE",
+        "Clicked tile selector/container summary: Global patient search result tiles containing ngb-highlight :: search-body__item ng-star-inserted",
+        "all patient name tokens present",
+        "ngb-highlight patient-name text starts with the normalized LAST, FIRST display name",
+        "row/card text contains both last and first name tokens",
+        "row text contains the full first-name segment"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-11T23:04:45.387Z",
+      "step": "chart_open",
+      "message": "Opened the patient page from global search in read-only mode for FICZERI, JULIANNE MR# 125 Active SOC: 3/13/2026 / DOB: 10/22/1957 LOS: 28 days Medicare 10220 East Apache Trail #70 Apache Junction AZ 85120 (612)387-3633 Last Visit Confirmed by PT : 04/08/2026 (2 days ago).",
+      "patientName": "Julianne Ficzeri",
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/intake/69ab086262ad95579a2040b9/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/intake/69ab086262ad95579a2040b9/calendar",
+      "selectorUsed": "Global patient search result tiles containing ngb-highlight :: nearest clickable parent around ngb-highlight",
+      "found": [
+        "Documents"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Matched patient result text: FICZERI, JULIANNE MR# 125 Active SOC: 3/13/2026 / DOB: 10/22/1957 LOS: 28 days Medicare 10220 East Apache Trail #70 Apache Junction AZ 85120 (612)387-3633 Last Visit Confirmed by PT : 04/08/2026 (2 days ago)",
+        "Clicked patient result text: FICZERI, JULIANNE MR# 125 Active SOC: 3/13/2026 / DOB: 10/22/1957 LOS: 28 days Medicare 10220 East Apache Trail #70 Apache Junction AZ 85120 (612)387-3633 Last Visit Confirmed by PT : 04/08/2026 (2 days ago)",
+        "Clicked tile selector/container summary: Global patient search result tiles containing ngb-highlight :: search-body__item ng-star-inserted",
+        "Click target summary: Global patient search result tiles containing ngb-highlight :: nearest clickable parent around ngb-highlight",
+        "URL after patient navigation: https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/intake/69ab086262ad95579a2040b9/calendar",
+        "Used Enter retry: false",
+        "Dashboard URL changed: true",
+        "Chart/page markers found: Documents",
+        "Preferred click target was the nearest clickable parent around the highlighted patient name.",
+        "all patient name tokens present",
+        "ngb-highlight patient-name text starts with the normalized LAST, FIRST display name",
+        "row/card text contains both last and first name tokens",
+        "row text contains the full first-name segment",
+        "attempt=1 urlChanged=true dashboardUrlChanged=true urlLooksLikePatientIntakePage=true chartMarkersFound=true markers=Documents url=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/intake/69ab086262ad95579a2040b9/calendar"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-11T23:04:45.388Z",
+      "step": "shared_portal_access",
+      "message": "Shared portal access reached the patient chart and produced 1 workflow context(s).",
+      "patientName": "Julianne Ficzeri",
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/intake/69ab086262ad95579a2040b9/calendar",
+      "selectorUsed": null,
+      "found": [
+        "coding:https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/intake/69ab086262ad95579a2040b9/calendar"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "matchStatus=EXACT",
+        "portalPatientId=none",
+        "dashboardUrl=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+        "chartUrl=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/intake/69ab086262ad95579a2040b9/calendar"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-11T23:04:45.388Z",
+      "step": "shared_evidence_discovery_start",
+      "message": "Shared evidence workflow started from the patient chart context.",
+      "patientName": "Julianne Ficzeri",
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/intake/69ab086262ad95579a2040b9/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/intake/69ab086262ad95579a2040b9/calendar",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=coding",
+        "patientRunId=batch-2026-04-11T22-46-21-275Z-cf15c659-JULIANNE_FICZERI__8724d9f1aee6e2e3",
+        "status=started",
+        "chartUrl=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/intake/69ab086262ad95579a2040b9/calendar"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-11T23:05:37.427Z",
+      "step": "file_uploads_open",
+      "message": "Opened File Uploads section and enumerated available uploaded records.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/intake/69ab086262ad95579a2040b9/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/file-uploads",
+      "selectorUsed": "patient File Uploads sidebar anchor by /file-uploads href",
+      "found": [
+        "fileUploadsAccessible:true",
+        "patientFileUploadsRouteDetected:true",
+        "genericProviderDocumentsRouteDetected:false",
+        "fileUploadsSidebarClickSucceeded:true",
+        "pageComponentDetected:true",
+        "traversalMode:file_list_view",
+        "usedChartDocumentsFallback:false",
+        "matchedFileUploadsLabel:File Uploads",
+        "matchedFileUploadsHref:/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/file-uploads",
+        "referralFolderSelected:true",
+        "referralFolderLabel:📁 Referral Files 🔀 ✏️ 🗑️",
+        "matchedReferralFileLabel:📄 New Referral Julianne Ficzeri.pdf",
+        "normalizedFileLabels:new referral julianne ficzeri.pdf",
+        "matchedSourceDocuments:new referral julianne ficzeri.pdf | new referral julianne ficzeri.pdf",
+        "selectedSourceFile:New Referral Julianne Ficzeri.pdf",
+        "viewerDetected:true",
+        "printButtonDetected:true",
+        "printButtonVisible:true",
+        "printClickSucceeded:false",
+        "pdfResponseDetected:true",
+        "pdfResponseUrl:https://api.finalehealth.com/api/v1/files/69ab065193d0ec982c8b854b?index=documents",
+        "pdfContentType:application/pdf",
+        "pdfSavedPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\documents\\new-referral-julianne-ficzeri-pdf\\source.pdf",
+        "pdfByteSize:1055598",
+        "printAcquisitionMethodUsed:network_pdf_response",
+        "sourcePdfPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\documents\\new-referral-julianne-ficzeri-pdf\\source.pdf",
+        "printedPdfPath:none",
+        "extractionMethodUsed:click",
+        "rawExtractedTextSource:dom",
+        "domExtractionRejectedReasons:viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS",
+        "extractionSuccess:false",
+        "uploadedDocumentCount:2"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Sidebar container count: 5",
+        "Sidebar diagnostics: [{\"index\":0,\"visible\":true,\"fileUploadsLabelCount\":0,\"fileUploadsAnchorCount\":1}]",
+        "[matched] patient File Uploads sidebar anchor by /file-uploads href count=1 visible=1 elapsedMs=76 samples=File Uploads",
+        "Matched File Uploads sidebar label: File Uploads",
+        "Matched File Uploads sidebar href: /provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/file-uploads",
+        "File Uploads sidebar click succeeded: true",
+        "File Uploads URL after sidebar click: https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/file-uploads",
+        "File Uploads ready attempt=1 url=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/file-uploads urlChanged=true patientFileUploadsRouteDetected=true genericProviderDocumentsRouteDetected=false pageComponentDetected=true traversalMode=folder_view folderCount=4 fileCount=0 markers=Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root 📁 Referral Files 🔀 ✏️ 🗑️ 📁 Admission 🔀 ✏️ 🗑️ 📁 Admission Packets 🔀 ✏️ 🗑️ 📁 Orders 🔀 ✏️ 🗑️ Select FILE to view or a FOLDER to upload file into. anchorCount=3",
+        "[matched] File Uploads page root component app-client-file-upload count=1 visible=1 elapsedMs=33 samples=Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root 📁 Referral Files 🔀 ✏️ 🗑️ 📁 Admission 🔀 ✏️ 🗑️ 📁 Admission Packets 🔀 ✏️ 🗑️ 📁 Orders 🔀 ✏️",
+        "[not_found] File Uploads downloadable file rows by .file-item count=0 visible=0 elapsedMs=19",
+        "[not_found] File Uploads downloadable file labels by .file-label count=0 visible=0 elapsedMs=23",
+        "[not_found] File Uploads document row click targets count=0 visible=0 elapsedMs=21",
+        "[not_found] File Uploads referral click targets outside table rows count=0 visible=0 elapsedMs=22",
+        "[matched] Admission-related click targets count=3 visible=3 elapsedMs=85 samples=Admission 03-13-2026 | Admission Info | Admission Packets",
+        "[matched] File Uploads Referral folder row by .folder-item count=4 visible=4 elapsedMs=104 samples=📁 Referral Files 🔀 ✏️ 🗑️ | 📁 Admission 🔀 ✏️ 🗑️ | 📁 Admission Packets 🔀 ✏️ 🗑️",
+        "Referral folder target clicked: 📁 Referral Files 🔀 ✏️ 🗑️ via File Uploads Referral folder row by .folder-item",
+        "File Uploads ready attempt=1 url=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/file-uploads urlChanged=true patientFileUploadsRouteDetected=true genericProviderDocumentsRouteDetected=false pageComponentDetected=true traversalMode=file_list_view folderCount=0 fileCount=1 markers=Patient File Uploads View All Uploaded Files View Logs Reorder Root / Referral Files⬅️ Back 🔄 ➕ ⬆️ 📄 New Referral Julianne Ficzeri.pdf 📝 ✏️ 🗑️ 🔗 Uploading file(s) to Referral FilesDRAG FILES HEREBrowse anchorCount=1",
+        "[matched] File Uploads page root component app-client-file-upload count=1 visible=1 elapsedMs=40 samples=Patient File Uploads View All Uploaded Files View Logs Reorder Root / Referral Files⬅️ Back 🔄 ➕ ⬆️ 📄 New Referral Julianne Ficzeri.pdf 📝 ✏️ 🗑️ 🔗 Uploading file(s) to Referral",
+        "[matched] File Uploads downloadable file rows by .file-item count=1 visible=1 elapsedMs=39 samples=📄 New Referral Julianne Ficzeri.pdf 📝 ✏️ 🗑️ 🔗",
+        "File Uploads accessible: true",
+        "Patient-specific File Uploads route detected: true",
+        "Generic provider Documents route detected: false",
+        "Matched File Uploads sidebar label: File Uploads",
+        "Matched File Uploads sidebar href: /provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/file-uploads",
+        "File Uploads sidebar click succeeded: true",
+        "File Uploads page component detected: true",
+        "File Uploads traversal mode: file_list_view",
+        "Used chart Documents fallback: false",
+        "File Uploads URL: https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/file-uploads",
+        "File Uploads URL changed from prior page: true",
+        "File Uploads ready attempt count: 1",
+        "File Uploads page markers: Patient File Uploads View All Uploaded Files View Logs Reorder Root / Referral Files⬅️ Back 🔄 ➕ ⬆️ 📄 New Referral Julianne Ficzeri.pdf 📝 ✏️ 🗑️ 🔗 Uploading file(s) to Referral FilesDRAG FILES HEREBrowse",
+        "Referral folder selected: true",
+        "Referral folder label: 📁 Referral Files 🔀 ✏️ 🗑️",
+        "Referral file label (if resolved instead of folder): 📄 New Referral Julianne Ficzeri.pdf",
+        "Discovered folder labels: none",
+        "Discovered file labels: 📄 New Referral Julianne Ficzeri.pdf",
+        "Normalized file labels: new referral julianne ficzeri.pdf",
+        "Matched source documents: 📄 New Referral Julianne Ficzeri.pdf [normalized=new referral julianne ficzeri.pdf] [score=150] | 📄 New Referral Julianne Ficzeri.pdf 📝 ✏️ 🗑️ 🔗 [normalized=new referral julianne ficzeri.pdf] [score=150]",
+        "Visible uploaded documents: 📄 New Referral Julianne Ficzeri.pdf | 📄 New Referral Julianne Ficzeri.pdf 📝 ✏️ 🗑️ 🔗",
+        "Admission Order candidate count: 1",
+        "Admission Order candidate labels: 📄 New Referral Julianne Ficzeri.pdf 📝 ✏️ 🗑️ 🔗 [score=340]",
+        "[matched] embedded PDF viewer toolbar and print controls count=5 visible=4 elapsedMs=265 samples=of ⁨6⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools | of ⁨6⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools | Tools",
+        "[not_found] Admission Order text marker count=0 visible=0 elapsedMs=50",
+        "[not_found] Admission clinical reason/diagnosis text markers count=0 visible=0 elapsedMs=47",
+        "[not_found] Admission order wrapper by class/id count=0 visible=0 elapsedMs=37",
+        "Selected source file: New Referral Julianne Ficzeri.pdf",
+        "Selected source file normalized: new referral julianne ficzeri.pdf",
+        "Viewer detected: true",
+        "Viewer marker samples: of ⁨6⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools | Tools | Print",
+        "Print button detected: true",
+        "Print button visible: true",
+        "Print button selector used: pdf-print #printButton, #printButton, pdf-shy-button[primarytoolbarid='printButton'] button",
+        "Print click succeeded: false",
+        "PDF response detected: true",
+        "PDF response URL: https://api.finalehealth.com/api/v1/files/69ab065193d0ec982c8b854b?index=documents",
+        "PDF content type: application/pdf",
+        "PDF saved path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\documents\\new-referral-julianne-ficzeri-pdf\\source.pdf",
+        "PDF byte size: 1055598",
+        "Print acquisition method used: network_pdf_response",
+        "Printed PDF saved: false",
+        "Printed PDF path: none",
+        "Source meta path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\documents\\new-referral-julianne-ficzeri-pdf\\source-meta.json",
+        "Extracted text path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\documents\\new-referral-julianne-ficzeri-pdf\\extracted-text.txt",
+        "Extraction result path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\documents\\new-referral-julianne-ficzeri-pdf\\extraction-result.json",
+        "Extracted text length: 111",
+        "Raw extracted text source: dom",
+        "DOM extraction rejected reasons: viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS",
+        "Extraction method used: click",
+        "Extraction success: false",
+        "Queued for LLM: true",
+        "Admission Order title: 📄 New Referral Julianne Ficzeri.pdf 📝 ✏️ 🗑️ 🔗",
+        "Admission Order URL after click: https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/file-uploads",
+        "Admission Order markers: none",
+        "Admission text candidates ranked: [1] score=2.8 text=of ⁨6⁩ Automatic Zoom Actual Size Page Fit Page Width ⁨50⁩% ⁨100⁩% ⁨125⁩% ⁨150⁩% ⁨200⁩% ⁨300⁩% ⁨400⁩% 90% Tools || [2] score=1.2 text=📄 New Referral Julianne Ficzeri.pdf 📝 ✏️ 🗑️ 🔗",
+        "Admission reason primary: none",
+        "Admission reason snippets: none",
+        "Possible ICD-10 codes: I00 | I25 | I50",
+        "Admission order text excerpt: of ⁨6⁩ Automatic Zoom Actual Size Page Fit Page Width ⁨50⁩% ⁨100⁩% ⁨125⁩% ⁨150⁩% ⁨200⁩% ⁨300⁩% ⁨400⁩% 90% Tools"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-11T23:05:37.427Z",
+      "step": "admission_order_open",
+      "message": "Opened Admission Order from File Uploads for coding-reference verification.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/intake/69ab086262ad95579a2040b9/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/file-uploads",
+      "selectorUsed": "File Uploads source document row by .file-item/.file-label or table row",
+      "found": [
+        "fileUploadsAccessible:true",
+        "patientFileUploadsRouteDetected:true",
+        "genericProviderDocumentsRouteDetected:false",
+        "fileUploadsSidebarClickSucceeded:true",
+        "pageComponentDetected:true",
+        "traversalMode:file_list_view",
+        "usedChartDocumentsFallback:false",
+        "referralFolderSelected:true",
+        "admissionOrderAccessible:true",
+        "admissionOrderTitle:📄 New Referral Julianne Ficzeri.pdf 📝 ✏️ 🗑️ 🔗",
+        "selectedSourceFile:New Referral Julianne Ficzeri.pdf",
+        "viewerDetected:true",
+        "printButtonDetected:true",
+        "printClickSucceeded:false",
+        "pdfResponseDetected:true",
+        "pdfResponseUrl:https://api.finalehealth.com/api/v1/files/69ab065193d0ec982c8b854b?index=documents",
+        "pdfContentType:application/pdf",
+        "pdfSavedPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\documents\\new-referral-julianne-ficzeri-pdf\\source.pdf",
+        "pdfByteSize:1055598",
+        "printAcquisitionMethodUsed:network_pdf_response",
+        "sourcePdfPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\documents\\new-referral-julianne-ficzeri-pdf\\source.pdf",
+        "printedPdfPath:none",
+        "extractionMethodUsed:click",
+        "rawExtractedTextSource:dom",
+        "domExtractionRejectedReasons:viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS",
+        "extractionSuccess:false",
+        "admissionReasonPrimary:none",
+        "possibleIcd10Codes:I00 | I25 | I50"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Sidebar container count: 5",
+        "Sidebar diagnostics: [{\"index\":0,\"visible\":true,\"fileUploadsLabelCount\":0,\"fileUploadsAnchorCount\":1}]",
+        "[matched] patient File Uploads sidebar anchor by /file-uploads href count=1 visible=1 elapsedMs=76 samples=File Uploads",
+        "Matched File Uploads sidebar label: File Uploads",
+        "Matched File Uploads sidebar href: /provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/file-uploads",
+        "File Uploads sidebar click succeeded: true",
+        "File Uploads URL after sidebar click: https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/file-uploads",
+        "File Uploads ready attempt=1 url=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/file-uploads urlChanged=true patientFileUploadsRouteDetected=true genericProviderDocumentsRouteDetected=false pageComponentDetected=true traversalMode=folder_view folderCount=4 fileCount=0 markers=Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root 📁 Referral Files 🔀 ✏️ 🗑️ 📁 Admission 🔀 ✏️ 🗑️ 📁 Admission Packets 🔀 ✏️ 🗑️ 📁 Orders 🔀 ✏️ 🗑️ Select FILE to view or a FOLDER to upload file into. anchorCount=3",
+        "[matched] File Uploads page root component app-client-file-upload count=1 visible=1 elapsedMs=33 samples=Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root 📁 Referral Files 🔀 ✏️ 🗑️ 📁 Admission 🔀 ✏️ 🗑️ 📁 Admission Packets 🔀 ✏️ 🗑️ 📁 Orders 🔀 ✏️",
+        "[not_found] File Uploads downloadable file rows by .file-item count=0 visible=0 elapsedMs=19",
+        "[not_found] File Uploads downloadable file labels by .file-label count=0 visible=0 elapsedMs=23",
+        "[not_found] File Uploads document row click targets count=0 visible=0 elapsedMs=21",
+        "[not_found] File Uploads referral click targets outside table rows count=0 visible=0 elapsedMs=22",
+        "[matched] Admission-related click targets count=3 visible=3 elapsedMs=85 samples=Admission 03-13-2026 | Admission Info | Admission Packets",
+        "[matched] File Uploads Referral folder row by .folder-item count=4 visible=4 elapsedMs=104 samples=📁 Referral Files 🔀 ✏️ 🗑️ | 📁 Admission 🔀 ✏️ 🗑️ | 📁 Admission Packets 🔀 ✏️ 🗑️",
+        "Referral folder target clicked: 📁 Referral Files 🔀 ✏️ 🗑️ via File Uploads Referral folder row by .folder-item",
+        "File Uploads ready attempt=1 url=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/file-uploads urlChanged=true patientFileUploadsRouteDetected=true genericProviderDocumentsRouteDetected=false pageComponentDetected=true traversalMode=file_list_view folderCount=0 fileCount=1 markers=Patient File Uploads View All Uploaded Files View Logs Reorder Root / Referral Files⬅️ Back 🔄 ➕ ⬆️ 📄 New Referral Julianne Ficzeri.pdf 📝 ✏️ 🗑️ 🔗 Uploading file(s) to Referral FilesDRAG FILES HEREBrowse anchorCount=1",
+        "[matched] File Uploads page root component app-client-file-upload count=1 visible=1 elapsedMs=40 samples=Patient File Uploads View All Uploaded Files View Logs Reorder Root / Referral Files⬅️ Back 🔄 ➕ ⬆️ 📄 New Referral Julianne Ficzeri.pdf 📝 ✏️ 🗑️ 🔗 Uploading file(s) to Referral",
+        "[matched] File Uploads downloadable file rows by .file-item count=1 visible=1 elapsedMs=39 samples=📄 New Referral Julianne Ficzeri.pdf 📝 ✏️ 🗑️ 🔗",
+        "File Uploads accessible: true",
+        "Patient-specific File Uploads route detected: true",
+        "Generic provider Documents route detected: false",
+        "Matched File Uploads sidebar label: File Uploads",
+        "Matched File Uploads sidebar href: /provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/file-uploads",
+        "File Uploads sidebar click succeeded: true",
+        "File Uploads page component detected: true",
+        "File Uploads traversal mode: file_list_view",
+        "Used chart Documents fallback: false",
+        "File Uploads URL: https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/file-uploads",
+        "File Uploads URL changed from prior page: true",
+        "File Uploads ready attempt count: 1",
+        "File Uploads page markers: Patient File Uploads View All Uploaded Files View Logs Reorder Root / Referral Files⬅️ Back 🔄 ➕ ⬆️ 📄 New Referral Julianne Ficzeri.pdf 📝 ✏️ 🗑️ 🔗 Uploading file(s) to Referral FilesDRAG FILES HEREBrowse",
+        "Referral folder selected: true",
+        "Referral folder label: 📁 Referral Files 🔀 ✏️ 🗑️",
+        "Referral file label (if resolved instead of folder): 📄 New Referral Julianne Ficzeri.pdf",
+        "Discovered folder labels: none",
+        "Discovered file labels: 📄 New Referral Julianne Ficzeri.pdf",
+        "Normalized file labels: new referral julianne ficzeri.pdf",
+        "Matched source documents: 📄 New Referral Julianne Ficzeri.pdf [normalized=new referral julianne ficzeri.pdf] [score=150] | 📄 New Referral Julianne Ficzeri.pdf 📝 ✏️ 🗑️ 🔗 [normalized=new referral julianne ficzeri.pdf] [score=150]",
+        "Visible uploaded documents: 📄 New Referral Julianne Ficzeri.pdf | 📄 New Referral Julianne Ficzeri.pdf 📝 ✏️ 🗑️ 🔗",
+        "Admission Order candidate count: 1",
+        "Admission Order candidate labels: 📄 New Referral Julianne Ficzeri.pdf 📝 ✏️ 🗑️ 🔗 [score=340]",
+        "[matched] embedded PDF viewer toolbar and print controls count=5 visible=4 elapsedMs=265 samples=of ⁨6⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools | of ⁨6⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools | Tools",
+        "[not_found] Admission Order text marker count=0 visible=0 elapsedMs=50",
+        "[not_found] Admission clinical reason/diagnosis text markers count=0 visible=0 elapsedMs=47",
+        "[not_found] Admission order wrapper by class/id count=0 visible=0 elapsedMs=37",
+        "Selected source file: New Referral Julianne Ficzeri.pdf",
+        "Selected source file normalized: new referral julianne ficzeri.pdf",
+        "Viewer detected: true",
+        "Viewer marker samples: of ⁨6⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools | Tools | Print",
+        "Print button detected: true",
+        "Print button visible: true",
+        "Print button selector used: pdf-print #printButton, #printButton, pdf-shy-button[primarytoolbarid='printButton'] button",
+        "Print click succeeded: false",
+        "PDF response detected: true",
+        "PDF response URL: https://api.finalehealth.com/api/v1/files/69ab065193d0ec982c8b854b?index=documents",
+        "PDF content type: application/pdf",
+        "PDF saved path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\documents\\new-referral-julianne-ficzeri-pdf\\source.pdf",
+        "PDF byte size: 1055598",
+        "Print acquisition method used: network_pdf_response",
+        "Printed PDF saved: false",
+        "Printed PDF path: none",
+        "Source meta path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\documents\\new-referral-julianne-ficzeri-pdf\\source-meta.json",
+        "Extracted text path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\documents\\new-referral-julianne-ficzeri-pdf\\extracted-text.txt",
+        "Extraction result path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\documents\\new-referral-julianne-ficzeri-pdf\\extraction-result.json",
+        "Extracted text length: 111",
+        "Raw extracted text source: dom",
+        "DOM extraction rejected reasons: viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS",
+        "Extraction method used: click",
+        "Extraction success: false",
+        "Queued for LLM: true",
+        "Admission Order title: 📄 New Referral Julianne Ficzeri.pdf 📝 ✏️ 🗑️ 🔗",
+        "Admission Order URL after click: https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/file-uploads",
+        "Admission Order markers: none",
+        "Admission text candidates ranked: [1] score=2.8 text=of ⁨6⁩ Automatic Zoom Actual Size Page Fit Page Width ⁨50⁩% ⁨100⁩% ⁨125⁩% ⁨150⁩% ⁨200⁩% ⁨300⁩% ⁨400⁩% 90% Tools || [2] score=1.2 text=📄 New Referral Julianne Ficzeri.pdf 📝 ✏️ 🗑️ 🔗",
+        "Admission reason primary: none",
+        "Admission reason snippets: none",
+        "Possible ICD-10 codes: I00 | I25 | I50",
+        "Admission order text excerpt: of ⁨6⁩ Automatic Zoom Actual Size Page Fit Page Width ⁨50⁩% ⁨100⁩% ⁨125⁩% ⁨150⁩% ⁨200⁩% ⁨300⁩% ⁨400⁩% 90% Tools"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-11T23:05:37.428Z",
+      "step": "qa_summary",
+      "message": "File Uploads and Admission Order were successfully accessed for coding reference.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/intake/69ab086262ad95579a2040b9/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/file-uploads",
+      "selectorUsed": "File Uploads source document row by .file-item/.file-label or table row",
+      "found": [
+        "fileUploadsAccessible:true",
+        "patientFileUploadsRouteDetected:true",
+        "genericProviderDocumentsRouteDetected:false",
+        "fileUploadsSidebarClickSucceeded:true",
+        "pageComponentDetected:true",
+        "traversalMode:file_list_view",
+        "usedChartDocumentsFallback:false",
+        "referralFolderSelected:true",
+        "admissionOrderAccessible:true",
+        "admissionOrderTitle:📄 New Referral Julianne Ficzeri.pdf 📝 ✏️ 🗑️ 🔗",
+        "selectedSourceFile:New Referral Julianne Ficzeri.pdf",
+        "viewerDetected:true",
+        "printButtonDetected:true",
+        "printClickSucceeded:false",
+        "pdfResponseDetected:true",
+        "pdfResponseUrl:https://api.finalehealth.com/api/v1/files/69ab065193d0ec982c8b854b?index=documents",
+        "pdfContentType:application/pdf",
+        "pdfSavedPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\documents\\new-referral-julianne-ficzeri-pdf\\source.pdf",
+        "pdfByteSize:1055598",
+        "printAcquisitionMethodUsed:network_pdf_response",
+        "sourcePdfPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\documents\\new-referral-julianne-ficzeri-pdf\\source.pdf",
+        "printedPdfPath:none",
+        "extractionMethodUsed:click",
+        "rawExtractedTextSource:dom",
+        "domExtractionRejectedReasons:viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS",
+        "extractionSuccess:false",
+        "admissionReasonPrimary:none",
+        "possibleIcd10Codes:I00 | I25 | I50"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Sidebar container count: 5",
+        "Sidebar diagnostics: [{\"index\":0,\"visible\":true,\"fileUploadsLabelCount\":0,\"fileUploadsAnchorCount\":1}]",
+        "[matched] patient File Uploads sidebar anchor by /file-uploads href count=1 visible=1 elapsedMs=76 samples=File Uploads",
+        "Matched File Uploads sidebar label: File Uploads",
+        "Matched File Uploads sidebar href: /provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/file-uploads",
+        "File Uploads sidebar click succeeded: true",
+        "File Uploads URL after sidebar click: https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/file-uploads",
+        "File Uploads ready attempt=1 url=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/file-uploads urlChanged=true patientFileUploadsRouteDetected=true genericProviderDocumentsRouteDetected=false pageComponentDetected=true traversalMode=folder_view folderCount=4 fileCount=0 markers=Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root 📁 Referral Files 🔀 ✏️ 🗑️ 📁 Admission 🔀 ✏️ 🗑️ 📁 Admission Packets 🔀 ✏️ 🗑️ 📁 Orders 🔀 ✏️ 🗑️ Select FILE to view or a FOLDER to upload file into. anchorCount=3",
+        "[matched] File Uploads page root component app-client-file-upload count=1 visible=1 elapsedMs=33 samples=Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root 📁 Referral Files 🔀 ✏️ 🗑️ 📁 Admission 🔀 ✏️ 🗑️ 📁 Admission Packets 🔀 ✏️ 🗑️ 📁 Orders 🔀 ✏️",
+        "[not_found] File Uploads downloadable file rows by .file-item count=0 visible=0 elapsedMs=19",
+        "[not_found] File Uploads downloadable file labels by .file-label count=0 visible=0 elapsedMs=23",
+        "[not_found] File Uploads document row click targets count=0 visible=0 elapsedMs=21",
+        "[not_found] File Uploads referral click targets outside table rows count=0 visible=0 elapsedMs=22",
+        "[matched] Admission-related click targets count=3 visible=3 elapsedMs=85 samples=Admission 03-13-2026 | Admission Info | Admission Packets",
+        "[matched] File Uploads Referral folder row by .folder-item count=4 visible=4 elapsedMs=104 samples=📁 Referral Files 🔀 ✏️ 🗑️ | 📁 Admission 🔀 ✏️ 🗑️ | 📁 Admission Packets 🔀 ✏️ 🗑️",
+        "Referral folder target clicked: 📁 Referral Files 🔀 ✏️ 🗑️ via File Uploads Referral folder row by .folder-item",
+        "File Uploads ready attempt=1 url=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/file-uploads urlChanged=true patientFileUploadsRouteDetected=true genericProviderDocumentsRouteDetected=false pageComponentDetected=true traversalMode=file_list_view folderCount=0 fileCount=1 markers=Patient File Uploads View All Uploaded Files View Logs Reorder Root / Referral Files⬅️ Back 🔄 ➕ ⬆️ 📄 New Referral Julianne Ficzeri.pdf 📝 ✏️ 🗑️ 🔗 Uploading file(s) to Referral FilesDRAG FILES HEREBrowse anchorCount=1",
+        "[matched] File Uploads page root component app-client-file-upload count=1 visible=1 elapsedMs=40 samples=Patient File Uploads View All Uploaded Files View Logs Reorder Root / Referral Files⬅️ Back 🔄 ➕ ⬆️ 📄 New Referral Julianne Ficzeri.pdf 📝 ✏️ 🗑️ 🔗 Uploading file(s) to Referral",
+        "[matched] File Uploads downloadable file rows by .file-item count=1 visible=1 elapsedMs=39 samples=📄 New Referral Julianne Ficzeri.pdf 📝 ✏️ 🗑️ 🔗",
+        "File Uploads accessible: true",
+        "Patient-specific File Uploads route detected: true",
+        "Generic provider Documents route detected: false",
+        "Matched File Uploads sidebar label: File Uploads",
+        "Matched File Uploads sidebar href: /provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/file-uploads",
+        "File Uploads sidebar click succeeded: true",
+        "File Uploads page component detected: true",
+        "File Uploads traversal mode: file_list_view",
+        "Used chart Documents fallback: false",
+        "File Uploads URL: https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/file-uploads",
+        "File Uploads URL changed from prior page: true",
+        "File Uploads ready attempt count: 1",
+        "File Uploads page markers: Patient File Uploads View All Uploaded Files View Logs Reorder Root / Referral Files⬅️ Back 🔄 ➕ ⬆️ 📄 New Referral Julianne Ficzeri.pdf 📝 ✏️ 🗑️ 🔗 Uploading file(s) to Referral FilesDRAG FILES HEREBrowse",
+        "Referral folder selected: true",
+        "Referral folder label: 📁 Referral Files 🔀 ✏️ 🗑️",
+        "Referral file label (if resolved instead of folder): 📄 New Referral Julianne Ficzeri.pdf",
+        "Discovered folder labels: none",
+        "Discovered file labels: 📄 New Referral Julianne Ficzeri.pdf",
+        "Normalized file labels: new referral julianne ficzeri.pdf",
+        "Matched source documents: 📄 New Referral Julianne Ficzeri.pdf [normalized=new referral julianne ficzeri.pdf] [score=150] | 📄 New Referral Julianne Ficzeri.pdf 📝 ✏️ 🗑️ 🔗 [normalized=new referral julianne ficzeri.pdf] [score=150]",
+        "Visible uploaded documents: 📄 New Referral Julianne Ficzeri.pdf | 📄 New Referral Julianne Ficzeri.pdf 📝 ✏️ 🗑️ 🔗",
+        "Admission Order candidate count: 1",
+        "Admission Order candidate labels: 📄 New Referral Julianne Ficzeri.pdf 📝 ✏️ 🗑️ 🔗 [score=340]",
+        "[matched] embedded PDF viewer toolbar and print controls count=5 visible=4 elapsedMs=265 samples=of ⁨6⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools | of ⁨6⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools | Tools",
+        "[not_found] Admission Order text marker count=0 visible=0 elapsedMs=50",
+        "[not_found] Admission clinical reason/diagnosis text markers count=0 visible=0 elapsedMs=47",
+        "[not_found] Admission order wrapper by class/id count=0 visible=0 elapsedMs=37",
+        "Selected source file: New Referral Julianne Ficzeri.pdf",
+        "Selected source file normalized: new referral julianne ficzeri.pdf",
+        "Viewer detected: true",
+        "Viewer marker samples: of ⁨6⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools | Tools | Print",
+        "Print button detected: true",
+        "Print button visible: true",
+        "Print button selector used: pdf-print #printButton, #printButton, pdf-shy-button[primarytoolbarid='printButton'] button",
+        "Print click succeeded: false",
+        "PDF response detected: true",
+        "PDF response URL: https://api.finalehealth.com/api/v1/files/69ab065193d0ec982c8b854b?index=documents",
+        "PDF content type: application/pdf",
+        "PDF saved path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\documents\\new-referral-julianne-ficzeri-pdf\\source.pdf",
+        "PDF byte size: 1055598",
+        "Print acquisition method used: network_pdf_response",
+        "Printed PDF saved: false",
+        "Printed PDF path: none",
+        "Source meta path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\documents\\new-referral-julianne-ficzeri-pdf\\source-meta.json",
+        "Extracted text path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\documents\\new-referral-julianne-ficzeri-pdf\\extracted-text.txt",
+        "Extraction result path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\documents\\new-referral-julianne-ficzeri-pdf\\extraction-result.json",
+        "Extracted text length: 111",
+        "Raw extracted text source: dom",
+        "DOM extraction rejected reasons: viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS",
+        "Extraction method used: click",
+        "Extraction success: false",
+        "Queued for LLM: true",
+        "Admission Order title: 📄 New Referral Julianne Ficzeri.pdf 📝 ✏️ 🗑️ 🔗",
+        "Admission Order URL after click: https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/file-uploads",
+        "Admission Order markers: none",
+        "Admission text candidates ranked: [1] score=2.8 text=of ⁨6⁩ Automatic Zoom Actual Size Page Fit Page Width ⁨50⁩% ⁨100⁩% ⁨125⁩% ⁨150⁩% ⁨200⁩% ⁨300⁩% ⁨400⁩% 90% Tools || [2] score=1.2 text=📄 New Referral Julianne Ficzeri.pdf 📝 ✏️ 🗑️ 🔗",
+        "Admission reason primary: none",
+        "Admission reason snippets: none",
+        "Possible ICD-10 codes: I00 | I25 | I50",
+        "Admission order text excerpt: of ⁨6⁩ Automatic Zoom Actual Size Page Fit Page Width ⁨50⁩% ⁨100⁩% ⁨125⁩% ⁨150⁩% ⁨200⁩% ⁨300⁩% ⁨400⁩% 90% Tools"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-11T23:05:46.706Z",
+      "step": "document_text_export",
+      "message": "Wrote normalized extracted document text for read-only dashboard reference and troubleshooting.",
+      "patientName": "Julianne Ficzeri",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "documentTextPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\document-text.json",
+        "documentCount:2",
+        "orderDocumentCount:1",
+        "hasAdmissionOrderText:true"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "[0] type=OASIS source=artifact_fallback effectiveTextSource=viewer_text_fallback textLength=1490",
+        "[0] rawExtractedTextSource=dom textSelectionReason=artifact_fallback_text",
+        "[0] domExtractionRejectedReasons=none",
+        "[0] preview=OASIS documents page false false false false false false 0 none 0 high:0 medium:0 low:0 false false true false true https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/file-uploads 📄 New Referral Julianne Ficzeri.pdf | 📄 New Referral Julianne Ficzeri.pdf 📝 ✏️ 🗑️ 🔗 true 📄 New Referral Julianne Ficzeri.pdf 📝 ✏️ 🗑️ 🔗 dom viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS I00 | I25 | I50 of ⁨6⁩ Automatic Zoom Actual Size Page F",
+        "[1] type=ORDER source=printed_pdf effectiveTextSource=ocr_text textLength=8966",
+        "[1] rawExtractedTextSource=ocr textSelectionReason=preferred_ocr_for_scanned_image_pdf",
+        "[1] domExtractionRejectedReasons=none",
+        "[1] preview=East Mesa Orthopedics & Sports Medicine Stephen Hatfield, DO 4850 E Baseline Rd, Suite #118 Mesa, AZ 85206 Phone 480-461-0047 Fax 480-461-1103 Patient Name: Julianne Ficzeri DOB: 10/22/1957 Surgery/ Date: DOS: 03/12/2026 Right Total Knee Arthroplasty Homebound: medically restricted, taxing effort to leave the home due to surgical intervention as documented in hospital and clinical visit notes. Pt needs the use of assistance device and/or help from another person in order to leave home. I certify"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-11T23:05:46.741Z",
+      "step": "diagnosis_code_extract",
+      "message": "No ICD-10 code candidates were extracted from admission/referral/OASIS text.",
+      "patientName": "Julianne Ficzeri",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "icd10CodeCount:0",
+        "diagnosisMentionCount:6",
+        "diagnosisCodePairCount:6",
+        "extractionConfidence:medium",
+        "llmUsed:false"
+      ],
+      "missing": [
+        "ICD-10 code candidates"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "selectedOrderDocumentCount:1",
+        "bestOrderEffectiveTextSource:ocr_text",
+        "[0] type=ORDER effectiveTextSource=ocr_text source=printed_pdf textLength=8966 pdfType=scanned_image_pdf ocrSuccess=true ocrTextLength=8966",
+        "[1] type=OASIS effectiveTextSource=viewer_text_fallback source=artifact_fallback textLength=1490 pdfType=none ocrSuccess=false ocrTextLength=0",
+        "sourceDocumentCount:2",
+        "sourceCharacterCount:1337",
+        "sourceTextPreview:Monitor patient's response to therapy and for side effects/complications to include, medication, pain and incision monitoring.. RN - has patient start oral pain meds as soon as patient tolerates PO intake.. RN - per protocol to assess for pain, incision monitoring and post op complications.. MEDICAL (PART B) 10-01-2022 1-800-MEDICARE (1-800-633-4227 / TTY: 1-877-486-2048) Medicare.gov 17357C001/21546 AARP Medicare Supplement Claim Address: Electronic Payer ID 36273 UnitedHealthcare UnitedHealthc",
+        "llmProvider:bedrock",
+        "llmUsed:false",
+        "llmModel:none",
+        "llmError:none",
+        "reasonForAdmission:none",
+        "diagnosisPhraseCount:6",
+        "diagnosisCodePairCount:6",
+        "icd10Codes:none",
+        "orderedServices:none",
+        "documentType:Admission Order",
+        "extractionConfidence:medium",
+        "uncertainItems:none",
+        "codeCategories:none"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-11T23:05:46.742Z",
+      "step": "source_document_identified",
+      "message": "Identified referral/admission-order source document candidates and selected the best source for processing.",
+      "patientName": "Julianne Ficzeri",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "JULIANNE_FICZERI__8724d9f1aee6e2e3-referral-1:REFERRAL_ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\documents\\new-referral-julianne-ficzeri-pdf\\source.pdf"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "selectedDocumentId=JULIANNE_FICZERI__8724d9f1aee6e2e3-referral-1"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-11T23:05:46.767Z",
+      "step": "source_document_acquired",
+      "message": "Selected referral/admission-order file is available locally for read-only processing.",
+      "patientName": "Julianne Ficzeri",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\documents\\new-referral-julianne-ficzeri-pdf\\source.pdf"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "acquisitionMethod=printed_pdf"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-11T23:05:46.767Z",
+      "step": "document_extraction_started",
+      "message": "Started referral/admission-order document extraction from the canonical local file when available.",
+      "patientName": "Julianne Ficzeri",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\documents\\new-referral-julianne-ficzeri-pdf\\source.pdf"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-11T23:05:46.772Z",
+      "step": "document_extraction_completed",
+      "message": "Completed referral/admission-order extraction.",
+      "patientName": "Julianne Ficzeri",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "extractionMethod=ocr_text",
+        "effectiveTextSource=ocr_text",
+        "textLength=8966"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-11T23:05:46.772Z",
+      "step": "extraction_quality_evaluated",
+      "message": "Evaluated extraction quality with usability status usable.",
+      "patientName": "Julianne Ficzeri",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "characterCount=8966",
+        "tokenCount=1329",
+        "likelyUsableForLlm=true",
+        "likelyRequiresOcrRetry=false"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-11T23:05:46.776Z",
+      "step": "referral_sections_normalized",
+      "message": "Normalized referral text into 8 semantic sections.",
+      "patientName": "Julianne Ficzeri",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "patient_identity:1",
+        "hospitalization_history:0.75",
+        "medical_necessity:0.55",
+        "homebound_evidence:0.55",
+        "diagnoses:0.55",
+        "medications:1",
+        "therapy_need:0.55",
+        "other_clinical_notes:1"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-11T23:05:46.790Z",
+      "step": "chart_snapshot_created",
+      "message": "Built a read-only chart/OASIS field snapshot and categorization buckets for referral comparison.",
+      "patientName": "Julianne Ficzeri",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "alreadyPopulated=1",
+        "llmCandidates=18",
+        "humanReviewRequired=14",
+        "referenceOnly=3"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-11T23:05:46.790Z",
+      "step": "referral_facts_extracted",
+      "message": "Extracted 3 referral facts before field mapping.",
+      "patientName": "Julianne Ficzeri",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "medical_necessity_summary:medical_necessity",
+        "homebound_narrative:homebound",
+        "therapy_need:therapy"
+      ],
+      "missing": [
+        "referral_date",
+        "preferred_language",
+        "interpreter_needed",
+        "recent_hospitalization_discharge_date",
+        "recent_hospitalization_facility",
+        "caregiver_name",
+        "caregiver_relationship",
+        "caregiver_phone",
+        "code_status",
+        "order_summary",
+        "homebound_supporting_factors",
+        "living_situation",
+        "functional_limitations",
+        "fall_risk_narrative",
+        "primary_reason_for_home_health_medical_necessity",
+        "admit_reason_to_home_health"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "I certify this patient is confined to home and needs intermittent skilled nursing care and or therapy services.",
+        "DOB: 10/22/1957 Surgery/ Date: DOS: 03/12/2026 Right Total Knee Arthroplasty Homebound: medically restricted, taxing effort to leave the home due to surgical intervention as documented in hospital and clinical visit notes.",
+        "RN - to instruct patient to take ASA 325mg PO BID x4-6 wks starting POD 1, unless otherwise stated PT - eval and treat OT - eval and treat WBAT FWW Physician Signature: or Date: 03-06-2026 DEA#: BH3145908 Refill: 0 Page 1 Patient #: :25642-1 Date:03/06/2026 Current Balance: 30 Days: 60 Days: 90 Days: 120 Days: 150 Days: 150+ Days: $0.00 $0.00 $0.00 $0.00 $0.00 $0.00 $0.00 Primary Employer Primary's Insurance Carrier "
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-11T23:05:46.790Z",
+      "step": "llm_field_proposal_started",
+      "message": "Started referral-to-field proposal generation using the strict JSON contract.",
+      "patientName": "Julianne Ficzeri",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "candidateFieldCount=18"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-11T23:05:46.793Z",
+      "step": "llm_field_proposal_completed",
+      "message": "Completed referral-to-field proposal generation with 4 field proposals.",
+      "patientName": "Julianne Ficzeri",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "proposalCount=4",
+        "diagnosisCandidateCount=1"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Deterministic referral facts extraction was used.",
+        "LLM disabled or unavailable; deterministic referral proposal fallback was used."
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-11T23:05:46.793Z",
+      "step": "field_comparison_completed",
+      "message": "Completed referral proposal comparison across 21 fields.",
+      "patientName": "Julianne Ficzeri",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "patient_name:unsupported",
+        "dob:unsupported",
+        "soc_date:unsupported",
+        "referral_date:requires_human_review",
+        "preferred_language:unsupported",
+        "interpreter_needed:requires_human_review",
+        "primary_reason_for_home_health_medical_necessity:requires_human_review",
+        "admit_reason_to_home_health:requires_human_review",
+        "homebound_narrative:requires_human_review",
+        "homebound_supporting_factors:requires_human_review",
+        "recent_hospitalization_discharge_date:requires_human_review",
+        "recent_hospitalization_facility:requires_human_review",
+        "caregiver_name:unsupported",
+        "caregiver_relationship:unsupported",
+        "caregiver_phone:requires_human_review",
+        "living_situation:unsupported",
+        "functional_limitations:requires_human_review",
+        "therapy_need:requires_human_review",
+        "fall_risk_narrative:requires_human_review",
+        "diagnosis_candidates:requires_human_review",
+        "code_status:requires_human_review"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-11T23:05:46.841Z",
+      "step": "qa_document_summary_persisted",
+      "message": "Persisted read-only referral document QA artifacts.",
+      "patientName": "Julianne Ficzeri",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\referral-document-processing\\source-meta.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\referral-document-processing\\extraction-result.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\referral-document-processing\\normalized-sections.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\referral-document-processing\\extracted-facts.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\referral-document-processing\\field-map-snapshot.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\referral-document-processing\\llm-proposal.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\referral-document-processing\\field-comparison.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\referral-document-processing\\patient-qa-reference.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\referral-document-processing\\qa-document-summary.json"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-11T23:05:46.841Z",
+      "step": "shared_evidence_discovery_complete",
+      "message": "Shared evidence workflow completed and produced reusable extracted chart evidence.",
+      "patientName": "Julianne Ficzeri",
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/intake/69ab086262ad95579a2040b9/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/intake/69ab086262ad95579a2040b9/calendar",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=coding",
+        "patientRunId=batch-2026-04-11T22-46-21-275Z-cf15c659-JULIANNE_FICZERI__8724d9f1aee6e2e3",
+        "status=completed",
+        "chartUrl=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/intake/69ab086262ad95579a2040b9/calendar",
+        "artifactCount=1",
+        "documentInventoryCount=1",
+        "extractedDocumentCount=2",
+        "diagnosisCodeCount=0"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-11T23:05:46.842Z",
+      "step": "referral_document_check",
+      "message": "Referral/admission-order evidence was found in shared chart documents.",
+      "patientName": "Julianne Ficzeri",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "artifactOrderCount:0",
+        "inventoryOrderCount:1",
+        "extractedOrderCount:1"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "📄 New Referral Julianne Ficzeri.pdf 📝 ✏️ 🗑️ 🔗:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\documents\\new-referral-julianne-ficzeri-pdf\\source.pdf:East Mesa Orthopedics & Sports Medicine Stephen Hatfield, DO 4850 E Baseline Rd, Suite #118 Mesa, AZ 85206 Phone 480-461-0047 Fax 480-461-1103 Patient Name: Julianne Ficzeri DOB: 1"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-11T23:05:46.843Z",
+      "step": "coding_workflow_start",
+      "message": "Coding workflow branch started from the shared patient chart context.",
+      "patientName": "Julianne Ficzeri",
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/intake/69ab086262ad95579a2040b9/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/intake/69ab086262ad95579a2040b9/calendar",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=coding",
+        "patientRunId=batch-2026-04-11T22-46-21-275Z-cf15c659-JULIANNE_FICZERI__8724d9f1aee6e2e3",
+        "status=started",
+        "chartUrl=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/intake/69ab086262ad95579a2040b9/calendar"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-11T23:05:46.938Z",
+      "step": "document_extraction",
+      "message": "Extracted 2 document(s) for QA evaluation.",
+      "patientName": "Julianne Ficzeri",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "0:OASIS:viewer_text_fallback:artifact_fallback:1490",
+        "1:ORDER:ocr_text:printed_pdf:8966"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "[0] type=OASIS source=artifact_fallback effectiveTextSource=viewer_text_fallback portalLabel=OASIS documents page textLength=1490",
+        "[0] rawExtractedTextSource=dom textSelectionReason=artifact_fallback_text",
+        "[0] domExtractionRejectedReasons=none",
+        "[0] preview=OASIS documents page false false false false false false 0 none 0 high:0 medium:0 low:0 false false true false true https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/file-uploads 📄 New Referral Julianne Ficzeri.pdf | 📄 New Referral Julianne Ficzeri.pdf 📝 ✏️ 🗑️ 🔗 true 📄 New Referral Julianne Ficzeri.pdf 📝 ✏️ 🗑️ 🔗 dom viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS I00 | I25 | I50 of ⁨6⁩ Automatic Zoom Actual Size Page F",
+        "[1] type=ORDER source=printed_pdf effectiveTextSource=ocr_text portalLabel=📄 New Referral Julianne Ficzeri.pdf 📝 ✏️ 🗑️ 🔗 textLength=8966",
+        "[1] rawExtractedTextSource=ocr textSelectionReason=preferred_ocr_for_scanned_image_pdf",
+        "[1] domExtractionRejectedReasons=none",
+        "[1] preview=East Mesa Orthopedics & Sports Medicine Stephen Hatfield, DO 4850 E Baseline Rd, Suite #118 Mesa, AZ 85206 Phone 480-461-0047 Fax 480-461-1103 Patient Name: Julianne Ficzeri DOB: 10/22/1957 Surgery/ Date: DOS: 03/12/2026 Right Total Knee Arthroplasty Homebound: medically restricted, taxing effort to leave the home due to surgical intervention as documented in hospital and clinical visit notes. Pt needs the use of assistance device and/or help from another person in order to leave home. I certify",
+        "[1] admissionReasonPrimary=none",
+        "[1] admissionReasonSnippets=none",
+        "[1] possibleIcd10Codes=I18 | I20 | I50 | M17.11 | I00 | I25",
+        "[1] possibleIcd10CodeCount=6"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-11T23:05:46.939Z",
+      "step": "admission_document_extract",
+      "message": "Extracted 1 Admission Order/referral document text block(s).",
+      "patientName": "Julianne Ficzeri",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "📄 New Referral Julianne Ficzeri.pdf 📝 ✏️ 🗑️ 🔗:8966"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "[0] source=printed_pdf",
+        "[0] effectiveTextSource=ocr_text",
+        "[0] rawExtractedTextSource=ocr",
+        "[0] textSelectionReason=preferred_ocr_for_scanned_image_pdf",
+        "[0] domExtractionRejectedReasons=none",
+        "[0] preview=East Mesa Orthopedics & Sports Medicine Stephen Hatfield, DO 4850 E Baseline Rd, Suite #118 Mesa, AZ 85206 Phone 480-461-0047 Fax 480-461-1103 Patient Name: Julianne Ficzeri DOB: 10/22/1957 Surgery/ Date: DOS: 03/12/2026 Right Total Knee Arthroplasty Homebound: medically restricted, taxing effort to leave the home due to surgical intervention as documented in hospital and clinical visit notes. Pt needs the use of assistance device and/or help from another person in order to leave home. I certify",
+        "[0] admissionReasonPrimary=none",
+        "[0] admissionReasonSnippets=none",
+        "[0] possibleIcd10Codes=I18 | I20 | I50 | M17.11 | I00 | I25"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-11T23:05:46.939Z",
+      "step": "oasis_extract",
+      "message": "Extracted 1 OASIS document(s).",
+      "patientName": "Julianne Ficzeri",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "OASIS documents page"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-11T23:05:46.939Z",
+      "step": "poc_extract",
+      "message": "No plan-of-care content was extracted.",
+      "patientName": "Julianne Ficzeri",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [],
+      "missing": [
+        "POC"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-11T23:05:46.939Z",
+      "step": "visit_note_extract",
+      "message": "No visit-note content was extracted.",
+      "patientName": "Julianne Ficzeri",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [],
+      "missing": [
+        "VISIT_NOTE"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-11T23:05:46.939Z",
+      "step": "technical_review_extract",
+      "message": "Aggregated technical-review evidence from document inventory and extracted content.",
+      "patientName": "Julianne Ficzeri",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "orders:1",
+        "summaries:0",
+        "supervisory:0",
+        "communication:0",
+        "missed_visits:0",
+        "sn_visits:0"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Detected 1 order document candidate(s)."
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-11T23:05:46.943Z",
+      "step": "coding_input_export",
+      "message": "Wrote read-only diagnosis reference output for dashboard consumption.",
+      "patientName": "Julianne Ficzeri",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "codingInputPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\coding-input.json",
+        "diagnosisCount:6",
+        "primaryDiagnosisSelected:complications to include, medication, pain",
+        "otherDiagnosisCount:5",
+        "codeConfidenceSummary:high:0 medium:6 low:0",
+        "noteCount:1",
+        "primaryDiagnosisCode:none"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "primaryDiagnosisDescription:complications to include, medication, pain",
+        "suggestedOnsetType:onset",
+        "suggestedSeverity:1",
+        "comorbidityFlags:{\"pvd_pad\":false,\"diabetes\":false,\"none\":true}"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-11T23:05:46.945Z",
+      "step": "qa_summary",
+      "message": "QA summary computed with overallStatus=BLOCKED.",
+      "patientName": "Julianne Ficzeri",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "timing:PASS",
+        "coding:NEEDS_REVIEW",
+        "oasis:FAIL",
+        "poc:MISSING",
+        "visit_notes:MISSING",
+        "technical_review:MISSING",
+        "final_check:FAIL"
+      ],
+      "missing": [
+        "Medical necessity is stated",
+        "Homebound reason is stated",
+        "Health assessment is documented",
+        "Skilled interventions during the OASIS visit are documented",
+        "Plan of care content extracted",
+        "POC QA completed in workbook",
+        "Diagnoses or codes are present in the plan of care",
+        "Interventions, goals, and frequency are present in the plan of care",
+        "Conditions or exacerbations are reflected in the plan of care",
+        "Visit note content extracted",
+        "Visit notes review completed in workbook",
+        "Skilled need is clearly documented",
+        "Interventions performed are specific and detailed",
+        "Patient response to interventions is documented",
+        "Progress toward goals is noted",
+        "Vitals and focused assessment are documented",
+        "Medication review is documented",
+        "Changes in condition are clearly reported and addressed",
+        "Documentation supports billed services",
+        "Documentation remains consistent with OASIS and diagnoses",
+        "SN visits were identified from visit-note content",
+        "Applicable disciplines were detected"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Medical necessity is stated",
+        "Homebound reason is stated",
+        "Health assessment is documented",
+        "Skilled interventions during the OASIS visit are documented",
+        "Plan of care content extracted",
+        "POC QA completed in workbook",
+        "Diagnoses or codes are present in the plan of care",
+        "Interventions, goals, and frequency are present in the plan of care",
+        "Conditions or exacerbations are reflected in the plan of care",
+        "Visit note content extracted",
+        "Visit notes review completed in workbook",
+        "Skilled need is clearly documented",
+        "Interventions performed are specific and detailed",
+        "Patient response to interventions is documented",
+        "Progress toward goals is noted",
+        "Vitals and focused assessment are documented",
+        "Medication review is documented",
+        "Changes in condition are clearly reported and addressed",
+        "Documentation supports billed services",
+        "Documentation remains consistent with OASIS and diagnoses",
+        "SN visits were identified from visit-note content",
+        "Applicable disciplines were detected"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-11T23:05:46.945Z",
+      "step": "coding_workflow_complete",
+      "message": "Coding workflow branch completed.",
+      "patientName": "Julianne Ficzeri",
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/intake/69ab086262ad95579a2040b9/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/intake/69ab086262ad95579a2040b9/calendar",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=coding",
+        "patientRunId=batch-2026-04-11T22-46-21-275Z-cf15c659-JULIANNE_FICZERI__8724d9f1aee6e2e3",
+        "status=completed",
+        "chartUrl=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/intake/69ab086262ad95579a2040b9/calendar"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-11T23:05:46.949Z",
+      "step": "coding_input_export",
+      "message": "Wrote fallback coding-input.json for downstream read-only diagnosis consumers.",
+      "patientName": "Julianne Ficzeri",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "codingInputPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\coding-input.json",
+        "diagnosisCount:0",
+        "primaryDiagnosisSelected:none",
+        "otherDiagnosisCount:0",
+        "codeConfidenceSummary:high:0 medium:0 low:0"
+      ],
+      "missing": [
+        "primary diagnosis"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "suggestedOnsetType:onset",
+        "matchStatus:EXACT"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    }
+  ],
+  "notes": [
+    "Document inventory exported: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\document-inventory.json",
+    "Document text exported: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\document-text.json",
+    "Referral document QA summary persisted: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\referral-document-processing\\qa-document-summary.json",
+    "Document inventory exported: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\document-inventory.json",
+    "Document text exported: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\document-text.json",
+    "Extracted 2 document(s) for QA evaluation.",
+    "Coding input exported: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\coding-input.json",
+    "Fallback coding input exported: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\coding-input.json"
+  ]
+}

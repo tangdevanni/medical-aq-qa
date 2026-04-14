@@ -1,0 +1,107 @@
+{
+  "patient_context": {
+    "patient_name": null,
+    "dob": "12/15/1934",
+    "soc_date": null,
+    "referral_date": null
+  },
+  "facts": [
+    {
+      "fact_key": "homebound_narrative",
+      "category": "homebound",
+      "value": "Lumbar Spine: Lumbar motion: pain with motion Using walker Review of Systems None recorded. No Trisha Jimmy FL HOPCo 12/30/2024 13:49:55 12/30/2024 Do you use or have you been advised to use a cane or walker to get around safely? No Not Available Not Available 03/31/2025 14:36:29 03/31/2025 Do you use or have you been advised to use a cane or walker to get around safely? No Not Available Not Available 08/18/2025 16:25:41 08/18/2025 Do you use or have you been advised to use a cane or walker to get around safely? No Not Available Not Available 06/04/2024 17:14:31 06/04/2024 Do you use or have you been advised to use a cane or walker to get around safely?",
+      "confidence": 0.8,
+      "evidence_spans": [
+        "Lumbar Spine: Lumbar motion: pain with motion Using walker Review of Systems None recorded. No Trisha Jimmy FL HOPCo 12/30/2024 13:49:55 12/30/2024 Do you use or have you been advised to use a cane or walker to get around safely? No Not Available Not Available 03/31/2025 14:36:29 03/31/2025 Do you use or have you been advised to use a cane or walker to get around safely? No Not Available Not Available 08/18/2025 16:25:41 08/18/2025 Do you use or have you been advised to use a cane or walker to get around safely? No Not Available Not Available 06/04/2024 17:14:31 06/04/2024 Do you use or have you been advised to use a cane or walker to get around safely?"
+      ],
+      "rationale": "Homebound evidence was summarized from referral text.",
+      "source_sections": [
+        "homebound_evidence"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "homebound_supporting_factors",
+      "category": "homebound",
+      "value": [
+        "uses_walker"
+      ],
+      "confidence": 0.73,
+      "evidence_spans": [
+        "Lumbar Spine: Lumbar motion: pain with motion Using walker Review of Systems None recorded. No Trisha Jimmy FL HOPCo 12/30/2024 13:49:55 12/30/2024 Do you use or have you been advised to use a cane or walker to get around safely? No Not Available Not Available 03/31/2025 14:36:29 03/31/2025 Do you use or have you been advised to use a cane or walker to get around safely? No Not Available Not Available 08/18/2025 16:25:41 08/18/2025 Do you use or have you been advised to use a cane or walker to get around safely? No Not Available Not Available 06/04/2024 17:14:31 06/04/2024 Do you use or have you been advised to use a cane or walker to get around safely?"
+      ],
+      "rationale": "Homebound supporting factors were extracted from referral text.",
+      "source_sections": [
+        "homebound_evidence"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "functional_limitations",
+      "category": "functional",
+      "value": [
+        "weakness",
+        "reduced_endurance"
+      ],
+      "confidence": 0.76,
+      "evidence_spans": [
+        "Reason for Referral Physical Therapist Referral for Spinal stenosis of lumbar region PT for back strengthening and endurance 2-3x/week for 4-6 weeks CORE NAO Haug, Nancy (ID: 3448862), Chief complaint: pain; weakness Body part(s) affected: hip - bilateral; thigh bilateral; knee - bilateral; lower leg/calf bilateral; ankle bilateral; lower back Duration: 1 years Mechanism: no specific incident or unknown Recent symptomatic course: unchanged Prior treatments: OTC medications - helped a little; She also notes numbness/tingling and weakness in both hands. At increased risk 129839007 Z91.81 for falls Screening for 300004007 Z13.820 osteoporosis Postoperative pain 213299007 G89.18 Goals Section None Recorded Health Concerns Section Related Observation LastModified by Organization Details LastModified Time None Recorded Concern Status LastModified by Organization Details LastModified Time None Recorded SDOH Concern Status LastModified by Organization Details LastModified Time None Recorded Notes Date Note Note Provider Name OrganizationRecorded Type and Address Details Time 02/17/2026 text/html Basic HPI Reported by Patient HPI For chief complaint, patient reports pain and weakness For body Jason FL 02/17/2026 part(s) affected, patient reports hip bilateral thigh bilateral knee - bilateral lower leg/calf bilateral Sherman, MD HOPCo 13:48:43 ankle - bilateral and lower back For duration, patient reports 1 years For mechanism, patient 18444 N. 25th reports no specific incident or unknown For recent symptomatic course, patient reports unchanged Avenue, SUITE For prior treatments, patient reports otc medications - helped a little and"
+      ],
+      "rationale": "Functional limitations were extracted from referral text.",
+      "source_sections": [
+        "functional_limitations"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "therapy_need",
+      "category": "therapy",
+      "value": "Physical Therapy: -Start home PT",
+      "confidence": 0.77,
+      "evidence_spans": [
+        "Physical Therapy: -Start home PT"
+      ],
+      "rationale": "Therapy need was summarized from referral text.",
+      "source_sections": [
+        "therapy_need"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "fall_risk_narrative",
+      "category": "risk",
+      "value": "She is low risk for opiod abuse per ORT. No Mark Triplett, PAC FL HOPCo 12/27/2021 18444 N. 25th Avenue, SUITE 310, 16:21:08 Phoenix, AZ, 85023-1266, Do you or have you ever used any other forms of tobacco or No Not Available Epion 12/20/2023 nicotine? 16:56:43 Date Assessment Value LastModified Organization LastModified by Details Time 03/07/2023 Opioid Risk 0 Jason FL HOPCo 03/07/2023 Sherman, MD 16:03:30 CORE NAO  Reason for Referral Physical Therapist Referral for Spinal stenosis of lumbar region PT for back strengthening and endurance 2-3x/week for 4-6 weeks CORE NAO Haug, Nancy (ID: 3448862), Chief complaint: pain; weakness Body part(s) affected: hip - bilateral; thigh bilateral; knee - bilateral; lower leg/calf bilateral; ankle bilateral; lower back Duration: 1 years Mechanism: no specific incident or unknown Recent sympto",
+      "confidence": 0.7,
+      "evidence_spans": [
+        "She is low risk for opiod abuse per ORT. No Mark Triplett, PAC FL HOPCo 12/27/2021 18444 N. 25th Avenue, SUITE 310, 16:21:08 Phoenix, AZ, 85023-1266, Do you or have you ever used any other forms of tobacco or No Not Available Epion 12/20/2023 nicotine? 16:56:43 Date Assessment Value LastModified Organization LastModified by Details Time 03/07/2023 Opioid Risk 0 Jason FL HOPCo 03/07/2023 Sherman, MD 16:03:30 CORE NAO  Reason for Referral Physical Therapist Referral for Spinal stenosis of lumbar region PT for back strengthening and endurance 2-3x/week for 4-6 weeks CORE NAO Haug, Nancy (ID: 3448862), Chief complaint: pain; weakness Body part(s) affected: hip - bilateral; thigh bilateral; knee - bilateral; lower leg/calf bilateral; ankle bilateral; lower back Duration: 1 years Mechanism: no specific incident or unknown Recent sympto"
+      ],
+      "rationale": "Risk and safety narrative was summarized from referral text.",
+      "source_sections": [
+        "risk_factors",
+        "functional_limitations"
+      ],
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "preferred_language",
+    "interpreter_needed",
+    "recent_hospitalization_discharge_date",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "code_status",
+    "order_summary",
+    "medical_necessity_summary",
+    "living_situation",
+    "primary_reason_for_home_health_medical_necessity",
+    "admit_reason_to_home_health"
+  ],
+  "warnings": [
+    "Deterministic referral facts extraction was used."
+  ]
+}

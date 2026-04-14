@@ -3,6 +3,7 @@ import { automationStepLogSchema } from "./automation-step-log";
 import { documentInventoryItemSchema } from "./document-inventory";
 import { emptyOasisQaSummary, oasisQaSummarySchema } from "./oasis-qa";
 import { patientEpisodeWorkItemSchema } from "./patient-episode-work-item";
+import { patientWorkflowRunSchema } from "./patient-workflow-run";
 
 export const batchStatusSchema = z.enum([
   "CREATED",
@@ -180,6 +181,7 @@ export const patientRunSchema = z.object({
     screenshotPaths: z.array(z.string().min(1)),
     downloadPaths: z.array(z.string().min(1)),
   }),
+  workflowRuns: z.array(patientWorkflowRunSchema).default([]),
   workItemSnapshot: patientEpisodeWorkItemSchema,
   automationStepLogs: z.array(automationStepLogSchema).default([]),
   notes: z.array(z.string().min(1)),

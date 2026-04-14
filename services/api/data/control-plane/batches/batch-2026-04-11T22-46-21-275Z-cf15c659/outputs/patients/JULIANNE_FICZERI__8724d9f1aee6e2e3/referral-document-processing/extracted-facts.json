@@ -1,0 +1,87 @@
+{
+  "patient_context": {
+    "patient_name": null,
+    "dob": "10/22/1957",
+    "soc_date": null,
+    "referral_date": null
+  },
+  "facts": [
+    {
+      "fact_key": "medical_necessity_summary",
+      "category": "medical_necessity",
+      "value": "I certify this patient is confined to home and needs intermittent skilled nursing care and or therapy services.",
+      "confidence": 0.78,
+      "evidence_spans": [
+        "I certify this patient is confined to home and needs intermittent skilled nursing care and or therapy services."
+      ],
+      "rationale": "Medical necessity was summarized from referral narrative and skilled-need evidence.",
+      "source_sections": [
+        "primary_reason_for_home_health",
+        "medical_necessity"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "homebound_narrative",
+      "category": "homebound",
+      "value": "DOB: 10/22/1957 Surgery/ Date: DOS: 03/12/2026 Right Total Knee Arthroplasty Homebound: medically restricted, taxing effort to leave the home due to surgical intervention as documented in hospital and clinical visit notes.",
+      "confidence": 0.8,
+      "evidence_spans": [
+        "DOB: 10/22/1957 Surgery/ Date: DOS: 03/12/2026 Right Total Knee Arthroplasty Homebound: medically restricted, taxing effort to leave the home due to surgical intervention as documented in hospital and clinical visit notes."
+      ],
+      "rationale": "Homebound evidence was summarized from referral text.",
+      "source_sections": [
+        "homebound_evidence"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "therapy_need",
+      "category": "therapy",
+      "value": "RN - to instruct patient to take ASA 325mg PO BID x4-6 wks starting POD 1, unless otherwise stated PT - eval and treat OT - eval and treat WBAT FWW Physician Signature: or Date: 03-06-2026 DEA#: BH3145908 Refill: 0 Page 1 Patient #: :25642-1 Date:03/06/2026 Current Balance: 30 Days: 60 Days: 90 Days: 120 Days: 150 Days: 150+ Days: $0.00 $0.00 $0.00 $0.00 $0.00 $0.00 $0.00 Primary Employer Primary's Insurance Carrier ",
+      "confidence": 0.77,
+      "evidence_spans": [
+        "RN - to instruct patient to take ASA 325mg PO BID x4-6 wks starting POD 1, unless otherwise stated PT - eval and treat OT - eval and treat WBAT FWW Physician Signature: or Date: 03-06-2026 DEA#: BH3145908 Refill: 0 Page 1 Patient #: :25642-1 Date:03/06/2026 Current Balance: 30 Days: 60 Days: 90 Days: 120 Days: 150 Days: 150+ Days: $0.00 $0.00 $0.00 $0.00 $0.00 $0.00 $0.00 Primary Employer Primary's Insurance Carrier "
+      ],
+      "rationale": "Therapy need was summarized from referral text.",
+      "source_sections": [
+        "therapy_need"
+      ],
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [
+    {
+      "description": "Procedures Applied on 02/12/2026",
+      "icd10_code": "M17.11",
+      "confidence": 0.74,
+      "source_spans": [
+        "M17.11) Procedures Applied on 02/12/2026"
+      ],
+      "is_primary_candidate": true,
+      "requires_human_review": true
+    }
+  ],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "preferred_language",
+    "interpreter_needed",
+    "recent_hospitalization_discharge_date",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "code_status",
+    "order_summary",
+    "homebound_supporting_factors",
+    "living_situation",
+    "functional_limitations",
+    "fall_risk_narrative",
+    "primary_reason_for_home_health_medical_necessity",
+    "admit_reason_to_home_health"
+  ],
+  "warnings": [
+    "Deterministic referral facts extraction was used."
+  ]
+}

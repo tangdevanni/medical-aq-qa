@@ -3,6 +3,7 @@ import { automationStepLogSchema } from "./automation-step-log";
 import { documentInventoryItemSchema } from "./document-inventory";
 import { emptyOasisQaSummary, oasisQaSummarySchema } from "./oasis-qa";
 import { patientProcessingStatusSchema, qaOutcomeSchema } from "./batch-pipeline";
+import { patientWorkflowRunSchema } from "./patient-workflow-run";
 
 export const patientRunLogSchema = z.object({
   schemaVersion: z.literal("1"),
@@ -32,6 +33,7 @@ export const patientRunLogSchema = z.object({
     screenshotPaths: z.array(z.string().min(1)),
     downloadPaths: z.array(z.string().min(1)),
   }),
+  workflowRuns: z.array(patientWorkflowRunSchema).default([]),
 });
 
 export type PatientRunLog = z.infer<typeof patientRunLogSchema>;

@@ -1,4 +1,4 @@
-import { mkdir, writeFile } from "node:fs/promises";
+import { access, mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import type { Locator, Page, Response } from "@playwright/test";
 import type {
@@ -75,6 +75,19 @@ import {
   extractPossibleIcd10Codes,
 } from "../../services/documentTextAnalysis";
 import type { OasisReadyDiagnosisDocument } from "../../services/codingInputExportService";
+import type {
+  OasisAssessmentNoteOpenResult,
+  OasisPrintedNoteCaptureOpenResult,
+  OasisMenuOpenResult,
+} from "../../oasis/types/oasisQaResult";
+import {
+  DEFAULT_OASIS_PRINT_SECTION_PROFILE_KEY,
+  findMatchingOasisPrintSectionLabels,
+  getOasisPrintSectionProfile,
+  type OasisPrintSectionProfile,
+  type OasisPrintSectionProfileKey,
+} from "../../oasis/print/oasisPrintedNoteProfiles";
+import { extractDocumentsFromArtifacts } from "../../services/documentExtractionService";
 import type {
   OasisExecutionActionPerformed,
   OasisDiagnosisExecutionGuardDecision,
@@ -930,6 +943,146 @@ async function clickPortalTarget(input: {
   await waitForPortalPageSettled(input.page, input.debugConfig);
 }
 
+interface OasisPrintModalCheckboxEntry {
+  checkboxIndex: number;
+  label: string;
+  checked: boolean;
+}
+
+async function resolveVisibleModalLocator(page: Page): Promise<{
+  locator: Locator | null;
+  selectorUsed: string | null;
+}> {
+  const selectors = [
+    "ngb-modal-window[role='dialog']",
+    "ngb-modal-window",
+    ".modal.show .modal-dialog",
+    ".modal-dialog",
+  ];
+
+  for (const selector of selectors) {
+    const locator = page.locator(selector).last();
+    if (await locator.count().catch(() => 0) > 0 && await locator.isVisible().catch(() => false)) {
+      return {
+        locator,
+        selectorUsed: selector,
+      };
+    }
+  }
+
+  return {
+    locator: null,
+    selectorUsed: null,
+  };
+}
+
+async function readOasisPrintModalCheckboxEntries(modal: Locator): Promise<OasisPrintModalCheckboxEntry[]> {
+  return modal.evaluate((element) => {
+    const listGroup =
+      element.querySelector(".modal-body .list-group") ??
+      element.querySelector(".list-group");
+    if (!listGroup) {
+      return [];
+    }
+
+    const children = Array.from(listGroup.children);
+    const entries: Array<{ checkboxIndex: number; label: string; checked: boolean }> = [];
+    let checkboxIndex = 0;
+
+    for (const child of children) {
+      const candidate = child as any;
+      if (candidate.tagName?.toLowerCase() !== "li") {
+        continue;
+      }
+      const checkbox = candidate.querySelector("input[type='checkbox']") as any;
+      if (checkbox) {
+        const labelFromTextNode = Array.from(candidate.childNodes)
+          .filter((node: any) => node?.nodeType === 3)
+          .map((node: any) => node?.textContent ?? "")
+          .join(" ")
+          .replace(/\s+/g, " ")
+          .trim();
+        const label = labelFromTextNode || ((candidate.textContent?.replace(/\s+/g, " ").trim()) ?? "");
+        entries.push({
+          checkboxIndex,
+          label,
+          checked: checkbox.checked === true,
+        });
+        checkboxIndex += 1;
+      }
+    }
+
+    return entries;
+  });
+}
+
+async function applyOasisPrintSectionProfile(input: {
+  modal: Locator;
+  page: Page;
+  profile: OasisPrintSectionProfile;
+  debugConfig?: PortalDebugConfig;
+}): Promise<{
+  selectedSectionLabels: string[];
+  warnings: string[];
+}> {
+  let entries = await readOasisPrintModalCheckboxEntries(input.modal);
+  const checkboxLocator = input.modal.locator(".list-group input[type='checkbox']");
+  const selectedSectionLabels = findMatchingOasisPrintSectionLabels({
+    profile: input.profile,
+    labels: entries.map((entry) => entry.label),
+  });
+  const warnings: string[] = [];
+
+  if (entries.length === 0) {
+    warnings.push("OASIS print modal opened without recognizable checkbox entries.");
+    return {
+      selectedSectionLabels: [],
+      warnings,
+    };
+  }
+
+  if (selectedSectionLabels.length === 0) {
+    warnings.push(`No OASIS print modal sections matched profile '${input.profile.key}'.`);
+  }
+
+  const selectAllToggle = input.modal.locator("#printAll, input[type='checkbox'][name='printAll']").first();
+  const selectAllVisible = await selectAllToggle.count().catch(() => 0) > 0
+    && await selectAllToggle.isVisible().catch(() => false);
+  if (selectAllVisible) {
+    const selectAllChecked = await selectAllToggle.isChecked().catch(() => false);
+    const shouldResetSelections = selectAllChecked && selectedSectionLabels.length < entries.length;
+    if (shouldResetSelections) {
+      await clickReadOnlyTarget({
+        locator: selectAllToggle,
+        page: input.page,
+        debugConfig: input.debugConfig,
+      }).catch(() => undefined);
+      await input.page.waitForTimeout(150).catch(() => undefined);
+      entries = await readOasisPrintModalCheckboxEntries(input.modal);
+    }
+  }
+
+  for (const entry of entries) {
+    if (!entry.label) {
+      continue;
+    }
+    const shouldBeChecked = selectedSectionLabels.includes(entry.label);
+    if (entry.checked === shouldBeChecked) {
+      continue;
+    }
+    await clickReadOnlyTarget({
+      locator: checkboxLocator.nth(entry.checkboxIndex),
+      page: input.page,
+      debugConfig: input.debugConfig,
+    }).catch(() => undefined);
+  }
+
+  return {
+    selectedSectionLabels,
+    warnings,
+  };
+}
+
 async function summarizeClickTarget(locator: Locator): Promise<string> {
   const id = normalizeWhitespace(await locator.getAttribute("id").catch(() => null));
   const role = normalizeWhitespace(await locator.getAttribute("role").catch(() => null));
@@ -1720,6 +1873,498 @@ export class PatientChartPage {
       diagnosisPageSnapshot: diagnosisNavigationResult.diagnosisPageSnapshot,
       calendarScope: null,
       calendarScopePath: null,
+    };
+  }
+
+  async openOasisMenuForReview(input: {
+    chartUrl: string;
+  }): Promise<{
+    result: OasisMenuOpenResult;
+    stepLogs: AutomationStepLog[];
+  }> {
+    const menuResult = await this.openOasisDocumentsPageFromSidebar();
+    const availableAssessmentTypes = menuResult.opened
+      ? await this.collectVisibleOasisAssessmentTypes()
+      : [];
+
+    return {
+      result: {
+        opened: menuResult.opened,
+        currentUrl: this.page.url(),
+        selectorUsed: menuResult.oasisSelectorUsed,
+        availableAssessmentTypes,
+        warnings: menuResult.opened
+          ? []
+          : ["OASIS documents page could not be verified from the patient chart sidebar."],
+      },
+      stepLogs: menuResult.stepLogs,
+    };
+  }
+
+  async openOasisAssessmentNoteForReview(input: {
+    chartUrl: string;
+    assessmentType: string;
+  }): Promise<{
+    result: OasisAssessmentNoteOpenResult;
+    stepLogs: AutomationStepLog[];
+  }> {
+    const warnings: string[] = [];
+    const normalizedAssessmentType = input.assessmentType.toUpperCase();
+    if (normalizedAssessmentType !== "SOC") {
+      warnings.push(
+        `Assessment type ${normalizedAssessmentType} is not explicitly automated yet; attempting the current SOC-oriented note open path.`,
+      );
+    }
+
+    const socDocumentResult = await this.openSocDocumentFromOasisTable({
+      chartUrl: input.chartUrl,
+      oasisSelectorUsed: "oasis_menu_for_review",
+    });
+    const initialOasisLockState = socDocumentResult.opened
+      ? await this.detectOasisSocLockState({
+          chartUrl: input.chartUrl,
+          socSelectorUsed: socDocumentResult.socSelectorUsed,
+          matchedSocAnchorText: socDocumentResult.matchedSocAnchorText,
+        })
+      : { lockState: null, stepLogs: [] };
+    const diagnosisNavigationResult = socDocumentResult.opened
+      ? await this.openActiveDiagnosesSectionFromSocForm({
+          chartUrl: input.chartUrl,
+          socSelectorUsed: socDocumentResult.socSelectorUsed,
+          matchedSocAnchorText: socDocumentResult.matchedSocAnchorText,
+          lockState: initialOasisLockState.lockState ?? null,
+        })
+      : {
+          diagnosisSectionOpened: false,
+          diagnosisListFound: false,
+          diagnosisNavigationMethod: null,
+          diagnosisListSamples: [],
+          diagnosisPageSnapshot: null,
+          lockState: initialOasisLockState.lockState ?? null,
+          stepLogs: [] as AutomationStepLog[],
+        };
+
+    const visibleDiagnoses = (diagnosisNavigationResult.diagnosisPageSnapshot?.rows ?? [])
+      .map((row) => {
+        const description = normalizeWhitespace(row.description ?? null);
+        const code = normalizeWhitespace(row.icd10Code ?? null);
+        if (!description && !code) {
+          return null;
+        }
+        return {
+          text: [code, description].filter(Boolean).join(" ").trim(),
+          code: code || null,
+          description: description || null,
+        };
+      })
+      .filter((value): value is NonNullable<typeof value> => Boolean(value))
+      .slice(0, 12);
+
+      return {
+        result: {
+          assessmentOpened: socDocumentResult.opened,
+          matchedAssessmentLabel: socDocumentResult.matchedSocAnchorText,
+          matchedRequestedAssessment: normalizedAssessmentType === "SOC"
+            ? Boolean(socDocumentResult.opened)
+            : false,
+          currentUrl: this.page.url(),
+          diagnosisSectionOpened: diagnosisNavigationResult.diagnosisSectionOpened,
+          diagnosisListFound: diagnosisNavigationResult.diagnosisListFound,
+        diagnosisListSamples: diagnosisNavigationResult.diagnosisListSamples,
+        visibleDiagnoses,
+        lockStatus: diagnosisNavigationResult.lockState?.oasisLockState ?? "unknown",
+        warnings,
+      },
+      stepLogs: [
+        ...socDocumentResult.stepLogs,
+        ...initialOasisLockState.stepLogs,
+        ...diagnosisNavigationResult.stepLogs,
+      ],
+    };
+  }
+
+  async captureOasisPrintedNoteForReview(input: {
+    chartUrl: string;
+    evidenceDir: string;
+    assessmentType: string;
+    matchedAssessmentLabel?: string | null;
+    printProfileKey?: OasisPrintSectionProfileKey | null;
+  }): Promise<{
+    result: OasisPrintedNoteCaptureOpenResult;
+    stepLogs: AutomationStepLog[];
+  }> {
+    await waitForPortalPageSettled(this.page, this.options.debugConfig);
+    const stepLogs: AutomationStepLog[] = [];
+    const warnings: string[] = [];
+    const documentDirectory = path.join(input.evidenceDir, "oasis-printed-note");
+    await mkdir(documentDirectory, { recursive: true });
+
+    const printedPdfPath = path.join(documentDirectory, "printed-source.pdf");
+    const extractionResultPath = path.join(documentDirectory, "extraction-result.json");
+    const printProfile = getOasisPrintSectionProfile(
+      input.printProfileKey ?? DEFAULT_OASIS_PRINT_SECTION_PROFILE_KEY,
+    );
+    const printButtonCandidates = [
+      {
+        strategy: "css",
+        selector: "fin-button[title='Print Preview'] > button",
+        description: "Print Preview nested button",
+      },
+      {
+        strategy: "css",
+        selector: "fin-button[title*='Print'] > button",
+        description: "Nested print button within titled fin-button",
+      },
+      {
+        strategy: "css",
+        selector: "fin-button[icon='ft-printer'] > button",
+        description: "Nested print button within printer-icon fin-button",
+      },
+      {
+        strategy: "css",
+        selector: "button:has(.ft-printer)",
+        description: "Button containing printer icon",
+      },
+      {
+        strategy: "role",
+        role: "button",
+        name: /^print$/i,
+        description: "Print button by accessible role",
+      },
+      {
+        strategy: "css",
+        selector: "button:has-text('Print')",
+        description: "Visible button with Print text",
+      },
+    ] satisfies PortalSelectorCandidate[];
+    const printButtonSelector = [
+      "fin-button[title='Print Preview'] > button",
+      "fin-button[title*='Print'] > button",
+      "fin-button[icon='ft-printer'] > button",
+      "button:has(.ft-printer)",
+      "button:has-text('Print')",
+      "role=button[name=/^print$/i]",
+    ].join(", ");
+    const printActionBarCandidates = [
+      {
+        strategy: "css",
+        selector: "app-document-note section:has(fin-button[icon='ft-printer']), app-document-note fin-action-menu:has(fin-button[icon='ft-printer'])",
+        description: "OASIS note action area containing the print control",
+      },
+      {
+        strategy: "css",
+        selector: "app-document-note [class*='action'], app-document-note [class*='toolbar'], app-document-note [class*='header']",
+        description: "OASIS note header/action containers",
+      },
+    ] satisfies PortalSelectorCandidate[];
+    const rawPrintButtonLocator = this.page.locator([
+      "fin-button[title='Print Preview'] > button",
+      "fin-button[title*='Print'] > button",
+      "fin-button[icon='ft-printer'] > button",
+      "button:has(.ft-printer)",
+      "button:has-text('Print')",
+    ].join(", "));
+    const printButtonDetected = await rawPrintButtonLocator.count().catch(() => 0) > 0;
+    let printButton: Locator | null = null;
+    let printButtonSelectorUsed: string | null = null;
+    const actionBarResolution = await resolveVisibleLocatorList({
+      page: this.page,
+      candidates: printActionBarCandidates,
+      step: "oasis_print_action_bar",
+      logger: this.options.logger,
+      debugConfig: this.options.debugConfig,
+      maxItems: 6,
+    });
+    for (const actionBar of actionBarResolution.items) {
+      const buttonResolution = await resolveVisibleLocatorList({
+        page: actionBar.locator,
+        candidates: printButtonCandidates,
+        step: "oasis_print_button_scoped",
+        logger: this.options.logger,
+        debugConfig: this.options.debugConfig,
+        maxItems: 4,
+      });
+      if (buttonResolution.items.length > 0) {
+        printButton = buttonResolution.items[0].locator;
+        printButtonSelectorUsed = buttonResolution.items[0].candidate.strategy === "css"
+          ? buttonResolution.items[0].candidate.selector
+          : buttonResolution.items[0].candidate.description;
+        break;
+      }
+    }
+    if (!printButton) {
+      const globalButtonResolution = await resolveVisibleLocatorList({
+        page: this.page,
+        candidates: printButtonCandidates,
+        step: "oasis_print_button_global",
+        logger: this.options.logger,
+        debugConfig: this.options.debugConfig,
+        maxItems: 4,
+      });
+      if (globalButtonResolution.items.length > 0) {
+        printButton = globalButtonResolution.items[0].locator;
+        printButtonSelectorUsed = globalButtonResolution.items[0].candidate.strategy === "css"
+          ? globalButtonResolution.items[0].candidate.selector
+          : globalButtonResolution.items[0].candidate.description;
+      }
+    }
+    const printButtonVisible = Boolean(printButton);
+    let printClickSucceeded = false;
+    let printModalDetected = false;
+    let printModalSelectorUsed: string | null = null;
+    let printModalConfirmSelectorUsed: string | null = null;
+    let printModalConfirmSucceeded = false;
+    let selectedSectionLabels: string[] = [];
+
+    if (printButton) {
+      await printButton.scrollIntoViewIfNeeded().catch(() => undefined);
+      await this.page.evaluate(() => {
+        const windowWithPrintFlag = globalThis as unknown as {
+          print?: () => void;
+          __medicalAiQaOriginalPrint?: () => void;
+          __medicalAiQaPrintRequested?: boolean;
+        };
+        if (!windowWithPrintFlag.__medicalAiQaOriginalPrint && windowWithPrintFlag.print) {
+          windowWithPrintFlag.__medicalAiQaOriginalPrint = windowWithPrintFlag.print.bind(globalThis);
+        }
+        windowWithPrintFlag.__medicalAiQaPrintRequested = false;
+        windowWithPrintFlag.print = () => {
+          windowWithPrintFlag.__medicalAiQaPrintRequested = true;
+        };
+      }).catch(() => undefined);
+
+      await clickReadOnlyTarget({
+        locator: printButton,
+        page: this.page,
+        debugConfig: this.options.debugConfig,
+      }).then(() => {
+        printClickSucceeded = true;
+      }).catch(() => {
+        printClickSucceeded = false;
+      });
+
+      if (printClickSucceeded) {
+        printClickSucceeded = await this.page.evaluate(() => {
+          const windowWithPrintFlag = globalThis as unknown as {
+            __medicalAiQaPrintRequested?: boolean;
+          };
+          return windowWithPrintFlag.__medicalAiQaPrintRequested === true;
+        }).catch(() => true);
+      }
+
+      const modalResolution = await resolveVisibleModalLocator(this.page);
+      if (modalResolution.locator) {
+        printModalDetected = true;
+        printModalSelectorUsed = modalResolution.selectorUsed;
+        const modalSelection = await applyOasisPrintSectionProfile({
+          modal: modalResolution.locator,
+          page: this.page,
+          profile: printProfile,
+          debugConfig: this.options.debugConfig,
+        });
+        selectedSectionLabels = modalSelection.selectedSectionLabels;
+        warnings.push(...modalSelection.warnings);
+
+        const modalConfirmCandidates = [
+          "button:has-text('Print')",
+          "fin-button[title='Print']",
+          "fin-button[icon='ft-printer']",
+          "fin-button:has-text('Print')",
+          "button:has-text('Preview')",
+          "button:has-text('Generate')",
+          "button:has-text('OK')",
+          "button:has-text('Ok')",
+        ];
+        for (const selector of modalConfirmCandidates) {
+          const confirmButton = modalResolution.locator.locator(selector).first();
+          if (await confirmButton.count().catch(() => 0) > 0 && await confirmButton.isVisible().catch(() => false)) {
+            printModalConfirmSelectorUsed = selector;
+            const downloadPromise = this.page.waitForEvent("download", {
+              timeout: this.options.debugConfig?.stepTimeoutMs ?? 8_000,
+            }).catch(() => null);
+            const pdfResponsePromise = this.page.waitForResponse((response) => {
+              const contentType = response.headers()["content-type"] ?? "";
+              return /application\/pdf/i.test(contentType);
+            }, {
+              timeout: this.options.debugConfig?.stepTimeoutMs ?? 8_000,
+            }).catch(() => null);
+
+            await clickReadOnlyTarget({
+              locator: confirmButton,
+              page: this.page,
+              debugConfig: this.options.debugConfig,
+            }).then(() => {
+              printModalConfirmSucceeded = true;
+            }).catch(() => {
+              printModalConfirmSucceeded = false;
+            });
+
+            const download = await downloadPromise;
+            if (download) {
+              await download.saveAs(printedPdfPath).catch(() => undefined);
+            } else {
+              const pdfResponse = await pdfResponsePromise;
+              if (pdfResponse) {
+                const responseBody = await pdfResponse.body().catch(() => null);
+                if (responseBody) {
+                  await writeFile(printedPdfPath, responseBody);
+                }
+              }
+            }
+            break;
+          }
+        }
+
+        if (!printModalConfirmSelectorUsed) {
+          warnings.push("OASIS print modal opened but no confirm/print button was found.");
+        }
+
+        await this.page.waitForTimeout(250).catch(() => undefined);
+        await waitForPortalPageSettled(this.page, this.options.debugConfig);
+      } else if (!printClickSucceeded) {
+        warnings.push("OASIS print button click did not open a print modal.");
+      }
+    } else {
+      warnings.push("Print button could not be located on the OASIS assessment page.");
+    }
+
+    let sourcePdfPath: string | null =
+      printModalConfirmSucceeded || printClickSucceeded ? printedPdfPath : null;
+    let extractionMethod: OasisPrintedNoteCaptureOpenResult["extractionMethod"] = "visible_text_fallback";
+    if (sourcePdfPath) {
+      try {
+        const printedPdfExists = await access(printedPdfPath)
+          .then(() => true)
+          .catch(() => false);
+        if (!printedPdfExists) {
+          await this.page.pdf({
+            path: printedPdfPath,
+            format: "Letter",
+            printBackground: true,
+          });
+        }
+        extractionMethod = "printed_pdf_no_ocr";
+      } catch (error) {
+        warnings.push(
+          `Playwright PDF capture failed for the printed OASIS note: ${error instanceof Error ? error.message : String(error)}`,
+        );
+        sourcePdfPath = null;
+      }
+    }
+
+    const extractedTextFallback = normalizeWhitespace(await dumpTopVisibleText(this.page, 16_000).catch(() => ""));
+    const artifact: ArtifactRecord = {
+      artifactType: "OASIS",
+      status: "DOWNLOADED",
+      portalLabel: input.matchedAssessmentLabel ?? `${input.assessmentType} OASIS`,
+      locatorUsed: printButtonDetected ? printButtonSelector : "visible_text_fallback",
+      discoveredAt: new Date().toISOString(),
+      downloadPath: sourcePdfPath,
+      extractedFields: {},
+      notes: [],
+    };
+    const extractedDocuments = await extractDocumentsFromArtifacts(sourcePdfPath ? [artifact] : []);
+    const extractedDocument = extractedDocuments.find((document) => document.type === "OASIS") ?? null;
+    const extractedTextPath = path.join(documentDirectory, "extracted-text.txt");
+    const ocrResultPath = path.join(documentDirectory, "ocr-result.json");
+    let textLength = extractedDocument?.text.length ?? 0;
+    if (!extractedDocument) {
+      await writeFile(extractedTextPath, `${extractedTextFallback}\n`, "utf8");
+      textLength = extractedTextFallback.length;
+      warnings.push("Fell back to visible page text because printed-note OCR text was unavailable.");
+    } else if (extractedDocument.metadata.ocrSuccess) {
+      extractionMethod = "printed_pdf_ocr";
+    }
+
+    await writeFile(
+      extractionResultPath,
+      JSON.stringify(
+        {
+          assessmentType: input.assessmentType,
+          matchedAssessmentLabel: input.matchedAssessmentLabel ?? null,
+          printProfileKey: printProfile.key,
+          printProfileLabel: printProfile.label,
+          currentUrl: this.page.url(),
+          printButtonDetected,
+          printButtonVisible,
+          printButtonSelectorUsed: printButtonSelectorUsed ?? (printButtonDetected ? printButtonSelector : null),
+          printClickSucceeded,
+          printModalDetected,
+          printModalSelectorUsed,
+          printModalConfirmSelectorUsed,
+          printModalConfirmSucceeded,
+          selectedSectionLabels,
+          printedPdfPath: sourcePdfPath,
+          extractedTextPath,
+          ocrResultPath: sourcePdfPath ? ocrResultPath : null,
+          textLength,
+          extractionMethod,
+          warnings,
+          generatedAt: new Date().toISOString(),
+        },
+        null,
+        2,
+      ),
+      "utf8",
+    );
+
+    stepLogs.push(createAutomationStepLog({
+      step: "oasis_print_capture",
+      message: printClickSucceeded
+        ? "Captured the OASIS assessment print view for read-only OCR review."
+        : "Attempted OASIS assessment print capture and fell back to visible text review.",
+      urlBefore: input.chartUrl,
+      urlAfter: this.page.url(),
+      selectorUsed: printButtonSelectorUsed ?? (printButtonDetected ? printButtonSelector : null),
+      found: [
+        `assessmentType=${input.assessmentType}`,
+        `printProfileKey=${printProfile.key}`,
+        `printButtonDetected=${printButtonDetected}`,
+        `printClickSucceeded=${printClickSucceeded}`,
+        `printModalDetected=${printModalDetected}`,
+        `printModalConfirmSucceeded=${printModalConfirmSucceeded}`,
+        `extractionMethod=${extractionMethod}`,
+        `textLength=${textLength}`,
+      ],
+      missing: textLength > 0 ? [] : ["printed OASIS note text"],
+      openedDocumentLabel: input.matchedAssessmentLabel ?? `${input.assessmentType} OASIS`,
+      openedDocumentUrl: this.page.url(),
+      evidence: [
+        `printedPdfPath=${sourcePdfPath ?? "none"}`,
+        `selectedSectionLabels=${selectedSectionLabels.join(" | ") || "none"}`,
+        `extractedTextPath=${extractedTextPath}`,
+        `ocrResultPath=${sourcePdfPath ? ocrResultPath : "none"}`,
+        `extractionResultPath=${extractionResultPath}`,
+        `warnings=${warnings.join(" | ") || "none"}`,
+      ],
+      safeReadConfirmed: true,
+    }));
+
+    return {
+      result: {
+        assessmentType: input.assessmentType,
+        printProfileKey: printProfile.key,
+        printProfileLabel: printProfile.label,
+        printButtonDetected,
+        printButtonVisible,
+        printButtonSelectorUsed: printButtonSelectorUsed ?? (printButtonDetected ? printButtonSelector : null),
+        printClickSucceeded,
+        printModalDetected,
+        printModalSelectorUsed,
+        printModalConfirmSelectorUsed,
+        printModalConfirmSucceeded,
+        selectedSectionLabels,
+        currentUrl: this.page.url(),
+        printedPdfPath: sourcePdfPath,
+        sourcePdfPath,
+        extractedTextPath,
+        extractionResultPath,
+        ocrResultPath: sourcePdfPath ? ocrResultPath : null,
+        textLength,
+        extractionMethod,
+        warnings,
+      },
+      stepLogs,
     };
   }
 
@@ -2768,6 +3413,35 @@ export class PatientChartPage {
       matchedSocAnchorText: null,
       stepLogs,
     };
+  }
+
+  private async collectVisibleOasisAssessmentTypes(): Promise<string[]> {
+    const anchorLocator = this.page.locator(
+      "app-private-documents table tbody tr a.tbl-link, fin-datatable table tbody tr a.tbl-link, table tbody tr a.tbl-link, a.tbl-link",
+    );
+    const count = await anchorLocator.count().catch(() => 0);
+    const labels = new Set<string>();
+
+    for (let index = 0; index < Math.min(count, 100); index += 1) {
+      const text = normalizeWhitespace(await anchorLocator.nth(index).textContent().catch(() => null)).toUpperCase();
+      if (!text) {
+        continue;
+      }
+      if (/\bSOC\b/.test(text)) {
+        labels.add("SOC");
+      }
+      if (/\bROC\b/.test(text)) {
+        labels.add("ROC");
+      }
+      if (/\bREC\b|\bRECERT/i.test(text)) {
+        labels.add("RECERT");
+      }
+      if (/\bDC\b|\bDISCHARGE\b/i.test(text)) {
+        labels.add("DC");
+      }
+    }
+
+    return [...labels];
   }
 
   private async openSocDocumentFromOasisTable(input: {

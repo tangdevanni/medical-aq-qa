@@ -1,0 +1,45 @@
+{
+  "batchId": "batch-2026-04-10T01-42-08-452Z",
+  "status": "COMPLETED",
+  "startedAt": "2026-04-10T01:42:08.464Z",
+  "completedAt": "2026-04-10T01:48:30.001Z",
+  "lastUpdatedAt": "2026-04-10T01:48:30.001Z",
+  "totalWorkItems": 1,
+  "automationEligible": 1,
+  "processed": 1,
+  "totalCompleted": 1,
+  "totalBlocked": 0,
+  "totalFailed": 0,
+  "totalNeedsHumanReview": 0,
+  "totalReadyForBillingPrep": 0,
+  "totalParserExceptions": 0,
+  "percentComplete": 100,
+  "currentlyRunningCount": 0,
+  "currentBatchStatus": "COMPLETED",
+  "complete": 1,
+  "blocked": 0,
+  "failed": 0,
+  "needsHumanReview": 0,
+  "parserExceptions": 0,
+  "qaOutcomes": {
+    "READY_FOR_BILLING_PREP": 0,
+    "INCOMPLETE": 1,
+    "MISSING_DOCUMENTS": 0,
+    "PORTAL_NOT_FOUND": 0,
+    "PORTAL_MISMATCH": 0,
+    "AMBIGUOUS_PATIENT": 0,
+    "NEEDS_MANUAL_QA": 0
+  },
+  "patientRuns": [
+    {
+      "workItemId": "CHRISTINE_YOUNG__a89bc267c323fb6a",
+      "patientName": "Christine Young",
+      "processingStatus": "COMPLETE",
+      "executionStep": "OASIS_QA_ENTRY_COMPLETE",
+      "progressPercent": 100,
+      "qaOutcome": "INCOMPLETE",
+      "errorSummary": null,
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-10T01-42-08-309Z\\run\\patient-results\\CHRISTINE_YOUNG__a89bc267c323fb6a.json"
+    }
+  ]
+}

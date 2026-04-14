@@ -23,6 +23,7 @@
     "dev:portal-worker": "pnpm --filter @medical-ai-qa/portal-worker dev"
   },
   "devDependencies": {
+    "@playwright/test": "^1.52.0",
     "@types/node": "^24.0.0",
     "tsx": "^4.19.2",
     "typescript": "^5.8.2"

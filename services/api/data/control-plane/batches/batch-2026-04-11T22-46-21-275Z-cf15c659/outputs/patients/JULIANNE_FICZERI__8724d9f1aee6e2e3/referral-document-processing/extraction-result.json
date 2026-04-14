@@ -1,0 +1,33 @@
+{
+  "documentId": "JULIANNE_FICZERI__8724d9f1aee6e2e3-referral-1",
+  "localFilePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\documents\\new-referral-julianne-ficzeri-pdf\\source.pdf",
+  "fileType": "pdf",
+  "extractionMethod": "ocr_text",
+  "extractionSuccess": true,
+  "effectiveTextSource": "ocr_text",
+  "rawExtractedTextSource": "ocr",
+  "textSelectionReason": "preferred_ocr_for_scanned_image_pdf",
+  "domExtractionRejectedReasons": [],
+  "pdfType": "scanned_image_pdf",
+  "ocrUsed": true,
+  "ocrProvider": "textract",
+  "ocrResultPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\documents\\new-referral-julianne-ficzeri-pdf\\ocr-result.json",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-11T22-46-21-275Z-cf15c659\\outputs\\patients\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\referral-document-processing\\extracted-text.txt",
+  "extractionQuality": {
+    "characterCount": 8966,
+    "lineCount": 1,
+    "normalizedTokenCount": 1329,
+    "containsClinicalVocabulary": true,
+    "containsDiagnosisLikePatterns": true,
+    "containsDatePatterns": true,
+    "containsSectionLikeHeadings": true,
+    "likelyUsableForLlm": true,
+    "likelyRequiresOcrRetry": false,
+    "likelyCorruptedEncoding": false,
+    "rejectedReasons": [],
+    "usabilityStatus": "usable"
+  },
+  "failureReasons": [],
+  "warnings": [],
+  "generatedAt": "2026-04-11T23:05:46.772Z"
+}

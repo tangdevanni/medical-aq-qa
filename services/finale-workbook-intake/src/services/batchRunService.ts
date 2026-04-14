@@ -12,10 +12,12 @@ import type {
   PatientMatchResult,
   PatientRun,
   SubsidiaryRuntimeConfig,
+  WorkflowDomain,
 } from "@medical-ai-qa/shared-types";
 import { loadEnv } from "../config/env";
 import { resolvePortalRuntimeConfig } from "../config/portalRuntime";
 import { buildBatchSummary } from "../domain/batchSummary";
+import { executeSharedPortalAccessWorkflow } from "../portal/workflows/sharedPortalAccessWorkflow";
 import { createAutomationStepLog } from "../portal/utils/automationLog";
 import { evaluateDeterministicQa } from "../qa/deterministicQaEngine";
 import type { BatchPortalAutomationClient } from "../workers/playwrightBatchQaWorker";
@@ -41,6 +43,15 @@ import { extractTechnicalReview } from "./technicalReviewExtractor";
 import { writePatientRunLog } from "./patientRunLogWriter";
 import { writePatientResultBundle } from "./patientResultBundleWriter";
 import { intakeWorkbook } from "./workbookIntakeService";
+import { runCodingWorkflowOrchestrator } from "../workflows/codingWorkflowOrchestrator";
+import { runQaWorkflowOrchestrator } from "../workflows/qaWorkflowOrchestrator";
+import { runSharedEvidenceWorkflow } from "../workflows/sharedEvidenceWorkflow";
+import {
+  buildWorkflowRun,
+  createDefaultWorkflowRuns,
+  findWorkflowRun,
+  upsertWorkflowRun,
+} from "../workflows/patientWorkflowRunState";
 
 export interface RunFinaleBatchParams {
   batchId?: string;
@@ -51,6 +62,7 @@ export interface RunFinaleBatchParams {
   workbookPath: string;
   outputDir?: string;
   parseOnly?: boolean;
+  workflowDomains?: WorkflowDomain[];
   logger?: Logger;
   portalClient?: BatchPortalAutomationClient;
 }
@@ -71,6 +83,7 @@ export interface ExecutePatientWorkItemsParams {
   batchId: string;
   workItems: PatientEpisodeWorkItem[];
   outputDir: string;
+  workflowDomains?: WorkflowDomain[];
   subsidiaryRuntimeConfig?: SubsidiaryRuntimeConfig;
   logger?: Logger;
   portalClient?: BatchPortalAutomationClient;
@@ -81,6 +94,7 @@ export interface RunQaForPatientParams {
   batchId: string;
   patient: PatientEpisodeWorkItem;
   outputDir: string;
+  workflowDomains?: WorkflowDomain[];
   subsidiaryRuntimeConfig?: SubsidiaryRuntimeConfig;
   logger?: Logger;
   portalClient?: BatchPortalAutomationClient;
@@ -91,6 +105,7 @@ export interface RunBatchQaParams {
   batchId: string;
   patients: PatientEpisodeWorkItem[];
   outputDir: string;
+  workflowDomains?: WorkflowDomain[];
   workbookPath?: string;
   billingPeriod?: string | null;
   parserExceptions?: ParserException[];
@@ -106,6 +121,11 @@ function createLogger(): Logger {
     name: "finale-batch-runner",
     level: env.FINALE_LOG_LEVEL,
   });
+}
+
+function resolveWorkflowDomains(workflowDomains?: WorkflowDomain[]): WorkflowDomain[] {
+  const normalized = workflowDomains?.filter((domain, index, values) => values.indexOf(domain) === index) ?? [];
+  return normalized.length > 0 ? normalized : ["coding"];
 }
 
 function createEmptyMatchResult(workItem: PatientEpisodeWorkItem): PatientMatchResult {
@@ -124,9 +144,11 @@ function createInitialPatientRun(input: {
   workItem: PatientEpisodeWorkItem;
 }): PatientRun {
   const { batchId, workItem } = input;
+  const startedAt = new Date().toISOString();
+  const runId = `${batchId}-${workItem.id}`;
 
   return {
-    runId: `${batchId}-${workItem.id}`,
+    runId,
     batchId,
     subsidiaryId: workItem.subsidiaryId,
     workItemId: workItem.id,
@@ -134,9 +156,9 @@ function createInitialPatientRun(input: {
     processingStatus: "MATCHING_PATIENT",
     executionStep: "MATCHING_PATIENT",
     progressPercent: 10,
-    startedAt: new Date().toISOString(),
+    startedAt,
     completedAt: null,
-    lastUpdatedAt: new Date().toISOString(),
+    lastUpdatedAt: startedAt,
     matchResult: createEmptyMatchResult(workItem),
     artifacts: [],
     artifactCount: 0,
@@ -162,6 +184,7 @@ function createInitialPatientRun(input: {
       screenshotPaths: [],
       downloadPaths: [],
     },
+    workflowRuns: createDefaultWorkflowRuns(runId, startedAt),
     workItemSnapshot: workItem,
     automationStepLogs: [],
     notes: [],
@@ -209,6 +232,18 @@ function processingStatusForOutcome(run: PatientRun): PatientRun["processingStat
     default:
       return "NEEDS_HUMAN_REVIEW";
   }
+}
+
+function hasReferralDocumentEvidence(input: {
+  artifacts: ArtifactRecord[];
+  documentInventory: DocumentInventoryItem[];
+  extractedDocuments: ExtractedDocument[];
+}): boolean {
+  const hasExtractedOrderText = input.extractedDocuments.some((document) =>
+    document.type === "ORDER" && document.text.trim().length > 0);
+  const hasOrderInventory = input.documentInventory.some((item) => item.normalizedType === "ORDER");
+  const hasOrderArtifact = input.artifacts.some((artifact) => artifact.artifactType === "PHYSICIAN_ORDERS");
+  return hasExtractedOrderText || hasOrderInventory || hasOrderArtifact;
 }
 
 function canRetryPatientRun(run: PatientRun): boolean {
@@ -598,6 +633,20 @@ async function emitPatientRunUpdate(
   updatePatientRunDerivedFields(run);
   run.logPath = await writePatientRunLog(outputDirectory, run);
   run.logAvailable = true;
+  run.workflowRuns = run.workflowRuns.map((workflowRun) => ({
+    ...workflowRun,
+    workflowLogPath:
+      workflowRun.status === "NOT_STARTED"
+        ? workflowRun.workflowLogPath ?? null
+        : run.logPath,
+    workflowResultPath:
+      workflowRun.workflowDomain === "coding" &&
+      workflowRun.status !== "NOT_STARTED" &&
+      run.resultBundlePath
+        ? run.resultBundlePath
+        : workflowRun.workflowResultPath ?? null,
+  }));
+  run.logPath = await writePatientRunLog(outputDirectory, run);
   if (onPatientRunUpdate) {
     await onPatientRunUpdate({
       ...run,
@@ -609,6 +658,7 @@ async function emitPatientRunUpdate(
       artifacts: [...run.artifacts],
       documentInventory: [...run.documentInventory],
       findings: [...run.findings],
+      workflowRuns: [...run.workflowRuns],
       automationStepLogs: [...run.automationStepLogs],
       notes: [...run.notes],
     });
@@ -621,6 +671,7 @@ export async function executePatientWorkItems(
   const env = loadEnv();
   const logger = params.logger ?? createLogger();
   const patientRuns: PatientRun[] = [];
+  const selectedWorkflowDomains = resolveWorkflowDomains(params.workflowDomains);
 
   await mkdir(params.outputDir, { recursive: true });
 
@@ -656,6 +707,22 @@ export async function executePatientWorkItems(
       run.executionStep = "FAILED";
       run.progressPercent = 100;
       run.qaOutcome = "PORTAL_MISMATCH";
+      run.workflowRuns = selectedWorkflowDomains.reduce(
+        (workflowRuns, workflowDomain) =>
+          upsertWorkflowRun(
+            workflowRuns,
+            buildWorkflowRun({
+              patientRunId: run.runId,
+              workflowDomain,
+              status: "FAILED",
+              stepName: "FAILED",
+              message: errorSummary,
+              timestamp: new Date().toISOString(),
+              completedAt: new Date().toISOString(),
+            }),
+          ),
+        run.workflowRuns,
+      );
       run.errorSummary = errorSummary;
       run.notes.push(errorSummary);
       run.matchResult = {
@@ -688,45 +755,47 @@ export async function executePatientWorkItems(
         run,
         message: `QA summary computed after portal initialization failure with overallStatus=${run.oasisQaSummary.overallStatus}.`,
       });
-      try {
-        const fallbackCodingInput = await writeCodingInputFile({
-          outputDirectory: params.outputDir,
-          patientId: workItem.id,
-          batchId: params.batchId,
-          canonical: buildFallbackCanonicalCodingInput({
-            run,
-            reason: "coding_input_export_fallback_for_portal_initialization_failure",
-          }),
-        });
-        appendAutomationLogs(run, [createAutomationStepLog({
-          step: "coding_input_export",
-          message: "Wrote fallback coding-input.json after portal initialization failure.",
-          patientName: workItem.patientIdentity.displayName,
-          found: [
-            `codingInputPath:${fallbackCodingInput.filePath}`,
-            `diagnosisCount:${countCodingInputDiagnoses(fallbackCodingInput.document)}`,
-          ],
-          missing: ["primary diagnosis"],
-          evidence: [
-            `suggestedOnsetType:${fallbackCodingInput.document.suggestedOnsetType}`,
-            errorSummary,
-          ],
-          safeReadConfirmed: true,
-        })]);
-        run.notes.push(`Fallback coding input exported: ${fallbackCodingInput.filePath}`);
-      } catch (fallbackError) {
-        const fallbackMessage =
-          fallbackError instanceof Error ? fallbackError.message : String(fallbackError);
-        appendAutomationLogs(run, [createAutomationStepLog({
-          step: "coding_input_export",
-          message: "Fallback coding-input export failed after portal initialization failure.",
-          patientName: workItem.patientIdentity.displayName,
-          found: [],
-          missing: ["coding-input.json"],
-          evidence: [fallbackMessage],
-          safeReadConfirmed: true,
-        })]);
-        run.notes.push(`Fallback coding input export failed: ${fallbackMessage}`);
+      if (selectedWorkflowDomains.includes("coding")) {
+        try {
+          const fallbackCodingInput = await writeCodingInputFile({
+            outputDirectory: params.outputDir,
+            patientId: workItem.id,
+            batchId: params.batchId,
+            canonical: buildFallbackCanonicalCodingInput({
+              run,
+              reason: "coding_input_export_fallback_for_portal_initialization_failure",
+            }),
+          });
+          appendAutomationLogs(run, [createAutomationStepLog({
+            step: "coding_input_export",
+            message: "Wrote fallback coding-input.json after portal initialization failure.",
+            patientName: workItem.patientIdentity.displayName,
+            found: [
+              `codingInputPath:${fallbackCodingInput.filePath}`,
+              `diagnosisCount:${countCodingInputDiagnoses(fallbackCodingInput.document)}`,
+            ],
+            missing: ["primary diagnosis"],
+            evidence: [
+              `suggestedOnsetType:${fallbackCodingInput.document.suggestedOnsetType}`,
+              errorSummary,
+            ],
+            safeReadConfirmed: true,
+          })]);
+          run.notes.push(`Fallback coding input exported: ${fallbackCodingInput.filePath}`);
+        } catch (fallbackError) {
+          const fallbackMessage =
+            fallbackError instanceof Error ? fallbackError.message : String(fallbackError);
+          appendAutomationLogs(run, [createAutomationStepLog({
+            step: "coding_input_export",
+            message: "Fallback coding-input export failed after portal initialization failure.",
+            patientName: workItem.patientIdentity.displayName,
+            found: [],
+            missing: ["coding-input.json"],
+            evidence: [fallbackMessage],
+            safeReadConfirmed: true,
+          })]);
+          run.notes.push(`Fallback coding input export failed: ${fallbackMessage}`);
+        }
       }
       run.completedAt = new Date().toISOString();
       run.resultBundlePath = await writePatientResultBundle(params.outputDir, run);
@@ -751,210 +820,151 @@ export async function executePatientWorkItems(
 
       try {
         const evidenceDir = path.join(params.outputDir, "evidence", workItem.id);
-        const patientResolution = await portalClient.resolvePatient(workItem, evidenceDir);
-        run.matchResult = patientResolution.matchResult;
+        const sharedAccess = await executeSharedPortalAccessWorkflow({
+          batchId: params.batchId,
+          patientRunId: run.runId,
+          workflowDomains: selectedWorkflowDomains,
+          workItem,
+          evidenceDir,
+          portalClient,
+          logger,
+        });
+        run.matchResult = sharedAccess.matchResult;
         appendAutomationLogs(run, ensureCanonicalAutomationLogs({
           workItem,
           matchResult: run.matchResult,
-          logs: patientResolution.stepLogs,
+          logs: sharedAccess.stepLogs,
         }));
-        let extractedDocuments: ExtractedDocument[] = [];
-        let documentTextExportPath: string | null = null;
-
-        if (run.matchResult.status === "EXACT") {
-          run.processingStatus = "DISCOVERING_CHART";
-          run.executionStep = "DISCOVERING_CHART";
-          run.progressPercent = 25;
-          await emitPatientRunUpdate(run, params.outputDir, params.onPatientRunUpdate);
-
-          run.processingStatus = "COLLECTING_EVIDENCE";
-          run.executionStep = "COLLECTING_EVIDENCE";
-          run.progressPercent = 55;
-          await emitPatientRunUpdate(run, params.outputDir, params.onPatientRunUpdate);
-          const discoveryResult = await portalClient.discoverArtifacts(workItem, evidenceDir, {
-            workflowPhase: "file_uploads_only",
-          });
-          run.artifacts = discoveryResult.artifacts;
-          setDocumentInventory(run, discoveryResult.documentInventory);
-          appendAutomationLogs(run, discoveryResult.stepLogs);
-          try {
-            const documentInventoryExport = await writeDocumentInventoryFile({
-              outputDirectory: params.outputDir,
-              patientId: workItem.id,
-              batchId: params.batchId,
-              documentInventory: run.documentInventory,
-            });
-            run.notes.push(`Document inventory exported: ${documentInventoryExport.filePath}`);
-          } catch (error) {
-            const documentInventoryExportError = error instanceof Error ? error.message : String(error);
-            run.notes.push(`Document inventory export failed: ${documentInventoryExportError}`);
-          }
-          run.processingStatus = "RUNNING_QA";
-          run.executionStep = "RUNNING_QA";
-          run.progressPercent = 80;
-          await emitPatientRunUpdate(run, params.outputDir, params.onPatientRunUpdate);
-
-          extractedDocuments = await extractDocumentsFromArtifacts(run.artifacts);
-          try {
-            const documentTextExport = await writeDocumentTextFile({
-              outputDirectory: params.outputDir,
-              patientId: workItem.id,
-              batchId: params.batchId,
-              extractedDocuments,
-            });
-            documentTextExportPath = documentTextExport.filePath;
-            appendAutomationLogs(run, [createAutomationStepLog({
-              step: "document_text_export",
-              message: "Wrote normalized extracted document text for read-only dashboard reference and troubleshooting.",
-              patientName: run.patientName,
-              found: [
-                `documentTextPath:${documentTextExport.filePath}`,
-                `documentCount:${documentTextExport.document.documentCount}`,
-                `orderDocumentCount:${documentTextExport.document.orderDocumentCount}`,
-                `hasAdmissionOrderText:${documentTextExport.document.hasAdmissionOrderText}`,
-              ],
-              missing: documentTextExport.document.hasAdmissionOrderText
-                ? []
-                : ["Admission Order text"],
-              evidence: documentTextExport.document.documents.flatMap((document) => [
-                `[${document.documentIndex}] type=${document.type} source=${document.source} effectiveTextSource=${document.effectiveTextSource} textLength=${document.textLength}`,
-                `[${document.documentIndex}] rawExtractedTextSource=${document.rawExtractedTextSource ?? "none"} textSelectionReason=${document.textSelectionReason ?? "none"}`,
-                `[${document.documentIndex}] domExtractionRejectedReasons=${document.domExtractionRejectedReasons.join(" | ") || "none"}`,
-                `[${document.documentIndex}] preview=${document.textPreview || "none"}`,
-              ]),
-              safeReadConfirmed: true,
-            })]);
-            run.notes.push(`Document text exported: ${documentTextExport.filePath}`);
-          } catch (error) {
-            const documentTextExportError = error instanceof Error ? error.message : String(error);
-            appendAutomationLogs(run, [createAutomationStepLog({
-              step: "document_text_export",
-              message: "Document text export failed; continuing with in-memory extracted document text.",
-              patientName: run.patientName,
-              found: [],
-              missing: ["document-text.json"],
-              evidence: [documentTextExportError],
-              safeReadConfirmed: true,
-            })]);
-            run.notes.push(`Document text export failed: ${documentTextExportError}`);
-          }
-          run.notes.push(`Extracted ${extractedDocuments.length} document(s) for QA evaluation.`);
-          appendAutomationLogs(run, buildExtractionStepLogs({
-            run,
-            extractedDocuments,
-          }));
-
-          const codingContext = await extractDiagnosisCodingContext({
-            extractedDocuments,
+        if (run.matchResult.status === "EXACT" && sharedAccess.portalContexts.length > 0) {
+          const sharedEvidenceContext =
+            sharedAccess.portalContexts.find((portalContext) => portalContext.workflowDomain === "coding") ??
+            sharedAccess.portalContexts[0]!;
+          const sharedEvidenceResult = await runSharedEvidenceWorkflow({
+            context: sharedEvidenceContext,
+            workItem,
+            evidenceDir,
+            outputDir: params.outputDir,
             env,
+            logger,
+            portalClient,
+          });
+          run.artifacts = sharedEvidenceResult.sharedEvidence.artifacts;
+          setDocumentInventory(run, sharedEvidenceResult.sharedEvidence.documentInventory);
+          appendAutomationLogs(run, sharedEvidenceResult.stepLogs);
+
+          if (sharedEvidenceResult.sharedEvidence.documentInventoryExportPath) {
+            run.notes.push(`Document inventory exported: ${sharedEvidenceResult.sharedEvidence.documentInventoryExportPath}`);
+          } else if (sharedEvidenceResult.sharedEvidence.documentInventoryExportError) {
+            run.notes.push(`Document inventory export failed: ${sharedEvidenceResult.sharedEvidence.documentInventoryExportError}`);
+          }
+          if (sharedEvidenceResult.sharedEvidence.documentTextExportPath) {
+            run.notes.push(`Document text exported: ${sharedEvidenceResult.sharedEvidence.documentTextExportPath}`);
+          } else if (sharedEvidenceResult.sharedEvidence.documentTextExportError) {
+            run.notes.push(`Document text export failed: ${sharedEvidenceResult.sharedEvidence.documentTextExportError}`);
+          }
+          if (sharedEvidenceResult.sharedEvidence.referralDocumentSummaryPath) {
+            run.notes.push(`Referral document QA summary persisted: ${sharedEvidenceResult.sharedEvidence.referralDocumentSummaryPath}`);
+          }
+
+          const referralDocumentAvailable = hasReferralDocumentEvidence({
+            artifacts: sharedEvidenceResult.sharedEvidence.artifacts,
+            documentInventory: sharedEvidenceResult.sharedEvidence.documentInventory,
+            extractedDocuments: sharedEvidenceResult.sharedEvidence.extractedDocuments,
           });
           appendAutomationLogs(run, [createAutomationStepLog({
-            step: "diagnosis_code_extract",
-            message:
-              codingContext.icd10Codes.length > 0
-                ? `Extracted ${codingContext.icd10Codes.length} diagnosis code candidate(s) from admission/referral/OASIS text.`
-                : "No ICD-10 code candidates were extracted from admission/referral/OASIS text.",
+            step: "referral_document_check",
+            message: referralDocumentAvailable
+              ? "Referral/admission-order evidence was found in shared chart documents."
+              : "Referral/admission-order evidence was not found; downstream QA and coding workflows will be skipped for this patient.",
             patientName: run.patientName,
             found: [
-              `icd10CodeCount:${codingContext.icd10Codes.length}`,
-              `diagnosisMentionCount:${codingContext.diagnosisMentions.length}`,
-              `diagnosisCodePairCount:${codingContext.canonical.diagnosis_code_pairs.length}`,
-              `extractionConfidence:${codingContext.canonical.extraction_confidence}`,
-              `llmUsed:${codingContext.llmUsed}`,
+              `artifactOrderCount:${sharedEvidenceResult.sharedEvidence.artifacts.filter((artifact) => artifact.artifactType === "PHYSICIAN_ORDERS").length}`,
+              `inventoryOrderCount:${sharedEvidenceResult.sharedEvidence.documentInventory.filter((item) => item.normalizedType === "ORDER").length}`,
+              `extractedOrderCount:${sharedEvidenceResult.sharedEvidence.extractedDocuments.filter((document) => document.type === "ORDER" && document.text.trim().length > 0).length}`,
             ],
-            missing: codingContext.icd10Codes.length > 0 ? [] : ["ICD-10 code candidates"],
-            evidence: codingContext.evidence,
+            missing: referralDocumentAvailable ? [] : ["Referral/admission-order document text"],
+            evidence: sharedEvidenceResult.sharedEvidence.extractedDocuments
+              .filter((document) => document.type === "ORDER")
+              .slice(0, 4)
+              .map((document) =>
+                `${document.metadata.portalLabel ?? "ORDER"}:${document.metadata.sourcePath ?? "in_memory"}:${document.text.slice(0, 180)}`),
             safeReadConfirmed: true,
           })]);
 
-          let codingInputExport:
-            | Awaited<ReturnType<typeof writeCodingInputFile>>
-            | null = null;
-          try {
-            codingInputExport = await writeCodingInputFile({
-              outputDirectory: params.outputDir,
-              patientId: workItem.id,
-              batchId: params.batchId,
-              canonical: codingContext.canonical,
+          if (!referralDocumentAvailable) {
+            const timestamp = new Date().toISOString();
+            const blockedMessage =
+              "Referral/admission-order document text was not found in shared evidence; skipping this patient and continuing to the next.";
+            run.qaOutcome = "MISSING_DOCUMENTS";
+            run.processingStatus = processingStatusForOutcome(run);
+            run.executionStep = "REFERRAL_DOCUMENT_REQUIRED";
+            run.progressPercent = 100;
+            run.errorSummary = blockedMessage;
+            run.notes.push(blockedMessage);
+            run.workflowRuns = selectedWorkflowDomains.reduce(
+              (workflowRuns, workflowDomain) =>
+                upsertWorkflowRun(
+                  workflowRuns,
+                  buildWorkflowRun({
+                    patientRunId: run.runId,
+                    workflowDomain,
+                    status: "BLOCKED",
+                    stepName: "REFERRAL_DOCUMENT_REQUIRED",
+                    message: blockedMessage,
+                    chartUrl:
+                      sharedAccess.portalContexts.find((portalContext) => portalContext.workflowDomain === workflowDomain)?.chartUrl ??
+                      sharedAccess.portalContexts[0]?.chartUrl ??
+                      null,
+                    timestamp,
+                    startedAt: timestamp,
+                    completedAt: timestamp,
+                  }),
+                ),
+              run.workflowRuns,
+            );
+            run.oasisQaSummary = buildOasisQaSummary({
+              workItem,
+              matchResult: run.matchResult,
+              artifacts: run.artifacts,
+              processingStatus: run.processingStatus,
+              documentInventory: run.documentInventory,
             });
-            appendAutomationLogs(run, [createAutomationStepLog({
-              step: "coding_input_export",
-              message:
-                "Wrote read-only diagnosis reference output for dashboard consumption.",
-              patientName: run.patientName,
-              found: [
-                `codingInputPath:${codingInputExport.filePath}`,
-                `diagnosisCount:${countCodingInputDiagnoses(codingInputExport.document)}`,
-                `primaryDiagnosisSelected:${formatPrimaryDiagnosisSelected(codingInputExport.document)}`,
-                `otherDiagnosisCount:${codingInputExport.document.otherDiagnoses.length}`,
-                `codeConfidenceSummary:${summarizeCodeConfidence(codingInputExport.document)}`,
-                `noteCount:${codingInputExport.document.notes.length}`,
-                `primaryDiagnosisCode:${codingInputExport.document.primaryDiagnosis.code || "none"}`,
-              ],
-              missing: [],
-              evidence: [
-                `primaryDiagnosisDescription:${codingInputExport.document.primaryDiagnosis.description || "none"}`,
-                `suggestedOnsetType:${codingInputExport.document.suggestedOnsetType}`,
-                `suggestedSeverity:${codingInputExport.document.suggestedSeverity}`,
-                `comorbidityFlags:${JSON.stringify(codingInputExport.document.comorbidityFlags)}`,
-              ],
-              safeReadConfirmed: true,
-            })]);
-            run.notes.push(`Coding input exported: ${codingInputExport.filePath}`);
-            codingInputExportPath = codingInputExport.filePath;
-          } catch (error) {
-            const exportError = error instanceof Error ? error.message : String(error);
-            appendAutomationLogs(run, [createAutomationStepLog({
-              step: "coding_input_export",
-              message: "Coding input export failed; continuing without exported coding-input.json.",
-              patientName: run.patientName,
-              found: [],
-              missing: ["coding-input.json"],
-              evidence: [exportError],
-              safeReadConfirmed: true,
-            })]);
-            run.notes.push(`Coding input export failed: ${exportError}`);
+            await emitPatientRunUpdate(run, params.outputDir, params.onPatientRunUpdate);
+            continue;
           }
 
-          if (run.artifacts.length > 0) {
-            const firstArtifact = run.artifacts[0]!;
-            firstArtifact.extractedFields = {
-              ...firstArtifact.extractedFields,
-              diagnosisMentionCount: String(codingContext.diagnosisMentions.length),
-              diagnosisMentions: codingContext.diagnosisMentions.join(" | "),
-              diagnosisCodeCount: String(codingContext.icd10Codes.length),
-              diagnosisCodes: codingContext.icd10Codes.join(" | "),
-              diagnosisCodeCategories: codingContext.codeCategories.join(" | "),
-              diagnosisCanonicalJson: JSON.stringify(codingContext.canonical),
-              codingInputPath: codingInputExport?.filePath ?? null,
-              codingInputJson: codingInputExport ? JSON.stringify(codingInputExport.document) : null,
-              reasonForAdmission: codingContext.canonical.reason_for_admission,
-              diagnosisCodePairs: codingContext.canonical.diagnosis_code_pairs
-                .map((pair) => `${pair.diagnosis} => ${pair.code ?? "null"} (${pair.code_source ?? "null"})`)
-                .join(" | "),
-              primaryDiagnosis: codingInputExport?.document.primaryDiagnosis.description ?? null,
-              primaryDiagnosisCode: codingInputExport?.document.primaryDiagnosis.code ?? null,
-              otherDiagnoses: codingInputExport?.document.otherDiagnoses
-                .map((diagnosis) => `${diagnosis.description}${diagnosis.code ? ` (${diagnosis.code})` : ""}`)
-                .join(" | ") ?? "",
-              suggestedOnsetType: codingInputExport?.document.suggestedOnsetType ?? null,
-              suggestedSeverity: codingInputExport?.document.suggestedSeverity != null
-                ? String(codingInputExport.document.suggestedSeverity)
-                : null,
-              comorbidityFlags: codingInputExport
-                ? JSON.stringify(codingInputExport.document.comorbidityFlags)
-                : null,
-              orderedServices: codingContext.canonical.ordered_services.join(" | "),
-              extractionConfidence: codingContext.canonical.extraction_confidence,
-              uncertainDiagnosisItems: codingContext.canonical.uncertain_items.join(" | "),
-              codingLlmUsed: String(codingContext.llmUsed),
-              codingLlmModel: codingContext.llmModel,
-              codingLlmError: codingContext.llmError,
-              documentTextPath: documentTextExportPath,
-            };
+          const qaPortalContext = sharedAccess.portalContexts.find((portalContext) => portalContext.workflowDomain === "qa");
+          if (qaPortalContext) {
+            const qaResult = await runQaWorkflowOrchestrator({
+              context: qaPortalContext,
+              run,
+              workItem,
+              evidenceDir,
+              outputDir: params.outputDir,
+              logger,
+              portalClient,
+              sharedEvidence: sharedEvidenceResult.sharedEvidence,
+            });
+            appendAutomationLogs(run, qaResult.stepLogs);
+            run.notes.push(`QA prefetch result persisted: ${qaResult.workflowResultPath}`);
           }
-          if (codingContext.icd10Codes.length > 0) {
-            run.notes.push(`Diagnosis code candidates: ${codingContext.icd10Codes.join(", ")}`);
+
+          const codingPortalContext = sharedAccess.portalContexts.find((portalContext) => portalContext.workflowDomain === "coding");
+          if (codingPortalContext) {
+            const codingResult = await runCodingWorkflowOrchestrator({
+              context: codingPortalContext,
+              run,
+              workItem,
+              sharedEvidence: sharedEvidenceResult.sharedEvidence,
+              outputDir: params.outputDir,
+              logger,
+              emitRunUpdate: async () => {
+                await emitPatientRunUpdate(run, params.outputDir, params.onPatientRunUpdate);
+              },
+            });
+            appendAutomationLogs(run, codingResult.stepLogs);
+            const codingWorkflowRun = findWorkflowRun(run.workflowRuns, "coding");
+            codingInputExportPath = codingWorkflowRun?.workflowResultPath ?? codingInputExportPath;
           }
         } else {
           run.processingStatus = "RUNNING_QA";
@@ -976,58 +986,63 @@ export async function executePatientWorkItems(
               run.matchResult.note ??
               `Patient lookup ended with non-EXACT status ${run.matchResult.status} before chart discovery.`,
           });
+          const qa = evaluateDeterministicQa({
+            workItem,
+            matchResult: run.matchResult,
+            artifacts: run.artifacts,
+            processingStatus: "BLOCKED",
+            documentInventory: run.documentInventory,
+          });
+          run.findings = qa.findings;
+          run.qaOutcome = qa.qaOutcome;
+          run.processingStatus = "BLOCKED";
+          run.executionStep = "BLOCKED";
+          run.progressPercent = 100;
+          run.oasisQaSummary = buildOasisQaSummary({
+            workItem,
+            matchResult: run.matchResult,
+            artifacts: run.artifacts,
+            processingStatus: run.processingStatus,
+            documentInventory: run.documentInventory,
+          });
+          run.errorSummary = run.matchResult.note ?? `Patient lookup ended with status ${run.matchResult.status}.`;
           await emitPatientRunUpdate(run, params.outputDir, params.onPatientRunUpdate);
         }
 
-        const qa = evaluateDeterministicQa({
-          workItem,
-          matchResult: run.matchResult,
-          artifacts: run.artifacts,
-          processingStatus: "COMPLETE",
-          extractedDocuments,
-          documentInventory: run.documentInventory,
-        });
-
-        run.findings = qa.findings;
-        run.qaOutcome = qa.qaOutcome;
-        run.processingStatus = processingStatusForOutcome(run);
-        run.executionStep = run.processingStatus;
-        run.progressPercent = 100;
-        run.oasisQaSummary = buildOasisQaSummary({
-          workItem,
-          matchResult: run.matchResult,
-          artifacts: run.artifacts,
-          processingStatus: run.processingStatus,
-          extractedDocuments,
-          documentInventory: run.documentInventory,
-        });
-        appendAutomationLogs(run, [{
-          timestamp: new Date().toISOString(),
-          step: "qa_summary",
-          message: `QA summary computed with overallStatus=${run.oasisQaSummary.overallStatus}.`,
-          patientName: run.patientName,
-          urlBefore: null,
-          urlAfter: null,
-          selectorUsed: null,
-          found: run.oasisQaSummary.sections.map((section) => `${section.key}:${section.status}`),
-          missing: run.oasisQaSummary.blockers,
-          openedDocumentLabel: null,
-          openedDocumentUrl: null,
-          evidence: run.oasisQaSummary.blockers,
-          retryCount: 0,
-          safeReadConfirmed: true,
-        }]);
-        run.errorSummary =
-          run.processingStatus === "COMPLETE"
-            ? null
-            : run.notes.at(-1) ??
-              run.matchResult.note ??
-              `Patient run ended with status ${run.processingStatus}.`;
+        if (
+          !selectedWorkflowDomains.includes("coding") &&
+          run.matchResult.status === "EXACT" &&
+          run.processingStatus !== "BLOCKED" &&
+          run.processingStatus !== "FAILED"
+        ) {
+          run.processingStatus = "COMPLETE";
+          run.executionStep = "OASIS_QA_ENTRY_COMPLETE";
+          run.progressPercent = 100;
+          run.errorSummary = null;
+        }
       } catch (error) {
         run.processingStatus = "FAILED";
         run.executionStep = "FAILED";
         run.progressPercent = 100;
         run.qaOutcome = "PORTAL_MISMATCH";
+        run.workflowRuns = selectedWorkflowDomains.reduce(
+          (workflowRuns, workflowDomain) =>
+            upsertWorkflowRun(
+              workflowRuns,
+              buildWorkflowRun({
+                patientRunId: run.runId,
+                workflowDomain,
+                status: "FAILED",
+                stepName: "FAILED",
+                message: error instanceof Error ? error.message : "Unknown batch worker error.",
+                chartUrl: findWorkflowRun(run.workflowRuns, workflowDomain)?.chartUrl ?? null,
+                timestamp: new Date().toISOString(),
+                startedAt: run.startedAt,
+                completedAt: new Date().toISOString(),
+              }),
+            ),
+          run.workflowRuns,
+        );
         run.errorSummary =
           error instanceof Error ? error.message : "Unknown batch worker error.";
         run.notes.push(run.errorSummary);
@@ -1071,7 +1086,7 @@ export async function executePatientWorkItems(
           message: `QA summary computed after worker failure with overallStatus=${run.oasisQaSummary.overallStatus}.`,
         });
       } finally {
-        if (!codingInputExportPath) {
+        if (selectedWorkflowDomains.includes("coding") && !codingInputExportPath) {
           try {
             const fallbackCodingInput = await writeCodingInputFile({
               outputDirectory: params.outputDir,
@@ -1122,6 +1137,17 @@ export async function executePatientWorkItems(
         run.completedAt = new Date().toISOString();
         run.resultBundlePath = await writePatientResultBundle(params.outputDir, run);
         run.bundleAvailable = true;
+        run.workflowRuns = run.workflowRuns.map((workflowRun) =>
+          workflowRun.workflowDomain === "coding" &&
+          workflowRun.status !== "NOT_STARTED" &&
+          run.resultBundlePath
+            ? {
+                ...workflowRun,
+                workflowResultPath: run.resultBundlePath,
+              }
+            : workflowRun,
+        );
+        await writePatientResultBundle(params.outputDir, run);
         await emitPatientRunUpdate(run, params.outputDir, params.onPatientRunUpdate);
         patientRuns.push(run);
       }
@@ -1140,6 +1166,7 @@ export async function runQAForPatient(
     batchId: params.batchId,
     workItems: [params.patient],
     outputDir: params.outputDir,
+    workflowDomains: params.workflowDomains,
     subsidiaryRuntimeConfig: params.subsidiaryRuntimeConfig,
     logger: params.logger,
     portalClient: params.portalClient,
@@ -1209,6 +1236,7 @@ export async function runBatchQA(
     batchId: params.batchId,
     workItems: params.patients,
     outputDir: params.outputDir,
+    workflowDomains: params.workflowDomains,
     subsidiaryRuntimeConfig: params.subsidiaryRuntimeConfig,
     logger,
     portalClient: params.portalClient,
@@ -1273,6 +1301,7 @@ export async function runFinaleBatch(
           batchId: intake.manifest.batchId,
           workItems: intake.workItems,
           outputDir: outputDirectory,
+          workflowDomains: params.workflowDomains,
           subsidiaryRuntimeConfig: params.subsidiaryRuntimeConfig,
           logger,
           portalClient: params.portalClient,

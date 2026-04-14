@@ -1,0 +1,176 @@
+{
+  "selectedEpisode": {
+    "rawLabel": "03/01/2026 - 04/29/2026",
+    "startDate": "2026-03-01",
+    "endDate": "2026-04-29"
+  },
+  "periods": {
+    "first30Days": {
+      "startDate": "2026-03-01",
+      "endDate": "2026-03-30",
+      "totalCards": 2,
+      "countsByType": {
+        "oasis": 1,
+        "sn_visit": 1
+      },
+      "cards": [
+        {
+          "rawText": "OASIS",
+          "title": "OASIS",
+          "eventType": "oasis",
+          "date": "2026-03-01",
+          "billingPeriod": "first30",
+          "timeLabel": null,
+          "clinician": null,
+          "statusLabel": null
+        },
+        {
+          "rawText": "SN Visit 9:00 AM",
+          "title": "SN Visit 9:00 AM",
+          "eventType": "sn_visit",
+          "date": "2026-03-01",
+          "billingPeriod": "first30",
+          "timeLabel": "9:00 AM",
+          "clinician": null,
+          "statusLabel": null
+        }
+      ]
+    },
+    "second30Days": {
+      "startDate": "2026-03-31",
+      "endDate": "2026-04-29",
+      "totalCards": 2,
+      "countsByType": {
+        "pt_visit": 1,
+        "physician_order": 1
+      },
+      "cards": [
+        {
+          "rawText": "PT Visit",
+          "title": "PT Visit",
+          "eventType": "pt_visit",
+          "date": "2026-04-05",
+          "billingPeriod": "second30",
+          "timeLabel": null,
+          "clinician": null,
+          "statusLabel": null
+        },
+        {
+          "rawText": "Phys. Order",
+          "title": "Phys. Order",
+          "eventType": "physician_order",
+          "date": "2026-04-05",
+          "billingPeriod": "second30",
+          "timeLabel": null,
+          "clinician": null,
+          "statusLabel": null
+        }
+      ]
+    },
+    "outsideRange": {
+      "startDate": null,
+      "endDate": null,
+      "totalCards": 1,
+      "countsByType": {
+        "other": 1
+      },
+      "cards": [
+        {
+          "rawText": "Admin Pay",
+          "title": "Admin Pay",
+          "eventType": "other",
+          "date": "2026-05-01",
+          "billingPeriod": "outside",
+          "timeLabel": null,
+          "clinician": null,
+          "statusLabel": null
+        }
+      ]
+    }
+  },
+  "visibleDays": [
+    {
+      "date": "2026-03-01",
+      "rawDateLabel": "03/01/2026",
+      "weekLabel": "Week 1",
+      "billingPeriod": "first30",
+      "visualPeriodHint": "green",
+      "cards": [
+        {
+          "rawText": "OASIS",
+          "title": "OASIS",
+          "eventType": "oasis",
+          "date": "2026-03-01",
+          "billingPeriod": "first30",
+          "timeLabel": null,
+          "clinician": null,
+          "statusLabel": null
+        },
+        {
+          "rawText": "SN Visit 9:00 AM",
+          "title": "SN Visit 9:00 AM",
+          "eventType": "sn_visit",
+          "date": "2026-03-01",
+          "billingPeriod": "first30",
+          "timeLabel": "9:00 AM",
+          "clinician": null,
+          "statusLabel": null
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "date": "2026-04-05",
+      "rawDateLabel": "04/05/2026",
+      "weekLabel": "Week 1",
+      "billingPeriod": "second30",
+      "visualPeriodHint": "blue",
+      "cards": [
+        {
+          "rawText": "PT Visit",
+          "title": "PT Visit",
+          "eventType": "pt_visit",
+          "date": "2026-04-05",
+          "billingPeriod": "second30",
+          "timeLabel": null,
+          "clinician": null,
+          "statusLabel": null
+        },
+        {
+          "rawText": "Phys. Order",
+          "title": "Phys. Order",
+          "eventType": "physician_order",
+          "date": "2026-04-05",
+          "billingPeriod": "second30",
+          "timeLabel": null,
+          "clinician": null,
+          "statusLabel": null
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "date": "2026-05-01",
+      "rawDateLabel": "05/01/2026",
+      "weekLabel": "Week 1",
+      "billingPeriod": "outside",
+      "visualPeriodHint": "other",
+      "cards": [
+        {
+          "rawText": "Admin Pay",
+          "title": "Admin Pay",
+          "eventType": "other",
+          "date": "2026-05-01",
+          "billingPeriod": "outside",
+          "timeLabel": null,
+          "clinician": null,
+          "statusLabel": null
+        }
+      ],
+      "warnings": []
+    }
+  ],
+  "warnings": [
+    "Visible calendar window ends before the selected episode end date; not all episode days are currently visible."
+  ]
+}

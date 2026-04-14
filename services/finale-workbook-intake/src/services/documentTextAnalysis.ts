@@ -53,6 +53,18 @@ function normalizeWhitespace(value: string | null | undefined): string {
   return value?.replace(/\s+/g, " ").trim() ?? "";
 }
 
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function buildPhrasePattern(phrase: string): RegExp {
+  const pattern = phrase
+    .split(/\s+/)
+    .map((part) => escapeRegExp(part))
+    .join("\\s+");
+  return new RegExp(`(?:^|\\b)${pattern}(?=\\b|$)`, "i");
+}
+
 function unique(values: string[]): string[] {
   return [...new Set(values.filter(Boolean))];
 }
@@ -94,8 +106,7 @@ export function extractPossibleIcd10Codes(text: string): string[] {
 
 export function analyzeDocumentText(text: string): DocumentTextAnalysis {
   const normalizedText = normalizeWhitespace(text);
-  const upperText = normalizedText.toUpperCase();
-  const viewerChromePhrases = VIEWER_CHROME_PHRASES.filter((phrase) => upperText.includes(phrase));
+  const viewerChromePhrases = VIEWER_CHROME_PHRASES.filter((phrase) => buildPhrasePattern(phrase).test(normalizedText));
   const clinicalSignalCount = CLINICAL_SIGNAL_PATTERNS.filter((pattern) => pattern.test(normalizedText)).length;
   const possibleIcd10CodeCount = extractPossibleIcd10Codes(normalizedText).length;
   const viewerChromeDetected =

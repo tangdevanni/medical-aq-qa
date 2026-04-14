@@ -64,7 +64,7 @@ export type EffectiveTextSource =
   | "raw_pdf_fallback"
   | "viewer_text_fallback";
 
-type ExtractedTextReadResult = {
+export type LocalFileTextExtractionResult = {
   text: string;
   pdfType: PdfTextKind | null;
   effectiveTextSource: EffectiveTextSource;
@@ -90,12 +90,14 @@ type ExtractedTextReadResult = {
   textractStartError: string | null;
 };
 
+type ExtractedTextReadResult = LocalFileTextExtractionResult;
+
 function createExtractedTextReadResult(
-  input: Partial<ExtractedTextReadResult> & {
+  input: Partial<LocalFileTextExtractionResult> & {
     text: string;
     effectiveTextSource: EffectiveTextSource;
   },
-): ExtractedTextReadResult {
+): LocalFileTextExtractionResult {
   return {
     text: input.text,
     pdfType: input.pdfType ?? null,
@@ -968,7 +970,7 @@ function deriveKeyPhrases(text: string): string[] {
   return tokens.filter((token) => lowercaseText.includes(token));
 }
 
-async function readExtractedText(filePath: string): Promise<ExtractedTextReadResult> {
+export async function extractTextFromLocalFile(filePath: string): Promise<LocalFileTextExtractionResult> {
   const extension = path.extname(filePath).toLowerCase();
   const buffer = await readFile(filePath);
 
@@ -991,7 +993,7 @@ async function readExtractedText(filePath: string): Promise<ExtractedTextReadRes
     const domText = extractPdfText(buffer);
     const pdfType = classifyPdfBuffer(buffer, domText);
     const domAnalysis = analyzeDocumentText(domText);
-    let ocrResult: ExtractedTextReadResult | null = null;
+    let ocrResult: LocalFileTextExtractionResult | null = null;
 
     if (pdfType === "scanned_image_pdf" || !domAnalysis.accepted) {
       ocrResult = await runTextractOcr({
@@ -1117,12 +1119,12 @@ export async function extractDocumentsFromArtifacts(
     let text = "";
     let source: "download" | "artifact_fallback" = "artifact_fallback";
     let effectiveTextSource: EffectiveTextSource = "viewer_text_fallback";
-    let baseReadResult: ExtractedTextReadResult | null = null;
+    let baseReadResult: LocalFileTextExtractionResult | null = null;
 
     if (artifact.downloadPath) {
       try {
         await access(artifact.downloadPath);
-        baseReadResult = await readExtractedText(artifact.downloadPath);
+        baseReadResult = await extractTextFromLocalFile(artifact.downloadPath);
         text = baseReadResult.text;
         source = "download";
         effectiveTextSource = baseReadResult.effectiveTextSource;
@@ -1204,7 +1206,7 @@ export async function extractDocumentsFromArtifacts(
       artifact.downloadPath;
     let admissionDocumentSource: "admission_order_excerpt" | "printed_pdf" = "admission_order_excerpt";
     let admissionEffectiveTextSource: EffectiveTextSource = "viewer_text_fallback";
-    let admissionReadResult: ExtractedTextReadResult | null = null;
+    let admissionReadResult: LocalFileTextExtractionResult | null = null;
     const admissionExcerptRawExtractedTextSource = readRawExtractedTextSource(
       artifact.extractedFields?.rawExtractedTextSource,
     ) ?? "dom";
@@ -1218,7 +1220,7 @@ export async function extractDocumentsFromArtifacts(
     if (capturedPdfPath) {
       try {
         await access(capturedPdfPath);
-        admissionReadResult = await readExtractedText(capturedPdfPath);
+        admissionReadResult = await extractTextFromLocalFile(capturedPdfPath);
         if (admissionReadResult.text) {
           admissionDocumentText = admissionReadResult.text;
           admissionDocumentSource = "printed_pdf";

@@ -19,13 +19,36 @@ import { LoginPage } from "../portal/pages/LoginPage";
 import { PatientChartPage } from "../portal/pages/PatientChartPage";
 import { PatientSearchPage } from "../portal/pages/PatientSearchPage";
 import { createAutomationStepLog } from "../portal/utils/automationLog";
+import type { ResolvedPatientPortalAccess } from "../portal/context/patientPortalContext";
 import type { PortalDebugConfig } from "../portal/utils/locatorResolution";
 import type { OasisLockStateSnapshot } from "../portal/utils/oasisLockStateDetector";
 import { capturePageDebugArtifacts } from "../portal/utils/pageDiagnostics";
 import type { OasisDiagnosisPageSnapshot } from "../portal/utils/oasisDiagnosisInspector";
+import { QaChartDiscoveryService } from "../qa/navigation/qaChartDiscoveryService";
+import type { PatientPortalContext } from "../portal/context/patientPortalContext";
+import type { QaPrefetchResult } from "../qa/types/qaPrefetchResult";
+import type {
+  OasisAssessmentNoteOpenResult,
+  OasisPrintedNoteCaptureOpenResult,
+  OasisMenuOpenResult,
+} from "../oasis/types/oasisQaResult";
+import {
+  selectEpisodeRange,
+  type EpisodeRangeSelectionTarget,
+  type ResolvedEpisodeSelection,
+} from "../oasis/navigation/episodeRangeDropdownService";
+import type { BillingPeriodCalendarSummary } from "../oasis/types/billingPeriodCalendarSummary";
+import { parseBillingPeriodCalendar } from "../oasis/calendar/billingPeriodCalendarParser";
+import type { OasisPrintSectionProfileKey } from "../oasis/print/oasisPrintedNoteProfiles";
 
 export interface BatchPortalAutomationClient {
   initialize(outputDir?: string): Promise<void>;
+  resolvePatientPortalAccess(input: {
+    batchId: string;
+    patientRunId: string;
+    workItem: PatientEpisodeWorkItem;
+    evidenceDir?: string;
+  }): Promise<ResolvedPatientPortalAccess>;
   resolvePatient(workItem: PatientEpisodeWorkItem, evidenceDir?: string): Promise<{
     matchResult: PatientMatchResult;
     stepLogs: AutomationStepLog[];
@@ -63,6 +86,61 @@ export interface BatchPortalAutomationClient {
     fieldsUpdatedCount: number;
     executed: boolean;
     warnings: string[];
+    stepLogs: AutomationStepLog[];
+  }>;
+  runQaPrefetchDiscovery(input: {
+    context: PatientPortalContext;
+    workItem: PatientEpisodeWorkItem;
+    evidenceDir: string;
+  }): Promise<{
+    result: QaPrefetchResult;
+    stepLogs: AutomationStepLog[];
+  }>;
+  openOasisMenuForReview(input: {
+    context: PatientPortalContext;
+    workItem: PatientEpisodeWorkItem;
+    evidenceDir: string;
+  }): Promise<{
+    result: OasisMenuOpenResult;
+    stepLogs: AutomationStepLog[];
+  }>;
+  selectEpisodeRangeForReview(input: {
+    context: PatientPortalContext;
+    workItem: PatientEpisodeWorkItem;
+    evidenceDir: string;
+    target?: EpisodeRangeSelectionTarget | null;
+  }): Promise<{
+    result: ResolvedEpisodeSelection;
+    stepLogs: AutomationStepLog[];
+  }>;
+  extractBillingPeriodCalendarSummaryForReview(input: {
+    context: PatientPortalContext;
+    workItem: PatientEpisodeWorkItem;
+    evidenceDir: string;
+    selectedEpisode: EpisodeRangeSelectionTarget | null;
+  }): Promise<{
+    result: BillingPeriodCalendarSummary;
+    summaryPath: string;
+    stepLogs: AutomationStepLog[];
+  }>;
+  openOasisAssessmentNoteForReview(input: {
+    context: PatientPortalContext;
+    workItem: PatientEpisodeWorkItem;
+    evidenceDir: string;
+    assessmentType: string;
+  }): Promise<{
+    result: OasisAssessmentNoteOpenResult;
+    stepLogs: AutomationStepLog[];
+  }>;
+  captureOasisPrintedNoteForReview(input: {
+    context: PatientPortalContext;
+    workItem: PatientEpisodeWorkItem;
+    evidenceDir: string;
+    assessmentType: string;
+    matchedAssessmentLabel?: string | null;
+    printProfileKey?: OasisPrintSectionProfileKey | null;
+  }): Promise<{
+    result: OasisPrintedNoteCaptureOpenResult;
     stepLogs: AutomationStepLog[];
   }>;
   captureFailureArtifacts(workItemId: string, outputDir: string): Promise<{
@@ -303,6 +381,33 @@ export class PlaywrightBatchQaWorker implements BatchPortalAutomationClient {
     };
   }
 
+  async resolvePatientPortalAccess(input: {
+    batchId: string;
+    patientRunId: string;
+    workItem: PatientEpisodeWorkItem;
+    evidenceDir?: string;
+  }): Promise<ResolvedPatientPortalAccess> {
+    const resolvedAt = new Date().toISOString();
+    const patientResolution = await this.resolvePatient(input.workItem, input.evidenceDir);
+
+    return {
+      patientName: input.workItem.patientIdentity.displayName,
+      patientId: patientResolution.matchResult.portalPatientId,
+      chartUrl:
+        patientResolution.matchResult.status === "EXACT"
+          ? this.currentPatientChartUrl
+          : null,
+      dashboardUrl: this.dashboardUrl,
+      resolvedAt:
+        patientResolution.matchResult.status === "EXACT" && this.currentPatientChartUrl
+          ? resolvedAt
+          : null,
+      traceId: `${input.batchId}:${input.patientRunId}`,
+      matchResult: patientResolution.matchResult,
+      stepLogs: patientResolution.stepLogs,
+    };
+  }
+
   async discoverArtifacts(
     workItem: PatientEpisodeWorkItem,
     evidenceDir: string,
@@ -377,6 +482,169 @@ export class PlaywrightBatchQaWorker implements BatchPortalAutomationClient {
       writeEnabled: options.writeEnabled,
       initialSnapshot: options.initialSnapshot,
     });
+  }
+
+  async runQaPrefetchDiscovery(input: {
+    context: PatientPortalContext;
+    workItem: PatientEpisodeWorkItem;
+    evidenceDir: string;
+  }): Promise<{
+    result: QaPrefetchResult;
+    stepLogs: AutomationStepLog[];
+  }> {
+    if (!this.session) {
+      throw new Error("Playwright batch worker was not initialized.");
+    }
+
+    this.currentDebugDir = path.join(input.evidenceDir, "debug");
+    const service = new QaChartDiscoveryService({
+      page: this.session.page,
+      context: input.context,
+      logger: this.logger,
+    });
+
+    return service.discover();
+  }
+
+  async openOasisMenuForReview(input: {
+    context: PatientPortalContext;
+    workItem: PatientEpisodeWorkItem;
+    evidenceDir: string;
+  }): Promise<{
+    result: OasisMenuOpenResult;
+    stepLogs: AutomationStepLog[];
+  }> {
+    if (!this.session) {
+      throw new Error("Playwright batch worker was not initialized.");
+    }
+
+    this.currentDebugDir = path.join(input.evidenceDir, "debug");
+    const patientChartPage = new PatientChartPage(this.session.page, {
+      logger: this.logger,
+      debugConfig: this.debugConfig,
+      debugDir: this.currentDebugDir,
+    });
+    return patientChartPage.openOasisMenuForReview({
+      chartUrl: this.currentPatientChartUrl ?? input.context.chartUrl,
+    });
+  }
+
+  async openOasisAssessmentNoteForReview(input: {
+    context: PatientPortalContext;
+    workItem: PatientEpisodeWorkItem;
+    evidenceDir: string;
+    assessmentType: string;
+  }): Promise<{
+    result: OasisAssessmentNoteOpenResult;
+    stepLogs: AutomationStepLog[];
+  }> {
+    if (!this.session) {
+      throw new Error("Playwright batch worker was not initialized.");
+    }
+
+    this.currentDebugDir = path.join(input.evidenceDir, "debug");
+    const patientChartPage = new PatientChartPage(this.session.page, {
+      logger: this.logger,
+      debugConfig: this.debugConfig,
+      debugDir: this.currentDebugDir,
+    });
+    return patientChartPage.openOasisAssessmentNoteForReview({
+      chartUrl: this.currentPatientChartUrl ?? input.context.chartUrl,
+      assessmentType: input.assessmentType,
+    });
+  }
+
+  async captureOasisPrintedNoteForReview(input: {
+    context: PatientPortalContext;
+    workItem: PatientEpisodeWorkItem;
+    evidenceDir: string;
+    assessmentType: string;
+    matchedAssessmentLabel?: string | null;
+    printProfileKey?: OasisPrintSectionProfileKey | null;
+  }): Promise<{
+    result: OasisPrintedNoteCaptureOpenResult;
+    stepLogs: AutomationStepLog[];
+  }> {
+    if (!this.session) {
+      throw new Error("Playwright batch worker was not initialized.");
+    }
+
+    this.currentDebugDir = path.join(input.evidenceDir, "debug");
+    const patientChartPage = new PatientChartPage(this.session.page, {
+      logger: this.logger,
+      debugConfig: this.debugConfig,
+      debugDir: this.currentDebugDir,
+    });
+    return patientChartPage.captureOasisPrintedNoteForReview({
+      chartUrl: this.currentPatientChartUrl ?? input.context.chartUrl,
+      evidenceDir: input.evidenceDir,
+      assessmentType: input.assessmentType,
+      matchedAssessmentLabel: input.matchedAssessmentLabel,
+      printProfileKey: input.printProfileKey,
+    });
+  }
+
+  async selectEpisodeRangeForReview(input: {
+    context: PatientPortalContext;
+    workItem: PatientEpisodeWorkItem;
+    evidenceDir: string;
+    target?: EpisodeRangeSelectionTarget | null;
+  }): Promise<{
+    result: ResolvedEpisodeSelection;
+    stepLogs: AutomationStepLog[];
+  }> {
+    if (!this.session) {
+      throw new Error("Playwright batch worker was not initialized.");
+    }
+
+    this.currentDebugDir = path.join(input.evidenceDir, "debug");
+    return selectEpisodeRange({
+      page: this.session.page,
+      logger: this.logger,
+      context: input.context,
+      workflowRunId: `${input.context.patientRunId}:${input.context.workflowDomain}`,
+      debugConfig: this.debugConfig,
+      target: input.target,
+    });
+  }
+
+  async extractBillingPeriodCalendarSummaryForReview(input: {
+    context: PatientPortalContext;
+    workItem: PatientEpisodeWorkItem;
+    evidenceDir: string;
+    selectedEpisode: EpisodeRangeSelectionTarget | null;
+  }): Promise<{
+    result: BillingPeriodCalendarSummary;
+    summaryPath: string;
+    stepLogs: AutomationStepLog[];
+  }> {
+    if (!this.session) {
+      throw new Error("Playwright batch worker was not initialized.");
+    }
+
+    this.currentDebugDir = path.join(input.evidenceDir, "debug");
+    const parsed = await parseBillingPeriodCalendar({
+      page: this.session.page,
+      logger: this.logger,
+      context: input.context,
+      workflowRunId: `${input.context.patientRunId}:${input.context.workflowDomain}`,
+      outputDirectory: input.evidenceDir,
+      debugConfig: this.debugConfig,
+      selectedEpisode: input.selectedEpisode
+        ? {
+            rawLabel: input.selectedEpisode.rawLabel ?? [input.selectedEpisode.startDate, input.selectedEpisode.endDate].filter(Boolean).join(" - "),
+            startDate: input.selectedEpisode.startDate ?? null,
+            endDate: input.selectedEpisode.endDate ?? null,
+            isSelected: true,
+          }
+        : null,
+    });
+
+    return {
+      result: parsed.summary,
+      summaryPath: parsed.summaryPath,
+      stepLogs: parsed.stepLogs,
+    };
   }
 
   async captureFailureArtifacts(
