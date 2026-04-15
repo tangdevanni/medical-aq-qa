@@ -1,0 +1,309 @@
+{
+  "patient_context": {
+    "patient_name": "SPEAR, LINDA M",
+    "dob": "08/26/1951",
+    "soc_date": "2026-02-18",
+    "referral_date": null
+  },
+  "facts": [
+    {
+      "fact_key": "recent_hospitalization_discharge_date",
+      "category": "hospitalization",
+      "value": "12/17/2025",
+      "confidence": 0.9,
+      "evidence_spans": [
+        "12/17/2025"
+      ],
+      "rationale": "Recent discharge date was identified in referral or hospitalization history.",
+      "source_sections": [
+        "hospitalization_history"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "caregiver_name",
+      "category": "caregiver",
+      "value": "Mailman, Andrew",
+      "confidence": 0.88,
+      "evidence_spans": [
+        "Mailman, Andrew"
+      ],
+      "rationale": "Caregiver name was identified in referral caregiver evidence.",
+      "source_sections": [
+        "caregiver_support"
+      ],
+      "requires_human_review": false
+    },
+    {
+      "fact_key": "caregiver_relationship",
+      "category": "caregiver",
+      "value": "Friend",
+      "confidence": 0.85,
+      "evidence_spans": [
+        "Friend"
+      ],
+      "rationale": "Caregiver relationship was identified in referral caregiver evidence.",
+      "source_sections": [
+        "caregiver_support"
+      ],
+      "requires_human_review": false
+    },
+    {
+      "fact_key": "caregiver_phone",
+      "category": "caregiver",
+      "value": "7252209272",
+      "confidence": 0.8,
+      "evidence_spans": [
+        "7252209272"
+      ],
+      "rationale": "Caregiver phone number was identified in referral caregiver evidence.",
+      "source_sections": [
+        "caregiver_support"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "code_status",
+      "category": "directive",
+      "value": "full_code",
+      "confidence": 0.75,
+      "evidence_spans": [
+        "Code status: full_code"
+      ],
+      "rationale": "Code status was explicitly stated in referral text.",
+      "source_sections": [
+        "code_status",
+        "advance_directives"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "order_summary",
+      "category": "medical_necessity",
+      "value": "Report User: Derrick Miller Time: 12:42:23 PT Resident: SPEAR, LINDA M (20330) Order Category: Dietary Diet,",
+      "confidence": 0.82,
+      "evidence_spans": [
+        "Report User: Derrick Miller Time: 12:42:23 PT Resident: SPEAR, LINDA M (20330) Order Category: Dietary Diet,"
+      ],
+      "rationale": "Order summary was extracted from referral instructions.",
+      "source_sections": [
+        "primary_reason_for_home_health",
+        "medical_necessity"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "medical_necessity_summary",
+      "category": "medical_necessity",
+      "value": "Report User: Derrick Miller Time: 12:42:23 PT Resident: SPEAR, LINDA M (20330) Order Category: Dietary Diet,",
+      "confidence": 0.78,
+      "evidence_spans": [
+        "Report User: Derrick Miller Time: 12:42:23 PT Resident: SPEAR, LINDA M (20330) Order Category: Dietary Diet,"
+      ],
+      "rationale": "Medical necessity was summarized from referral narrative and skilled-need evidence.",
+      "source_sections": [
+        "primary_reason_for_home_health",
+        "medical_necessity"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "living_situation",
+      "category": "living_situation",
+      "value": "TLC Care Center",
+      "confidence": 0.72,
+      "evidence_spans": [
+        "TLC Care Center"
+      ],
+      "rationale": "Living situation was summarized from referral text.",
+      "source_sections": [
+        "living_situation"
+      ],
+      "requires_human_review": false
+    },
+    {
+      "fact_key": "functional_limitations",
+      "category": "functional",
+      "value": [
+        "weakness",
+        "difficulty_walking"
+      ],
+      "confidence": 0.76,
+      "evidence_spans": [
+        "MUSCLE WEAKNESS (GENERALIZED) DIFFICULTY IN WALKING, NOT ELSEWHERE CLASSIFIED ELSEWHERE(D84.81), MUSCLE WEAKNESS (GENERALIZED)(M62.81), DIFFICULTY IN WALKING, NOT ELSEWHERE CLASSIFIED(R26.2), COGNITIVE Weakness improved"
+      ],
+      "rationale": "Functional limitations were extracted from referral text.",
+      "source_sections": [
+        "functional_limitations"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "therapy_need",
+      "category": "therapy",
+      "value": "physical therapy and and occupational therapy. PT/OT, brace education",
+      "confidence": 0.77,
+      "evidence_spans": [
+        "physical therapy and and occupational therapy. PT/OT, brace education"
+      ],
+      "rationale": "Therapy need was summarized from referral text.",
+      "source_sections": [
+        "therapy_need"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "fall_risk_narrative",
+      "category": "risk",
+      "value": "FALL ON SAME LEVEL, UNSPECIFIED, SUBSEQUENT ENCOUNTER Fall, initial encounter [W19.XXXA] Fall, initial encounter MUSCLE WEAKNESS (GENERALIZED) DIFFICULTY IN WALKING, NOT ELSEWHERE CLASSIFIED ELSEWHERE(D84.81), MUSCLE WEAKNESS (GENERALIZED)(M62.81), DIFFICULTY IN WALKING, NOT ELSEWHERE CLASSIFIED(R26.2), COGNITIVE",
+      "confidence": 0.7,
+      "evidence_spans": [
+        "FALL ON SAME LEVEL, UNSPECIFIED, SUBSEQUENT ENCOUNTER Fall, initial encounter [W19.XXXA] Fall, initial encounter MUSCLE WEAKNESS (GENERALIZED) DIFFICULTY IN WALKING, NOT ELSEWHERE CLASSIFIED ELSEWHERE(D84.81), MUSCLE WEA"
+      ],
+      "rationale": "Risk and safety narrative was summarized from referral text.",
+      "source_sections": [
+        "risk_factors",
+        "functional_limitations"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "skilled_interventions",
+      "category": "therapy",
+      "value": "physical therapy and and occupational therapy. PT/OT, brace education",
+      "confidence": 0.8,
+      "evidence_spans": [
+        "physical therapy and and occupational therapy. PT/OT, brace education"
+      ],
+      "rationale": "Skilled interventions were summarized from the therapy plan.",
+      "source_sections": [
+        "therapy_need"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "plan_for_next_visit",
+      "category": "therapy",
+      "value": "physical therapy and and occupational therapy. PT/OT, brace education",
+      "confidence": 0.78,
+      "evidence_spans": [
+        "physical therapy and and occupational therapy. PT/OT, brace education"
+      ],
+      "rationale": "Next-visit plan was summarized from the therapy plan.",
+      "source_sections": [
+        "therapy_need"
+      ],
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [
+    {
+      "description": "T12 VERTEBRA, SUBSEQUENT",
+      "icd10_code": "T11",
+      "confidence": 0.74,
+      "source_spans": [
+        "T11-T12 VERTEBRA, SUBSEQUENT"
+      ],
+      "is_primary_candidate": true,
+      "requires_human_review": true
+    },
+    {
+      "description": "T12 VERTEBRA, SUBSEQUENT ENCOUNTER FOR FRACTURE WITH ROUTINE",
+      "icd10_code": "T11",
+      "confidence": 0.74,
+      "source_spans": [
+        "T11-T12 VERTEBRA, SUBSEQUENT ENCOUNTER FOR FRACTURE WITH ROUTINE"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Dietary Diet",
+      "icd10_code": "T81.42XA",
+      "confidence": 0.74,
+      "source_spans": [
+        "T81.42XA) Dietary Diet"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Aftercare following joint replacement surgery, unspecified joint",
+      "icd10_code": "Z47.1",
+      "confidence": 0.74,
+      "source_spans": [
+        "Z47.1: Aftercare following joint replacement surgery, unspecified joint"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Pressure ulcer of sacral region, stage 4",
+      "icd10_code": "L89.154",
+      "confidence": 0.74,
+      "source_spans": [
+        "L89.154: Pressure ulcer of sacral region, stage 4"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Disruption of external operation (surgical) wound, not elsewhere classified, subsequent encounter",
+      "icd10_code": "T81.31XD",
+      "confidence": 0.74,
+      "source_spans": [
+        "T81.31XD: Disruption of external operation (surgical) wound, not elsewhere classified, subsequent encounter"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Type 1 diabetes mellitus without complications",
+      "icd10_code": "E10.9",
+      "confidence": 0.74,
+      "source_spans": [
+        "E10.9: Type 1 diabetes mellitus without complications"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Immunodeficiency due to conditions classified elsewhere",
+      "icd10_code": "D84.81",
+      "confidence": 0.74,
+      "source_spans": [
+        "D84.81: Immunodeficiency due to conditions classified elsewhere"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    }
+  ],
+  "caregiver_candidates": [
+    {
+      "caregiver_name": "Mailman, Andrew",
+      "caregiver_relationship": "Friend",
+      "caregiver_phone": "7252209272"
+    }
+  ],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "preferred_language",
+    "interpreter_needed",
+    "homebound_narrative",
+    "homebound_supporting_factors",
+    "recent_hospitalization_facility",
+    "patient_summary_narrative",
+    "discipline_frequencies",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status"
+  ],
+  "warnings": [
+    "Deterministic referral facts extraction was used."
+  ]
+}

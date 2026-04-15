@@ -1,0 +1,297 @@
+[
+  {
+    "sectionName": "patient_identity",
+    "extractedTextSpans": [
+      "Patient Name: Janice Harper",
+      "DOB / Age:",
+      "DOB: 03/23/1948",
+      "DOB: 03/23/1948",
+      "DOB: 03/23/1948",
+      "DOB:03/23/1948 Visit Date: 04/08/2026 11:00AM",
+      "DOB:03/23/1948 Visit Date: 04/08/2026 11:00AM"
+    ],
+    "normalizedSummary": "Patient Name: Janice Harper DOB / Age: DOB: 03/23/1948",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 18,
+        "lineEnd": 18,
+        "charStart": 369,
+        "charEnd": 396
+      },
+      {
+        "lineStart": 111,
+        "lineEnd": 111,
+        "charStart": 3272,
+        "charEnd": 3282
+      },
+      {
+        "lineStart": 154,
+        "lineEnd": 154,
+        "charStart": 3949,
+        "charEnd": 3964
+      },
+      {
+        "lineStart": 156,
+        "lineEnd": 156,
+        "charStart": 3973,
+        "charEnd": 3988
+      },
+      {
+        "lineStart": 187,
+        "lineEnd": 187,
+        "charStart": 4431,
+        "charEnd": 4446
+      },
+      {
+        "lineStart": 229,
+        "lineEnd": 229,
+        "charStart": 5709,
+        "charEnd": 5754
+      },
+      {
+        "lineStart": 271,
+        "lineEnd": 271,
+        "charStart": 7927,
+        "charEnd": 7972
+      }
+    ]
+  },
+  {
+    "sectionName": "referral_metadata",
+    "extractedTextSpans": [
+      "Referral",
+      "Referral Source Information:",
+      "THANK YOU FOR YOUR REFERRAL!!!"
+    ],
+    "normalizedSummary": "Referral Referral Source Information: THANK YOU FOR YOUR REFERRAL!!!",
+    "confidence": 0.95,
+    "lineReferences": [
+      {
+        "lineStart": 5,
+        "lineEnd": 5,
+        "charStart": 80,
+        "charEnd": 88
+      },
+      {
+        "lineStart": 13,
+        "lineEnd": 13,
+        "charStart": 229,
+        "charEnd": 257
+      },
+      {
+        "lineStart": 47,
+        "lineEnd": 47,
+        "charStart": 1124,
+        "charEnd": 1154
+      }
+    ]
+  },
+  {
+    "sectionName": "hospitalization_history",
+    "extractedTextSpans": [
+      "as redness, swelling, opening of the wound or any kind of discharge, Dr.Khavkin and his"
+    ],
+    "normalizedSummary": "as redness, swelling, opening of the wound or any kind of discharge, Dr.Khavkin and his",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 77,
+        "lineEnd": 77,
+        "charStart": 2431,
+        "charEnd": 2518
+      }
+    ]
+  },
+  {
+    "sectionName": "medical_necessity",
+    "extractedTextSpans": [
+      "Skilled Nursing"
+    ],
+    "normalizedSummary": "Skilled Nursing",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 23,
+        "lineEnd": 23,
+        "charStart": 559,
+        "charEnd": 574
+      }
+    ]
+  },
+  {
+    "sectionName": "homebound_evidence",
+    "extractedTextSpans": [
+      "Gait and Station: normal gait and stance; ambulation did not require cane; ambulation did not require walker; no"
+    ],
+    "normalizedSummary": "Gait and Station: normal gait and stance; ambulation did not require cane; ambulation did not require walker; no",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 223,
+        "lineEnd": 223,
+        "charStart": 5432,
+        "charEnd": 5544
+      }
+    ]
+  },
+  {
+    "sectionName": "diagnoses",
+    "extractedTextSpans": [
+      "Primary Diagnosis (ICD 10): 798.1 post SX care - TLIF L5-S1 04/09/2026"
+    ],
+    "normalizedSummary": "Primary Diagnosis (ICD 10): 798.1 post SX care - TLIF L5-S1 04/09/2026",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 21,
+        "lineEnd": 21,
+        "charStart": 434,
+        "charEnd": 504
+      }
+    ]
+  },
+  {
+    "sectionName": "medications",
+    "extractedTextSpans": [
+      "Medication Management",
+      "- Medication List",
+      "Allergies",
+      "No known active allergies"
+    ],
+    "normalizedSummary": "Medication Management - Medication List Allergies",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 24,
+        "lineEnd": 24,
+        "charStart": 575,
+        "charEnd": 596
+      },
+      {
+        "lineStart": 46,
+        "lineEnd": 46,
+        "charStart": 1106,
+        "charEnd": 1123
+      },
+      {
+        "lineStart": 202,
+        "lineEnd": 202,
+        "charStart": 4792,
+        "charEnd": 4801
+      },
+      {
+        "lineStart": 203,
+        "lineEnd": 203,
+        "charStart": 4802,
+        "charEnd": 4827
+      }
+    ]
+  },
+  {
+    "sectionName": "functional_limitations",
+    "extractedTextSpans": [
+      "swallowing, signs of infection or any numbness, tingling or weakness in the extremities.",
+      "Gait and Station: normal gait and stance; ambulation did not require cane; ambulation did not require walker; no"
+    ],
+    "normalizedSummary": "swallowing, signs of infection or any numbness, tingling or weakness in the extremities. Gait and Station: normal gait and stance; ambulation did not require cane; ambulation did not require walker; no",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 81,
+        "lineEnd": 81,
+        "charStart": 2648,
+        "charEnd": 2736
+      },
+      {
+        "lineStart": 223,
+        "lineEnd": 223,
+        "charStart": 5432,
+        "charEnd": 5544
+      }
+    ]
+  },
+  {
+    "sectionName": "therapy_need",
+    "extractedTextSpans": [
+      "Physical Therapy",
+      "Occupational Therapy",
+      "physical therapy on the extremities without working on the area of",
+      "physical therapy"
+    ],
+    "normalizedSummary": "Physical Therapy Occupational Therapy physical therapy on the extremities without working on the area of",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 31,
+        "lineEnd": 31,
+        "charStart": 666,
+        "charEnd": 682
+      },
+      {
+        "lineStart": 32,
+        "lineEnd": 32,
+        "charStart": 683,
+        "charEnd": 703
+      },
+      {
+        "lineStart": 83,
+        "lineEnd": 83,
+        "charStart": 2758,
+        "charEnd": 2824
+      },
+      {
+        "lineStart": 87,
+        "lineEnd": 87,
+        "charStart": 2898,
+        "charEnd": 2914
+      }
+    ]
+  },
+  {
+    "sectionName": "risk_factors",
+    "extractedTextSpans": [
+      "Steri-Strips usually fall off about two weeks after the surgery or Dr."
+    ],
+    "normalizedSummary": "Steri-Strips usually fall off about two weeks after the surgery or Dr.",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 63,
+        "lineEnd": 63,
+        "charStart": 1769,
+        "charEnd": 1839
+      }
+    ]
+  },
+  {
+    "sectionName": "other_clinical_notes",
+    "extractedTextSpans": [
+      "- Recent H&P or recent progress notes",
+      "Assessment and Plan",
+      "Plan"
+    ],
+    "normalizedSummary": "- Recent H&P or recent progress notes Assessment and Plan Plan",
+    "confidence": 0.95,
+    "lineReferences": [
+      {
+        "lineStart": 45,
+        "lineEnd": 45,
+        "charStart": 1068,
+        "charEnd": 1105
+      },
+      {
+        "lineStart": 259,
+        "lineEnd": 259,
+        "charStart": 7567,
+        "charEnd": 7586
+      },
+      {
+        "lineStart": 263,
+        "lineEnd": 263,
+        "charStart": 7669,
+        "charEnd": 7673
+      }
+    ]
+  }
+]

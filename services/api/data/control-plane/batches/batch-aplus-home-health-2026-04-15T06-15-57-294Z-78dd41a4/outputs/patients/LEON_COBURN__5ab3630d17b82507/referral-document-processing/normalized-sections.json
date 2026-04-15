@@ -1,0 +1,284 @@
+[
+  {
+    "sectionName": "patient_identity",
+    "extractedTextSpans": [
+      "Patient Name: Leon Coburn",
+      "DOB:",
+      "DOB:"
+    ],
+    "normalizedSummary": "Patient Name: Leon Coburn DOB: DOB:",
+    "confidence": 0.95,
+    "lineReferences": [
+      {
+        "lineStart": 15,
+        "lineEnd": 15,
+        "charStart": 277,
+        "charEnd": 302
+      },
+      {
+        "lineStart": 125,
+        "lineEnd": 125,
+        "charStart": 2214,
+        "charEnd": 2218
+      },
+      {
+        "lineStart": 276,
+        "lineEnd": 276,
+        "charStart": 6396,
+        "charEnd": 6400
+      }
+    ]
+  },
+  {
+    "sectionName": "referral_metadata",
+    "extractedTextSpans": [
+      "Referral",
+      "Referral Source Information:",
+      "THANK YOU FOR YOUR REFERRAL!!!"
+    ],
+    "normalizedSummary": "Referral Referral Source Information: THANK YOU FOR YOUR REFERRAL!!!",
+    "confidence": 0.95,
+    "lineReferences": [
+      {
+        "lineStart": 3,
+        "lineEnd": 3,
+        "charStart": 34,
+        "charEnd": 42
+      },
+      {
+        "lineStart": 10,
+        "lineEnd": 10,
+        "charStart": 174,
+        "charEnd": 202
+      },
+      {
+        "lineStart": 44,
+        "lineEnd": 44,
+        "charStart": 1018,
+        "charEnd": 1048
+      }
+    ]
+  },
+  {
+    "sectionName": "medical_necessity",
+    "extractedTextSpans": [
+      "Skilled Nursing"
+    ],
+    "normalizedSummary": "Skilled Nursing",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 20,
+        "lineEnd": 20,
+        "charStart": 443,
+        "charEnd": 458
+      }
+    ]
+  },
+  {
+    "sectionName": "diagnoses",
+    "extractedTextSpans": [
+      "Primary Diagnosis: osteoantritis Bilat Showlders",
+      "Associated diagnosis: Shoulder Pain",
+      "Diagnosis discussed at length with patient all questions were answered."
+    ],
+    "normalizedSummary": "Primary Diagnosis: osteoantritis Bilat Showlders Associated diagnosis: Shoulder Pain Diagnosis discussed at length with patient all questions were answered.",
+    "confidence": 0.95,
+    "lineReferences": [
+      {
+        "lineStart": 18,
+        "lineEnd": 18,
+        "charStart": 340,
+        "charEnd": 388
+      },
+      {
+        "lineStart": 234,
+        "lineEnd": 234,
+        "charStart": 4666,
+        "charEnd": 4701
+      },
+      {
+        "lineStart": 312,
+        "lineEnd": 312,
+        "charStart": 8083,
+        "charEnd": 8154
+      }
+    ]
+  },
+  {
+    "sectionName": "medications",
+    "extractedTextSpans": [
+      "Medication Management",
+      "- Medication List",
+      "Pharmacy Information",
+      "Allergies",
+      "No known drug allergies",
+      "Plan: Prescription Medication Management.",
+      "OTC Medication: Recommend over the counter medication PRN"
+    ],
+    "normalizedSummary": "Medication Management - Medication List Pharmacy Information",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 21,
+        "lineEnd": 21,
+        "charStart": 459,
+        "charEnd": 480
+      },
+      {
+        "lineStart": 43,
+        "lineEnd": 43,
+        "charStart": 1000,
+        "charEnd": 1017
+      },
+      {
+        "lineStart": 110,
+        "lineEnd": 110,
+        "charStart": 1976,
+        "charEnd": 1996
+      },
+      {
+        "lineStart": 135,
+        "lineEnd": 135,
+        "charStart": 2416,
+        "charEnd": 2425
+      },
+      {
+        "lineStart": 138,
+        "lineEnd": 138,
+        "charStart": 2489,
+        "charEnd": 2512
+      },
+      {
+        "lineStart": 308,
+        "lineEnd": 308,
+        "charStart": 7895,
+        "charEnd": 7936
+      },
+      {
+        "lineStart": 309,
+        "lineEnd": 309,
+        "charStart": 7937,
+        "charEnd": 7994
+      }
+    ]
+  },
+  {
+    "sectionName": "therapy_need",
+    "extractedTextSpans": [
+      "Physical Therapy",
+      "Occupational Therapy",
+      "physical therapy, and"
+    ],
+    "normalizedSummary": "Physical Therapy Occupational Therapy physical therapy, and",
+    "confidence": 0.95,
+    "lineReferences": [
+      {
+        "lineStart": 27,
+        "lineEnd": 27,
+        "charStart": 548,
+        "charEnd": 564
+      },
+      {
+        "lineStart": 28,
+        "lineEnd": 28,
+        "charStart": 565,
+        "charEnd": 585
+      },
+      {
+        "lineStart": 291,
+        "lineEnd": 291,
+        "charStart": 7020,
+        "charEnd": 7041
+      }
+    ]
+  },
+  {
+    "sectionName": "risk_factors",
+    "extractedTextSpans": [
+      "when evaluating effectiveness of the injection, and for safety purposes to minimize risk of bleeding or injury to"
+    ],
+    "normalizedSummary": "when evaluating effectiveness of the injection, and for safety purposes to minimize risk of bleeding or injury to",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 258,
+        "lineEnd": 258,
+        "charStart": 5767,
+        "charEnd": 5880
+      }
+    ]
+  },
+  {
+    "sectionName": "other_clinical_notes",
+    "extractedTextSpans": [
+      "- Recent H&P or recent progress notes",
+      "Visit Note - March 19, 2026",
+      "Impression/Plan:",
+      "Plan: Subacromial Steroid Bursal Injection.",
+      "Visit Note - March 19, 2026",
+      "Plan: Separate and Identifiable Documentation.",
+      "Plan: Counseling - Shoulder DJD.",
+      "Plan: Prescription Medication Management.",
+      "Plan: Recommendations."
+    ],
+    "normalizedSummary": "- Recent H&P or recent progress notes Visit Note - March 19, 2026 Impression/Plan:",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 42,
+        "lineEnd": 42,
+        "charStart": 962,
+        "charEnd": 999
+      },
+      {
+        "lineStart": 122,
+        "lineEnd": 122,
+        "charStart": 2173,
+        "charEnd": 2200
+      },
+      {
+        "lineStart": 222,
+        "lineEnd": 222,
+        "charStart": 4348,
+        "charEnd": 4364
+      },
+      {
+        "lineStart": 237,
+        "lineEnd": 237,
+        "charStart": 4741,
+        "charEnd": 4784
+      },
+      {
+        "lineStart": 273,
+        "lineEnd": 273,
+        "charStart": 6355,
+        "charEnd": 6382
+      },
+      {
+        "lineStart": 287,
+        "lineEnd": 287,
+        "charStart": 6732,
+        "charEnd": 6778
+      },
+      {
+        "lineStart": 288,
+        "lineEnd": 288,
+        "charStart": 6779,
+        "charEnd": 6811
+      },
+      {
+        "lineStart": 308,
+        "lineEnd": 308,
+        "charStart": 7895,
+        "charEnd": 7936
+      },
+      {
+        "lineStart": 310,
+        "lineEnd": 310,
+        "charStart": 7995,
+        "charEnd": 8017
+      }
+    ]
+  }
+]

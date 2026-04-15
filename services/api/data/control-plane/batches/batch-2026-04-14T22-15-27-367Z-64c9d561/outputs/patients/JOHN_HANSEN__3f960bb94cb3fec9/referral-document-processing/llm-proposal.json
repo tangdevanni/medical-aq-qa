@@ -1,0 +1,88 @@
+{
+  "patient_context": {
+    "patient_name": "HANSEN JR, JOHN",
+    "dob": "03/04/1947",
+    "soc_date": "2026-03-24",
+    "referral_date": null
+  },
+  "proposed_field_values": [
+    {
+      "field_key": "code_status",
+      "proposed_value": "full_code",
+      "confidence": 0.75,
+      "source_spans": [
+        "Code status: full_code"
+      ],
+      "rationale": "Code status was explicitly stated in referral text.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "homebound_supporting_factors",
+      "proposed_value": [
+        "uses_walker"
+      ],
+      "confidence": 0.73,
+      "source_spans": [
+        "[x] Requires assistive device: wheelchair, walker and/or assistance of another person to leave home"
+      ],
+      "rationale": "Homebound supporting factors were extracted from referral text.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "living_situation",
+      "proposed_value": "his family. FAMILY HISTORY",
+      "confidence": 0.72,
+      "source_spans": [
+        "his family. FAMILY HISTORY"
+      ],
+      "rationale": "Living situation was summarized from referral text.",
+      "requires_human_review": false
+    },
+    {
+      "field_key": "therapy_need",
+      "proposed_value": "PT/OT will continue to work with patient",
+      "confidence": 0.77,
+      "source_spans": [
+        "PT/OT will continue to work with patient"
+      ],
+      "rationale": "Therapy need was summarized from referral text.",
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "preferred_language",
+    "interpreter_needed",
+    "recent_hospitalization_discharge_date",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "order_summary",
+    "medical_necessity_summary",
+    "functional_limitations",
+    "primary_reason_for_home_health_medical_necessity",
+    "admit_reason_to_home_health",
+    "prior_functioning",
+    "patient_summary_narrative",
+    "skilled_interventions",
+    "discipline_frequencies",
+    "plan_for_next_visit",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status",
+    "homebound_narrative",
+    "fall_risk_narrative"
+  ],
+  "warnings": [
+    "Deterministic referral facts extraction was used.",
+    "Rejected noisy or unsupported referral proposals for fields: homebound_narrative, fall_risk_narrative."
+  ]
+}

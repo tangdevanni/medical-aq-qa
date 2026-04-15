@@ -389,6 +389,18 @@ export class PlaywrightBatchQaWorker implements BatchPortalAutomationClient {
   }): Promise<ResolvedPatientPortalAccess> {
     const resolvedAt = new Date().toISOString();
     const patientResolution = await this.resolvePatient(input.workItem, input.evidenceDir);
+    let portalAdmissionStatus: string | null = null;
+
+    if (patientResolution.matchResult.status === "EXACT" && this.session) {
+      const patientChartPage = new PatientChartPage(this.session.page, {
+        logger: this.logger,
+        debugConfig: this.debugConfig,
+        debugDir: this.currentDebugDir ?? undefined,
+      });
+      const statusProbe = await patientChartPage.readPatientAdmissionStatus();
+      portalAdmissionStatus = statusProbe.statusLabel;
+      patientResolution.stepLogs.push(...statusProbe.stepLogs);
+    }
 
     return {
       patientName: input.workItem.patientIdentity.displayName,
@@ -402,6 +414,7 @@ export class PlaywrightBatchQaWorker implements BatchPortalAutomationClient {
         patientResolution.matchResult.status === "EXACT" && this.currentPatientChartUrl
           ? resolvedAt
           : null,
+      portalAdmissionStatus,
       traceId: `${input.batchId}:${input.patientRunId}`,
       matchResult: patientResolution.matchResult,
       stepLogs: patientResolution.stepLogs,

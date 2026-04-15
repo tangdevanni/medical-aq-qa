@@ -1,18 +1,25 @@
 import { randomUUID } from "node:crypto";
 import path from "node:path";
 import type {
+  AgencyDashboardSnapshot,
+  Agency,
   BatchManifest,
   BatchSummary,
+  DashboardPatientRecord,
   ParserException,
+  PatientQueueArtifact,
   PatientEpisodeWorkItem,
   PatientMatchResult,
   PatientRunLog,
   PatientRun,
+  ReviewWindow,
   SubsidiaryRecord,
+  WorkbookSource,
 } from "@medical-ai-qa/shared-types";
 import {
   buildOasisQaSummary,
   createBatchSummary,
+  createReviewWindow,
   createDefaultWorkflowRuns,
   executePatientWorkItems,
   intakeWorkbook,
@@ -26,13 +33,17 @@ import type { FilesystemBatchRepository } from "../repositories/filesystemBatchR
 import type { FilesystemScheduledRunRepository } from "../repositories/filesystemScheduledRunRepository";
 import type { BatchRecord } from "../types/batchControlPlane";
 import type { ScheduledRunRecord } from "../types/scheduledRun";
+import { isWorkbookRotationDue } from "../utils/workbookRotation";
 import type { SubsidiaryConfigService } from "./subsidiaryConfigService";
 
 const DEFAULT_RERUN_INTERVAL_HOURS = 24;
 const SCHEDULE_POLL_INTERVAL_MS = 60_000;
+const DEFAULT_REFRESH_TIMEZONE = "Asia/Manila";
+const DEFAULT_REFRESH_LOCAL_TIMES = ["15:00", "23:30"] as const;
 
-function createBatchId(): string {
-  return `batch-${new Date().toISOString().replace(/[:.]/g, "-")}-${randomUUID().slice(0, 8)}`;
+function createBatchId(subsidiarySlug?: string): string {
+  const slugPrefix = subsidiarySlug?.trim() ? `${subsidiarySlug.trim()}-` : "";
+  return `batch-${slugPrefix}${new Date().toISOString().replace(/[:.]/g, "-")}-${randomUUID().slice(0, 8)}`;
 }
 
 function createRunId(batchId: string, workItemId: string): string {
@@ -58,6 +69,17 @@ function isTransientPatientStatus(status: BatchRecord["patientRuns"][number]["pr
 
 function isRetryEligibleStatus(status: BatchRecord["patientRuns"][number]["processingStatus"]): boolean {
   return ["BLOCKED", "FAILED", "NEEDS_HUMAN_REVIEW"].includes(status);
+}
+
+async function canReuseCompletedPatientRun(
+  repository: FilesystemBatchRepository,
+  patientRun: BatchRecord["patientRuns"][number] | undefined,
+): Promise<boolean> {
+  if (!patientRun || patientRun.processingStatus !== "COMPLETE" || !patientRun.bundleAvailable) {
+    return false;
+  }
+
+  return repository.fileExists(patientRun.resultBundlePath);
 }
 
 function createPendingPatientRunState(
@@ -167,15 +189,124 @@ function createBatchSchedule(now: string, subsidiary: SubsidiaryRecord): BatchRe
     active: subsidiary.rerunEnabled,
     rerunEnabled: subsidiary.rerunEnabled,
     intervalHours: subsidiary.rerunIntervalHours || DEFAULT_RERUN_INTERVAL_HOURS,
+    timezone: subsidiary.timezone || DEFAULT_REFRESH_TIMEZONE,
+    localTimes: [...DEFAULT_REFRESH_LOCAL_TIMES],
     lastRunAt: null,
     nextScheduledRunAt: subsidiary.rerunEnabled
-      ? calculateNextScheduledRunAt(now, subsidiary.rerunIntervalHours || DEFAULT_RERUN_INTERVAL_HOURS)
+      ? calculateNextScheduledRunAt(
+          now,
+          subsidiary.timezone || DEFAULT_REFRESH_TIMEZONE,
+          [...DEFAULT_REFRESH_LOCAL_TIMES],
+          subsidiary.rerunIntervalHours || DEFAULT_RERUN_INTERVAL_HOURS,
+        )
       : null,
   };
 }
 
-function calculateNextScheduledRunAt(fromIsoTimestamp: string, intervalHours: number): string {
+function formatManilaDateParts(value: Date): { year: number; month: number; day: number } {
+  const manila = new Date(value.getTime() + 8 * 60 * 60 * 1000);
+  return {
+    year: manila.getUTCFullYear(),
+    month: manila.getUTCMonth() + 1,
+    day: manila.getUTCDate(),
+  };
+}
+
+function buildManilaUtcCandidate(parts: {
+  year: number;
+  month: number;
+  day: number;
+  hour: number;
+  minute: number;
+}): Date {
+  return new Date(Date.UTC(parts.year, parts.month - 1, parts.day, parts.hour - 8, parts.minute, 0, 0));
+}
+
+function calculateNextFixedScheduleAt(fromIsoTimestamp: string, localTimes: readonly string[]): string {
+  const from = new Date(fromIsoTimestamp);
+  const base = formatManilaDateParts(from);
+
+  for (let dayOffset = 0; dayOffset <= 2; dayOffset += 1) {
+    const candidateDate = new Date(Date.UTC(base.year, base.month - 1, base.day + dayOffset, 0, 0, 0, 0));
+    const dateParts = {
+      year: candidateDate.getUTCFullYear(),
+      month: candidateDate.getUTCMonth() + 1,
+      day: candidateDate.getUTCDate(),
+    };
+
+    const candidates = [...localTimes]
+      .map((localTime) => {
+        const [hourText, minuteText] = localTime.split(":");
+        return buildManilaUtcCandidate({
+          ...dateParts,
+          hour: Number(hourText),
+          minute: Number(minuteText),
+        });
+      })
+      .sort((left, right) => left.getTime() - right.getTime());
+
+    const nextCandidate = candidates.find((candidate) => candidate.getTime() > from.getTime());
+    if (nextCandidate) {
+      return nextCandidate.toISOString();
+    }
+  }
+
+  return new Date(Date.parse(fromIsoTimestamp) + 24 * 60 * 60 * 1000).toISOString();
+}
+
+function calculateNextScheduledRunAt(
+  fromIsoTimestamp: string,
+  timezone: string,
+  localTimes: readonly string[],
+  intervalHours: number,
+): string {
+  if (timezone === DEFAULT_REFRESH_TIMEZONE && localTimes.length > 0) {
+    return calculateNextFixedScheduleAt(fromIsoTimestamp, localTimes);
+  }
+
   return new Date(Date.parse(fromIsoTimestamp) + intervalHours * 60 * 60 * 1000).toISOString();
+}
+
+function mapWorkbookSourceKind(providerId: WorkbookAcquisitionProviderId): WorkbookSource["kind"] {
+  switch (providerId) {
+    case "MANUAL_UPLOAD":
+      return "manual_upload";
+    case "FINALE":
+      return "finale_download";
+    default:
+      return "unknown";
+  }
+}
+
+function createFallbackWorkbookSource(batch: BatchRecord): WorkbookSource {
+  return {
+    agencyId: batch.subsidiary.id,
+    batchId: batch.id,
+    kind: mapWorkbookSourceKind(batch.sourceWorkbook.acquisitionProvider),
+    path: batch.sourceWorkbook.storedPath,
+    originalFileName: batch.sourceWorkbook.originalFileName,
+    sourceLabel: batch.sourceWorkbook.originalFileName,
+    acquiredAt: batch.sourceWorkbook.uploadedAt,
+    ingestedAt: batch.sourceWorkbook.uploadedAt,
+    acquisition: batch.sourceWorkbook.acquisitionMetadata ?? {
+      providerId: batch.sourceWorkbook.acquisitionProvider,
+      acquisitionReference: batch.sourceWorkbook.acquisitionReference,
+      metadataPath: batch.sourceWorkbook.acquisitionReference,
+      selectedAgencyName: null,
+      selectedAgencyUrl: null,
+      dashboardUrl: null,
+      notes: batch.sourceWorkbook.acquisitionNotes,
+    },
+    verification: batch.sourceWorkbook.verification,
+  };
+}
+
+function filterEligibleWorkItems(
+  workItems: PatientEpisodeWorkItem[],
+  manifest: BatchManifest,
+): PatientEpisodeWorkItem[] {
+  const eligibleIds = new Set(manifest.automationEligibleWorkItemIds);
+  return workItems.filter((workItem) => eligibleIds.has(workItem.id));
 }
 
 export class BatchControlPlaneService {
@@ -195,6 +326,7 @@ export class BatchControlPlaneService {
     await this.scheduledRunRepository.ensureReady();
     await this.subsidiaryConfigService.initialize();
     await this.reconcileInterruptedBatches();
+    await this.ensureAutonomousAgencyBatches();
     this.ensureScheduler();
     await this.triggerDueScheduledRuns();
   }
@@ -227,7 +359,7 @@ export class BatchControlPlaneService {
     const subsidiary = params.subsidiaryId
       ? await this.subsidiaryConfigService.getSubsidiaryConfig(params.subsidiaryId)
       : await this.subsidiaryConfigService.getDefaultActiveSubsidiary();
-    const batchId = createBatchId();
+    const batchId = createBatchId(subsidiary.slug);
     const fileName = params.originalFileName?.trim() || "finale-workbook.xlsx";
     const paths = this.repository.createBatchPaths(batchId, fileName);
     const now = new Date().toISOString();
@@ -251,9 +383,11 @@ export class BatchControlPlaneService {
         acquisitionStatus: "PENDING",
         acquisitionReference: null,
         acquisitionNotes: [],
+        acquisitionMetadata: null,
         originalFileName: fileName,
         storedPath: paths.sourceWorkbookPath,
         uploadedAt: now,
+        verification: null,
       },
       storage: {
         batchRoot: paths.batchRoot,
@@ -298,9 +432,11 @@ export class BatchControlPlaneService {
       batch.sourceWorkbook.acquisitionStatus = "ACQUIRED";
       batch.sourceWorkbook.acquisitionReference = acquisition.acquisitionReference;
       batch.sourceWorkbook.acquisitionNotes = acquisition.notes;
+      batch.sourceWorkbook.acquisitionMetadata = acquisition.acquisitionMetadata ?? null;
       batch.sourceWorkbook.originalFileName = acquisition.originalFileName;
       batch.sourceWorkbook.storedPath = acquisition.storedPath;
       batch.sourceWorkbook.uploadedAt = acquisition.acquiredAt;
+      batch.sourceWorkbook.verification = acquisition.verification ?? null;
       await this.repository.saveBatch(batch);
 
       const scheduledRun = await this.createOrRefreshScheduledRun(batch, subsidiary, acquisition.acquiredAt);
@@ -324,9 +460,11 @@ export class BatchControlPlaneService {
       batch.status = "FAILED";
       batch.updatedAt = new Date().toISOString();
       batch.sourceWorkbook.acquisitionStatus = "FAILED";
+      batch.sourceWorkbook.acquisitionMetadata = null;
       batch.sourceWorkbook.acquisitionNotes = [
         error instanceof Error ? error.message : "Unknown workbook acquisition error.",
       ];
+      batch.sourceWorkbook.verification = null;
       batch.parse.lastError =
         error instanceof Error ? error.message : "Unknown workbook acquisition error.";
       await this.repository.saveBatch(batch);
@@ -336,6 +474,93 @@ export class BatchControlPlaneService {
 
   async listBatches(): Promise<BatchRecord[]> {
     return this.repository.listBatches();
+  }
+
+  async listAgencies(): Promise<Agency[]> {
+    const subsidiaries = await this.subsidiaryConfigService.listSubsidiaries();
+    return subsidiaries.map((subsidiary) => ({
+      id: subsidiary.id,
+      slug: subsidiary.slug,
+      name: subsidiary.name,
+      status: subsidiary.status,
+      timezone: subsidiary.timezone,
+    }));
+  }
+
+  async triggerAgencyRefresh(agencyId: string): Promise<BatchRecord> {
+    const subsidiary = await this.subsidiaryConfigService.getSubsidiaryConfig(agencyId);
+    const batches = await this.repository.listBatches();
+    const activeBatch = batches.find((batch) =>
+      batch.subsidiary.id === agencyId && this.activeBatchJobs.has(batch.id),
+    );
+    if (activeBatch) {
+      throw new Error(`Agency refresh already running for ${subsidiary.name}.`);
+    }
+
+    const exportName = `${subsidiary.slug}-oasis-30-days.xlsx`;
+    const batch = await this.createBatchFromProvider({
+      providerId: "FINALE",
+      subsidiaryId: subsidiary.id,
+      originalFileName: exportName,
+      input: {
+        exportName,
+      },
+    });
+
+    await this.parseBatch(batch.id);
+    return this.startBatchRun(batch.id);
+  }
+
+  private async ensureAutonomousAgencyBatches(): Promise<void> {
+    const subsidiaries = await this.subsidiaryConfigService.listSubsidiaries();
+    const batches = await this.repository.listBatches();
+
+    for (const subsidiary of subsidiaries) {
+      if (subsidiary.status !== "ACTIVE") {
+        continue;
+      }
+
+      const activeAgencyBatch = batches.find((batch) =>
+        batch.subsidiary.id === subsidiary.id &&
+        batch.schedule.active &&
+        batch.sourceWorkbook.acquisitionProvider === "FINALE" &&
+        batch.sourceWorkbook.acquisitionStatus === "ACQUIRED"
+      );
+      if (activeAgencyBatch) {
+        continue;
+      }
+
+      try {
+        const batch = await this.createBatchFromProvider({
+          providerId: "FINALE",
+          subsidiaryId: subsidiary.id,
+          originalFileName: `${subsidiary.slug}-oasis-30-days.xlsx`,
+          input: {
+            exportName: `${subsidiary.slug}-oasis-30-days.xlsx`,
+          },
+        });
+        await this.parseBatch(batch.id);
+        await this.startBatchRun(batch.id);
+        this.logger.info(
+          {
+            batchId: batch.id,
+            subsidiaryId: subsidiary.id,
+            subsidiarySlug: subsidiary.slug,
+          },
+          "initialized autonomous Finale workbook batch for active agency",
+        );
+      } catch (error) {
+        this.logger.error(
+          {
+            subsidiaryId: subsidiary.id,
+            subsidiarySlug: subsidiary.slug,
+            errorMessage:
+              error instanceof Error ? error.message : "Unknown autonomous workbook bootstrap error.",
+          },
+          "failed to initialize autonomous Finale workbook batch for active agency",
+        );
+      }
+    }
   }
 
   async getBatch(batchId: string): Promise<BatchRecord | null> {
@@ -365,7 +590,27 @@ export class BatchControlPlaneService {
         subsidiaryId: batch.subsidiary.id,
         workbookPath: batch.sourceWorkbook.storedPath,
         outputDir: batch.storage.outputRoot,
+        ingestedAt: batch.sourceWorkbook.uploadedAt,
+        workbookOriginalFileName: batch.sourceWorkbook.originalFileName,
+        workbookSourceKind: mapWorkbookSourceKind(batch.sourceWorkbook.acquisitionProvider),
+        workbookAcquisitionMetadata: batch.sourceWorkbook.acquisitionMetadata ?? {
+          providerId: batch.sourceWorkbook.acquisitionProvider,
+          acquisitionReference: batch.sourceWorkbook.acquisitionReference,
+          metadataPath: batch.sourceWorkbook.acquisitionReference,
+          selectedAgencyName: null,
+          selectedAgencyUrl: null,
+          dashboardUrl: null,
+          notes: batch.sourceWorkbook.acquisitionNotes,
+        },
+        workbookVerification: batch.sourceWorkbook.verification,
+        reviewWindowTimezone: batch.schedule.timezone,
       });
+      const eligibleWorkItemIds = new Set(
+        result.patientQueue.entries
+          .filter((entry) => entry.status === "eligible")
+          .map((entry) => entry.workItemId),
+      );
+      const eligibleWorkItems = result.workItems.filter((workItem) => eligibleWorkItemIds.has(workItem.id));
 
       batch.status = "READY";
       batch.updatedAt = new Date().toISOString();
@@ -376,7 +621,7 @@ export class BatchControlPlaneService {
       batch.storage.batchSummaryPath = null;
       batch.parse.completedAt = batch.updatedAt;
       batch.parse.workItemCount = result.workItems.length;
-      batch.parse.eligibleWorkItemCount = result.workItems.length;
+      batch.parse.eligibleWorkItemCount = result.patientQueue.summary.eligible;
       batch.parse.parserExceptionCount = result.parserExceptions.length;
       batch.parse.sourceDetections = result.diagnostics.sourceDetections;
       batch.parse.sheetSummaries = result.diagnostics.sheetSummaries;
@@ -385,7 +630,7 @@ export class BatchControlPlaneService {
       batch.run.completedAt = null;
       batch.run.patientRunCount = 0;
       batch.run.lastError = null;
-      batch.patientRuns = result.workItems.map((workItem) =>
+      batch.patientRuns = eligibleWorkItems.map((workItem) =>
         createPendingPatientRunState(batch, workItem),
       );
       await this.repository.saveBatch(batch);
@@ -420,11 +665,25 @@ export class BatchControlPlaneService {
       batch = await this.parseBatch(batchId);
     }
 
-    const workItems = await this.repository.readWorkItems(batch);
-    batch.patientRuns = workItems.map((workItem) => {
-      const previous = batch.patientRuns.find((patientRun) => patientRun.workItemId === workItem.id);
-      return createPendingPatientRunState(batch, workItem, previous);
-    });
+    const manifest = await this.repository.readManifest(batch);
+    const workItems = filterEligibleWorkItems(await this.repository.readWorkItems(batch), manifest);
+    const plannedRuns = await Promise.all(
+      workItems.map(async (workItem) => {
+        const previous = batch.patientRuns.find((patientRun) => patientRun.workItemId === workItem.id);
+        const reuseExisting = await canReuseCompletedPatientRun(this.repository, previous);
+        return {
+          workItem,
+          patientRun: reuseExisting && previous ? previous : createPendingPatientRunState(batch, workItem, previous),
+          reuseExisting,
+        };
+      }),
+    );
+
+    const workItemsToRun = plannedRuns
+      .filter((plannedRun) => !plannedRun.reuseExisting)
+      .map((plannedRun) => plannedRun.workItem);
+
+    batch.patientRuns = plannedRuns.map((plannedRun) => plannedRun.patientRun);
     batch.status = "RUNNING";
     batch.updatedAt = new Date().toISOString();
     batch.run.requestedAt = batch.updatedAt;
@@ -433,7 +692,36 @@ export class BatchControlPlaneService {
     batch.run.patientRunCount = 0;
     await this.repository.saveBatch(batch);
 
-    const task = this.executeBatchRun(batchId).finally(() => {
+    if (workItemsToRun.length === 0) {
+      batch.status = "COMPLETED";
+      batch.updatedAt = new Date().toISOString();
+      batch.run.completedAt = batch.updatedAt;
+      batch.run.patientRunCount = countProcessedPatientRuns(batch);
+      batch.run.lastError = deriveBatchErrorSummary(batch);
+      batch.schedule.lastRunAt = batch.updatedAt;
+      batch.schedule.nextScheduledRunAt =
+        batch.schedule.active && batch.schedule.rerunEnabled
+          ? calculateNextScheduledRunAt(
+              batch.updatedAt,
+              batch.schedule.timezone,
+              batch.schedule.localTimes,
+              batch.schedule.intervalHours,
+            )
+          : null;
+      await this.repository.saveBatch(batch);
+      await this.syncScheduledRunForBatch(batch);
+      this.logger.info(
+        {
+          batchId: batch.id,
+          subsidiaryId: batch.subsidiary.id,
+          reusedPatients: plannedRuns.length,
+        },
+        "scheduled batch run skipped because existing patient bundles were reused",
+      );
+      return batch;
+    }
+
+    const task = this.executeBatchRun(batchId, workItemsToRun).finally(() => {
       this.activeBatchJobs.delete(batchId);
     });
     this.activeBatchJobs.set(batchId, task);
@@ -720,6 +1008,7 @@ export class BatchControlPlaneService {
       qaPrefetch: string | null;
       patientQaReference: string;
       qaDocumentSummary: string;
+      fieldMapSnapshot: string;
     };
     artifactContents: {
       codingInput: unknown | null;
@@ -727,6 +1016,7 @@ export class BatchControlPlaneService {
       qaPrefetch: unknown | null;
       patientQaReference: unknown | null;
       qaDocumentSummary: unknown | null;
+      fieldMapSnapshot: unknown | null;
     };
   } | null> {
     const patient = await this.getBatchPatient(batchId, patientId);
@@ -737,10 +1027,28 @@ export class BatchControlPlaneService {
     const workItem = await this.getBatchWorkItem(batchId, patientId);
     const patientArtifactsDirectory = path.join(patient.batch.storage.outputRoot, "patients", patientId);
     const qaWorkflowRun = patient.summary.workflowRuns.find((workflowRun) => workflowRun.workflowDomain === "qa");
+    const qaPrefetchPathCandidates = Array.from(
+      new Set(
+        [
+          qaWorkflowRun?.workflowResultPath ?? null,
+          path.join(patientArtifactsDirectory, "qa-prefetch-result.json"),
+        ].filter((candidate): candidate is string => Boolean(candidate)),
+      ),
+    );
+    let qaPrefetchPath: string | null = null;
+    for (const candidate of qaPrefetchPathCandidates) {
+      if (await this.repository.fileExists(candidate)) {
+        qaPrefetchPath = candidate;
+        break;
+      }
+    }
+    if (!qaPrefetchPath) {
+      qaPrefetchPath = qaPrefetchPathCandidates[0] ?? null;
+    }
     const artifactPaths = {
       codingInput: path.join(patientArtifactsDirectory, "coding-input.json"),
       documentText: path.join(patientArtifactsDirectory, "document-text.json"),
-      qaPrefetch: qaWorkflowRun?.workflowResultPath ?? null,
+      qaPrefetch: qaPrefetchPath,
       patientQaReference: path.join(
         patientArtifactsDirectory,
         "referral-document-processing",
@@ -750,6 +1058,11 @@ export class BatchControlPlaneService {
         patientArtifactsDirectory,
         "referral-document-processing",
         "qa-document-summary.json",
+      ),
+      fieldMapSnapshot: path.join(
+        patientArtifactsDirectory,
+        "referral-document-processing",
+        "field-map-snapshot.json",
       ),
     };
 
@@ -768,7 +1081,112 @@ export class BatchControlPlaneService {
           : null,
         patientQaReference: await this.repository.readJsonIfExists(artifactPaths.patientQaReference),
         qaDocumentSummary: await this.repository.readJsonIfExists(artifactPaths.qaDocumentSummary),
+        fieldMapSnapshot: await this.repository.readJsonIfExists(artifactPaths.fieldMapSnapshot),
       },
+    };
+  }
+
+  async getAgencyDashboardSnapshot(agencyId: string): Promise<AgencyDashboardSnapshot> {
+    const agencyRecord = await this.subsidiaryConfigService.getSubsidiaryConfig(agencyId);
+    const agency: Agency = {
+      id: agencyRecord.id,
+      slug: agencyRecord.slug,
+      name: agencyRecord.name,
+      status: agencyRecord.status,
+      timezone: agencyRecord.timezone,
+    };
+    const batches = (await this.repository.listBatches())
+      .filter((batch) => batch.subsidiary.id === agencyId)
+      .sort((left, right) => right.createdAt.localeCompare(left.createdAt));
+    const batch = batches.find((candidate) => candidate.schedule.active) ?? batches[0] ?? null;
+
+    if (!batch) {
+      return {
+        agency,
+        refreshCycle: null,
+        queueEntries: [],
+        patientRecords: [],
+        lastUpdatedAt: new Date().toISOString(),
+      };
+    }
+
+    const outputRoot = batch.storage.outputRoot;
+    const workbookSource = await this.repository.readJsonIfExists<WorkbookSource>(
+      path.join(outputRoot, "workbook-source.json"),
+    );
+    const reviewWindow = await this.repository.readJsonIfExists<ReviewWindow>(
+      path.join(outputRoot, "review-window.json"),
+    );
+    const patientQueue = await this.repository.readJsonIfExists<PatientQueueArtifact>(
+      path.join(outputRoot, "patient-queue.json"),
+    );
+    const queueEntries = patientQueue?.entries ?? [];
+    const patientRecords: DashboardPatientRecord[] = queueEntries.map((queueEntry) => {
+      const patientRun = batch.patientRuns.find((candidate) => candidate.workItemId === queueEntry.workItemId);
+      return {
+        queueEntry,
+        runId: patientRun ? batch.id : null,
+        patientId: patientRun?.workItemId ?? null,
+        processingStatus: patientRun?.processingStatus ?? null,
+        lastUpdatedAt: patientRun?.lastUpdatedAt ?? null,
+        errorSummary: patientRun?.errorSummary ?? null,
+      };
+    });
+    const resolvedWorkbookSource: WorkbookSource = workbookSource
+      ? {
+          ...workbookSource,
+          acquisition: workbookSource.acquisition ?? {
+            providerId: batch.sourceWorkbook.acquisitionProvider,
+            acquisitionReference: batch.sourceWorkbook.acquisitionReference,
+            metadataPath: batch.sourceWorkbook.acquisitionReference,
+            selectedAgencyName: batch.sourceWorkbook.acquisitionMetadata?.selectedAgencyName ?? null,
+            selectedAgencyUrl: batch.sourceWorkbook.acquisitionMetadata?.selectedAgencyUrl ?? null,
+            dashboardUrl: batch.sourceWorkbook.acquisitionMetadata?.dashboardUrl ?? null,
+            notes: batch.sourceWorkbook.acquisitionNotes,
+          },
+          verification: workbookSource.verification ?? batch.sourceWorkbook.verification,
+        }
+      : createFallbackWorkbookSource(batch);
+    const resolvedReviewWindow =
+      reviewWindow ??
+      createReviewWindow({
+        agencyId: agency.id,
+        startsAt: batch.sourceWorkbook.uploadedAt,
+        timezone: batch.schedule.timezone,
+      });
+
+    return {
+      agency,
+      refreshCycle: {
+        id: batch.schedule.scheduledRunId ?? `refresh-${batch.id}`,
+        agencyId: agency.id,
+        batchId: batch.id,
+        status:
+          batch.status === "FAILED"
+            ? "failed"
+            : batch.status === "RUNNING"
+              ? "running"
+              : batch.status === "CREATED" || batch.status === "PARSING"
+                ? "pending"
+                : "completed",
+        workbookSource: resolvedWorkbookSource,
+        reviewWindow: resolvedReviewWindow,
+        scheduleTimezone: batch.schedule.timezone,
+        scheduleLocalTimes: batch.schedule.localTimes,
+        lastRefreshStartedAt: batch.run.requestedAt,
+        lastRefreshCompletedAt: batch.run.completedAt,
+        nextRefreshAt: batch.schedule.nextScheduledRunAt,
+        queueSummary: patientQueue?.summary ?? {
+          total: 0,
+          eligible: 0,
+          skippedNonAdmit: 0,
+          skippedPending: 0,
+          excludedOther: 0,
+        },
+      },
+      queueEntries,
+      patientRecords,
+      lastUpdatedAt: batch.updatedAt,
     };
   }
 
@@ -817,11 +1235,16 @@ export class BatchControlPlaneService {
     };
   }
 
-  private async executeBatchRun(batchId: string): Promise<void> {
+  private async executeBatchRun(
+    batchId: string,
+    workItemsOverride?: PatientEpisodeWorkItem[],
+  ): Promise<void> {
     const batch = await this.mustGetBatch(batchId);
     const manifest = await this.repository.readManifest(batch);
     const parserExceptions = await this.repository.readParserExceptions(batch);
-    const workItems = await this.repository.readWorkItems(batch);
+    const workItems =
+      workItemsOverride ??
+      filterEligibleWorkItems(await this.repository.readWorkItems(batch), manifest);
     const subsidiaryRuntimeConfig = await this.subsidiaryConfigService.resolveRuntimeConfig(
       batch.subsidiary.id,
     );
@@ -954,7 +1377,12 @@ export class BatchControlPlaneService {
     batch.schedule.lastRunAt = completedAt;
     batch.schedule.nextScheduledRunAt =
       batch.schedule.active && batch.schedule.rerunEnabled
-        ? calculateNextScheduledRunAt(completedAt, batch.schedule.intervalHours)
+        ? calculateNextScheduledRunAt(
+            completedAt,
+            batch.schedule.timezone,
+            batch.schedule.localTimes,
+            batch.schedule.intervalHours,
+          )
         : null;
     await this.repository.saveBatch(batch);
     await this.syncScheduledRunForBatch(batch);
@@ -974,7 +1402,12 @@ export class BatchControlPlaneService {
     batch.schedule.lastRunAt = batch.updatedAt;
     batch.schedule.nextScheduledRunAt =
       batch.schedule.active && batch.schedule.rerunEnabled
-        ? calculateNextScheduledRunAt(batch.updatedAt, batch.schedule.intervalHours)
+        ? calculateNextScheduledRunAt(
+            batch.updatedAt,
+            batch.schedule.timezone,
+            batch.schedule.localTimes,
+            batch.schedule.intervalHours,
+          )
         : null;
     await this.repository.saveBatch(batch);
     await this.syncScheduledRunForBatch(batch);
@@ -1024,7 +1457,12 @@ export class BatchControlPlaneService {
       batch.schedule.lastRunAt = reconciledAt;
       batch.schedule.nextScheduledRunAt =
         batch.schedule.active && batch.schedule.rerunEnabled
-          ? calculateNextScheduledRunAt(reconciledAt, batch.schedule.intervalHours)
+          ? calculateNextScheduledRunAt(
+              reconciledAt,
+              batch.schedule.timezone,
+              batch.schedule.localTimes,
+              batch.schedule.intervalHours,
+            )
           : null;
 
       await this.repository.saveBatch(batch);
@@ -1045,6 +1483,7 @@ export class BatchControlPlaneService {
 
   private async triggerDueScheduledRuns(): Promise<void> {
     const now = Date.now();
+    const nowIso = new Date(now).toISOString();
     const schedules = await this.scheduledRunRepository.listScheduledRuns();
 
     for (const schedule of schedules) {
@@ -1068,33 +1507,136 @@ export class BatchControlPlaneService {
         continue;
       }
 
-      if (!(await this.repository.fileExists(batch.sourceWorkbook.storedPath))) {
-        batch.updatedAt = new Date().toISOString();
-        batch.schedule.active = false;
-        batch.schedule.rerunEnabled = false;
-        batch.schedule.nextScheduledRunAt = null;
-        batch.run.lastError =
-          batch.run.lastError ?? "Workbook source file is no longer available for scheduled rerun.";
-        await this.repository.saveBatch(batch);
-        await this.syncScheduledRunForBatch(batch);
-        this.logger.warn(
-          { batchId: batch.id, subsidiaryId: batch.subsidiary.id },
-          "scheduled rerun disabled because workbook file is missing",
-        );
-        continue;
-      }
+      try {
+        const workbookMissing = !(await this.repository.fileExists(batch.sourceWorkbook.storedPath));
+        const rotationDue =
+          batch.sourceWorkbook.acquisitionProvider === "FINALE" &&
+          isWorkbookRotationDue(batch.sourceWorkbook.uploadedAt, nowIso);
 
-      this.logger.info(
-        {
-          batchId: batch.id,
-          subsidiaryId: batch.subsidiary.id,
-          scheduledRunId: schedule.id,
-          scheduledFor: schedule.nextScheduledRunAt,
-        },
-        "scheduled batch rerun started",
-      );
-      await this.startBatchRun(batch.id);
+        if (workbookMissing && batch.sourceWorkbook.acquisitionProvider !== "FINALE") {
+          batch.updatedAt = nowIso;
+          batch.schedule.active = false;
+          batch.schedule.rerunEnabled = false;
+          batch.schedule.nextScheduledRunAt = null;
+          batch.run.lastError =
+            batch.run.lastError ?? "Workbook source file is no longer available for scheduled rerun.";
+          await this.repository.saveBatch(batch);
+          await this.syncScheduledRunForBatch(batch);
+          this.logger.warn(
+            { batchId: batch.id, subsidiaryId: batch.subsidiary.id },
+            "scheduled rerun disabled because workbook file is missing",
+          );
+          continue;
+        }
+
+        if (batch.sourceWorkbook.acquisitionProvider === "FINALE" && (workbookMissing || rotationDue)) {
+          await this.reacquireFinaleWorkbook(batch, nowIso, workbookMissing ? "missing" : "rotation_due");
+          await this.parseBatch(batch.id);
+        }
+
+        this.logger.info(
+          {
+            batchId: batch.id,
+            subsidiaryId: batch.subsidiary.id,
+            scheduledRunId: schedule.id,
+            scheduledFor: schedule.nextScheduledRunAt,
+            workbookRotationDue: rotationDue,
+            workbookMissing,
+          },
+          "scheduled batch rerun started",
+        );
+        await this.startBatchRun(batch.id);
+      } catch (error) {
+        await this.markScheduledRefreshFailure(batch, error, nowIso);
+        this.logger.error(
+          {
+            batchId: batch.id,
+            subsidiaryId: batch.subsidiary.id,
+            scheduledRunId: schedule.id,
+            errorMessage: error instanceof Error ? error.message : "Unknown scheduled refresh error.",
+          },
+          "scheduled batch refresh failed",
+        );
+      }
     }
+  }
+
+  private async reacquireFinaleWorkbook(
+    batch: BatchRecord,
+    _triggeredAt: string,
+    reason: "missing" | "rotation_due",
+  ): Promise<void> {
+    const acquisition = await this.acquisitionService.acquireWorkbook({
+      batch,
+      billingPeriod: batch.billingPeriod,
+      providerId: "FINALE",
+      input: {
+        exportName: batch.sourceWorkbook.originalFileName,
+      },
+    });
+
+    batch.updatedAt = acquisition.acquiredAt;
+    batch.status = "CREATED";
+    batch.sourceWorkbook.acquisitionStatus = "ACQUIRED";
+    batch.sourceWorkbook.acquisitionReference = acquisition.acquisitionReference;
+    batch.sourceWorkbook.acquisitionNotes = acquisition.notes;
+    batch.sourceWorkbook.acquisitionMetadata = acquisition.acquisitionMetadata ?? null;
+    batch.sourceWorkbook.originalFileName = acquisition.originalFileName;
+    batch.sourceWorkbook.storedPath = acquisition.storedPath;
+    batch.sourceWorkbook.uploadedAt = acquisition.acquiredAt;
+    batch.sourceWorkbook.verification = acquisition.verification ?? null;
+    batch.parse.requestedAt = null;
+    batch.parse.completedAt = null;
+    batch.parse.lastError = null;
+    batch.run.requestedAt = null;
+    batch.run.completedAt = null;
+    batch.run.lastError = null;
+    await this.repository.saveBatch(batch);
+    await this.syncScheduledRunForBatch(batch);
+
+    this.logger.info(
+      {
+        batchId: batch.id,
+        subsidiaryId: batch.subsidiary.id,
+        acquisitionReference: acquisition.acquisitionReference,
+        originalFileName: acquisition.originalFileName,
+        reason,
+      },
+      "reacquired Finale workbook for scheduled refresh",
+    );
+  }
+
+  private async markScheduledRefreshFailure(
+    batch: BatchRecord,
+    error: unknown,
+    updatedAt: string,
+  ): Promise<void> {
+    batch.status = "FAILED";
+    batch.updatedAt = updatedAt;
+    batch.sourceWorkbook.acquisitionStatus =
+      batch.sourceWorkbook.acquisitionProvider === "FINALE" ? "FAILED" : batch.sourceWorkbook.acquisitionStatus;
+    batch.sourceWorkbook.acquisitionMetadata =
+      batch.sourceWorkbook.acquisitionProvider === "FINALE" ? null : batch.sourceWorkbook.acquisitionMetadata;
+    batch.sourceWorkbook.acquisitionNotes = [
+      error instanceof Error ? error.message : "Unknown scheduled refresh error.",
+    ];
+    batch.sourceWorkbook.verification =
+      batch.sourceWorkbook.acquisitionProvider === "FINALE" ? null : batch.sourceWorkbook.verification;
+    batch.run.completedAt = updatedAt;
+    batch.run.lastError =
+      error instanceof Error ? error.message : "Unknown scheduled refresh error.";
+    batch.schedule.lastRunAt = updatedAt;
+    batch.schedule.nextScheduledRunAt =
+      batch.schedule.active && batch.schedule.rerunEnabled
+        ? calculateNextScheduledRunAt(
+            updatedAt,
+            batch.schedule.timezone,
+            batch.schedule.localTimes,
+            batch.schedule.intervalHours,
+          )
+        : null;
+    await this.repository.saveBatch(batch);
+    await this.syncScheduledRunForBatch(batch);
   }
 
   private async deactivateOtherActiveSchedules(
@@ -1144,7 +1686,8 @@ export class BatchControlPlaneService {
       active: batch.schedule.active,
       rerunEnabled: batch.schedule.rerunEnabled,
       intervalHours: batch.schedule.intervalHours,
-      timezone: subsidiary.timezone,
+      timezone: batch.schedule.timezone || subsidiary.timezone,
+      localTimes: batch.schedule.localTimes,
       lastRunAt: batch.schedule.lastRunAt,
       nextScheduledRunAt: batch.schedule.nextScheduledRunAt,
       createdAt: batch.createdAt,

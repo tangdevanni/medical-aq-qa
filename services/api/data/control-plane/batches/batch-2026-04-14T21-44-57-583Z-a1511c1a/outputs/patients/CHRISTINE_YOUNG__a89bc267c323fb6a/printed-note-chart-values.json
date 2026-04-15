@@ -1,0 +1,103 @@
+{
+  "generatedAt": "2026-04-14T21:52:22.137Z",
+  "source": "printed_note_ocr",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-14T21-44-57-583Z-a1511c1a\\outputs\\evidence\\CHRISTINE_YOUNG__a89bc267c323fb6a\\oasis-printed-note\\extracted-text.txt",
+  "extractedFieldCount": 9,
+  "invocationModelId": "us.amazon.nova-lite-v1:0",
+  "currentChartValues": {
+    "patient_name": "YOUNG, CHRISTINE",
+    "dob": "1944-05-30",
+    "soc_date": "2026-02-27",
+    "primary_reason_for_home_health_medical_necessity": "Christine E. Young, an 81-year-old female, is being admitted to home health care following her discharge from Fountain Hills Post Acute after a prolonged hospitalization due to multifocal pneumonia, acute respiratory failure with hypoxia, and acute on chronic congestive heart failure, among other chronic conditions. Has conditions such as chronic atrial fibrillation, acute kidney failure, metabolic encephalopathy, and dysphagia, which have compounded her health status and functional limitations. Christine's medical",
+    "living_situation": "Patient lives alone",
+    "caregiver_name": "Emily Young",
+    "caregiver_relationship": "Daughter",
+    "caregiver_phone": "4807035881",
+    "pain_assessment_narrative": "Lower back pain with a scale of 8/10; comfort measures and pain medication were provided. Re-checked after 30 minutes, resulting with a scale of 3/10."
+  },
+  "extractedFieldValues": [
+    {
+      "field_key": "patient_name",
+      "current_value": "YOUNG, CHRISTINE",
+      "confidence": 0.95,
+      "source_spans": [
+        "Name: YOUNG, CHRISTINE",
+        "Name: CHRISTINE YOUNG",
+        "Name: CHRISTINE YOUNG"
+      ]
+    },
+    {
+      "field_key": "dob",
+      "current_value": "1944-05-30",
+      "confidence": 0.95,
+      "source_spans": [
+        "DOB: 05/30/1944",
+        "Birth Date * (M0069) 05/30/1944"
+      ]
+    },
+    {
+      "field_key": "soc_date",
+      "current_value": "2026-02-27",
+      "confidence": 0.95,
+      "source_spans": [
+        "Start of Care Date 02/27/2026",
+        "Start of Care Date PRABHAKARAN, VINAY 02/27/2026",
+        "02/27/2026"
+      ]
+    },
+    {
+      "field_key": "primary_reason_for_home_health_medical_necessity",
+      "current_value": "Christine E. Young, an 81-year-old female, is being admitted to home health care following her discharge from Fountain Hills Post Acute after a prolonged hospitalization due to multifocal pneumonia, acute respiratory failure with hypoxia, and acute on chronic congestive heart failure, among other chronic conditions. Has conditions such as chronic atrial fibrillation, acute kidney failure, metabolic encephalopathy, and dysphagia, which have compounded her health status and functional limitations. Christine's medical status is further complicated by generalized muscle weakness, cognitive communication deficits, and difficulty walking, which limit her ability to perform activities of daily living independently. In light of her recent acute medical issues and the need for ongoing skilled care, Christine requires a multidisciplinary home health team. Skilled nursing services will be essential for medication management, including anticoagulation therapy with Apixaban and treatment of her chronic conditions. Additionally, skilled physical and occupational therapy are necessary to address her mobility challenges, enhance her strength and endurance, and facilitate her recovery from acute illness. She has demonstrated the need for assistance with activities such as transfers and self- care, indicating a significant level of functional impairment that necessitates skilled intervention. Furthermore, Christine's recent hospitalization and her complex medical history make home health services medically necessary to ensure safe recovery and prevent readmission. Home health care will provide her with the tailored support she needs to manage her chronic illnesses while promoting her independence and quality of life. Overall, the combination of her acute medical needs, chronic condition management, and functional limitations strongly justifies her admission to home health care under Medicare guidelines.",
+      "confidence": 0.95,
+      "source_spans": [
+        "Primary Reason for Home Health / Medical Necessity",
+        "Christine E. Young, an 81-year-old female, is being admitted to home health care following her discharge from Fountain Hills Post Acute after a prolonged hospitalization due to multifocal pneumonia, acute respiratory failure with hypoxia, and acute on chronic congestive heart failure, among other chronic conditions."
+      ]
+    },
+    {
+      "field_key": "living_situation",
+      "current_value": "Patient lives alone",
+      "confidence": 0.95,
+      "source_spans": [
+        "Patient Lives alone",
+        "Patient lives alone"
+      ]
+    },
+    {
+      "field_key": "caregiver_name",
+      "current_value": "Emily Young",
+      "confidence": 0.95,
+      "source_spans": [
+        "Primary Caregiver: Emily Young"
+      ]
+    },
+    {
+      "field_key": "caregiver_relationship",
+      "current_value": "Daughter",
+      "confidence": 0.95,
+      "source_spans": [
+        "Relationship to Patient Daughter"
+      ]
+    },
+    {
+      "field_key": "caregiver_phone",
+      "current_value": "4807035881",
+      "confidence": 0.95,
+      "source_spans": [
+        "Contact Number 4807035881"
+      ]
+    },
+    {
+      "field_key": "pain_assessment_narrative",
+      "current_value": "Lower back pain with a scale of 8/10; comfort measures and pain medication were provided. Re-checked after 30 minutes, resulting with a scale of 3/10.",
+      "confidence": 0.95,
+      "source_spans": [
+        "Pain Location and Description: low back",
+        "Lower back pain with a scale of 8/10; comfort measures and pain medication were provided. Re-checked after 30 minutes, resulting with a scale of 3/10."
+      ]
+    }
+  ],
+  "warnings": [
+    "Printed-note chart-value extraction used inference profile us.amazon.nova-lite-v1:0."
+  ]
+}

@@ -1,0 +1,183 @@
+{
+  "patient_context": {
+    "patient_name": "Briggs, Aurora",
+    "dob": "08/13/1942",
+    "soc_date": null,
+    "referral_date": null
+  },
+  "proposed_field_values": [
+    {
+      "field_key": "preferred_language",
+      "proposed_value": "English",
+      "confidence": 0.92,
+      "source_spans": [
+        "English"
+      ],
+      "rationale": "Preferred language was identified in referral demographics.",
+      "requires_human_review": false
+    },
+    {
+      "field_key": "functional_limitations",
+      "proposed_value": [
+        "weakness"
+      ],
+      "confidence": 0.76,
+      "source_spans": [
+        "fatigue, malaise, numbness/weakness, tingling, dizziness,"
+      ],
+      "rationale": "Functional limitations were extracted from referral text.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "therapy_need",
+      "proposed_value": "Physical therapy",
+      "confidence": 0.77,
+      "source_spans": [
+        "Physical therapy"
+      ],
+      "rationale": "Therapy need was summarized from referral text.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "fall_risk_narrative",
+      "proposed_value": "fatigue, malaise, numbness/weakness, tingling, dizziness,",
+      "confidence": 0.7,
+      "source_spans": [
+        "fatigue, malaise, numbness/weakness, tingling, dizziness,"
+      ],
+      "rationale": "Risk and safety narrative was summarized from referral text.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "skilled_interventions",
+      "proposed_value": "Physical therapy",
+      "confidence": 0.8,
+      "source_spans": [
+        "Physical therapy"
+      ],
+      "rationale": "Skilled interventions were summarized from the therapy plan.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "plan_for_next_visit",
+      "proposed_value": "Physical therapy",
+      "confidence": 0.78,
+      "source_spans": [
+        "Physical therapy"
+      ],
+      "rationale": "Next-visit plan was summarized from the therapy plan.",
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [
+    {
+      "description": "hyperosmolarity without nonketotic",
+      "icd10_code": "E11.00",
+      "confidence": 0.74,
+      "source_spans": [
+        "E11.00 hyperosmolarity without nonketotic 05/04/2023 05"
+      ],
+      "is_primary_candidate": true,
+      "requires_human_review": true
+    },
+    {
+      "description": "Mixed hyperlipidemia",
+      "icd10_code": "E78.2",
+      "confidence": 0.74,
+      "source_spans": [
+        "E78.2 Mixed hyperlipidemia 08/24/2023 08"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Delusional disorders",
+      "icd10_code": "F22",
+      "confidence": 0.74,
+      "source_spans": [
+        "F22 Delusional disorders 05/04/2023 05"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Anxiety disorder, unspecified",
+      "icd10_code": "F41.9",
+      "confidence": 0.74,
+      "source_spans": [
+        "F41.9 Anxiety disorder, unspecified 05/04/2023 05"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Insomnia, unspecified",
+      "icd10_code": "G47.00",
+      "confidence": 0.74,
+      "source_spans": [
+        "G47.00 Insomnia, unspecified 05/04/2023 05"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "elsewhere classified",
+      "icd10_code": "G54.2",
+      "confidence": 0.74,
+      "source_spans": [
+        "G54.2 elsewhere classified 05/04/2023 05"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Essential (primary) hypertension",
+      "icd10_code": "I10",
+      "confidence": 0.74,
+      "source_spans": [
+        "I10 Essential (primary) hypertension 05/04/2023 05"
+      ],
+      "is_primary_candidate": true,
+      "requires_human_review": true
+    },
+    {
+      "description": "Chronic obstructive pulmonary",
+      "icd10_code": "J44.9",
+      "confidence": 0.74,
+      "source_spans": [
+        "J44.9 Chronic obstructive pulmonary 05/04/2023 05"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    }
+  ],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "interpreter_needed",
+    "primary_reason_for_home_health_medical_necessity",
+    "admit_reason_to_home_health",
+    "homebound_narrative",
+    "homebound_supporting_factors",
+    "recent_hospitalization_discharge_date",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "living_situation",
+    "patient_summary_narrative",
+    "discipline_frequencies",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status",
+    "code_status"
+  ],
+  "warnings": [
+    "Deterministic referral facts extraction was used."
+  ]
+}

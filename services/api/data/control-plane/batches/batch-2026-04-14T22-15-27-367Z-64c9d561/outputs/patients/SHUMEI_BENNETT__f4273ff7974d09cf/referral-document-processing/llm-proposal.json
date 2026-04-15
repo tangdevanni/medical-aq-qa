@@ -1,0 +1,76 @@
+{
+  "patient_context": {
+    "patient_name": "BENNETT, SHUMEI",
+    "dob": "02/01/1939",
+    "soc_date": null,
+    "referral_date": null
+  },
+  "proposed_field_values": [
+    {
+      "field_key": "code_status",
+      "proposed_value": "dnr",
+      "confidence": 0.75,
+      "source_spans": [
+        "Code status: dnr"
+      ],
+      "rationale": "Code status was explicitly stated in referral text.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "functional_limitations",
+      "proposed_value": [
+        "weakness"
+      ],
+      "confidence": 0.76,
+      "source_spans": [
+        "Neurologic: global weakness, no focal motor deficit"
+      ],
+      "rationale": "Functional limitations were extracted from referral text.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "fall_risk_narrative",
+      "proposed_value": "Patient lives alone and recently sustained a ground level fall leading to hospitalization where the workup found to have right periorbital ecchymosis/hematoma, nontraumatic rhabdomyolysis, non ST-elevation MI secondary to fall and rhabdomyolysis.",
+      "confidence": 0.7,
+      "source_spans": [
+        "Patient lives alone and recently sustained a ground level fall leading to hospitalization where the workup found to have right periorbital ecchymosis/hematoma, nontraumatic rhabdomyolysis, non ST-elevation MI secondary to fall and rhabdomyolysis."
+      ],
+      "rationale": "Risk and safety narrative was summarized from referral text.",
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "preferred_language",
+    "interpreter_needed",
+    "recent_hospitalization_discharge_date",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "order_summary",
+    "medical_necessity_summary",
+    "homebound_narrative",
+    "homebound_supporting_factors",
+    "living_situation",
+    "therapy_need",
+    "primary_reason_for_home_health_medical_necessity",
+    "admit_reason_to_home_health",
+    "prior_functioning",
+    "patient_summary_narrative",
+    "skilled_interventions",
+    "discipline_frequencies",
+    "plan_for_next_visit",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status"
+  ],
+  "warnings": []
+}

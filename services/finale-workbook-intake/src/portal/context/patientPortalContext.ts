@@ -20,6 +20,7 @@ export interface ResolvedPatientPortalAccess {
   chartUrl: string | null;
   dashboardUrl: string | null;
   resolvedAt: string | null;
+  portalAdmissionStatus: string | null;
   traceId?: string;
   matchResult: PatientMatchResult;
   stepLogs: AutomationStepLog[];

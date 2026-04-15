@@ -1,0 +1,42 @@
+{
+  "patientId": "CHRISTINE_YOUNG__a89bc267c323fb6a",
+  "selectedDocumentId": "CHRISTINE_YOUNG__a89bc267c323fb6a-manual-source-2",
+  "sourceDocuments": [
+    {
+      "documentId": "CHRISTINE_YOUNG__a89bc267c323fb6a-referral-2",
+      "sourceIndex": 1,
+      "sourceLabel": "📄 christine young referral.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedSourceLabel": "christine-young-referral-pdf",
+      "sourceType": "REFERRAL_ORDER",
+      "acquisitionMethod": "printed_pdf",
+      "selectionStatus": "candidate",
+      "portalLabel": "📄 christine young referral.pdf 📝 ✏️ 🗑️ 🔗",
+      "localFilePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-15T00-13-32-016Z-23825b56\\outputs\\patients\\CHRISTINE_YOUNG__a89bc267c323fb6a\\documents\\christine-young-referral-pdf\\source.pdf",
+      "effectiveTextSource": "ocr_text",
+      "fileType": "pdf",
+      "fileSizeBytes": 2611584,
+      "extractedTextLength": 19467,
+      "selectedReason": null,
+      "rejectedReasons": []
+    },
+    {
+      "documentId": "CHRISTINE_YOUNG__a89bc267c323fb6a-manual-source-2",
+      "sourceIndex": -1,
+      "sourceLabel": "christineref.pdf",
+      "normalizedSourceLabel": "christineref-pdf",
+      "sourceType": "REFERRAL_ORDER",
+      "acquisitionMethod": "local_file",
+      "selectionStatus": "selected",
+      "portalLabel": null,
+      "localFilePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-15T00-13-32-016Z-23825b56\\source\\christineref.pdf",
+      "effectiveTextSource": null,
+      "fileType": "pdf",
+      "fileSizeBytes": 2989029,
+      "extractedTextLength": 0,
+      "selectedReason": "highest-ranked referral/admission-order source with local file preference",
+      "rejectedReasons": []
+    }
+  ],
+  "warnings": [],
+  "generatedAt": "2026-04-15T00:25:02.558Z"
+}

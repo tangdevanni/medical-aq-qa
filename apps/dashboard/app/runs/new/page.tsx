@@ -1,95 +1,46 @@
-"use client";
-
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
-import { uploadWorkbook } from "../../../lib/api";
 
 export default function NewRunPage() {
-  const router = useRouter();
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [billingPeriod, setBillingPeriod] = useState("");
-  const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  async function handleUpload(event: FormEvent<HTMLFormElement>): Promise<void> {
-    event.preventDefault();
-    if (!selectedFile) {
-      setError("Select a Finale .xlsx export to continue.");
-      return;
-    }
-
-    setSubmitting(true);
-    setError(null);
-
-    try {
-      const run = await uploadWorkbook({
-        file: selectedFile,
-        billingPeriod,
-      });
-      router.push(`/runs/${run.id}`);
-    } catch (nextError) {
-      setError(nextError instanceof Error ? nextError.message : "Workbook upload failed.");
-      setSubmitting(false);
-    }
-  }
-
   return (
     <main className="page-shell stack">
       <div className="page-header">
         <div>
-          <p className="eyebrow">Reference Workflow</p>
-          <h1 className="page-title">Upload Workbook</h1>
+          <p className="eyebrow">Autonomous Refresh</p>
+          <h1 className="page-title">Workbook intake is backend-managed</h1>
           <p className="page-subtitle">
-            Upload a Finale workbook to start a read-only diagnosis extraction batch. The system reruns the active workbook every 24 hours until it is replaced or deactivated.
+            QA users no longer upload workbooks from the dashboard. After sign-in and agency selection, the UI reads the agency-scoped workbook queue and scheduled refresh outputs that the backend maintains automatically.
           </p>
         </div>
         <div className="actions">
-          <Link className="button secondary" href="/runs">
-            View Batches
+          <Link className="button secondary" href="/agency">
+            Back to Agency Overview
           </Link>
         </div>
       </div>
 
       <section className="hero-panel">
         <div className="hero-copy">
-          <span className="eyebrow">Read Only</span>
-          <h2>Diagnosis reference batch</h2>
+          <span className="eyebrow">15-Day Queue</span>
+          <h2>Autonomous agency-scoped processing</h2>
           <p>
-            The active pipeline parses workbook rows, finds patient charts, extracts document text, and publishes primary and secondary diagnoses for QA reference only.
+            The backend owns workbook acquisition, queue normalization, patient vetting, and scheduled portal refresh. The dashboard is read-only and should never imply that a QA user has to trigger scraping or upload a file every session.
           </p>
         </div>
 
-        <form className="hero-form" onSubmit={handleUpload}>
-          <label className="field">
-            <span>Finale workbook</span>
-            <input
-              className="input"
-              type="file"
-              accept=".xlsx"
-              onChange={(event) => setSelectedFile(event.target.files?.[0] ?? null)}
-            />
-          </label>
-
-          <label className="field">
-            <span>Billing period</span>
-            <input
-              className="input"
-              type="text"
-              placeholder="Optional"
-              value={billingPeriod}
-              onChange={(event) => setBillingPeriod(event.target.value)}
-            />
-          </label>
-
-          <div className="actions">
-            <button className="button" type="submit" disabled={submitting}>
-              {submitting ? "Uploading..." : "Upload Workbook"}
-            </button>
+        <div className="hero-form">
+          <div className="field">
+            <span>Refresh schedule</span>
+            <div>3:00 PM and 11:30 PM Asia/Manila</div>
           </div>
-
-          {error ? <div className="badge danger">{error}</div> : null}
-        </form>
+          <div className="field">
+            <span>Queue source</span>
+            <div>Active workbook review window from the configured agency source path</div>
+          </div>
+          <div className="field">
+            <span>Eligibility policy</span>
+            <div>Skip non-admits and pending patients before creating comparisons</div>
+          </div>
+        </div>
       </section>
     </main>
   );

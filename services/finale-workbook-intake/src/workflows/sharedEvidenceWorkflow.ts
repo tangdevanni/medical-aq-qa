@@ -14,6 +14,10 @@ import {
   extractDiagnosisCodingContext,
   type DiagnosisCodingExtractionResult,
 } from "../services/diagnosisCodingExtractionService";
+import {
+  buildDocumentFactPack,
+  writeDocumentFactPackFile,
+} from "../services/documentFactPackBuilder";
 import { writeDocumentInventoryFile } from "../services/documentInventoryExportService";
 import { writeDocumentTextFile } from "../services/documentTextExportService";
 import type { BatchPortalAutomationClient } from "../workers/playwrightBatchQaWorker";
@@ -54,6 +58,8 @@ export interface SharedEvidenceBundle {
   documentInventoryExportError: string | null;
   documentTextExportPath: string | null;
   documentTextExportError: string | null;
+  documentFactPackPath?: string | null;
+  documentFactPackError?: string | null;
   referralDocumentProcessing: ReferralDocumentProcessingResult | null;
   referralDocumentSummaryPath: string | null;
   warnings: string[];
@@ -140,6 +146,57 @@ export async function runSharedEvidenceWorkflow(
       found: [],
       missing: ["document-text.json"],
       evidence: [documentTextExportError],
+      safeReadConfirmed: true,
+    }));
+  }
+
+  let documentFactPackPath: string | null = null;
+  let documentFactPackError: string | null = null;
+  try {
+    const factPack = buildDocumentFactPack(extractedDocuments);
+    const documentFactPackExport = await writeDocumentFactPackFile({
+      outputDirectory: params.outputDir,
+      patientId: params.workItem.id,
+      batchId: params.context.batchId,
+      factPack,
+    });
+    documentFactPackPath = documentFactPackExport.filePath;
+    stepLogs.push(createAutomationStepLog({
+      step: "document_fact_pack_export",
+      message: "Wrote compact document fact pack to reduce downstream token usage while preserving chart evidence.",
+      patientName: params.context.patientName,
+      found: [
+        `documentFactPackPath:${documentFactPackExport.filePath}`,
+        `diagnosisCount:${documentFactPackExport.document.factPack.diagnoses.length}`,
+        `medicationCount:${documentFactPackExport.document.factPack.medications.length}`,
+        `allergyCount:${documentFactPackExport.document.factPack.allergies.length}`,
+        `rawCharacters:${documentFactPackExport.document.factPack.stats.rawCharacters}`,
+        `packedCharacters:${documentFactPackExport.document.factPack.stats.packedCharacters}`,
+        `reductionPercent:${documentFactPackExport.document.factPack.stats.reductionPercent}`,
+      ],
+      missing: [],
+      evidence: [
+        ...documentFactPackExport.document.factPack.diagnoses
+          .slice(0, 6)
+          .map((diagnosis) => `diagnosis:${diagnosis.code ?? "no-code"}:${diagnosis.description}`),
+        ...documentFactPackExport.document.factPack.homeboundEvidence
+          .slice(0, 3)
+          .map((snippet) => `homebound:${snippet.text}`),
+        ...documentFactPackExport.document.factPack.skilledNeedEvidence
+          .slice(0, 3)
+          .map((snippet) => `skilled_need:${snippet.text}`),
+      ],
+      safeReadConfirmed: true,
+    }));
+  } catch (error) {
+    documentFactPackError = error instanceof Error ? error.message : String(error);
+    stepLogs.push(createAutomationStepLog({
+      step: "document_fact_pack_export",
+      message: "Document fact pack export failed; continuing with raw extracted document text.",
+      patientName: params.context.patientName,
+      found: [],
+      missing: ["document-fact-pack.json"],
+      evidence: [documentFactPackError],
       safeReadConfirmed: true,
     }));
   }
@@ -232,11 +289,14 @@ export async function runSharedEvidenceWorkflow(
       documentInventoryExportError,
       documentTextExportPath,
       documentTextExportError,
+      documentFactPackPath,
+      documentFactPackError,
       referralDocumentProcessing,
       referralDocumentSummaryPath,
       warnings: [
         ...(documentInventoryExportError ? [documentInventoryExportError] : []),
         ...(documentTextExportError ? [documentTextExportError] : []),
+        ...(documentFactPackError ? [documentFactPackError] : []),
         ...(diagnosisCodingContext.llmError ? [diagnosisCodingContext.llmError] : []),
         ...(referralDocumentProcessing?.qaDocumentSummary.warnings ?? []),
       ],

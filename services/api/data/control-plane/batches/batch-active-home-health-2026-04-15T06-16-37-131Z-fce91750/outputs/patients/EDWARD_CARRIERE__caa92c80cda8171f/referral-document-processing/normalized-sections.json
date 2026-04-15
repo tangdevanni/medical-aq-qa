@@ -1,0 +1,110 @@
+[
+  {
+    "sectionName": "patient_identity",
+    "extractedTextSpans": [
+      "DOB: 04/04/1948, 77 years"
+    ],
+    "normalizedSummary": "DOB: 04/04/1948, 77 years",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 13,
+        "lineEnd": 13,
+        "charStart": 225,
+        "charEnd": 250
+      }
+    ]
+  },
+  {
+    "sectionName": "diagnoses",
+    "extractedTextSpans": [
+      "Once tissue diagnosis has been obtained then we can decide whether radiation therapy will be necessary for local",
+      "We discussed the fact that the differential diagnosis would be an infection"
+    ],
+    "normalizedSummary": "Once tissue diagnosis has been obtained then we can decide whether radiation therapy will be necessary for local We discussed the fact that the differential diagnosis would be an infection",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 88,
+        "lineEnd": 88,
+        "charStart": 3321,
+        "charEnd": 3433
+      },
+      {
+        "lineStart": 91,
+        "lineEnd": 91,
+        "charStart": 3498,
+        "charEnd": 3573
+      }
+    ]
+  },
+  {
+    "sectionName": "medications",
+    "extractedTextSpans": [
+      "Allergies",
+      "No known drug allergy []",
+      "Allergies Reconciled"
+    ],
+    "normalizedSummary": "Allergies No known drug allergy [] Allergies Reconciled",
+    "confidence": 0.95,
+    "lineReferences": [
+      {
+        "lineStart": 102,
+        "lineEnd": 102,
+        "charStart": 4251,
+        "charEnd": 4260
+      },
+      {
+        "lineStart": 103,
+        "lineEnd": 103,
+        "charStart": 4261,
+        "charEnd": 4285
+      },
+      {
+        "lineStart": 104,
+        "lineEnd": 104,
+        "charStart": 4286,
+        "charEnd": 4306
+      }
+    ]
+  },
+  {
+    "sectionName": "risk_factors",
+    "extractedTextSpans": [
+      "In anticipation of surgery he is given a letter requesting cardiac risk stratification."
+    ],
+    "normalizedSummary": "In anticipation of surgery he is given a letter requesting cardiac risk stratification.",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 93,
+        "lineEnd": 93,
+        "charStart": 3685,
+        "charEnd": 3772
+      }
+    ]
+  },
+  {
+    "sectionName": "other_clinical_notes",
+    "extractedTextSpans": [
+      "imaging studies with the patient, reviewing reports with the patient and formulating this treatment plan.",
+      "Assessment and Plan"
+    ],
+    "normalizedSummary": "imaging studies with the patient, reviewing reports with the patient and formulating this treatment plan. Assessment and Plan",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 96,
+        "lineEnd": 96,
+        "charStart": 3920,
+        "charEnd": 4025
+      },
+      {
+        "lineStart": 156,
+        "lineEnd": 156,
+        "charStart": 6535,
+        "charEnd": 6554
+      }
+    ]
+  }
+]

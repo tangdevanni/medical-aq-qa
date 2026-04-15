@@ -1,0 +1,91 @@
+{
+  "patient_context": {
+    "patient_name": null,
+    "dob": "08/31/2057",
+    "soc_date": null,
+    "referral_date": null
+  },
+  "proposed_field_values": [
+    {
+      "field_key": "preferred_language",
+      "proposed_value": "English",
+      "confidence": 0.92,
+      "source_spans": [
+        "English"
+      ],
+      "rationale": "Preferred language was identified in referral demographics.",
+      "requires_human_review": false
+    },
+    {
+      "field_key": "primary_reason_for_home_health_medical_necessity",
+      "proposed_value": "*SKILLED NURSING: PT/INR BLOOD DRAWS 2 TIMES PER WEEK FOR 4 WEEKS",
+      "confidence": 0.78,
+      "source_spans": [
+        "*SKILLED NURSING: PT/INR BLOOD DRAWS 2 TIMES PER WEEK FOR 4 WEEKS"
+      ],
+      "rationale": "Medical necessity was summarized from referral narrative and skilled-need evidence.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "therapy_need",
+      "proposed_value": "PHYSICAL THERAPY 3-5 TIMES PER WEEK FOR 2-4 WEEKS",
+      "confidence": 0.77,
+      "source_spans": [
+        "PHYSICAL THERAPY 3-5 TIMES PER WEEK FOR 2-4 WEEKS"
+      ],
+      "rationale": "Therapy need was summarized from referral text.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "skilled_interventions",
+      "proposed_value": "PHYSICAL THERAPY 3-5 TIMES PER WEEK FOR 2-4 WEEKS",
+      "confidence": 0.8,
+      "source_spans": [
+        "PHYSICAL THERAPY 3-5 TIMES PER WEEK FOR 2-4 WEEKS"
+      ],
+      "rationale": "Skilled interventions were summarized from the therapy plan.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "plan_for_next_visit",
+      "proposed_value": "PHYSICAL THERAPY 3-5 TIMES PER WEEK FOR 2-4 WEEKS",
+      "confidence": 0.78,
+      "source_spans": [
+        "PHYSICAL THERAPY 3-5 TIMES PER WEEK FOR 2-4 WEEKS"
+      ],
+      "rationale": "Next-visit plan was summarized from the therapy plan.",
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "interpreter_needed",
+    "homebound_narrative",
+    "homebound_supporting_factors",
+    "recent_hospitalization_discharge_date",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "living_situation",
+    "prior_functioning",
+    "functional_limitations",
+    "patient_summary_narrative",
+    "discipline_frequencies",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "fall_risk_narrative",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status",
+    "code_status"
+  ],
+  "warnings": [
+    "Deterministic referral facts extraction was used."
+  ]
+}

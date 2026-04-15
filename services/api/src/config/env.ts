@@ -16,16 +16,22 @@ const envSchema = z.object({
     .enum(["local_env", "aws_secrets_manager"])
     .default("local_env"),
   DEFAULT_SUBSIDIARY_ID: z.string().min(1).default("default"),
-  DEFAULT_SUBSIDIARY_SLUG: z.string().min(1).default("default"),
-  DEFAULT_SUBSIDIARY_NAME: z.string().min(1).default("Default Subsidiary"),
-  DEFAULT_SUBSIDIARY_TIMEZONE: z.string().min(1).default("America/Los_Angeles"),
+  DEFAULT_SUBSIDIARY_SLUG: z.string().min(1).default("star-home-health-care-inc"),
+  DEFAULT_SUBSIDIARY_NAME: z.string().min(1).default("Star Home Health"),
+  DEFAULT_SUBSIDIARY_TIMEZONE: z.string().min(1).default("Asia/Manila"),
   DEFAULT_SUBSIDIARY_PORTAL_BASE_URL: z.string().url().optional(),
   DEFAULT_SUBSIDIARY_PORTAL_DASHBOARD_URL: z.string().url().optional(),
+  APLUS_HOME_HEALTH_PORTAL_DASHBOARD_URL: z.string().url().optional(),
+  ACTIVE_HOME_HEALTH_PORTAL_DASHBOARD_URL: z.string().url().optional(),
+  AVERY_HOME_HEALTH_PORTAL_DASHBOARD_URL: z.string().url().optional(),
+  MEADOWS_HOME_HEALTH_PORTAL_DASHBOARD_URL: z.string().url().optional(),
+  STAR_HOME_HEALTH_PORTAL_DASHBOARD_URL: z.string().url().optional(),
   DEFAULT_SUBSIDIARY_PORTAL_CREDENTIALS_SECRET_ARN: z.string().min(1).optional(),
   DEFAULT_SUBSIDIARY_PORTAL_CREDENTIALS_ENV_VAR: z
     .string()
     .min(1)
     .default("DEFAULT_SUBSIDIARY_PORTAL_CREDENTIALS_JSON"),
+  AUTONOMOUS_AGENCY_IDS: z.string().default("default"),
   DEFAULT_SUBSIDIARY_RERUN_ENABLED: z
     .enum(["true", "false"])
     .default("true")

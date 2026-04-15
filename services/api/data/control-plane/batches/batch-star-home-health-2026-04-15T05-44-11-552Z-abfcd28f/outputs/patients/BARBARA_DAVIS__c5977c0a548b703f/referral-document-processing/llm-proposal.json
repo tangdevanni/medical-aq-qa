@@ -1,0 +1,145 @@
+{
+  "patient_context": {
+    "patient_name": null,
+    "dob": "08/03/1936",
+    "soc_date": null,
+    "referral_date": null
+  },
+  "proposed_field_values": [
+    {
+      "field_key": "functional_limitations",
+      "proposed_value": "weakness, ambulation_limitations",
+      "confidence": 0.76,
+      "source_spans": [
+        "muscle cramps, no muscle weakness, no joint pains, and no back pain. Ambulation:"
+      ],
+      "rationale": "Functional limitations were extracted from referral text.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "fall_risk_narrative",
+      "proposed_value": "Moderate risk of progression. muscle cramps, no muscle weakness, no joint pains, and no back pain. Ambulation:",
+      "confidence": 0.7,
+      "source_spans": [
+        "Moderate risk of progression. muscle cramps, no muscle weakness, no joint pains, and no back pain. Ambulation:"
+      ],
+      "rationale": "Risk and safety narrative was summarized from referral text.",
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [
+    {
+      "description": "Aphasia",
+      "icd10_code": "R47.01",
+      "confidence": 0.74,
+      "source_spans": [
+        "Aphasia"
+      ],
+      "is_primary_candidate": true,
+      "requires_human_review": true
+    },
+    {
+      "description": "Progressive supranuclear ophthalmoplegia",
+      "icd10_code": "G23.1",
+      "confidence": 0.74,
+      "source_spans": [
+        "Progressive supranuclear ophthalmoplegia"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Disorder of the autonomic nervous system, unspecified",
+      "icd10_code": "G90.9",
+      "confidence": 0.74,
+      "source_spans": [
+        "Disorder of the autonomic nervous system, unspecified"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Polyneuropathy, unspecified",
+      "icd10_code": "G62.9",
+      "confidence": 0.74,
+      "source_spans": [
+        "Polyneuropathy, unspecified"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Dizziness and giddiness",
+      "icd10_code": "R42",
+      "confidence": 0.74,
+      "source_spans": [
+        "Dizziness and giddiness"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Rectal prolapse",
+      "icd10_code": "K62.3",
+      "confidence": 0.74,
+      "source_spans": [
+        "Rectal prolapse"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Diverticulosis of large intestine without perforation or abscess without bleeding",
+      "icd10_code": "K57.30",
+      "confidence": 0.74,
+      "source_spans": [
+        "Diverticulosis of large intestine without perforation or abscess without bleeding"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Irritable bowel syndrome, unspecified",
+      "icd10_code": "K58.9",
+      "confidence": 0.74,
+      "source_spans": [
+        "Irritable bowel syndrome, unspecified"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    }
+  ],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "preferred_language",
+    "interpreter_needed",
+    "primary_reason_for_home_health_medical_necessity",
+    "admit_reason_to_home_health",
+    "homebound_narrative",
+    "homebound_supporting_factors",
+    "recent_hospitalization_discharge_date",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "living_situation",
+    "therapy_need",
+    "patient_summary_narrative",
+    "skilled_interventions",
+    "discipline_frequencies",
+    "plan_for_next_visit",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status",
+    "code_status"
+  ],
+  "warnings": [
+    "Deterministic referral facts extraction was used."
+  ]
+}

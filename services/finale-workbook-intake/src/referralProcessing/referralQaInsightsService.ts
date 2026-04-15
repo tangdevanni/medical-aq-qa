@@ -1,9 +1,12 @@
 import {
   BedrockRuntimeClient,
-  ConverseCommand,
   type ConverseCommandOutput,
 } from "@aws-sdk/client-bedrock-runtime";
 import type { FinaleBatchEnv } from "../config/env";
+import {
+  resolveBedrockConfig,
+  sendBedrockConverseWithProfileFallback,
+} from "../config/bedrock";
 import type {
   FieldComparisonResult,
   FieldMapSnapshot,
@@ -66,18 +69,6 @@ function normalizeWhitespace(value: string | null | undefined): string {
 
 function isReferralQaInsightsLlmEnabled(env: FinaleBatchEnv): boolean {
   return Boolean(env.CODE_LLM_ENABLED && env.LLM_PROVIDER === "bedrock");
-}
-
-function resolveBedrockConfig(env: FinaleBatchEnv): { region: string; modelId: string } {
-  const region = normalizeWhitespace(env.BEDROCK_REGION);
-  const modelId = normalizeWhitespace(env.BEDROCK_MODEL_ID);
-  if (!region) {
-    throw new Error("CODE_LLM_ENABLED=true requires BEDROCK_REGION when LLM_PROVIDER=bedrock.");
-  }
-  if (!modelId) {
-    throw new Error("CODE_LLM_ENABLED=true requires BEDROCK_MODEL_ID when LLM_PROVIDER=bedrock.");
-  }
-  return { region, modelId };
 }
 
 function getBedrockClient(region: string): BedrockRuntimeClient {
@@ -557,21 +548,24 @@ export async function generateReferralQaInsights(input: {
     return deterministicFallback;
   }
 
-  const { region, modelId } = resolveBedrockConfig(input.env);
-  const client = getBedrockClient(region);
+  const config = resolveBedrockConfig(input.env);
+  const client = getBedrockClient(config.region);
 
   try {
-    const response = await client.send(new ConverseCommand({
-      modelId,
-      messages: [{
-        role: "user",
-        content: [{ text: buildLlmPrompt(input) }],
-      }],
-      inferenceConfig: {
-        temperature: 0,
-        maxTokens: 2_000,
+    const { response } = await sendBedrockConverseWithProfileFallback({
+      client,
+      config,
+      command: {
+        messages: [{
+          role: "user",
+          content: [{ text: buildLlmPrompt(input) }],
+        }],
+        inferenceConfig: {
+          temperature: 0,
+          maxTokens: 2_000,
+        },
       },
-    }));
+    });
 
     const content = extractConverseText(response);
     const parsed = parseReferralQaInsightsPayload(content);

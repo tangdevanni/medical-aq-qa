@@ -115,6 +115,7 @@ describe("capturePrintedOasisNoteReview", () => {
           diagnosisCodingContext: {
             sourceDocumentCount: 0,
             sourceCharacterCount: 0,
+            llmInputSource: "raw_text_fallback",
             diagnosisMentions: ["Pneumonia"],
             icd10Codes: ["J18.9"],
             codeCategories: ["J18.9:Diseases of the respiratory system"],

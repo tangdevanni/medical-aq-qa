@@ -74,12 +74,16 @@ import {
   analyzeDocumentText,
   extractPossibleIcd10Codes,
 } from "../../services/documentTextAnalysis";
+import { decideDocumentExtractionPolicy } from "../../services/documentExtractionPolicyService";
+import { captureChartDocument } from "../services/chartDocumentCaptureService";
 import type { OasisReadyDiagnosisDocument } from "../../services/codingInputExportService";
 import type {
   OasisAssessmentNoteOpenResult,
   OasisPrintedNoteCaptureOpenResult,
   OasisMenuOpenResult,
 } from "../../oasis/types/oasisQaResult";
+
+const MIN_OASIS_PRINT_CAPTURE_TIMEOUT_MS = 30_000;
 import {
   DEFAULT_OASIS_PRINT_SECTION_PROFILE_KEY,
   findMatchingOasisPrintSectionLabels,
@@ -1096,6 +1100,10 @@ async function summarizeClickTarget(locator: Locator): Promise<string> {
   ].filter(Boolean).join(" | ") || "unlabeled clickable target";
 }
 
+function resolveOasisPrintCaptureTimeoutMs(debugConfig?: PortalDebugConfig): number {
+  return Math.max(debugConfig?.stepTimeoutMs ?? 8_000, MIN_OASIS_PRINT_CAPTURE_TIMEOUT_MS);
+}
+
 function normalizeDiagnosisMatchText(value: string | null | undefined): string {
   return normalizeWhitespace(value)
     .toUpperCase()
@@ -1527,6 +1535,49 @@ export class PatientChartPage {
     } = {},
   ) {
     this.safety = resolvePortalSafetyConfig(this.options.safety);
+  }
+
+  async readPatientAdmissionStatus(): Promise<{
+    statusLabel: string | null;
+    stepLogs: AutomationStepLog[];
+  }> {
+    await waitForPortalPageSettled(this.page, this.options.debugConfig);
+
+    const statusResolution = await resolveFirstVisibleLocator({
+      page: this.page,
+      candidates: selectorRegistry.patientChartStatus.admissionStatusBadge,
+      step: "patient_admission_status_badge",
+      logger: this.options.logger,
+      debugConfig: this.options.debugConfig,
+      settle: async () => waitForPortalPageSettled(this.page, this.options.debugConfig, 200),
+    });
+
+    const statusLabel = statusResolution.locator
+      ? normalizeWhitespace(
+          (await statusResolution.locator.getAttribute("aria-label").catch(() => null)) ??
+          (await statusResolution.locator.getAttribute("title").catch(() => null)) ??
+          (await statusResolution.locator.textContent().catch(() => null)),
+        )
+      : null;
+
+    return {
+      statusLabel: statusLabel || null,
+      stepLogs: [
+        createAutomationStepLog({
+          step: "patient_admission_status",
+          message: statusLabel
+            ? `Captured patient admission status from chart header: ${statusLabel}.`
+            : "Patient admission status badge was not detected in the chart header.",
+          urlBefore: this.page.url(),
+          urlAfter: this.page.url(),
+          selectorUsed: statusResolution.matchedCandidate?.description ?? null,
+          found: statusLabel ? [statusLabel] : [],
+          missing: statusLabel ? [] : ["patient admission status badge"],
+          evidence: statusResolution.attempts.map(selectorAttemptToEvidence),
+          safeReadConfirmed: true,
+        }),
+      ],
+    };
   }
 
   async discoverArtifacts(
@@ -2179,14 +2230,15 @@ export class PatientChartPage {
           const confirmButton = modalResolution.locator.locator(selector).first();
           if (await confirmButton.count().catch(() => 0) > 0 && await confirmButton.isVisible().catch(() => false)) {
             printModalConfirmSelectorUsed = selector;
+            const printCaptureTimeoutMs = resolveOasisPrintCaptureTimeoutMs(this.options.debugConfig);
             const downloadPromise = this.page.waitForEvent("download", {
-              timeout: this.options.debugConfig?.stepTimeoutMs ?? 8_000,
+              timeout: printCaptureTimeoutMs,
             }).catch(() => null);
             const pdfResponsePromise = this.page.waitForResponse((response) => {
               const contentType = response.headers()["content-type"] ?? "";
               return /application\/pdf/i.test(contentType);
             }, {
-              timeout: this.options.debugConfig?.stepTimeoutMs ?? 8_000,
+              timeout: printCaptureTimeoutMs,
             }).catch(() => null);
 
             await clickReadOnlyTarget({
@@ -2209,6 +2261,10 @@ export class PatientChartPage {
                 if (responseBody) {
                   await writeFile(printedPdfPath, responseBody);
                 }
+              } else {
+                warnings.push(
+                  `Timed out after ${printCaptureTimeoutMs}ms waiting for Finale to produce the printed OASIS PDF.`,
+                );
               }
             }
             break;
@@ -2228,28 +2284,18 @@ export class PatientChartPage {
       warnings.push("Print button could not be located on the OASIS assessment page.");
     }
 
-    let sourcePdfPath: string | null =
-      printModalConfirmSucceeded || printClickSucceeded ? printedPdfPath : null;
+    let sourcePdfPath: string | null = null;
     let extractionMethod: OasisPrintedNoteCaptureOpenResult["extractionMethod"] = "visible_text_fallback";
-    if (sourcePdfPath) {
-      try {
-        const printedPdfExists = await access(printedPdfPath)
-          .then(() => true)
-          .catch(() => false);
-        if (!printedPdfExists) {
-          await this.page.pdf({
-            path: printedPdfPath,
-            format: "Letter",
-            printBackground: true,
-          });
-        }
-        extractionMethod = "printed_pdf_no_ocr";
-      } catch (error) {
-        warnings.push(
-          `Playwright PDF capture failed for the printed OASIS note: ${error instanceof Error ? error.message : String(error)}`,
-        );
-        sourcePdfPath = null;
-      }
+    const printedPdfExists = await access(printedPdfPath)
+      .then(() => true)
+      .catch(() => false);
+    if (printedPdfExists) {
+      sourcePdfPath = printedPdfPath;
+      extractionMethod = "printed_pdf_no_ocr";
+    } else if (printModalConfirmSucceeded || printClickSucceeded) {
+      warnings.push(
+        "Skipped Playwright page.pdf fallback because it can capture the live OASIS screen before Finale finishes generating the printable document.",
+      );
     }
 
     const extractedTextFallback = normalizeWhitespace(await dumpTopVisibleText(this.page, 16_000).catch(() => ""));
@@ -2310,7 +2356,7 @@ export class PatientChartPage {
 
     stepLogs.push(createAutomationStepLog({
       step: "oasis_print_capture",
-      message: printClickSucceeded
+      message: sourcePdfPath
         ? "Captured the OASIS assessment print view for read-only OCR review."
         : "Attempted OASIS assessment print capture and fell back to visible text review.",
       urlBefore: input.chartUrl,
@@ -4339,6 +4385,8 @@ export class PatientChartPage {
     admissionOrderSelectorUsed: string | null;
     stepLogs: AutomationStepLog[];
   }> {
+    return this.openFileUploadsAndAdmissionOrderFromSidebarRefactored(input);
+    /*
     await waitForPortalPageSettled(this.page, this.options.debugConfig);
     const stepLogs: AutomationStepLog[] = [];
     const evidence: string[] = [];
@@ -5590,6 +5638,478 @@ export class PatientChartPage {
       extractionResultPath,
       fileUploadsSelectorUsed,
       admissionOrderSelectorUsed,
+      stepLogs,
+    };
+    */
+  }
+
+  private async openFileUploadsAndAdmissionOrderFromSidebarRefactored(input: {
+    chartUrl: string;
+    outputDirectory: string;
+    socSelectorUsed: string | null;
+    matchedSocAnchorText: string | null;
+    includeOasisSignals?: boolean;
+  }): Promise<{
+    fileUploadsAccessible: boolean;
+    fileUploadsUrl: string | null;
+    visibleUploadedDocuments: string[];
+    admissionOrderAccessible: boolean;
+    admissionOrderTitle: string | null;
+    admissionReasonSnippets: string[];
+    admissionReasonPrimary: string | null;
+    possibleIcd10Codes: string[];
+    rawExtractedTextSource: "dom" | "ocr" | "hybrid" | null;
+    domExtractionRejectedReasons: string[];
+    admissionOrderTextExcerpt: string | null;
+    sourcePdfPath: string | null;
+    printedPdfPath: string | null;
+    sourceMetaPath: string | null;
+    extractedTextPath: string | null;
+    extractionResultPath: string | null;
+    fileUploadsSelectorUsed: string | null;
+    admissionOrderSelectorUsed: string | null;
+    stepLogs: AutomationStepLog[];
+  }> {
+    await waitForPortalPageSettled(this.page, this.options.debugConfig);
+    const stepLogs: AutomationStepLog[] = [];
+    const oasisContextSignals = input.includeOasisSignals
+      ? [
+          "oasisMenuClicked:true",
+          "oasisDocumentListDetected:true",
+          "socDocumentFound:true",
+          "socDocumentClicked:true",
+        ]
+      : [];
+    const withContextSignals = (signals: string[]) => [...oasisContextSignals, ...signals];
+
+    const captureResult = await captureChartDocument({
+      page: this.page,
+      logger: this.options.logger,
+      debugConfig: this.options.debugConfig,
+      chartUrl: input.chartUrl,
+      outputDirectory: input.outputDirectory,
+      targetType: "admission_order",
+      ensureDocumentsSectionVisible: () => this.ensureDocumentsSectionVisible(),
+    });
+
+    const evidence = [...captureResult.evidence];
+    let admissionOrderAccessible = captureResult.admissionOrderAccessible;
+    let admissionOrderTextExcerpt: string | null = null;
+    let admissionReasonPrimary: string | null = null;
+    let admissionReasonSnippets: string[] = [];
+    let possibleIcd10Codes: string[] = [];
+    let rawExtractedTextSource: "dom" | "ocr" | "hybrid" | null = null;
+    let domExtractionRejectedReasons: string[] = [];
+    let extractionMethodUsed = captureResult.extractionMethodUsed;
+    let extractionSuccess = false;
+    const extractionPolicyDecision = captureResult.capturedDocument
+      ? await decideDocumentExtractionPolicy(captureResult.capturedDocument)
+      : null;
+
+    if (extractionPolicyDecision) {
+      evidence.push(`Extraction policy mode: ${extractionPolicyDecision.mode}`);
+      evidence.push(`Extraction policy confidence: ${extractionPolicyDecision.confidence}`);
+      evidence.push(`Extraction policy reasons: ${extractionPolicyDecision.reasons.join(" | ") || "none"}`);
+      evidence.push(`Extraction policy recommended source: ${extractionPolicyDecision.recommendedSourcePath ?? "none"}`);
+      evidence.push(`Extraction policy fallback source: ${extractionPolicyDecision.fallbackSourcePath ?? "none"}`);
+      this.options.logger?.info(
+        {
+          chartUrl: input.chartUrl,
+          selectedSourceFile: captureResult.selectedSourceFile,
+          selectedSourceFileNormalized: captureResult.selectedSourceFileNormalized,
+          extractionPolicyDecision,
+        },
+        "document extraction policy evaluated for captured chart document",
+      );
+    }
+
+    if (
+      captureResult.capturedDocument &&
+      captureResult.extractedTextPath &&
+      captureResult.extractionResultPath &&
+      captureResult.sourceMetaPath
+    ) {
+      const scoreAdmissionTextCandidate = (value: string): number => {
+        let score = 0;
+        const upper = value.toUpperCase();
+        if (/REASON FOR ADMISSION/.test(upper)) {
+          score += 120;
+        }
+        if (/ADMITTING DIAGNOSIS/.test(upper)) {
+          score += 100;
+        }
+        if (/PRIMARY DIAGNOSIS/.test(upper)) {
+          score += 80;
+        }
+        if (/DIAGNOSIS/.test(upper)) {
+          score += 40;
+        }
+        if (/ADMISSION/.test(upper)) {
+          score += 35;
+        }
+        if (/\b[A-TV-Z][0-9][0-9AB](?:\.[0-9A-TV-Z]{1,4})?\b/.test(upper)) {
+          score += 50;
+        }
+        if (/DASHBOARD|VIEW ALL AGENCIES|SEARCH PATIENT|NOTIFICATIONS|MESSAGES|LOGOUT|STICKY NOTES|QAPI BOARD/.test(upper)) {
+          score -= 140;
+        }
+        score += Math.min(value.length, 1600) / 40;
+        return score;
+      };
+
+      const rankedAdmissionTextCandidates = captureResult.rawTextCandidates
+        .map((value) => ({ value, score: scoreAdmissionTextCandidate(value) }))
+        .sort((left, right) => right.score - left.score)
+        .slice(0, 6);
+      const bestAdmissionText = rankedAdmissionTextCandidates[0]?.value ?? "";
+      const pageFallbackText = await dumpTopVisibleText(this.page, 8000).catch(() => "");
+      admissionOrderTextExcerpt =
+        (captureResult.pdfResponseDetected && captureResult.pdfSavedPath ? normalizeWhitespace(bestAdmissionText) : "") ||
+        bestAdmissionText ||
+        pageFallbackText ||
+        normalizeWhitespace(captureResult.selectedSourceFile) ||
+        captureResult.admissionOrderTitle ||
+        null;
+
+      if (!bestAdmissionText && !pageFallbackText && normalizeWhitespace(captureResult.selectedSourceFile)) {
+        extractionMethodUsed = "metadata";
+      }
+
+      await writeFile(
+        captureResult.extractedTextPath,
+        `${normalizeWhitespace(admissionOrderTextExcerpt) || ""}\n`,
+        "utf8",
+      );
+      rawExtractedTextSource = "dom";
+      const admissionTextAnalysis = analyzeDocumentText(admissionOrderTextExcerpt ?? "");
+      domExtractionRejectedReasons = admissionTextAnalysis.rejectionReasons;
+      admissionReasonSnippets = extractAdmissionReasonSnippets(admissionTextAnalysis.normalizedText);
+      admissionReasonPrimary = admissionReasonSnippets[0] ?? null;
+      possibleIcd10Codes = extractPossibleIcd10Codes(admissionTextAnalysis.normalizedText);
+      const extractedTextLength = admissionTextAnalysis.normalizedText.length;
+      extractionSuccess =
+        admissionTextAnalysis.accepted &&
+        (captureResult.pdfResponseDetected || extractedTextLength >= 120 || possibleIcd10Codes.length > 0);
+      const queuedForLlm = !extractionSuccess;
+      admissionOrderAccessible =
+        admissionOrderAccessible ||
+        Boolean(
+          captureResult.selectedSourceFileNormalized &&
+            (extractionSuccess || extractionMethodUsed === "metadata" || captureResult.viewerDetected),
+        );
+
+      await writeFile(
+        captureResult.sourceMetaPath,
+        JSON.stringify(
+          {
+            selectedSourceFile: captureResult.selectedSourceFile,
+            selectedSourceFileNormalized: captureResult.selectedSourceFileNormalized,
+            admissionOrderTitle: captureResult.admissionOrderTitle,
+            admissionOrderSelectorUsed: captureResult.admissionOrderSelectorUsed,
+            sourceUrlBeforeClick: input.chartUrl,
+            sourceUrlAfterClick: this.page.url(),
+            matchedReferralFileLabel: captureResult.referralFileLabel
+              ? normalizeUploadFileLabelForDisplay(captureResult.referralFileLabel)
+              : null,
+            normalizedFileLabels: captureResult.normalizedFileLabels,
+            matchedSourceDocuments: captureResult.matchedSourceDocuments,
+            viewerDetected: captureResult.viewerDetected,
+            viewerMarkerSamples: captureResult.viewerMarkerSamples,
+            printButtonDetected: captureResult.printButtonDetected,
+            printButtonVisible: captureResult.printButtonVisible,
+            printButtonSelectorUsed: captureResult.printButtonSelectorUsed,
+            printClickSucceeded: captureResult.printClickSucceeded,
+            pdfResponseDetected: captureResult.pdfResponseDetected,
+            pdfResponseUrl: captureResult.pdfResponseUrl,
+            pdfContentType: captureResult.pdfContentType,
+            pdfSavedPath: captureResult.pdfSavedPath,
+            pdfByteSize: captureResult.pdfByteSize,
+            printAcquisitionMethodUsed: captureResult.printAcquisitionMethodUsed,
+            printedPdfSaved: Boolean(captureResult.printedPdfPath),
+            printedPdfPath: captureResult.printedPdfPath,
+            sourcePdfPath: captureResult.pdfSavedPath,
+            extractedTextPath: captureResult.extractedTextPath,
+            extractionResultPath: captureResult.extractionResultPath,
+            extractedTextLength,
+            rawExtractedTextSource,
+            domExtractionRejectedReasons,
+            extractionSuccess,
+            queuedForLlm,
+            extractionPolicyDecision,
+            generatedAt: new Date().toISOString(),
+          },
+          null,
+          2,
+        ),
+        "utf8",
+      );
+      await writeFile(
+        captureResult.extractionResultPath,
+        JSON.stringify(
+          {
+            documentType: "ORDER",
+            sourceLabel: captureResult.selectedSourceFile,
+            normalizedSourceLabel: captureResult.selectedSourceFileNormalized,
+            viewerDetected: captureResult.viewerDetected,
+            printButtonDetected: captureResult.printButtonDetected,
+            printButtonSelectorUsed: captureResult.printButtonSelectorUsed,
+            printClickSucceeded: captureResult.printClickSucceeded,
+            pdfResponseDetected: captureResult.pdfResponseDetected,
+            pdfResponseUrl: captureResult.pdfResponseUrl,
+            pdfContentType: captureResult.pdfContentType,
+            pdfSavedPath: captureResult.pdfSavedPath,
+            pdfByteSize: captureResult.pdfByteSize,
+            printAcquisitionMethodUsed: captureResult.printAcquisitionMethodUsed,
+            printedPdfSaved: Boolean(captureResult.printedPdfPath),
+            printedPdfPath: captureResult.printedPdfPath,
+            sourcePdfPath: captureResult.pdfSavedPath,
+            extractedTextPath: captureResult.extractedTextPath,
+            extractedTextLength,
+            extractionMethodUsed,
+            rawExtractedTextSource,
+            domExtractionRejectedReasons,
+            extractionSuccess,
+            queuedForLlm,
+            extractionPolicyDecision,
+            admissionReasonPrimary,
+            admissionReasonSnippets,
+            possibleIcd10Codes,
+            textPreview: admissionTextAnalysis.normalizedText.slice(0, 500) || null,
+            generatedAt: new Date().toISOString(),
+          },
+          null,
+          2,
+        ),
+        "utf8",
+      );
+
+      evidence.push(`Extracted text length: ${extractedTextLength}`);
+      evidence.push(`Raw extracted text source: ${rawExtractedTextSource ?? "none"}`);
+      evidence.push(`DOM extraction rejected reasons: ${domExtractionRejectedReasons.join(" | ") || "none"}`);
+      evidence.push(`Extraction method used: ${extractionMethodUsed ?? "none"}`);
+      evidence.push(`Extraction success: ${extractionSuccess}`);
+      evidence.push(`Queued for LLM: ${queuedForLlm}`);
+      evidence.push(
+        `Admission text candidates ranked: ${rankedAdmissionTextCandidates
+          .map((entry, index) => `[${index + 1}] score=${entry.score.toFixed(1)} text=${entry.value.slice(0, 220)}`)
+          .join(" || ") || "none"}`,
+      );
+      evidence.push(`Admission reason primary: ${admissionReasonPrimary ?? "none"}`);
+      evidence.push(`Admission reason snippets: ${admissionReasonSnippets.join(" | ") || "none"}`);
+      evidence.push(`Possible ICD-10 codes: ${possibleIcd10Codes.join(" | ") || "none"}`);
+      evidence.push(`Admission order text excerpt: ${normalizeWhitespace(admissionOrderTextExcerpt).slice(0, 900) || "none"}`);
+    }
+
+    stepLogs.push(createAutomationStepLog({
+      step: "file_uploads_open",
+      message: captureResult.fileUploadsAccessible
+        ? "Opened File Uploads section and enumerated available uploaded records."
+        : "Could not verify File Uploads section content after sidebar navigation.",
+      urlBefore: input.chartUrl,
+      urlAfter: this.page.url(),
+      selectorUsed: captureResult.fileUploadsSelectorUsed,
+      found: withContextSignals([
+        `fileUploadsAccessible:${captureResult.fileUploadsAccessible}`,
+        `patientFileUploadsRouteDetected:${captureResult.patientFileUploadsRouteDetected}`,
+        `genericProviderDocumentsRouteDetected:${captureResult.genericProviderDocumentsRouteDetected}`,
+        `fileUploadsSidebarClickSucceeded:${captureResult.fileUploadsSidebarClickSucceeded}`,
+        `pageComponentDetected:${captureResult.fileUploadsPageComponentDetected}`,
+        `traversalMode:${captureResult.fileUploadsTraversalMode}`,
+        `usedChartDocumentsFallback:${captureResult.usedChartDocumentsFallback}`,
+        `matchedFileUploadsLabel:${captureResult.matchedFileUploadsLabel ?? "none"}`,
+        `matchedFileUploadsHref:${captureResult.matchedFileUploadsHref ?? "none"}`,
+        `referralFolderSelected:${captureResult.referralFolderSelected}`,
+        `referralFolderLabel:${captureResult.referralFolderLabel ?? "none"}`,
+        `matchedReferralFileLabel:${captureResult.referralFileLabel ?? "none"}`,
+        `normalizedFileLabels:${captureResult.normalizedFileLabels.join(" | ") || "none"}`,
+        `matchedSourceDocuments:${captureResult.matchedSourceDocuments.map((entry) => entry.normalizedLabel).join(" | ") || "none"}`,
+        `selectedSourceFile:${captureResult.selectedSourceFile ?? "none"}`,
+        `viewerDetected:${captureResult.viewerDetected}`,
+        `printButtonDetected:${captureResult.printButtonDetected}`,
+        `printButtonVisible:${captureResult.printButtonVisible}`,
+        `printClickSucceeded:${captureResult.printClickSucceeded}`,
+        `pdfResponseDetected:${captureResult.pdfResponseDetected}`,
+        `pdfResponseUrl:${captureResult.pdfResponseUrl ?? "none"}`,
+        `pdfContentType:${captureResult.pdfContentType ?? "none"}`,
+        `pdfSavedPath:${captureResult.pdfSavedPath ?? "none"}`,
+        `pdfByteSize:${captureResult.pdfByteSize}`,
+        `printAcquisitionMethodUsed:${captureResult.printAcquisitionMethodUsed}`,
+        `sourcePdfPath:${captureResult.sourcePdfPath ?? "none"}`,
+        `printedPdfPath:${captureResult.printedPdfPath ?? "none"}`,
+        `extractionMethodUsed:${extractionMethodUsed ?? "none"}`,
+        `rawExtractedTextSource:${rawExtractedTextSource ?? "none"}`,
+        `domExtractionRejectedReasons:${domExtractionRejectedReasons.join(" | ") || "none"}`,
+        `extractionSuccess:${extractionSuccess}`,
+        `uploadedDocumentCount:${captureResult.visibleUploadedDocuments.length}`,
+      ]),
+      missing: captureResult.fileUploadsAccessible ? [] : ["File Uploads content"],
+      evidence,
+      safeReadConfirmed: true,
+    }));
+
+    stepLogs.push(createAutomationStepLog({
+      step: "admission_order_open",
+      message: admissionOrderAccessible
+        ? "Opened Admission Order from File Uploads for coding-reference verification."
+        : "Admission Order could not be located/opened from File Uploads.",
+      urlBefore: input.chartUrl,
+      urlAfter: this.page.url(),
+      selectorUsed: captureResult.admissionOrderSelectorUsed ?? captureResult.fileUploadsSelectorUsed,
+      found: withContextSignals([
+        `fileUploadsAccessible:${captureResult.fileUploadsAccessible}`,
+        `patientFileUploadsRouteDetected:${captureResult.patientFileUploadsRouteDetected}`,
+        `genericProviderDocumentsRouteDetected:${captureResult.genericProviderDocumentsRouteDetected}`,
+        `fileUploadsSidebarClickSucceeded:${captureResult.fileUploadsSidebarClickSucceeded}`,
+        `pageComponentDetected:${captureResult.fileUploadsPageComponentDetected}`,
+        `traversalMode:${captureResult.fileUploadsTraversalMode}`,
+        `usedChartDocumentsFallback:${captureResult.usedChartDocumentsFallback}`,
+        `referralFolderSelected:${captureResult.referralFolderSelected}`,
+        `admissionOrderAccessible:${admissionOrderAccessible}`,
+        `admissionOrderTitle:${captureResult.admissionOrderTitle ?? "none"}`,
+        `selectedSourceFile:${captureResult.selectedSourceFile ?? "none"}`,
+        `viewerDetected:${captureResult.viewerDetected}`,
+        `printButtonDetected:${captureResult.printButtonDetected}`,
+        `printClickSucceeded:${captureResult.printClickSucceeded}`,
+        `pdfResponseDetected:${captureResult.pdfResponseDetected}`,
+        `pdfResponseUrl:${captureResult.pdfResponseUrl ?? "none"}`,
+        `pdfContentType:${captureResult.pdfContentType ?? "none"}`,
+        `pdfSavedPath:${captureResult.pdfSavedPath ?? "none"}`,
+        `pdfByteSize:${captureResult.pdfByteSize}`,
+        `printAcquisitionMethodUsed:${captureResult.printAcquisitionMethodUsed}`,
+        `sourcePdfPath:${captureResult.sourcePdfPath ?? "none"}`,
+        `printedPdfPath:${captureResult.printedPdfPath ?? "none"}`,
+        `extractionMethodUsed:${extractionMethodUsed ?? "none"}`,
+        `rawExtractedTextSource:${rawExtractedTextSource ?? "none"}`,
+        `domExtractionRejectedReasons:${domExtractionRejectedReasons.join(" | ") || "none"}`,
+        `extractionSuccess:${extractionSuccess}`,
+        `admissionReasonPrimary:${admissionReasonPrimary ?? "none"}`,
+        `possibleIcd10Codes:${possibleIcd10Codes.join(" | ") || "none"}`,
+      ]),
+      missing: admissionOrderAccessible ? [] : ["Admission Order"],
+      evidence,
+      safeReadConfirmed: true,
+    }));
+
+    stepLogs.push(createAutomationStepLog({
+      step: "qa_summary",
+      message: admissionOrderAccessible
+        ? "File Uploads and Admission Order were successfully accessed for coding reference."
+        : "File Uploads stage completed but Admission Order was not accessible.",
+      urlBefore: input.chartUrl,
+      urlAfter: this.page.url(),
+      selectorUsed: captureResult.admissionOrderSelectorUsed ?? captureResult.fileUploadsSelectorUsed,
+      found: withContextSignals([
+        `fileUploadsAccessible:${captureResult.fileUploadsAccessible}`,
+        `patientFileUploadsRouteDetected:${captureResult.patientFileUploadsRouteDetected}`,
+        `genericProviderDocumentsRouteDetected:${captureResult.genericProviderDocumentsRouteDetected}`,
+        `fileUploadsSidebarClickSucceeded:${captureResult.fileUploadsSidebarClickSucceeded}`,
+        `pageComponentDetected:${captureResult.fileUploadsPageComponentDetected}`,
+        `traversalMode:${captureResult.fileUploadsTraversalMode}`,
+        `usedChartDocumentsFallback:${captureResult.usedChartDocumentsFallback}`,
+        `referralFolderSelected:${captureResult.referralFolderSelected}`,
+        `admissionOrderAccessible:${admissionOrderAccessible}`,
+        `admissionOrderTitle:${captureResult.admissionOrderTitle ?? "none"}`,
+        `selectedSourceFile:${captureResult.selectedSourceFile ?? "none"}`,
+        `viewerDetected:${captureResult.viewerDetected}`,
+        `printButtonDetected:${captureResult.printButtonDetected}`,
+        `printClickSucceeded:${captureResult.printClickSucceeded}`,
+        `pdfResponseDetected:${captureResult.pdfResponseDetected}`,
+        `pdfResponseUrl:${captureResult.pdfResponseUrl ?? "none"}`,
+        `pdfContentType:${captureResult.pdfContentType ?? "none"}`,
+        `pdfSavedPath:${captureResult.pdfSavedPath ?? "none"}`,
+        `pdfByteSize:${captureResult.pdfByteSize}`,
+        `printAcquisitionMethodUsed:${captureResult.printAcquisitionMethodUsed}`,
+        `sourcePdfPath:${captureResult.sourcePdfPath ?? "none"}`,
+        `printedPdfPath:${captureResult.printedPdfPath ?? "none"}`,
+        `extractionMethodUsed:${extractionMethodUsed ?? "none"}`,
+        `rawExtractedTextSource:${rawExtractedTextSource ?? "none"}`,
+        `domExtractionRejectedReasons:${domExtractionRejectedReasons.join(" | ") || "none"}`,
+        `extractionSuccess:${extractionSuccess}`,
+        `admissionReasonPrimary:${admissionReasonPrimary ?? "none"}`,
+        `possibleIcd10Codes:${possibleIcd10Codes.join(" | ") || "none"}`,
+      ]),
+      missing: [
+        ...(captureResult.fileUploadsAccessible ? [] : ["File Uploads"]),
+        ...(admissionOrderAccessible ? [] : ["Admission Order"]),
+      ],
+      evidence,
+      safeReadConfirmed: true,
+    }));
+
+    this.options.logger?.info(
+      {
+        postNavigationUrl: this.page.url(),
+        socSelectorUsed: input.socSelectorUsed,
+        matchedSocAnchorText: input.matchedSocAnchorText,
+        fileUploadsSelectorUsed: captureResult.fileUploadsSelectorUsed,
+        matchedFileUploadsLabel: captureResult.matchedFileUploadsLabel,
+        matchedFileUploadsHref: captureResult.matchedFileUploadsHref,
+        fileUploadsSidebarClickSucceeded: captureResult.fileUploadsSidebarClickSucceeded,
+        fileUploadsAccessible: captureResult.fileUploadsAccessible,
+        patientFileUploadsRouteDetected: captureResult.patientFileUploadsRouteDetected,
+        genericProviderDocumentsRouteDetected: captureResult.genericProviderDocumentsRouteDetected,
+        fileUploadsPageComponentDetected: captureResult.fileUploadsPageComponentDetected,
+        fileUploadsTraversalMode: captureResult.fileUploadsTraversalMode,
+        usedChartDocumentsFallback: captureResult.usedChartDocumentsFallback,
+        referralFolderSelected: captureResult.referralFolderSelected,
+        referralFolderLabel: captureResult.referralFolderLabel,
+        referralFileLabel: captureResult.referralFileLabel,
+        normalizedFileLabels: captureResult.normalizedFileLabels.slice(0, 20),
+        matchedSourceDocuments: captureResult.matchedSourceDocuments.slice(0, 20),
+        selectedSourceFile: captureResult.selectedSourceFile,
+        selectedSourceFileNormalized: captureResult.selectedSourceFileNormalized,
+        viewerDetected: captureResult.viewerDetected,
+        printButtonDetected: captureResult.printButtonDetected,
+        printButtonVisible: captureResult.printButtonVisible,
+        printButtonSelectorUsed: captureResult.printButtonSelectorUsed,
+        printClickSucceeded: captureResult.printClickSucceeded,
+        pdfResponseDetected: captureResult.pdfResponseDetected,
+        pdfResponseUrl: captureResult.pdfResponseUrl,
+        pdfContentType: captureResult.pdfContentType,
+        pdfSavedPath: captureResult.pdfSavedPath,
+        pdfByteSize: captureResult.pdfByteSize,
+        printAcquisitionMethodUsed: captureResult.printAcquisitionMethodUsed,
+        sourcePdfPath: captureResult.sourcePdfPath,
+        printedPdfPath: captureResult.printedPdfPath,
+        sourceMetaPath: captureResult.sourceMetaPath,
+        extractedTextPath: captureResult.extractedTextPath,
+        extractionResultPath: captureResult.extractionResultPath,
+        extractionMethodUsed,
+        rawExtractedTextSource,
+        domExtractionRejectedReasons,
+        extractionSuccess,
+        fileUploadsUrl: captureResult.fileUploadsUrl,
+        uploadedDocumentCount: captureResult.visibleUploadedDocuments.length,
+        visibleUploadedDocuments: captureResult.visibleUploadedDocuments.slice(0, 20),
+        admissionOrderSelectorUsed: captureResult.admissionOrderSelectorUsed,
+        admissionOrderAccessible,
+        admissionOrderTitle: captureResult.admissionOrderTitle,
+        admissionReasonPrimary,
+        admissionReasonSnippets,
+        possibleIcd10Codes,
+      },
+      "File Uploads and Admission Order read-only navigation completed",
+    );
+
+    return {
+      fileUploadsAccessible: captureResult.fileUploadsAccessible,
+      fileUploadsUrl: captureResult.fileUploadsUrl,
+      visibleUploadedDocuments: captureResult.visibleUploadedDocuments,
+      admissionOrderAccessible,
+      admissionOrderTitle: captureResult.admissionOrderTitle,
+      admissionReasonSnippets,
+      admissionReasonPrimary,
+      possibleIcd10Codes,
+      rawExtractedTextSource,
+      domExtractionRejectedReasons,
+      admissionOrderTextExcerpt,
+      sourcePdfPath: captureResult.sourcePdfPath,
+      printedPdfPath: captureResult.printedPdfPath,
+      sourceMetaPath: captureResult.sourceMetaPath,
+      extractedTextPath: captureResult.extractedTextPath,
+      extractionResultPath: captureResult.extractionResultPath,
+      fileUploadsSelectorUsed: captureResult.fileUploadsSelectorUsed,
+      admissionOrderSelectorUsed: captureResult.admissionOrderSelectorUsed,
       stepLogs,
     };
   }

@@ -1,0 +1,25 @@
+{
+  "generatedAt": "2026-04-15T07:11:42.771Z",
+  "source": "printed_note_ocr",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\evidence\\GENEVA_EGELHOFF__0f0c294619085ab6\\oasis-printed-note\\extracted-text.txt",
+  "extractedFieldCount": 1,
+  "invocationModelId": "us.amazon.nova-lite-v1:0",
+  "currentChartValues": {
+    "patient_name": "Geneva Egelhoff"
+  },
+  "extractedFieldValues": [
+    {
+      "field_key": "patient_name",
+      "current_value": "Geneva Egelhoff",
+      "confidence": 0.95,
+      "source_spans": [
+        "Geneva Egelhoff",
+        "EGELHOFF, GENEVA",
+        "EGELHOFF, GENEVA116313"
+      ]
+    }
+  ],
+  "warnings": [
+    "Printed-note chart-value extraction used inference profile us.amazon.nova-lite-v1:0."
+  ]
+}

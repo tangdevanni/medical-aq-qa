@@ -19,6 +19,7 @@ export interface ExecuteSharedPortalAccessWorkflowParams {
 
 export interface SharedPortalAccessWorkflowResult {
   matchResult: ResolvedPatientPortalAccess["matchResult"];
+  portalAdmissionStatus: string | null;
   portalContexts: PatientPortalContext[];
   stepLogs: AutomationStepLog[];
 }
@@ -65,6 +66,7 @@ export async function executeSharedPortalAccessWorkflow(
       evidence: [
         `matchStatus=${access.matchResult.status}`,
         `portalPatientId=${access.patientId ?? "none"}`,
+        `portalAdmissionStatus=${access.portalAdmissionStatus ?? "none"}`,
         `dashboardUrl=${access.dashboardUrl ?? "none"}`,
         `chartUrl=${access.chartUrl ?? "none"}`,
       ],
@@ -86,6 +88,7 @@ export async function executeSharedPortalAccessWorkflow(
 
   return {
     matchResult: access.matchResult,
+    portalAdmissionStatus: access.portalAdmissionStatus,
     portalContexts,
     stepLogs,
   };

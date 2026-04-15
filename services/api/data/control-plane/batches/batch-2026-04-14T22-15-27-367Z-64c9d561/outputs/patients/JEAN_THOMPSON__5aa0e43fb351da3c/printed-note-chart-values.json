@@ -1,0 +1,186 @@
+{
+  "generatedAt": "2026-04-14T22:37:31.599Z",
+  "source": "printed_note_ocr",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-14T22-15-27-367Z-64c9d561\\outputs\\evidence\\JEAN_THOMPSON__5aa0e43fb351da3c\\oasis-printed-note\\extracted-text.txt",
+  "extractedFieldCount": 17,
+  "invocationModelId": "us.amazon.nova-lite-v1:0",
+  "currentChartValues": {
+    "patient_name": "THOMPSON, JEAN",
+    "dob": "1937-08-16",
+    "soc_date": "2026-01-24",
+    "primary_reason_for_home_health_medical_necessity": "Jean Laverne Thompson is an 88-year-old female with a primary diagnosis of a left patella fracture following a mechanical fall, resulting in significant pain and functional limitations. She also has a history of atrial fibrillation, benign essential hypertension, congestive heart failure, diabetes, and hyperlipidemia. Following her recent orthopedic surgery for an open reduction and internal fixation (ORIF) of the left patella, her functional status has significantly declined, requiring assistance with activities o",
+    "homebound_narrative": "The patient is considered homebound because she of status post open reduction and internal fixation (ORIF) of the left patella following a ground-level fall. She presents with significant mobility impairments including the need for a walker and assistance from another person to safely leave the home. The patient experiences weakness, poor balance, joint stiffness, and high risk for falls, which severely limit her ability to ambulate independently. Due to pain and functional limitations in the left lower extremity,",
+    "recent_hospitalization_discharge_date": "2026-01-23",
+    "caregiver_name": "William Thompson",
+    "caregiver_relationship": "spouse",
+    "caregiver_phone": "6028160413",
+    "living_situation": "Patient lives with other person(s) in the home",
+    "prior_functioning": "Prior to her hospitalization, she was living independently with her spouse but now requires moderate assistance with transfers and ambulation, as well as supervision for toileting activities.",
+    "functional_limitations": "Amputation, Ambulation, Dyspnea with minimal exertion, Speech",
+    "therapy_need": "The patient requires assistance with activities of daily living (ADLs) and mobility due to her recent orthopedic surgery and functional limitations.",
+    "patient_summary_narrative": "Jean Thompson is an 88-year-old female with a left patella fracture following a mechanical fall. She has a history of atrial fibrillation, benign essential hypertension, congestive heart failure, diabetes, and hyperlipidemia. Following her recent orthopedic surgery, her functional status has declined, requiring assistance with ADLs and mobility. She is homebound due to significant mobility impairments and high risk for falls.",
+    "past_medical_history": "CHF, Cardiomyopathy, Arrhythmia, Chest Pain, MI, CAD, HTN, PVD, Murmur, Cancer, Osteoarthritis/DJD, Joint Replacement, Rheumatoid Arthritis, Gait Problems, Fractures, Falls, CVA, TIA, MS, Hemiplegia, Seizures, Headaches, Dizziness/Vertigo, IBS, Crohn's Disease, Diverticulitis/Diverticulosis, Constipation, Diarrhea, Fecal Incontinence, Liver/Gallbladder Problems, Depression, Anxiety, Dementia, Substance Abuse, Alzheimer's, Mental Disorder, Pressure Ulcer, Stasis Ulcer, Diabetic Ulcer, Trauma Wound, surgical wound at",
+    "immunization_status": "None",
+    "diagnosis_candidates": "Unsp fracture of left patella, subs for clos fx W routn heal, Hypertensive heart disease with heart failure, Heart failure, unspecified, Unspecified atrial fibrillation, Type 2 diabetes mellitus without complications, Hyperlipidemia, unspecified, Gastro-esophageal reflux disease without esophagitis, Long term (current) use of anticoagulants, Long term (current) use of oral hypoglycemic drugs, History of falling"
+  },
+  "extractedFieldValues": [
+    {
+      "field_key": "patient_name",
+      "current_value": "THOMPSON, JEAN",
+      "confidence": 0.95,
+      "source_spans": [
+        "Name: THOMPSON, JEAN",
+        "Name: JEAN THOMPSON",
+        "Name: THOMPSON, JEAN"
+      ]
+    },
+    {
+      "field_key": "dob",
+      "current_value": "1937-08-16",
+      "confidence": 0.95,
+      "source_spans": [
+        "Birth Date * 08/16/1937",
+        "DOB: 08/16/1937"
+      ]
+    },
+    {
+      "field_key": "soc_date",
+      "current_value": "2026-01-24",
+      "confidence": 0.95,
+      "source_spans": [
+        "Start of Care Date 01/24/2026",
+        "Start of Care Date MORALES, ALEXANDER 01/24/2026",
+        "N: 01/24/2026"
+      ]
+    },
+    {
+      "field_key": "primary_reason_for_home_health_medical_necessity",
+      "current_value": "Jean Laverne Thompson is an 88-year-old female with a primary diagnosis of a left patella fracture following a mechanical fall, resulting in significant pain and functional limitations. She also has a history of atrial fibrillation, benign essential hypertension, congestive heart failure, diabetes, and hyperlipidemia. Following her recent orthopedic surgery for an open reduction and internal fixation (ORIF) of the left patella, her functional status has significantly declined, requiring assistance with activities of daily living (ADLs) and mobility.",
+      "confidence": 0.9,
+      "source_spans": [
+        "Primary Reason for Home Health/Medical Necessity:",
+        "Jean Laverne Thompson is an 88-year-old female with a primary diagnosis of a left patella fracture following a mechanical fall, resulting in significant pain and functional limitations."
+      ]
+    },
+    {
+      "field_key": "homebound_narrative",
+      "current_value": "The patient is considered homebound because she of status post open reduction and internal fixation (ORIF) of the left patella following a ground-level fall. She presents with significant mobility impairments including the need for a walker and assistance from another person to safely leave the home. The patient experiences weakness, poor balance, joint stiffness, and high risk for falls, which severely limit her ability to ambulate independently. Due to pain and functional limitations in the left lower extremity, ambulation is strenuous and requires extended rest periods for recovery. Additionally, the patient demonstrates dyspnea on minimal exertion, which further contributes to the taxing effort required to leave the home.",
+      "confidence": 0.9,
+      "source_spans": [
+        "The patient is considered homebound because she of status post open reduction and internal fixation (ORIF) of the left patella following a ground-level fall.",
+        "She presents with significant mobility impairments including the need for a walker and assistance from another person to safely leave the home.",
+        "The patient experiences weakness, poor balance, joint stiffness, and high risk for falls, which severely limit her ability to ambulate independently."
+      ]
+    },
+    {
+      "field_key": "recent_hospitalization_discharge_date",
+      "current_value": "2026-01-23",
+      "confidence": 0.95,
+      "source_spans": [
+        "Inpatient Discharge Date (most recent): 01/23/2026"
+      ]
+    },
+    {
+      "field_key": "caregiver_name",
+      "current_value": "William Thompson",
+      "confidence": 0.95,
+      "source_spans": [
+        "Primary Caregiver: William Thompson"
+      ]
+    },
+    {
+      "field_key": "caregiver_relationship",
+      "current_value": "spouse",
+      "confidence": 0.95,
+      "source_spans": [
+        "Relationship to Patient spouse"
+      ]
+    },
+    {
+      "field_key": "caregiver_phone",
+      "current_value": "602-816-0413",
+      "confidence": 0.95,
+      "source_spans": [
+        "Contact Number 602-816-0413"
+      ]
+    },
+    {
+      "field_key": "living_situation",
+      "current_value": "Patient lives with other person(s) in the home",
+      "confidence": 0.9,
+      "source_spans": [
+        "Patient lives with other person(s) in the home"
+      ]
+    },
+    {
+      "field_key": "prior_functioning",
+      "current_value": "Prior to her hospitalization, she was living independently with her spouse but now requires moderate assistance with transfers and ambulation, as well as supervision for toileting activities.",
+      "confidence": 0.9,
+      "source_spans": [
+        "Prior to her hospitalization, she was living independently with her spouse but now requires moderate assistance with transfers and ambulation, as well as supervision for toileting activities."
+      ]
+    },
+    {
+      "field_key": "functional_limitations",
+      "current_value": "Amputation, Ambulation, Dyspnea with minimal exertion, Speech",
+      "confidence": 0.9,
+      "source_spans": [
+        "Functional Limitations 1 - Amputation 4 Hearing 7- Ambulation A Dyspnea with minimal exertion 2- Bowel/Bladder (Incontinence) 5 - Paralysis 8 - Speech 3 - Contracture 6 - Endurance 9 - Legally blind"
+      ]
+    },
+    {
+      "field_key": "therapy_need",
+      "current_value": "The patient requires assistance with activities of daily living (ADLs) and mobility due to her recent orthopedic surgery and functional limitations.",
+      "confidence": 0.9,
+      "source_spans": [
+        "requiring assistance with activities of daily living (ADLs) and mobility"
+      ]
+    },
+    {
+      "field_key": "patient_summary_narrative",
+      "current_value": "Jean Thompson is an 88-year-old female with a left patella fracture following a mechanical fall. She has a history of atrial fibrillation, benign essential hypertension, congestive heart failure, diabetes, and hyperlipidemia. Following her recent orthopedic surgery, her functional status has declined, requiring assistance with ADLs and mobility. She is homebound due to significant mobility impairments and high risk for falls.",
+      "confidence": 0.9,
+      "source_spans": [
+        "Jean Laverne Thompson is an 88-year-old female with a primary diagnosis of a left patella fracture following a mechanical fall, resulting in significant pain and functional limitations.",
+        "She also has a history of atrial fibrillation, benign essential hypertension, congestive heart failure, diabetes, and hyperlipidemia.",
+        "Following her recent orthopedic surgery for an open reduction and internal fixation (ORIF) of the left patella, her functional status has significantly declined, requiring assistance with activities of daily living (ADLs) and mobility."
+      ]
+    },
+    {
+      "field_key": "past_medical_history",
+      "current_value": "CHF, Cardiomyopathy, Arrhythmia, Chest Pain, MI, CAD, HTN, PVD, Murmur, Cancer, Osteoarthritis/DJD, Joint Replacement, Rheumatoid Arthritis, Gait Problems, Fractures, Falls, CVA, TIA, MS, Hemiplegia, Seizures, Headaches, Dizziness/Vertigo, IBS, Crohn's Disease, Diverticulitis/Diverticulosis, Constipation, Diarrhea, Fecal Incontinence, Liver/Gallbladder Problems, Depression, Anxiety, Dementia, Substance Abuse, Alzheimer's, Mental Disorder, Pressure Ulcer, Stasis Ulcer, Diabetic Ulcer, Trauma Wound, surgical wound at left knee, hyperlipidemia, GERD, Chronic Kidney Disease, Renal Failure, Dialysis, Anemia, Abnormal Coagulation, Blood Clots, Diabetes, Thyroid Problems, COPD, Asthma, Emphysema, Chronic Obstructive Bronchitis, Chronic Obstructive Asthma, Urinary Incontinence, Urinary Retention, BPH, Recent/Frequent UTI, Tuberculosis, Hepatitis, Infectious Disease, Tobacco Dependence",
+      "confidence": 0.9,
+      "source_spans": [
+        "Past Medical History (Mark all that apply)"
+      ]
+    },
+    {
+      "field_key": "immunization_status",
+      "current_value": "None",
+      "confidence": 0.9,
+      "source_spans": [
+        "None of the above"
+      ]
+    },
+    {
+      "field_key": "diagnosis_candidates",
+      "current_value": "Unsp fracture of left patella, subs for clos fx W routn heal, Hypertensive heart disease with heart failure, Heart failure, unspecified, Unspecified atrial fibrillation, Type 2 diabetes mellitus without complications, Hyperlipidemia, unspecified, Gastro-esophageal reflux disease without esophagitis, Long term (current) use of anticoagulants, Long term (current) use of oral hypoglycemic drugs, History of falling",
+      "confidence": 0.9,
+      "source_spans": [
+        "PRIMARY DIAGNOSIS",
+        "OTHER DIAGNOSIS - 1",
+        "OTHER DIAGNOSIS - 2",
+        "OTHER DIAGNOSIS - 3",
+        "OTHER DIAGNOSIS 4",
+        "OTHER DIAGNOSIS - 5",
+        "K21.9 Gastro-esophageal reflux disease without esophagitis",
+        "Z79.01 Long term (current) use of anticoagulants",
+        "Z79.84 Long term (current) use of oral hypoglycemic drugs",
+        "Z91.81 History of falling"
+      ]
+    }
+  ],
+  "warnings": [
+    "Printed-note chart-value extraction used inference profile us.amazon.nova-lite-v1:0."
+  ]
+}

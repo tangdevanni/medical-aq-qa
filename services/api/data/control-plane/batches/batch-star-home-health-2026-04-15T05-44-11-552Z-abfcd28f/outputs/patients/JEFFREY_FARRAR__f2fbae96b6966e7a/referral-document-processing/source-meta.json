@@ -1,0 +1,27 @@
+{
+  "patientId": "JEFFREY_FARRAR__f2fbae96b6966e7a",
+  "selectedDocumentId": "JEFFREY_FARRAR__f2fbae96b6966e7a-referral-1",
+  "sourceDocuments": [
+    {
+      "documentId": "JEFFREY_FARRAR__f2fbae96b6966e7a-referral-1",
+      "sourceIndex": 0,
+      "sourceLabel": "Admission Packets",
+      "normalizedSourceLabel": "admission-packets",
+      "sourceType": "ADMISSION_ORDER",
+      "acquisitionMethod": "local_file",
+      "selectionStatus": "selected",
+      "portalLabel": "Admission Packets",
+      "localFilePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-star-home-health-2026-04-15T05-44-11-552Z-abfcd28f\\outputs\\patients\\JEFFREY_FARRAR__f2fbae96b6966e7a\\documents\\admission-packets\\source.pdf",
+      "effectiveTextSource": "viewer_text_fallback",
+      "fileType": "pdf",
+      "fileSizeBytes": null,
+      "extractedTextLength": 1805,
+      "selectedReason": "highest-ranked referral/admission-order source with local file preference",
+      "rejectedReasons": []
+    }
+  ],
+  "warnings": [
+    "Local file extraction failed for C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-star-home-health-2026-04-15T05-44-11-552Z-abfcd28f\\outputs\\patients\\JEFFREY_FARRAR__f2fbae96b6966e7a\\documents\\admission-packets\\source.pdf: ENOENT: no such file or directory, open 'C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-star-home-health-2026-04-15T05-44-11-552Z-abfcd28f\\outputs\\patients\\JEFFREY_FARRAR__f2fbae96b6966e7a\\documents\\admission-packets\\source.pdf'"
+  ],
+  "generatedAt": "2026-04-15T07:36:36.459Z"
+}

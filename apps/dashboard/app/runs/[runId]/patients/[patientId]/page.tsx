@@ -231,6 +231,9 @@ function ComparisonRow({
         <div className="comparison-value-block">
           <div className="comparison-value-label">Portal Shows</div>
           <div className="comparison-value-text">{comparison.displayPortalValue}</div>
+          {comparison.portalValueSource !== "chart_read" ? (
+            <div className="muted">Source: {comparison.portalValueSourceLabel}</div>
+          ) : null}
         </div>
 
         <div className="comparison-status-block">
@@ -838,7 +841,7 @@ export default function PatientDetailPage() {
     <main className="page-shell patient-page-shell patient-dashboard stack">
       <div className="page-header">
         <div>
-          <Link className="link" href={`/runs/${runId}`}>Back to run</Link>
+          <Link className="link" href="/agency">Back to agency overview</Link>
           <p className="eyebrow">Referral vs Portal Reconciliation Workspace</p>
           <p className="page-subtitle">
             Open the patient, compare what the referral says against what the portal shows, and work the discrepancies from the top down.

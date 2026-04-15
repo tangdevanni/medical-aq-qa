@@ -49,6 +49,8 @@ export interface FieldComparison {
   sourceSectionLabel: string;
   referralValue: string | null;
   portalValue: string | null;
+  portalValueSource: string;
+  portalValueSourceLabel: string;
   normalizedReferralValue: string | null;
   normalizedPortalValue: string | null;
   displayReferralValue: string;
@@ -67,6 +69,7 @@ export interface FieldComparison {
   reviewStatus: string;
   referralSnippet?: string | null;
   portalSnippet?: string | null;
+  portalCaptureWarning?: string | null;
   sourceQualityWarning?: string | null;
   oasisItemId?: string | null;
   sourceDocuments: string[];
@@ -341,6 +344,19 @@ function humanizeStatus(value: string): string {
   return value
     .replace(/_/g, " ")
     .replace(/\b\w/g, (character) => character.toUpperCase());
+}
+
+function getPortalValueSourceLabel(source: string): string {
+  if (source === "chart_read") {
+    return "Portal read";
+  }
+  if (source === "workbook_context") {
+    return "Workbook context";
+  }
+  if (source === "unavailable") {
+    return "Portal capture unavailable";
+  }
+  return humanizeStatus(source);
 }
 
 function normalizePhoneDigits(value: string): string | null {
@@ -644,8 +660,44 @@ function getDisplayReferralValue(
     : "No reliable referral value extracted";
 }
 
-function getDisplayPortalValue(portalValue: string | null): string {
-  return portalValue ?? "Blank on portal";
+function getDisplayPortalValue(input: {
+  portalValue: string | null;
+  portalValueSource: string;
+  populatedInChart: boolean;
+}): string {
+  if (input.portalValue) {
+    return input.portalValue;
+  }
+  if (input.portalValueSource === "unavailable") {
+    return "Portal value not captured";
+  }
+  if (input.portalValueSource === "workbook_context") {
+    return "No workbook context value";
+  }
+  if (input.portalValueSource === "chart_read" && !input.populatedInChart) {
+    return "Blank on portal";
+  }
+  return "Portal value unavailable";
+}
+
+function getPortalCaptureWarning(input: {
+  portalValue: string | null;
+  portalValueSource: string;
+  populatedInChart: boolean;
+}): string | null {
+  if (input.portalValue) {
+    return null;
+  }
+  if (input.portalValueSource === "unavailable") {
+    return "Portal value was not captured in the available portal snapshot.";
+  }
+  if (input.portalValueSource === "workbook_context") {
+    return "Portal value is only available from workbook context, not a portal chart read.";
+  }
+  if (input.portalValueSource === "chart_read" && !input.populatedInChart) {
+    return null;
+  }
+  return "Portal value could not be confirmed from the available snapshot.";
 }
 
 function getSnippetUsageMap(patient: PatientDetail): Map<string, number> {
@@ -853,11 +905,13 @@ function getComparisonResult(input: {
   sourceSupportStrength: SourceSupportStrength;
   mappingStrength: MappingStrength;
   isFieldLeakSuspected: boolean;
+  portalCaptureWarning: string | null;
   sourceQualityWarning: string | null;
 }): ComparisonResult | null {
   const hasReferral = input.referralValue !== null;
   const hasPortal = input.portalValue !== null;
   const lowTrust =
+    input.portalCaptureWarning !== null ||
     input.patient.referralQa.extractionUsabilityStatus !== "usable" ||
     input.sourceSupportStrength === "weak" ||
     input.sourceSupportStrength === "none" ||
@@ -922,10 +976,14 @@ function getReviewStatus(result: ComparisonResult, equivalenceType: EquivalenceT
 function getShortReason(input: {
   result: ComparisonResult;
   equivalenceType: EquivalenceType;
+  portalCaptureWarning: string | null;
   sourceQualityWarning: string | null;
   isFieldLeakSuspected: boolean;
   sourceSupportStrength: SourceSupportStrength;
 }): string {
+  if (input.result === "uncertain" && input.portalCaptureWarning) {
+    return input.portalCaptureWarning;
+  }
   if (input.result === "uncertain" && input.sourceQualityWarning) {
     return input.sourceQualityWarning;
   }
@@ -1022,6 +1080,7 @@ function buildFieldComparison(
   const family = getSectionFamily(section);
   const referralValue = stringifyValue(field.documentSupportedValue);
   const portalValue = stringifyValue(field.currentChartValue);
+  const portalValueSource = field.currentChartValueSource || "unavailable";
   const normalizedReferralValue = referralValue ? normalizeComparisonText(referralValue) : null;
   const normalizedPortalValue = portalValue ? normalizeComparisonText(portalValue) : null;
   const evidence = dedupeEvidence(field, section);
@@ -1046,6 +1105,11 @@ function buildFieldComparison(
     isFieldLeakSuspected,
   );
   const equivalenceType = detectEquivalence(field, referralValue, portalValue);
+  const portalCaptureWarning = getPortalCaptureWarning({
+    portalValue,
+    portalValueSource,
+    populatedInChart: field.populatedInChart,
+  });
   const sourceQualityWarning = getSourceQualityWarning({
     patient,
     field,
@@ -1067,6 +1131,7 @@ function buildFieldComparison(
     sourceSupportStrength,
     mappingStrength,
     isFieldLeakSuspected,
+    portalCaptureWarning,
     sourceQualityWarning,
   });
 
@@ -1078,7 +1143,11 @@ function buildFieldComparison(
   const referralSnippet = evidence[0]?.snippet ?? (referralValue ? compactText(referralValue, 240) : null);
   const portalSnippet = portalValue ? compactText(portalValue, 220) : null;
   const displayReferralValue = getDisplayReferralValue(referralValue, sourceSupportStrength);
-  const displayPortalValue = getDisplayPortalValue(portalValue);
+  const displayPortalValue = getDisplayPortalValue({
+    portalValue,
+    portalValueSource,
+    populatedInChart: field.populatedInChart,
+  });
 
   const comparison: FieldComparison = {
     fieldKey: field.fieldKey,
@@ -1088,6 +1157,8 @@ function buildFieldComparison(
     sourceSectionLabel: section.label,
     referralValue,
     portalValue,
+    portalValueSource,
+    portalValueSourceLabel: getPortalValueSourceLabel(portalValueSource),
     normalizedReferralValue,
     normalizedPortalValue,
     displayReferralValue,
@@ -1110,6 +1181,7 @@ function buildFieldComparison(
     shortReason: getShortReason({
       result: comparisonResult,
       equivalenceType,
+      portalCaptureWarning,
       sourceQualityWarning,
       isFieldLeakSuspected,
       sourceSupportStrength,
@@ -1117,6 +1189,7 @@ function buildFieldComparison(
     reviewStatus: getReviewStatus(comparisonResult, equivalenceType),
     referralSnippet,
     portalSnippet,
+    portalCaptureWarning,
     sourceQualityWarning,
     oasisItemId: field.oasisItemId,
     sourceDocuments: Array.from(new Set(evidence.map((entry) => entry.sourceLabel))),

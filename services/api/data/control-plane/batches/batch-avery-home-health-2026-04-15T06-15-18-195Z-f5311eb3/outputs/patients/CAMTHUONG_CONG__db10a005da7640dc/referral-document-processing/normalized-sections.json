@@ -1,0 +1,822 @@
+[
+  {
+    "sectionName": "patient_identity",
+    "extractedTextSpans": [
+      "RESIDENT INFORMATION",
+      "Resident Name",
+      "Resident #",
+      "Second Payer Resident Resources",
+      "Resident has pre-paid funeral arrangements?",
+      "Resident Name :",
+      "Called Life Care Center South Las Vegas 702-798-7990 to inquire about the resident's wallet.",
+      "Resident Name",
+      "Resident Name :",
+      "Miralax(Dialysis Resident) by next shift, 10MG, ACTIVE, 3/27/2024",
+      "resident has not had a bowel movement in past 72 hours., ACTIVE, 3/27/2024",
+      "Resident Name :",
+      "Resident Name :",
+      "Resident Name :",
+      "The resident's Nutrition Concern(s) Category Score is: No Concern(s) Identified."
+    ],
+    "normalizedSummary": "RESIDENT INFORMATION Resident Name Resident #",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 8,
+        "lineEnd": 8,
+        "charStart": 158,
+        "charEnd": 178
+      },
+      {
+        "lineStart": 9,
+        "lineEnd": 9,
+        "charStart": 179,
+        "charEnd": 192
+      },
+      {
+        "lineStart": 18,
+        "lineEnd": 18,
+        "charStart": 269,
+        "charEnd": 279
+      },
+      {
+        "lineStart": 77,
+        "lineEnd": 77,
+        "charStart": 1160,
+        "charEnd": 1191
+      },
+      {
+        "lineStart": 151,
+        "lineEnd": 151,
+        "charStart": 2748,
+        "charEnd": 2791
+      },
+      {
+        "lineStart": 394,
+        "lineEnd": 394,
+        "charStart": 7991,
+        "charEnd": 8006
+      },
+      {
+        "lineStart": 439,
+        "lineEnd": 439,
+        "charStart": 10086,
+        "charEnd": 10178
+      },
+      {
+        "lineStart": 454,
+        "lineEnd": 454,
+        "charStart": 10751,
+        "charEnd": 10764
+      },
+      {
+        "lineStart": 517,
+        "lineEnd": 517,
+        "charStart": 14525,
+        "charEnd": 14540
+      },
+      {
+        "lineStart": 542,
+        "lineEnd": 542,
+        "charStart": 15730,
+        "charEnd": 15795
+      },
+      {
+        "lineStart": 550,
+        "lineEnd": 550,
+        "charStart": 16403,
+        "charEnd": 16477
+      },
+      {
+        "lineStart": 584,
+        "lineEnd": 584,
+        "charStart": 17791,
+        "charEnd": 17806
+      },
+      {
+        "lineStart": 648,
+        "lineEnd": 648,
+        "charStart": 20057,
+        "charEnd": 20072
+      },
+      {
+        "lineStart": 716,
+        "lineEnd": 716,
+        "charStart": 22921,
+        "charEnd": 22936
+      },
+      {
+        "lineStart": 751,
+        "lineEnd": 751,
+        "charStart": 24797,
+        "charEnd": 24877
+      }
+    ]
+  },
+  {
+    "sectionName": "referral_metadata",
+    "extractedTextSpans": [
+      "Dignity Referral",
+      "Referral Date",
+      "Original Referral Source Contact",
+      "Original Referral Source - Facility"
+    ],
+    "normalizedSummary": "Dignity Referral Referral Date Original Referral Source Contact",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 108,
+        "lineEnd": 108,
+        "charStart": 1761,
+        "charEnd": 1777
+      },
+      {
+        "lineStart": 114,
+        "lineEnd": 114,
+        "charStart": 1900,
+        "charEnd": 1913
+      },
+      {
+        "lineStart": 136,
+        "lineEnd": 136,
+        "charStart": 2428,
+        "charEnd": 2460
+      },
+      {
+        "lineStart": 137,
+        "lineEnd": 137,
+        "charStart": 2461,
+        "charEnd": 2496
+      }
+    ]
+  },
+  {
+    "sectionName": "referring_provider",
+    "extractedTextSpans": [
+      "NPI",
+      "Attending Physician",
+      "Attending Physician",
+      "Attending Physician"
+    ],
+    "normalizedSummary": "NPI Attending Physician Attending Physician",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 161,
+        "lineEnd": 161,
+        "charStart": 2890,
+        "charEnd": 2893
+      },
+      {
+        "lineStart": 162,
+        "lineEnd": 162,
+        "charStart": 2894,
+        "charEnd": 2913
+      },
+      {
+        "lineStart": 172,
+        "lineEnd": 172,
+        "charStart": 3109,
+        "charEnd": 3128
+      },
+      {
+        "lineStart": 179,
+        "lineEnd": 179,
+        "charStart": 3227,
+        "charEnd": 3246
+      }
+    ]
+  },
+  {
+    "sectionName": "hospitalization_history",
+    "extractedTextSpans": [
+      "Rehabilitation hospital",
+      "PAM Rehabilitation Hospital of Centennial",
+      "Most Recent Hospital Stay",
+      "Home Health/Hospice Agency (Discharge",
+      "Hospital Preference",
+      "(Discharge Only)",
+      "Generally, avoid. intensive care Request transfer to hospital only if comfort needs cannot be met in current location.",
+      "Date of Discharge"
+    ],
+    "normalizedSummary": "Rehabilitation hospital PAM Rehabilitation Hospital of Centennial Most Recent Hospital Stay",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 49,
+        "lineEnd": 49,
+        "charStart": 645,
+        "charEnd": 668
+      },
+      {
+        "lineStart": 50,
+        "lineEnd": 50,
+        "charStart": 669,
+        "charEnd": 710
+      },
+      {
+        "lineStart": 92,
+        "lineEnd": 92,
+        "charStart": 1400,
+        "charEnd": 1425
+      },
+      {
+        "lineStart": 112,
+        "lineEnd": 112,
+        "charStart": 1842,
+        "charEnd": 1879
+      },
+      {
+        "lineStart": 115,
+        "lineEnd": 115,
+        "charStart": 1914,
+        "charEnd": 1933
+      },
+      {
+        "lineStart": 118,
+        "lineEnd": 118,
+        "charStart": 1976,
+        "charEnd": 1992
+      },
+      {
+        "lineStart": 338,
+        "lineEnd": 338,
+        "charStart": 6038,
+        "charEnd": 6156
+      },
+      {
+        "lineStart": 341,
+        "lineEnd": 341,
+        "charStart": 6232,
+        "charEnd": 6249
+      }
+    ]
+  },
+  {
+    "sectionName": "diagnoses",
+    "extractedTextSpans": [
+      "Diagnoses",
+      "Referring Diagnosis",
+      "DIAGNOSIS INFORMATION",
+      "Diagnoses :",
+      "Diagnoses :",
+      "Diagnoses :",
+      "Diagnoses :",
+      "Diagnoses :",
+      "Diagnosis and Assessment",
+      "Diagnoses :",
+      "Nutritional Diagnosis (None if Blank):"
+    ],
+    "normalizedSummary": "Diagnoses Referring Diagnosis DIAGNOSIS INFORMATION",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 140,
+        "lineEnd": 140,
+        "charStart": 2543,
+        "charEnd": 2552
+      },
+      {
+        "lineStart": 148,
+        "lineEnd": 148,
+        "charStart": 2687,
+        "charEnd": 2706
+      },
+      {
+        "lineStart": 245,
+        "lineEnd": 245,
+        "charStart": 4334,
+        "charEnd": 4355
+      },
+      {
+        "lineStart": 408,
+        "lineEnd": 408,
+        "charStart": 8248,
+        "charEnd": 8259
+      },
+      {
+        "lineStart": 467,
+        "lineEnd": 467,
+        "charStart": 10997,
+        "charEnd": 11008
+      },
+      {
+        "lineStart": 531,
+        "lineEnd": 531,
+        "charStart": 14778,
+        "charEnd": 14789
+      },
+      {
+        "lineStart": 598,
+        "lineEnd": 598,
+        "charStart": 18048,
+        "charEnd": 18059
+      },
+      {
+        "lineStart": 663,
+        "lineEnd": 663,
+        "charStart": 20314,
+        "charEnd": 20325
+      },
+      {
+        "lineStart": 680,
+        "lineEnd": 680,
+        "charStart": 21381,
+        "charEnd": 21405
+      },
+      {
+        "lineStart": 730,
+        "lineEnd": 730,
+        "charStart": 23177,
+        "charEnd": 23188
+      },
+      {
+        "lineStart": 752,
+        "lineEnd": 752,
+        "charStart": 24878,
+        "charEnd": 24916
+      }
+    ]
+  },
+  {
+    "sectionName": "medications",
+    "extractedTextSpans": [
+      "Allergies",
+      "PHARMACY",
+      "Pharmacy",
+      "Pharmacy : Omnicare of Las Vegas*",
+      "Allergies :",
+      "Note : A medication regimen review was performed with no irregularities found.",
+      "Pharmacy Consult [e-",
+      "Pharmacy Omnicare of Las Vegas*",
+      "Allergies :",
+      "Medication List:",
+      "Pharmacy Omnicare of Las Vegas*",
+      "Allergies :",
+      "Pharmacy : Omnicare of Las Vegas*",
+      "Allergies :",
+      "Pharmacy : Omnicare of Las Vegas*",
+      "Allergies :",
+      "Pharmacy : Omnicare of Las Vegas*",
+      "Allergies :",
+      "Medication List:"
+    ],
+    "normalizedSummary": "Allergies PHARMACY Pharmacy",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 93,
+        "lineEnd": 93,
+        "charStart": 1426,
+        "charEnd": 1435
+      },
+      {
+        "lineStart": 211,
+        "lineEnd": 211,
+        "charStart": 3782,
+        "charEnd": 3790
+      },
+      {
+        "lineStart": 212,
+        "lineEnd": 212,
+        "charStart": 3791,
+        "charEnd": 3799
+      },
+      {
+        "lineStart": 405,
+        "lineEnd": 405,
+        "charStart": 8183,
+        "charEnd": 8216
+      },
+      {
+        "lineStart": 406,
+        "lineEnd": 406,
+        "charStart": 8217,
+        "charEnd": 8228
+      },
+      {
+        "lineStart": 425,
+        "lineEnd": 425,
+        "charStart": 9495,
+        "charEnd": 9573
+      },
+      {
+        "lineStart": 428,
+        "lineEnd": 428,
+        "charStart": 9630,
+        "charEnd": 9650
+      },
+      {
+        "lineStart": 464,
+        "lineEnd": 464,
+        "charStart": 10934,
+        "charEnd": 10965
+      },
+      {
+        "lineStart": 465,
+        "lineEnd": 465,
+        "charStart": 10966,
+        "charEnd": 10977
+      },
+      {
+        "lineStart": 488,
+        "lineEnd": 488,
+        "charStart": 12378,
+        "charEnd": 12394
+      },
+      {
+        "lineStart": 528,
+        "lineEnd": 528,
+        "charStart": 14715,
+        "charEnd": 14746
+      },
+      {
+        "lineStart": 529,
+        "lineEnd": 529,
+        "charStart": 14747,
+        "charEnd": 14758
+      },
+      {
+        "lineStart": 595,
+        "lineEnd": 595,
+        "charStart": 17983,
+        "charEnd": 18016
+      },
+      {
+        "lineStart": 596,
+        "lineEnd": 596,
+        "charStart": 18017,
+        "charEnd": 18028
+      },
+      {
+        "lineStart": 660,
+        "lineEnd": 660,
+        "charStart": 20249,
+        "charEnd": 20282
+      },
+      {
+        "lineStart": 661,
+        "lineEnd": 661,
+        "charStart": 20283,
+        "charEnd": 20294
+      },
+      {
+        "lineStart": 727,
+        "lineEnd": 727,
+        "charStart": 23112,
+        "charEnd": 23145
+      },
+      {
+        "lineStart": 728,
+        "lineEnd": 728,
+        "charStart": 23146,
+        "charEnd": 23157
+      },
+      {
+        "lineStart": 763,
+        "lineEnd": 763,
+        "charStart": 25276,
+        "charEnd": 25292
+      }
+    ]
+  },
+  {
+    "sectionName": "caregiver_support",
+    "extractedTextSpans": [
+      "Relationship",
+      "Relationship"
+    ],
+    "normalizedSummary": "Relationship Relationship",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 227,
+        "lineEnd": 227,
+        "charStart": 4023,
+        "charEnd": 4035
+      },
+      {
+        "lineStart": 350,
+        "lineEnd": 350,
+        "charStart": 6367,
+        "charEnd": 6379
+      }
+    ]
+  },
+  {
+    "sectionName": "functional_limitations",
+    "extractedTextSpans": [
+      "MUSCLE WEAKNESS (GENERALIZED)",
+      "DIFFICULTY IN WALKING, NOT ELSEWHERE CLASSIFIED",
+      "USE OF ANTITHROMBOTICS/ANTIPLATELETS(Z79.02), DYSPHAGIA, ORAL PHASE(R13.11), MUSCLE WEAKNESS (GENERALIZED)",
+      "(M62.81), DIFFICULTY IN WALKING, NOT ELSEWHERE CLASSIFIED(R26.2), MYALGIA, UNSPECIFIED SITE(M79.10)",
+      "USE OF ANTITHROMBOTICS/ANTIPLATELETS(Z79.02), DYSPHAGIA, ORAL PHASE(R13.11), MUSCLE WEAKNESS (GENERALIZED)",
+      "(M62.81), DIFFICULTY IN WALKING, NOT ELSEWHERE CLASSIFIED(R26.2), MYALGIA, UNSPECIFIED SITE(M79.10)",
+      "USE OF ANTITHROMBOTICS/ANTIPLATELETS(Z79.02) DYSPHAGIA, ORAL PHASE(R13.11), MUSCLE WEAKNESS (GENERALIZED)",
+      "(M62.81), DIFFICULTY IN WALKING, NOT ELSEWHERE CLASSIFIED(R26.2), MYALGIA, UNSPECIFIED SITE(M79.10)",
+      "USE OF ANTITHROMBOTICS/ANTIPLATELETS(Z79.02) DYSPHAGIA, ORAL PHASE(R13.11), MUSCLE WEAKNESS (GENERALIZED)",
+      "(M62.81), DIFFICULTY IN WALKING, NOT ELSEWHERE CLASSIFIED(R26.2), MYALGIA, UNSPECIFIED SITE(M79.10)",
+      "USE OF ANTITHROMBOTICS/ANTIPLATELETS(Z79.02) DYSPHAGIA, ORAL PHASE(R13.11), MUSCLE WEAKNESS (GENERALIZED)",
+      "(M62.81), DIFFICULTY IN WALKING, NOT ELSEWHERE CLASSIFIED(R26.2), MYALGIA, UNSPECIFIED SITE(M79.10)",
+      "USE OF ANTITHROMBOTICS/ANTIPLATELETS(Z79.02), DYSPHAGIA, ORAL PHASE(R13.11), MUSCLE WEAKNESS (GENERALIZED)",
+      "(M62.81), DIFFICULTY IN WALKING, NOT ELSEWHERE CLASSIFIED(R26.2), MYALGIA, UNSPECIFIED SITE(M79.10)"
+    ],
+    "normalizedSummary": "MUSCLE WEAKNESS (GENERALIZED) DIFFICULTY IN WALKING, NOT ELSEWHERE CLASSIFIED USE OF ANTITHROMBOTICS/ANTIPLATELETS(Z79.02), DYSPHAGIA, ORAL PHASE(R13.11), MUSCLE WEAKNESS (GENERALIZED)",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 317,
+        "lineEnd": 317,
+        "charStart": 5457,
+        "charEnd": 5486
+      },
+      {
+        "lineStart": 329,
+        "lineEnd": 329,
+        "charStart": 5629,
+        "charEnd": 5676
+      },
+      {
+        "lineStart": 416,
+        "lineEnd": 416,
+        "charStart": 8979,
+        "charEnd": 9085
+      },
+      {
+        "lineStart": 417,
+        "lineEnd": 417,
+        "charStart": 9086,
+        "charEnd": 9185
+      },
+      {
+        "lineStart": 475,
+        "lineEnd": 475,
+        "charStart": 11727,
+        "charEnd": 11833
+      },
+      {
+        "lineStart": 476,
+        "lineEnd": 476,
+        "charStart": 11834,
+        "charEnd": 11933
+      },
+      {
+        "lineStart": 539,
+        "lineEnd": 539,
+        "charStart": 15509,
+        "charEnd": 15614
+      },
+      {
+        "lineStart": 540,
+        "lineEnd": 540,
+        "charStart": 15615,
+        "charEnd": 15714
+      },
+      {
+        "lineStart": 606,
+        "lineEnd": 606,
+        "charStart": 18779,
+        "charEnd": 18884
+      },
+      {
+        "lineStart": 607,
+        "lineEnd": 607,
+        "charStart": 18885,
+        "charEnd": 18984
+      },
+      {
+        "lineStart": 671,
+        "lineEnd": 671,
+        "charStart": 21045,
+        "charEnd": 21150
+      },
+      {
+        "lineStart": 672,
+        "lineEnd": 672,
+        "charStart": 21151,
+        "charEnd": 21250
+      },
+      {
+        "lineStart": 738,
+        "lineEnd": 738,
+        "charStart": 23908,
+        "charEnd": 24014
+      },
+      {
+        "lineStart": 739,
+        "lineEnd": 739,
+        "charStart": 24015,
+        "charEnd": 24114
+      }
+    ]
+  },
+  {
+    "sectionName": "therapy_need",
+    "extractedTextSpans": [
+      "physical therapy making slow progress in physical and functional status."
+    ],
+    "normalizedSummary": "physical therapy making slow progress in physical and functional status.",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 621,
+        "lineEnd": 621,
+        "charStart": 19328,
+        "charEnd": 19400
+      }
+    ]
+  },
+  {
+    "sectionName": "advance_directives",
+    "extractedTextSpans": [
+      "ADVANCE DIRECTIVE"
+    ],
+    "normalizedSummary": "ADVANCE DIRECTIVE",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 332,
+        "lineEnd": 332,
+        "charStart": 5704,
+        "charEnd": 5721
+      }
+    ]
+  },
+  {
+    "sectionName": "other_clinical_notes",
+    "extractedTextSpans": [
+      "Progress Notes *NEW*",
+      "Primary Physician: All Progress Note Type: All Effective Date Range: 04/01/2024 to 05/02/2024 Effective Time Range: 00:00-00:00 Created",
+      "Note : A Braden Scale was completed today resulting in a score of 17.0.",
+      "Note : A medication regimen review was performed with no irregularities found.",
+      "Note : A Braden Scale was completed today resulting in a score of 19.0.",
+      "Note : Spoke with Camthoung, who stated she left her wallet at Life Care prior to coming to THOS.",
+      "Progress Notes *NEW*",
+      "Primary Physician: All Progress Note Type: All Effective Date Range: 04/01/2024 to 05/02/2024 Effective Time Range: 00:00-00:00 Created",
+      "Note : A Braden Scale was completed today resulting in a score of 20.0.",
+      "Details : This is a copy of a signed encounter note documented in GEHRIMED.",
+      "Progress Note",
+      "Progress Notes *NEW*",
+      "Primary Physician: All Progress Note Type: All Effective Date Range: 04/01/2024 to 05/02/2024 Effective Time Range: 00:00-00:00 Created",
+      "Progress Notes *NEW*",
+      "Primary Physician: All Progress Note Type: All Effective Date Range: 04/01/2024 to 05/02/2024 Effective Time Range: 00:00-00:00 Created",
+      "Progress Notes *NEW*",
+      "Primary Physician: All Progress Note Type: All Effective Date Range: 04/01/2024 to 05/02/2024 Effective Time Range: 00:00-00:00 Created",
+      "Plan",
+      "Plan:",
+      "Progress Notes *NEW*",
+      "Primary Physician: All Progress Note Type: All Effective Date Range: 04/01/2024 to 05/02/2024 Effective Time Range: 00:00-00:00 Created",
+      "Note : A Nutrition Assessment was completed today.",
+      "Details : This is a copy of a signed encounter note documented in GEHRIMED.",
+      "Progress Note"
+    ],
+    "normalizedSummary": "Progress Notes *NEW* Primary Physician: All Progress Note Type: All Effective Date Range: 04/01/2024 to 05/02/2024 Effective Time Range: 00:00-00:00 Created Note : A Braden Scale was completed today resulting in a score of 17.0.",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 389,
+        "lineEnd": 389,
+        "charStart": 7727,
+        "charEnd": 7747
+      },
+      {
+        "lineStart": 392,
+        "lineEnd": 392,
+        "charStart": 7787,
+        "charEnd": 7922
+      },
+      {
+        "lineStart": 420,
+        "lineEnd": 420,
+        "charStart": 9247,
+        "charEnd": 9318
+      },
+      {
+        "lineStart": 425,
+        "lineEnd": 425,
+        "charStart": 9495,
+        "charEnd": 9573
+      },
+      {
+        "lineStart": 431,
+        "lineEnd": 431,
+        "charStart": 9709,
+        "charEnd": 9780
+      },
+      {
+        "lineStart": 436,
+        "lineEnd": 436,
+        "charStart": 9933,
+        "charEnd": 10030
+      },
+      {
+        "lineStart": 449,
+        "lineEnd": 449,
+        "charStart": 10487,
+        "charEnd": 10507
+      },
+      {
+        "lineStart": 452,
+        "lineEnd": 452,
+        "charStart": 10547,
+        "charEnd": 10682
+      },
+      {
+        "lineStart": 478,
+        "lineEnd": 478,
+        "charStart": 11984,
+        "charEnd": 12055
+      },
+      {
+        "lineStart": 485,
+        "lineEnd": 485,
+        "charStart": 12280,
+        "charEnd": 12355
+      },
+      {
+        "lineStart": 486,
+        "lineEnd": 486,
+        "charStart": 12356,
+        "charEnd": 12369
+      },
+      {
+        "lineStart": 512,
+        "lineEnd": 512,
+        "charStart": 14261,
+        "charEnd": 14281
+      },
+      {
+        "lineStart": 515,
+        "lineEnd": 515,
+        "charStart": 14321,
+        "charEnd": 14456
+      },
+      {
+        "lineStart": 579,
+        "lineEnd": 579,
+        "charStart": 17527,
+        "charEnd": 17547
+      },
+      {
+        "lineStart": 582,
+        "lineEnd": 582,
+        "charStart": 17587,
+        "charEnd": 17722
+      },
+      {
+        "lineStart": 643,
+        "lineEnd": 643,
+        "charStart": 19793,
+        "charEnd": 19813
+      },
+      {
+        "lineStart": 646,
+        "lineEnd": 646,
+        "charStart": 19853,
+        "charEnd": 19988
+      },
+      {
+        "lineStart": 690,
+        "lineEnd": 690,
+        "charStart": 21574,
+        "charEnd": 21578
+      },
+      {
+        "lineStart": 691,
+        "lineEnd": 691,
+        "charStart": 21579,
+        "charEnd": 21584
+      },
+      {
+        "lineStart": 711,
+        "lineEnd": 711,
+        "charStart": 22657,
+        "charEnd": 22677
+      },
+      {
+        "lineStart": 714,
+        "lineEnd": 714,
+        "charStart": 22717,
+        "charEnd": 22852
+      },
+      {
+        "lineStart": 750,
+        "lineEnd": 750,
+        "charStart": 24746,
+        "charEnd": 24796
+      },
+      {
+        "lineStart": 760,
+        "lineEnd": 760,
+        "charStart": 25178,
+        "charEnd": 25253
+      },
+      {
+        "lineStart": 761,
+        "lineEnd": 761,
+        "charStart": 25254,
+        "charEnd": 25267
+      }
+    ]
+  }
+]

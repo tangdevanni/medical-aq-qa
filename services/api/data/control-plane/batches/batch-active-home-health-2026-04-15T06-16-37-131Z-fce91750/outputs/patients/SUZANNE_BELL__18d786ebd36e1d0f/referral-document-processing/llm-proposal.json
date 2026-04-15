@@ -1,0 +1,102 @@
+{
+  "patient_context": {
+    "patient_name": null,
+    "dob": "10/01/1968",
+    "soc_date": null,
+    "referral_date": "04/08/2026"
+  },
+  "proposed_field_values": [
+    {
+      "field_key": "referral_date",
+      "proposed_value": "04/08/2026",
+      "confidence": 0.94,
+      "source_spans": [
+        "04/08/2026"
+      ],
+      "rationale": "Referral date was identified in referral metadata.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "primary_reason_for_home_health_medical_necessity",
+      "proposed_value": "PT: Eval & Treat w/ Modalities Frequency/Duration: HOME HEALTH EVAL AND TREAT: SKILLED NURSING: HOME PT RT UPPER",
+      "confidence": 0.78,
+      "source_spans": [
+        "PT: Eval & Treat w/ Modalities Frequency/Duration: HOME HEALTH EVAL AND TREAT: SKILLED NURSING: HOME PT RT UPPER"
+      ],
+      "rationale": "Medical necessity was summarized from referral narrative and skilled-need evidence.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "therapy_need",
+      "proposed_value": "Physical/Occupational Therapy Order Physical/Occupational Therapy Facility PT: Eval & Treat w/ Modalities Frequency/Duration: HOME HEALTH EVAL AND TREAT: SKILLED NURSING: HOME PT RT UPPER",
+      "confidence": 0.77,
+      "source_spans": [
+        "Physical/Occupational Therapy Order Physical/Occupational Therapy Facility PT: Eval & Treat w/ Modalities Frequency/Duration: HOME HEALTH EVAL AND TREAT: SKILLED NURSING: HOME PT RT UPPER"
+      ],
+      "rationale": "Therapy need was summarized from referral text.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "skilled_interventions",
+      "proposed_value": "Physical/Occupational Therapy Order Physical/Occupational Therapy Facility PT: Eval & Treat w/ Modalities Frequency/Duration: HOME HEALTH EVAL AND TREAT: SKILLED NURSING: HOME PT RT UPPER",
+      "confidence": 0.8,
+      "source_spans": [
+        "Physical/Occupational Therapy Order Physical/Occupational Therapy Facility PT: Eval & Treat w/ Modalities Frequency/Duration: HOME HEALTH EVAL AND TREAT: SKILLED NURSING: HOME PT RT UPPER"
+      ],
+      "rationale": "Skilled interventions were summarized from the therapy plan.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "plan_for_next_visit",
+      "proposed_value": "Physical/Occupational Therapy Order Physical/Occupational Therapy Facility PT: Eval & Treat w/ Modalities Frequency/Duration: HOME HEALTH EVAL AND TREAT: SKILLED NURSING: HOME PT RT UPPER",
+      "confidence": 0.78,
+      "source_spans": [
+        "Physical/Occupational Therapy Order Physical/Occupational Therapy Facility PT: Eval & Treat w/ Modalities Frequency/Duration: HOME HEALTH EVAL AND TREAT: SKILLED NURSING: HOME PT RT UPPER"
+      ],
+      "rationale": "Next-visit plan was summarized from the therapy plan.",
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [
+    {
+      "description": "Displaced oblique fracture of shaft of right ulna, subsequent encounter for closed fracture with routine healing",
+      "icd10_code": "S52.231D",
+      "confidence": 0.74,
+      "source_spans": [
+        "S52.231D ) Displaced oblique fracture of shaft of right ulna, subsequent encounter for closed fracture with routine healing ( S52"
+      ],
+      "is_primary_candidate": true,
+      "requires_human_review": true
+    }
+  ],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "preferred_language",
+    "interpreter_needed",
+    "homebound_narrative",
+    "homebound_supporting_factors",
+    "recent_hospitalization_discharge_date",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "living_situation",
+    "prior_functioning",
+    "functional_limitations",
+    "patient_summary_narrative",
+    "discipline_frequencies",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "fall_risk_narrative",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status",
+    "code_status"
+  ],
+  "warnings": [
+    "Deterministic referral facts extraction was used."
+  ]
+}

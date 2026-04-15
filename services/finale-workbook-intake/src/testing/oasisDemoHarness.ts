@@ -288,16 +288,17 @@ class DemoReadOnlyPortalClient implements BatchPortalAutomationClient {
   }): Promise<ResolvedPatientPortalAccess> {
     const resolution = await this.resolvePatient(input.workItem);
 
-    return {
-      patientName: input.workItem.patientIdentity.displayName,
-      patientId: "PT-1001",
-      chartUrl: "https://demo.portal/patients/PT-1001/chart",
-      dashboardUrl: "https://demo.portal/dashboard",
-      resolvedAt: new Date().toISOString(),
-      traceId: `${input.batchId}:${input.patientRunId}`,
-      matchResult: resolution.matchResult,
-      stepLogs: resolution.stepLogs,
-    };
+      return {
+        patientName: input.workItem.patientIdentity.displayName,
+        patientId: "PT-1001",
+        chartUrl: "https://demo.portal/patients/PT-1001/chart",
+        dashboardUrl: "https://demo.portal/dashboard",
+        resolvedAt: new Date().toISOString(),
+        portalAdmissionStatus: null,
+        traceId: `${input.batchId}:${input.patientRunId}`,
+        matchResult: resolution.matchResult,
+        stepLogs: resolution.stepLogs,
+      };
   }
 
   async resolvePatient(workItem: PatientEpisodeWorkItem): Promise<{

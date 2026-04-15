@@ -43,6 +43,9 @@ import { extractTechnicalReview } from "./technicalReviewExtractor";
 import { writePatientRunLog } from "./patientRunLogWriter";
 import { writePatientResultBundle } from "./patientResultBundleWriter";
 import { intakeWorkbook } from "./workbookIntakeService";
+import { extractCurrentChartValuesFromPrintedNote } from "../oasis/print/printedNoteChartValueExtractionService";
+import type { OasisPrintedNoteReviewResult } from "../oasis/types/oasisPrintedNoteReview";
+import { runReferralDocumentProcessingPipeline } from "../referralProcessing/pipeline";
 import { runCodingWorkflowOrchestrator } from "../workflows/codingWorkflowOrchestrator";
 import { runQaWorkflowOrchestrator } from "../workflows/qaWorkflowOrchestrator";
 import { runSharedEvidenceWorkflow } from "../workflows/sharedEvidenceWorkflow";
@@ -115,6 +118,26 @@ export interface RunBatchQaParams {
   onPatientRunUpdate?: (patientRun: PatientRun) => Promise<void> | void;
 }
 
+const PORTAL_NON_ADMIT_PATTERN = /\bnon[-\s]?admit(?:ted)?\b/i;
+const PORTAL_PENDING_PATTERN = /\bpending\b/i;
+
+function getPortalExclusionReason(statusLabel: string | null | undefined): string | null {
+  const normalized = statusLabel?.trim();
+  if (!normalized) {
+    return null;
+  }
+
+  if (PORTAL_NON_ADMIT_PATTERN.test(normalized)) {
+    return "non_admit";
+  }
+
+  if (PORTAL_PENDING_PATTERN.test(normalized)) {
+    return "pending";
+  }
+
+  return null;
+}
+
 function createLogger(): Logger {
   const env = loadEnv();
   return pino({
@@ -125,7 +148,56 @@ function createLogger(): Logger {
 
 function resolveWorkflowDomains(workflowDomains?: WorkflowDomain[]): WorkflowDomain[] {
   const normalized = workflowDomains?.filter((domain, index, values) => values.indexOf(domain) === index) ?? [];
-  return normalized.length > 0 ? normalized : ["coding"];
+  return normalized.length > 0 ? normalized : ["coding", "qa"];
+}
+
+function replaceRunOasisArtifactWithPrintedNoteReview(input: {
+  artifacts: ArtifactRecord[];
+  printedNoteReview: OasisPrintedNoteReviewResult | null | undefined;
+}): ArtifactRecord[] {
+  const printedNoteReview = input.printedNoteReview;
+  if (!printedNoteReview) {
+    return input.artifacts;
+  }
+
+  const capture = printedNoteReview.capture;
+  const printedNoteArtifact: ArtifactRecord = {
+    artifactType: "OASIS",
+    status: capture.sourcePdfPath || capture.textLength > 0 ? "DOWNLOADED" : "FOUND",
+    portalLabel: printedNoteReview.matchedAssessmentLabel ?? `${printedNoteReview.assessmentType} OASIS`,
+    locatorUsed: capture.printButtonSelectorUsed,
+    discoveredAt: new Date().toISOString(),
+    downloadPath: capture.sourcePdfPath,
+    extractedFields: {
+      assessmentType: printedNoteReview.assessmentType,
+      reviewSource: printedNoteReview.reviewSource,
+      overallStatus: printedNoteReview.overallStatus,
+      printProfileKey: capture.printProfileKey,
+      printButtonDetected: String(capture.printButtonDetected),
+      printModalDetected: String(capture.printModalDetected),
+      printModalConfirmSucceeded: String(capture.printModalConfirmSucceeded),
+      extractionMethod: capture.extractionMethod,
+      textLength: String(capture.textLength),
+      completedSectionCount: String(
+        printedNoteReview.sections.filter((section) => section.status === "COMPLETED").length,
+      ),
+      incompleteSectionCount: String(
+        printedNoteReview.sections.filter((section) => section.status !== "COMPLETED").length,
+      ),
+      extractedTextPath: capture.extractedTextPath,
+      printedPdfPath: capture.sourcePdfPath,
+      ocrResultPath: capture.ocrResultPath,
+    },
+    notes: [
+      `Printed-note review status: ${printedNoteReview.overallStatus}`,
+      ...printedNoteReview.warnings.slice(0, 6),
+    ],
+  };
+
+  return [
+    ...input.artifacts.filter((artifact) => artifact.artifactType !== "OASIS"),
+    printedNoteArtifact,
+  ];
 }
 
 function createEmptyMatchResult(workItem: PatientEpisodeWorkItem): PatientMatchResult {
@@ -835,6 +907,58 @@ export async function executePatientWorkItems(
           matchResult: run.matchResult,
           logs: sharedAccess.stepLogs,
         }));
+        const portalExclusionReason = getPortalExclusionReason(sharedAccess.portalAdmissionStatus);
+        if (run.matchResult.status === "EXACT" && portalExclusionReason) {
+          const timestamp = new Date().toISOString();
+          const blockedMessage = `Portal patient status '${sharedAccess.portalAdmissionStatus}' excludes this patient from autonomous QA evaluation.`;
+          run.qaOutcome = "PORTAL_MISMATCH";
+          run.processingStatus = "BLOCKED";
+          run.executionStep = "PATIENT_STATUS_EXCLUDED";
+          run.progressPercent = 100;
+          run.errorSummary = blockedMessage;
+          run.notes.push(blockedMessage);
+          run.notes.push(`Portal admission status evidence: ${sharedAccess.portalAdmissionStatus}`);
+          appendAutomationLogs(run, [
+            createAutomationStepLog({
+              step: "patient_status_gate",
+              message: blockedMessage,
+              patientName: run.patientName,
+              found: [sharedAccess.portalAdmissionStatus!],
+              evidence: [`portalExclusionReason=${portalExclusionReason}`],
+              safeReadConfirmed: true,
+            }),
+          ]);
+          run.workflowRuns = selectedWorkflowDomains.reduce(
+            (workflowRuns, workflowDomain) =>
+              upsertWorkflowRun(
+                workflowRuns,
+                buildWorkflowRun({
+                  patientRunId: run.runId,
+                  workflowDomain,
+                  status: "BLOCKED",
+                  stepName: "PATIENT_STATUS_EXCLUDED",
+                  message: blockedMessage,
+                  chartUrl:
+                    sharedAccess.portalContexts.find((portalContext) => portalContext.workflowDomain === workflowDomain)?.chartUrl ??
+                    sharedAccess.portalContexts[0]?.chartUrl ??
+                    null,
+                  timestamp,
+                  startedAt: timestamp,
+                  completedAt: timestamp,
+                }),
+              ),
+            run.workflowRuns,
+          );
+          run.oasisQaSummary = buildOasisQaSummary({
+            workItem,
+            matchResult: run.matchResult,
+            artifacts: run.artifacts,
+            processingStatus: run.processingStatus,
+            documentInventory: run.documentInventory,
+          });
+          await emitPatientRunUpdate(run, params.outputDir, params.onPatientRunUpdate);
+          continue;
+        }
         if (run.matchResult.status === "EXACT" && sharedAccess.portalContexts.length > 0) {
           const sharedEvidenceContext =
             sharedAccess.portalContexts.find((portalContext) => portalContext.workflowDomain === "coding") ??
@@ -945,8 +1069,64 @@ export async function executePatientWorkItems(
               portalClient,
               sharedEvidence: sharedEvidenceResult.sharedEvidence,
             });
+            run.artifacts = replaceRunOasisArtifactWithPrintedNoteReview({
+              artifacts: run.artifacts,
+              printedNoteReview: qaResult.result.printedNoteReview,
+            });
             appendAutomationLogs(run, qaResult.stepLogs);
             run.notes.push(`QA prefetch result persisted: ${qaResult.workflowResultPath}`);
+
+            const printedNoteChartValues = await extractCurrentChartValuesFromPrintedNote({
+              env,
+              logger,
+              outputDir: params.outputDir,
+              workItem,
+              extractedTextPath: qaResult.result.printedNoteReview?.capture.extractedTextPath ?? null,
+            });
+            run.notes.push(
+              printedNoteChartValues.artifactPath
+                ? `Printed-note chart values persisted: ${printedNoteChartValues.artifactPath}`
+                : "Printed-note chart values were not extracted.",
+            );
+            appendAutomationLogs(run, [createAutomationStepLog({
+              step: "printed_note_chart_values",
+              message:
+                printedNoteChartValues.extractedFieldCount > 0
+                  ? `Extracted ${printedNoteChartValues.extractedFieldCount} current chart value(s) from printed OASIS note text.`
+                  : "Printed OASIS note text did not yield usable chart field values.",
+              patientName: run.patientName,
+              found: [
+                `fieldCount=${printedNoteChartValues.extractedFieldCount}`,
+                `artifactPath=${printedNoteChartValues.artifactPath ?? "none"}`,
+                `invocationModelId=${printedNoteChartValues.invocationModelId ?? "none"}`,
+              ],
+              missing: printedNoteChartValues.extractedFieldCount > 0 ? [] : ["usable chart field values from printed OASIS note"],
+              evidence: printedNoteChartValues.warnings.slice(0, 8),
+              safeReadConfirmed: true,
+            })]);
+
+            if (printedNoteChartValues.extractedFieldCount > 0) {
+              const refreshedReferralProcessing = await runReferralDocumentProcessingPipeline({
+                workItem,
+                outputDir: params.outputDir,
+                env,
+                logger,
+                extractedDocuments: sharedEvidenceResult.sharedEvidence.extractedDocuments
+                  .filter((document) => document.type === "ORDER"),
+                currentChartValues: printedNoteChartValues.currentChartValues,
+              });
+              appendAutomationLogs(run, refreshedReferralProcessing.stepLogs);
+              if (refreshedReferralProcessing.result) {
+                sharedEvidenceResult.sharedEvidence.referralDocumentProcessing = refreshedReferralProcessing.result;
+                sharedEvidenceResult.sharedEvidence.referralDocumentSummaryPath =
+                  refreshedReferralProcessing.result.artifacts.qaDocumentSummaryPath ?? null;
+                run.notes.push(
+                  `Referral comparison refreshed from printed OASIS note: ${refreshedReferralProcessing.result.artifacts.qaDocumentSummaryPath ?? "artifacts updated"}`,
+                );
+              } else {
+                run.notes.push("Referral comparison refresh from printed OASIS note did not produce updated artifacts.");
+              }
+            }
           }
 
           const codingPortalContext = sharedAccess.portalContexts.find((portalContext) => portalContext.workflowDomain === "coding");

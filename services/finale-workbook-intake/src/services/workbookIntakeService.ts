@@ -3,8 +3,14 @@ import path from "node:path";
 import pino, { type Logger } from "pino";
 import type {
   BatchManifest,
+  PatientQueueArtifact,
   ParserException,
   PatientEpisodeWorkItem,
+  ReviewWindow,
+  WorkbookAcquisitionMetadata,
+  WorkbookSource,
+  WorkbookSourceKind,
+  WorkbookVerification,
 } from "@medical-ai-qa/shared-types";
 import { loadEnv } from "../config/env";
 import { aggregatePatientEpisodes } from "../mappers/patientEpisodeAggregator";
@@ -13,6 +19,8 @@ import { mapDizRow } from "../mappers/dizMapper";
 import { mapSocPocRow } from "../mappers/socPocMapper";
 import { mapVisitNotesRow } from "../mappers/visitNotesMapper";
 import { parseWorkbook } from "../parsers/workbookParser";
+import { buildWorkbookQueue, createWorkbookSource } from "../queue-building/buildWorkbookQueue";
+import { createReviewWindow } from "../workbook-intake/reviewWindow";
 
 export interface WorkbookIntakeParams {
   batchId?: string;
@@ -20,17 +28,29 @@ export interface WorkbookIntakeParams {
   workbookPath: string;
   outputDir?: string;
   logger?: Logger;
+  ingestedAt?: string;
+  workbookSourceKind?: WorkbookSourceKind;
+  workbookOriginalFileName?: string | null;
+  workbookAcquisitionMetadata?: WorkbookAcquisitionMetadata | null;
+  workbookVerification?: WorkbookVerification | null;
+  reviewWindowTimezone?: string;
 }
 
 export interface WorkbookIntakeResult {
   manifest: BatchManifest;
   workItems: PatientEpisodeWorkItem[];
+  workbookSource: WorkbookSource;
+  reviewWindow: ReviewWindow;
+  patientQueue: PatientQueueArtifact;
   parserExceptions: ParserException[];
   diagnostics: ReturnType<typeof parseWorkbook>["diagnostics"];
   manifestPath: string;
   workItemsPath: string;
   normalizedPatientsPath: string;
   parserExceptionsPath: string;
+  workbookSourcePath: string;
+  reviewWindowPath: string;
+  patientQueuePath: string;
 }
 
 function createLogger(): Logger {
@@ -59,6 +79,7 @@ function createBatchManifest(input: {
   workbookPath: string;
   outputDirectory: string;
   workItems: PatientEpisodeWorkItem[];
+  patientQueue: PatientQueueArtifact;
   parserExceptions: ParserException[];
 }): BatchManifest {
   return {
@@ -71,8 +92,12 @@ function createBatchManifest(input: {
     billingPeriod: deriveBillingPeriod(input.workItems),
     totalWorkItems: input.workItems.length,
     parserExceptionCount: input.parserExceptions.length,
-    automationEligibleWorkItemIds: input.workItems.map((item) => item.id),
-    blockedWorkItemIds: [],
+    automationEligibleWorkItemIds: input.patientQueue.entries
+      .filter((entry) => entry.status === "eligible")
+      .map((entry) => entry.workItemId),
+    blockedWorkItemIds: input.patientQueue.entries
+      .filter((entry) => entry.status !== "eligible")
+      .map((entry) => entry.workItemId),
   };
 }
 
@@ -150,16 +175,56 @@ export async function intakeWorkbook(
 
   const batchId = params.batchId ?? `batch-${new Date().toISOString().replace(/[:.]/g, "-")}`;
   const subsidiaryId = params.subsidiaryId ?? "default";
+  const ingestedAt = params.ingestedAt ?? new Date().toISOString();
   const workItems = aggregation.workItems.map((workItem) => ({
     ...workItem,
     subsidiaryId,
   }));
+  const workbookSource = createWorkbookSource({
+    agencyId: subsidiaryId,
+    batchId,
+    workbookPath: params.workbookPath,
+    originalFileName: params.workbookOriginalFileName ?? path.basename(params.workbookPath),
+    acquiredAt: ingestedAt,
+    ingestedAt,
+    kind: params.workbookSourceKind,
+    acquisition: params.workbookAcquisitionMetadata ?? null,
+    verification: params.workbookVerification ?? null,
+  });
+  const reviewWindow = createReviewWindow({
+    agencyId: subsidiaryId,
+    startsAt: ingestedAt,
+    timezone: params.reviewWindowTimezone ?? "Asia/Manila",
+  });
+  const patientQueue = buildWorkbookQueue({
+    batchId,
+    agencyId: subsidiaryId,
+    generatedAt: ingestedAt,
+    workItems,
+    reviewWindow,
+  });
+  if (patientQueue.entries.length > 0) {
+    logger.info(
+      {
+        batchId,
+        subsidiaryId,
+        queueDecisions: patientQueue.entries.map((entry) => ({
+          patientName: entry.patientName,
+          status: entry.status,
+          rationale: entry.eligibility.rationale,
+          matchedSignals: entry.eligibility.matchedSignals,
+        })),
+      },
+      "workbook queue eligibility decisions recorded",
+    );
+  }
   const manifest = createBatchManifest({
     batchId,
     subsidiaryId,
     workbookPath: params.workbookPath,
     outputDirectory,
     workItems,
+    patientQueue,
     parserExceptions,
   });
 
@@ -167,17 +232,27 @@ export async function intakeWorkbook(
   const workItemsPath = path.join(outputDirectory, "work-items.json");
   const normalizedPatientsPath = path.join(outputDirectory, "normalized-patients.json");
   const parserExceptionsPath = path.join(outputDirectory, "parser-exceptions.json");
+  const workbookSourcePath = path.join(outputDirectory, "workbook-source.json");
+  const reviewWindowPath = path.join(outputDirectory, "review-window.json");
+  const patientQueuePath = path.join(outputDirectory, "patient-queue.json");
 
   await writeFile(manifestPath, JSON.stringify(manifest, null, 2), "utf8");
   await writeFile(workItemsPath, JSON.stringify(workItems, null, 2), "utf8");
   await writeFile(normalizedPatientsPath, JSON.stringify(workItems, null, 2), "utf8");
   await writeFile(parserExceptionsPath, JSON.stringify(parserExceptions, null, 2), "utf8");
+  await writeFile(workbookSourcePath, JSON.stringify(workbookSource, null, 2), "utf8");
+  await writeFile(reviewWindowPath, JSON.stringify(reviewWindow, null, 2), "utf8");
+  await writeFile(patientQueuePath, JSON.stringify(patientQueue, null, 2), "utf8");
 
   logger.info(
     {
       batchId,
       subsidiaryId,
       workItems: workItems.length,
+      eligibleQueueEntries: patientQueue.summary.eligible,
+      skippedNonAdmit: patientQueue.summary.skippedNonAdmit,
+      skippedPending: patientQueue.summary.skippedPending,
+      excludedOther: patientQueue.summary.excludedOther,
       parserExceptions: parserExceptions.length,
     },
     "workbook intake completed",
@@ -186,12 +261,18 @@ export async function intakeWorkbook(
   return {
     manifest,
     workItems,
+    workbookSource,
+    reviewWindow,
+    patientQueue,
     parserExceptions,
     diagnostics: parsedWorkbook.diagnostics,
     manifestPath,
     workItemsPath,
     normalizedPatientsPath,
     parserExceptionsPath,
+    workbookSourcePath,
+    reviewWindowPath,
+    patientQueuePath,
   };
 }
 

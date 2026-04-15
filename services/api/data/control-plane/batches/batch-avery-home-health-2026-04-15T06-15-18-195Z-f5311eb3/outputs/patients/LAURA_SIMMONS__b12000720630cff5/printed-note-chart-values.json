@@ -1,0 +1,33 @@
+{
+  "generatedAt": "2026-04-15T09:00:29.210Z",
+  "source": "printed_note_ocr",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-avery-home-health-2026-04-15T06-15-18-195Z-f5311eb3\\outputs\\evidence\\LAURA_SIMMONS__b12000720630cff5\\oasis-printed-note\\extracted-text.txt",
+  "extractedFieldCount": 2,
+  "invocationModelId": "us.amazon.nova-lite-v1:0",
+  "currentChartValues": {
+    "patient_name": "Laura Simmons",
+    "soc_date": "01/29/2026"
+  },
+  "extractedFieldValues": [
+    {
+      "field_key": "patient_name",
+      "current_value": "Laura Simmons",
+      "confidence": 0.95,
+      "source_spans": [
+        "Simmons, Laura",
+        "Simmons, Laura123804"
+      ]
+    },
+    {
+      "field_key": "soc_date",
+      "current_value": "01/29/2026",
+      "confidence": 0.95,
+      "source_spans": [
+        "SOC: 01/29/2026"
+      ]
+    }
+  ],
+  "warnings": [
+    "Printed-note chart-value extraction used inference profile us.amazon.nova-lite-v1:0."
+  ]
+}

@@ -208,9 +208,11 @@ export function toBatchDetail(batch: BatchRecord) {
       acquisitionStatus: batch.sourceWorkbook.acquisitionStatus,
       acquisitionReference: batch.sourceWorkbook.acquisitionReference,
       acquisitionNotes: batch.sourceWorkbook.acquisitionNotes,
+      acquisitionMetadata: batch.sourceWorkbook.acquisitionMetadata,
       originalFileName: batch.sourceWorkbook.originalFileName,
       storedPath: batch.sourceWorkbook.storedPath,
       uploadedAt: batch.sourceWorkbook.uploadedAt,
+      verification: batch.sourceWorkbook.verification,
     },
     timestamps: {
       createdAt: batch.createdAt,

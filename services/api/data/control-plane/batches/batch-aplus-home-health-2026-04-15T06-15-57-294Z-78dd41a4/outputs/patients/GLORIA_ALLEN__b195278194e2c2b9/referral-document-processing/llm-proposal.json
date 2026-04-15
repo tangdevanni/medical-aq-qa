@@ -1,0 +1,64 @@
+{
+  "patient_context": {
+    "patient_name": "Gloria Allen",
+    "dob": "08/21/1951",
+    "soc_date": null,
+    "referral_date": null
+  },
+  "proposed_field_values": [
+    {
+      "field_key": "functional_limitations",
+      "proposed_value": "weakness",
+      "confidence": 0.76,
+      "source_spans": [
+        "Pt denies experiencing any weakness on her hands, denies dropping any"
+      ],
+      "rationale": "Functional limitations were extracted from referral text.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "therapy_need",
+      "proposed_value": "occupational therapy for hand fingers stiffness (fingers getting stuck) and lumbar radiculpathy to RLE",
+      "confidence": 0.77,
+      "source_spans": [
+        "Refer to occupational therapy for hand fingers stiffness (fingers getting stuck) and lumbar radiculpathy to her RLE"
+      ],
+      "rationale": "Therapy need was summarized from referral text.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "fall_risk_narrative",
+      "proposed_value": "Pt denies experiencing any weakness on her hands, denies dropping any",
+      "confidence": 0.7,
+      "source_spans": [
+        "Pt denies experiencing any weakness on her hands, denies dropping any"
+      ],
+      "rationale": "Risk and safety narrative was summarized from referral text.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "skilled_interventions",
+      "proposed_value": "occupational therapy for hand fingers stiffness (fingers getting stuck) and lumbar radiculpathy to RLE",
+      "confidence": 0.8,
+      "source_spans": [
+        "Refer to occupational therapy for hand fingers stiffness (fingers getting stuck) and lumbar radiculpathy to her RLE"
+      ],
+      "rationale": "Skilled interventions were summarized from the therapy plan.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "plan_for_next_visit",
+      "proposed_value": "occupational therapy for hand fingers stiffness (fingers getting stuck) and lumbar radiculpathy to RLE",
+      "confidence": 0.78,
+      "source_spans": [
+        "Refer to occupational therapy for hand fingers stiffness (fingers getting stuck) and lumbar radiculpathy to her RLE"
+      ],
+      "rationale": "Next-visit plan was summarized from the therapy plan.",
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [],
+  "warnings": []
+}

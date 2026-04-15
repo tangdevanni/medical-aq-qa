@@ -1,0 +1,25 @@
+{
+  "patientId": "RICHARD_COLLINS__da067ad93c51ef00",
+  "selectedDocumentId": "RICHARD_COLLINS__da067ad93c51ef00-referral-1",
+  "sourceDocuments": [
+    {
+      "documentId": "RICHARD_COLLINS__da067ad93c51ef00-referral-1",
+      "sourceIndex": 0,
+      "sourceLabel": "📄 New Referral Richard Collins 02262026.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedSourceLabel": "new-referral-richard-collins-02262026-pdf",
+      "sourceType": "REFERRAL_ORDER",
+      "acquisitionMethod": "printed_pdf",
+      "selectionStatus": "selected",
+      "portalLabel": "📄 New Referral Richard Collins 02262026.pdf 📝 ✏️ 🗑️ 🔗",
+      "localFilePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-14T22-15-27-367Z-64c9d561\\outputs\\patients\\RICHARD_COLLINS__da067ad93c51ef00\\documents\\new-referral-richard-collins-02262026-pdf\\source.pdf",
+      "effectiveTextSource": "ocr_text",
+      "fileType": "pdf",
+      "fileSizeBytes": 1914268,
+      "extractedTextLength": 5543,
+      "selectedReason": "highest-ranked referral/admission-order source with local file preference",
+      "rejectedReasons": []
+    }
+  ],
+  "warnings": [],
+  "generatedAt": "2026-04-14T23:38:11.716Z"
+}

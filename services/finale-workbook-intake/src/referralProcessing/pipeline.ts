@@ -1,4 +1,4 @@
-import { mkdir, stat, writeFile } from "node:fs/promises";
+import { mkdir, readdir, readFile, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import type { PatientEpisodeWorkItem } from "@medical-ai-qa/shared-types";
 import type { Logger } from "pino";
@@ -14,6 +14,7 @@ import { generateReferralFieldProposals } from "./llmProposalService";
 import { generateReferralQaInsights } from "./referralQaInsightsService";
 import { normalizeReferralSections } from "./sectionNormalization";
 import { buildPatientQaReference } from "../qaReference/projection";
+import { normalizePatientName } from "../utils/patientName";
 import type {
   FieldComparisonResult,
   QaDocumentSummary,
@@ -88,11 +89,63 @@ function effectiveSourceRank(value: string | null | undefined): number {
   }
 }
 
+function buildPatientNameTokens(value: string): string[] {
+  return normalizePatientName(value)
+    .split(" ")
+    .map((token) => token.trim())
+    .filter((token) => token.length >= 3);
+}
+
+function buildFileNameTokens(filePath: string): string[] {
+  return normalizePatientName(path.parse(filePath).name)
+    .split(" ")
+    .map((token) => token.trim())
+    .filter((token) => token.length >= 3);
+}
+
+async function readBatchWorkItemCount(outputDir: string): Promise<number | null> {
+  try {
+    const payload = await readFile(path.join(outputDir, "work-items.json"), "utf8");
+    const parsed = JSON.parse(payload);
+    return Array.isArray(parsed) ? parsed.length : null;
+  } catch {
+    return null;
+  }
+}
+
+function fileLooksLikePatientSource(input: {
+  filePath: string;
+  patientName: string;
+  batchWorkItemCount: number | null;
+}): boolean {
+  const extension = path.extname(input.filePath).toLowerCase();
+  if (![".pdf", ".jpg", ".jpeg", ".png"].includes(extension)) {
+    return false;
+  }
+
+  const patientTokens = buildPatientNameTokens(input.patientName);
+  const fileTokens = new Set(buildFileNameTokens(input.filePath));
+  const overlappingTokens = patientTokens.filter((token) => fileTokens.has(token));
+
+  if (overlappingTokens.length >= Math.min(2, patientTokens.length)) {
+    return true;
+  }
+
+  if (patientTokens.length > 0 && fileTokens.has(patientTokens[patientTokens.length - 1]!)) {
+    return true;
+  }
+
+  return input.batchWorkItemCount === 1;
+}
+
 async function buildSourceReferences(input: {
   extractedDocuments: ExtractedDocument[];
   patientId: string;
+  patientName: string;
+  outputDir: string;
 }): Promise<SourceDocumentReference[]> {
   const references: SourceDocumentReference[] = [];
+  const seenLocalPaths = new Set<string>();
 
   for (const [index, document] of input.extractedDocuments.entries()) {
     if (document.type !== "ORDER") {
@@ -102,6 +155,7 @@ async function buildSourceReferences(input: {
     const localFilePath = document.metadata.sourcePath ?? null;
     let fileSizeBytes: number | null = null;
     if (localFilePath) {
+      seenLocalPaths.add(path.resolve(localFilePath));
       try {
         fileSizeBytes = (await stat(localFilePath)).size;
       } catch {
@@ -128,15 +182,130 @@ async function buildSourceReferences(input: {
     });
   }
 
+  const batchSourceDir = path.resolve(input.outputDir, "..", "source");
+  const batchWorkItemCount = await readBatchWorkItemCount(input.outputDir);
+  try {
+    const entries = await readdir(batchSourceDir, { withFileTypes: true });
+    const manualCandidates = entries.filter((entry) => entry.isFile());
+
+    for (const entry of manualCandidates) {
+      const localFilePath = path.join(batchSourceDir, entry.name);
+      const resolvedPath = path.resolve(localFilePath);
+      if (seenLocalPaths.has(resolvedPath)) {
+        continue;
+      }
+      if (!fileLooksLikePatientSource({
+        filePath: localFilePath,
+        patientName: input.patientName,
+        batchWorkItemCount,
+      })) {
+        continue;
+      }
+
+      let fileSizeBytes: number | null = null;
+      try {
+        fileSizeBytes = (await stat(localFilePath)).size;
+      } catch {
+        fileSizeBytes = null;
+      }
+
+      references.push({
+        documentId: `${input.patientId}-manual-source-${references.length + 1}`,
+        sourceIndex: -1,
+        sourceLabel: entry.name,
+        normalizedSourceLabel: slugify(entry.name),
+        sourceType: "REFERRAL_ORDER",
+        acquisitionMethod: "local_file",
+        selectionStatus: "candidate",
+        portalLabel: null,
+        localFilePath,
+        effectiveTextSource: null,
+        fileType: classifySourceDocumentFileType(localFilePath),
+        fileSizeBytes,
+        extractedTextLength: 0,
+        selectedReason: null,
+        rejectedReasons: [],
+      });
+      seenLocalPaths.add(resolvedPath);
+    }
+  } catch {
+    // Manual batch-source documents are optional.
+  }
+
   return references;
 }
 
-function selectPrimarySourceDocument(references: SourceDocumentReference[]): SourceDocumentReference | null {
-  const ordered = [...references].sort((left, right) =>
-    Number(Boolean(right.localFilePath)) - Number(Boolean(left.localFilePath)) ||
-    effectiveSourceRank(right.effectiveTextSource) - effectiveSourceRank(left.effectiveTextSource) ||
-    right.extractedTextLength - left.extractedTextLength,
+type CandidateEvaluation = {
+  reference: SourceDocumentReference;
+  localExtraction: Awaited<ReturnType<typeof extractTextFromLocalFile>> | null;
+  extractedText: string;
+  extractionQuality: ReturnType<typeof evaluateDocumentExtractionQuality>;
+};
+
+async function selectPrimarySourceDocument(input: {
+  references: SourceDocumentReference[];
+  extractedDocuments: ExtractedDocument[];
+}): Promise<CandidateEvaluation | null> {
+  const evaluations: CandidateEvaluation[] = [];
+
+  for (const reference of input.references) {
+    const extractedDocument = reference.sourceIndex >= 0
+      ? input.extractedDocuments[reference.sourceIndex] ?? null
+      : null;
+    const fallbackText = extractedDocument?.text ?? "";
+
+    let localExtraction: Awaited<ReturnType<typeof extractTextFromLocalFile>> | null = null;
+    if (reference.localFilePath) {
+      try {
+        localExtraction = await extractTextFromLocalFile(reference.localFilePath);
+      } catch {
+        localExtraction = null;
+      }
+    }
+
+    const extractedText = normalizeDocumentText(localExtraction?.text) || normalizeDocumentText(fallbackText);
+    const extractionQuality = evaluateDocumentExtractionQuality({
+      text: extractedText,
+      extraction: {
+        pdfType: localExtraction?.pdfType ?? null,
+        rawExtractedTextSource: localExtraction?.rawExtractedTextSource ?? "dom",
+        domExtractionRejectedReasons: localExtraction?.domExtractionRejectedReasons ?? [],
+      },
+      fileType: reference.fileType,
+    });
+
+    evaluations.push({
+      reference,
+      localExtraction,
+      extractedText,
+      extractionQuality,
+    });
+  }
+
+  const usabilityRank = (value: CandidateEvaluation["extractionQuality"]["usabilityStatus"]): number => {
+    switch (value) {
+      case "usable":
+        return 3;
+      case "needs_ocr_retry":
+        return 2;
+      default:
+        return 1;
+    }
+  };
+
+  const ordered = evaluations.sort((left, right) =>
+    usabilityRank(right.extractionQuality.usabilityStatus) - usabilityRank(left.extractionQuality.usabilityStatus) ||
+    Number(right.extractionQuality.likelyUsableForLlm) - Number(left.extractionQuality.likelyUsableForLlm) ||
+    effectiveSourceRank(right.localExtraction?.effectiveTextSource ?? right.reference.effectiveTextSource) -
+      effectiveSourceRank(left.localExtraction?.effectiveTextSource ?? left.reference.effectiveTextSource) ||
+    Number(right.extractionQuality.containsSectionLikeHeadings) - Number(left.extractionQuality.containsSectionLikeHeadings) ||
+    Number(right.extractionQuality.containsDiagnosisLikePatterns) - Number(left.extractionQuality.containsDiagnosisLikePatterns) ||
+    right.extractionQuality.characterCount - left.extractionQuality.characterCount ||
+    right.extractionQuality.lineCount - left.extractionQuality.lineCount ||
+    (right.reference.fileSizeBytes ?? 0) - (left.reference.fileSizeBytes ?? 0) ||
+    right.reference.extractedTextLength - left.reference.extractedTextLength
   );
+
   return ordered[0] ?? null;
 }
 
@@ -315,8 +484,14 @@ export async function runReferralDocumentProcessingPipeline(input: {
   const sourceDocuments = await buildSourceReferences({
     extractedDocuments: input.extractedDocuments,
     patientId: input.workItem.id,
+    patientName: input.workItem.patientIdentity.displayName,
+    outputDir: input.outputDir,
   });
-  const selectedSource = selectPrimarySourceDocument(sourceDocuments);
+  const selectedCandidate = await selectPrimarySourceDocument({
+    references: sourceDocuments,
+    extractedDocuments: input.extractedDocuments,
+  });
+  const selectedSource = selectedCandidate?.reference ?? null;
   const sourceMeta: SourceDocumentArtifact = {
     patientId: input.workItem.id,
     selectedDocumentId: selectedSource?.documentId ?? null,
@@ -423,14 +598,16 @@ export async function runReferralDocumentProcessingPipeline(input: {
     };
   }
 
-  let localExtraction: Awaited<ReturnType<typeof extractTextFromLocalFile>> | null = null;
-  const selectedExtractedDocument = input.extractedDocuments[selectedSource.sourceIndex];
-  try {
-    if (selectedSource.localFilePath) {
+  let localExtraction: Awaited<ReturnType<typeof extractTextFromLocalFile>> | null = selectedCandidate?.localExtraction ?? null;
+  const selectedExtractedDocument = selectedSource.sourceIndex >= 0
+    ? input.extractedDocuments[selectedSource.sourceIndex] ?? null
+    : null;
+  if (selectedSource.localFilePath && !localExtraction) {
+    try {
       localExtraction = await extractTextFromLocalFile(selectedSource.localFilePath);
+    } catch (error) {
+      sourceMeta.warnings.push(`Local file extraction failed for ${selectedSource.localFilePath}: ${error instanceof Error ? error.message : String(error)}`);
     }
-  } catch (error) {
-    sourceMeta.warnings.push(`Local file extraction failed for ${selectedSource.localFilePath}: ${error instanceof Error ? error.message : String(error)}`);
   }
 
   stepLogs.push(createAutomationStepLog({

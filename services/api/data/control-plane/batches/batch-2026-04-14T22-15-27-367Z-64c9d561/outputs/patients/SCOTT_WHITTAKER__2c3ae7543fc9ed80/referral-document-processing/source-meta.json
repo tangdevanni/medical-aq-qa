@@ -1,0 +1,25 @@
+{
+  "patientId": "SCOTT_WHITTAKER__2c3ae7543fc9ed80",
+  "selectedDocumentId": "SCOTT_WHITTAKER__2c3ae7543fc9ed80-referral-1",
+  "sourceDocuments": [
+    {
+      "documentId": "SCOTT_WHITTAKER__2c3ae7543fc9ed80-referral-1",
+      "sourceIndex": 0,
+      "sourceLabel": "📄 scott whittaker new referral.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedSourceLabel": "scott-whittaker-new-referral-pdf",
+      "sourceType": "REFERRAL_ORDER",
+      "acquisitionMethod": "printed_pdf",
+      "selectionStatus": "selected",
+      "portalLabel": "📄 scott whittaker new referral.pdf 📝 ✏️ 🗑️ 🔗",
+      "localFilePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-14T22-15-27-367Z-64c9d561\\outputs\\patients\\SCOTT_WHITTAKER__2c3ae7543fc9ed80\\documents\\scott-whittaker-new-referral-pdf\\source.pdf",
+      "effectiveTextSource": "ocr_text",
+      "fileType": "pdf",
+      "fileSizeBytes": 1196424,
+      "extractedTextLength": 5083,
+      "selectedReason": "highest-ranked referral/admission-order source with local file preference",
+      "rejectedReasons": []
+    }
+  ],
+  "warnings": [],
+  "generatedAt": "2026-04-14T23:49:22.072Z"
+}

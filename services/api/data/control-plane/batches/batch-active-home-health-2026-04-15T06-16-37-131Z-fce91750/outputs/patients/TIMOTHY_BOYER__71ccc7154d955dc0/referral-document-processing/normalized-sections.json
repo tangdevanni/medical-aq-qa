@@ -1,0 +1,188 @@
+[
+  {
+    "sectionName": "patient_identity",
+    "extractedTextSpans": [
+      "Patient Name:",
+      "DOB:",
+      "DOB: 03/12/1956, 70 years"
+    ],
+    "normalizedSummary": "Patient Name: DOB: DOB: 03/12/1956, 70 years",
+    "confidence": 0.95,
+    "lineReferences": [
+      {
+        "lineStart": 12,
+        "lineEnd": 12,
+        "charStart": 267,
+        "charEnd": 280
+      },
+      {
+        "lineStart": 13,
+        "lineEnd": 13,
+        "charStart": 281,
+        "charEnd": 285
+      },
+      {
+        "lineStart": 118,
+        "lineEnd": 118,
+        "charStart": 2049,
+        "charEnd": 2074
+      }
+    ]
+  },
+  {
+    "sectionName": "referral_metadata",
+    "extractedTextSpans": [
+      "Home Health Referral"
+    ],
+    "normalizedSummary": "Home Health Referral",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 3,
+        "lineEnd": 3,
+        "charStart": 16,
+        "charEnd": 36
+      }
+    ]
+  },
+  {
+    "sectionName": "medical_necessity",
+    "extractedTextSpans": [
+      "Skilled Nursing"
+    ],
+    "normalizedSummary": "Skilled Nursing",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 58,
+        "lineEnd": 58,
+        "charStart": 944,
+        "charEnd": 959
+      }
+    ]
+  },
+  {
+    "sectionName": "homebound_evidence",
+    "extractedTextSpans": [
+      "Homebound due to (i.e inability to leave home, leaving",
+      "medically contraindicated or requires assistance/ DME):"
+    ],
+    "normalizedSummary": "Homebound due to (i.e inability to leave home, leaving medically contraindicated or requires assistance/ DME):",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 24,
+        "lineEnd": 24,
+        "charStart": 503,
+        "charEnd": 557
+      },
+      {
+        "lineStart": 29,
+        "lineEnd": 29,
+        "charStart": 634,
+        "charEnd": 689
+      }
+    ]
+  },
+  {
+    "sectionName": "medications",
+    "extractedTextSpans": [
+      "Medication reconciliation/management",
+      "Allergies",
+      "No known drug allergy",
+      "Allergies Reconciled"
+    ],
+    "normalizedSummary": "Medication reconciliation/management Allergies No known drug allergy",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 66,
+        "lineEnd": 66,
+        "charStart": 1140,
+        "charEnd": 1176
+      },
+      {
+        "lineStart": 187,
+        "lineEnd": 187,
+        "charStart": 4774,
+        "charEnd": 4783
+      },
+      {
+        "lineStart": 188,
+        "lineEnd": 188,
+        "charStart": 4784,
+        "charEnd": 4805
+      },
+      {
+        "lineStart": 189,
+        "lineEnd": 189,
+        "charStart": 4806,
+        "charEnd": 4826
+      }
+    ]
+  },
+  {
+    "sectionName": "functional_limitations",
+    "extractedTextSpans": [
+      "endurance"
+    ],
+    "normalizedSummary": "endurance",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 92,
+        "lineEnd": 92,
+        "charStart": 1612,
+        "charEnd": 1621
+      }
+    ]
+  },
+  {
+    "sectionName": "therapy_need",
+    "extractedTextSpans": [
+      "Occupational Therapy"
+    ],
+    "normalizedSummary": "Occupational Therapy",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 60,
+        "lineEnd": 60,
+        "charStart": 979,
+        "charEnd": 999
+      }
+    ]
+  },
+  {
+    "sectionName": "risk_factors",
+    "extractedTextSpans": [
+      "Home safety /fall precaution"
+    ],
+    "normalizedSummary": "Home safety /fall precaution",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 67,
+        "lineEnd": 67,
+        "charStart": 1177,
+        "charEnd": 1205
+      }
+    ]
+  },
+  {
+    "sectionName": "other_clinical_notes",
+    "extractedTextSpans": [
+      "Assessment and Plan"
+    ],
+    "normalizedSummary": "Assessment and Plan",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 233,
+        "lineEnd": 233,
+        "charStart": 6732,
+        "charEnd": 6751
+      }
+    ]
+  }
+]

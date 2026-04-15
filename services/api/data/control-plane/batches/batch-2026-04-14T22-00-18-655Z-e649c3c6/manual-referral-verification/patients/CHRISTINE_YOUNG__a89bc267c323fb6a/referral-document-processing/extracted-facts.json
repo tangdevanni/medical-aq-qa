@@ -1,0 +1,458 @@
+{
+  "patient_context": {
+    "patient_name": "YOUNG, CHRISTINE",
+    "dob": "05/30/1944",
+    "soc_date": null,
+    "referral_date": "02/23/2026"
+  },
+  "facts": [
+    {
+      "fact_key": "referral_date",
+      "category": "patient_context",
+      "value": "02/23/2026",
+      "confidence": 0.94,
+      "evidence_spans": [
+        "February 23, 2026"
+      ],
+      "rationale": "Referral date was identified in referral metadata.",
+      "source_sections": [
+        "referral_metadata"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "recent_hospitalization_facility",
+      "category": "hospitalization",
+      "value": "Fountain Hills Post Acute",
+      "confidence": 0.78,
+      "evidence_spans": [
+        "Fountain Hills Post Acute"
+      ],
+      "rationale": "Recent inpatient facility was identified in referral history.",
+      "source_sections": [
+        "hospitalization_history"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "caregiver_name",
+      "category": "caregiver",
+      "value": "Emily Young",
+      "confidence": 0.88,
+      "evidence_spans": [
+        "Emily Young"
+      ],
+      "rationale": "Caregiver name was identified in referral caregiver evidence.",
+      "source_sections": [
+        "caregiver_support"
+      ],
+      "requires_human_review": false
+    },
+    {
+      "fact_key": "caregiver_relationship",
+      "category": "caregiver",
+      "value": "Daughter",
+      "confidence": 0.85,
+      "evidence_spans": [
+        "Daughter"
+      ],
+      "rationale": "Caregiver relationship was identified in referral caregiver evidence.",
+      "source_sections": [
+        "caregiver_support"
+      ],
+      "requires_human_review": false
+    },
+    {
+      "fact_key": "caregiver_phone",
+      "category": "caregiver",
+      "value": "4807035881",
+      "confidence": 0.8,
+      "evidence_spans": [
+        "4807035881"
+      ],
+      "rationale": "Caregiver phone number was identified in referral caregiver evidence.",
+      "source_sections": [
+        "caregiver_support"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "code_status",
+      "category": "directive",
+      "value": "full_code",
+      "confidence": 0.75,
+      "evidence_spans": [
+        "Code status: full_code"
+      ],
+      "rationale": "Code status was explicitly stated in referral text.",
+      "source_sections": [
+        "code_status",
+        "advance_directives"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "medical_necessity_summary",
+      "category": "medical_necessity",
+      "value": "Christine E. Young, an 81-year-old female, is being admitted to home health care following her discharge from Fountain Hills Post Acute after a prolonged hospitalization due to multifocal pneumonia, acute respiratory failure with hypoxia, and acute on chronic congestive heart failure, among other chronic conditions. Has conditions such as chronic atrial fibrillation, acute kidney failure, metabolic encephalopathy, and dysphagia, which have compounded her health status and functional limitations.",
+      "confidence": 0.78,
+      "evidence_spans": [
+        "Christine E."
+      ],
+      "rationale": "Medical necessity was summarized from referral narrative and skilled-need evidence.",
+      "source_sections": [
+        "primary_reason_for_home_health",
+        "medical_necessity"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "homebound_narrative",
+      "category": "homebound",
+      "value": "The patient is homebound due to weakness and pain, requiring assistive devices and assistance from others for safe ambulation. She also reports difficulty accessing medical care and medications due to lack of transportation. The patient requires assistance with activities of daily living, including grooming, dressing, toileting, and bathing, and demonstrates limited endurance and strength affecting her ability to perform functional tasks independently",
+      "confidence": 0.8,
+      "evidence_spans": [
+        "The patient is homebound due to weakness and pain, requiring assistive devices and assistance from others for safe ambulation. She also reports difficulty accessing medical care and medications due to lack of transportation."
+      ],
+      "rationale": "Homebound evidence was summarized from referral text.",
+      "source_sections": [
+        "homebound_evidence"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "homebound_supporting_factors",
+      "category": "homebound",
+      "value": [
+        "needs_assistance",
+        "pain_limits_mobility"
+      ],
+      "confidence": 0.73,
+      "evidence_spans": [
+        "The patient is homebound due to weakness and pain, requiring assistive devices and assistance from others for safe ambulation. She also reports difficulty accessing medical care and medications due to lack of transportation."
+      ],
+      "rationale": "Homebound supporting factors were extracted from referral text.",
+      "source_sections": [
+        "homebound_evidence"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "living_situation",
+      "category": "living_situation",
+      "value": "She lives with a caregiver who provides support but may require additional training to meet her care needs effectively.",
+      "confidence": 0.72,
+      "evidence_spans": [
+        "She lives with a caregiver who provides support but may require additional training to meet her care needs effectively."
+      ],
+      "rationale": "Living situation was summarized from referral text.",
+      "source_sections": [
+        "living_situation"
+      ],
+      "requires_human_review": false
+    },
+    {
+      "fact_key": "functional_limitations",
+      "category": "functional",
+      "value": [
+        "ambulation_limitations",
+        "reduced_endurance"
+      ],
+      "confidence": 0.76,
+      "evidence_spans": [
+        "The patient requires assistance with activities of daily living, including grooming, dressing, toileting, and bathing, and demonstrates limited endurance and strength affecting her ability to perform functional tasks ind"
+      ],
+      "rationale": "Functional limitations were extracted from referral text.",
+      "source_sections": [
+        "functional_limitations"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "therapy_need",
+      "category": "therapy",
+      "value": "Initiate physical therapy services focusing on strengthening, balance training, gait training, transfer training, and safety awareness to improve functional mobility and reduce fall risk. Provide patient and caregiver education on home safety, proper use of assistive devices, and strategies to support independence with daily activities",
+      "confidence": 0.77,
+      "evidence_spans": [
+        "Initiate physical therapy services focusing on strengthening, balance training, gait training, transfer training, and safety awareness to improve functional mobility and reduce fall risk. Provide patient and caregiver education on home safety, proper use of assistive devices, and strategies to support independence with daily activities"
+      ],
+      "rationale": "Therapy need was summarized from referral text.",
+      "source_sections": [
+        "therapy_need"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "discipline_frequencies",
+      "category": "therapy",
+      "value": "1x.wk X 1 wk, 2x/wk X 3",
+      "confidence": 0.84,
+      "evidence_spans": [
+        "1x.wk X 1 wk, 2x/wk X 3"
+      ],
+      "rationale": "Discipline frequency was identified from the therapy plan.",
+      "source_sections": [
+        "therapy_need"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "fall_risk_narrative",
+      "category": "risk",
+      "value": "High Risk for Falls Weight Bearing Restriction Poor Conditioning Fracture: Joints Pain: Amputation: Atrophy: Paresthesia: Contractures: Site Foot Drop: Right Left Fall(s) since last visit (Specify): Weakness (Specify): Generalized Change i",
+      "confidence": 0.7,
+      "evidence_spans": [
+        "High Risk for Falls Weight Bearing Restriction Poor Conditioning Fracture: Joints Pain: Amputation: Atrophy: Paresthesia: Contractures: Site Foot Drop: Right Left Fall(s) since last visit (Specify): Weakness (Specify): G"
+      ],
+      "rationale": "Risk and safety narrative was summarized from referral text.",
+      "source_sections": [
+        "risk_factors",
+        "functional_limitations"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "patient_summary_narrative",
+      "category": "medical_necessity",
+      "value": "Christine Young is an 81-year-old female referred for home health services on February 23, 2026, with a start of care date of February 27, 2026, under the supervision of Dr. Vinay Prabhakaran. She was recently discharged from a skilled nursing facility on February 20, 2026. A physical therapy assessment was completed, noting that she is homebound due to significant weakness, pain, impaired mobility, poor balance, and an unsteady gait.",
+      "confidence": 0.82,
+      "evidence_spans": [
+        "Christine Young is an 81-year-old female referred for home health services on February 23, 2026, with a start of care date of February 27, 2026, under the supervision of Dr. Vinay Prabhakaran."
+      ],
+      "rationale": "Patient summary narrative was extracted from the OASIS clinical summary.",
+      "source_sections": [
+        "other_clinical_notes"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "skilled_interventions",
+      "category": "therapy",
+      "value": "Initiate physical therapy services focusing on strengthening, balance training, gait training, transfer training, and safety awareness to improve functional mobility and reduce fall risk. Provide patient and caregiver education on home safety, proper use of assistive devices, and strategies to support independence with daily activities",
+      "confidence": 0.8,
+      "evidence_spans": [
+        "Initiate physical therapy services focusing on strengthening, balance training, gait training, transfer training, and safety awareness to improve functional mobility and reduce fall risk."
+      ],
+      "rationale": "Skilled interventions were summarized from the therapy plan.",
+      "source_sections": [
+        "therapy_need"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "plan_for_next_visit",
+      "category": "therapy",
+      "value": "Initiate physical therapy services focusing on strengthening, balance training, gait training, transfer training, and safety awareness to improve functional mobility and reduce fall risk. Provide patient and caregiver education on home safety, proper use of assistive devices, and strategies to support independence with daily activities",
+      "confidence": 0.78,
+      "evidence_spans": [
+        "Initiate physical therapy services focusing on strengthening, balance training, gait training, transfer training, and safety awareness to improve functional mobility and reduce fall risk."
+      ],
+      "rationale": "Next-visit plan was summarized from the therapy plan.",
+      "source_sections": [
+        "therapy_need"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "patient_caregiver_goals",
+      "category": "therapy",
+      "value": "I want to get stronger, better, be free from pain and able to do the activities in daily living.",
+      "confidence": 0.79,
+      "evidence_spans": [
+        "I want to get stronger, better, be free from pain and able to do the activities in daily living."
+      ],
+      "rationale": "Patient or caregiver goals were identified in the therapy plan.",
+      "source_sections": [
+        "therapy_need",
+        "other_clinical_notes"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "care_plan_problems_goals_interventions",
+      "category": "therapy",
+      "value": ": Problem: Fall Risk Goals: Target Completion: 4 Week(s) Term: Long-term Status: Unmet Reduce the risk of falls in the home environment. Interventions: Assigned Staff: PT Assess the patient's gait and balance through physical therapy. Progress Toward Goals: No Progress Yet Provide training for the patient on the use of mobility aids (e.g., walkers, canes). Progress Toward Goals: No Progress Yet Instruct the family on how to assist the patient safely during ambulation.",
+      "confidence": 0.8,
+      "evidence_spans": [
+        ": Problem: Fall Risk Goals: Target Completion: 4 Week(s) Term: Long-term Status: Unmet Reduce the risk of falls in the home environment. Interventions: Assigned Staff: PT Assess the patient's gait and balance through physical therapy."
+      ],
+      "rationale": "Care-plan problems, goals, and interventions were summarized from the OASIS care plan.",
+      "source_sections": [
+        "other_clinical_notes"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "pain_assessment_narrative",
+      "category": "functional",
+      "value": "Comments: Lower back pain with a scale of 8/10; comfort measures and pain medication were provided. Re-checked after 30 minutes, resulting with a scale of 3/10",
+      "confidence": 0.8,
+      "evidence_spans": [
+        "Comments: Lower back pain with a scale of 8/10; comfort measures and pain medication were provided. Re-checked after 30 minutes, resulting with a scale of 3/10"
+      ],
+      "rationale": "Pain assessment narrative was identified in the vitals and pain assessment section.",
+      "source_sections": [
+        "other_clinical_notes"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "respiratory_status",
+      "category": "medical_necessity",
+      "value": "O2 Sat: 95 02 Sat in: Room Air Comments",
+      "confidence": 0.74,
+      "evidence_spans": [
+        "O2 Sat: 95 02 Sat in: Room Air Comments"
+      ],
+      "rationale": "Respiratory status was summarized from referral text.",
+      "source_sections": [
+        "other_clinical_notes"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "integumentary_wound_status",
+      "category": "medical_necessity",
+      "value": "intact skin integrity with no noted wounds",
+      "confidence": 0.74,
+      "evidence_spans": [
+        "intact skin integrity with no noted wounds"
+      ],
+      "rationale": "Integumentary and wound status was summarized from the patient summary.",
+      "source_sections": [
+        "other_clinical_notes"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "emotional_behavioral_status",
+      "category": "medical_necessity",
+      "value": "Despite intact cognition and stable mood, her multiple comorbidities and functional limitations necessitate continued monitoring and rehabilitation to maintain safety and prevent complications.",
+      "confidence": 0.74,
+      "evidence_spans": [
+        "Despite intact cognition and stable mood, her multiple comorbidities and functional limitations necessitate continued monitoring and rehabilitation to maintain safety and prevent complications."
+      ],
+      "rationale": "Emotional and behavioral status was summarized from the patient summary.",
+      "source_sections": [
+        "other_clinical_notes"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "past_medical_history",
+      "category": "medical_necessity",
+      "value": "Her comorbidities include hypertensive heart disease with heart failure, heart failure, chronic atrial fibrillation, hypothyroidism, and generalized weakness, all of which contribute to her decreased functional capacity. Assessment findings indicate stable vital signs and intact skin integrity with no noted wounds",
+      "confidence": 0.78,
+      "evidence_spans": [
+        "Her comorbidities include hypertensive heart disease with heart failure, heart failure, chronic atrial fibrillation, hypothyroidism, and generalized weakness, all of which contribute to her decreased functional capacity."
+      ],
+      "rationale": "Past medical history was summarized from the clinical narrative.",
+      "source_sections": [
+        "other_clinical_notes"
+      ],
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [
+    {
+      "description": "Dysphagia, unspecified",
+      "icd10_code": "R13.10",
+      "confidence": 0.74,
+      "source_spans": [
+        "PRIMARY DIAGNOSIS 0 Severity 02/27/2026 R13.10- Dysphagia, unspecified 0 1 2 3 4"
+      ],
+      "is_primary_candidate": true,
+      "requires_human_review": true
+    },
+    {
+      "description": "Hypertensive heart disease with heart failure",
+      "icd10_code": "I11.0",
+      "confidence": 0.74,
+      "source_spans": [
+        "OTHER DIAGNOSIS - 1 Severity 02/27/2026 I11.0- Hypertensive heart disease with heart failure 0 1 2 3 4"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Heart failure, unspecified",
+      "icd10_code": "I50.9",
+      "confidence": 0.74,
+      "source_spans": [
+        "OTHER DIAGNOSIS - 2 Onset Date Severity 02/27/2026 150.9 - Heart failure, unspecified 0 1 2 3 4"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Chronic atrial fibrillation, unspecified",
+      "icd10_code": "I48.20",
+      "confidence": 0.74,
+      "source_spans": [
+        "OTHER DIAGNOSIS - 3 Severity 02/27/2026 148.20- Chronic atrial fibrillation, unspecified 0 1 2 3 4"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Hypothyroidism, unspecified",
+      "icd10_code": "E03.9",
+      "confidence": 0.74,
+      "source_spans": [
+        "OTHER DIAGNOSIS - 4 Severity 02/27/2026 E03.9 - Hypothyroidism, unspecified 0 1 2 3 4"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Depression, unspecified Onset Date Severity 02/27/2026",
+      "icd10_code": "F32.A",
+      "confidence": 0.74,
+      "source_spans": [
+        "OTHER DIAGNOSIS - 5 Severity 02/27/2026 R53.1 Weakness 0 1 2 3 4 ^ Onset Exacerbate F32.A- Depression, unspecified Onset Date Severity 02/27/2026 0 1 2 3 4"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Personal history of pneumonia Onset Date Severity (recurrent)",
+      "icd10_code": "Z87.01",
+      "confidence": 0.74,
+      "source_spans": [
+        "Z87.01 Personal history of pneumonia Onset Date Severity (recurrent) 02/27/2026 0"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Dysphagia, unspecified",
+      "icd10_code": "R13.10",
+      "confidence": 0.74,
+      "source_spans": [
+        "R13.10- Dysphagia, unspecified 0 1 2 3 4"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    }
+  ],
+  "caregiver_candidates": [
+    {
+      "caregiver_name": "Emily Young",
+      "caregiver_relationship": "Daughter",
+      "caregiver_phone": "4807035881"
+    }
+  ],
+  "unsupported_or_missing_fields": [
+    "preferred_language",
+    "interpreter_needed",
+    "recent_hospitalization_discharge_date",
+    "order_summary",
+    "primary_reason_for_home_health_medical_necessity",
+    "admit_reason_to_home_health",
+    "prior_functioning",
+    "immunization_status"
+  ],
+  "warnings": [
+    "Deterministic referral facts extraction was used."
+  ]
+}

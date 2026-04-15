@@ -1,0 +1,25 @@
+{
+  "patientId": "THOMAS_ALLEN__50f11c53da78b4c8",
+  "selectedDocumentId": "THOMAS_ALLEN__50f11c53da78b4c8-referral-1",
+  "sourceDocuments": [
+    {
+      "documentId": "THOMAS_ALLEN__50f11c53da78b4c8-referral-1",
+      "sourceIndex": 0,
+      "sourceLabel": "📄 thomas allen hnp hho.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedSourceLabel": "thomas-allen-hnp-hho-pdf",
+      "sourceType": "REFERRAL_ORDER",
+      "acquisitionMethod": "printed_pdf",
+      "selectionStatus": "selected",
+      "portalLabel": "📄 thomas allen hnp hho.pdf 📝 ✏️ 🗑️ 🔗",
+      "localFilePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-14T22-15-27-367Z-64c9d561\\outputs\\patients\\THOMAS_ALLEN__50f11c53da78b4c8\\documents\\thomas-allen-hnp-hho-pdf\\source.pdf",
+      "effectiveTextSource": "ocr_text",
+      "fileType": "pdf",
+      "fileSizeBytes": 184248,
+      "extractedTextLength": 7171,
+      "selectedReason": "highest-ranked referral/admission-order source with local file preference",
+      "rejectedReasons": []
+    }
+  ],
+  "warnings": [],
+  "generatedAt": "2026-04-14T23:58:40.190Z"
+}

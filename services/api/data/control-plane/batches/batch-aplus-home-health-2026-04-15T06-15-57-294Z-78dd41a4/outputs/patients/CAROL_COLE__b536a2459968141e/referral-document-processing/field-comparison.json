@@ -1,0 +1,379 @@
+[
+  {
+    "field_key": "patient_name",
+    "current_chart_value": "Carol G. Cole",
+    "proposed_value": null,
+    "comparison_status": "unsupported",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "medium"
+  },
+  {
+    "field_key": "dob",
+    "current_chart_value": "1944-12-28",
+    "proposed_value": null,
+    "comparison_status": "unsupported",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "medium"
+  },
+  {
+    "field_key": "soc_date",
+    "current_chart_value": "2026-03-27",
+    "proposed_value": null,
+    "comparison_status": "unsupported",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "medium"
+  },
+  {
+    "field_key": "referral_date",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "preferred_language",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "unsupported",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "medium"
+  },
+  {
+    "field_key": "interpreter_needed",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "primary_reason_for_home_health_medical_necessity",
+    "current_chart_value": "Carol G. Cole, an 81-year-old female, requires home health following a recent hospitalization for hypokalemia, acute kidney failure, and hypomagnesemia. Her potassium level was critically low at 2.4 mmol/L, requiring IV repletion and close monitoring. She also has a history of atrial fibrillation on anticoagulation, hypertension, and arthritis, contributing to her medical complexity. Functional limitations affect her ability to perform some activities of daily living independently, and she is at risk for falls due",
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "admit_reason_to_home_health",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "homebound_narrative",
+    "current_chart_value": "Patient is not Homebound. Criteria One (One must be met): Describe what assistive devices the patient is dependent on (if any) and specifically why the patient condition warrants the special transportation or the assistance of another person or describe the condition that makes leaving home medically contraindicated. Criteria 1 A: Because of illness or injury Patient needs the aid of supportive devices Crutches Cane Manual Wheel Chair Walker Motorized Wheelchair Scooter Patient Needs the use of special transportati",
+    "proposed_value": "Devices/Equipment at Home: Shower chair, Walker, Wheelchair Performed By: Paine RN, Danielle 03/25/2026 Home Equipment Rehab : Elevated toilet seat, 4-Wheel walker, Front-wheel walker (FWW), Shower commode chair Device : Gait belt, Front-wheel walker (FWW) Ambulation with Standard Walker : Verbalizes understanding, Demonstrates, Needs further teaching, Needs PT reviewed walker management and upright posture during mobility, VC for attention to walker placement. Pt AxO4 and ambulatory with personal walker.",
+    "comparison_status": "requires_human_review",
+    "confidence": 0.8,
+    "rationale": "Homebound evidence was summarized from referral text.",
+    "source_spans": [
+      "Devices/Equipment at Home: Shower chair, Walker, Wheelchair Performed By: Paine RN, Danielle 03/25/2026 Home Equipment Rehab : Elevated toilet seat, 4-Wheel walker, Front-wheel walker (FWW), Shower commode chair Device : Gait belt, Front-wheel walker (FWW) Amb"
+    ],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "homebound_supporting_factors",
+    "current_chart_value": null,
+    "proposed_value": [
+      "uses_walker"
+    ],
+    "comparison_status": "requires_human_review",
+    "confidence": 0.73,
+    "rationale": "Homebound supporting factors were extracted from referral text.",
+    "source_spans": [
+      "Devices/Equipment at Home: Shower chair, Walker, Wheelchair Performed By: Paine RN, Danielle 03/25/2026 Home Equipment Rehab : Elevated toilet seat, 4-Wheel walker, Front-wheel walker (FWW), Shower commode chair Device : Gait belt, Front-wheel walker (FWW) Amb"
+    ],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "recent_hospitalization_discharge_date",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "recent_hospitalization_facility",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "caregiver_name",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "unsupported",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "medium"
+  },
+  {
+    "field_key": "caregiver_relationship",
+    "current_chart_value": null,
+    "proposed_value": "daughter",
+    "comparison_status": "missing_in_chart",
+    "confidence": 0.85,
+    "rationale": "Caregiver relationship was identified in referral caregiver evidence.",
+    "source_spans": [
+      "daughter"
+    ],
+    "reviewer_priority": "medium"
+  },
+  {
+    "field_key": "caregiver_phone",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "living_situation",
+    "current_chart_value": null,
+    "proposed_value": "Home independently Performed By",
+    "comparison_status": "missing_in_chart",
+    "confidence": 0.72,
+    "rationale": "Living situation was summarized from referral text.",
+    "source_spans": [
+      "Home independently Performed By"
+    ],
+    "reviewer_priority": "medium"
+  },
+  {
+    "field_key": "prior_functioning",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "functional_limitations",
+    "current_chart_value": "Ambulation",
+    "proposed_value": [
+      "weakness",
+      "ambulation_limitations"
+    ],
+    "comparison_status": "requires_human_review",
+    "confidence": 0.76,
+    "rationale": "Functional limitations were extracted from referral text.",
+    "source_spans": [
+      "Ambulation Level : Close supervision Ambulation Distance : 250 ft PT Impairments or Limitations : Ambulation deficits, Balance deficits Ambulation with Standard Walker : Verbalizes understanding, Demonstrates, Needs furt"
+    ],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "therapy_need",
+    "current_chart_value": null,
+    "proposed_value": "Physical Therapy Forms Physical Therapy Orders : PT Evaluation and Treatment 03/25/26 13:50:00 PDT, Routine, Stop date 03/25/26 13:50:00 Physical Therapy Forms",
+    "comparison_status": "requires_human_review",
+    "confidence": 0.77,
+    "rationale": "Therapy need was summarized from referral text.",
+    "source_spans": [
+      "Physical Therapy Forms Physical Therapy Orders : PT Evaluation and Treatment 03/25/26 13:50:00 PDT, Routine, Stop date 03/25/26 13:50:00 Physical Therapy Forms"
+    ],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "patient_summary_narrative",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "skilled_interventions",
+    "current_chart_value": "Skilled nursing services are required for ongoing monitoring of her potassium and renal status, as well as medication management, while physical therapy will focus on balance training and safe ambulation.",
+    "proposed_value": "Physical Therapy Forms Physical Therapy Orders : PT Evaluation and Treatment 03/25/26 13:50:00 PDT, Routine, Stop date 03/25/26 13:50:00 Physical Therapy Forms",
+    "comparison_status": "requires_human_review",
+    "confidence": 0.8,
+    "rationale": "Skilled interventions were summarized from the therapy plan.",
+    "source_spans": [
+      "Physical Therapy Forms Physical Therapy Orders : PT Evaluation and Treatment 03/25/26 13:50:00 PDT, Routine, Stop date 03/25/26 13:50:00 Physical Therapy Forms"
+    ],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "discipline_frequencies",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "plan_for_next_visit",
+    "current_chart_value": null,
+    "proposed_value": "Physical Therapy Forms Physical Therapy Orders : PT Evaluation and Treatment 03/25/26 13:50:00 PDT, Routine, Stop date 03/25/26 13:50:00 Physical Therapy Forms",
+    "comparison_status": "requires_human_review",
+    "confidence": 0.78,
+    "rationale": "Next-visit plan was summarized from the therapy plan.",
+    "source_spans": [
+      "Physical Therapy Forms Physical Therapy Orders : PT Evaluation and Treatment 03/25/26 13:50:00 PDT, Routine, Stop date 03/25/26 13:50:00 Physical Therapy Forms"
+    ],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "patient_caregiver_goals",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "care_plan_problems_goals_interventions",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "fall_risk_narrative",
+    "current_chart_value": null,
+    "proposed_value": "Readmit Risk: 34 - LOW 03/25/26 13:45 Precautions, 03/23/26 18:39:00 PDT, Routine, Precautions: Fall, Ordered Safety/Judgment : Intact Ambulation Level : Close supervision Ambulation Distance : 250 ft PT Impairments or Limitations : Ambulation deficits, Balance deficits",
+    "comparison_status": "requires_human_review",
+    "confidence": 0.7,
+    "rationale": "Risk and safety narrative was summarized from referral text.",
+    "source_spans": [
+      "Readmit Risk: 34 - LOW 03/25/26 13:45 Precautions, 03/23/26 18:39:00 PDT, Routine, Precautions: Fall, Ordered Safety/Judgment : Intact Ambulation Level : Close supervision Ambulation Distance : 250 ft PT Impairments or L"
+    ],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "respiratory_status",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "integumentary_wound_status",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "pain_assessment_narrative",
+    "current_chart_value": "Carol G. Cole, an 81-year-old female, requires home health following a recent hospitalization for hypokalemia, acute kidney failure, and hypomagnesemia. Her potassium level was critically low at 2.4 mmol/L, requiring IV repletion and close monitoring. She also has a history of atrial fibrillation on anticoagulation, hypertension, and arthritis, contributing to her medical complexity. Functional limitations affect her ability to perform some activities of daily living independently, and she is at risk for falls due",
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "emotional_behavioral_status",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "past_medical_history",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "immunization_status",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "diagnosis_candidates",
+    "current_chart_value": null,
+    "proposed_value": [
+      {
+        "description": "AKI (acute kidney injury) (N17",
+        "icd10_code": "E87.6"
+      },
+      {
+        "description": "Hypokalemia (E87",
+        "icd10_code": "E83.42"
+      }
+    ],
+    "comparison_status": "requires_human_review",
+    "confidence": 0.74,
+    "rationale": "Diagnosis candidates extracted from referral evidence.",
+    "source_spans": [
+      "E87.6) AKI (acute kidney injury) (N17",
+      "E83.42) Hypokalemia (E87"
+    ],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "code_status",
+    "current_chart_value": null,
+    "proposed_value": "dnr",
+    "comparison_status": "requires_human_review",
+    "confidence": 0.75,
+    "rationale": "Code status was explicitly stated in referral text.",
+    "source_spans": [
+      "Code status: dnr"
+    ],
+    "reviewer_priority": "high"
+  }
+]

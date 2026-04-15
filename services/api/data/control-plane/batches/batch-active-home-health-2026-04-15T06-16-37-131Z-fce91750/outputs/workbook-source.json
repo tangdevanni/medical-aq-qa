@@ -1,0 +1,37 @@
+{
+  "agencyId": "active-home-health",
+  "batchId": "batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750",
+  "kind": "finale_download",
+  "path": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\source\\active-home-health-oasis-30-days.xlsx",
+  "originalFileName": "OASIS Tracking (30 Days Tracking).xlsx",
+  "sourceLabel": "OASIS Tracking (30 Days Tracking).xlsx",
+  "acquiredAt": "2026-04-15T06:17:02.834Z",
+  "ingestedAt": "2026-04-15T06:17:02.834Z",
+  "acquisition": {
+    "providerId": "FINALE",
+    "acquisitionReference": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\source\\finale-workbook-export.json",
+    "metadataPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\source\\finale-workbook-export.json",
+    "selectedAgencyName": "Active Home Healthcare LLC",
+    "selectedAgencyUrl": "https://app.finalehealth.com/users/user-agencies",
+    "dashboardUrl": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+    "notes": [
+      "Workbook acquired from Finale dashboard OASIS 30 Day's export.",
+      "Selected agency: Active Home Healthcare LLC",
+      "Dashboard URL: https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+      "Workbook verification detected sheets: trackingReport"
+    ]
+  },
+  "verification": {
+    "usable": true,
+    "verifiedAt": "2026-04-15T06:17:02.834Z",
+    "fileSizeBytes": 180718,
+    "fileExtension": ".xlsx",
+    "sheetNames": [
+      "OASIS Tracking Report"
+    ],
+    "detectedSourceTypes": [
+      "trackingReport"
+    ],
+    "warningCount": 0
+  }
+}

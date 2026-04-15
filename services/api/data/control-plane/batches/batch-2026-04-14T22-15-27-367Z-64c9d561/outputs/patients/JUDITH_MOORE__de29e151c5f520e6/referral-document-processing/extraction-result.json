@@ -1,0 +1,35 @@
+{
+  "documentId": "JUDITH_MOORE__de29e151c5f520e6-referral-1",
+  "localFilePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-14T22-15-27-367Z-64c9d561\\outputs\\patients\\JUDITH_MOORE__de29e151c5f520e6\\documents\\admission-03-27-2026\\source.pdf",
+  "fileType": "pdf",
+  "extractionMethod": "in_memory_fallback",
+  "extractionSuccess": true,
+  "effectiveTextSource": null,
+  "rawExtractedTextSource": null,
+  "textSelectionReason": "selected_in_memory_fallback_text",
+  "domExtractionRejectedReasons": [],
+  "pdfType": null,
+  "ocrUsed": false,
+  "ocrProvider": null,
+  "ocrResultPath": null,
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-14T22-15-27-367Z-64c9d561\\outputs\\patients\\JUDITH_MOORE__de29e151c5f520e6\\referral-document-processing\\extracted-text.txt",
+  "extractionQuality": {
+    "characterCount": 1528,
+    "lineCount": 1,
+    "normalizedTokenCount": 191,
+    "containsClinicalVocabulary": true,
+    "containsDiagnosisLikePatterns": true,
+    "containsDatePatterns": false,
+    "containsSectionLikeHeadings": true,
+    "likelyUsableForLlm": true,
+    "likelyRequiresOcrRetry": false,
+    "likelyCorruptedEncoding": false,
+    "rejectedReasons": [
+      "no_date_patterns"
+    ],
+    "usabilityStatus": "usable"
+  },
+  "failureReasons": [],
+  "warnings": [],
+  "generatedAt": "2026-04-14T22:56:09.739Z"
+}

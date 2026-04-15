@@ -1,0 +1,130 @@
+{
+  "patient_context": {
+    "patient_name": "Downing, Margaret A",
+    "dob": "03/02/1938",
+    "soc_date": null,
+    "referral_date": null
+  },
+  "proposed_field_values": [
+    {
+      "field_key": "recent_hospitalization_discharge_date",
+      "proposed_value": "04/01/2026",
+      "confidence": 0.9,
+      "source_spans": [
+        "4/1/2026"
+      ],
+      "rationale": "Recent discharge date was identified in referral or hospitalization history.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "code_status",
+      "proposed_value": "full_code",
+      "confidence": 0.75,
+      "source_spans": [
+        "Code status: full_code"
+      ],
+      "rationale": "Code status was explicitly stated in referral text.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "homebound_narrative",
+      "proposed_value": "Patient cannot use a cane or a walker to ambulate in the home. She uses a walker for ambulation outside of the house. Inside the house, she does not use anything. Based on the above findings, I certify that this patient is homebound and needs intermittent",
+      "confidence": 0.8,
+      "source_spans": [
+        "Patient cannot use a cane or a walker to ambulate in the home. She uses a walker for ambulation outside of the house inside the house she does not use anything. Based on the above findings, I certify that this patient is homebound and needs intermittent"
+      ],
+      "rationale": "Homebound evidence was summarized from referral text.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "homebound_supporting_factors",
+      "proposed_value": [
+        "uses_walker"
+      ],
+      "confidence": 0.73,
+      "source_spans": [
+        "Patient cannot use a cane or a walker to ambulate in the home. She uses a walker for ambulation outside of the house inside the house she does not use anything. Based on the above findings, I certify that this patient is homebound and needs intermittent"
+      ],
+      "rationale": "Homebound supporting factors were extracted from referral text.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "living_situation",
+      "proposed_value": "3 adult men at home, 1 is her husband and 2 adult sons",
+      "confidence": 0.72,
+      "source_spans": [
+        "3 adult men at home, 1 is her husband and 2 adult sons"
+      ],
+      "rationale": "Living situation was summarized from referral text.",
+      "requires_human_review": false
+    },
+    {
+      "field_key": "functional_limitations",
+      "proposed_value": [
+        "weakness",
+        "ambulation_limitations",
+        "reduced_endurance"
+      ],
+      "confidence": 0.76,
+      "source_spans": [
+        "functional endurance, AMBULATION: unable to generalized weakness She uses a walker for ambulation outside of the house inside the house she does not use anything."
+      ],
+      "rationale": "Functional limitations were extracted from referral text.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "therapy_need",
+      "proposed_value": "Physical therapy and occupational therapy failed to return. Physical therapy for mobility, transfers, and gait.",
+      "confidence": 0.77,
+      "source_spans": [
+        "physical therapy and occupational therapy failed to return Physical therapy for mobility, transfers, and gait."
+      ],
+      "rationale": "Therapy need was summarized from referral text.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "skilled_interventions",
+      "proposed_value": "Physical therapy and occupational therapy failed to return. Physical therapy for mobility, transfers, and gait.",
+      "confidence": 0.8,
+      "source_spans": [
+        "physical therapy and occupational therapy failed to return Physical therapy for mobility, transfers, and gait."
+      ],
+      "rationale": "Skilled interventions were summarized from the therapy plan.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "plan_for_next_visit",
+      "proposed_value": "Physical therapy and occupational therapy failed to return. Physical therapy for mobility, transfers, and gait.",
+      "confidence": 0.78,
+      "source_spans": [
+        "physical therapy and occupational therapy failed to return Physical therapy for mobility, transfers, and gait."
+      ],
+      "rationale": "Next-visit plan was summarized from the therapy plan.",
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "preferred_language",
+    "interpreter_needed",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "patient_summary_narrative",
+    "discipline_frequencies",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status"
+  ],
+  "warnings": [
+    "Deterministic referral facts extraction was used."
+  ]
+}

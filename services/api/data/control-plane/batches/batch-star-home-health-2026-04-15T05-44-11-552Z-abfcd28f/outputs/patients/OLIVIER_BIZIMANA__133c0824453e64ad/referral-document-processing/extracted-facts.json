@@ -1,0 +1,148 @@
+{
+  "patient_context": {
+    "patient_name": null,
+    "dob": "08/12/1982",
+    "soc_date": "2026-04-13",
+    "referral_date": null
+  },
+  "facts": [
+    {
+      "fact_key": "preferred_language",
+      "category": "patient_context",
+      "value": "English",
+      "confidence": 0.92,
+      "evidence_spans": [
+        "English"
+      ],
+      "rationale": "Preferred language was identified in referral demographics.",
+      "source_sections": [
+        "patient_identity"
+      ],
+      "requires_human_review": false
+    },
+    {
+      "fact_key": "functional_limitations",
+      "category": "functional",
+      "value": [
+        "weakness"
+      ],
+      "confidence": 0.76,
+      "evidence_spans": [
+        "Weakness denies. numbness and weakness to his legs."
+      ],
+      "rationale": "Functional limitations were extracted from referral text.",
+      "source_sections": [
+        "functional_limitations"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "therapy_need",
+      "category": "therapy",
+      "value": "PHYSICAL THERAPY- eval and tx for lumbar radiculopathy. physical therapy in 2015 and repeated again this year, the month prior to this initial appointment. physical therapy.",
+      "confidence": 0.77,
+      "evidence_spans": [
+        "PHYSICAL THERAPY- eval and tx for lumbar radiculopathy. physical therapy in 2015 and repeated again this year, the month prior to this initial appointment. physical therapy."
+      ],
+      "rationale": "Therapy need was summarized from referral text.",
+      "source_sections": [
+        "therapy_need"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "fall_risk_narrative",
+      "category": "risk",
+      "value": "Hospitalization/Major Diagnostic Procedure: fall 2015, denies recent 03/2023. placement and spread prior to steroid injection, in accordance with safety and Medicare requirements. these medications due to the risk of impairment and motor vehicle accident. Weakness denies. numbness and weakness to his legs.",
+      "confidence": 0.7,
+      "evidence_spans": [
+        "Hospitalization/Major Diagnostic Procedure: fall 2015, denies recent 03/2023. placement and spread prior to steroid injection, in accordance with safety and Medicare requirements."
+      ],
+      "rationale": "Risk and safety narrative was summarized from referral text.",
+      "source_sections": [
+        "risk_factors",
+        "functional_limitations"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "skilled_interventions",
+      "category": "therapy",
+      "value": "PHYSICAL THERAPY- eval and tx for lumbar radiculopathy. physical therapy in 2015 and repeated again this year, the month prior to this initial appointment. physical therapy.",
+      "confidence": 0.8,
+      "evidence_spans": [
+        "PHYSICAL THERAPY- eval and tx for lumbar radiculopathy. physical therapy in 2015 and repeated again this year, the month prior to this initial appointment. physical therapy."
+      ],
+      "rationale": "Skilled interventions were summarized from the therapy plan.",
+      "source_sections": [
+        "therapy_need"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "plan_for_next_visit",
+      "category": "therapy",
+      "value": "PHYSICAL THERAPY- eval and tx for lumbar radiculopathy. physical therapy in 2015 and repeated again this year, the month prior to this initial appointment. physical therapy.",
+      "confidence": 0.78,
+      "evidence_spans": [
+        "PHYSICAL THERAPY- eval and tx for lumbar radiculopathy. physical therapy in 2015 and repeated again this year, the month prior to this initial appointment. physical therapy."
+      ],
+      "rationale": "Next-visit plan was summarized from the therapy plan.",
+      "source_sections": [
+        "therapy_need"
+      ],
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [
+    {
+      "description": "Lumbar radiculopathy",
+      "icd10_code": "M54.16",
+      "confidence": 0.74,
+      "source_spans": [
+        "M54.16 Lumbar radiculopathy 08/14/2024 2"
+      ],
+      "is_primary_candidate": true,
+      "requires_human_review": true
+    },
+    {
+      "description": "Neuropathy",
+      "icd10_code": "G62.9",
+      "confidence": 0.74,
+      "source_spans": [
+        "G62.9 Neuropathy 08/14/2024 2"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    }
+  ],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "interpreter_needed",
+    "primary_reason_for_home_health_medical_necessity",
+    "admit_reason_to_home_health",
+    "homebound_narrative",
+    "homebound_supporting_factors",
+    "recent_hospitalization_discharge_date",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "living_situation",
+    "patient_summary_narrative",
+    "discipline_frequencies",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status",
+    "code_status"
+  ],
+  "warnings": [
+    "Deterministic referral facts extraction was used."
+  ]
+}

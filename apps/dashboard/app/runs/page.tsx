@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { listRuns } from "../../lib/api";
 import { batchStatusClass } from "../../lib/qa";
 import type { RunListItem } from "../../lib/types";
@@ -11,9 +12,14 @@ function formatTimestamp(value: string | null): string {
 }
 
 export default function RunsPage() {
+  const router = useRouter();
   const [runs, setRuns] = useState<RunListItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    router.replace("/agency");
+  }, [router]);
 
   useEffect(() => {
     let active = true;
@@ -63,15 +69,15 @@ export default function RunsPage() {
     <main className="page-shell stack">
       <div className="page-header">
         <div>
-          <p className="eyebrow">Referral QA Dashboard</p>
-          <h1 className="page-title">Referral Comparison Runs</h1>
+          <p className="eyebrow">Agency Workspace</p>
+          <h1 className="page-title">Redirecting to agency overview</h1>
           <p className="page-subtitle">
-            Read-only runs that pull referral evidence, compare it against the portal, and surface patient charts that need correction or manual review.
+            The authenticated QA entry point is now the agency overview, which reads the workbook-driven queue and autonomous refresh outputs for the selected agency.
           </p>
         </div>
         <div className="actions">
-          <Link className="button" href="/runs/new">
-            Upload Workbook
+          <Link className="button secondary" href="/agency">
+            Open Agency Overview
           </Link>
         </div>
       </div>

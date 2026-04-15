@@ -1,0 +1,426 @@
+[
+  {
+    "sectionName": "patient_identity",
+    "extractedTextSpans": [
+      "DOB 09/02/1939"
+    ],
+    "normalizedSummary": "DOB 09/02/1939",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 60,
+        "lineEnd": 60,
+        "charStart": 1684,
+        "charEnd": 1698
+      }
+    ]
+  },
+  {
+    "sectionName": "referral_metadata",
+    "extractedTextSpans": [
+      "Patient Referral",
+      "Irfan Tahir MD sent you this referral using Practice Fusion's EHR.",
+      "To retrieve this referral instantly online, sign up for a",
+      "Retrieve referral online at:",
+      "https://static.practicefusion.com/apps/ehr/#/referral/26ZPLWV",
+      "Your referral access code is 26ZPLWV",
+      "Subject: Patient Referral",
+      "Reason for referral: home health-",
+      "Referral electronically submitted by Irfan Tahir MD 12/02/2025 11:48AM"
+    ],
+    "normalizedSummary": "Patient Referral Irfan Tahir MD sent you this referral using Practice Fusion's EHR. To retrieve this referral instantly online, sign up for a",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 22,
+        "lineEnd": 22,
+        "charStart": 240,
+        "charEnd": 256
+      },
+      {
+        "lineStart": 27,
+        "lineEnd": 27,
+        "charStart": 290,
+        "charEnd": 356
+      },
+      {
+        "lineStart": 28,
+        "lineEnd": 28,
+        "charStart": 357,
+        "charEnd": 414
+      },
+      {
+        "lineStart": 32,
+        "lineEnd": 32,
+        "charStart": 557,
+        "charEnd": 585
+      },
+      {
+        "lineStart": 33,
+        "lineEnd": 33,
+        "charStart": 586,
+        "charEnd": 647
+      },
+      {
+        "lineStart": 34,
+        "lineEnd": 34,
+        "charStart": 648,
+        "charEnd": 684
+      },
+      {
+        "lineStart": 79,
+        "lineEnd": 79,
+        "charStart": 1952,
+        "charEnd": 1977
+      },
+      {
+        "lineStart": 82,
+        "lineEnd": 82,
+        "charStart": 2069,
+        "charEnd": 2102
+      },
+      {
+        "lineStart": 535,
+        "lineEnd": 535,
+        "charStart": 13711,
+        "charEnd": 13781
+      }
+    ]
+  },
+  {
+    "sectionName": "hospitalization_history",
+    "extractedTextSpans": [
+      "Denies having any discharge or any",
+      "type of discharge."
+    ],
+    "normalizedSummary": "Denies having any discharge or any type of discharge.",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 399,
+        "lineEnd": 399,
+        "charStart": 7211,
+        "charEnd": 7245
+      },
+      {
+        "lineStart": 426,
+        "lineEnd": 426,
+        "charStart": 8157,
+        "charEnd": 8175
+      }
+    ]
+  },
+  {
+    "sectionName": "diagnoses",
+    "extractedTextSpans": [
+      "Diagnoses",
+      "ICD-10",
+      "ICD-10",
+      "ICD-10",
+      "ICD-10",
+      "ICD-10",
+      "ICD-10",
+      "ICD-10",
+      "ICD-10",
+      "ICD-10",
+      "ICD-10",
+      "ICD-10",
+      "ICD-10",
+      "ICD-10",
+      "ICD-10",
+      "ICD-10",
+      "ICD-10",
+      "ICD-10",
+      "ICD-10",
+      "ICD-10",
+      "ICD-10",
+      "ICD-10",
+      "ICD-10",
+      "ICD-10",
+      "ICD-10",
+      "ICD-10",
+      "ICD-10",
+      "ICD-10",
+      "Diagnoses attached to this encounter:"
+    ],
+    "normalizedSummary": "Diagnoses ICD-10 ICD-10",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 117,
+        "lineEnd": 117,
+        "charStart": 2571,
+        "charEnd": 2580
+      },
+      {
+        "lineStart": 122,
+        "lineEnd": 122,
+        "charStart": 2614,
+        "charEnd": 2620
+      },
+      {
+        "lineStart": 126,
+        "lineEnd": 126,
+        "charStart": 2664,
+        "charEnd": 2670
+      },
+      {
+        "lineStart": 130,
+        "lineEnd": 130,
+        "charStart": 2703,
+        "charEnd": 2709
+      },
+      {
+        "lineStart": 135,
+        "lineEnd": 135,
+        "charStart": 2765,
+        "charEnd": 2771
+      },
+      {
+        "lineStart": 140,
+        "lineEnd": 140,
+        "charStart": 2827,
+        "charEnd": 2833
+      },
+      {
+        "lineStart": 144,
+        "lineEnd": 144,
+        "charStart": 2868,
+        "charEnd": 2874
+      },
+      {
+        "lineStart": 148,
+        "lineEnd": 148,
+        "charStart": 2906,
+        "charEnd": 2912
+      },
+      {
+        "lineStart": 152,
+        "lineEnd": 152,
+        "charStart": 2954,
+        "charEnd": 2960
+      },
+      {
+        "lineStart": 157,
+        "lineEnd": 157,
+        "charStart": 3020,
+        "charEnd": 3026
+      },
+      {
+        "lineStart": 161,
+        "lineEnd": 161,
+        "charStart": 3069,
+        "charEnd": 3075
+      },
+      {
+        "lineStart": 170,
+        "lineEnd": 170,
+        "charStart": 3219,
+        "charEnd": 3225
+      },
+      {
+        "lineStart": 174,
+        "lineEnd": 174,
+        "charStart": 3256,
+        "charEnd": 3262
+      },
+      {
+        "lineStart": 178,
+        "lineEnd": 178,
+        "charStart": 3330,
+        "charEnd": 3336
+      },
+      {
+        "lineStart": 182,
+        "lineEnd": 182,
+        "charStart": 3404,
+        "charEnd": 3410
+      },
+      {
+        "lineStart": 186,
+        "lineEnd": 186,
+        "charStart": 3435,
+        "charEnd": 3441
+      },
+      {
+        "lineStart": 190,
+        "lineEnd": 190,
+        "charStart": 3487,
+        "charEnd": 3493
+      },
+      {
+        "lineStart": 194,
+        "lineEnd": 194,
+        "charStart": 3535,
+        "charEnd": 3541
+      },
+      {
+        "lineStart": 198,
+        "lineEnd": 198,
+        "charStart": 3585,
+        "charEnd": 3591
+      },
+      {
+        "lineStart": 202,
+        "lineEnd": 202,
+        "charStart": 3651,
+        "charEnd": 3657
+      },
+      {
+        "lineStart": 206,
+        "lineEnd": 206,
+        "charStart": 3690,
+        "charEnd": 3696
+      },
+      {
+        "lineStart": 210,
+        "lineEnd": 210,
+        "charStart": 3752,
+        "charEnd": 3758
+      },
+      {
+        "lineStart": 215,
+        "lineEnd": 215,
+        "charStart": 3838,
+        "charEnd": 3844
+      },
+      {
+        "lineStart": 220,
+        "lineEnd": 220,
+        "charStart": 3915,
+        "charEnd": 3921
+      },
+      {
+        "lineStart": 225,
+        "lineEnd": 225,
+        "charStart": 3988,
+        "charEnd": 3994
+      },
+      {
+        "lineStart": 229,
+        "lineEnd": 229,
+        "charStart": 4038,
+        "charEnd": 4044
+      },
+      {
+        "lineStart": 234,
+        "lineEnd": 234,
+        "charStart": 4114,
+        "charEnd": 4120
+      },
+      {
+        "lineStart": 238,
+        "lineEnd": 238,
+        "charStart": 4162,
+        "charEnd": 4168
+      },
+      {
+        "lineStart": 464,
+        "lineEnd": 464,
+        "charStart": 9439,
+        "charEnd": 9476
+      }
+    ]
+  },
+  {
+    "sectionName": "medications",
+    "extractedTextSpans": [
+      "MEDICATION",
+      "DRUG ALLERGY",
+      "Severe allergy - active"
+    ],
+    "normalizedSummary": "MEDICATION DRUG ALLERGY Severe allergy - active",
+    "confidence": 0.95,
+    "lineReferences": [
+      {
+        "lineStart": 244,
+        "lineEnd": 244,
+        "charStart": 4293,
+        "charEnd": 4303
+      },
+      {
+        "lineStart": 355,
+        "lineEnd": 355,
+        "charStart": 6416,
+        "charEnd": 6428
+      },
+      {
+        "lineStart": 359,
+        "lineEnd": 359,
+        "charStart": 6453,
+        "charEnd": 6476
+      }
+    ]
+  },
+  {
+    "sectionName": "functional_limitations",
+    "extractedTextSpans": [
+      "Neuro: Denies having any headaches weakness numbness or paresthesias."
+    ],
+    "normalizedSummary": "Neuro: Denies having any headaches weakness numbness or paresthesias.",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 427,
+        "lineEnd": 427,
+        "charStart": 8176,
+        "charEnd": 8245
+      }
+    ]
+  },
+  {
+    "sectionName": "therapy_need",
+    "extractedTextSpans": [
+      "physical therapy for balance"
+    ],
+    "normalizedSummary": "physical therapy for balance",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 83,
+        "lineEnd": 83,
+        "charStart": 2103,
+        "charEnd": 2131
+      }
+    ]
+  },
+  {
+    "sectionName": "risk_factors",
+    "extractedTextSpans": [
+      "major health concern which increases the risk of several other health issues."
+    ],
+    "normalizedSummary": "major health concern which increases the risk of several other health issues.",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 504,
+        "lineEnd": 504,
+        "charStart": 11664,
+        "charEnd": 11741
+      }
+    ]
+  },
+  {
+    "sectionName": "other_clinical_notes",
+    "extractedTextSpans": [
+      "PLAN",
+      "PLAN"
+    ],
+    "normalizedSummary": "PLAN PLAN",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 93,
+        "lineEnd": 93,
+        "charStart": 2238,
+        "charEnd": 2242
+      },
+      {
+        "lineStart": 104,
+        "lineEnd": 104,
+        "charStart": 2405,
+        "charEnd": 2409
+      }
+    ]
+  }
+]

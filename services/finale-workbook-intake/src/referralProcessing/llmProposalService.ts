@@ -1,9 +1,12 @@
 import {
   BedrockRuntimeClient,
-  ConverseCommand,
   type ConverseCommandOutput,
 } from "@aws-sdk/client-bedrock-runtime";
 import type { FinaleBatchEnv } from "../config/env";
+import {
+  resolveBedrockConfig,
+  sendBedrockConverseWithProfileFallback,
+} from "../config/bedrock";
 import {
   QA_REFERENCE_FIELD_REGISTRY,
   QA_SECTION_METADATA,
@@ -36,18 +39,6 @@ function getBedrockClient(region: string): BedrockRuntimeClient {
 
 function isReferralProposalLlmEnabled(env: FinaleBatchEnv): boolean {
   return Boolean(env.CODE_LLM_ENABLED && env.LLM_PROVIDER === "bedrock");
-}
-
-function resolveBedrockConfig(env: FinaleBatchEnv): { region: string; modelId: string } {
-  const region = normalizeWhitespace(env.BEDROCK_REGION);
-  const modelId = normalizeWhitespace(env.BEDROCK_MODEL_ID);
-  if (!region) {
-    throw new Error("CODE_LLM_ENABLED=true requires BEDROCK_REGION when LLM_PROVIDER=bedrock.");
-  }
-  if (!modelId) {
-    throw new Error("CODE_LLM_ENABLED=true requires BEDROCK_MODEL_ID when LLM_PROVIDER=bedrock.");
-  }
-  return { region, modelId };
 }
 
 function extractConverseText(response: ConverseCommandOutput): string {
@@ -109,16 +100,21 @@ function buildDeterministicFallback(input: {
   proposeFact("homebound_narrative");
   proposeFact("homebound_supporting_factors");
   proposeFact("living_situation");
-  proposeFact("medical_necessity_summary", "patient_summary_narrative");
-  proposeFact("order_summary", "skilled_interventions");
-  proposeFact("order_summary", "plan_for_next_visit");
-  proposeFact("order_summary", "care_plan_problems_goals_interventions");
-  proposeFact("caregiver_name", "patient_caregiver_goals");
+  proposeFact("patient_summary_narrative");
+  proposeFact("skilled_interventions");
+  proposeFact("plan_for_next_visit");
+  proposeFact("care_plan_problems_goals_interventions");
+  proposeFact("patient_caregiver_goals");
   proposeFact("functional_limitations");
-  proposeFact("functional_limitations", "prior_functioning");
+  proposeFact("prior_functioning");
   proposeFact("therapy_need");
-  proposeFact("therapy_need", "discipline_frequencies");
+  proposeFact("discipline_frequencies");
   proposeFact("fall_risk_narrative");
+  proposeFact("pain_assessment_narrative");
+  proposeFact("respiratory_status");
+  proposeFact("integumentary_wound_status");
+  proposeFact("emotional_behavioral_status");
+  proposeFact("past_medical_history");
   warnings.push("LLM disabled or unavailable; deterministic referral proposal fallback was used.");
 
   return {
@@ -233,6 +229,7 @@ const NARRATIVE_PROPOSAL_FIELDS = new Set([
   "integumentary_wound_status",
   "pain_assessment_narrative",
   "emotional_behavioral_status",
+  "past_medical_history",
 ]);
 
 const CAREGIVER_RELATIONSHIPS = /^(?:daughter|son|spouse|wife|husband|sister|brother|friend|caregiver|self|other)$/i;
@@ -416,25 +413,28 @@ export async function generateReferralFieldProposals(input: {
     return deterministicFallback;
   }
 
-  const { region, modelId } = resolveBedrockConfig(input.env);
-  const client = getBedrockClient(region);
+  const config = resolveBedrockConfig(input.env);
+  const client = getBedrockClient(config.region);
 
   try {
-    const response = await client.send(new ConverseCommand({
-      modelId,
-      messages: [{
-        role: "user",
-        content: [{ text: buildLlmPrompt({
-          fieldMapSnapshot: input.fieldMapSnapshot,
-          extractedFacts: input.extractedFacts,
-          sourceText: input.sourceText,
-        }) }],
-      }],
-      inferenceConfig: {
-        temperature: 0,
-        maxTokens: 2_000,
+    const { response } = await sendBedrockConverseWithProfileFallback({
+      client,
+      config,
+      command: {
+        messages: [{
+          role: "user",
+          content: [{ text: buildLlmPrompt({
+            fieldMapSnapshot: input.fieldMapSnapshot,
+            extractedFacts: input.extractedFacts,
+            sourceText: input.sourceText,
+          }) }],
+        }],
+        inferenceConfig: {
+          temperature: 0,
+          maxTokens: 2_000,
+        },
       },
-    }));
+    });
 
     const content = extractConverseText(response);
     const parsed = parseReferralLlmProposalPayload(content);

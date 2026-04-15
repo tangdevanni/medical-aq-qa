@@ -68,19 +68,14 @@ export default function RunDetailPage() {
     <main className="page-shell stack">
       <div className="page-header">
         <div>
-          <Link className="link" href="/runs">
-            Back to runs
+          <Link className="link" href="/agency">
+            Back to agency overview
           </Link>
           <h1 className="page-title">{runId}</h1>
           <p className="page-subtitle">
-            Patient queue for referral-vs-portal review. Open a patient to see what the referral supports, what the portal is missing, and where human review is still required.
+            Patient queue for referral-vs-portal review. Open a patient to see what the referral supports, what the portal is missing, and where human review is still required inside the currently selected agency.
           </p>
           {run ? <p className="muted">Active subsidiary: {run.subsidiaryName}</p> : null}
-        </div>
-        <div className="actions">
-          <Link className="button secondary" href="/runs/new">
-            Upload Workbook
-          </Link>
         </div>
       </div>
 

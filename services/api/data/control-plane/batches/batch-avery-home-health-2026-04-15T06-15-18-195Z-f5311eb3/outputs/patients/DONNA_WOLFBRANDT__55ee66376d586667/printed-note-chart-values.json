@@ -1,0 +1,180 @@
+{
+  "generatedAt": "2026-04-15T07:17:27.486Z",
+  "source": "printed_note_ocr",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-avery-home-health-2026-04-15T06-15-18-195Z-f5311eb3\\outputs\\evidence\\DONNA_WOLFBRANDT__55ee66376d586667\\oasis-printed-note\\extracted-text.txt",
+  "extractedFieldCount": 15,
+  "invocationModelId": "us.amazon.nova-lite-v1:0",
+  "currentChartValues": {
+    "patient_name": "WOLFBRANDT, DONNA",
+    "dob": "1957-03-25",
+    "soc_date": "2026-03-24",
+    "primary_reason_for_home_health_medical_necessity": "The patient is considered homebound because she has significant functional limitations and medical conditions that make leaving her home difficult and unsafe without assistance.",
+    "homebound_narrative": "The patient is considered homebound because she has significant functional limitations and medical conditions that make leaving her home difficult and unsafe without assistance.",
+    "homebound_supporting_factors": "Dyspnea with minimal exertion, Generalized weakness, Speech, Legally blind",
+    "recent_hospitalization_discharge_date": "2026-03-24",
+    "living_situation": "The patient requires assistance of another person to leave the home due to her multiple comorbidities, limited mobility, muscle weakness, and safety risks associated with falls and functional decline.",
+    "prior_functioning": "The patient required maximal assistance for mobility and activities of daily living during her recent hospitalization but progressed to ambulating with a walker.",
+    "functional_limitations": "Dyspnea with minimal exertion, Generalized weakness, Speech, Legally blind",
+    "therapy_need": "The patient requires ongoing skilled therapy for rehabilitation and medical management due to her multiple comorbidities, limited mobility, muscle weakness, and safety risks associated with falls and functional decline.",
+    "patient_summary_narrative": "The patient is a 69-year-old female with a history of a minimally displaced fracture of the left inferior pubic ramus and left pubic symphysis due to a mechanical fall, resulting in impaired mobility and requiring use of a wheelchair and walker for ambulation. She has generalized muscle weakness and other abnormalities of gait and mobility, compounded by morbid obesity, chronic kidney disease, chronic heart failure with reduced ejection fraction (35%), and a history of recurrent mechanical falls. These conditions c",
+    "respiratory_status": "The patient has dyspnea with minimal exertion and requires ongoing skilled therapy for rehabilitation and medical management.",
+    "pain_assessment_narrative": "The patient experiences chronic left shoulder pain and tremor, fine motor decline, and speech difficulty, all impairing her physical function.",
+    "emotional_behavioral_status": "The patient is alert, oriented, forgetful at times, able to communicate needs, able to follow instructions, cooperative, and verbally responsive. Patient experiences episodes of depression."
+  },
+  "extractedFieldValues": [
+    {
+      "field_key": "patient_name",
+      "current_value": "WOLFBRANDT, DONNA",
+      "confidence": 0.95,
+      "source_spans": [
+        "Name: WOLFBRANDT, DONNA",
+        "Name: WOLFBRANDT, DONNA",
+        "Name: WOLFBRANDT, DONNA I 104753 I DOB: 03/25/1957 I N: 03/24/2026"
+      ]
+    },
+    {
+      "field_key": "dob",
+      "current_value": "1957-03-25",
+      "confidence": 0.95,
+      "source_spans": [
+        "DOB: 1957-03-25",
+        "Birth Date * (M0069) 03/25/1957",
+        "DOB: 03/25/1957"
+      ]
+    },
+    {
+      "field_key": "soc_date",
+      "current_value": "2026-03-24",
+      "confidence": 0.95,
+      "source_spans": [
+        "Start of Care Date OLSEN, JEFFERY 03/24/2026",
+        "Date of Physician-ordered Start of Care (Resumption of Care) 03/24/2026",
+        "Start of Care Date 03/24/2026"
+      ]
+    },
+    {
+      "field_key": "primary_reason_for_home_health_medical_necessity",
+      "current_value": "The patient is considered homebound because she has significant functional limitations and medical conditions that make leaving her home difficult and unsafe without assistance.",
+      "confidence": 0.95,
+      "source_spans": [
+        "Primary Reason for Home Health I Medical Necessity The patient is considered homebound because she has significant functional limitations and medical conditions that make leaving her home difficult and unsafe without assistance.",
+        "Homebound Reason Document as Clinical Narrative Patient is not Homebound Criteria One (One must be met):",
+        "Homebound Reason : Criteria Two (Both must be met)"
+      ]
+    },
+    {
+      "field_key": "homebound_narrative",
+      "current_value": "The patient is considered homebound because she has significant functional limitations and medical conditions that make leaving her home difficult and unsafe without assistance.",
+      "confidence": 0.95,
+      "source_spans": [
+        "Primary Reason for Home Health I Medical Necessity The patient is considered homebound because she has significant functional limitations and medical conditions that make leaving her home difficult and unsafe without assistance.",
+        "Homebound Reason Document as Clinical Narrative Patient is not Homebound Criteria One (One must be met):",
+        "Homebound Reason : Criteria Two (Both must be met)"
+      ]
+    },
+    {
+      "field_key": "homebound_supporting_factors",
+      "current_value": "Dyspnea with minimal exertion, Generalized weakness, Speech, Legally blind",
+      "confidence": 0.95,
+      "source_spans": [
+        "Dyspnea with minimal exertion",
+        "Generalized weakness",
+        "Speech",
+        "Legally blind"
+      ]
+    },
+    {
+      "field_key": "recent_hospitalization_discharge_date",
+      "current_value": "2026-03-24",
+      "confidence": 0.95,
+      "source_spans": [
+        "Start of Care Date OLSEN, JEFFERY 03/24/2026",
+        "Date of Physician-ordered Start of Care (Resumption of Care) 03/24/2026",
+        "Start of Care Date 03/24/2026"
+      ]
+    },
+    {
+      "field_key": "living_situation",
+      "current_value": "The patient requires assistance of another person to leave the home due to her multiple comorbidities, limited mobility, muscle weakness, and safety risks associated with falls and functional decline.",
+      "confidence": 0.9,
+      "source_spans": [
+        "Leaving the home requires a considerable and taxing effort due to her multiple comorbidities, limited mobility, muscle weakness, and safety risks associated with falls and functional decline.",
+        "Any absences from the home are limited to medically necessary appointments and essential outings, with transportation support arranged via para transport and private services.",
+        "These documented functional impairments and medical complexities demonstrate that the patient meets Medicare criteria for homebound status and justify the medical necessity for skilled home health services, including continued physical and occupational therapy, nursing care, and medical supervision to promote recovery, prevent complications, and maintain safety in the home environment."
+      ]
+    },
+    {
+      "field_key": "prior_functioning",
+      "current_value": "The patient required maximal assistance for mobility and activities of daily living during her recent hospitalization but progressed to ambulating with a walker.",
+      "confidence": 0.9,
+      "source_spans": [
+        "During her recent hospitalization, she required maximal assistance for mobility and activities of daily living but progressed to ambulating with a walker.",
+        "Leaving the home requires a considerable and taxing effort due to her multiple comorbidities, limited mobility, muscle weakness, and safety risks associated with falls and functional decline.",
+        "Any absences from the home are limited to medically necessary appointments and essential outings, with transportation support arranged via para transport and private services."
+      ]
+    },
+    {
+      "field_key": "functional_limitations",
+      "current_value": "Dyspnea with minimal exertion, Generalized weakness, Speech, Legally blind",
+      "confidence": 0.95,
+      "source_spans": [
+        "Dyspnea with minimal exertion",
+        "Generalized weakness",
+        "Speech",
+        "Legally blind"
+      ]
+    },
+    {
+      "field_key": "therapy_need",
+      "current_value": "The patient requires ongoing skilled therapy for rehabilitation and medical management due to her multiple comorbidities, limited mobility, muscle weakness, and safety risks associated with falls and functional decline.",
+      "confidence": 0.9,
+      "source_spans": [
+        "Leaving the home requires a considerable and taxing effort due to her multiple comorbidities, limited mobility, muscle weakness, and safety risks associated with falls and functional decline.",
+        "Any absences from the home are limited to medically necessary appointments and essential outings, with transportation support arranged via para transport and private services.",
+        "These documented functional impairments and medical complexities demonstrate that the patient meets Medicare criteria for homebound status and justify the medical necessity for skilled home health services, including continued physical and occupational therapy, nursing care, and medical supervision to promote recovery, prevent complications, and maintain safety in the home environment."
+      ]
+    },
+    {
+      "field_key": "patient_summary_narrative",
+      "current_value": "The patient is a 69-year-old female with a history of a minimally displaced fracture of the left inferior pubic ramus and left pubic symphysis due to a mechanical fall, resulting in impaired mobility and requiring use of a wheelchair and walker for ambulation. She has generalized muscle weakness and other abnormalities of gait and mobility, compounded by morbid obesity, chronic kidney disease, chronic heart failure with reduced ejection fraction (35%), and a history of recurrent mechanical falls. These conditions cause considerable debility and deconditioning, limiting her endurance and safety when attempting to leave home. The patient requires ongoing skilled therapy for rehabilitation and medical management.",
+      "confidence": 0.95,
+      "source_spans": [
+        "The patient is a 69-year-old female with a history of a minimally displaced fracture of the left inferior pubic ramus and left pubic symphysis due to a mechanical fall, resulting in impaired mobility and requiring use of a wheelchair and walker for ambulation.",
+        "She has generalized muscle weakness and other abnormalities of gait and mobility, compounded by morbid obesity, chronic kidney disease, chronic heart failure with reduced ejection fraction (35%), and a history of recurrent mechanical falls.",
+        "These conditions cause considerable debility and deconditioning, limiting her endurance and safety when attempting to leave home.",
+        "The patient requires ongoing skilled therapy for rehabilitation and medical management."
+      ]
+    },
+    {
+      "field_key": "respiratory_status",
+      "current_value": "The patient has dyspnea with minimal exertion and requires ongoing skilled therapy for rehabilitation and medical management.",
+      "confidence": 0.9,
+      "source_spans": [
+        "Dyspnea with minimal exertion",
+        "The patient requires ongoing skilled therapy for rehabilitation and medical management."
+      ]
+    },
+    {
+      "field_key": "pain_assessment_narrative",
+      "current_value": "The patient experiences chronic left shoulder pain and tremor, fine motor decline, and speech difficulty, all impairing her physical function.",
+      "confidence": 0.9,
+      "source_spans": [
+        "She continues to experience chronic left shoulder pain and tremor, fine motor decline, and speech difficulty, all impairing her physical function.",
+        "The patient requires ongoing skilled therapy for rehabilitation and medical management."
+      ]
+    },
+    {
+      "field_key": "emotional_behavioral_status",
+      "current_value": "The patient is alert, oriented, forgetful at times, able to communicate needs, able to follow instructions, cooperative, and verbally responsive. Patient experiences episodes of depression.",
+      "confidence": 0.9,
+      "source_spans": [
+        "Patient is alert, oriented, forgetful at times, able to communicate needs, able to follow instructions, cooperative, and verbally responsive.",
+        "Patient experiences episodes of depression.",
+        "Thought content was normal with no psychotic or suicidal thoughts."
+      ]
+    }
+  ],
+  "warnings": [
+    "Printed-note chart-value extraction used inference profile us.amazon.nova-lite-v1:0."
+  ]
+}

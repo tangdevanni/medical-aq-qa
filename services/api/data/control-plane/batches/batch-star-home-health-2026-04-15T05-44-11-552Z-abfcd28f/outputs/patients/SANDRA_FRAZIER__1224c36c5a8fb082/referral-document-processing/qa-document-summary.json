@@ -1,0 +1,48 @@
+{
+  "generatedAt": "2026-04-15T08:29:58.786Z",
+  "selectedDocumentId": "SANDRA_FRAZIER__1224c36c5a8fb082-referral-1",
+  "extractionUsabilityStatus": "usable",
+  "normalizedSectionCount": 3,
+  "llmProposalCount": 0,
+  "comparisonStatusCounts": {
+    "match": 0,
+    "missing_in_chart": 0,
+    "missing_in_referral": 0,
+    "possible_conflict": 0,
+    "unsupported": 7,
+    "requires_human_review": 27
+  },
+  "highPriorityFieldKeys": [
+    "referral_date",
+    "interpreter_needed",
+    "primary_reason_for_home_health_medical_necessity",
+    "admit_reason_to_home_health",
+    "homebound_narrative",
+    "homebound_supporting_factors",
+    "recent_hospitalization_discharge_date",
+    "recent_hospitalization_facility",
+    "caregiver_phone",
+    "prior_functioning",
+    "functional_limitations",
+    "therapy_need",
+    "patient_summary_narrative",
+    "skilled_interventions",
+    "discipline_frequencies",
+    "plan_for_next_visit",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "fall_risk_narrative",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status",
+    "diagnosis_candidates",
+    "code_status"
+  ],
+  "warnings": [
+    "Local file extraction failed for C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-star-home-health-2026-04-15T05-44-11-552Z-abfcd28f\\outputs\\patients\\SANDRA_FRAZIER__1224c36c5a8fb082\\documents\\admission-04-03-2026\\source.pdf: ENOENT: no such file or directory, open 'C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-star-home-health-2026-04-15T05-44-11-552Z-abfcd28f\\outputs\\patients\\SANDRA_FRAZIER__1224c36c5a8fb082\\documents\\admission-04-03-2026\\source.pdf'",
+    "Deterministic referral facts extraction was used."
+  ]
+}

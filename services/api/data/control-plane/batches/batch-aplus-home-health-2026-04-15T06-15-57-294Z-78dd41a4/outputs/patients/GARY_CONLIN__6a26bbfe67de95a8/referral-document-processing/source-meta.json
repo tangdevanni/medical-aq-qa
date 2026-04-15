@@ -1,0 +1,27 @@
+{
+  "patientId": "GARY_CONLIN__6a26bbfe67de95a8",
+  "selectedDocumentId": "GARY_CONLIN__6a26bbfe67de95a8-referral-1",
+  "sourceDocuments": [
+    {
+      "documentId": "GARY_CONLIN__6a26bbfe67de95a8-referral-1",
+      "sourceIndex": 0,
+      "sourceLabel": "Admission 04-10-2026",
+      "normalizedSourceLabel": "admission-04-10-2026",
+      "sourceType": "ADMISSION_ORDER",
+      "acquisitionMethod": "local_file",
+      "selectionStatus": "selected",
+      "portalLabel": "Admission 04-10-2026",
+      "localFilePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\outputs\\patients\\GARY_CONLIN__6a26bbfe67de95a8\\documents\\admission-04-10-2026\\source.pdf",
+      "effectiveTextSource": "viewer_text_fallback",
+      "fileType": "pdf",
+      "fileSizeBytes": null,
+      "extractedTextLength": 1925,
+      "selectedReason": "highest-ranked referral/admission-order source with local file preference",
+      "rejectedReasons": []
+    }
+  ],
+  "warnings": [
+    "Local file extraction failed for C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\outputs\\patients\\GARY_CONLIN__6a26bbfe67de95a8\\documents\\admission-04-10-2026\\source.pdf: ENOENT: no such file or directory, open 'C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\outputs\\patients\\GARY_CONLIN__6a26bbfe67de95a8\\documents\\admission-04-10-2026\\source.pdf'"
+  ],
+  "generatedAt": "2026-04-15T07:16:05.230Z"
+}

@@ -1,0 +1,34 @@
+{
+  "generatedAt": "2026-04-15T08:47:14.667Z",
+  "source": "printed_note_ocr",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-avery-home-health-2026-04-15T06-15-18-195Z-f5311eb3\\outputs\\evidence\\JUDITH_DANIELS__d2f6961606e12b69\\oasis-printed-note\\extracted-text.txt",
+  "extractedFieldCount": 2,
+  "invocationModelId": "us.amazon.nova-lite-v1:0",
+  "currentChartValues": {
+    "patient_name": "DANIEL, JUDITH",
+    "soc_date": "12/04/2025"
+  },
+  "extractedFieldValues": [
+    {
+      "field_key": "patient_name",
+      "current_value": "DANIEL, JUDITH",
+      "confidence": 0.95,
+      "source_spans": [
+        "DANIEL, JUDITH",
+        "DANIEL, JUDITH",
+        "DANIEL, JUDITH"
+      ]
+    },
+    {
+      "field_key": "soc_date",
+      "current_value": "12/04/2025",
+      "confidence": 0.95,
+      "source_spans": [
+        "SOC: 12/04/2025"
+      ]
+    }
+  ],
+  "warnings": [
+    "Printed-note chart-value extraction used inference profile us.amazon.nova-lite-v1:0."
+  ]
+}

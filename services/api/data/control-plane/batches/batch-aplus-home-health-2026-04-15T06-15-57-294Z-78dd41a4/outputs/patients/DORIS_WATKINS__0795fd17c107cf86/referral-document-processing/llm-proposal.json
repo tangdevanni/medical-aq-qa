@@ -1,0 +1,75 @@
+{
+  "patient_context": {
+    "patient_name": null,
+    "dob": null,
+    "soc_date": null,
+    "referral_date": null
+  },
+  "proposed_field_values": [
+    {
+      "field_key": "primary_reason_for_home_health_medical_necessity",
+      "proposed_value": "Skilled Nursing",
+      "confidence": 0.78,
+      "source_spans": [
+        "Skilled Nursing"
+      ],
+      "rationale": "Medical necessity was summarized from referral narrative and skilled-need evidence.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "therapy_need",
+      "proposed_value": "Physical Therapy Occupational Therapy physical therapy, and use of supportive devices or change in footwear.",
+      "confidence": 0.77,
+      "source_spans": [
+        "Physical Therapy Occupational Therapy physical therapy, and use of supportive devices or change in footwear."
+      ],
+      "rationale": "Therapy need was summarized from referral text.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "skilled_interventions",
+      "proposed_value": "Physical Therapy Occupational Therapy physical therapy, and use of supportive devices or change in footwear.",
+      "confidence": 0.8,
+      "source_spans": [
+        "Physical Therapy Occupational Therapy physical therapy, and use of supportive devices or change in footwear."
+      ],
+      "rationale": "Skilled interventions were summarized from the therapy plan.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "plan_for_next_visit",
+      "proposed_value": "Physical Therapy Occupational Therapy physical therapy, and use of supportive devices or change in footwear.",
+      "confidence": 0.78,
+      "source_spans": [
+        "Physical Therapy Occupational Therapy physical therapy, and use of supportive devices or change in footwear."
+      ],
+      "rationale": "Next-visit plan was summarized from the therapy plan.",
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [
+    {
+      "description": "Family History",
+      "icd10_code": "M17.12",
+      "confidence": 0.74,
+      "source_spans": [
+        "M17.12) Family History"
+      ],
+      "is_primary_candidate": true,
+      "requires_human_review": true
+    },
+    {
+      "description": "Unilateral primary osteoarthritis, left knee",
+      "icd10_code": "M17.12",
+      "confidence": 0.74,
+      "source_spans": [
+        "Unilateral primary osteoarthritis, left knee (M17.12)"
+      ],
+      "is_primary_candidate": true,
+      "requires_human_review": true
+    }
+  ],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [],
+  "warnings": []
+}

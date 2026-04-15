@@ -1,0 +1,109 @@
+{
+  "patient_context": {
+    "patient_name": null,
+    "dob": "10/21/1957",
+    "soc_date": "2026-03-26",
+    "referral_date": null
+  },
+  "proposed_field_values": [
+    {
+      "field_key": "fall_risk_narrative",
+      "proposed_value": "STEADI Fall Risk",
+      "confidence": 0.7,
+      "source_spans": [
+        "STEADI Fall Risk"
+      ],
+      "rationale": "Risk and safety narrative was summarized from referral text.",
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [
+    {
+      "description": "Disruption of external operation (surgical) wound",
+      "icd10_code": "T81.31XD",
+      "confidence": 0.74,
+      "source_spans": [
+        "T81.31XD: Disruption of external operation (surgical) wound"
+      ],
+      "is_primary_candidate": true,
+      "requires_human_review": true
+    },
+    {
+      "description": "Cellulitis of left toe",
+      "icd10_code": "L03.032",
+      "confidence": 0.74,
+      "source_spans": [
+        "L03.032: Cellulitis of left toe"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Encounter for other specified surgical aftercare",
+      "icd10_code": "Z48.89",
+      "confidence": 0.74,
+      "source_spans": [
+        "Z48.89: Encounter for other specified surgical aftercare"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Type 2 diabetes mellitus with diabetic peripheral angiopathy with gangrene",
+      "icd10_code": "E11.52",
+      "confidence": 0.74,
+      "source_spans": [
+        "E11.52: Type 2 diabetes mellitus with diabetic peripheral angiopathy with gangrene"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Disruption of external operation (surgical) wound, not elsewhere classified, subsequent",
+      "icd10_code": "T81.31XD",
+      "confidence": 0.74,
+      "source_spans": [
+        "T81.31XD: Disruption of external operation (surgical) wound, not elsewhere classified, subsequent"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    }
+  ],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "preferred_language",
+    "interpreter_needed",
+    "primary_reason_for_home_health_medical_necessity",
+    "admit_reason_to_home_health",
+    "homebound_narrative",
+    "homebound_supporting_factors",
+    "recent_hospitalization_discharge_date",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "living_situation",
+    "prior_functioning",
+    "functional_limitations",
+    "therapy_need",
+    "patient_summary_narrative",
+    "skilled_interventions",
+    "discipline_frequencies",
+    "plan_for_next_visit",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status",
+    "code_status"
+  ],
+  "warnings": [
+    "Deterministic referral facts extraction was used.",
+    "LLM disabled or unavailable; deterministic referral proposal fallback was used.",
+    "Bedrock returned invalid or non-JSON referral proposal output; deterministic fallback was used."
+  ]
+}

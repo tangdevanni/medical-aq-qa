@@ -1,0 +1,251 @@
+[
+  {
+    "sectionName": "patient_identity",
+    "extractedTextSpans": [
+      "DOB: Phone: MRN: 70550 Male 01/08/1943 (602) 577-8688 70550 PATIENT INFORMATION GUARANTOR INFORMATION LAST NAME #RST NAME M.",
+      "DOB: Fhane: VRN: 70550 Male 01/08/1943 (602) 577-8688 70660 PATIENT INFORMATION GUARANTOR INFORMATION LAST NAME FIRST NAME V.I."
+    ],
+    "normalizedSummary": "DOB: Phone: MRN: 70550 Male 01/08/1943 (602) 577-8688 70550 PATIENT INFORMATION GUARANTOR INFORMATION LAST NAME #RST NAME M. DOB: Fhane: VRN: 70550 Male 01/08/1943 (602) 577-8688 70660 PATIENT INFORMATION GUARANTOR INFORMATION LAST NAME FIRST NAME V.I.",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 4,
+        "lineEnd": 4,
+        "charStart": 1327,
+        "charEnd": 1451
+      },
+      {
+        "lineStart": 23,
+        "lineEnd": 23,
+        "charStart": 5538,
+        "charEnd": 5665
+      }
+    ]
+  },
+  {
+    "sectionName": "referral_metadata",
+    "extractedTextSpans": [
+      "DIAGNOSES Diagnosis ICD Code Description 1 M16.11 Unilateral primary osteoarthritis, right hip Home Health Referral Thomas Allen was examined and treated today.",
+      "DIAGNOSES Diagnosis ICD Code Description 1 M16.11 Unilateral primary osteoarthritis, right hip Home Health Referral Thomas Allen was examined and treated today."
+    ],
+    "normalizedSummary": "DIAGNOSES Diagnosis ICD Code Description 1 M16.11 Unilateral primary osteoarthritis, right hip Home Health Referral Thomas Allen was examined and treated today. DIAGNOSES Diagnosis ICD Code Description 1 M16.11 Unilateral primary osteoarthritis, right hip Home Health Referral Thomas Allen was examined and treated today.",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 11,
+        "lineEnd": 11,
+        "charStart": 2441,
+        "charEnd": 2601
+      },
+      {
+        "lineStart": 30,
+        "lineEnd": 30,
+        "charStart": 6652,
+        "charEnd": 6812
+      }
+    ]
+  },
+  {
+    "sectionName": "referring_provider",
+    "extractedTextSpans": [
+      "MD Priority: normal Electronically Signed By: Robert Berghoff, MD, 03/04/2026 11:54 AM MST Robert Berghoff, MD Orthoanzona Areadia Page 1 (602) 631-3161 Work 3033 N 44Th St Suite 100 NPI: 1124024831 Phoenix, AZ 65018-7226 Mar/4/2026 11:59:49 AM OrthoArizona 16029575079 3/4 OrthoArizona Allen, Thomas Order Note - January 20, 2026 PAIS ID: Sox: DOE: Phone: MRN: 70550 Male 01/08/1943 (802) 677-8688 70550 Alerts Pacemaker No bland minnore.",
+      "MD Priority: normal Electronically Signed By: Robert Berghoff, MD, 03/04/2026 11:52 AM MST Robert Berghoff, MD Orthoanzona Arcacia Page 1 (602) 631-3131 Work 3033 N 44Th SL Suite 100 NPI: 1124024831 Phoonix, AZ 85018-7226"
+    ],
+    "normalizedSummary": "MD Priority: normal Electronically Signed By: Robert Berghoff, MD, 03/04/2026 11:54 AM MST Robert Berghoff, MD Orthoanzona Areadia Page 1 (602) 631-3161 Work 3033 N 44Th St Suite 100 NPI: 1124024831 Phoenix, AZ 65018-7226 Mar/4/2026 11:59:49 AM OrthoArizona 16029575079 3/4 OrthoArizona Allen, Thomas Order Note - January 20, 2026 PAIS ID: Sox: DOE: Phone: MRN: 70550 Male 01/08/1943 (802) 677-8688 70550 Alerts Pacemake",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 14,
+        "lineEnd": 14,
+        "charStart": 2759,
+        "charEnd": 3198
+      },
+      {
+        "lineStart": 33,
+        "lineEnd": 33,
+        "charStart": 6950,
+        "charEnd": 7171
+      }
+    ]
+  },
+  {
+    "sectionName": "medical_necessity",
+    "extractedTextSpans": [
+      "The following was determined: evaluate and treat: Skilled nursing eval to Star Home Health nursing:",
+      "The following was determined: evaluate and treat: Skilled nursing eval nursing:"
+    ],
+    "normalizedSummary": "The following was determined: evaluate and treat: Skilled nursing eval to Star Home Health nursing: The following was determined: evaluate and treat: Skilled nursing eval nursing:",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 12,
+        "lineEnd": 12,
+        "charStart": 2602,
+        "charEnd": 2701
+      },
+      {
+        "lineStart": 31,
+        "lineEnd": 31,
+        "charStart": 6813,
+        "charEnd": 6892
+      }
+    ]
+  },
+  {
+    "sectionName": "diagnoses",
+    "extractedTextSpans": [
+      "DIAGNOSES Diagnosis ICD Code Description 1 M16.11 Unilateral primary osteoarthritis, right hip Home Health Referral Thomas Allen was examined and treated today.",
+      "SURGERY INFORMATION: Musculoskeletal Family History Surgeon: berghoff Assistant: clare jones None Provider: Clara Jones, PA-C Musculoskeletal Surgery Perform at: SURGIMATE Release of trigger finger Priority: normal Repair of ankle: valley fever Surgical History Cardiac pacemaker: 2yrs age Estimated Length of Procedure: 90 minutes Cardiac pacemaker procedure Proced are on healt valve Diagnosis: Hip Ostegarthritis, Right - M16.11 Total replacement of left h.p joint Procedure Description: right THA ASH 23 HR CPT Codes: Social History Total Hip Arthroplesty (27130) Smoking status Unspecifted Surgical Site: right hip Anesthesia: General and Spinal Advance Care Labs and Tests: CBC with differential, BMP, EKG Healthcare Proxy: No Medical Clearance: Internal Medicine, Cardlology Risks and benefits: I had a lengthy conversation with the patient/family regarding the risks of surgery, which include but are not limited to infection, persistent pain, blood clots, pulmonary embolus, need for repeat surgery, cardiac events, fat embolus, swelling, stroke and death; the benefits of surgery; and the alternatives to surgery which Include second opintons, delaying surgery, further conservative care, or alternative medicine, They have had emple opportunity to have all of their questions answered by the medical teem and are encouraged to contact us with any questions. changes or concerns that arise prior to surgery.",
+      "DIAGNOSES Diagnosis ICD Code Description 1 M16.11 Unilateral primary osteoarthritis, right hip Home Health Referral Thomas Allen was examined and treated today."
+    ],
+    "normalizedSummary": "DIAGNOSES Diagnosis ICD Code Description 1 M16.11 Unilateral primary osteoarthritis, right hip Home Health Referral Thomas Allen was examined and treated today. SURGERY INFORMATION: Musculoskeletal Family History Surgeon: berghoff Assistant: clare jones None Provider: Clara Jones, PA-C Musculoskeletal Surgery Perform at: SURGIMATE Release of trigger finger Priority: normal Repair of ankle: valley fever Surgical Histo",
+    "confidence": 0.95,
+    "lineReferences": [
+      {
+        "lineStart": 11,
+        "lineEnd": 11,
+        "charStart": 2441,
+        "charEnd": 2601
+      },
+      {
+        "lineStart": 19,
+        "lineEnd": 19,
+        "charStart": 3694,
+        "charEnd": 5111
+      },
+      {
+        "lineStart": 30,
+        "lineEnd": 30,
+        "charStart": 6652,
+        "charEnd": 6812
+      }
+    ]
+  },
+  {
+    "sectionName": "medications",
+    "extractedTextSpans": [
+      "Pharmacy Information Name: EXPRESS SCRIPTS HOME DELIVERY Phone Number: 8883279791 Address: 4600 North Hanley Road St.",
+      "Data Reviewed: Allergies 3 Ordering of each unique test (Order Surgery: Hip Arthropiasty (EKG, BMP, CBC with differential)) No known drug ellergies Medical History Impression/Plan: Other: RH hip pain 1."
+    ],
+    "normalizedSummary": "Pharmacy Information Name: EXPRESS SCRIPTS HOME DELIVERY Phone Number: 8883279791 Address: 4600 North Hanley Road St. Data Reviewed: Allergies 3 Ordering of each unique test (Order Surgery: Hip Arthropiasty (EKG, BMP, CBC with differential)) No known drug ellergies Medical History Impression/Plan: Other: RH hip pain 1.",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 2,
+        "lineEnd": 2,
+        "charStart": 984,
+        "charEnd": 1101
+      },
+      {
+        "lineStart": 15,
+        "lineEnd": 15,
+        "charStart": 3199,
+        "charEnd": 3401
+      }
+    ]
+  },
+  {
+    "sectionName": "caregiver_support",
+    "extractedTextSpans": [
+      "RELATIONSHIP TO PATIENT XXX-XX-1810 01/08/1943 Male 70550 Other BIREET ADDRESS STREET ADDRESS 7715 N 6th St 7715 N 6th St STREET ADDRESS CONTD STREET ADDRESS CONTO.",
+      "RELATIONSHIP $ 50,000 COMPANY MAIAZ DRP/CONTRACT# MEMBER E# Thomas Allen Self Medicare of Arizona 8WK9P99EF41 STREET ADDRESS STREET ADDRESS CONTS.",
+      "RELATIONSHIP $40,000 COMPANY NAME CRR/CONTRACT MEMBER or Shirley Allen Spouse 12/28/1944 BCBS TPA PERSONIFY SAL001 2612002324 FORMERLY HEALTHCOMP STREET ADDRESS BIREAT ADDRESS CONTO, PO BOX 2924 CITY STATE ZIP CODE EMPLOYER NAME PHOENIX AZ 850622924",
+      "RELATIONSHIP TO PATIENT XXX-XX-1810 01/08/1943 Male 70550 Other STREET ADDRESS STREET ADDRESS 7715 N 6th St 7715 N 6th SI STREET ADDRESS CONTO, STREET ADDRESS GOVTO.",
+      "RELATIONSHIP BUB. 505 COMPANY NAME IRP:CONTRACT* MEMBER #' Thomas Allen Self Medicare of Arizona 8WK9P99EF41 STREET ADDRESS STREET ADDRESS COVID.",
+      "RELATIONSHIP 808,005 COMPANY NAME PEONTRABT # MEMBERS # Shirley Allen Spouse 12/28/1944 BCBS TPA PERSONIFY SAL001 2612002324 FORMERLY HEALTHCOMP STREET ADDRESS OTHER'S ADDRESS DONTO, PO BOX 2924 CITY STATE 21P000E EMPLOYER NAME PHOENIX AZ 850822924"
+    ],
+    "normalizedSummary": "RELATIONSHIP TO PATIENT XXX-XX-1810 01/08/1943 Male 70550 Other BIREET ADDRESS STREET ADDRESS 7715 N 6th St 7715 N 6th St STREET ADDRESS CONTD STREET ADDRESS CONTO. RELATIONSHIP $ 50,000 COMPANY MAIAZ DRP/CONTRACT# MEMBER E# Thomas Allen Self Medicare of Arizona 8WK9P99EF41 STREET ADDRESS STREET ADDRESS CONTS. RELATIONSHIP $40,000 COMPANY NAME CRR/CONTRACT MEMBER or Shirley Allen Spouse 12/28/1944 BCBS TPA PERSONIFY ",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 6,
+        "lineEnd": 6,
+        "charStart": 1532,
+        "charEnd": 1696
+      },
+      {
+        "lineStart": 8,
+        "lineEnd": 8,
+        "charStart": 1925,
+        "charEnd": 2071
+      },
+      {
+        "lineStart": 10,
+        "lineEnd": 10,
+        "charStart": 2191,
+        "charEnd": 2440
+      },
+      {
+        "lineStart": 25,
+        "lineEnd": 25,
+        "charStart": 5746,
+        "charEnd": 5911
+      },
+      {
+        "lineStart": 27,
+        "lineEnd": 27,
+        "charStart": 6139,
+        "charEnd": 6284
+      },
+      {
+        "lineStart": 29,
+        "lineEnd": 29,
+        "charStart": 6403,
+        "charEnd": 6651
+      }
+    ]
+  },
+  {
+    "sectionName": "therapy_need",
+    "extractedTextSpans": [
+      "physical therapy: wound care: Provider: Robert Berghoff.",
+      "physical therapy: wound care: Provider: Robert Berghoff."
+    ],
+    "normalizedSummary": "physical therapy: wound care: Provider: Robert Berghoff. physical therapy: wound care: Provider: Robert Berghoff.",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 13,
+        "lineEnd": 13,
+        "charStart": 2702,
+        "charEnd": 2758
+      },
+      {
+        "lineStart": 32,
+        "lineEnd": 32,
+        "charStart": 6893,
+        "charEnd": 6949
+      }
+    ]
+  },
+  {
+    "sectionName": "other_clinical_notes",
+    "extractedTextSpans": [
+      "MD Priority: normal Electronically Signed By: Robert Berghoff, MD, 03/04/2026 11:54 AM MST Robert Berghoff, MD Orthoanzona Areadia Page 1 (602) 631-3161 Work 3033 N 44Th St Suite 100 NPI: 1124024831 Phoenix, AZ 65018-7226 Mar/4/2026 11:59:49 AM OrthoArizona 16029575079 3/4 OrthoArizona Allen, Thomas Order Note - January 20, 2026 PAIS ID: Sox: DOE: Phone: MRN: 70550 Male 01/08/1943 (802) 677-8688 70550 Alerts Pacemaker No bland minnore.",
+      "Data Reviewed: Allergies 3 Ordering of each unique test (Order Surgery: Hip Arthropiasty (EKG, BMP, CBC with differential)) No known drug ellergies Medical History Impression/Plan: Other: RH hip pain 1.",
+      "History Status: Worsening Osteopania Plan: Order Surgery: Hip Arthroplesty."
+    ],
+    "normalizedSummary": "MD Priority: normal Electronically Signed By: Robert Berghoff, MD, 03/04/2026 11:54 AM MST Robert Berghoff, MD Orthoanzona Areadia Page 1 (602) 631-3161 Work 3033 N 44Th St Suite 100 NPI: 1124024831 Phoenix, AZ 65018-7226 Mar/4/2026 11:59:49 AM OrthoArizona 16029575079 3/4 OrthoArizona Allen, Thomas Order Note - January 20, 2026 PAIS ID: Sox: DOE: Phone: MRN: 70550 Male 01/08/1943 (802) 677-8688 70550 Alerts Pacemake",
+    "confidence": 0.95,
+    "lineReferences": [
+      {
+        "lineStart": 14,
+        "lineEnd": 14,
+        "charStart": 2759,
+        "charEnd": 3198
+      },
+      {
+        "lineStart": 15,
+        "lineEnd": 15,
+        "charStart": 3199,
+        "charEnd": 3401
+      },
+      {
+        "lineStart": 18,
+        "lineEnd": 18,
+        "charStart": 3618,
+        "charEnd": 3693
+      }
+    ]
+  }
+]

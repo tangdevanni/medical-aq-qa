@@ -10,6 +10,7 @@ import { getHealthPayload } from "./health";
 import { FilesystemBatchRepository } from "./repositories/filesystemBatchRepository";
 import { FilesystemScheduledRunRepository } from "./repositories/filesystemScheduledRunRepository";
 import { FilesystemSubsidiaryRepository } from "./repositories/filesystemSubsidiaryRepository";
+import { registerAgencyRoutes } from "./routes/agencies";
 import { registerBatchRoutes } from "./routes/batches";
 import { registerPatientRunRoutes } from "./routes/patientRuns";
 import { BatchControlPlaneService } from "./services/batchControlPlaneService";
@@ -48,7 +49,10 @@ export async function createApp() {
     logger,
   );
   const acquisitionService = new WorkbookAcquisitionService(
-    [new ManualUploadWorkbookProvider(), new FinaleWorkbookProvider()],
+    [
+      new ManualUploadWorkbookProvider(),
+      new FinaleWorkbookProvider(subsidiaryConfigService, logger),
+    ],
     repository,
     logger,
   );
@@ -62,6 +66,7 @@ export async function createApp() {
   await batchService.initialize();
 
   app.get("/health", async () => getHealthPayload());
+  await registerAgencyRoutes(app, batchService);
   await registerBatchRoutes(app, batchService);
   await registerPatientRunRoutes(app, batchService);
 

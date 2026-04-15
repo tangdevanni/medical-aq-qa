@@ -49,6 +49,7 @@ class FakePortalClient implements BatchPortalAutomationClient {
       chartUrl: "https://demo.portal/provider/branch/client/PT-1/intake",
       dashboardUrl: "https://demo.portal/provider/branch/dashboard",
       resolvedAt: new Date().toISOString(),
+      portalAdmissionStatus: null,
       traceId: `${input.batchId}:${input.patientRunId}`,
       matchResult: {
         status: "EXACT",
@@ -635,6 +636,7 @@ class MixedPortalClient extends FakePortalClient {
         chartUrl: null,
         dashboardUrl: "https://demo.portal/provider/branch/dashboard",
         resolvedAt: null,
+        portalAdmissionStatus: null,
         traceId: `${input.batchId}:${input.patientRunId}`,
         matchResult: {
           status: "NOT_FOUND",
@@ -681,6 +683,25 @@ class MixedPortalClient extends FakePortalClient {
         note: null,
       },
       stepLogs: [],
+    };
+  }
+}
+
+class PortalExcludedStatusClient extends FakePortalClient {
+  constructor(private readonly statusLabel: string) {
+    super();
+  }
+
+  override async resolvePatientPortalAccess(input: {
+    batchId: string;
+    patientRunId: string;
+    workItem: PatientEpisodeWorkItem;
+    evidenceDir?: string;
+  }): Promise<ResolvedPatientPortalAccess> {
+    const result = await super.resolvePatientPortalAccess(input);
+    return {
+      ...result,
+      portalAdmissionStatus: this.statusLabel,
     };
   }
 }
@@ -988,6 +1009,54 @@ describe("runFinaleBatch", () => {
       expect(patientRun.automationStepLogs.some((log) => log.step === "oasis_menu_open")).toBe(true);
       expect(patientRun.automationStepLogs.some((log) => log.step === "oasis_assessment_note_opened")).toBe(true);
       expect(patientRun.automationStepLogs.some((log) => log.step === "oasis_printed_note_review")).toBe(true);
+      expect(patientRun.artifacts.find((artifact) => artifact.artifactType === "OASIS")).toMatchObject({
+        artifactType: "OASIS",
+        status: "DOWNLOADED",
+        extractedFields: expect.objectContaining({
+          reviewSource: "printed_note_ocr",
+          extractionMethod: "visible_text_fallback",
+        }),
+      });
+    } finally {
+      fixture.cleanup();
+    }
+  });
+
+  it("skips patients when the live portal header shows Non-Admit or Pending", async () => {
+    const fixture = writeWorkbookFixture();
+
+    try {
+      const intake = await intakeWorkbook({
+        workbookPath: fixture.workbookPath,
+        outputDir: fixture.outputDir,
+      });
+
+      const nonAdmitRun = await runQAForPatient({
+        batchId: `${intake.manifest.batchId}-non-admit`,
+        patient: intake.workItems[0]!,
+        outputDir: path.join(fixture.outputDir, "non-admit"),
+        portalClient: new PortalExcludedStatusClient("Non-Admit"),
+      });
+
+      expect(nonAdmitRun.processingStatus).toBe("BLOCKED");
+      expect(nonAdmitRun.executionStep).toBe("PATIENT_STATUS_EXCLUDED");
+      expect(nonAdmitRun.qaOutcome).toBe("PORTAL_MISMATCH");
+      expect(nonAdmitRun.errorSummary).toContain("Portal patient status 'Non-Admit'");
+      expect(nonAdmitRun.notes.some((note) => note.includes("Portal admission status evidence: Non-Admit"))).toBe(true);
+      expect(nonAdmitRun.automationStepLogs.some((log) => log.step === "patient_status_gate")).toBe(true);
+      expect(nonAdmitRun.workflowRuns.every((workflowRun) => workflowRun.status === "BLOCKED")).toBe(true);
+
+      const pendingRun = await runQAForPatient({
+        batchId: `${intake.manifest.batchId}-pending`,
+        patient: intake.workItems[0]!,
+        outputDir: path.join(fixture.outputDir, "pending"),
+        portalClient: new PortalExcludedStatusClient("Pending"),
+      });
+
+      expect(pendingRun.processingStatus).toBe("BLOCKED");
+      expect(pendingRun.executionStep).toBe("PATIENT_STATUS_EXCLUDED");
+      expect(pendingRun.errorSummary).toContain("Portal patient status 'Pending'");
+      expect(pendingRun.automationStepLogs.some((log) => log.step === "patient_status_gate")).toBe(true);
     } finally {
       fixture.cleanup();
     }
@@ -1020,6 +1089,35 @@ describe("runFinaleBatch", () => {
       expect(qaWorkflow?.workflowResultPath).toMatch(/qa-prefetch-result\.json$/);
       expect(portalClient.discoverArtifactsCalls).toBe(1);
       expect(portalClient.discoverArtifactWorkflowPhases).toEqual(["file_uploads_only"]);
+    } finally {
+      fixture.cleanup();
+    }
+  });
+
+  it("defaults patient runs to both coding and QA workflows when no workflow domains are provided", async () => {
+    const fixture = writeWorkbookFixture();
+    const portalClient = new FakePortalClient();
+
+    try {
+      const intake = await intakeWorkbook({
+        workbookPath: fixture.workbookPath,
+        outputDir: fixture.outputDir,
+      });
+
+      const patientRun = await runQAForPatient({
+        batchId: intake.manifest.batchId,
+        patient: intake.workItems[0]!,
+        outputDir: fixture.outputDir,
+        portalClient,
+      });
+
+      const codingWorkflow = patientRun.workflowRuns.find((workflowRun) => workflowRun.workflowDomain === "coding");
+      const qaWorkflow = patientRun.workflowRuns.find((workflowRun) => workflowRun.workflowDomain === "qa");
+
+      expect(codingWorkflow?.status).toBe("COMPLETED");
+      expect(qaWorkflow?.status).toBe("COMPLETED");
+      expect(qaWorkflow?.workflowResultPath).toMatch(/qa-prefetch-result\.json$/);
+      expect(patientRun.notes.some((note) => note.includes("QA prefetch result persisted:"))).toBe(true);
     } finally {
       fixture.cleanup();
     }

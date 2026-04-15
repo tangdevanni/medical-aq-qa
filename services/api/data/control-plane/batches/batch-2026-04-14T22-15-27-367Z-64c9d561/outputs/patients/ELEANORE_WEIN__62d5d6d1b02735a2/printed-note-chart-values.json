@@ -1,0 +1,23 @@
+{
+  "generatedAt": "2026-04-14T22:30:29.033Z",
+  "source": "printed_note_ocr",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-14T22-15-27-367Z-64c9d561\\outputs\\evidence\\ELEANORE_WEIN__62d5d6d1b02735a2\\oasis-printed-note\\extracted-text.txt",
+  "extractedFieldCount": 1,
+  "invocationModelId": "us.amazon.nova-lite-v1:0",
+  "currentChartValues": {
+    "patient_name": "Eleanore Wein"
+  },
+  "extractedFieldValues": [
+    {
+      "field_key": "patient_name",
+      "current_value": "Eleanore Wein",
+      "confidence": 1,
+      "source_spans": [
+        "Patient: Eleanore Wein"
+      ]
+    }
+  ],
+  "warnings": [
+    "Printed-note chart-value extraction used inference profile us.amazon.nova-lite-v1:0."
+  ]
+}

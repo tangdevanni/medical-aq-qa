@@ -1,0 +1,143 @@
+{
+  "patient_context": {
+    "patient_name": null,
+    "dob": "06/23/1944",
+    "soc_date": "2026-04-09",
+    "referral_date": null
+  },
+  "facts": [
+    {
+      "fact_key": "homebound_narrative",
+      "category": "homebound",
+      "value": "DC to group home, HHPT, has WC/Hemi-walker",
+      "confidence": 0.8,
+      "evidence_spans": [
+        "DC to group home, HHPT, has WC/Hemi-walker"
+      ],
+      "rationale": "Homebound evidence was summarized from referral text.",
+      "source_sections": [
+        "homebound_evidence"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "homebound_supporting_factors",
+      "category": "homebound",
+      "value": [
+        "uses_walker"
+      ],
+      "confidence": 0.73,
+      "evidence_spans": [
+        "DC to group home, HHPT, has WC/Hemi-walker"
+      ],
+      "rationale": "Homebound supporting factors were extracted from referral text.",
+      "source_sections": [
+        "homebound_evidence"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "functional_limitations",
+      "category": "functional",
+      "value": [
+        "weakness",
+        "reduced_endurance"
+      ],
+      "confidence": 0.76,
+      "evidence_spans": [
+        "residual weakness/hemiparesis R side from CVA 12-2025. hemi-technique due to residual weakness from CVA UE>LE. LE weakness R>L on uneven surfaces."
+      ],
+      "rationale": "Functional limitations were extracted from referral text.",
+      "source_sections": [
+        "functional_limitations"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "therapy_need",
+      "category": "therapy",
+      "value": "Physical Therapy Daily Progress Note (v1.7) Physical Therapy Daily Progress Note Physical Therapy Daily Progress Note (v1.7)",
+      "confidence": 0.77,
+      "evidence_spans": [
+        "Physical Therapy Daily Progress Note (v1.7) Physical Therapy Daily Progress Note Physical Therapy Daily Progress Note (v1.7)"
+      ],
+      "rationale": "Therapy need was summarized from referral text.",
+      "source_sections": [
+        "therapy_need"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "fall_risk_narrative",
+      "category": "risk",
+      "value": "Prec: goes by \"Katie\", fall risk, stroke in 12/25, not able to move RUE Not attempted due to medical condition or safety concerns - 88 Not attempted due to medical condition or safety concerns - 88 residual weakness/hemiparesis R side from CVA 12-2025. hemi-technique due to residual weakness from CVA UE>LE. LE weakness R>L on uneven surfaces.",
+      "confidence": 0.7,
+      "evidence_spans": [
+        "Prec: goes by \"Katie\", fall risk, stroke in 12/25, not able to move RUE Not attempted due to medical condition or safety concerns - 88 Not attempted due to medical condition or safety concerns - 88 residual weakness/hemi"
+      ],
+      "rationale": "Risk and safety narrative was summarized from referral text.",
+      "source_sections": [
+        "risk_factors",
+        "functional_limitations"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "skilled_interventions",
+      "category": "therapy",
+      "value": "Physical Therapy Daily Progress Note (v1.7) Physical Therapy Daily Progress Note Physical Therapy Daily Progress Note (v1.7)",
+      "confidence": 0.8,
+      "evidence_spans": [
+        "Physical Therapy Daily Progress Note (v1.7) Physical Therapy Daily Progress Note Physical Therapy Daily Progress Note (v1.7)"
+      ],
+      "rationale": "Skilled interventions were summarized from the therapy plan.",
+      "source_sections": [
+        "therapy_need"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "plan_for_next_visit",
+      "category": "therapy",
+      "value": "Physical Therapy Daily Progress Note (v1.7) Physical Therapy Daily Progress Note Physical Therapy Daily Progress Note (v1.7)",
+      "confidence": 0.78,
+      "evidence_spans": [
+        "Physical Therapy Daily Progress Note (v1.7) Physical Therapy Daily Progress Note Physical Therapy Daily Progress Note (v1.7)"
+      ],
+      "rationale": "Next-visit plan was summarized from the therapy plan.",
+      "source_sections": [
+        "therapy_need"
+      ],
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "preferred_language",
+    "interpreter_needed",
+    "primary_reason_for_home_health_medical_necessity",
+    "admit_reason_to_home_health",
+    "recent_hospitalization_discharge_date",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "living_situation",
+    "patient_summary_narrative",
+    "discipline_frequencies",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status",
+    "code_status"
+  ],
+  "warnings": [
+    "Deterministic referral facts extraction was used."
+  ]
+}

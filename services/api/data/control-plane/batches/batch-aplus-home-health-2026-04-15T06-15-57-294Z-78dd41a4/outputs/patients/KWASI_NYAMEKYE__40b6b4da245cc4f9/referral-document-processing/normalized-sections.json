@@ -1,0 +1,265 @@
+[
+  {
+    "sectionName": "referral_metadata",
+    "extractedTextSpans": [
+      "Order date of therapy:",
+      "Ostomy Outpatient Clinic Referral:",
+      "Referral Details:"
+    ],
+    "normalizedSummary": "Order date of therapy: Ostomy Outpatient Clinic Referral: Referral Details:",
+    "confidence": 0.95,
+    "lineReferences": [
+      {
+        "lineStart": 218,
+        "lineEnd": 218,
+        "charStart": 4194,
+        "charEnd": 4216
+      },
+      {
+        "lineStart": 321,
+        "lineEnd": 321,
+        "charStart": 6134,
+        "charEnd": 6168
+      },
+      {
+        "lineStart": 323,
+        "lineEnd": 323,
+        "charStart": 6181,
+        "charEnd": 6198
+      }
+    ]
+  },
+  {
+    "sectionName": "referring_provider",
+    "extractedTextSpans": [
+      "ORDERED BY Mohsin, Qazi Z DO",
+      "Ordering Provider NPI#: 1134625015"
+    ],
+    "normalizedSummary": "ORDERED BY Mohsin, Qazi Z DO Ordering Provider NPI#: 1134625015",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 9,
+        "lineEnd": 9,
+        "charStart": 173,
+        "charEnd": 201
+      },
+      {
+        "lineStart": 31,
+        "lineEnd": 31,
+        "charStart": 694,
+        "charEnd": 728
+      }
+    ]
+  },
+  {
+    "sectionName": "hospitalization_history",
+    "extractedTextSpans": [
+      "Preferred Hospital:",
+      "Name of Hospital:",
+      "OK to search outside of preferred hospital:",
+      "Type of Hospital Bed:"
+    ],
+    "normalizedSummary": "Preferred Hospital: Name of Hospital: OK to search outside of preferred hospital:",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 51,
+        "lineEnd": 51,
+        "charStart": 1012,
+        "charEnd": 1031
+      },
+      {
+        "lineStart": 52,
+        "lineEnd": 52,
+        "charStart": 1032,
+        "charEnd": 1049
+      },
+      {
+        "lineStart": 53,
+        "lineEnd": 53,
+        "charStart": 1050,
+        "charEnd": 1093
+      },
+      {
+        "lineStart": 324,
+        "lineEnd": 324,
+        "charStart": 6199,
+        "charEnd": 6220
+      }
+    ]
+  },
+  {
+    "sectionName": "homebound_evidence",
+    "extractedTextSpans": [
+      "Walker Length of Need:",
+      "Walker Other Length of Need:",
+      "Walker Size:",
+      "Walker Type:"
+    ],
+    "normalizedSummary": "Walker Length of Need: Walker Other Length of Need: Walker Size:",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 281,
+        "lineEnd": 281,
+        "charStart": 5368,
+        "charEnd": 5390
+      },
+      {
+        "lineStart": 282,
+        "lineEnd": 282,
+        "charStart": 5391,
+        "charEnd": 5419
+      },
+      {
+        "lineStart": 283,
+        "lineEnd": 283,
+        "charStart": 5420,
+        "charEnd": 5432
+      },
+      {
+        "lineStart": 284,
+        "lineEnd": 284,
+        "charStart": 5433,
+        "charEnd": 5445
+      }
+    ]
+  },
+  {
+    "sectionName": "diagnoses",
+    "extractedTextSpans": [
+      "Diagnoses:",
+      "Criteria for Home Oxygen: Appropriate diagnosis AND resting oxygen sat of 88% or less."
+    ],
+    "normalizedSummary": "Diagnoses: Criteria for Home Oxygen: Appropriate diagnosis AND resting oxygen sat of 88% or less.",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 41,
+        "lineEnd": 41,
+        "charStart": 831,
+        "charEnd": 841
+      },
+      {
+        "lineStart": 77,
+        "lineEnd": 77,
+        "charStart": 1556,
+        "charEnd": 1642
+      }
+    ]
+  },
+  {
+    "sectionName": "medications",
+    "extractedTextSpans": [
+      "Medication Management",
+      "Medication:",
+      "SECOND (2ND) IV INFUSION MEDICATION DETAILS:",
+      "Medication:",
+      "THIRD (3RD) IV INFUSION MEDICATION DETAILS:",
+      "Medication:",
+      "Deaccess Implanted Port after medication regimen is complete:"
+    ],
+    "normalizedSummary": "Medication Management Medication: SECOND (2ND) IV INFUSION MEDICATION DETAILS:",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 60,
+        "lineEnd": 60,
+        "charStart": 1258,
+        "charEnd": 1279
+      },
+      {
+        "lineStart": 111,
+        "lineEnd": 111,
+        "charStart": 2287,
+        "charEnd": 2298
+      },
+      {
+        "lineStart": 121,
+        "lineEnd": 121,
+        "charStart": 2419,
+        "charEnd": 2463
+      },
+      {
+        "lineStart": 123,
+        "lineEnd": 123,
+        "charStart": 2485,
+        "charEnd": 2496
+      },
+      {
+        "lineStart": 133,
+        "lineEnd": 133,
+        "charStart": 2617,
+        "charEnd": 2660
+      },
+      {
+        "lineStart": 135,
+        "lineEnd": 135,
+        "charStart": 2682,
+        "charEnd": 2693
+      },
+      {
+        "lineStart": 160,
+        "lineEnd": 160,
+        "charStart": 3089,
+        "charEnd": 3150
+      }
+    ]
+  },
+  {
+    "sectionName": "therapy_need",
+    "extractedTextSpans": [
+      "Physical Therapy",
+      "Occupational Therapy"
+    ],
+    "normalizedSummary": "Physical Therapy Occupational Therapy",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 57,
+        "lineEnd": 57,
+        "charStart": 1205,
+        "charEnd": 1221
+      },
+      {
+        "lineStart": 67,
+        "lineEnd": 67,
+        "charStart": 1389,
+        "charEnd": 1409
+      }
+    ]
+  },
+  {
+    "sectionName": "risk_factors",
+    "extractedTextSpans": [
+      "Safety Evaluation"
+    ],
+    "normalizedSummary": "Safety Evaluation",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 59,
+        "lineEnd": 59,
+        "charStart": 1240,
+        "charEnd": 1257
+      }
+    ]
+  },
+  {
+    "sectionName": "other_clinical_notes",
+    "extractedTextSpans": [
+      "Documentation should reflect need in provider progress note."
+    ],
+    "normalizedSummary": "Documentation should reflect need in provider progress note.",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 78,
+        "lineEnd": 78,
+        "charStart": 1643,
+        "charEnd": 1703
+      }
+    ]
+  }
+]

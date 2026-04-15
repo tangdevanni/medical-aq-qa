@@ -1,0 +1,293 @@
+[
+  {
+    "sectionName": "patient_identity",
+    "extractedTextSpans": [
+      "Patient Name: James Helms",
+      "Patient Name: JAMES HELMS",
+      "DOB: 08/30/1935",
+      "DOB: 08/30/1935",
+      "DOB: 08/30/1935, 90 years"
+    ],
+    "normalizedSummary": "Patient Name: James Helms Patient Name: JAMES HELMS DOB: 08/30/1935",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 18,
+        "lineEnd": 18,
+        "charStart": 337,
+        "charEnd": 362
+      },
+      {
+        "lineStart": 63,
+        "lineEnd": 63,
+        "charStart": 1417,
+        "charEnd": 1442
+      },
+      {
+        "lineStart": 127,
+        "lineEnd": 127,
+        "charStart": 2219,
+        "charEnd": 2234
+      },
+      {
+        "lineStart": 140,
+        "lineEnd": 140,
+        "charStart": 2459,
+        "charEnd": 2474
+      },
+      {
+        "lineStart": 166,
+        "lineEnd": 166,
+        "charStart": 2942,
+        "charEnd": 2967
+      }
+    ]
+  },
+  {
+    "sectionName": "referral_metadata",
+    "extractedTextSpans": [
+      "Referral",
+      "Referral Source Information:",
+      "THANK YOU FOR YOUR REFERRAL!!!",
+      "referral for a at-home nurse to perform dressing changes every other day was placed with his insurance."
+    ],
+    "normalizedSummary": "Referral Referral Source Information: THANK YOU FOR YOUR REFERRAL!!!",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 7,
+        "lineEnd": 7,
+        "charStart": 69,
+        "charEnd": 77
+      },
+      {
+        "lineStart": 13,
+        "lineEnd": 13,
+        "charStart": 207,
+        "charEnd": 235
+      },
+      {
+        "lineStart": 47,
+        "lineEnd": 47,
+        "charStart": 1113,
+        "charEnd": 1143
+      },
+      {
+        "lineStart": 292,
+        "lineEnd": 292,
+        "charStart": 8294,
+        "charEnd": 8397
+      }
+    ]
+  },
+  {
+    "sectionName": "medical_necessity",
+    "extractedTextSpans": [
+      "Skilled Nursing"
+    ],
+    "normalizedSummary": "Skilled Nursing",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 23,
+        "lineEnd": 23,
+        "charStart": 554,
+        "charEnd": 569
+      }
+    ]
+  },
+  {
+    "sectionName": "diagnoses",
+    "extractedTextSpans": [
+      "Primary Diagnosis (ICD 10): I73.9 L97.522 103.116 590.822A"
+    ],
+    "normalizedSummary": "Primary Diagnosis (ICD 10): I73.9 L97.522 103.116 590.822A",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 21,
+        "lineEnd": 21,
+        "charStart": 441,
+        "charEnd": 499
+      }
+    ]
+  },
+  {
+    "sectionName": "medications",
+    "extractedTextSpans": [
+      "Medication Management",
+      "Medication List",
+      "Allergies",
+      "No Known Drug Allergies",
+      "Allergies Reconciled"
+    ],
+    "normalizedSummary": "Medication Management Medication List Allergies",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 24,
+        "lineEnd": 24,
+        "charStart": 570,
+        "charEnd": 591
+      },
+      {
+        "lineStart": 46,
+        "lineEnd": 46,
+        "charStart": 1097,
+        "charEnd": 1112
+      },
+      {
+        "lineStart": 177,
+        "lineEnd": 177,
+        "charStart": 3371,
+        "charEnd": 3380
+      },
+      {
+        "lineStart": 178,
+        "lineEnd": 178,
+        "charStart": 3381,
+        "charEnd": 3404
+      },
+      {
+        "lineStart": 179,
+        "lineEnd": 179,
+        "charStart": 3405,
+        "charEnd": 3425
+      }
+    ]
+  },
+  {
+    "sectionName": "caregiver_support",
+    "extractedTextSpans": [
+      "Patient words: 90-year-old male returns to the office with his daughter.",
+      "daughter continues to do wound care at home."
+    ],
+    "normalizedSummary": "Patient words: 90-year-old male returns to the office with his daughter. daughter continues to do wound care at home.",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 170,
+        "lineEnd": 170,
+        "charStart": 3034,
+        "charEnd": 3106
+      },
+      {
+        "lineStart": 173,
+        "lineEnd": 173,
+        "charStart": 3170,
+        "charEnd": 3214
+      }
+    ]
+  },
+  {
+    "sectionName": "therapy_need",
+    "extractedTextSpans": [
+      "Physical Therapy",
+      "Occupational Therapy"
+    ],
+    "normalizedSummary": "Physical Therapy Occupational Therapy",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 30,
+        "lineEnd": 30,
+        "charStart": 659,
+        "charEnd": 675
+      },
+      {
+        "lineStart": 31,
+        "lineEnd": 31,
+        "charStart": 676,
+        "charEnd": 696
+      }
+    ]
+  },
+  {
+    "sectionName": "risk_factors",
+    "extractedTextSpans": [
+      "Although having better inflow to the lower extremity he still significantly at risk for limb ischemia to his foot.",
+      "- Now status post revascularization however the limb is still at risk due to his significant peripheral arterial disease."
+    ],
+    "normalizedSummary": "Although having better inflow to the lower extremity he still significantly at risk for limb ischemia to his foot. - Now status post revascularization however the limb is still at risk due to his significant peripheral arterial disease.",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 286,
+        "lineEnd": 286,
+        "charStart": 8019,
+        "charEnd": 8133
+      },
+      {
+        "lineStart": 312,
+        "lineEnd": 312,
+        "charStart": 9172,
+        "charEnd": 9293
+      }
+    ]
+  },
+  {
+    "sectionName": "other_clinical_notes",
+    "extractedTextSpans": [
+      "Recent H&P or recent progress notes",
+      "Plan Information",
+      "Plan #: 4EH4MV8XC96",
+      "Plan Type: Undefined",
+      "Plan #: 161307862",
+      "Plan Type: Champus",
+      "Assessment and Plan",
+      "Note: 90-year-old male with a history of acute on chronic peripheral artery disease with left second toe ulcer."
+    ],
+    "normalizedSummary": "Recent H&P or recent progress notes Plan Information Plan #: 4EH4MV8XC96",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 44,
+        "lineEnd": 44,
+        "charStart": 1059,
+        "charEnd": 1094
+      },
+      {
+        "lineStart": 120,
+        "lineEnd": 120,
+        "charStart": 2112,
+        "charEnd": 2128
+      },
+      {
+        "lineStart": 126,
+        "lineEnd": 126,
+        "charStart": 2199,
+        "charEnd": 2218
+      },
+      {
+        "lineStart": 133,
+        "lineEnd": 133,
+        "charStart": 2350,
+        "charEnd": 2370
+      },
+      {
+        "lineStart": 139,
+        "lineEnd": 139,
+        "charStart": 2441,
+        "charEnd": 2458
+      },
+      {
+        "lineStart": 146,
+        "lineEnd": 146,
+        "charStart": 2592,
+        "charEnd": 2610
+      },
+      {
+        "lineStart": 270,
+        "lineEnd": 270,
+        "charStart": 7145,
+        "charEnd": 7164
+      },
+      {
+        "lineStart": 275,
+        "lineEnd": 275,
+        "charStart": 7319,
+        "charEnd": 7430
+      }
+    ]
+  }
+]

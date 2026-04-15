@@ -91,4 +91,73 @@ describe("SubsidiaryConfigService", () => {
       fixture.cleanup();
     }
   });
+
+  it("seeds the known Finale agency choices for dashboard selection", async () => {
+    const fixture = createFixture({
+      DEFAULT_SUBSIDIARY_PORTAL_BASE_URL: "https://app.finalehealth.com/provider/demo",
+      DEFAULT_SUBSIDIARY_PORTAL_DASHBOARD_URL: "https://app.finalehealth.com/provider/default/dashboard",
+      AUTONOMOUS_AGENCY_IDS: "default,aplus-home-health,active-home-health",
+      STAR_HOME_HEALTH_PORTAL_DASHBOARD_URL: "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      APLUS_HOME_HEALTH_PORTAL_DASHBOARD_URL: "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      ACTIVE_HOME_HEALTH_PORTAL_DASHBOARD_URL: "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+      AVERY_HOME_HEALTH_PORTAL_DASHBOARD_URL: "https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/dashboard",
+      MEADOWS_HOME_HEALTH_PORTAL_DASHBOARD_URL: "https://app.finalehealth.com/provider/691de9e967052347d890e991/dashboard",
+      PORTAL_USERNAME: "local-user",
+      PORTAL_PASSWORD: "local-pass",
+    });
+
+    try {
+      await fixture.service.initialize();
+      const subsidiaries = await fixture.service.listSubsidiaries();
+
+      assert.deepEqual(
+        subsidiaries.map((subsidiary) => subsidiary.name),
+        [
+          "Active Home Health",
+          "APlus Home Health",
+          "Avery Home Health",
+          "Meadows Home Health",
+          "Star Home Health",
+        ],
+      );
+      assert.equal(
+        subsidiaries.filter((subsidiary) => subsidiary.status === "ACTIVE").map((subsidiary) => subsidiary.name).join(","),
+        "Active Home Health,APlus Home Health,Star Home Health",
+      );
+      assert.equal(
+        subsidiaries.find((subsidiary) => subsidiary.name === "APlus Home Health")?.portalAgencyName,
+        "A Plus Home Health Systems LLC",
+      );
+      assert.equal(
+        subsidiaries.find((subsidiary) => subsidiary.name === "Active Home Health")?.portalAgencyName,
+        "Active Home Healthcare LLC",
+      );
+      assert.equal(
+        subsidiaries.find((subsidiary) => subsidiary.name === "Avery Home Health")?.portalAgencyName,
+        "Avery Home Health LLC",
+      );
+      assert.equal(
+        subsidiaries.find((subsidiary) => subsidiary.name === "APlus Home Health")?.portalDashboardUrl,
+        "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      );
+      assert.equal(
+        subsidiaries.find((subsidiary) => subsidiary.name === "Active Home Health")?.portalDashboardUrl,
+        "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+      );
+      assert.equal(
+        subsidiaries.find((subsidiary) => subsidiary.name === "Avery Home Health")?.portalDashboardUrl,
+        "https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/dashboard",
+      );
+      assert.equal(
+        subsidiaries.find((subsidiary) => subsidiary.name === "Meadows Home Health")?.portalDashboardUrl,
+        "https://app.finalehealth.com/provider/691de9e967052347d890e991/dashboard",
+      );
+      assert.equal(
+        subsidiaries.find((subsidiary) => subsidiary.name === "Star Home Health")?.portalDashboardUrl,
+        "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      );
+    } finally {
+      fixture.cleanup();
+    }
+  });
 });

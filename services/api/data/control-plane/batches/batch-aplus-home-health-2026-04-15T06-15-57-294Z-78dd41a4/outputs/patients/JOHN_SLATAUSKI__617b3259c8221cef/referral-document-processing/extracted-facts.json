@@ -1,0 +1,124 @@
+{
+  "patient_context": {
+    "patient_name": null,
+    "dob": "09/25/2040",
+    "soc_date": null,
+    "referral_date": null
+  },
+  "facts": [
+    {
+      "fact_key": "medical_necessity_summary",
+      "category": "medical_necessity",
+      "value": "of services regue wed). SIP Left shoulder anthroscors i notater wft Repain on 4/10/24- will need assistance a ADLs 1 will need home PT. VA FORM JUL 2023 10-10172 IVC Page VETERAN'S LEGAL FULL NAME (First, All. Lasts: John Slatauski 7976 SECTION V: CERIATRICS AND EXTENDED CARE SERVICES (If applicable). 37. COMMUNITY ADULT DAY HEALTH CARE COMMUNITY NURSING HOME HOMEMAKER/HOME HEALTH AIDE HOME INFUSION HOSPICE/PALLIATIVE CARE RESPITE SKILLED HOME HEALTH CARE OTHER: FREQUENCY & DURATION: 39. JUSTIFICATION FOR REQUEST (To avoid delays in care, include appropriate documentation such as office notes, current treatment plans, clinical history, laboratory results, radiology results &/or",
+      "confidence": 0.78,
+      "evidence_spans": [
+        "of services regue wed). SIP Left shoulder anthroscors i notater wft Repain on 4/10/24- will need assistance a ADLs 1 will need home PT. VA FORM JUL 2023 10-10172 IVC Page VETERAN'S LEGAL FULL NAME (First, All."
+      ],
+      "rationale": "Medical necessity was summarized from referral narrative and skilled-need evidence.",
+      "source_sections": [
+        "primary_reason_for_home_health",
+        "medical_necessity"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "therapy_need",
+      "category": "therapy",
+      "value": "physical therapy clinic visits (excludes in-home services), as clinically indicated, occupational therapy clinic visits (excludes in-home services), as clinically",
+      "confidence": 0.77,
+      "evidence_spans": [
+        "physical therapy clinic visits (excludes in-home services), as clinically indicated, occupational therapy clinic visits (excludes in-home services), as clinically"
+      ],
+      "rationale": "Therapy need was summarized from referral text.",
+      "source_sections": [
+        "therapy_need"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "fall_risk_narrative",
+      "category": "risk",
+      "value": "or if Veteran is at risk for Suicide/Homacide please call the VA directly on the same day as completed RFS form submission. CHECK APPROPRIATE DIABETIC/AMPUTATION RISK SCORE: RISK SCORE 2: PATIENT DEMONSTRATED SENSORY LOSS (inability to",
+      "confidence": 0.7,
+      "evidence_spans": [
+        "or if Veteran is at risk for Suicide/Homacide please call the VA directly on the same day as completed RFS form submission."
+      ],
+      "rationale": "Risk and safety narrative was summarized from referral text.",
+      "source_sections": [
+        "risk_factors",
+        "functional_limitations"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "skilled_interventions",
+      "category": "therapy",
+      "value": "physical therapy clinic visits (excludes in-home services), as clinically indicated, occupational therapy clinic visits (excludes in-home services), as clinically",
+      "confidence": 0.8,
+      "evidence_spans": [
+        "physical therapy clinic visits (excludes in-home services), as clinically indicated, occupational therapy clinic visits (excludes in-home services), as clinically"
+      ],
+      "rationale": "Skilled interventions were summarized from the therapy plan.",
+      "source_sections": [
+        "therapy_need"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "plan_for_next_visit",
+      "category": "therapy",
+      "value": "physical therapy clinic visits (excludes in-home services), as clinically indicated, occupational therapy clinic visits (excludes in-home services), as clinically",
+      "confidence": 0.78,
+      "evidence_spans": [
+        "physical therapy clinic visits (excludes in-home services), as clinically indicated, occupational therapy clinic visits (excludes in-home services), as clinically"
+      ],
+      "rationale": "Next-visit plan was summarized from the therapy plan.",
+      "source_sections": [
+        "therapy_need"
+      ],
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [
+    {
+      "description": "located on the left shoulder joint",
+      "icd10_code": "M75.122",
+      "confidence": 0.74,
+      "source_spans": [
+        "M75.122) located on the left shoulder joint"
+      ],
+      "is_primary_candidate": true,
+      "requires_human_review": true
+    }
+  ],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "preferred_language",
+    "interpreter_needed",
+    "homebound_narrative",
+    "homebound_supporting_factors",
+    "recent_hospitalization_discharge_date",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "living_situation",
+    "prior_functioning",
+    "functional_limitations",
+    "patient_summary_narrative",
+    "discipline_frequencies",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status",
+    "code_status"
+  ],
+  "warnings": [
+    "Deterministic referral facts extraction was used."
+  ]
+}

@@ -99,5 +99,7 @@ describe("generateReferralFieldProposals", () => {
     }
     expect(proposal.unsupported_or_missing_fields).toContain("living_situation");
     expect(proposal.unsupported_or_missing_fields).not.toContain("referral_date");
+    expect(proposal.unsupported_or_missing_fields).not.toContain("primary_reason_for_home_health_medical_necessity");
+    expect(proposal.unsupported_or_missing_fields).not.toContain("admit_reason_to_home_health");
   });
 });

@@ -1,0 +1,25 @@
+{
+  "patientId": "JAMES_BAIER__10e8949f7ed5b158",
+  "selectedDocumentId": "JAMES_BAIER__10e8949f7ed5b158-referral-1",
+  "sourceDocuments": [
+    {
+      "documentId": "JAMES_BAIER__10e8949f7ed5b158-referral-1",
+      "sourceIndex": 0,
+      "sourceLabel": "📄 BAIER, JAMES VA REFERRAL 04102026.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedSourceLabel": "baier-james-va-referral-04102026-pdf",
+      "sourceType": "REFERRAL_ORDER",
+      "acquisitionMethod": "printed_pdf",
+      "selectionStatus": "selected",
+      "portalLabel": "📄 BAIER, JAMES VA REFERRAL 04102026.pdf 📝 ✏️ 🗑️ 🔗",
+      "localFilePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\outputs\\patients\\JAMES_BAIER__10e8949f7ed5b158\\documents\\baier-james-va-referral-04102026-pdf\\source.pdf",
+      "effectiveTextSource": "ocr_text",
+      "fileType": "pdf",
+      "fileSizeBytes": 1133766,
+      "extractedTextLength": 42591,
+      "selectedReason": "highest-ranked referral/admission-order source with local file preference",
+      "rejectedReasons": []
+    }
+  ],
+  "warnings": [],
+  "generatedAt": "2026-04-15T07:47:52.109Z"
+}

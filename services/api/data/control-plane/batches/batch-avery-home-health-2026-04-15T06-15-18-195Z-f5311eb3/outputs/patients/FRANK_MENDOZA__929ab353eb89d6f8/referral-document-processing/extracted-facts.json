@@ -1,0 +1,61 @@
+{
+  "patient_context": {
+    "patient_name": null,
+    "dob": "04/02/1936",
+    "soc_date": "02/05/2026",
+    "referral_date": null
+  },
+  "facts": [
+    {
+      "fact_key": "fall_risk_narrative",
+      "category": "risk",
+      "value": "Falls risk assessment documented (In-House) Pt screen for fall risk; document no falls in past year or only 1 fall w/o injury in past year (GER) (In-House) No history of fall only 1 fall without injury within the past year.",
+      "confidence": 0.7,
+      "evidence_spans": [
+        "Falls risk assessment documented (In-House) Pt screen for fall risk; document no falls in past year or only 1 fall w/o injury in past year (GER) (In-House) No history of fall only 1 fall without injury within the past ye"
+      ],
+      "rationale": "Risk and safety narrative was summarized from referral text.",
+      "source_sections": [
+        "risk_factors",
+        "functional_limitations"
+      ],
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "preferred_language",
+    "interpreter_needed",
+    "primary_reason_for_home_health_medical_necessity",
+    "admit_reason_to_home_health",
+    "homebound_narrative",
+    "homebound_supporting_factors",
+    "recent_hospitalization_discharge_date",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "living_situation",
+    "prior_functioning",
+    "functional_limitations",
+    "therapy_need",
+    "patient_summary_narrative",
+    "skilled_interventions",
+    "discipline_frequencies",
+    "plan_for_next_visit",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status",
+    "code_status"
+  ],
+  "warnings": [
+    "Deterministic referral facts extraction was used."
+  ]
+}

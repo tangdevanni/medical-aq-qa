@@ -1,0 +1,97 @@
+{
+  "patient_context": {
+    "patient_name": null,
+    "dob": null,
+    "soc_date": null,
+    "referral_date": null
+  },
+  "facts": [
+    {
+      "fact_key": "medical_necessity_summary",
+      "category": "medical_necessity",
+      "value": "The following was determined: evaluate and treat: Skilled nursing eval to Star Home Health nursing: The following was determined: evaluate and treat: Skilled nursing eval nursing:",
+      "confidence": 0.78,
+      "evidence_spans": [
+        "The following was determined: evaluate and treat: Skilled nursing eval to Star Home Health nursing: The following was determined: evaluate and treat: Skilled nursing eval nursing:"
+      ],
+      "rationale": "Medical necessity was summarized from referral narrative and skilled-need evidence.",
+      "source_sections": [
+        "primary_reason_for_home_health",
+        "medical_necessity"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "therapy_need",
+      "category": "therapy",
+      "value": "physical therapy: wound care: Provider: Robert Berghoff",
+      "confidence": 0.77,
+      "evidence_spans": [
+        "physical therapy: wound care: Provider: Robert Berghoff"
+      ],
+      "rationale": "Therapy need was summarized from referral text.",
+      "source_sections": [
+        "therapy_need"
+      ],
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [
+    {
+      "description": "Musculoskeletal located on the right hip",
+      "icd10_code": "M16.11",
+      "confidence": 0.74,
+      "source_spans": [
+        "M16.11) Musculoskeletal located on the right hip"
+      ],
+      "is_primary_candidate": true,
+      "requires_human_review": true
+    },
+    {
+      "description": "M16.11",
+      "icd10_code": "CHRONIC ILLNESS WITH EXACERBATION, PROGRESSION OR SIDE EFFECTS OF TREATMENT UNILATERAL PRIMERY OSTEOARTHRITIS RIGHT HIP",
+      "confidence": 0.74,
+      "source_spans": [
+        "Chronic illness with exacerbation, progression or side effects of treatment Unilateral primery osteoarthritis right hip (M16.11)"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    }
+  ],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "preferred_language",
+    "interpreter_needed",
+    "recent_hospitalization_discharge_date",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "code_status",
+    "order_summary",
+    "homebound_narrative",
+    "homebound_supporting_factors",
+    "living_situation",
+    "functional_limitations",
+    "fall_risk_narrative",
+    "primary_reason_for_home_health_medical_necessity",
+    "admit_reason_to_home_health",
+    "prior_functioning",
+    "patient_summary_narrative",
+    "skilled_interventions",
+    "discipline_frequencies",
+    "plan_for_next_visit",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status"
+  ],
+  "warnings": [
+    "Deterministic referral facts extraction was used."
+  ]
+}

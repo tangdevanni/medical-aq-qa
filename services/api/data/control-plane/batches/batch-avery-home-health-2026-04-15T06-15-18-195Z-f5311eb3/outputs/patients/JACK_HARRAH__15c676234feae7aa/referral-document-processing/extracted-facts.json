@@ -1,0 +1,165 @@
+{
+  "patient_context": {
+    "patient_name": null,
+    "dob": "09/02/1939",
+    "soc_date": "12/10/2025",
+    "referral_date": null
+  },
+  "facts": [
+    {
+      "fact_key": "functional_limitations",
+      "category": "functional",
+      "value": [
+        "weakness"
+      ],
+      "confidence": 0.76,
+      "evidence_spans": [
+        "Neuro: Denies having any headaches weakness numbness or paresthesias."
+      ],
+      "rationale": "Functional limitations were extracted from referral text.",
+      "source_sections": [
+        "functional_limitations"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "therapy_need",
+      "category": "therapy",
+      "value": "physical therapy for balance",
+      "confidence": 0.77,
+      "evidence_spans": [
+        "physical therapy for balance"
+      ],
+      "rationale": "Therapy need was summarized from referral text.",
+      "source_sections": [
+        "therapy_need"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "fall_risk_narrative",
+      "category": "risk",
+      "value": "major health concern which increases the risk of several other health issues. Neuro: Denies having any headaches weakness numbness or paresthesias.",
+      "confidence": 0.7,
+      "evidence_spans": [
+        "major health concern which increases the risk of several other health issues. Neuro: Denies having any headaches weakness numbness or paresthesias."
+      ],
+      "rationale": "Risk and safety narrative was summarized from referral text.",
+      "source_sections": [
+        "risk_factors",
+        "functional_limitations"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "skilled_interventions",
+      "category": "therapy",
+      "value": "physical therapy for balance",
+      "confidence": 0.8,
+      "evidence_spans": [
+        "physical therapy for balance"
+      ],
+      "rationale": "Skilled interventions were summarized from the therapy plan.",
+      "source_sections": [
+        "therapy_need"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "plan_for_next_visit",
+      "category": "therapy",
+      "value": "physical therapy for balance",
+      "confidence": 0.78,
+      "evidence_spans": [
+        "physical therapy for balance"
+      ],
+      "rationale": "Next-visit plan was summarized from the therapy plan.",
+      "source_sections": [
+        "therapy_need"
+      ],
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [
+    {
+      "description": "Essential (primary) hypertension",
+      "icd10_code": "I10",
+      "confidence": 0.74,
+      "source_spans": [
+        "I10) Essential (primary) hypertension"
+      ],
+      "is_primary_candidate": true,
+      "requires_human_review": true
+    },
+    {
+      "description": "Mixed hyperlipidemia",
+      "icd10_code": "E78.2",
+      "confidence": 0.74,
+      "source_spans": [
+        "E78.2) Mixed hyperlipidemia"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Type 2 diabetes mellitus with hyperglycemia",
+      "icd10_code": "E11.65",
+      "confidence": 0.74,
+      "source_spans": [
+        "E11.65) Type 2 diabetes mellitus with hyperglycemia"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Obstructive sleep apnea (adult) (pediatric",
+      "icd10_code": "G47.33",
+      "confidence": 0.74,
+      "source_spans": [
+        "G47.33) Obstructive sleep apnea (adult) (pediatric"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Hemochromatosis, unspecified",
+      "icd10_code": "E83.119",
+      "confidence": 0.74,
+      "source_spans": [
+        "E83.119) Hemochromatosis, unspecified"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    }
+  ],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "preferred_language",
+    "interpreter_needed",
+    "primary_reason_for_home_health_medical_necessity",
+    "admit_reason_to_home_health",
+    "homebound_narrative",
+    "homebound_supporting_factors",
+    "recent_hospitalization_discharge_date",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "living_situation",
+    "patient_summary_narrative",
+    "discipline_frequencies",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status",
+    "code_status"
+  ],
+  "warnings": [
+    "Deterministic referral facts extraction was used."
+  ]
+}

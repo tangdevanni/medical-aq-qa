@@ -1,0 +1,526 @@
+[
+  {
+    "sectionName": "patient_identity",
+    "extractedTextSpans": [
+      "dob: 08/03/1936)",
+      "Patient Name",
+      "Sex/DOB/Age",
+      "DOB 08/03/1936 Age 89yo",
+      "dob: 08/03/1936)",
+      "dob: 08/03/1936)",
+      "DOB",
+      "dob: 08/03/1936)",
+      "dob: 08/03/1936)",
+      "dob: 08/03/1936)",
+      "dob: 08/03/1936)",
+      "dob: 08/03/1936)",
+      "dob: 08/03/1936)",
+      "dob: 08/03/1936)",
+      "dob: 08/03/1936)",
+      "dob: 08/03/1936)"
+    ],
+    "normalizedSummary": "dob: 08/03/1936) Patient Name Sex/DOB/Age",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 7,
+        "lineEnd": 7,
+        "charStart": 149,
+        "charEnd": 165
+      },
+      {
+        "lineStart": 42,
+        "lineEnd": 42,
+        "charStart": 1510,
+        "charEnd": 1522
+      },
+      {
+        "lineStart": 46,
+        "lineEnd": 46,
+        "charStart": 1557,
+        "charEnd": 1568
+      },
+      {
+        "lineStart": 48,
+        "lineEnd": 48,
+        "charStart": 1575,
+        "charEnd": 1598
+      },
+      {
+        "lineStart": 83,
+        "lineEnd": 83,
+        "charStart": 2285,
+        "charEnd": 2301
+      },
+      {
+        "lineStart": 163,
+        "lineEnd": 163,
+        "charStart": 3712,
+        "charEnd": 3728
+      },
+      {
+        "lineStart": 197,
+        "lineEnd": 197,
+        "charStart": 4524,
+        "charEnd": 4527
+      },
+      {
+        "lineStart": 232,
+        "lineEnd": 232,
+        "charStart": 5821,
+        "charEnd": 5837
+      },
+      {
+        "lineStart": 304,
+        "lineEnd": 304,
+        "charStart": 7459,
+        "charEnd": 7475
+      },
+      {
+        "lineStart": 418,
+        "lineEnd": 418,
+        "charStart": 9191,
+        "charEnd": 9207
+      },
+      {
+        "lineStart": 612,
+        "lineEnd": 612,
+        "charStart": 11106,
+        "charEnd": 11122
+      },
+      {
+        "lineStart": 751,
+        "lineEnd": 751,
+        "charStart": 13326,
+        "charEnd": 13342
+      },
+      {
+        "lineStart": 829,
+        "lineEnd": 829,
+        "charStart": 16193,
+        "charEnd": 16209
+      },
+      {
+        "lineStart": 922,
+        "lineEnd": 922,
+        "charStart": 19808,
+        "charEnd": 19824
+      },
+      {
+        "lineStart": 1034,
+        "lineEnd": 1034,
+        "charStart": 23109,
+        "charEnd": 23125
+      },
+      {
+        "lineStart": 1145,
+        "lineEnd": 1145,
+        "charStart": 25553,
+        "charEnd": 25569
+      }
+    ]
+  },
+  {
+    "sectionName": "referral_metadata",
+    "extractedTextSpans": [
+      "HOME HEALTH REFERRAL",
+      "HOME HEALTH REFERRAL"
+    ],
+    "normalizedSummary": "HOME HEALTH REFERRAL HOME HEALTH REFERRAL",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 175,
+        "lineEnd": 175,
+        "charStart": 3938,
+        "charEnd": 3958
+      },
+      {
+        "lineStart": 180,
+        "lineEnd": 180,
+        "charStart": 4017,
+        "charEnd": 4037
+      }
+    ]
+  },
+  {
+    "sectionName": "referring_provider",
+    "extractedTextSpans": [
+      "(602) 604-5032 NPI: 1871650564",
+      "(602) 263-0778 NPI: 1851387344",
+      "234-4840 NPI: 1255310462",
+      "Dentist: TERRY D BELDEN: 4901 N 44TH ST, PHOENIX, AZ 85018, Ph (602) 840-1217, Fax (602) 840-6866 NPI:",
+      "254-5321, Fax (602) 257-0810 NPI: 1215929971",
+      "344-5596 NPI: 1316939101"
+    ],
+    "normalizedSummary": "(602) 604-5032 NPI: 1871650564 (602) 263-0778 NPI: 1851387344 234-4840 NPI: 1255310462",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 215,
+        "lineEnd": 215,
+        "charStart": 4992,
+        "charEnd": 5022
+      },
+      {
+        "lineStart": 217,
+        "lineEnd": 217,
+        "charStart": 5121,
+        "charEnd": 5151
+      },
+      {
+        "lineStart": 220,
+        "lineEnd": 220,
+        "charStart": 5291,
+        "charEnd": 5315
+      },
+      {
+        "lineStart": 221,
+        "lineEnd": 221,
+        "charStart": 5316,
+        "charEnd": 5418
+      },
+      {
+        "lineStart": 224,
+        "lineEnd": 224,
+        "charStart": 5528,
+        "charEnd": 5572
+      },
+      {
+        "lineStart": 233,
+        "lineEnd": 233,
+        "charStart": 5838,
+        "charEnd": 5862
+      }
+    ]
+  },
+  {
+    "sectionName": "hospitalization_history",
+    "extractedTextSpans": [
+      "She reports no vaginal lesions, no vaginal discharge, no",
+      "discharge.",
+      "Eyes: Lids and Conjunctivae: no discharge or pallor and non-injected.",
+      "external nose or nasal discharge."
+    ],
+    "normalizedSummary": "She reports no vaginal lesions, no vaginal discharge, no discharge. Eyes: Lids and Conjunctivae: no discharge or pallor and non-injected.",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 881,
+        "lineEnd": 881,
+        "charStart": 18406,
+        "charEnd": 18462
+      },
+      {
+        "lineStart": 889,
+        "lineEnd": 889,
+        "charStart": 18778,
+        "charEnd": 18788
+      },
+      {
+        "lineStart": 899,
+        "lineEnd": 899,
+        "charStart": 19157,
+        "charEnd": 19226
+      },
+      {
+        "lineStart": 907,
+        "lineEnd": 907,
+        "charStart": 19448,
+        "charEnd": 19481
+      }
+    ]
+  },
+  {
+    "sectionName": "diagnoses",
+    "extractedTextSpans": [
+      "ICD-10: R47.01: Aphasia",
+      "However, neurology is more concerned for PSP as the diagnosis."
+    ],
+    "normalizedSummary": "ICD-10: R47.01: Aphasia However, neurology is more concerned for PSP as the diagnosis.",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 179,
+        "lineEnd": 179,
+        "charStart": 3993,
+        "charEnd": 4016
+      },
+      {
+        "lineStart": 980,
+        "lineEnd": 980,
+        "charStart": 21707,
+        "charEnd": 21769
+      }
+    ]
+  },
+  {
+    "sectionName": "medications",
+    "extractedTextSpans": [
+      "Allergies",
+      "Allergies not reviewed (last reviewed 12/12/2025)",
+      "PHARMACY SOLUTIONS DIRECT - Member is eligible. details",
+      "PHARMACY # 465 (ERX): 4502 EAST OAK STREET, PHOENIX, AZ 85008, Ph (602) 808-0111, Fax",
+      "Allergies",
+      "Allergies not reviewed (last reviewed 12/12/2025)",
+      "Seasonal allergy",
+      "Do you take: Osteoporosis Medication (Notes: Prolia).",
+      "Seasonal allergy -",
+      "Followed allergy/immunology."
+    ],
+    "normalizedSummary": "Allergies Allergies not reviewed (last reviewed 12/12/2025) PHARMACY SOLUTIONS DIRECT - Member is eligible. details",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 59,
+        "lineEnd": 59,
+        "charStart": 1781,
+        "charEnd": 1790
+      },
+      {
+        "lineStart": 60,
+        "lineEnd": 60,
+        "charStart": 1791,
+        "charEnd": 1840
+      },
+      {
+        "lineStart": 210,
+        "lineEnd": 210,
+        "charStart": 4793,
+        "charEnd": 4848
+      },
+      {
+        "lineStart": 236,
+        "lineEnd": 236,
+        "charStart": 5891,
+        "charEnd": 5976
+      },
+      {
+        "lineStart": 263,
+        "lineEnd": 263,
+        "charStart": 6352,
+        "charEnd": 6361
+      },
+      {
+        "lineStart": 264,
+        "lineEnd": 264,
+        "charStart": 6362,
+        "charEnd": 6411
+      },
+      {
+        "lineStart": 717,
+        "lineEnd": 717,
+        "charStart": 12217,
+        "charEnd": 12233
+      },
+      {
+        "lineStart": 834,
+        "lineEnd": 834,
+        "charStart": 16448,
+        "charEnd": 16501
+      },
+      {
+        "lineStart": 1099,
+        "lineEnd": 1099,
+        "charStart": 24558,
+        "charEnd": 24576
+      },
+      {
+        "lineStart": 1103,
+        "lineEnd": 1103,
+        "charStart": 24643,
+        "charEnd": 24671
+      }
+    ]
+  },
+  {
+    "sectionName": "functional_limitations",
+    "extractedTextSpans": [
+      "muscle cramps, no muscle weakness, no joint pains, and no back pain.",
+      "Ambulation:"
+    ],
+    "normalizedSummary": "muscle cramps, no muscle weakness, no joint pains, and no back pain. Ambulation:",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 885,
+        "lineEnd": 885,
+        "charStart": 18567,
+        "charEnd": 18635
+      },
+      {
+        "lineStart": 896,
+        "lineEnd": 896,
+        "charStart": 19082,
+        "charEnd": 19093
+      }
+    ]
+  },
+  {
+    "sectionName": "risk_factors",
+    "extractedTextSpans": [
+      "Moderate risk of progression."
+    ],
+    "normalizedSummary": "Moderate risk of progression.",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 1055,
+        "lineEnd": 1055,
+        "charStart": 23683,
+        "charEnd": 23712
+      }
+    ]
+  },
+  {
+    "sectionName": "advance_directives",
+    "extractedTextSpans": [
+      "Advance Directive",
+      "advance directive?: Yes"
+    ],
+    "normalizedSummary": "Advance Directive advance directive?: Yes",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 783,
+        "lineEnd": 783,
+        "charStart": 14723,
+        "charEnd": 14740
+      },
+      {
+        "lineStart": 785,
+        "lineEnd": 785,
+        "charStart": 14756,
+        "charEnd": 14779
+      }
+    ]
+  },
+  {
+    "sectionName": "other_clinical_notes",
+    "extractedTextSpans": [
+      "Note: A Summary of Care Record (SCR) for this patient will be sent separately.",
+      "Schedule Within: provider's discretion Note to",
+      "NOTE: It is the responsibility of the patient to contact their insurance company to",
+      "Internal Note: HALF tablet PRN",
+      "Internal Note: Every 6 months",
+      "On what date was tobacco cessation counseling provided?: (Notes: mparker7 answered No to the Tobacco",
+      "What is your level of caffeine consumption?: Moderate (Notes: 1 CUP PER DAY)",
+      "When was your last pap smear?: 10/01/2016 (Notes: OB/GYN).",
+      "Have you had a hysterectomy?: Y (Notes: 2002).",
+      "Other?: Biopsy (Notes: was done before mammograms and was benign).",
+      "Have you ever had a bone mineral density test?: Y (Notes: Osteoporosis).",
+      "Have you ever broken any bones: Y (Notes: 1999, fell of a hore).",
+      "Do you take: Osteoporosis Medication (Notes: Prolia).",
+      "Notes: Cardiac Ablation 7/2015",
+      "Assessment / Plan",
+      "Discussion Notes",
+      "formulating a treatment plan, addressing patient concerns, coordinating care, and completing necessary"
+    ],
+    "normalizedSummary": "Note: A Summary of Care Record (SCR) for this patient will be sent separately. Schedule Within: provider's discretion Note to NOTE: It is the responsibility of the patient to contact their insurance company to",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 8,
+        "lineEnd": 8,
+        "charStart": 166,
+        "charEnd": 244
+      },
+      {
+        "lineStart": 181,
+        "lineEnd": 181,
+        "charStart": 4038,
+        "charEnd": 4084
+      },
+      {
+        "lineStart": 186,
+        "lineEnd": 186,
+        "charStart": 4207,
+        "charEnd": 4290
+      },
+      {
+        "lineStart": 288,
+        "lineEnd": 288,
+        "charStart": 6992,
+        "charEnd": 7022
+      },
+      {
+        "lineStart": 323,
+        "lineEnd": 323,
+        "charStart": 8043,
+        "charEnd": 8072
+      },
+      {
+        "lineStart": 770,
+        "lineEnd": 770,
+        "charStart": 14081,
+        "charEnd": 14181
+      },
+      {
+        "lineStart": 774,
+        "lineEnd": 774,
+        "charStart": 14349,
+        "charEnd": 14425
+      },
+      {
+        "lineStart": 802,
+        "lineEnd": 802,
+        "charStart": 15213,
+        "charEnd": 15271
+      },
+      {
+        "lineStart": 804,
+        "lineEnd": 804,
+        "charStart": 15317,
+        "charEnd": 15363
+      },
+      {
+        "lineStart": 822,
+        "lineEnd": 822,
+        "charStart": 15977,
+        "charEnd": 16043
+      },
+      {
+        "lineStart": 831,
+        "lineEnd": 831,
+        "charStart": 16272,
+        "charEnd": 16344
+      },
+      {
+        "lineStart": 833,
+        "lineEnd": 833,
+        "charStart": 16383,
+        "charEnd": 16447
+      },
+      {
+        "lineStart": 834,
+        "lineEnd": 834,
+        "charStart": 16448,
+        "charEnd": 16501
+      },
+      {
+        "lineStart": 850,
+        "lineEnd": 850,
+        "charStart": 17155,
+        "charEnd": 17185
+      },
+      {
+        "lineStart": 956,
+        "lineEnd": 956,
+        "charStart": 21086,
+        "charEnd": 21103
+      },
+      {
+        "lineStart": 1150,
+        "lineEnd": 1150,
+        "charStart": 25675,
+        "charEnd": 25691
+      },
+      {
+        "lineStart": 1153,
+        "lineEnd": 1153,
+        "charStart": 25901,
+        "charEnd": 26003
+      }
+    ]
+  }
+]

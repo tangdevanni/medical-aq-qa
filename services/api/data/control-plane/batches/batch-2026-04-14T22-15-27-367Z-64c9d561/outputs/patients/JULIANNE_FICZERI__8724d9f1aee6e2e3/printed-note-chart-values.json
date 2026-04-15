@@ -1,0 +1,84 @@
+{
+  "generatedAt": "2026-04-14T23:03:28.457Z",
+  "source": "printed_note_ocr",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-14T22-15-27-367Z-64c9d561\\outputs\\evidence\\JULIANNE_FICZERI__8724d9f1aee6e2e3\\oasis-printed-note\\extracted-text.txt",
+  "extractedFieldCount": 7,
+  "invocationModelId": "us.amazon.nova-lite-v1:0",
+  "currentChartValues": {
+    "patient_name": "FICZERI, JULIANNE",
+    "dob": "1957-10-22",
+    "soc_date": "2026-03-13",
+    "primary_reason_for_home_health_medical_necessity": "Julianne Ficzeri, a 68-year-old female, is being admitted to home health care following her recent right total knee arthroplasty performed on March 12, 2026. Her primary diagnosis is right knee osteoarthritis (ICD10CM - M17.11), and she has a secondary condition of chronic pain related to the pre-operative osteoarthritis. Due to the surgical intervention, she is medically homebound, as leaving the home requires significant effort and assistance, which has been documented in her hospital and clinical visit notes. At",
+    "homebound_narrative": "Julianne Ficzeri is medically homebound due to her recent right total knee arthroplasty. She requires significant effort and assistance to leave her home, as documented in her hospital and clinical visit notes. Her condition necessitates intermittent skilled nursing care and physical therapy to support her recovery and rehabilitation process.",
+    "functional_limitations": "Severe functional limitations, including the need for an assistive device and assistance from another person to leave her home.",
+    "pain_assessment_narrative": "Julianne Ficzeri reports post-surgical knee pain with a pain intensity of 7 on the Wong-Baker FACES® Pain Rating Scale. The pain is described as a dull ache and is exacerbated by movement. The pain affects her ability to sleep and participate in day-to-day activities."
+  },
+  "extractedFieldValues": [
+    {
+      "field_key": "patient_name",
+      "current_value": "FICZERI, JULIANNE",
+      "confidence": 0.95,
+      "source_spans": [
+        "Name: FICZERI, JULIANNE",
+        "Name: JULIANNE FICZERI",
+        "Patient Name First Name: JULIANNE"
+      ]
+    },
+    {
+      "field_key": "dob",
+      "current_value": "1957-10-22",
+      "confidence": 0.95,
+      "source_spans": [
+        "DOB: 10/22/1957",
+        "Birth Date * (M0069) 10/22/1957"
+      ]
+    },
+    {
+      "field_key": "soc_date",
+      "current_value": "2026-03-13",
+      "confidence": 0.95,
+      "source_spans": [
+        "(M0032) Start of Care Date 03/13/2026",
+        "Start of Care Date HATFIELD, STEPHEN 03/13/2026"
+      ]
+    },
+    {
+      "field_key": "primary_reason_for_home_health_medical_necessity",
+      "current_value": "Julianne Ficzeri, a 68-year-old female, is being admitted to home health care following her recent right total knee arthroplasty performed on March 12, 2026. Her primary diagnosis is right knee osteoarthritis (ICD10CM - M17.11), and she has a secondary condition of chronic pain related to the pre-operative osteoarthritis. Due to the surgical intervention, she is medically homebound, as leaving the home requires significant effort and assistance, which has been documented in her hospital and clinical visit notes. At present, Julianne's medical status indicates that she experiences severe functional limitations, including the need for an assistive device and assistance from another person to leave her home. These limitations necessitate intermittent skilled nursing care and physical therapy to support her recovery and rehabilitation process.",
+      "confidence": 0.9,
+      "source_spans": [
+        "Primary Reason for Home Health / Medical Necessity",
+        "Julianne Ficzeri, a 68-year-old female, is being admitted to home health care following her recent right total knee arthroplasty performed on March 12, 2026."
+      ]
+    },
+    {
+      "field_key": "homebound_narrative",
+      "current_value": "Julianne Ficzeri is medically homebound due to her recent right total knee arthroplasty. She requires significant effort and assistance to leave her home, as documented in her hospital and clinical visit notes. Her condition necessitates intermittent skilled nursing care and physical therapy to support her recovery and rehabilitation process.",
+      "confidence": 0.85,
+      "source_spans": [
+        "Homebound Reason Document as Clinical Narrative",
+        "Due to the surgical intervention, she is medically homebound, as leaving the home requires significant effort and assistance, which has been documented in her hospital and clinical visit notes."
+      ]
+    },
+    {
+      "field_key": "functional_limitations",
+      "current_value": "Severe functional limitations, including the need for an assistive device and assistance from another person to leave her home.",
+      "confidence": 0.85,
+      "source_spans": [
+        "At present, Julianne's medical status indicates that she experiences severe functional limitations, including the need for an assistive device and assistance from another person to leave her home."
+      ]
+    },
+    {
+      "field_key": "pain_assessment_narrative",
+      "current_value": "Julianne Ficzeri reports post-surgical knee pain with a pain intensity of 7 on the Wong-Baker FACES® Pain Rating Scale. The pain is described as a dull ache and is exacerbated by movement. The pain affects her ability to sleep and participate in day-to-day activities.",
+      "confidence": 0.85,
+      "source_spans": [
+        "Pain Assessment Wong-Baker FACES® Pain Rating Scale",
+        "Pain Location and Description: Location Start Date Activity What makes pain worse? right knee 03/13/2026 With Activityx Movementx"
+      ]
+    }
+  ],
+  "warnings": [
+    "Printed-note chart-value extraction used inference profile us.amazon.nova-lite-v1:0."
+  ]
+}

@@ -1,0 +1,5905 @@
+{
+  "schemaVersion": "1",
+  "generatedAt": "2026-04-14T23:45:22.954Z",
+  "sourcePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-14T22-15-27-367Z-64c9d561\\outputs\\patients\\SCOTT_WHITTAKER__2c3ae7543fc9ed80\\documents\\scott-whittaker-new-referral-pdf\\source.pdf",
+  "pdfType": "scanned_image_pdf",
+  "ocrUsed": true,
+  "ocrMode": "async_s3",
+  "ocrProvider": "textract",
+  "ocrSuccess": true,
+  "ocrTextLength": 5083,
+  "configuredAwsRegion": "us-east-2",
+  "resolvedBucketRegion": "us-east-2",
+  "textractRegion": "us-east-2",
+  "regionMatch": true,
+  "regionOverrideUsed": true,
+  "s3UploadSucceeded": true,
+  "s3UploadError": null,
+  "textractStartSucceeded": true,
+  "textractStartError": null,
+  "ocrErrorCategory": null,
+  "syncError": "Request has unsupported document format",
+  "textractS3Bucket": "medical-qa-textract-docs-devanni",
+  "textractS3Key": "finale-workbook-intake/textract/d08fe4946c38fca423275b8b8701c7dbbbd20837/source.pdf",
+  "textractJobId": "a5d1d197c4355ec2feb972d780538e4a7f6db7705a61005a1e64a9c9c5710569",
+  "textractJobStatus": "SUCCEEDED",
+  "textractStatusMessage": null,
+  "textractPollAttemptCount": 7,
+  "blockCount": 979,
+  "blocks": [
+    {
+      "blockType": "PAGE",
+      "text": null,
+      "confidence": null,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "From: robert mileski",
+      "confidence": 99.87550354003906,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Fax: +16232098892",
+      "confidence": 99.78396606445312,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "To:",
+      "confidence": 99.83159637451172,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Fax: +14809560654",
+      "confidence": 99.81694030761719,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Page: 1 of 6",
+      "confidence": 99.73921966552734,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "02/02/2026 1:39 PM",
+      "confidence": 99.73931884765625,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "FAX",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Date: 02/02/2026",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Pages including cover sheet:",
+      "confidence": 99.92781066894531,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "6",
+      "confidence": 99.91131591796875,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "To:",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "From:",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "robert mileski",
+      "confidence": 99.98046875,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Phoenix Orthopedic Group",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "9941 N 95th St",
+      "confidence": 99.94568634033203,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Scottsdale",
+      "confidence": 99.96014404296875,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "AZ",
+      "confidence": 99.88042449951172,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "85258",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Phone",
+      "confidence": 99.96014404296875,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Phone",
+      "confidence": 99.96014404296875,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "+16232098892X101",
+      "confidence": 99.87065887451172,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Fax Phone",
+      "confidence": 99.96054077148438,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "+14809560654",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Fax Phone",
+      "confidence": 99.95077514648438,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "+16232098892",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "NOTE:",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "HOME HEALTH ORDER",
+      "confidence": 99.96392822265625,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "SURGERY 2/26/2026",
+      "confidence": 99.95565795898438,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "WHEN OR IF YOU NEED PT ORDERS LET ME KNOW.",
+      "confidence": 99.88765716552734,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "CHARLIE",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "From:",
+      "confidence": 99.91131591796875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "robert",
+      "confidence": 99.76403045654297,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "mileski",
+      "confidence": 99.951171875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Fax:",
+      "confidence": 99.73394012451172,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "+16232098892",
+      "confidence": 99.833984375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "To:",
+      "confidence": 99.83159637451172,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Fax:",
+      "confidence": 99.75186920166016,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "+14809560654",
+      "confidence": 99.88201141357422,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Page:",
+      "confidence": 99.83079528808594,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "1",
+      "confidence": 99.59721374511719,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "of",
+      "confidence": 99.912109375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "6",
+      "confidence": 99.61674499511719,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "02/02/2026",
+      "confidence": 99.84375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "1:39",
+      "confidence": 99.67693328857422,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "PM",
+      "confidence": 99.697265625,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "FAX",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Date:",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "02/02/2026",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Pages",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "including",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "cover",
+      "confidence": 99.95037078857422,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "sheet:",
+      "confidence": 99.7608413696289,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "6",
+      "confidence": 99.91131591796875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "To:",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "From:",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "robert",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "mileski",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Phoenix",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Orthopedic",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Group",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "9941",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "N",
+      "confidence": 99.951171875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "95th",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "St",
+      "confidence": 99.87065887451172,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Scottsdale",
+      "confidence": 99.96014404296875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "AZ",
+      "confidence": 99.88042449951172,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "85258",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Phone",
+      "confidence": 99.96014404296875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Phone",
+      "confidence": 99.96014404296875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "+16232098892X101",
+      "confidence": 99.87065887451172,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Fax",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Phone",
+      "confidence": 99.95037078857422,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "+14809560654",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Fax",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Phone",
+      "confidence": 99.93083953857422,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "+16232098892",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "NOTE:",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "HOME",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "HEALTH",
+      "confidence": 99.931640625,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "ORDER",
+      "confidence": 99.96014404296875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "SURGERY",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "2/26/2026",
+      "confidence": 99.91131591796875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "WHEN",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "OR",
+      "confidence": 99.96014404296875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "IF",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "YOU",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "NEED",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "PT",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "ORDERS",
+      "confidence": 99.84056091308594,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "LET",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "ME",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "KNOW.",
+      "confidence": 99.17350769042969,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "CHARLIE",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "PAGE",
+      "text": null,
+      "confidence": null,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "From: robert mileski",
+      "confidence": 99.81179809570312,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Fax: +16232098892",
+      "confidence": 99.71769714355469,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "To:",
+      "confidence": 99.63229370117188,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Fax: +14809560654",
+      "confidence": 99.74170684814453,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Page: 2 of 6",
+      "confidence": 99.72476959228516,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "02/02/2026 1:39 PM",
+      "confidence": 99.7615737915039,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "STAR HH",
+      "confidence": 97.28619384765625,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Robert A. Mileski, M.D.",
+      "confidence": 99.18990325927734,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Phoenix Orthopedic Group",
+      "confidence": 99.97017669677734,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "9941 N. 95th Street, Ste 101",
+      "confidence": 98.79644012451172,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Scottsdale, AZ 85258",
+      "confidence": 99.75320434570312,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Phone: 602-277-1558",
+      "confidence": 99.9951171875,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Fax: 602-266-6991",
+      "confidence": 99.98046875,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "HOME HEALTH ORDER",
+      "confidence": 99.97721099853516,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "PATIENT Scott Whittaker",
+      "confidence": 71.65616607666016,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "DOB: 3/3/49",
+      "confidence": 99.90642547607422,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "DOS: 2/26/26",
+      "confidence": 99.18855285644531,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "PROCEDURE: Left Total Shoulder Rep",
+      "confidence": 97.89130401611328,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "LOCATION: Roden Valley",
+      "confidence": 57.850868225097656,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "ICD10: m19.012",
+      "confidence": 87.05606079101562,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "ORDERS:",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "HOME HEALTH",
+      "confidence": 99.970703125,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "SKILLED NURSING VISITS TO PERFORM WOUND CARE, DRESSING CHANGES",
+      "confidence": 99.96682739257812,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "PLEASE CALL (602)277-1558 TO CHARLIE FOR FURTHER INSTRUCTIONS IF NEEDED.",
+      "confidence": 99.89990997314453,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "OTHER:",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "SIGNATURE:",
+      "confidence": 99.95037078857422,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Plat A Milelar",
+      "confidence": 59.535301208496094,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "DATE:",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "2/2/26",
+      "confidence": 99.21337127685547,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "From:",
+      "confidence": 99.81126403808594,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "robert",
+      "confidence": 99.79252624511719,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "mileski",
+      "confidence": 99.83159637451172,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Fax:",
+      "confidence": 99.51351165771484,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "+16232098892",
+      "confidence": 99.921875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "To:",
+      "confidence": 99.63229370117188,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Fax:",
+      "confidence": 99.63229370117188,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "+14809560654",
+      "confidence": 99.85112762451172,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Page:",
+      "confidence": 99.91051483154297,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "2",
+      "confidence": 99.56871795654297,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "of",
+      "confidence": 99.88201141357422,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "6",
+      "confidence": 99.53782653808594,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "02/02/2026",
+      "confidence": 99.892578125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "1:39",
+      "confidence": 99.67534637451172,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "PM",
+      "confidence": 99.716796875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "STAR",
+      "confidence": 99.296875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "HH",
+      "confidence": 95.2755126953125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Robert",
+      "confidence": 99.873046875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "A.",
+      "confidence": 97.37723541259766,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Mileski,",
+      "confidence": 99.91051483154297,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "M.D.",
+      "confidence": 99.59881591796875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Phoenix",
+      "confidence": 99.96014404296875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Orthopedic",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Group",
+      "confidence": 99.95037078857422,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "9941",
+      "confidence": 99.990234375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "N.",
+      "confidence": 99.453125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "95th",
+      "confidence": 93.4239501953125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Street,",
+      "confidence": 99.95037078857422,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Ste",
+      "confidence": 99.990234375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "101",
+      "confidence": 99.970703125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Scottsdale,",
+      "confidence": 99.60140228271484,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "AZ",
+      "confidence": 99.8046875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "85258",
+      "confidence": 99.853515625,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Phone:",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "602-277-1558",
+      "confidence": 99.990234375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Fax:",
+      "confidence": 99.970703125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "602-266-6991",
+      "confidence": 99.990234375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "HOME",
+      "confidence": 99.970703125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "HEALTH",
+      "confidence": 99.9609375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "ORDER",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "PATIENT",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Scott",
+      "confidence": 53.32330322265625,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Whittaker",
+      "confidence": 61.64521026611328,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "DOB:",
+      "confidence": 99.9609375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "3/3/49",
+      "confidence": 99.85192108154297,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "DOS:",
+      "confidence": 99.9609375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "2/26/26",
+      "confidence": 98.41617584228516,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "PROCEDURE:",
+      "confidence": 99.89098358154297,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Left",
+      "confidence": 98.21688079833984,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Total",
+      "confidence": 99.951171875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Shoulder",
+      "confidence": 98.80081939697266,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Rep",
+      "confidence": 92.59666442871094,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "LOCATION:",
+      "confidence": 99.88121795654297,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Roden Valley",
+      "confidence": 15.820511817932129,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "ICD10:",
+      "confidence": 99.84295654296875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "m19.012",
+      "confidence": 74.26917266845703,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "ORDERS:",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "HOME",
+      "confidence": 99.970703125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "HEALTH",
+      "confidence": 99.970703125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "SKILLED",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "NURSING",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "VISITS",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "TO",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "PERFORM",
+      "confidence": 99.990234375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "WOUND",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "CARE,",
+      "confidence": 99.7510757446289,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "DRESSING",
+      "confidence": 99.96014404296875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "CHANGES",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "PLEASE",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "CALL",
+      "confidence": 99.990234375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "(602)277-1558",
+      "confidence": 99.29448699951172,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "TO",
+      "confidence": 99.931640625,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "CHARLIE",
+      "confidence": 99.990234375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "FOR",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "FURTHER",
+      "confidence": 99.970703125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "INSTRUCTIONS",
+      "confidence": 99.970703125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "IF",
+      "confidence": 99.970703125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "NEEDED.",
+      "confidence": 99.88042449951172,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "OTHER:",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "SIGNATURE:",
+      "confidence": 99.95037078857422,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Plat",
+      "confidence": 58.440486907958984,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "A",
+      "confidence": 94.60240173339844,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Milelar",
+      "confidence": 25.563018798828125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "DATE:",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "2/2/26",
+      "confidence": 99.21337127685547,
+      "page": 2
+    },
+    {
+      "blockType": "PAGE",
+      "text": null,
+      "confidence": null,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "From: robert mileski",
+      "confidence": 99.56739044189453,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Fax: +16232098892",
+      "confidence": 99.59033966064453,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "To:",
+      "confidence": 99.65262603759766,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Fax: +14809560654",
+      "confidence": 99.70344543457031,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Page: 3 of 6",
+      "confidence": 99.65641021728516,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "02/02/2026 1:39 PM",
+      "confidence": 99.69647216796875,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Page 1 of 1",
+      "confidence": 87.65968322753906,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Phoenix Orthopedic Group PC",
+      "confidence": 99.98291015625,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Monday, February 2, 2026",
+      "confidence": 99.465576171875,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "9941 N 95th Street",
+      "confidence": 99.970703125,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Suite 101",
+      "confidence": 99.88241577148438,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Scottsdale, AZ 85258-4610",
+      "confidence": 99.62299346923828,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "(602)277-1558",
+      "confidence": 99.51908874511719,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Demographics for Whittaker, Scott D",
+      "confidence": 99.90397644042969,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Medical Record Number:",
+      "confidence": 99.78116607666016,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Name: Whittaker, Scott D",
+      "confidence": 96.14242553710938,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "External ID: 99360",
+      "confidence": 99.89556884765625,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Also Known As: Whittaker, Scott D",
+      "confidence": 99.8143539428711,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Social Security Number:",
+      "confidence": 99.91051483154297,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Medical Record Number:",
+      "confidence": 99.89098358154297,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Practice Provider: Mileski, Robert A",
+      "confidence": 99.5714340209961,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Referring Provider: Crever, Gregory",
+      "confidence": 94.00395965576172,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Date of Birth: 3/3/1949",
+      "confidence": 99.95097351074219,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Age: 76 Years",
+      "confidence": 99.97721099853516,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Current Sex: Male",
+      "confidence": 99.96392822265625,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Gender Identity:",
+      "confidence": 99.21337127685547,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Sexual Orientation:",
+      "confidence": 99.80598449707031,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Preferred Contact Method:",
+      "confidence": 99.94386291503906,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Primary Address:",
+      "confidence": 99.9951171875,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Secondary Address:",
+      "confidence": 99.96014404296875,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "10538 E Topaz Cir",
+      "confidence": 99.79212951660156,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Scottsdale AZ 85258",
+      "confidence": 99.83917236328125,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Phone Numbers:",
+      "confidence": 99.9206771850586,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "2.",
+      "confidence": 99.873046875,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "1. (602)430-5901 cell",
+      "confidence": 99.0627670288086,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "3.",
+      "confidence": 99.73233795166016,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "4.",
+      "confidence": 99.88201141357422,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Email Addresses:",
+      "confidence": 99.87145233154297,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "1. swhittaker0349@gmail.com",
+      "confidence": 97.12313079833984,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "2.",
+      "confidence": 99.8828125,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Marital Status: Married",
+      "confidence": 99.89749145507812,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Race: Not Provided",
+      "confidence": 99.95063781738281,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Preferred Language: English",
+      "confidence": 99.90048217773438,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Ethnicity: Not Provided",
+      "confidence": 99.95063781738281,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Translator Required: No",
+      "confidence": 99.91077423095703,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Dominant Hand: Right",
+      "confidence": 99.9606704711914,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Interpreter Required: No",
+      "confidence": 98.92757415771484,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Driver's License Number:",
+      "confidence": 99.87091827392578,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Release Signed Date:",
+      "confidence": 99.96040344238281,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Original Chart Scanned:",
+      "confidence": 99.9373550415039,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Patient Status:",
+      "confidence": 99.93083953857422,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "Notes:",
+      "confidence": 99.91051483154297,
+      "page": 3
+    },
+    {
+      "blockType": "LINE",
+      "text": "http://ocal:1/WebBrowser/Prm.WebBrowser.DynamicHtmIPage.aspx?Key=46e79f6c-280d.2/22026",
+      "confidence": 56.71895217895508,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "From:",
+      "confidence": 99.71360778808594,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "robert",
+      "confidence": 99.37260437011719,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "mileski",
+      "confidence": 99.61595153808594,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Fax:",
+      "confidence": 99.3759994506836,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "+16232098892",
+      "confidence": 99.8046875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "To:",
+      "confidence": 99.65262603759766,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Fax:",
+      "confidence": 99.6338882446289,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "+14809560654",
+      "confidence": 99.77300262451172,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Page:",
+      "confidence": 99.83159637451172,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "3",
+      "confidence": 99.55895233154297,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "of",
+      "confidence": 99.85271453857422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "6",
+      "confidence": 99.38237762451172,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "02/02/2026",
+      "confidence": 99.892578125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "1:39",
+      "confidence": 99.67534637451172,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "PM",
+      "confidence": 99.521484375,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Page",
+      "confidence": 99.892578125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "1",
+      "confidence": 57.372249603271484,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "of",
+      "confidence": 98.33805084228516,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "1",
+      "confidence": 95.03587341308594,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Phoenix",
+      "confidence": 100,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Orthopedic",
+      "confidence": 99.990234375,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Group",
+      "confidence": 99.970703125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "PC",
+      "confidence": 99.970703125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Monday,",
+      "confidence": 99.92028045654297,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "February",
+      "confidence": 99.921875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "2,",
+      "confidence": 98.2643051147461,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "2026",
+      "confidence": 99.755859375,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "9941",
+      "confidence": 99.990234375,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "N",
+      "confidence": 99.931640625,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "95th",
+      "confidence": 99.9609375,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Street",
+      "confidence": 100,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Suite",
+      "confidence": 99.92107391357422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "101",
+      "confidence": 99.84375,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Scottsdale,",
+      "confidence": 99.60140228271484,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "AZ",
+      "confidence": 99.736328125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "85258-4610",
+      "confidence": 99.53125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "(602)277-1558",
+      "confidence": 99.51908874511719,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Demographics",
+      "confidence": 99.96014404296875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "for",
+      "confidence": 99.970703125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Whittaker,",
+      "confidence": 99.96014404296875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Scott",
+      "confidence": 99.970703125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "D",
+      "confidence": 99.658203125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Medical",
+      "confidence": 100,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Record",
+      "confidence": 99.970703125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Number:",
+      "confidence": 99.37281036376953,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Name:",
+      "confidence": 100,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Whittaker,",
+      "confidence": 85.82051086425781,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Scott",
+      "confidence": 99.79412841796875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "D",
+      "confidence": 98.955078125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "External",
+      "confidence": 99.990234375,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "ID:",
+      "confidence": 99.765625,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "99360",
+      "confidence": 99.93083953857422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Also",
+      "confidence": 99.990234375,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Known",
+      "confidence": 99.91051483154297,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "As:",
+      "confidence": 99.951171875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Whittaker,",
+      "confidence": 99.59163665771484,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Scott",
+      "confidence": 99.92107391357422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "D",
+      "confidence": 99.521484375,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Social",
+      "confidence": 99.990234375,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Security",
+      "confidence": 99.990234375,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Number:",
+      "confidence": 99.7510757446289,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Medical",
+      "confidence": 99.970703125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Record",
+      "confidence": 99.970703125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Number:",
+      "confidence": 99.7315444946289,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Practice",
+      "confidence": 99.96014404296875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Provider:",
+      "confidence": 99.83079528808594,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Mileski,",
+      "confidence": 99.0539321899414,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Robert",
+      "confidence": 99.892578125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "A",
+      "confidence": 99.11969757080078,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Referring",
+      "confidence": 99.990234375,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Provider:",
+      "confidence": 99.87065887451172,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Crever,",
+      "confidence": 76.27371215820312,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Gregory",
+      "confidence": 99.88121795654297,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Date",
+      "confidence": 99.970703125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "of",
+      "confidence": 99.9609375,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Birth:",
+      "confidence": 99.92107391357422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "3/3/1949",
+      "confidence": 99.951171875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Age:",
+      "confidence": 99.990234375,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "76",
+      "confidence": 99.970703125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Years",
+      "confidence": 99.970703125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Current",
+      "confidence": 99.990234375,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Sex:",
+      "confidence": 99.93083953857422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Male",
+      "confidence": 99.970703125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Gender",
+      "confidence": 99.93083953857422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Identity:",
+      "confidence": 98.49589538574219,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Sexual",
+      "confidence": 99.93083953857422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Orientation:",
+      "confidence": 99.68112182617188,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Preferred",
+      "confidence": 99.95037078857422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Contact",
+      "confidence": 99.990234375,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Method:",
+      "confidence": 99.89098358154297,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Primary",
+      "confidence": 100,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Address:",
+      "confidence": 99.990234375,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Secondary",
+      "confidence": 99.96014404296875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Address:",
+      "confidence": 99.96014404296875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "10538",
+      "confidence": 99.931640625,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "E",
+      "confidence": 99.51431274414062,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Topaz",
+      "confidence": 99.93083953857422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Cir",
+      "confidence": 99.79173278808594,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Scottsdale",
+      "confidence": 99.84056091308594,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "AZ",
+      "confidence": 99.75505828857422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "85258",
+      "confidence": 99.921875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Phone",
+      "confidence": 99.93083953857422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Numbers:",
+      "confidence": 99.91051483154297,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "2.",
+      "confidence": 99.873046875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "1.",
+      "confidence": 97.96057891845703,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "(602)430-5901",
+      "confidence": 99.72576141357422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "cell",
+      "confidence": 99.501953125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "3.",
+      "confidence": 99.73233795166016,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "4.",
+      "confidence": 99.88201141357422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Email",
+      "confidence": 99.912109375,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Addresses:",
+      "confidence": 99.83079528808594,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "1.",
+      "confidence": 99.216552734375,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "swhittaker0349@gmail.com",
+      "confidence": 95.02969360351562,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "2.",
+      "confidence": 99.8828125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Marital",
+      "confidence": 99.85112762451172,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Status:",
+      "confidence": 99.89098358154297,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Married",
+      "confidence": 99.95037078857422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Race:",
+      "confidence": 99.95037078857422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Not",
+      "confidence": 99.970703125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Provided",
+      "confidence": 99.93083953857422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Preferred",
+      "confidence": 99.87065887451172,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Language:",
+      "confidence": 99.84056091308594,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "English",
+      "confidence": 99.990234375,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Ethnicity:",
+      "confidence": 99.96014404296875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Not",
+      "confidence": 99.92107391357422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Provided",
+      "confidence": 99.970703125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Translator",
+      "confidence": 99.95037078857422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Required:",
+      "confidence": 99.85112762451172,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "No",
+      "confidence": 99.93083953857422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Dominant",
+      "confidence": 99.990234375,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Hand:",
+      "confidence": 99.92107391357422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Right",
+      "confidence": 99.970703125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Interpreter",
+      "confidence": 96.86164855957031,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Required:",
+      "confidence": 99.990234375,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "No",
+      "confidence": 99.93083953857422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Driver's",
+      "confidence": 99.95037078857422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "License",
+      "confidence": 99.970703125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Number:",
+      "confidence": 99.69168090820312,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Release",
+      "confidence": 99.96014404296875,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Signed",
+      "confidence": 99.990234375,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Date:",
+      "confidence": 99.93083953857422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Original",
+      "confidence": 99.95037078857422,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Chart",
+      "confidence": 99.89098358154297,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Scanned:",
+      "confidence": 99.970703125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Patient",
+      "confidence": 99.970703125,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Status:",
+      "confidence": 99.89098358154297,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "Notes:",
+      "confidence": 99.91051483154297,
+      "page": 3
+    },
+    {
+      "blockType": "WORD",
+      "text": "http://ocal:1/WebBrowser/Prm.WebBrowser.DynamicHtmIPage.aspx?Key=46e79f6c-280d.2/22026",
+      "confidence": 56.71895217895508,
+      "page": 3
+    },
+    {
+      "blockType": "PAGE",
+      "text": null,
+      "confidence": null,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "From: robert mileski",
+      "confidence": 99.79226684570312,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Fax: +16232098892",
+      "confidence": 99.7237777709961,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "To:",
+      "confidence": 99.65182495117188,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Fax: +14809560654",
+      "confidence": 99.67743682861328,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Page: 4 of 6",
+      "confidence": 99.73493194580078,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "02/02/2026 1:39 PM",
+      "confidence": 99.8006362915039,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Page 1 of 1",
+      "confidence": 88.44925689697266,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Phoenix Orthopedic Group PC",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Monday, February 2, 2026",
+      "confidence": 99.68854522705078,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "9941 N 95th Street",
+      "confidence": 99.97802734375,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Suite 101",
+      "confidence": 99.88729858398438,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Scottsdale, AZ 85258-4610",
+      "confidence": 99.69135284423828,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "(602)277-1558",
+      "confidence": 99.46129608154297,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Accounts for Whittaker, Scott D",
+      "confidence": 99.94710540771484,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Medical Record Number:",
+      "confidence": 98.77790069580078,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Account: Main",
+      "confidence": 99.97518920898438,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Add New Account",
+      "confidence": 99.91835021972656,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Account External ID: 110716",
+      "confidence": 99.9658203125,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Account Type: Medicare Part B",
+      "confidence": 99.84542083740234,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Coverage Type:",
+      "confidence": 99.97030639648438,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Total Account Balance: $0.00",
+      "confidence": 99.93368530273438,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Patient Balance: $0.00",
+      "confidence": 99.95442962646484,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Payer Credit Balance:",
+      "confidence": 99.9574203491211,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Responsible Party External ID: 107486",
+      "confidence": 99.95491790771484,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Responsible Party Balance: $0.00",
+      "confidence": 99.94061279296875,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "$0.00",
+      "confidence": 99.931640625,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Responsible Party: Whittaker, Scott",
+      "confidence": 97.81340026855469,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Collection Status:",
+      "confidence": 99.9157943725586,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Last Statement:",
+      "confidence": 99.94548797607422,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Statement: System -",
+      "confidence": 95.55604553222656,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Sufficient Payment Due: $0.00",
+      "confidence": 99.90886688232422,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Due Date:",
+      "confidence": 99.93612670898438,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Send",
+      "confidence": 99.96014404296875,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Current Insurance (1/21/2026-Future):",
+      "confidence": 99.61953735351562,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "e Eligibility Date 01/30/2026",
+      "confidence": 84.21321868896484,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Ins",
+      "confidence": 99.47285461425781,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Ins Subscriber",
+      "confidence": 99.73682403564453,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Payer/Plan",
+      "confidence": 99.76243591308594,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Status",
+      "confidence": 99.91051483154297,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Ded",
+      "confidence": 99.96014404296875,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Rmng",
+      "confidence": 99.91051483154297,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Eff Date",
+      "confidence": 99.873046875,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Copay",
+      "confidence": 99.95037078857422,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Copay",
+      "confidence": 99.95037078857422,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Primary",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Copay Spc",
+      "confidence": 99.88610076904297,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Other",
+      "confidence": 99.93083953857422,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Primary",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Whittaker, Scott D",
+      "confidence": 98.67771911621094,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "MEDICARE/MEDICARE Active",
+      "confidence": 92.88743591308594,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "$283.00",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "$1,736.00",
+      "confidence": 99.912109375,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Coverage",
+      "confidence": 99.96014404296875,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "DOB: 3/3/1949",
+      "confidence": 99.88241577148438,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Group ID: NONE",
+      "confidence": 99.91510009765625,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Patient Relation:Self",
+      "confidence": 99.79452514648438,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Member",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Authorize Assignment: ID:5NU9CY7GM13",
+      "confidence": 99.5062026977539,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Yes",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Po Box 6704",
+      "confidence": 99.88227844238281,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Fargo, ND 58108-6704",
+      "confidence": 99.90779113769531,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "(877)308-8431",
+      "confidence": 99.75267028808594,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Secondary Whittaker, Scott D",
+      "confidence": 99.55965423583984,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "HUMANA/HUMANA",
+      "confidence": 99.65262603759766,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "DOB: 3/3/1949",
+      "confidence": 99.90154266357422,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Group ID:",
+      "confidence": 99.94140625,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Patient Relation:Self",
+      "confidence": 99.6472396850586,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Member ID:H78845908",
+      "confidence": 99.94100952148438,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Authorize Assignment:",
+      "confidence": 99.6815185546875,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Po Box 14601",
+      "confidence": 99.78575897216797,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Yes",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "Lexington, KY 40512",
+      "confidence": 99.29335021972656,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "(800)448-6262",
+      "confidence": 99.5264663696289,
+      "page": 4
+    },
+    {
+      "blockType": "LINE",
+      "text": "http://ocal:2/WebBrowser/Prm.WebBrowser.DynamicHtmlPage.aspx?Key=5d41985-40c4.2/2/2026",
+      "confidence": 64.13005828857422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "From:",
+      "confidence": 99.79173278808594,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "robert",
+      "confidence": 99.77300262451172,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "mileski",
+      "confidence": 99.81205749511719,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Fax:",
+      "confidence": 99.55496978759766,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "+16232098892",
+      "confidence": 99.892578125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "To:",
+      "confidence": 99.65182495117188,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Fax:",
+      "confidence": 99.56314086914062,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "+14809560654",
+      "confidence": 99.79173278808594,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Page:",
+      "confidence": 99.85112762451172,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "4",
+      "confidence": 99.716796875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "of",
+      "confidence": 99.88201141357422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "6",
+      "confidence": 99.48979949951172,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "02/02/2026",
+      "confidence": 99.951171875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "1:39",
+      "confidence": 99.71440124511719,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "PM",
+      "confidence": 99.736328125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Page",
+      "confidence": 99.931640625,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "1",
+      "confidence": 90.13731384277344,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "of",
+      "confidence": 99.5533676147461,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "1",
+      "confidence": 64.1747055053711,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Phoenix",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Orthopedic",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Group",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "PC",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Monday,",
+      "confidence": 99.88042449951172,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "February",
+      "confidence": 99.951171875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "2,",
+      "confidence": 99.01048278808594,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "2026",
+      "confidence": 99.912109375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "9941",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "N",
+      "confidence": 99.951171875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "95th",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Street",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Suite",
+      "confidence": 99.9609375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "101",
+      "confidence": 99.81365966796875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Scottsdale,",
+      "confidence": 99.68112182617188,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "AZ",
+      "confidence": 99.77379608154297,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "85258-4610",
+      "confidence": 99.619140625,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "(602)277-1558",
+      "confidence": 99.46129608154297,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Accounts",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "for",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Whittaker,",
+      "confidence": 99.96014404296875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Scott",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "D",
+      "confidence": 99.814453125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Medical",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Record",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Number:",
+      "confidence": 96.36299896240234,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Account:",
+      "confidence": 99.96014404296875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Main",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Add",
+      "confidence": 99.873046875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "New",
+      "confidence": 99.951171875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Account",
+      "confidence": 99.93083953857422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Account",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "External",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "ID:",
+      "confidence": 99.931640625,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "110716",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Account",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Type:",
+      "confidence": 99.92028045654297,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Medicare",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Part",
+      "confidence": 99.921875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "B",
+      "confidence": 99.39472961425781,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Coverage",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Type:",
+      "confidence": 99.95037078857422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Total",
+      "confidence": 99.93083953857422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Account",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Balance:",
+      "confidence": 99.9609375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "$0.00",
+      "confidence": 99.87224578857422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Patient",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Balance:",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "$0.00",
+      "confidence": 99.921875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Payer",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Credit",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Balance:",
+      "confidence": 99.93083953857422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Responsible",
+      "confidence": 99.95037078857422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Party",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "External",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "ID:",
+      "confidence": 99.873046875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "107486",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Responsible",
+      "confidence": 99.91051483154297,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Party",
+      "confidence": 99.93083953857422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Balance:",
+      "confidence": 99.95037078857422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "$0.00",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "$0.00",
+      "confidence": 99.931640625,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Responsible",
+      "confidence": 99.93083953857422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Party:",
+      "confidence": 99.9609375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Whittaker,",
+      "confidence": 91.40087127685547,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Scott",
+      "confidence": 99.9609375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Collection",
+      "confidence": 99.95037078857422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Status:",
+      "confidence": 99.88121795654297,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Last",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Statement:",
+      "confidence": 99.92028045654297,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Statement:",
+      "confidence": 99.88042449951172,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "System -",
+      "confidence": 91.23165893554688,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Sufficient",
+      "confidence": 99.93083953857422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Payment",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Due:",
+      "confidence": 99.83238983154297,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "$0.00",
+      "confidence": 99.88201141357422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Due",
+      "confidence": 99.9609375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Date:",
+      "confidence": 99.91131591796875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Send",
+      "confidence": 99.96014404296875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Current",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Insurance",
+      "confidence": 99.77140808105469,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "(1/21/2026-Future):",
+      "confidence": 99.09697723388672,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "e",
+      "confidence": 37.1490364074707,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Eligibility",
+      "confidence": 99.79173278808594,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Date",
+      "confidence": 99.9609375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "01/30/2026",
+      "confidence": 99.951171875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Ins",
+      "confidence": 99.47285461425781,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Ins",
+      "confidence": 99.4834213256836,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Subscriber",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Payer/Plan",
+      "confidence": 99.76243591308594,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Status",
+      "confidence": 99.91051483154297,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Ded",
+      "confidence": 99.96014404296875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Rmng",
+      "confidence": 99.91051483154297,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Eff",
+      "confidence": 99.853515625,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Date",
+      "confidence": 99.892578125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Copay",
+      "confidence": 99.95037078857422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Copay",
+      "confidence": 99.95037078857422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Primary",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Copay",
+      "confidence": 99.93083953857422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Spc",
+      "confidence": 99.84135437011719,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Other",
+      "confidence": 99.93083953857422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Primary",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Whittaker,",
+      "confidence": 97.06094360351562,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Scott",
+      "confidence": 99.79332733154297,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "D",
+      "confidence": 99.17889404296875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "MEDICARE/MEDICARE",
+      "confidence": 86.01980590820312,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Active",
+      "confidence": 99.75505828857422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "$283.00",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "$1,736.00",
+      "confidence": 99.912109375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Coverage",
+      "confidence": 99.96014404296875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "DOB:",
+      "confidence": 99.88201141357422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "3/3/1949",
+      "confidence": 99.8828125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Group",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "ID:",
+      "confidence": 99.81365966796875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "NONE",
+      "confidence": 99.9609375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Patient",
+      "confidence": 99.951171875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Relation:Self",
+      "confidence": 99.63787078857422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Member",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Authorize",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Assignment:",
+      "confidence": 98.75458526611328,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "ID:5NU9CY7GM13",
+      "confidence": 99.77379608154297,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Yes",
+      "confidence": 100,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Po",
+      "confidence": 99.80388641357422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Box",
+      "confidence": 99.89178466796875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "6704",
+      "confidence": 99.951171875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Fargo,",
+      "confidence": 99.83079528808594,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "ND",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "58108-6704",
+      "confidence": 99.921875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "(877)308-8431",
+      "confidence": 99.75267028808594,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Secondary",
+      "confidence": 99.93083953857422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Whittaker,",
+      "confidence": 98.8448715209961,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Scott",
+      "confidence": 99.931640625,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "D",
+      "confidence": 99.53125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "HUMANA/HUMANA",
+      "confidence": 99.65262603759766,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "DOB:",
+      "confidence": 99.92107391357422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "3/3/1949",
+      "confidence": 99.88201141357422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Group",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "ID:",
+      "confidence": 99.912109375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Patient",
+      "confidence": 99.85192108154297,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Relation:Self",
+      "confidence": 99.44255828857422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Member",
+      "confidence": 99.970703125,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "ID:H78845908",
+      "confidence": 99.91131591796875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Authorize",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Assignment:",
+      "confidence": 99.37281036376953,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Po",
+      "confidence": 99.52487182617188,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Box",
+      "confidence": 99.92107391357422,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "14601",
+      "confidence": 99.91131591796875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Yes",
+      "confidence": 99.990234375,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "Lexington,",
+      "confidence": 98.00701904296875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "KY",
+      "confidence": 99.951171875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "40512",
+      "confidence": 99.921875,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "(800)448-6262",
+      "confidence": 99.5264663696289,
+      "page": 4
+    },
+    {
+      "blockType": "WORD",
+      "text": "http://ocal:2/WebBrowser/Prm.WebBrowser.DynamicHtmlPage.aspx?Key=5d41985-40c4.2/2/2026",
+      "confidence": 64.13005828857422,
+      "page": 4
+    },
+    {
+      "blockType": "PAGE",
+      "text": null,
+      "confidence": null,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "From: robert mileski",
+      "confidence": 99.55463409423828,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "Fax: +16232098892",
+      "confidence": 99.3946304321289,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "To:",
+      "confidence": 99.35885620117188,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "Fax: +14809560654",
+      "confidence": 99.3336410522461,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "Page: 5 of 6",
+      "confidence": 98.31204223632812,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "02/02/2026 1:39 PM",
+      "confidence": 99.33866119384766,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "Whittaker, Scott D/99360/M DOB 03-03-1949",
+      "confidence": 98.02786254882812,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "iana",
+      "confidence": 66.24282836914062,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "EVE",
+      "confidence": 99.72496795654297,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "e Supplement Insurance Plan",
+      "confidence": 99.16598510742188,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": ") WHITTAKER",
+      "confidence": 83.28085327148438,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "r ID: H78845908",
+      "confidence": 86.25657653808594,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "A155",
+      "confidence": 99.59402465820312,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "IG ACHIEVE",
+      "confidence": 77.783203125,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "MEDICARE HEALTH INSURANCE",
+      "confidence": 99.931640625,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "Name/Nombre",
+      "confidence": 99.32298278808594,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "SCOTT D WHITTAKER",
+      "confidence": 99.79711151123047,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "Medicare Number/Numero de Medicare",
+      "confidence": 97.76148223876953,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "5NU9-CY7-GM13",
+      "confidence": 98.46041870117188,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "Entitled to/Con derecho a",
+      "confidence": 97.00055694580078,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "Coverage starts/Cobertura empieza",
+      "confidence": 82.38320922851562,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "HOSPITAL (PART A)",
+      "confidence": 99.45916748046875,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "03-01-2014",
+      "confidence": 99.8046875,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "MEDICAL (PART B)",
+      "confidence": 99.31999206542969,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "03-01-2014",
+      "confidence": 99.8046875,
+      "page": 5
+    },
+    {
+      "blockType": "LINE",
+      "text": "Printed on by Charlie Page",
+      "confidence": 77.7648696899414,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "From:",
+      "confidence": 99.59721374511719,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "robert",
+      "confidence": 99.49955749511719,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "mileski",
+      "confidence": 99.56712341308594,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Fax:",
+      "confidence": 99.10176086425781,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "+16232098892",
+      "confidence": 99.6875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "To:",
+      "confidence": 99.35885620117188,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Fax:",
+      "confidence": 98.94232177734375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "+14809560654",
+      "confidence": 99.72496795654297,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Page:",
+      "confidence": 99.36622619628906,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "5",
+      "confidence": 98.05504608154297,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "of",
+      "confidence": 98.79802703857422,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "6",
+      "confidence": 97.02885437011719,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "02/02/2026",
+      "confidence": 99.5703125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "1:39",
+      "confidence": 99.17809295654297,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "PM",
+      "confidence": 99.267578125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Whittaker,",
+      "confidence": 93.90226745605469,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Scott",
+      "confidence": 99.69328308105469,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "D/99360/M",
+      "confidence": 97.33637237548828,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "DOB",
+      "confidence": 99.609375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "03-03-1949",
+      "confidence": 99.59801483154297,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "iana",
+      "confidence": 66.24282836914062,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "EVE",
+      "confidence": 99.72496795654297,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "e",
+      "confidence": 97.47747802734375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Supplement",
+      "confidence": 99.83159637451172,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Insurance",
+      "confidence": 99.83159637451172,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Plan",
+      "confidence": 99.52327728271484,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": ")",
+      "confidence": 66.67888641357422,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "WHITTAKER",
+      "confidence": 99.8828125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "r",
+      "confidence": 59.512718200683594,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "ID:",
+      "confidence": 99.36443328857422,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "H78845908",
+      "confidence": 99.892578125,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "A155",
+      "confidence": 99.59402465820312,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "IG",
+      "confidence": 56.06604766845703,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "ACHIEVE",
+      "confidence": 99.50035858154297,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "MEDICARE",
+      "confidence": 99.9609375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "HEALTH",
+      "confidence": 99.873046875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "INSURANCE",
+      "confidence": 99.9609375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Name/Nombre",
+      "confidence": 99.32298278808594,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "SCOTT",
+      "confidence": 99.91131591796875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "D",
+      "confidence": 99.51908874511719,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "WHITTAKER",
+      "confidence": 99.9609375,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Medicare",
+      "confidence": 99.72417449951172,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Number/Numero",
+      "confidence": 91.86603546142578,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "de",
+      "confidence": 99.72257995605469,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Medicare",
+      "confidence": 99.73313903808594,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "5NU9-CY7-GM13",
+      "confidence": 98.46041870117188,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Entitled",
+      "confidence": 99.4361801147461,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "to/Con",
+      "confidence": 96.98023223876953,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "derecho",
+      "confidence": 98.50067138671875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "a",
+      "confidence": 93.08513641357422,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Coverage",
+      "confidence": 99.29547882080078,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "starts/Cobertura",
+      "confidence": 85.63716125488281,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "empieza",
+      "confidence": 62.21699523925781,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "HOSPITAL",
+      "confidence": 99.951171875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "(PART",
+      "confidence": 99.44017028808594,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "A)",
+      "confidence": 98.98616790771484,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "03-01-2014",
+      "confidence": 99.8046875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "MEDICAL",
+      "confidence": 99.921875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "(PART",
+      "confidence": 99.21715545654297,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "B)",
+      "confidence": 98.8209457397461,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "03-01-2014",
+      "confidence": 99.8046875,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Printed",
+      "confidence": 88.68701934814453,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "on",
+      "confidence": 88.36376190185547,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "by",
+      "confidence": 59.20509719848633,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Charlie",
+      "confidence": 68.77102661132812,
+      "page": 5
+    },
+    {
+      "blockType": "WORD",
+      "text": "Page",
+      "confidence": 83.79743194580078,
+      "page": 5
+    },
+    {
+      "blockType": "PAGE",
+      "text": null,
+      "confidence": null,
+      "page": 6
+    },
+    {
+      "blockType": "LINE",
+      "text": "From: robert mileski",
+      "confidence": 99.56140899658203,
+      "page": 6
+    },
+    {
+      "blockType": "LINE",
+      "text": "Fax: +16232098892",
+      "confidence": 99.46458435058594,
+      "page": 6
+    },
+    {
+      "blockType": "LINE",
+      "text": "To:",
+      "confidence": 99.47684478759766,
+      "page": 6
+    },
+    {
+      "blockType": "LINE",
+      "text": "Fax: +14809560654",
+      "confidence": 99.58546447753906,
+      "page": 6
+    },
+    {
+      "blockType": "LINE",
+      "text": "Page: 6 of 6",
+      "confidence": 99.48042297363281,
+      "page": 6
+    },
+    {
+      "blockType": "LINE",
+      "text": "02/02/2026 1:39 PM",
+      "confidence": 99.18865203857422,
+      "page": 6
+    },
+    {
+      "blockType": "LINE",
+      "text": "Whittaker, Scott D/99360/M DOB 03-03-1949",
+      "confidence": 99.56425476074219,
+      "page": 6
+    },
+    {
+      "blockType": "LINE",
+      "text": "Member/Provider Service:",
+      "confidence": 99.76851654052734,
+      "page": 6
+    },
+    {
+      "blockType": "LINE",
+      "text": "1-800",
+      "confidence": 99.892578125,
+      "page": 6
+    },
+    {
+      "blockType": "LINE",
+      "text": "If you use a TTY, call 711",
+      "confidence": 98.12457275390625,
+      "page": 6
+    },
+    {
+      "blockType": "LINE",
+      "text": "Humana Claims, PO Box 14601, Lexington, KY 4051",
+      "confidence": 99.81360626220703,
+      "page": 6
+    },
+    {
+      "blockType": "LINE",
+      "text": "Please visit us at Humana.com",
+      "confidence": 99.7844009399414,
+      "page": 6
+    },
+    {
+      "blockType": "LINE",
+      "text": "Pharmacists call:",
+      "confidence": 99.91539764404297,
+      "page": 6
+    },
+    {
+      "blockType": "LINE",
+      "text": "1-80",
+      "confidence": 99.4834213256836,
+      "page": 6
+    },
+    {
+      "blockType": "LINE",
+      "text": "USA Senior Care:",
+      "confidence": 99.92107391357422,
+      "page": 6
+    },
+    {
+      "blockType": "LINE",
+      "text": "1-80",
+      "confidence": 99.84375,
+      "page": 6
+    },
+    {
+      "blockType": "LINE",
+      "text": "USA",
+      "confidence": 94.7120132446289,
+      "page": 6
+    },
+    {
+      "blockType": "LINE",
+      "text": "Senior Care",
+      "confidence": 92.86042785644531,
+      "page": 6
+    },
+    {
+      "blockType": "LINE",
+      "text": "Network",
+      "confidence": 99.23609161376953,
+      "page": 6
+    },
+    {
+      "blockType": "LINE",
+      "text": "Card Issue",
+      "confidence": 98.31283569335938,
+      "page": 6
+    },
+    {
+      "blockType": "LINE",
+      "text": "You may be asked to show this card when you get health care",
+      "confidence": 99.84393310546875,
+      "page": 6
+    },
+    {
+      "blockType": "LINE",
+      "text": "services. Only give your personal Medicare information to health",
+      "confidence": 99.15091705322266,
+      "page": 6
+    },
+    {
+      "blockType": "LINE",
+      "text": "care providers, your insurers, or people you trust who work with",
+      "confidence": 99.19851684570312,
+      "page": 6
+    },
+    {
+      "blockType": "LINE",
+      "text": "Medicare on your behalf. WARNING: Intentionally misusing this card",
+      "confidence": 99.29264831542969,
+      "page": 6
+    },
+    {
+      "blockType": "LINE",
+      "text": "may be considered fraud and/or other violation of federal law and is",
+      "confidence": 99.60336303710938,
+      "page": 6
+    },
+    {
+      "blockType": "LINE",
+      "text": "punishable by law.",
+      "confidence": 99.96366119384766,
+      "page": 6
+    },
+    {
+      "blockType": "LINE",
+      "text": "Es posible que le pidan que muestre esta tarjeta cuando reciba",
+      "confidence": 99.30292510986328,
+      "page": 6
+    },
+    {
+      "blockType": "LINE",
+      "text": "servicios de cuidado médico. Solamente dé su información personal",
+      "confidence": 95.50389099121094,
+      "page": 6
+    },
+    {
+      "blockType": "LINE",
+      "text": "de Medicare a los proveedores de salud, sus aseguradores 0",
+      "confidence": 97.47171783447266,
+      "page": 6
+    },
+    {
+      "blockType": "LINE",
+      "text": "personas de SU confianza que trabajan con Medicare en su nombre.",
+      "confidence": 97.1263198852539,
+      "page": 6
+    },
+    {
+      "blockType": "LINE",
+      "text": "¡ADVERTENCIA! El mal úso intencional de esta tarjeta puede ser",
+      "confidence": 95.21510314941406,
+      "page": 6
+    },
+    {
+      "blockType": "LINE",
+      "text": "considerado como fraude y/u otra violación de la ley federal y es",
+      "confidence": 99.15580749511719,
+      "page": 6
+    },
+    {
+      "blockType": "LINE",
+      "text": "sancionada por la ley.",
+      "confidence": 98.57825469970703,
+      "page": 6
+    },
+    {
+      "blockType": "LINE",
+      "text": "1-800-MEDICARE (1-600-833-4227 /",
+      "confidence": 81.10484313964844,
+      "page": 6
+    },
+    {
+      "blockType": "LINE",
+      "text": "TTY: 1-877-486-2048); Medicare.gov",
+      "confidence": 98.46407318115234,
+      "page": 6
+    },
+    {
+      "blockType": "LINE",
+      "text": "Printed on 2/2/2026 by Charlie",
+      "confidence": 99.83370208740234,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "From:",
+      "confidence": 99.67534637451172,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "robert",
+      "confidence": 99.37260437011719,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "mileski",
+      "confidence": 99.63628387451172,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "Fax:",
+      "confidence": 99.16354370117188,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "+16232098892",
+      "confidence": 99.765625,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "To:",
+      "confidence": 99.47684478759766,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "Fax:",
+      "confidence": 99.3580551147461,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "+14809560654",
+      "confidence": 99.81285858154297,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "Page:",
+      "confidence": 99.80309295654297,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "6",
+      "confidence": 99.30584716796875,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "of",
+      "confidence": 99.72576141357422,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "6",
+      "confidence": 99.0870132446289,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "02/02/2026",
+      "confidence": 99.697265625,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "1:39",
+      "confidence": 99.18785858154297,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "PM",
+      "confidence": 98.68083953857422,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "Whittaker,",
+      "confidence": 98.6756591796875,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "Scott",
+      "confidence": 99.92107391357422,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "D/99360/M",
+      "confidence": 99.53702545166016,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "DOB",
+      "confidence": 99.951171875,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "03-03-1949",
+      "confidence": 99.736328125,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "Member/Provider",
+      "confidence": 99.60618591308594,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "Service:",
+      "confidence": 99.93083953857422,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "1-800",
+      "confidence": 99.892578125,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "If",
+      "confidence": 99.53463745117188,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "you",
+      "confidence": 99.970703125,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "use",
+      "confidence": 99.951171875,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "a",
+      "confidence": 99.68669891357422,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "TTY,",
+      "confidence": 88.05265808105469,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "call",
+      "confidence": 99.80309295654297,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "711",
+      "confidence": 99.873046875,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "Humana",
+      "confidence": 99.990234375,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "Claims,",
+      "confidence": 99.48181915283203,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "PO",
+      "confidence": 99.990234375,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "Box",
+      "confidence": 99.93083953857422,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "14601,",
+      "confidence": 99.5322494506836,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "Lexington,",
+      "confidence": 99.67135620117188,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "KY",
+      "confidence": 99.951171875,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "4051",
+      "confidence": 99.9609375,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "Please",
+      "confidence": 100,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "visit",
+      "confidence": 99.93083953857422,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "us",
+      "confidence": 99.29388427734375,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "at",
+      "confidence": 99.9609375,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "Humana.com",
+      "confidence": 99.736328125,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "Pharmacists",
+      "confidence": 99.96014404296875,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "call:",
+      "confidence": 99.87065887451172,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "1-80",
+      "confidence": 99.4834213256836,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "USA",
+      "confidence": 99.970703125,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "Senior",
+      "confidence": 99.91131591796875,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "Care:",
+      "confidence": 99.88121795654297,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "1-80",
+      "confidence": 99.84375,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "USA",
+      "confidence": 94.7120132446289,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "Senior",
+      "confidence": 97.7806167602539,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "Care",
+      "confidence": 87.94025421142578,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "Network",
+      "confidence": 99.23609161376953,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "Card",
+      "confidence": 99.81285858154297,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "Issue",
+      "confidence": 96.81282043457031,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "You",
+      "confidence": 99.89098358154297,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "may",
+      "confidence": 99.990234375,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "be",
+      "confidence": 99.93083953857422,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "asked",
+      "confidence": 100,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "to",
+      "confidence": 99.65182495117188,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "show",
+      "confidence": 99.92028045654297,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "this",
+      "confidence": 99.990234375,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "card",
+      "confidence": 99.990234375,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "when",
+      "confidence": 100,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "you",
+      "confidence": 99.91051483154297,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "get",
+      "confidence": 98.81477355957031,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "health",
+      "confidence": 99.990234375,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "care",
+      "confidence": 99.89098358154297,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "services.",
+      "confidence": 98.52519226074219,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "Only",
+      "confidence": 100,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "give",
+      "confidence": 100,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "your",
+      "confidence": 99.95037078857422,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "personal",
+      "confidence": 99.990234375,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "Medicare",
+      "confidence": 100,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "information",
+      "confidence": 93.98118591308594,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "to",
+      "confidence": 99.92107391357422,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "health",
+      "confidence": 99.990234375,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "care",
+      "confidence": 99.95037078857422,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "providers,",
+      "confidence": 97.09024047851562,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "your",
+      "confidence": 99.970703125,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "insurers,",
+      "confidence": 94.89796447753906,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "or",
+      "confidence": 99.67215728759766,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "people",
+      "confidence": 99.96014404296875,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "you",
+      "confidence": 99.990234375,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "trust",
+      "confidence": 99.92028045654297,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "who",
+      "confidence": 99.95037078857422,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "work",
+      "confidence": 99.79093933105469,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "with",
+      "confidence": 99.990234375,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "Medicare",
+      "confidence": 99.92028045654297,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "on",
+      "confidence": 99.92107391357422,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "your",
+      "confidence": 99.990234375,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "behalf.",
+      "confidence": 96.69164276123047,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "WARNING:",
+      "confidence": 99.51191711425781,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "Intentionally",
+      "confidence": 97.6783676147461,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "misusing",
+      "confidence": 99.96014404296875,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "this",
+      "confidence": 99.96014404296875,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "card",
+      "confidence": 100,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "may",
+      "confidence": 99.970703125,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "be",
+      "confidence": 99.970703125,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "considered",
+      "confidence": 99.96014404296875,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "fraud",
+      "confidence": 98.36575317382812,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "and/or",
+      "confidence": 100,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "other",
+      "confidence": 100,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "violation",
+      "confidence": 100,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "of",
+      "confidence": 99.91131591796875,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "federal",
+      "confidence": 99.92028045654297,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "law",
+      "confidence": 99.93083953857422,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "and",
+      "confidence": 99.990234375,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "is",
+      "confidence": 97.22038269042969,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "punishable",
+      "confidence": 100,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "by",
+      "confidence": 99.970703125,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "law.",
+      "confidence": 99.92028045654297,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "Es",
+      "confidence": 99.57290649414062,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "posible",
+      "confidence": 99.88042449951172,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "que",
+      "confidence": 99.83159637451172,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "le",
+      "confidence": 97.88822937011719,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "pidan",
+      "confidence": 99.7608413696289,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "que",
+      "confidence": 99.7120132446289,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "muestre",
+      "confidence": 98.92378997802734,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "esta",
+      "confidence": 99.81126403808594,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "tarjeta",
+      "confidence": 97.91753387451172,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "cuando",
+      "confidence": 99.72098541259766,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "reciba",
+      "confidence": 99.3126220703125,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "servicios",
+      "confidence": 99.68112182617188,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "de",
+      "confidence": 99.49238586425781,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "cuidado",
+      "confidence": 88.20153045654297,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "médico.",
+      "confidence": 97.48883819580078,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "Solamente",
+      "confidence": 99.40210723876953,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "dé",
+      "confidence": 84.02682495117188,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "su",
+      "confidence": 94.47086334228516,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "información",
+      "confidence": 96.7713623046875,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "personal",
+      "confidence": 100,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "de",
+      "confidence": 99.79173278808594,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "Medicare",
+      "confidence": 100,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "a",
+      "confidence": 99.69486999511719,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "los",
+      "confidence": 99.3126220703125,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "proveedores",
+      "confidence": 97.95738983154297,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "de",
+      "confidence": 99.32318115234375,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "salud,",
+      "confidence": 98.046875,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "sus",
+      "confidence": 99.0344009399414,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "aseguradores",
+      "confidence": 99.36224365234375,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "0",
+      "confidence": 82.19387817382812,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "personas",
+      "confidence": 99.5517807006836,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "de",
+      "confidence": 99.77220153808594,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "SU",
+      "confidence": 80.43048095703125,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "confianza",
+      "confidence": 96.21332550048828,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "que",
+      "confidence": 99.84135437011719,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "trabajan",
+      "confidence": 99.16294860839844,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "con",
+      "confidence": 99.6827163696289,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "Medicare",
+      "confidence": 98.36575317382812,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "en",
+      "confidence": 97.68893432617188,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "su",
+      "confidence": 98.6365966796875,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "nombre.",
+      "confidence": 99.04336547851562,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "¡ADVERTENCIA!",
+      "confidence": 93.02774047851562,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "El",
+      "confidence": 92.97811889648438,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "mal",
+      "confidence": 92.58769226074219,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "úso",
+      "confidence": 75.6164321899414,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "intencional",
+      "confidence": 99.392333984375,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "de",
+      "confidence": 99.48262023925781,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "esta",
+      "confidence": 99.91051483154297,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "tarjeta",
+      "confidence": 99.392333984375,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "puede",
+      "confidence": 99.990234375,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "ser",
+      "confidence": 99.77300262451172,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "considerado",
+      "confidence": 99.48181915283203,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "como",
+      "confidence": 99.57210540771484,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "fraude",
+      "confidence": 99.52168273925781,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "y/u",
+      "confidence": 99.81126403808594,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "otra",
+      "confidence": 98.75458526611328,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "violación",
+      "confidence": 96.17346954345703,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "de",
+      "confidence": 99.77140808105469,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "la",
+      "confidence": 99.25402069091797,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "ley",
+      "confidence": 99.40290832519531,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "federal",
+      "confidence": 99.43219757080078,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "y",
+      "confidence": 99.25064086914062,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "es",
+      "confidence": 99.44355773925781,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "sancionada",
+      "confidence": 99.7608413696289,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "por",
+      "confidence": 99.92107391357422,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "la",
+      "confidence": 98.08833312988281,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "ley.",
+      "confidence": 96.54277038574219,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "1-800-MEDICARE",
+      "confidence": 99.001708984375,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "(1-600-833-4227",
+      "confidence": 51.814414978027344,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "/",
+      "confidence": 92.49840545654297,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "TTY:",
+      "confidence": 99.81285858154297,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "1-877-486-2048);",
+      "confidence": 95.82430267333984,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "Medicare.gov",
+      "confidence": 99.75505828857422,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "Printed",
+      "confidence": 99.95037078857422,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "on",
+      "confidence": 99.85192108154297,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "2/2/2026",
+      "confidence": 99.83238983154297,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "by",
+      "confidence": 99.970703125,
+      "page": 6
+    },
+    {
+      "blockType": "WORD",
+      "text": "Charlie",
+      "confidence": 99.56314086914062,
+      "page": 6
+    }
+  ]
+}

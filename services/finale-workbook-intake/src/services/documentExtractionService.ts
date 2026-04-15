@@ -14,6 +14,10 @@ import {
 } from "@aws-sdk/client-textract";
 import type { ArtifactRecord, DocumentInventoryItem } from "@medical-ai-qa/shared-types";
 import { loadEnv } from "../config/env";
+import type {
+  DocumentExtractionPolicyDecision,
+  ExtractionMode,
+} from "./documentExtractionPolicyService";
 import {
   analyzeDocumentText,
   extractPossibleIcd10Codes,
@@ -88,6 +92,7 @@ export type LocalFileTextExtractionResult = {
   s3UploadError: string | null;
   textractStartSucceeded: boolean | null;
   textractStartError: string | null;
+  extractionPolicyMode?: ExtractionMode | null;
 };
 
 type ExtractedTextReadResult = LocalFileTextExtractionResult;
@@ -122,6 +127,7 @@ function createExtractedTextReadResult(
     s3UploadError: input.s3UploadError ?? null,
     textractStartSucceeded: input.textractStartSucceeded ?? null,
     textractStartError: input.textractStartError ?? null,
+    extractionPolicyMode: input.extractionPolicyMode ?? null,
   };
 }
 
@@ -132,6 +138,92 @@ const s3ClientByRegion = new Map<string, S3Client>();
 
 function normalizeWhitespace(value: string): string {
   return value.replace(/\s+/g, " ").trim();
+}
+
+function normalizeMultilineText(value: string): string {
+  return value
+    .replace(/\r\n?/g, "\n")
+    .split("\n")
+    .map((line) => normalizeWhitespace(line))
+    .filter(Boolean)
+    .join("\n")
+    .trim();
+}
+
+function isDocumentExtractionPolicyDecision(
+  value: unknown,
+): value is DocumentExtractionPolicyDecision {
+  if (!value || typeof value !== "object") {
+    return false;
+  }
+
+  const candidate = value as Record<string, unknown>;
+  const mode = candidate.mode;
+  const confidence = candidate.confidence;
+  const reasons = candidate.reasons;
+  return (
+    (mode === "native_text" ||
+      mode === "ocr_required" ||
+      mode === "hybrid_candidate" ||
+      mode === "html_text" ||
+      mode === "unusable") &&
+    (confidence === "high" || confidence === "medium" || confidence === "low") &&
+    Array.isArray(reasons) &&
+    reasons.every((reason) => typeof reason === "string")
+  );
+}
+
+async function loadPersistedExtractionPolicyDecision(
+  filePath: string,
+): Promise<DocumentExtractionPolicyDecision | null> {
+  const candidatePaths = [
+    path.join(path.dirname(filePath), "source-meta.json"),
+    path.join(path.dirname(filePath), "extraction-result.json"),
+  ];
+
+  for (const candidatePath of candidatePaths) {
+    try {
+      const payload = JSON.parse(await readFile(candidatePath, "utf8")) as Record<string, unknown>;
+      if (isDocumentExtractionPolicyDecision(payload.extractionPolicyDecision)) {
+        return payload.extractionPolicyDecision;
+      }
+    } catch {
+      // ignore missing or malformed sidecars
+    }
+  }
+
+  return null;
+}
+
+async function resolveOperationalExtractionInput(input: {
+  filePath: string;
+  extractionPolicyDecision?: DocumentExtractionPolicyDecision | null;
+}): Promise<{
+  operationalFilePath: string;
+  extractionPolicyDecision: DocumentExtractionPolicyDecision | null;
+}> {
+  const extractionPolicyDecision =
+    input.extractionPolicyDecision ?? await loadPersistedExtractionPolicyDecision(input.filePath);
+  const recommendedSourcePath = normalizeWhitespace(
+    extractionPolicyDecision?.recommendedSourcePath ?? "",
+  );
+
+  if (recommendedSourcePath && recommendedSourcePath !== input.filePath) {
+    try {
+      await access(recommendedSourcePath);
+      return {
+        operationalFilePath: recommendedSourcePath,
+        extractionPolicyDecision,
+      };
+    } catch {
+      // fall back to original input path
+    }
+  }
+
+  return {
+    operationalFilePath: input.filePath,
+    extractionPolicyDecision,
+  };
 }
 
 export function resolveEffectiveTextSource(input: {
@@ -278,7 +370,43 @@ function extractTextractTextFromBlocks(blocks: Block[] | undefined): string {
     .filter((block): block is Block => Boolean(block) && block.BlockType === "LINE")
     .map((block: Block) => normalizeWhitespace(block.Text ?? ""))
     .filter(Boolean);
-  return normalizeWhitespace(lines.join("\n"));
+  return normalizeMultilineText(lines.join("\n"));
+}
+
+function extractTextractTextFromPersistedBlocks(blocks: unknown): string {
+  if (!Array.isArray(blocks)) {
+    return "";
+  }
+  const lines = blocks
+    .map((block) => {
+      if (!block || typeof block !== "object") {
+        return "";
+      }
+      const persisted = block as {
+        BlockType?: unknown;
+        Text?: unknown;
+        blockType?: unknown;
+        text?: unknown;
+      };
+      const blockType = normalizeWhitespace(
+        typeof persisted.BlockType === "string"
+          ? persisted.BlockType
+          : typeof persisted.blockType === "string"
+            ? persisted.blockType
+            : "",
+      );
+      if (blockType !== "LINE") {
+        return "";
+      }
+      const text = typeof persisted.Text === "string"
+        ? persisted.Text
+        : typeof persisted.text === "string"
+          ? persisted.text
+          : "";
+      return normalizeWhitespace(text);
+    })
+    .filter(Boolean);
+  return normalizeMultilineText(lines.join("\n"));
 }
 
 function extractTextractText(response: DetectDocumentTextCommandOutput): string {
@@ -336,10 +464,27 @@ async function readExistingOcrArtifacts(input: {
       readFile(extractedTextPath, "utf8"),
     ]);
     const ocrPayload = JSON.parse(ocrPayloadRaw) as Record<string, unknown>;
-    const extractedText = normalizeWhitespace(extractedTextRaw);
-    const ocrSuccess = Boolean(ocrPayload.ocrSuccess) && extractedText.length > 0;
+    const extractedText = normalizeMultilineText(extractedTextRaw);
+    const blockText = extractTextractTextFromPersistedBlocks(ocrPayload.blocks);
+    const extractedTextAnalysis = analyzeDocumentText(extractedText);
+    const extractedLineCount = extractedText ? extractedText.split(/\n+/).filter(Boolean).length : 0;
+    const blockLineCount = blockText ? blockText.split(/\n+/).filter(Boolean).length : 0;
+    const repairedText =
+      blockText.length > 0 &&
+      (
+        extractedText.length === 0 ||
+        extractedText.length < blockText.length ||
+        !extractedTextAnalysis.accepted ||
+        (extractedLineCount <= 1 && blockLineCount > 1)
+      )
+        ? blockText
+        : extractedText;
+    const ocrSuccess = Boolean(ocrPayload.ocrSuccess) && repairedText.length > 0;
+    if (repairedText && repairedText !== extractedText) {
+      await writeFile(extractedTextPath, `${repairedText}\n`, "utf8").catch(() => undefined);
+    }
     return {
-      text: ocrSuccess ? extractedText : input.fallbackText,
+      text: ocrSuccess ? repairedText : input.fallbackText,
       pdfType: input.pdfType,
       effectiveTextSource: resolveEffectiveTextSource({
         pdfType: input.pdfType,
@@ -347,12 +492,16 @@ async function readExistingOcrArtifacts(input: {
         ocrUsed: true,
       }),
       rawExtractedTextSource: ocrSuccess ? "ocr" : "dom",
-      textSelectionReason: ocrSuccess ? "reused_existing_ocr_artifacts" : "existing_ocr_artifacts_without_usable_text",
+      textSelectionReason: ocrSuccess
+        ? repairedText === extractedText
+          ? "reused_existing_ocr_artifacts"
+          : "repaired_existing_ocr_artifacts_from_blocks"
+        : "existing_ocr_artifacts_without_usable_text",
       domExtractionRejectedReasons: [],
       ocrUsed: true,
       ocrProvider: ocrPayload.ocrProvider === "textract" ? "textract" : null,
       ocrTextLength:
-        typeof ocrPayload.ocrTextLength === "number" ? ocrPayload.ocrTextLength : extractedText.length,
+        typeof ocrPayload.ocrTextLength === "number" ? ocrPayload.ocrTextLength : repairedText.length,
       ocrSuccess,
       ocrResultPath,
       ocrError: typeof ocrPayload.error === "string"
@@ -970,22 +1119,59 @@ function deriveKeyPhrases(text: string): string[] {
   return tokens.filter((token) => lowercaseText.includes(token));
 }
 
-export async function extractTextFromLocalFile(filePath: string): Promise<LocalFileTextExtractionResult> {
-  const extension = path.extname(filePath).toLowerCase();
-  const buffer = await readFile(filePath);
+export async function extractTextFromLocalFile(
+  filePath: string,
+  extractionPolicyDecision?: DocumentExtractionPolicyDecision | null,
+): Promise<LocalFileTextExtractionResult> {
+  const resolvedInput = await resolveOperationalExtractionInput({
+    filePath,
+    extractionPolicyDecision,
+  });
+  const operationalFilePath = resolvedInput.operationalFilePath;
+  const policyDecision = resolvedInput.extractionPolicyDecision;
+  const extension = path.extname(operationalFilePath).toLowerCase();
+  const buffer = await readFile(operationalFilePath);
 
   if (extension === ".html" || extension === ".htm") {
     const text = stripHtml(buffer.toString("utf8"));
     const analysis = analyzeDocumentText(text);
+    if (policyDecision?.mode === "unusable") {
+      return createExtractedTextReadResult({
+        text: "",
+        pdfType: null,
+        effectiveTextSource: "viewer_text_fallback",
+        rawExtractedTextSource: "dom",
+        textSelectionReason: `policy_unusable_short_circuit:${policyDecision.reasons.join("|")}`,
+        domExtractionRejectedReasons: [...analysis.rejectionReasons, ...policyDecision.reasons],
+        extractionPolicyMode: policyDecision.mode,
+      });
+    }
+
+    if (!analysis.accepted && policyDecision?.fallbackSourcePath) {
+      try {
+        await access(policyDecision.fallbackSourcePath);
+        return extractTextFromLocalFile(policyDecision.fallbackSourcePath, {
+          ...policyDecision,
+          mode: policyDecision.hasUsablePdfTextLayer ? "native_text" : "hybrid_candidate",
+          recommendedSourcePath: policyDecision.fallbackSourcePath,
+        });
+      } catch {
+        // keep local html result
+      }
+    }
+
     return createExtractedTextReadResult({
       text: analysis.accepted ? analysis.normalizedText : "",
       pdfType: null,
       effectiveTextSource: "viewer_text_fallback",
       rawExtractedTextSource: "dom",
       textSelectionReason: analysis.accepted
-        ? "accepted_html_text"
+        ? policyDecision?.mode === "html_text"
+          ? "policy_html_text_selected"
+          : "accepted_html_text"
         : `rejected_html_text:${analysis.rejectionReasons.join("|")}`,
       domExtractionRejectedReasons: analysis.rejectionReasons,
+      extractionPolicyMode: policyDecision?.mode ?? null,
     });
   }
 
@@ -994,10 +1180,58 @@ export async function extractTextFromLocalFile(filePath: string): Promise<LocalF
     const pdfType = classifyPdfBuffer(buffer, domText);
     const domAnalysis = analyzeDocumentText(domText);
     let ocrResult: LocalFileTextExtractionResult | null = null;
+    const extractedTextPath = path.join(path.dirname(operationalFilePath), "extracted-text.txt");
 
-    if (pdfType === "scanned_image_pdf" || !domAnalysis.accepted) {
+    if (policyDecision?.mode === "unusable") {
+      return createExtractedTextReadResult({
+        text: "",
+        pdfType,
+        effectiveTextSource: resolveEffectiveTextSource({
+          pdfType,
+          ocrSuccess: false,
+          ocrUsed: false,
+        }),
+        rawExtractedTextSource: "dom",
+        textSelectionReason: `policy_unusable_short_circuit:${policyDecision.reasons.join("|")}`,
+        domExtractionRejectedReasons: [...domAnalysis.rejectionReasons, ...policyDecision.reasons],
+        extractionPolicyMode: policyDecision.mode,
+      });
+    }
+
+    if (policyDecision?.mode === "ocr_required") {
       ocrResult = await runTextractOcr({
-        filePath,
+        filePath: operationalFilePath,
+        buffer,
+        pdfType: "scanned_image_pdf",
+        fallbackText: domAnalysis.normalizedText,
+      });
+      await writeFile(extractedTextPath, `${ocrResult.text}\n`, "utf8").catch(() => undefined);
+      return createExtractedTextReadResult({
+        ...(ocrResult ?? {}),
+        text: ocrResult.text,
+        pdfType: "scanned_image_pdf",
+        effectiveTextSource: resolveEffectiveTextSource({
+          pdfType: "scanned_image_pdf",
+          ocrSuccess: ocrResult.ocrSuccess,
+          ocrUsed: true,
+        }),
+        rawExtractedTextSource: ocrResult.ocrSuccess ? "ocr" : "dom",
+        textSelectionReason: ocrResult.ocrSuccess
+          ? `policy_ocr_required_direct_ocr:${policyDecision.reasons.join("|")}`
+          : `policy_ocr_required_fallback_to_dom:${policyDecision.reasons.join("|")}`,
+        domExtractionRejectedReasons: domAnalysis.rejectionReasons,
+        ocrUsed: ocrResult.ocrUsed,
+        extractionPolicyMode: policyDecision.mode,
+      });
+    }
+
+    if (
+      policyDecision?.mode === "native_text"
+        ? !domAnalysis.accepted
+        : pdfType === "scanned_image_pdf" || !domAnalysis.accepted
+    ) {
+      ocrResult = await runTextractOcr({
+        filePath: operationalFilePath,
         buffer,
         pdfType,
         fallbackText: domAnalysis.normalizedText,
@@ -1010,7 +1244,6 @@ export async function extractTextFromLocalFile(filePath: string): Promise<LocalF
       ocrText: ocrResult?.ocrSuccess ? ocrResult.text : "",
       ocrSuccess: ocrResult?.ocrSuccess ?? false,
     });
-    const extractedTextPath = path.join(path.dirname(filePath), "extracted-text.txt");
     await writeFile(extractedTextPath, `${selected.text}\n`, "utf8").catch(() => undefined);
 
     return createExtractedTextReadResult({
@@ -1023,9 +1256,12 @@ export async function extractTextFromLocalFile(filePath: string): Promise<LocalF
         ocrUsed: selected.rawExtractedTextSource === "ocr",
       }),
       rawExtractedTextSource: selected.rawExtractedTextSource,
-      textSelectionReason: selected.selectionReason,
+      textSelectionReason: policyDecision?.mode
+        ? `policy_${policyDecision.mode}:${selected.selectionReason}`
+        : selected.selectionReason,
       domExtractionRejectedReasons: selected.domAnalysis.rejectionReasons,
       ocrUsed: ocrResult?.ocrUsed ?? false,
+      extractionPolicyMode: policyDecision?.mode ?? null,
     });
   }
 
@@ -1037,9 +1273,12 @@ export async function extractTextFromLocalFile(filePath: string): Promise<LocalF
     effectiveTextSource: "viewer_text_fallback",
     rawExtractedTextSource: "dom",
     textSelectionReason: analysis.accepted
-      ? "accepted_printable_text"
+      ? policyDecision?.mode
+        ? `policy_${policyDecision.mode}:accepted_printable_text`
+        : "accepted_printable_text"
       : `rejected_printable_text:${analysis.rejectionReasons.join("|")}`,
     domExtractionRejectedReasons: analysis.rejectionReasons,
+    extractionPolicyMode: policyDecision?.mode ?? null,
   });
 }
 
@@ -1082,7 +1321,7 @@ function buildExtractedDocument(input: {
     "keyPhrases" | "sections" | "textLength" | "textPreview"
   >;
 }): ExtractedDocument | null {
-  const text = normalizeWhitespace(input.text);
+  const text = normalizeMultilineText(input.text);
   if (!text) {
     return null;
   }
@@ -1150,6 +1389,7 @@ export async function extractDocumentsFromArtifacts(
         source,
         sourcePath: artifact.downloadPath,
         effectiveTextSource,
+        extractionPolicyMode: baseReadResult?.extractionPolicyMode ?? null,
         rawExtractedTextSource: baseReadResult?.rawExtractedTextSource ?? "dom",
         textSelectionReason: baseReadResult?.textSelectionReason ?? "artifact_fallback_text",
         domExtractionRejectedReasons: baseReadResult?.domExtractionRejectedReasons ?? [],
@@ -1245,6 +1485,7 @@ export async function extractDocumentsFromArtifacts(
         source: admissionDocumentSource,
         sourcePath: admissionDocumentSourcePath,
         effectiveTextSource: admissionEffectiveTextSource,
+        extractionPolicyMode: admissionReadResult?.extractionPolicyMode ?? null,
         rawExtractedTextSource:
           admissionReadResult?.rawExtractedTextSource ?? admissionExcerptRawExtractedTextSource,
         textSelectionReason:

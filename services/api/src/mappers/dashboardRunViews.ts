@@ -14,6 +14,7 @@ type KnownArtifactContents = {
   qaPrefetch: unknown | null;
   patientQaReference: unknown | null;
   qaDocumentSummary: unknown | null;
+  fieldMapSnapshot: unknown | null;
 };
 
 type DashboardDiscrepancyRating = "green" | "yellow" | "red";
@@ -826,11 +827,42 @@ function deriveRecommendationConfidenceLabel(sourceEvidence: Array<{ confidence?
   return "Low confidence";
 }
 
+function deriveFieldSnapshotLookup(input: PatientViewInput) {
+  const fieldMapSnapshot = asRecord(input.artifactContents.fieldMapSnapshot);
+  const snapshotFields = asArray(fieldMapSnapshot?.fields);
+  const snapshotByFieldKey = new Map<
+    string,
+    {
+      currentChartValue: unknown;
+      currentChartValueSource: string;
+      populatedInChart: boolean;
+    }
+  >();
+
+  for (const snapshotFieldValue of snapshotFields) {
+    const snapshotField = asRecord(snapshotFieldValue);
+    const fieldKey = asString(snapshotField?.key);
+    if (!fieldKey) {
+      continue;
+    }
+
+    snapshotByFieldKey.set(fieldKey, {
+      currentChartValue: snapshotField?.currentChartValue ?? null,
+      currentChartValueSource: asString(snapshotField?.currentChartValueSource) ?? "unavailable",
+      populatedInChart:
+        typeof snapshotField?.populatedInChart === "boolean" ? snapshotField.populatedInChart : false,
+    });
+  }
+
+  return snapshotByFieldKey;
+}
+
 function deriveReferralQaSummary(input: PatientViewInput) {
   const patientQaReference = isPatientQaReference(input.artifactContents.patientQaReference)
     ? input.artifactContents.patientQaReference
     : null;
   const qaDocumentSummary = asRecord(input.artifactContents.qaDocumentSummary);
+  const fieldSnapshotLookup = deriveFieldSnapshotLookup(input);
   const extractionUsabilityStatus =
     asString(qaDocumentSummary?.extractionUsabilityStatus) ??
     (patientQaReference ? "usable" : "missing");
@@ -896,6 +928,11 @@ function deriveReferralQaSummary(input: PatientViewInput) {
           return null;
         }
 
+        const fieldSnapshot = fieldSnapshotLookup.get(fieldKey);
+        const currentChartValue = fieldSnapshot?.currentChartValue ?? comparisonResult.currentChartValue;
+        const currentChartValueSource = fieldSnapshot?.currentChartValueSource ?? "unavailable";
+        const populatedInChart = fieldSnapshot?.populatedInChart ?? hasMeaningfulValue(currentChartValue);
+
         const recommendation = {
           label: deriveRecommendationLabel({
             label: registryEntry.label,
@@ -907,7 +944,7 @@ function deriveReferralQaSummary(input: PatientViewInput) {
           recommendedValue: deriveRecommendationValue({
             label: registryEntry.label,
             documentSupportedValue: comparisonResult.documentSupportedValue,
-            currentChartValue: comparisonResult.currentChartValue,
+            currentChartValue,
             workflowState: comparisonResult.workflowState,
           }),
           rationale: deriveRecommendationRationale({
@@ -937,7 +974,9 @@ function deriveReferralQaSummary(input: PatientViewInput) {
           controlType: registryEntry.controlType,
           reviewMode: registryEntry.reviewMode,
           notes: registryEntry.notes ?? null,
-          currentChartValue: comparisonResult.currentChartValue,
+          currentChartValue,
+          currentChartValueSource,
+          populatedInChart,
           documentSupportedValue: comparisonResult.documentSupportedValue,
           comparisonStatus: comparisonResult.comparisonStatus,
           workflowState: comparisonResult.workflowState,

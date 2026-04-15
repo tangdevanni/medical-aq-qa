@@ -11,25 +11,70 @@
       "static/chunks/main-app.js",
       "static/chunks/app/page.js"
     ],
-    "/runs/new/page": [
+    "/login/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/runs/new/page.js"
+      "static/chunks/app/login/page.js"
     ],
-    "/runs/[runId]/page": [
+    "/auth/login/route": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/runs/[runId]/page.js"
+      "static/chunks/app/auth/login/route.js"
+    ],
+    "/healthz/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/healthz/route.js"
+    ],
+    "/select-agency/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/select-agency/page.js"
+    ],
+    "/auth/select-agency/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/auth/select-agency/route.js"
+    ],
+    "/agency/layout": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/agency/layout.js"
+    ],
+    "/agency/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/agency/page.js"
+    ],
+    "/auth/logout/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/auth/logout/route.js"
+    ],
+    "/api/session/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/session/route.js"
+    ],
+    "/runs/layout": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/runs/layout.js"
     ],
     "/runs/[runId]/patients/[patientId]/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/runs/[runId]/patients/[patientId]/page.js"
     ],
-    "/runs/page": [
+    "/api/session/runs/[...segments]/route": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/runs/page.js"
+      "static/chunks/app/api/session/runs/[...segments]/route.js"
+    ],
+    "/runs/[runId]/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/runs/[runId]/page.js"
     ]
   }
 }

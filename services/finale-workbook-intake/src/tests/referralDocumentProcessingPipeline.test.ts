@@ -1,4 +1,4 @@
-import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
@@ -188,6 +188,110 @@ describe("runReferralDocumentProcessingPipeline", () => {
       expect(persistedExtractedText).toContain("Order Summary: Pt to discharge home on 2/20/26.\nHomebound Status");
       expect(result.result?.extractionResult.extractionQuality.lineCount).toBeGreaterThan(1);
       expect(result.result?.normalizedSections.some((section) => section.sectionName === "homebound_evidence")).toBe(true);
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
+  });
+
+  it("prefers a richer batch source PDF over a thinner live-captured referral candidate", async () => {
+    const tempDir = await mkdtemp(path.join(os.tmpdir(), "referral-pipeline-source-selection-"));
+    const outputDir = path.join(tempDir, "outputs");
+    const sourceDir = path.join(tempDir, "source");
+
+    try {
+      await mkdir(outputDir, { recursive: true });
+      await mkdir(sourceDir, { recursive: true });
+      await writeFile(path.join(outputDir, "work-items.json"), JSON.stringify([{ id: "CHRISTINE_YOUNG__test" }]), "utf8");
+
+      const livePdfPath = path.join(outputDir, "christine-young-live-referral.pdf");
+      const livePdfText = [
+        "Patient Name: Christine Young",
+        "DOB: 05/30/1944",
+        "Order Date: 02/20/2026",
+        "Order Summary: SN for medication management.",
+        "Diagnosis Information",
+        "J18.9 PNEUMONIA, UNSPECIFIED ORGANISM",
+      ].join(" ");
+      await writeFile(livePdfPath, `%PDF-1.4 BT (${livePdfText}) Tj ET`, "latin1");
+
+      const richerPdfPath = path.join(sourceDir, "christine-young-complete-referral.pdf");
+      const richerPdfText = [
+        "Patient Name: Christine Young",
+        "DOB: 05/30/1944",
+        "Order Date: 02/20/2026",
+        "Primary Reason for Home Health / Medical Necessity",
+        "Patient requires skilled nursing for medication management and PT and OT due to pneumonia, weakness, and deconditioning after hospitalization.",
+        "Homebound Status",
+        "Uses walker, needs assistance for transfers, and leaving home is medically contraindicated except for essential medical care.",
+        "Caregiver Info",
+        "Primary Caregiver: Emily Young",
+        "Relationship: Daughter",
+        "Phone: 4807035881",
+        "Diagnosis Information",
+        "J18.9 PNEUMONIA, UNSPECIFIED ORGANISM",
+        "R53.1 WEAKNESS",
+        "Care Plan",
+        "PT Frequency 1w1 2w4",
+      ].join("\n");
+      await writeFile(richerPdfPath, `%PDF-1.4 BT (${richerPdfText}) Tj ET`, "latin1");
+
+      const extractedDocuments: ExtractedDocument[] = [{
+        type: "ORDER",
+        text: livePdfText,
+        metadata: {
+          source: "printed_pdf",
+          sourcePath: livePdfPath,
+          portalLabel: "Christine Young Referral",
+          effectiveTextSource: "digital_pdf_text",
+          textLength: livePdfText.length,
+        },
+      }];
+
+      const result = await runReferralDocumentProcessingPipeline({
+        workItem: {
+          id: "CHRISTINE_YOUNG__test",
+          subsidiaryId: "default",
+          patientIdentity: {
+            displayName: "Christine Young",
+            normalizedName: "CHRISTINE YOUNG",
+            medicareNumber: "8A75MN2VE79",
+            mrn: null,
+          },
+          episodeContext: {
+            socDate: "02/27/2026",
+            episodeDate: "02/27/2026",
+            billingPeriod: "02/27/2026 - 03/31/2026",
+            episodePeriod: "02/27/2026 - 04/27/2026",
+          },
+          codingReviewStatus: "NOT_STARTED",
+          oasisQaStatus: "IN_PROGRESS",
+          pocQaStatus: "NOT_STARTED",
+          visitNotesQaStatus: "NOT_STARTED",
+          billingPrepStatus: "NOT_STARTED",
+          sourceSheets: ["OASIS Tracking Report"],
+          assignedStaff: null,
+          payer: null,
+          rfa: "SOC",
+        } as any,
+        outputDir,
+        env: loadEnv({
+          ...process.env,
+          CODE_LLM_ENABLED: "false",
+        }),
+        logger: pino({ level: "silent" }),
+        extractedDocuments,
+      });
+
+      expect(result.result).not.toBeNull();
+      expect(result.result?.sourceMeta.selectedDocumentId).toContain("manual-source");
+      expect(result.result?.extractionResult.localFilePath).toBe(richerPdfPath);
+      expect(result.result?.extractionResult.extractionQuality.containsSectionLikeHeadings).toBe(true);
+      expect(result.result?.normalizedSections.some((section) => section.sectionName === "homebound_evidence")).toBe(true);
+
+      const persistedExtractedText = await readFile(result.result!.artifacts.extractedTextPath, "utf8");
+      expect(persistedExtractedText).toContain("Caregiver Info");
+      expect(persistedExtractedText).toContain("PT Frequency 1w1 2w4");
+      expect(persistedExtractedText).not.toContain("SN for medication management.");
     } finally {
       await rm(tempDir, { recursive: true, force: true });
     }

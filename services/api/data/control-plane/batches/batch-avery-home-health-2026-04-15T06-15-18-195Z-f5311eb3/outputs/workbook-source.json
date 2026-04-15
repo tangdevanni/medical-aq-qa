@@ -1,0 +1,37 @@
+{
+  "agencyId": "avery-home-health",
+  "batchId": "batch-avery-home-health-2026-04-15T06-15-18-195Z-f5311eb3",
+  "kind": "finale_download",
+  "path": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-avery-home-health-2026-04-15T06-15-18-195Z-f5311eb3\\source\\avery-home-health-oasis-30-days.xlsx",
+  "originalFileName": "OASIS Tracking (30 Days Tracking).xlsx",
+  "sourceLabel": "OASIS Tracking (30 Days Tracking).xlsx",
+  "acquiredAt": "2026-04-15T06:15:47.215Z",
+  "ingestedAt": "2026-04-15T06:15:47.215Z",
+  "acquisition": {
+    "providerId": "FINALE",
+    "acquisitionReference": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-avery-home-health-2026-04-15T06-15-18-195Z-f5311eb3\\source\\finale-workbook-export.json",
+    "metadataPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-avery-home-health-2026-04-15T06-15-18-195Z-f5311eb3\\source\\finale-workbook-export.json",
+    "selectedAgencyName": "Avery Home Health LLC",
+    "selectedAgencyUrl": "https://app.finalehealth.com/users/user-agencies",
+    "dashboardUrl": "https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/dashboard",
+    "notes": [
+      "Workbook acquired from Finale dashboard OASIS 30 Day's export.",
+      "Selected agency: Avery Home Health LLC",
+      "Dashboard URL: https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/dashboard",
+      "Workbook verification detected sheets: trackingReport"
+    ]
+  },
+  "verification": {
+    "usable": true,
+    "verifiedAt": "2026-04-15T06:15:47.215Z",
+    "fileSizeBytes": 205387,
+    "fileExtension": ".xlsx",
+    "sheetNames": [
+      "OASIS Tracking Report"
+    ],
+    "detectedSourceTypes": [
+      "trackingReport"
+    ],
+    "warningCount": 0
+  }
+}

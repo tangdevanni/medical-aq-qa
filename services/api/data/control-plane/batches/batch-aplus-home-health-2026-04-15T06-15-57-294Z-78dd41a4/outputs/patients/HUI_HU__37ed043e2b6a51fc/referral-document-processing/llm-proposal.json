@@ -1,0 +1,150 @@
+{
+  "patient_context": {
+    "patient_name": null,
+    "dob": null,
+    "soc_date": null,
+    "referral_date": null
+  },
+  "proposed_field_values": [
+    {
+      "field_key": "recent_hospitalization_discharge_date",
+      "proposed_value": "03/30/2026",
+      "confidence": 0.9,
+      "source_spans": [
+        "03/30/2026"
+      ],
+      "rationale": "Recent discharge date was identified in referral or hospitalization history.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "code_status",
+      "proposed_value": "full_code",
+      "confidence": 0.75,
+      "source_spans": [
+        "Code status: full_code"
+      ],
+      "rationale": "Code status was explicitly stated in referral text.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "primary_reason_for_home_health_medical_necessity",
+      "proposed_value": "Decline in patient condition due to hospitalization, requires skilled services. Patient has history of falls, problems with poor balance, gait instability. Based on the above findings, I certify that this patient is homebound and needs intermittent skilled nursing care, physical therapy and/or speech therapy or continues to need occupational therapy.",
+      "confidence": 0.78,
+      "source_spans": [
+        "Decline in patient condition due to hospitalization, requires skilled services. Patient has history of falls, problems with poor balance, gait instability."
+      ],
+      "rationale": "Medical necessity was summarized from referral narrative and skilled-need evidence.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "homebound_narrative",
+      "proposed_value": "Requires assistance with mobility and ADLs, impaired cognition with memory deficits and disorientation, Based on the above findings, I certify that this patient is homebound and needs intermittent",
+      "confidence": 0.8,
+      "source_spans": [
+        "Requires assistance with mobility and ADLs, impaired cognition with memory deficits and disorientation, Based on the above findings, I certify that this patient is homebound and needs intermittent"
+      ],
+      "rationale": "Homebound evidence was summarized from referral text.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "homebound_supporting_factors",
+      "proposed_value": [
+        "needs_assistance"
+      ],
+      "confidence": 0.73,
+      "source_spans": [
+        "Requires assistance with mobility and ADLs, impaired cognition with memory deficits and disorientation, Based on the above findings, I certify that this patient is homebound and needs intermittent"
+      ],
+      "rationale": "Homebound supporting factors were extracted from referral text.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "living_situation",
+      "proposed_value": "spouse",
+      "confidence": 0.72,
+      "source_spans": [
+        "spouse"
+      ],
+      "rationale": "Living situation was summarized from referral text.",
+      "requires_human_review": false
+    },
+    {
+      "field_key": "functional_limitations",
+      "proposed_value": [
+        "weakness",
+        "ambulation_limitations",
+        "reduced_endurance"
+      ],
+      "confidence": 0.76,
+      "source_spans": [
+        "ambulation, functional endurance, and transfers AMBULATION: Close SPV: Independent to modified independent with ambulation, able to communicate and oriented to basic information Decreased strength and endurance General w"
+      ],
+      "rationale": "Functional limitations were extracted from referral text.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "therapy_need",
+      "proposed_value": "Rehabilitative services will include PT/OT/ST 3 hours daily, 5 days per PT/OT goals are to improve balance, strength, endurance to achieve a CARE TOOL level 6 for transfers, basic - PT/OT",
+      "confidence": 0.77,
+      "source_spans": [
+        "Rehabilitative services will include PT/OT/ST 3 hours daily, 5 days per PT/OT goals are to improve balance, strength, endurance to achieve a CARE TOOL level 6 for transfers, basic - PT/OT"
+      ],
+      "rationale": "Therapy need was summarized from referral text.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "fall_risk_narrative",
+      "proposed_value": "falls, skin breakdown, aspiration and other complications associated with primary condition",
+      "confidence": 0.7,
+      "source_spans": [
+        "falls, skin breakdown, aspiration and other complications associated with primary condition"
+      ],
+      "rationale": "Risk and safety narrative was summarized from referral text.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "skilled_interventions",
+      "proposed_value": "Rehabilitative services will include PT/OT/ST 3 hours daily, 5 days per PT/OT goals are to improve balance, strength, endurance to achieve a CARE TOOL level 6 for transfers, basic - PT/OT",
+      "confidence": 0.8,
+      "source_spans": [
+        "Rehabilitative services will include PT/OT/ST 3 hours daily, 5 days per PT/OT goals are to improve balance, strength, endurance to achieve a CARE TOOL level 6 for transfers, basic - PT/OT"
+      ],
+      "rationale": "Skilled interventions were summarized from the therapy plan.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "plan_for_next_visit",
+      "proposed_value": "Rehabilitative services will include PT/OT/ST 3 hours daily, 5 days per PT/OT goals are to improve balance, strength, endurance to achieve a CARE TOOL level 6 for transfers, basic - PT/OT",
+      "confidence": 0.78,
+      "source_spans": [
+        "Rehabilitative services will include PT/OT/ST 3 hours daily, 5 days per PT/OT goals are to improve balance, strength, endurance to achieve a CARE TOOL level 6 for transfers, basic - PT/OT"
+      ],
+      "rationale": "Next-visit plan was summarized from the therapy plan.",
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "preferred_language",
+    "interpreter_needed",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "patient_summary_narrative",
+    "discipline_frequencies",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status"
+  ],
+  "warnings": [
+    "Deterministic referral facts extraction was used."
+  ]
+}

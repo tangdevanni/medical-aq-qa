@@ -1,0 +1,123 @@
+{
+  "patient_context": {
+    "patient_name": "Nadejda Odoni",
+    "dob": "09/30/1949",
+    "soc_date": null,
+    "referral_date": null
+  },
+  "proposed_field_values": [
+    {
+      "field_key": "preferred_language",
+      "proposed_value": "English",
+      "confidence": 0.92,
+      "source_spans": [
+        "Preferred Language: English"
+      ],
+      "rationale": "Preferred language was identified in referral demographics.",
+      "requires_human_review": false
+    },
+    {
+      "field_key": "code_status",
+      "proposed_value": "full_code",
+      "confidence": 0.75,
+      "source_spans": [
+        "Full Code"
+      ],
+      "rationale": "Code status was explicitly stated in referral text.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "primary_reason_for_home_health_medical_necessity",
+      "proposed_value": "Patient discharging home 3/5/2026 Home health care to follow upon discharge for skilled nursing",
+      "confidence": 0.78,
+      "source_spans": [
+        "Patient discharging home 3/5/2026 Home health care to follow upon discharge for skilled nursing"
+      ],
+      "rationale": "Medical necessity was summarized from referral narrative and skilled-need evidence.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "functional_limitations",
+      "proposed_value": [
+        "weakness",
+        "ambulation_limitations",
+        "reduced_endurance"
+      ],
+      "confidence": 0.76,
+      "source_spans": [
+        "Muscle weakness (generalized)",
+        "ambulation_limitations",
+        "reduced_endurance"
+      ],
+      "rationale": "Functional limitations were extracted from referral text.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "therapy_need",
+      "proposed_value": "Ridgecrest Post Acute 1/5/26-1/12/26 then transferred to AHC Scottsdale for ongoing skilled PT/OT due to Left FX of PT/OT Continue PT/OT",
+      "confidence": 0.77,
+      "source_spans": [
+        "Ridgecrest Post Acute 1/5/26-1/12/26 then transferred to AHC Scottsdale for ongoing skilled PT/OT due to Left FX of PT/OT Continue PT/OT"
+      ],
+      "rationale": "Therapy need was summarized from referral text.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "fall_risk_narrative",
+      "proposed_value": "(primary) hypertension, Z91.81 History of falling, W18.30XD Fall on same level, unspecified, subsequent encounter Fall on same level, unspecified, subsequent encounter Risk of falls and/or injury related to falls will be minimized throughout stay.",
+      "confidence": 0.7,
+      "source_spans": [
+        "(primary) hypertension, Z91.81 History of falling, W18.30XD Fall on same level, unspecified, subsequent encounter Fall on same level, unspecified, subsequent encounter Risk of falls and/or injury related to falls will be"
+      ],
+      "rationale": "Risk and safety narrative was summarized from referral text.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "skilled_interventions",
+      "proposed_value": "Ridgecrest Post Acute 1/5/26-1/12/26 then transferred to AHC Scottsdale for ongoing skilled PT/OT due to Left FX of PT/OT Continue PT/OT",
+      "confidence": 0.8,
+      "source_spans": [
+        "Ridgecrest Post Acute 1/5/26-1/12/26 then transferred to AHC Scottsdale for ongoing skilled PT/OT due to Left FX of PT/OT Continue PT/OT"
+      ],
+      "rationale": "Skilled interventions were summarized from the therapy plan.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "plan_for_next_visit",
+      "proposed_value": "Ridgecrest Post Acute 1/5/26-1/12/26 then transferred to AHC Scottsdale for ongoing skilled PT/OT due to Left FX of PT/OT Continue PT/OT",
+      "confidence": 0.78,
+      "source_spans": [
+        "Ridgecrest Post Acute 1/5/26-1/12/26 then transferred to AHC Scottsdale for ongoing skilled PT/OT due to Left FX of PT/OT Continue PT/OT"
+      ],
+      "rationale": "Next-visit plan was summarized from the therapy plan.",
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "interpreter_needed",
+    "homebound_narrative",
+    "homebound_supporting_factors",
+    "recent_hospitalization_discharge_date",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "living_situation",
+    "patient_summary_narrative",
+    "discipline_frequencies",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status"
+  ],
+  "warnings": [
+    "Deterministic referral facts extraction was used."
+  ]
+}

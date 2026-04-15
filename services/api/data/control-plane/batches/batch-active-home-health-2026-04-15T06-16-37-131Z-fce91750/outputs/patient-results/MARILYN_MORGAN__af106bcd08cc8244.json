@@ -1,0 +1,996 @@
+{
+  "runId": "batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750-MARILYN_MORGAN__af106bcd08cc8244",
+  "batchId": "batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750",
+  "subsidiaryId": "active-home-health",
+  "workItemId": "MARILYN_MORGAN__af106bcd08cc8244",
+  "patientName": "Marilyn Morgan",
+  "processingStatus": "BLOCKED",
+  "executionStep": "BLOCKED",
+  "progressPercent": 100,
+  "startedAt": "2026-04-15T07:29:24.585Z",
+  "completedAt": "2026-04-15T07:31:31.570Z",
+  "lastUpdatedAt": "2026-04-15T07:31:31.539Z",
+  "matchResult": {
+    "status": "NOT_FOUND",
+    "searchQuery": "morgan, marilyn",
+    "portalPatientId": null,
+    "portalDisplayName": null,
+    "candidateNames": [],
+    "note": "Global patient search completed, but no matching patient result was available to open."
+  },
+  "artifacts": [],
+  "artifactCount": 0,
+  "findings": [
+    {
+      "ruleId": "patient.match.not-found",
+      "stage": "TECHNICAL_REVIEW",
+      "outcome": "PORTAL_NOT_FOUND",
+      "message": "Portal patient search completed, but the patient is not currently available in portal results.",
+      "evidence": [
+        "morgan, marilyn",
+        "Global patient search completed, but no matching patient result was available to open."
+      ]
+    },
+    {
+      "ruleId": "oasis-qa.coding.missing",
+      "stage": "CODING_REVIEW",
+      "outcome": "PORTAL_NOT_FOUND",
+      "message": "Coding Review is missing.",
+      "evidence": [
+        "OASIS content is available to support coding review"
+      ]
+    },
+    {
+      "ruleId": "oasis-qa.oasis.missing",
+      "stage": "OASIS_QA",
+      "outcome": "PORTAL_NOT_FOUND",
+      "message": "OASIS QA is missing.",
+      "evidence": [
+        "OASIS document content extracted",
+        "Medical necessity is stated",
+        "Homebound reason is stated",
+        "Health assessment is documented",
+        "Skilled interventions during the OASIS visit are documented"
+      ]
+    },
+    {
+      "ruleId": "oasis-qa.poc.missing",
+      "stage": "POC_QA",
+      "outcome": "PORTAL_NOT_FOUND",
+      "message": "Plan Of Care QA is missing.",
+      "evidence": [
+        "Plan of care content extracted",
+        "POC QA completed in workbook",
+        "Diagnoses or codes are present in the plan of care",
+        "Interventions, goals, and frequency are present in the plan of care",
+        "Conditions or exacerbations are reflected in the plan of care"
+      ]
+    },
+    {
+      "ruleId": "oasis-qa.visit_notes.missing",
+      "stage": "VISIT_NOTES_REVIEW",
+      "outcome": "PORTAL_NOT_FOUND",
+      "message": "Visit Notes Review is missing.",
+      "evidence": [
+        "Visit note content extracted",
+        "Visit notes review completed in workbook",
+        "Skilled need is clearly documented",
+        "Interventions performed are specific and detailed",
+        "Patient response to interventions is documented",
+        "Progress toward goals is noted",
+        "Vitals and focused assessment are documented",
+        "Medication review is documented",
+        "Changes in condition are clearly reported and addressed",
+        "Documentation supports billed services",
+        "Documentation remains consistent with OASIS and diagnoses"
+      ]
+    },
+    {
+      "ruleId": "oasis-qa.technical_review.missing",
+      "stage": "TECHNICAL_REVIEW",
+      "outcome": "PORTAL_NOT_FOUND",
+      "message": "Technical Review is missing.",
+      "evidence": [
+        "Portal patient match resolved",
+        "SN visits were identified from visit-note content",
+        "Applicable disciplines were detected"
+      ]
+    },
+    {
+      "ruleId": "oasis-qa.final_check.fail",
+      "stage": "FINAL_BILLING_PREP_READINESS",
+      "outcome": "PORTAL_NOT_FOUND",
+      "message": "Final Check is fail.",
+      "evidence": [
+        "Critical QA sections are complete before billing prep",
+        "Billing prep status in workbook"
+      ]
+    }
+  ],
+  "hasFindings": true,
+  "qaOutcome": "PORTAL_NOT_FOUND",
+  "oasisQaSummary": {
+    "overallStatus": "BLOCKED",
+    "urgency": "ON_TRACK",
+    "daysInPeriod": 30,
+    "daysLeft": 11,
+    "sections": [
+      {
+        "key": "timing",
+        "label": "Timing / OASIS Due",
+        "status": "PASS",
+        "items": [
+          {
+            "key": "days_in_period",
+            "label": "Days in the 30-day period captured",
+            "status": "PASS",
+            "notes": "Workbook shows 30 days in period.",
+            "evidence": [
+              "Workbook days in period: 30"
+            ]
+          },
+          {
+            "key": "days_left",
+            "label": "Days left before OASIS due date verified",
+            "status": "PASS",
+            "notes": "11 day(s) remain before OASIS is due.",
+            "evidence": [
+              "Workbook days left: 11"
+            ]
+          },
+          {
+            "key": "urgency_bucket",
+            "label": "Urgency bucket",
+            "status": "PASS",
+            "notes": "ON TRACK",
+            "evidence": [
+              "Derived urgency from 11 day(s) left."
+            ]
+          }
+        ]
+      },
+      {
+        "key": "coding",
+        "label": "Coding Review",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "coding_review_complete",
+            "label": "Coding review completed in workbook",
+            "status": "NEEDS_REVIEW",
+            "notes": "Workbook status: IN_PROGRESS",
+            "evidence": [
+              "IN_PROGRESS"
+            ]
+          },
+          {
+            "key": "coding_supported_by_oasis",
+            "label": "OASIS content is available to support coding review",
+            "status": "MISSING",
+            "notes": "No OASIS content was extracted for coding validation.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "oasis",
+        "label": "OASIS QA",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "oasis_document",
+            "label": "OASIS document content extracted",
+            "status": "MISSING",
+            "notes": "No OASIS document content was available for extraction.",
+            "evidence": []
+          },
+          {
+            "key": "oasis_workbook_status",
+            "label": "OASIS QA completed in workbook",
+            "status": "NEEDS_REVIEW",
+            "notes": "Workbook status: IN_PROGRESS",
+            "evidence": [
+              "IN_PROGRESS"
+            ]
+          },
+          {
+            "key": "medical_necessity",
+            "label": "Medical necessity is stated",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "homebound_reason",
+            "label": "Homebound reason is stated",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "health_assessment",
+            "label": "Health assessment is documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "skilled_interventions",
+            "label": "Skilled interventions during the OASIS visit are documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "poc",
+        "label": "Plan Of Care QA",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "poc_document",
+            "label": "Plan of care content extracted",
+            "status": "MISSING",
+            "notes": "No plan-of-care content was available for extraction.",
+            "evidence": []
+          },
+          {
+            "key": "poc_workbook_status",
+            "label": "POC QA completed in workbook",
+            "status": "MISSING",
+            "notes": "Workbook status: NOT_STARTED",
+            "evidence": [
+              "NOT_STARTED"
+            ]
+          },
+          {
+            "key": "poc_diagnoses_codes",
+            "label": "Diagnoses or codes are present in the plan of care",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "poc_interventions_goals_frequency",
+            "label": "Interventions, goals, and frequency are present in the plan of care",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "poc_conditions_exacerbations",
+            "label": "Conditions or exacerbations are reflected in the plan of care",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "visit_notes",
+        "label": "Visit Notes Review",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "visit_notes_document",
+            "label": "Visit note content extracted",
+            "status": "MISSING",
+            "notes": "No visit-note content was available for extraction.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_workbook_status",
+            "label": "Visit notes review completed in workbook",
+            "status": "MISSING",
+            "notes": "Workbook status: NOT_STARTED",
+            "evidence": [
+              "NOT_STARTED"
+            ]
+          },
+          {
+            "key": "visit_notes_skilled_need",
+            "label": "Skilled need is clearly documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_intervention_detail",
+            "label": "Interventions performed are specific and detailed",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_patient_response",
+            "label": "Patient response to interventions is documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_progress",
+            "label": "Progress toward goals is noted",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_vitals",
+            "label": "Vitals and focused assessment are documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_medication_review",
+            "label": "Medication review is documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_condition_changes",
+            "label": "Changes in condition are clearly reported and addressed",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_billed_services_support",
+            "label": "Documentation supports billed services",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_consistency",
+            "label": "Documentation remains consistent with OASIS and diagnoses",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "technical_review",
+        "label": "Technical Review",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "portal_patient_match",
+            "label": "Portal patient match resolved",
+            "status": "MISSING",
+            "notes": "Global patient search completed, but no matching patient result was available to open.",
+            "evidence": [
+              "morgan, marilyn"
+            ]
+          },
+          {
+            "key": "sn_visit_count",
+            "label": "SN visits were identified from visit-note content",
+            "status": "MISSING",
+            "notes": "Visit-note content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "discipline_detection",
+            "label": "Applicable disciplines were detected",
+            "status": "MISSING",
+            "notes": "Visit-note content is not available for discipline detection.",
+            "evidence": []
+          },
+          {
+            "key": "physician_orders",
+            "label": "Physician orders were checked",
+            "status": "NOT_APPLICABLE",
+            "notes": "No additional physician orders were discovered for this patient.",
+            "evidence": []
+          },
+          {
+            "key": "supporting_notes",
+            "label": "Supporting note categories were reviewed",
+            "status": "NOT_APPLICABLE",
+            "notes": "No additional supporting note categories were discovered for this patient.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "final_check",
+        "label": "Final Check",
+        "status": "FAIL",
+        "items": [
+          {
+            "key": "critical_sections_clear",
+            "label": "Critical QA sections are complete before billing prep",
+            "status": "FAIL",
+            "notes": "Blocking sections: OASIS content is available to support coding review, OASIS document content extracted, Medical necessity is stated, Homebound reason is stated, Health assessment is documented, Skilled interventions during the OASIS visit are documented, Plan of care content extracted, POC QA completed in workbook, Diagnoses or codes are present in the plan of care, Interventions, goals, and frequency are present in the plan of care, Conditions or exacerbations are reflected in the plan of care, Visit note content extracted, Visit notes review completed in workbook, Skilled need is clearly documented, Interventions performed are specific and detailed, Patient response to interventions is documented, Progress toward goals is noted, Vitals and focused assessment are documented, Medication review is documented, Changes in condition are clearly reported and addressed, Documentation supports billed services, Documentation remains consistent with OASIS and diagnoses, Portal patient match resolved, SN visits were identified from visit-note content, Applicable disciplines were detected",
+            "evidence": [
+              "Timing / OASIS Due: PASS",
+              "Coding Review: MISSING",
+              "OASIS QA: MISSING",
+              "Plan Of Care QA: MISSING",
+              "Visit Notes Review: MISSING",
+              "Technical Review: MISSING"
+            ]
+          },
+          {
+            "key": "billing_prep_status",
+            "label": "Billing prep status in workbook",
+            "status": "MISSING",
+            "notes": "Workbook status: NOT_STARTED",
+            "evidence": [
+              "NOT_STARTED"
+            ]
+          }
+        ]
+      }
+    ],
+    "blockers": [
+      "OASIS content is available to support coding review",
+      "OASIS document content extracted",
+      "Medical necessity is stated",
+      "Homebound reason is stated",
+      "Health assessment is documented",
+      "Skilled interventions during the OASIS visit are documented",
+      "Plan of care content extracted",
+      "POC QA completed in workbook",
+      "Diagnoses or codes are present in the plan of care",
+      "Interventions, goals, and frequency are present in the plan of care",
+      "Conditions or exacerbations are reflected in the plan of care",
+      "Visit note content extracted",
+      "Visit notes review completed in workbook",
+      "Skilled need is clearly documented",
+      "Interventions performed are specific and detailed",
+      "Patient response to interventions is documented",
+      "Progress toward goals is noted",
+      "Vitals and focused assessment are documented",
+      "Medication review is documented",
+      "Changes in condition are clearly reported and addressed",
+      "Documentation supports billed services",
+      "Documentation remains consistent with OASIS and diagnoses",
+      "Portal patient match resolved",
+      "SN visits were identified from visit-note content",
+      "Applicable disciplines were detected"
+    ]
+  },
+  "documentInventory": [],
+  "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patient-results\\MARILYN_MORGAN__af106bcd08cc8244.json",
+  "bundleAvailable": true,
+  "logPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\logs\\MARILYN_MORGAN__af106bcd08cc8244.json",
+  "logAvailable": true,
+  "retryEligible": true,
+  "errorSummary": "Global patient search completed, but no matching patient result was available to open.",
+  "auditArtifacts": {
+    "tracePath": null,
+    "screenshotPaths": [],
+    "downloadPaths": []
+  },
+  "workflowRuns": [
+    {
+      "workflowRunId": "batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750-MARILYN_MORGAN__af106bcd08cc8244:coding",
+      "workflowDomain": "coding",
+      "status": "NOT_STARTED",
+      "stepName": "NOT_STARTED",
+      "message": null,
+      "chartUrl": null,
+      "startedAt": null,
+      "completedAt": null,
+      "lastUpdatedAt": "2026-04-15T07:29:24.585Z",
+      "workflowResultPath": null,
+      "workflowLogPath": null
+    },
+    {
+      "workflowRunId": "batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750-MARILYN_MORGAN__af106bcd08cc8244:qa",
+      "workflowDomain": "qa",
+      "status": "NOT_STARTED",
+      "stepName": "NOT_STARTED",
+      "message": null,
+      "chartUrl": null,
+      "startedAt": null,
+      "completedAt": null,
+      "lastUpdatedAt": "2026-04-15T07:29:24.585Z",
+      "workflowResultPath": null,
+      "workflowLogPath": null
+    }
+  ],
+  "workItemSnapshot": {
+    "id": "MARILYN_MORGAN__af106bcd08cc8244",
+    "subsidiaryId": "active-home-health",
+    "patientIdentity": {
+      "displayName": "Marilyn Morgan",
+      "normalizedName": "MARILYN MORGAN",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-01-29",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Gaspar, Arnel PT",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "09-DC"
+    },
+    "workflowTypes": [
+      "SOC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 11,
+      "daysInPeriod": null,
+      "daysLeft": 11,
+      "daysLeftBeforeOasisDueDate": 11,
+      "rawTrackingValues": [
+        "11"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "IN_PROGRESS",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "In Progress"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "03/27/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 31
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 31,
+        "values": {
+          "patientName": "MORGAN, MARILYN",
+          "episodeDate": "01/29/2026",
+          "assignedStaff": "Gaspar, Arnel PT",
+          "payer": "Medicare",
+          "rfa": "09-DC",
+          "trackingDays": "11",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "In Progress",
+          "oasisQaRemarks": "03/27/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  "automationStepLogs": [
+    {
+      "timestamp": "2026-04-15T07:31:31.539Z",
+      "step": "login",
+      "message": "Reused the authenticated portal session established for this batch.",
+      "patientName": "Marilyn Morgan",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T07:29:24.624Z",
+      "step": "run_started",
+      "message": "Patient run started from the shared Playwright portal runner.",
+      "patientName": "Marilyn Morgan",
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+      "selectorUsed": null,
+      "found": [
+        "currentUrl=https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "subsidiaryId=active-home-health",
+        "portalBaseUrl=https://app.finalehealth.com",
+        "configuredDashboardUrl=https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+        "resolvedDashboardUrl=https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+        "currentContextRequiresReset=false"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T07:29:27.200Z",
+      "step": "dashboard_ready",
+      "message": "Provider dashboard ready confirmed using 'button:has-text(\"Search Patient\")'.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+      "selectorUsed": null,
+      "found": [
+        "button:has-text(\"Search Patient\")"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "attempt=1 signal=button:has-text(\"Search Patient\") stableDom=false url=https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard title=Finale Health buttons=126 inputs=20 text=Active Home Healthcare LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notification"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T07:29:41.896Z",
+      "step": "patient_lookup_entry",
+      "message": "Global patient search is available from the current authenticated page context.",
+      "patientName": "Marilyn Morgan",
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+      "selectorUsed": "getByText(/Search Patient/i) -> nearest clickable parent (present)",
+      "found": [
+        "getByText(/Search Patient/i) -> nearest clickable parent (present)"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Current URL before patient lookup: https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+        "Global search available in current context: true",
+        "Global search availability selector used: getByText(/Search Patient/i) -> nearest clickable parent (present)",
+        "Resolved global search trigger with present manual selector 'getByText(/Search Patient/i) -> nearest clickable parent (present)' even though Playwright visibility did not confirm it in the probe path.",
+        "[not_found] Global patient search button by accessible name count=0 visible=0 elapsedMs=20",
+        "[not_visible] Global patient search button containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=31 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=32 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search button containing Search Patient text count=1 visible=0 elapsedMs=49 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search visible control containing Search Patient text count=1 visible=0 elapsedMs=55 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search fin-button wrapper containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=33 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control inside fin-button wrapper count=1 visible=0 elapsedMs=28 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by shortcut hint count=0 visible=0 elapsedMs=16",
+        "[not_visible] Global patient search button containing search icon and patient-search text count=1 visible=0 elapsedMs=27 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by accessible name count=0 visible=0 elapsedMs=20",
+        "[not_visible] Global patient search button containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=33 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=29 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search button containing Search Patient text count=1 visible=0 elapsedMs=33 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search visible control containing Search Patient text count=1 visible=0 elapsedMs=35 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search fin-button wrapper containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=66 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control inside fin-button wrapper count=1 visible=0 elapsedMs=34 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by shortcut hint count=0 visible=0 elapsedMs=17",
+        "[not_visible] Global patient search button containing search icon and patient-search text count=1 visible=0 elapsedMs=31 samples=Search Patient...Ctrl K"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T07:29:41.896Z",
+      "step": "patient_lookup_entry",
+      "message": "Patient lookup will start after shared dashboard bootstrap confirmed provider dashboard readiness and global search availability.",
+      "patientName": "Marilyn Morgan",
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+      "selectorUsed": null,
+      "found": [
+        "patientLookupEntryContext=current_page_global_search",
+        "dashboard_context_established",
+        "globalSearchAvailable=true"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "currentUrlAfterLogin=https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+        "currentUrlBeforeSearch=https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+        "resolvedDashboardUrl=https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+        "globalSearchSelectorUsed=getByText(/Search Patient/i) -> nearest clickable parent (present)"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T07:29:41.896Z",
+      "step": "patient_search_start",
+      "message": "Starting patient search with 3 query variant(s).",
+      "patientName": "Marilyn Morgan",
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+      "selectorUsed": null,
+      "found": [
+        "morgan, marilyn",
+        "MORGAN, MARILYN",
+        "Marilyn Morgan",
+        "MARILYN MORGAN",
+        "MORGAN, MARILYN"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Original workbook patient name: Marilyn Morgan",
+        "Normalized global search query: morgan, marilyn",
+        "Normalized expected display name: MORGAN, MARILYN",
+        "Workbook name variants: Marilyn Morgan | MARILYN MORGAN | MORGAN, MARILYN"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T07:30:12.206Z",
+      "step": "global_patient_search_open",
+      "message": "Clicked the global Search Patient trigger and found the visible search input.",
+      "patientName": "Marilyn Morgan",
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+      "selectorUsed": "getByText(/Search Patient/i) -> nearest clickable parent (present)",
+      "found": [
+        "Search Patient trigger",
+        "search input"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Original workbook patient name: Marilyn Morgan",
+        "Normalized global search query: morgan, marilyn",
+        "Search trigger clicked: true",
+        "Trigger click method: dom_click",
+        "Search modal visible: true",
+        "Global search control selector used: getByText(/Search Patient/i) -> nearest clickable parent (present)",
+        "Global search surface selector used: Global patient search overlay/dialog containing an input",
+        "Global search modal selector used: div.search-header.open",
+        "Resolved global search trigger with present manual selector 'getByText(/Search Patient/i) -> nearest clickable parent (present)' even though Playwright visibility did not confirm it in the probe path.",
+        "[not_found] Global patient search button by accessible name count=0 visible=0 elapsedMs=18",
+        "[not_visible] Global patient search button containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=46 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=32 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search button containing Search Patient text count=1 visible=0 elapsedMs=27 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search visible control containing Search Patient text count=1 visible=0 elapsedMs=27 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search fin-button wrapper containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=25 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control inside fin-button wrapper count=1 visible=0 elapsedMs=29 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by shortcut hint count=0 visible=0 elapsedMs=15",
+        "[not_visible] Global patient search button containing search icon and patient-search text count=1 visible=0 elapsedMs=26 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by accessible name count=0 visible=0 elapsedMs=18",
+        "[not_visible] Global patient search button containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=30 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=36 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search button containing Search Patient text count=1 visible=0 elapsedMs=27 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search visible control containing Search Patient text count=1 visible=0 elapsedMs=30 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search fin-button wrapper containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=26 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control inside fin-button wrapper count=1 visible=0 elapsedMs=29 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by shortcut hint count=0 visible=0 elapsedMs=16",
+        "[not_visible] Global patient search button containing search icon and patient-search text count=1 visible=0 elapsedMs=29 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search dialog by accessible name count=0 visible=0 elapsedMs=18",
+        "[matched] Global patient search overlay/dialog containing an input count=1 visible=1 elapsedMs=34 samples=EscPatients Sort By 3Sort By×Full Name×asc×SOC Date×desc×Status×ascAdd another sort itemNo recent searchesSearch by:Status:ActivePendingOn-HoldLeadNon-AdmitDischarged",
+        "Search input found by confirmed Search patients placeholder selector.",
+        "[matched] Global patient search input by confirmed Search patients placeholder count=1 visible=1 elapsedMs=32"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T07:31:29.634Z",
+      "step": "patient_search_input",
+      "message": "Typed the normalized query into the global patient search, but the results UI did not settle clearly.",
+      "patientName": "Marilyn Morgan",
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+      "selectorUsed": "input[type=\"text\"][placeholder*=\"Search patients\"]",
+      "found": [],
+      "missing": [
+        "settled global patient search results"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Search trigger clicked: true",
+        "Search input found: true",
+        "Typing into focused field succeeded: false",
+        "Used direct input fallback: true",
+        "Search query typed: morgan, marilyn",
+        "Result count: 0",
+        "Candidate search result texts: none",
+        "attempt=1 rowCount=0 noResults=false text=Active Home Healthcare LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notification",
+        "attempt=2 rowCount=0 noResults=false text=Active Home Healthcare LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notification",
+        "attempt=3 rowCount=0 noResults=false text=Active Home Healthcare LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notification",
+        "attempt=4 rowCount=0 noResults=false text=Active Home Healthcare LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notification",
+        "attempt=5 rowCount=0 noResults=false text=Active Home Healthcare LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notification",
+        "attempt=6 rowCount=0 noResults=false text=Active Home Healthcare LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notification",
+        "attempt=7 rowCount=0 noResults=false text=Active Home Healthcare LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notification",
+        "attempt=8 rowCount=0 noResults=false text=Active Home Healthcare LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notification"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T07:31:30.815Z",
+      "step": "patient_search",
+      "message": "Global patient search completed with 0 candidate(s).",
+      "patientName": "Marilyn Morgan",
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+      "selectorUsed": "getByText(/Search Patient/i) -> nearest clickable parent (present) -> input[type=\"text\"][placeholder*=\"Search patients\"]",
+      "found": [],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Original workbook patient name: Marilyn Morgan",
+        "Normalized global search query: morgan, marilyn",
+        "Normalized expected display name: MORGAN, MARILYN",
+        "Global search control selector used: getByText(/Search Patient/i) -> nearest clickable parent (present)",
+        "Global search surface selector used: Global patient search overlay/dialog containing an input",
+        "Global search input selector used: input[type=\"text\"][placeholder*=\"Search patients\"]",
+        "Result selector used: unknown",
+        "Search results ready: true",
+        "Visible result row count: 0",
+        "No results marker visible: false",
+        "Candidate search result texts: none",
+        "Result text sample: Active Home Healthcare LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notification",
+        "attempt=1 rowCount=0 noResults=false text=Active Home Healthcare LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notification",
+        "attempt=2 rowCount=0 noResults=false text=Active Home Healthcare LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notification",
+        "attempt=3 rowCount=0 noResults=false text=Active Home Healthcare LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notification",
+        "attempt=4 rowCount=0 noResults=false text=Active Home Healthcare LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notification",
+        "attempt=5 rowCount=0 noResults=false text=Active Home Healthcare LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notification",
+        "attempt=6 rowCount=0 noResults=false text=Active Home Healthcare LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notification",
+        "attempt=7 rowCount=0 noResults=false text=Active Home Healthcare LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notification",
+        "attempt=8 rowCount=0 noResults=false text=Active Home Healthcare LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notification",
+        "rowCount=0",
+        "noResultsVisible=false",
+        "Normalized query typed=morgan, marilyn",
+        "Normalized expected display name=MORGAN, MARILYN"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T07:31:31.539Z",
+      "step": "patient_search_match_resolution",
+      "message": "Global patient search completed, but no matching patient result was available to open.",
+      "patientName": "Marilyn Morgan",
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+      "selectorUsed": null,
+      "found": [],
+      "missing": [
+        "matching patient result"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Original workbook patient name: Marilyn Morgan",
+        "Normalized global search query: morgan, marilyn",
+        "Normalized expected display name: MORGAN, MARILYN",
+        "Candidate search result texts: none",
+        "Visible result row count: 0",
+        "No results marker visible: false",
+        "Debug summary: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\evidence\\MARILYN_MORGAN__af106bcd08cc8244\\debug\\patient-search-no-results.json",
+        "Text matches for 'morgan, marilyn': none",
+        "Text matches for 'Marilyn Morgan': none",
+        "Text matches for 'MARILYN MORGAN': none"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T07:31:31.539Z",
+      "step": "chart_open",
+      "message": "Patient chart open was skipped because the patient is not currently available in global portal search results. Global patient search completed, but no matching patient result was available to open.",
+      "patientName": "Marilyn Morgan",
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+      "selectorUsed": null,
+      "found": [],
+      "missing": [
+        "matching patient result"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Original workbook patient name: Marilyn Morgan",
+        "Normalized global search query: morgan, marilyn",
+        "Normalized expected display name: MORGAN, MARILYN",
+        "Candidate search result texts: none",
+        "Visible result row count: 0",
+        "No results marker visible: false",
+        "Debug summary: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\evidence\\MARILYN_MORGAN__af106bcd08cc8244\\debug\\patient-search-no-results.json"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T07:31:31.539Z",
+      "step": "shared_portal_access",
+      "message": "Shared portal access completed without a patient chart context because match status was NOT_FOUND.",
+      "patientName": "Marilyn Morgan",
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+      "selectorUsed": null,
+      "found": [],
+      "missing": [
+        "patient chart context"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "matchStatus=NOT_FOUND",
+        "portalPatientId=none",
+        "dashboardUrl=https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+        "chartUrl=none"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T07:31:31.539Z",
+      "step": "chart_discovery_skipped",
+      "message": "Chart discovery skipped because patient match status was NOT_FOUND.",
+      "patientName": "Marilyn Morgan",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Global patient search completed, but no matching patient result was available to open."
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T07:31:31.570Z",
+      "step": "coding_input_export",
+      "message": "Wrote fallback coding-input.json for downstream read-only diagnosis consumers.",
+      "patientName": "Marilyn Morgan",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "codingInputPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\MARILYN_MORGAN__af106bcd08cc8244\\coding-input.json",
+        "diagnosisCount:0",
+        "primaryDiagnosisSelected:none",
+        "otherDiagnosisCount:0",
+        "codeConfidenceSummary:high:0 medium:0 low:0"
+      ],
+      "missing": [
+        "primary diagnosis"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "suggestedOnsetType:onset",
+        "matchStatus:NOT_FOUND"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    }
+  ],
+  "notes": [
+    "Global patient search completed, but no matching patient result was available to open.",
+    "Fallback coding input exported: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\MARILYN_MORGAN__af106bcd08cc8244\\coding-input.json"
+  ]
+}

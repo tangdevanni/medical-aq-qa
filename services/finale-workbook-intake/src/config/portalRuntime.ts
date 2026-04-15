@@ -20,7 +20,9 @@ export function resolvePortalRuntimeConfig(input: {
   return subsidiaryRuntimeConfigSchema.parse({
     subsidiaryId: input.fallbackSubsidiaryId ?? "default",
     subsidiarySlug: input.fallbackSubsidiaryId ?? "default",
-    subsidiaryName: "Local Env Subsidiary",
+    subsidiaryName: "Star Home Health",
+    portalAgencyName: "Star Home Health",
+    portalAgencyAliases: ["Star Home Health Care Inc"],
     portalBaseUrl: input.env.PORTAL_BASE_URL,
     portalDashboardUrl: input.env.PORTAL_DASHBOARD_URL ?? null,
     credentials: {

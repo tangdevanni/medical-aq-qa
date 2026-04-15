@@ -1,0 +1,356 @@
+[
+  {
+    "field_key": "patient_name",
+    "current_chart_value": "Eleanore Wein",
+    "proposed_value": null,
+    "comparison_status": "unsupported",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "medium"
+  },
+  {
+    "field_key": "dob",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "unsupported",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "medium"
+  },
+  {
+    "field_key": "soc_date",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "unsupported",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "medium"
+  },
+  {
+    "field_key": "referral_date",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "preferred_language",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "unsupported",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "medium"
+  },
+  {
+    "field_key": "interpreter_needed",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "primary_reason_for_home_health_medical_necessity",
+    "current_chart_value": null,
+    "proposed_value": "Order Date Order Time Ordering User Authorizing Provider Department Mar 5, 2026 11:40 AM Connor D Yost, DO Rahul M Patel, DO Valleywise Health Medical Center: Critical Care Skilled Nursing & Therapy Services [NUR608] (#175758921) Priority: Routine Class: Clinic Performed Qty: 1 Resulting Agency: None Home Health Therapy Services: PT Eval & Treat Home Health Therapy Services: OT Eval & Treat Nursing Medication Managem",
+    "comparison_status": "requires_human_review",
+    "confidence": 0.78,
+    "rationale": "Medical necessity was summarized from referral narrative and skilled-need evidence.",
+    "source_spans": [
+      "Order Date Order Time Ordering User Authorizing Provider Department Mar 5, 2026 11:40 AM Connor D Yost, DO Rahul M Patel, DO Valleywise Health Medical Center: Critical Care Skilled Nursing & Therapy Services [NUR608] (#175758921) Priority: Routine Class: Clinic Performed Qty: 1 Resulting Agency: None Home Health Therapy Services: PT Eval & Treat Home Health Therapy Services: OT Eval & Treat Nursing Medication Managem"
+    ],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "admit_reason_to_home_health",
+    "current_chart_value": null,
+    "proposed_value": "Order Date Order Time Ordering User Authorizing Provider Department Mar 5, 2026 11:40 AM Connor D Yost, DO Rahul M Patel, DO Valleywise Health Medical Center: Critical Care Skilled Nursing & Therapy Services [NUR608] (#175758921) Priority: Routine Class: Clinic Performed Qty: 1 Resulting Agency: None Home Health Therapy Services: PT Eval & Treat Home Health Therapy Services: OT Eval & Treat Nursing Medication Managem",
+    "comparison_status": "requires_human_review",
+    "confidence": 0.78,
+    "rationale": "Medical necessity was summarized from referral narrative and skilled-need evidence.",
+    "source_spans": [
+      "Order Date Order Time Ordering User Authorizing Provider Department Mar 5, 2026 11:40 AM Connor D Yost, DO Rahul M Patel, DO Valleywise Health Medical Center: Critical Care Skilled Nursing & Therapy Services [NUR608] (#175758921) Priority: Routine Class: Clinic Performed Qty: 1 Resulting Agency: None Home Health Therapy Services: PT Eval & Treat Home Health Therapy Services: OT Eval & Treat Nursing Medication Managem"
+    ],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "homebound_narrative",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "homebound_supporting_factors",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "recent_hospitalization_discharge_date",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "recent_hospitalization_facility",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "caregiver_name",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "unsupported",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "medium"
+  },
+  {
+    "field_key": "caregiver_relationship",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "unsupported",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "medium"
+  },
+  {
+    "field_key": "caregiver_phone",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "living_situation",
+    "current_chart_value": null,
+    "proposed_value": "Alone Receives Help From",
+    "comparison_status": "missing_in_chart",
+    "confidence": 0.72,
+    "rationale": "Living situation was summarized from referral text.",
+    "source_spans": [
+      "Alone Receives Help From"
+    ],
+    "reviewer_priority": "medium"
+  },
+  {
+    "field_key": "prior_functioning",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "functional_limitations",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "therapy_need",
+    "current_chart_value": null,
+    "proposed_value": "PT/OT completed co-tx for comprehensive assessment, pt and staff safety, and to maintain optimal treatment environment",
+    "comparison_status": "requires_human_review",
+    "confidence": 0.77,
+    "rationale": "Therapy need was summarized from referral text.",
+    "source_spans": [
+      "PT/OT completed co-tx for comprehensive assessment, pt and staff safety, and to maintain optimal treatment environment"
+    ],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "patient_summary_narrative",
+    "current_chart_value": null,
+    "proposed_value": "Order Date Order Time Ordering User Authorizing Provider Department Mar 5, 2026 11:40 AM Connor D Yost, DO Rahul M Patel, DO Valleywise Health Medical Center: Critical Care Skilled Nursing & Therapy Services [NUR608] (#175758921) Priority: Routine Class: Clinic Performed Qty: 1 Resulting Agency: None Home Health Therapy Services: PT Eval & Treat Home Health Therapy Services: OT Eval & Treat Nursing Medication Managem",
+    "comparison_status": "requires_human_review",
+    "confidence": 0.78,
+    "rationale": "Medical necessity was summarized from referral narrative and skilled-need evidence.",
+    "source_spans": [
+      "Order Date Order Time Ordering User Authorizing Provider Department Mar 5, 2026 11:40 AM Connor D Yost, DO Rahul M Patel, DO Valleywise Health Medical Center: Critical Care Skilled Nursing & Therapy Services [NUR608] (#175758921) Priority: Routine Class: Clinic Performed Qty: 1 Resulting Agency: None Home Health Therapy Services: PT Eval & Treat Home Health Therapy Services: OT Eval & Treat Nursing Medication Managem"
+    ],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "skilled_interventions",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "discipline_frequencies",
+    "current_chart_value": null,
+    "proposed_value": "PT/OT completed co-tx for comprehensive assessment, pt and staff safety, and to maintain optimal treatment environment",
+    "comparison_status": "requires_human_review",
+    "confidence": 0.77,
+    "rationale": "Therapy need was summarized from referral text.",
+    "source_spans": [
+      "PT/OT completed co-tx for comprehensive assessment, pt and staff safety, and to maintain optimal treatment environment"
+    ],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "plan_for_next_visit",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "patient_caregiver_goals",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "care_plan_problems_goals_interventions",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "fall_risk_narrative",
+    "current_chart_value": null,
+    "proposed_value": "Order Date Order Time Ordering User Authorizing Provider Department Mar 5, 2026 11:40 AM Connor D Yost, DO Rahul M Patel, DO Valleywise Health Medical Center: Critical Care Skilled Nursing & Therapy Services [NUR608] (#175758921) Priority: Routine Class: Clinic Performed Qty: 1 Resulting Agency: None Home Health Therapy Services: PT Eval & Treat Home Health Therapy Services: OT Eval & Treat Nursing Medication Managem",
+    "comparison_status": "requires_human_review",
+    "confidence": 0.7,
+    "rationale": "Risk and safety narrative was summarized from referral text.",
+    "source_spans": [
+      "Order Date Order Time Ordering User Authorizing Provider Department Mar 5, 2026 11:40 AM Connor D Yost, DO Rahul M Patel, DO Valleywise Health Medical Center: Critical Care Skilled Nursing & Therapy Services [NUR608] (#175758921) Priority: Routine Class: Clinic Performed Qty: 1 Resulting Agency: None Home Health Therapy Services: PT Eval & Treat Home Health Therapy Services: OT Eval & Treat Nursing Medication Managem"
+    ],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "respiratory_status",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "integumentary_wound_status",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "pain_assessment_narrative",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "emotional_behavioral_status",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "past_medical_history",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "immunization_status",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "diagnosis_candidates",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "code_status",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  }
+]

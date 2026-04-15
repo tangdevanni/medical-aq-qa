@@ -5,27 +5,129 @@ import type { ApiEnv } from "../config/env";
 import type { FilesystemSubsidiaryRepository } from "../repositories/filesystemSubsidiaryRepository";
 import type { PortalCredentialProvider } from "./portalCredentialProvider";
 
+const KNOWN_AGENCY_OPTIONS: ReadonlyArray<{
+  id: string;
+  slug: string;
+  name: string;
+  portalAgencyName?: string;
+  portalAgencyAliases?: string[];
+  dashboardUrlEnvKey?: keyof ApiEnv;
+}> = [
+  {
+    id: "aplus-home-health",
+    slug: "aplus-home-health",
+    name: "APlus Home Health",
+    portalAgencyName: "A Plus Home Health Systems LLC",
+    portalAgencyAliases: ["APlus Home Health", "A Plus Home Health"],
+    dashboardUrlEnvKey: "APLUS_HOME_HEALTH_PORTAL_DASHBOARD_URL",
+  },
+  {
+    id: "active-home-health",
+    slug: "active-home-health",
+    name: "Active Home Health",
+    portalAgencyName: "Active Home Healthcare LLC",
+    portalAgencyAliases: ["Active Home Health", "Active Home Healthcare"],
+    dashboardUrlEnvKey: "ACTIVE_HOME_HEALTH_PORTAL_DASHBOARD_URL",
+  },
+  {
+    id: "avery-home-health",
+    slug: "avery-home-health",
+    name: "Avery Home Health",
+    portalAgencyName: "Avery Home Health LLC",
+    portalAgencyAliases: ["Avery Home Health"],
+    dashboardUrlEnvKey: "AVERY_HOME_HEALTH_PORTAL_DASHBOARD_URL",
+  },
+  {
+    id: "meadows-home-health",
+    slug: "meadows-home-health",
+    name: "Meadows Home Health",
+    portalAgencyName: "Meadows Home Health",
+    portalAgencyAliases: ["Meadows Home Health"],
+    dashboardUrlEnvKey: "MEADOWS_HOME_HEALTH_PORTAL_DASHBOARD_URL",
+  },
+];
+
+function parseAutonomousAgencyIds(env: ApiEnv): Set<string> {
+  return new Set(
+    env.AUTONOMOUS_AGENCY_IDS
+      .split(",")
+      .map((value) => value.trim())
+      .filter(Boolean),
+  );
+}
+
+function resolveAgencyDashboardUrl(
+  env: ApiEnv,
+  dashboardUrlEnvKey?: keyof ApiEnv,
+): string | null {
+  if (dashboardUrlEnvKey) {
+    const configuredValue = env[dashboardUrlEnvKey];
+    if (typeof configuredValue === "string" && configuredValue.trim()) {
+      return configuredValue;
+    }
+  }
+
+  if (env.DEFAULT_SUBSIDIARY_NAME === "Star Home Health" && env.STAR_HOME_HEALTH_PORTAL_DASHBOARD_URL) {
+    return env.STAR_HOME_HEALTH_PORTAL_DASHBOARD_URL;
+  }
+
+  return env.DEFAULT_SUBSIDIARY_PORTAL_DASHBOARD_URL ?? env.PORTAL_DASHBOARD_URL ?? null;
+}
+
 function buildDefaultSubsidiaryRecord(env: ApiEnv, existing: SubsidiaryRecord | null): SubsidiaryRecord {
   const now = new Date().toISOString();
+  const defaultAliases = env.DEFAULT_SUBSIDIARY_NAME === "Star Home Health"
+    ? ["Star Home Health Care Inc"]
+    : [];
   return {
     id: env.DEFAULT_SUBSIDIARY_ID,
     slug: env.DEFAULT_SUBSIDIARY_SLUG,
     name: env.DEFAULT_SUBSIDIARY_NAME,
+    portalAgencyName: env.DEFAULT_SUBSIDIARY_NAME,
+    portalAgencyAliases: existing?.portalAgencyAliases ?? defaultAliases,
     status: "ACTIVE",
     portalBaseUrl:
       env.DEFAULT_SUBSIDIARY_PORTAL_BASE_URL ??
       env.PORTAL_BASE_URL ??
       "https://app.finalehealth.com",
-    portalDashboardUrl:
-      env.DEFAULT_SUBSIDIARY_PORTAL_DASHBOARD_URL ??
-      env.PORTAL_DASHBOARD_URL ??
-      null,
+    portalDashboardUrl: resolveAgencyDashboardUrl(env),
     portalCredentialsSecretArn: env.DEFAULT_SUBSIDIARY_PORTAL_CREDENTIALS_SECRET_ARN ?? null,
     portalCredentialsEnvVarName: env.DEFAULT_SUBSIDIARY_PORTAL_CREDENTIALS_ENV_VAR,
     rerunEnabled: env.DEFAULT_SUBSIDIARY_RERUN_ENABLED,
     rerunIntervalHours: env.DEFAULT_SUBSIDIARY_RERUN_INTERVAL_HOURS,
     timezone: env.DEFAULT_SUBSIDIARY_TIMEZONE,
     isDefault: true,
+    createdAt: existing?.createdAt ?? now,
+    updatedAt: now,
+  };
+}
+
+function buildKnownSubsidiaryRecord(
+  env: ApiEnv,
+  agency: (typeof KNOWN_AGENCY_OPTIONS)[number],
+  existing: SubsidiaryRecord | null,
+): SubsidiaryRecord {
+  const now = new Date().toISOString();
+  const autonomousAgencyIds = parseAutonomousAgencyIds(env);
+  const isActive = autonomousAgencyIds.has(agency.id) || autonomousAgencyIds.has(agency.slug);
+  return {
+    id: agency.id,
+    slug: agency.slug,
+    name: agency.name,
+    portalAgencyName: agency.portalAgencyName ?? agency.name,
+    portalAgencyAliases: agency.portalAgencyAliases ?? existing?.portalAgencyAliases ?? [],
+    status: isActive ? "ACTIVE" : "INACTIVE",
+    portalBaseUrl:
+      env.DEFAULT_SUBSIDIARY_PORTAL_BASE_URL ??
+      env.PORTAL_BASE_URL ??
+      "https://app.finalehealth.com",
+    portalDashboardUrl: resolveAgencyDashboardUrl(env, agency.dashboardUrlEnvKey),
+    portalCredentialsSecretArn: env.DEFAULT_SUBSIDIARY_PORTAL_CREDENTIALS_SECRET_ARN ?? null,
+    portalCredentialsEnvVarName: env.DEFAULT_SUBSIDIARY_PORTAL_CREDENTIALS_ENV_VAR,
+    rerunEnabled: isActive ? env.DEFAULT_SUBSIDIARY_RERUN_ENABLED : false,
+    rerunIntervalHours: env.DEFAULT_SUBSIDIARY_RERUN_INTERVAL_HOURS,
+    timezone: env.DEFAULT_SUBSIDIARY_TIMEZONE,
+    isDefault: false,
     createdAt: existing?.createdAt ?? now,
     updatedAt: now,
   };
@@ -41,7 +143,7 @@ export class SubsidiaryConfigService {
 
   async initialize(): Promise<void> {
     await this.repository.ensureReady();
-    await this.ensureDefaultActiveSubsidiary();
+    await this.ensureKnownSubsidiaries();
   }
 
   async ensureDefaultActiveSubsidiary(): Promise<SubsidiaryRecord> {
@@ -58,6 +160,30 @@ export class SubsidiaryConfigService {
       "default active subsidiary configuration is ready",
     );
     return defaultRecord;
+  }
+
+  async ensureKnownSubsidiaries(): Promise<SubsidiaryRecord[]> {
+    const records: SubsidiaryRecord[] = [await this.ensureDefaultActiveSubsidiary()];
+    for (const agency of KNOWN_AGENCY_OPTIONS) {
+      const existing = await this.repository.getSubsidiary(agency.id);
+      const record = buildKnownSubsidiaryRecord(this.env, agency, existing);
+      await this.repository.saveSubsidiary(record);
+      records.push(record);
+    }
+
+    this.logger.info(
+      {
+        subsidiaries: records.map((record) => ({
+          subsidiaryId: record.id,
+          subsidiarySlug: record.slug,
+          status: record.status,
+          rerunEnabled: record.rerunEnabled,
+        })),
+      },
+      "known subsidiary configurations are ready",
+    );
+
+    return records;
   }
 
   async listSubsidiaries(): Promise<SubsidiaryRecord[]> {
@@ -100,6 +226,8 @@ export class SubsidiaryConfigService {
       subsidiaryId: subsidiary.id,
       subsidiarySlug: subsidiary.slug,
       subsidiaryName: subsidiary.name,
+      portalAgencyName: subsidiary.portalAgencyName,
+      portalAgencyAliases: subsidiary.portalAgencyAliases,
       portalBaseUrl: subsidiary.portalBaseUrl,
       portalDashboardUrl: subsidiary.portalDashboardUrl,
       credentials: credentialResolution.credentials,

@@ -1,0 +1,105 @@
+{
+  "patient_context": {
+    "patient_name": null,
+    "dob": "11/13/1946",
+    "soc_date": null,
+    "referral_date": null
+  },
+  "proposed_field_values": [
+    {
+      "field_key": "homebound_narrative",
+      "proposed_value": "requiring assistance and a walker at home.",
+      "confidence": 0.8,
+      "source_spans": [
+        "requiring assistance and a walker at home."
+      ],
+      "rationale": "Homebound evidence was summarized from referral text.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "homebound_supporting_factors",
+      "proposed_value": [
+        "uses_walker"
+      ],
+      "confidence": 0.73,
+      "source_spans": [
+        "and a walker at home."
+      ],
+      "rationale": "Homebound supporting factors were extracted from referral text.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "therapy_need",
+      "proposed_value": "Physical Therapy Occupational Therapy",
+      "confidence": 0.77,
+      "source_spans": [
+        "Physical Therapy Occupational Therapy"
+      ],
+      "rationale": "Therapy need was summarized from referral text.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "skilled_interventions",
+      "proposed_value": "Physical Therapy Occupational Therapy",
+      "confidence": 0.8,
+      "source_spans": [
+        "Physical Therapy Occupational Therapy"
+      ],
+      "rationale": "Skilled interventions were summarized from the therapy plan.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "plan_for_next_visit",
+      "proposed_value": "Physical Therapy Occupational Therapy",
+      "confidence": 0.78,
+      "source_spans": [
+        "Physical Therapy Occupational Therapy"
+      ],
+      "rationale": "Next-visit plan was summarized from the therapy plan.",
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [
+    {
+      "description": "R49",
+      "icd10_code": "R49",
+      "confidence": 0.74,
+      "source_spans": [
+        "R49-XQ65"
+      ],
+      "is_primary_candidate": true,
+      "requires_human_review": true
+    }
+  ],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "preferred_language",
+    "interpreter_needed",
+    "recent_hospitalization_discharge_date",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "living_situation",
+    "prior_functioning",
+    "functional_limitations",
+    "patient_summary_narrative",
+    "discipline_frequencies",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "fall_risk_narrative",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status",
+    "code_status",
+    "medical_necessity_summary"
+  ],
+  "warnings": [
+    "Deterministic referral facts extraction was used.",
+    "Rejected noisy or unsupported referral proposals for fields: medical_necessity_summary."
+  ]
+}

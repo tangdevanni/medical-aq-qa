@@ -1,0 +1,413 @@
+[
+  {
+    "field_key": "patient_name",
+    "current_chart_value": "SPEAR, LINDA M.",
+    "proposed_value": null,
+    "comparison_status": "unsupported",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "medium"
+  },
+  {
+    "field_key": "dob",
+    "current_chart_value": "1951-08-26",
+    "proposed_value": null,
+    "comparison_status": "unsupported",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "medium"
+  },
+  {
+    "field_key": "soc_date",
+    "current_chart_value": "2026-02-18",
+    "proposed_value": null,
+    "comparison_status": "unsupported",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "medium"
+  },
+  {
+    "field_key": "referral_date",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "preferred_language",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "unsupported",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "medium"
+  },
+  {
+    "field_key": "interpreter_needed",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "primary_reason_for_home_health_medical_necessity",
+    "current_chart_value": "Linda M. Spear, a 74-year-old female, presents with significant clinical complexities that warrant her admission to home health care following a recent hospitalization for chest pain, lower extremity edema, and right-sided paresthesias. Her primary diagnosis is chest pain, and she has multiple secondary conditions including diabetes mellitus, hypertension, atrial fibrillation, and a chronic sacral decubitus ulcer. The patient's functional status is notably impaired; she is experiencing bilateral lower extremity ede",
+    "proposed_value": "Dietary Diet",
+    "comparison_status": "requires_human_review",
+    "confidence": 0.82,
+    "rationale": "Order summary was extracted from referral instructions.",
+    "source_spans": [
+      "Report User: Derrick Miller Time: 12:42:23 PT Resident: SPEAR, LINDA M (20330) Order Category: Dietary Diet,"
+    ],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "admit_reason_to_home_health",
+    "current_chart_value": null,
+    "proposed_value": "Dietary Diet",
+    "comparison_status": "requires_human_review",
+    "confidence": 0.78,
+    "rationale": "Medical necessity was summarized from referral narrative and skilled-need evidence.",
+    "source_spans": [
+      "Report User: Derrick Miller Time: 12:42:23 PT Resident: SPEAR, LINDA M (20330) Order Category: Dietary Diet,"
+    ],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "homebound_narrative",
+    "current_chart_value": "Linda is categorized as homebound based on several criteria. She experiences significant challenges in leaving her home due to her medical conditions and physical limitations. Specifically, her inability to tolerate standing or walking for extended periods, along with pain that restricts her mobility, contributes to her homebound status. It is exhausting for her to leave home, and she requires human assistance due to an unsteady gait and poor balance. The effort needed to leave her home is considerable, necessitati",
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "homebound_supporting_factors",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "recent_hospitalization_discharge_date",
+    "current_chart_value": null,
+    "proposed_value": "12/17/2025",
+    "comparison_status": "requires_human_review",
+    "confidence": 0.9,
+    "rationale": "Recent discharge date was identified in referral or hospitalization history.",
+    "source_spans": [
+      "12/17/2025"
+    ],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "recent_hospitalization_facility",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "caregiver_name",
+    "current_chart_value": null,
+    "proposed_value": "Mailman, Andrew",
+    "comparison_status": "missing_in_chart",
+    "confidence": 0.88,
+    "rationale": "Caregiver name was identified in referral caregiver evidence.",
+    "source_spans": [
+      "Mailman, Andrew"
+    ],
+    "reviewer_priority": "medium"
+  },
+  {
+    "field_key": "caregiver_relationship",
+    "current_chart_value": null,
+    "proposed_value": "Friend",
+    "comparison_status": "missing_in_chart",
+    "confidence": 0.85,
+    "rationale": "Caregiver relationship was identified in referral caregiver evidence.",
+    "source_spans": [
+      "Friend"
+    ],
+    "reviewer_priority": "medium"
+  },
+  {
+    "field_key": "caregiver_phone",
+    "current_chart_value": null,
+    "proposed_value": "7252209272",
+    "comparison_status": "requires_human_review",
+    "confidence": 0.8,
+    "rationale": "Caregiver phone number was identified in referral caregiver evidence.",
+    "source_spans": [
+      "7252209272"
+    ],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "living_situation",
+    "current_chart_value": null,
+    "proposed_value": "TLC Care Center",
+    "comparison_status": "missing_in_chart",
+    "confidence": 0.72,
+    "rationale": "Living situation was summarized from referral text.",
+    "source_spans": [
+      "TLC Care Center"
+    ],
+    "reviewer_priority": "medium"
+  },
+  {
+    "field_key": "prior_functioning",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "functional_limitations",
+    "current_chart_value": null,
+    "proposed_value": [
+      "weakness",
+      "difficulty_walking"
+    ],
+    "comparison_status": "requires_human_review",
+    "confidence": 0.76,
+    "rationale": "Functional limitations were extracted from referral text.",
+    "source_spans": [
+      "MUSCLE WEAKNESS (GENERALIZED) DIFFICULTY IN WALKING, NOT ELSEWHERE CLASSIFIED ELSEWHERE(D84.81), MUSCLE WEAKNESS (GENERALIZED)(M62.81), DIFFICULTY IN WALKING, NOT ELSEWHERE CLASSIFIED(R26.2), COGNITIVE Weakness improved"
+    ],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "therapy_need",
+    "current_chart_value": null,
+    "proposed_value": "physical therapy and and occupational therapy. PT/OT, brace education",
+    "comparison_status": "requires_human_review",
+    "confidence": 0.77,
+    "rationale": "Therapy need was summarized from referral text.",
+    "source_spans": [
+      "physical therapy and and occupational therapy. PT/OT, brace education"
+    ],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "patient_summary_narrative",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "skilled_interventions",
+    "current_chart_value": "The skilled care required includes skilled nursing for ongoing monitoring of her anticoagulation therapy, medication management, and wound care for her decubitus ulcer. Additionally, physical therapy will be critical to aid in her mobility and to prevent further complications associated with her condition.",
+    "proposed_value": "physical therapy and and occupational therapy. PT/OT, brace education",
+    "comparison_status": "requires_human_review",
+    "confidence": 0.8,
+    "rationale": "Skilled interventions were summarized from the therapy plan.",
+    "source_spans": [
+      "physical therapy and and occupational therapy. PT/OT, brace education"
+    ],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "discipline_frequencies",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "plan_for_next_visit",
+    "current_chart_value": null,
+    "proposed_value": "physical therapy and and occupational therapy. PT/OT, brace education",
+    "comparison_status": "requires_human_review",
+    "confidence": 0.78,
+    "rationale": "Next-visit plan was summarized from the therapy plan.",
+    "source_spans": [
+      "physical therapy and and occupational therapy. PT/OT, brace education"
+    ],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "patient_caregiver_goals",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "care_plan_problems_goals_interventions",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "fall_risk_narrative",
+    "current_chart_value": null,
+    "proposed_value": "FALL ON SAME LEVEL, UNSPECIFIED, SUBSEQUENT ENCOUNTER Fall, initial encounter [W19.XXXA] Fall, initial encounter MUSCLE WEAKNESS (GENERALIZED) DIFFICULTY IN WALKING, NOT ELSEWHERE CLASSIFIED ELSEWHERE(D84.81), MUSCLE WEAKNESS (GENERALIZED)(M62.81), DIFFICULTY IN WALKING, NOT ELSEWHERE CLASSIFIED(R26.2), COGNITIVE",
+    "comparison_status": "requires_human_review",
+    "confidence": 0.7,
+    "rationale": "Risk and safety narrative was summarized from referral text.",
+    "source_spans": [
+      "FALL ON SAME LEVEL, UNSPECIFIED, SUBSEQUENT ENCOUNTER Fall, initial encounter [W19.XXXA] Fall, initial encounter MUSCLE WEAKNESS (GENERALIZED) DIFFICULTY IN WALKING, NOT ELSEWHERE CLASSIFIED ELSEWHERE(D84.81), MUSCLE WEA"
+    ],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "respiratory_status",
+    "current_chart_value": "Vital Signs Temperature: 97.8 Temporal Pulse (per minute): Apical = Radial = 79 Respiratory (per minute): 18 Weight: 137 reported Blood Pressure mm/Hg (R): 130 / sitting Blood Pressure mm/Hg (L): Blood Sugar (mg/dl): 135 Non-Fasting O2 Sat: 97 O2 Sat in: Room Air",
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "integumentary_wound_status",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "pain_assessment_narrative",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "emotional_behavioral_status",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "past_medical_history",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "immunization_status",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "diagnosis_candidates",
+    "current_chart_value": null,
+    "proposed_value": [
+      {
+        "description": "T12 VERTEBRA, SUBSEQUENT",
+        "icd10_code": "T11"
+      },
+      {
+        "description": "T12 VERTEBRA, SUBSEQUENT ENCOUNTER FOR FRACTURE WITH ROUTINE",
+        "icd10_code": "T11"
+      },
+      {
+        "description": "Dietary Diet",
+        "icd10_code": "T81.42XA"
+      },
+      {
+        "description": "Aftercare following joint replacement surgery, unspecified joint",
+        "icd10_code": "Z47.1"
+      },
+      {
+        "description": "Pressure ulcer of sacral region, stage 4",
+        "icd10_code": "L89.154"
+      },
+      {
+        "description": "Disruption of external operation (surgical) wound, not elsewhere classified, subsequent encounter",
+        "icd10_code": "T81.31XD"
+      },
+      {
+        "description": "Type 1 diabetes mellitus without complications",
+        "icd10_code": "E10.9"
+      },
+      {
+        "description": "Immunodeficiency due to conditions classified elsewhere",
+        "icd10_code": "D84.81"
+      }
+    ],
+    "comparison_status": "requires_human_review",
+    "confidence": 0.74,
+    "rationale": "Diagnosis candidates extracted from referral evidence.",
+    "source_spans": [
+      "T11-T12 VERTEBRA, SUBSEQUENT",
+      "T11-T12 VERTEBRA, SUBSEQUENT ENCOUNTER FOR FRACTURE WITH ROUTINE",
+      "T81.42XA) Dietary Diet",
+      "Z47.1: Aftercare following joint replacement surgery, unspecified joint",
+      "L89.154: Pressure ulcer of sacral region, stage 4",
+      "T81.31XD: Disruption of external operation (surgical) wound, not elsewhere classified, subsequent encounter",
+      "E10.9: Type 1 diabetes mellitus without complications",
+      "D84.81: Immunodeficiency due to conditions classified elsewhere"
+    ],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "code_status",
+    "current_chart_value": null,
+    "proposed_value": "full_code",
+    "comparison_status": "requires_human_review",
+    "confidence": 0.75,
+    "rationale": "Code status was explicitly stated in referral text.",
+    "source_spans": [
+      "Code status: full_code"
+    ],
+    "reviewer_priority": "high"
+  }
+]

@@ -21,6 +21,8 @@ const batch: BatchRecord = {
     active: true,
     rerunEnabled: true,
     intervalHours: 24,
+    timezone: "Asia/Manila",
+    localTimes: ["15:00", "23:30"],
     lastRunAt: "2026-04-06T20:05:00.000Z",
     nextScheduledRunAt: "2026-04-07T20:05:00.000Z",
   },
@@ -30,9 +32,11 @@ const batch: BatchRecord = {
     acquisitionStatus: "ACQUIRED",
     acquisitionReference: null,
     acquisitionNotes: [],
+    acquisitionMetadata: null,
     originalFileName: "reference.xlsx",
     storedPath: "C:\\temp\\reference.xlsx",
     uploadedAt: "2026-04-06T20:00:00.000Z",
+    verification: null,
   },
   storage: {
     batchRoot: "C:\\temp\\batch-1",
@@ -311,6 +315,27 @@ const patientViewInput = {
       ],
     },
     documentText: null,
+    fieldMapSnapshot: {
+      generatedAt: "2026-04-11T00:00:00.000Z",
+      fields: [
+        {
+          key: "primary_reason_for_home_health_medical_necessity",
+          label: "Primary Reason For Home Health / Medical Necessity",
+          category: "medical_necessity_homebound",
+          type: "textarea",
+          control: "textarea",
+          options: [],
+          llm_fill_candidate: true,
+          human_review_required: true,
+          reference_only: false,
+          compare_strategy: "narrative_support_compare",
+          evidence_strategy: "section_summary",
+          currentChartValue: null,
+          currentChartValueSource: "unavailable",
+          populatedInChart: false,
+        },
+      ],
+    },
     qaPrefetch: {
       status: "COMPLETED",
       selectedRouteSummary: "patient documents via sidebar_label: File Uploads",
@@ -470,6 +495,8 @@ describe("dashboardRunViews", () => {
     assert.equal(detail.referralPatientContext?.referralDate, "02/17/2026");
     assert.equal(detail.referralSections.length, 1);
     assert.equal(detail.referralSections[0]?.fields[0]?.comparisonStatus, "supported_by_referral");
+    assert.equal(detail.referralSections[0]?.fields[0]?.currentChartValueSource, "unavailable");
+    assert.equal(detail.referralSections[0]?.fields[0]?.populatedInChart, false);
     assert.equal(
       detail.referralSections[0]?.fields[0]?.recommendation.label,
       "The referral documents provide a chart-ready answer for Primary Reason For Home Health / Medical Necessity.",

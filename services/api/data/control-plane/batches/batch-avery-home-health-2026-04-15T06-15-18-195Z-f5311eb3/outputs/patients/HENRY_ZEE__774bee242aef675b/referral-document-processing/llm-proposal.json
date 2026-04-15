@@ -1,0 +1,94 @@
+{
+  "patient_context": {
+    "patient_name": "Henry KING Zee",
+    "dob": "01/09/1948",
+    "soc_date": "02/14/2026",
+    "referral_date": null
+  },
+  "proposed_field_values": [
+    {
+      "field_key": "therapy_need",
+      "proposed_value": "Physical Therapy, and Home Health Aide",
+      "confidence": 0.77,
+      "source_spans": [
+        "Physical Therapy, and Home Health Aide"
+      ],
+      "rationale": "Therapy need was summarized from referral text.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "fall_risk_narrative",
+      "proposed_value": "Fall risk has been referred to PT in past, per son he had 2 visits then patient deferred, agreeable to How often during the past 4 weeks have you been bothered by fall/dizzy when standing up?: Occasionally History of fall",
+      "confidence": 0.7,
+      "source_spans": [
+        "Fall risk has been referred to PT in past, per son he had 2 visits then patient deferred, agreeable to How often during the past 4 weeks have you been bothered by fall/dizzy when standing up?: Occasionally History of fal"
+      ],
+      "rationale": "Risk and safety narrative was summarized from referral text.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "skilled_interventions",
+      "proposed_value": "Physical Therapy, and Home Health Aide",
+      "confidence": 0.8,
+      "source_spans": [
+        "Physical Therapy, and Home Health Aide"
+      ],
+      "rationale": "Skilled interventions were summarized from the therapy plan.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "plan_for_next_visit",
+      "proposed_value": "Physical Therapy, and Home Health Aide",
+      "confidence": 0.78,
+      "source_spans": [
+        "Physical Therapy, and Home Health Aide"
+      ],
+      "rationale": "Next-visit plan was summarized from the therapy plan.",
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [
+    {
+      "description": "Balance problem (R26",
+      "icd10_code": "R41.89",
+      "confidence": 0.74,
+      "source_spans": [
+        "R41.89) Balance problem (R26"
+      ],
+      "is_primary_candidate": true,
+      "requires_human_review": true
+    }
+  ],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "preferred_language",
+    "interpreter_needed",
+    "primary_reason_for_home_health_medical_necessity",
+    "admit_reason_to_home_health",
+    "homebound_narrative",
+    "homebound_supporting_factors",
+    "recent_hospitalization_discharge_date",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "living_situation",
+    "prior_functioning",
+    "functional_limitations",
+    "patient_summary_narrative",
+    "discipline_frequencies",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status",
+    "code_status"
+  ],
+  "warnings": [
+    "Deterministic referral facts extraction was used."
+  ]
+}

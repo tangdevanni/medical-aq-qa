@@ -40,8 +40,13 @@ export class WorkbookAcquisitionService {
 
     const result = await provider.acquire(params.input, {
       batchId: params.batch.id,
+      subsidiaryId: params.batch.subsidiary.id,
+      subsidiarySlug: params.batch.subsidiary.slug,
+      subsidiaryName: params.batch.subsidiary.name,
       billingPeriod: params.billingPeriod ?? params.batch.billingPeriod,
       destinationPath: params.batch.sourceWorkbook.storedPath,
+      batchRoot: params.batch.storage.batchRoot,
+      outputRoot: params.batch.storage.outputRoot,
       logger: this.logger,
     });
 

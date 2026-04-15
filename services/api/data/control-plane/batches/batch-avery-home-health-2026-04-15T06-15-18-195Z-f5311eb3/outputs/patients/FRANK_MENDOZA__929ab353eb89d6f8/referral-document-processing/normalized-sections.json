@@ -1,0 +1,308 @@
+[
+  {
+    "sectionName": "patient_identity",
+    "extractedTextSpans": [
+      "DOB:41211936",
+      "DOB:"
+    ],
+    "normalizedSummary": "DOB:41211936 DOB:",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 23,
+        "lineEnd": 23,
+        "charStart": 312,
+        "charEnd": 324
+      },
+      {
+        "lineStart": 152,
+        "lineEnd": 152,
+        "charStart": 2864,
+        "charEnd": 2868
+      }
+    ]
+  },
+  {
+    "sectionName": "referral_metadata",
+    "extractedTextSpans": [
+      "Referral N/A",
+      "REFERRAL FOR HOME HEALTH SERVICES"
+    ],
+    "normalizedSummary": "Referral N/A REFERRAL FOR HOME HEALTH SERVICES",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 74,
+        "lineEnd": 74,
+        "charStart": 1715,
+        "charEnd": 1727
+      },
+      {
+        "lineStart": 141,
+        "lineEnd": 141,
+        "charStart": 2498,
+        "charEnd": 2531
+      }
+    ]
+  },
+  {
+    "sectionName": "diagnoses",
+    "extractedTextSpans": [
+      "The diagnosis for this patient is Age related debility.",
+      "Diagnosis and Procedure Summary:",
+      "Primary Diagnosis:"
+    ],
+    "normalizedSummary": "The diagnosis for this patient is Age related debility. Diagnosis and Procedure Summary: Primary Diagnosis:",
+    "confidence": 0.95,
+    "lineReferences": [
+      {
+        "lineStart": 148,
+        "lineEnd": 148,
+        "charStart": 2719,
+        "charEnd": 2774
+      },
+      {
+        "lineStart": 464,
+        "lineEnd": 464,
+        "charStart": 16730,
+        "charEnd": 16762
+      },
+      {
+        "lineStart": 465,
+        "lineEnd": 465,
+        "charStart": 16763,
+        "charEnd": 16781
+      }
+    ]
+  },
+  {
+    "sectionName": "medications",
+    "extractedTextSpans": [
+      "He is tolerating the medication well without side effects.",
+      "Allergies:",
+      "medication/s.",
+      "RECOMMENDATIONS given include: go to the ER if symptom/s worsen, explained potential side effects of medication/s,"
+    ],
+    "normalizedSummary": "He is tolerating the medication well without side effects. Allergies: medication/s.",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 190,
+        "lineEnd": 190,
+        "charStart": 3801,
+        "charEnd": 3859
+      },
+      {
+        "lineStart": 265,
+        "lineEnd": 265,
+        "charStart": 5961,
+        "charEnd": 5971
+      },
+      {
+        "lineStart": 395,
+        "lineEnd": 395,
+        "charStart": 12757,
+        "charEnd": 12770
+      },
+      {
+        "lineStart": 411,
+        "lineEnd": 411,
+        "charStart": 13607,
+        "charEnd": 13721
+      }
+    ]
+  },
+  {
+    "sectionName": "risk_factors",
+    "extractedTextSpans": [
+      "Falls risk assessment documented (In-House)",
+      "Pt screen for fall risk; document no falls in past year or only 1 fall w/o injury in past year (GER) (In-House)",
+      "No history of fall only 1 fall without injury within the past year.",
+      "3288F Falls risk assessment documented (In-House)",
+      "1101F Pt screen for fall risk; document no falls in past year or only 1 fall,w/o injury in past year (GER) (In-House)",
+      "3288F Falls risk assessment documented (In-House)",
+      "1101F Pt screen for fall risk; document no falls in past year or only 1 fall w/o injury in past year (GER) (In-House)"
+    ],
+    "normalizedSummary": "Falls risk assessment documented (In-House) Pt screen for fall risk; document no falls in past year or only 1 fall w/o injury in past year (GER) (In-House) No history of fall only 1 fall without injury within the past year.",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 374,
+        "lineEnd": 374,
+        "charStart": 11721,
+        "charEnd": 11764
+      },
+      {
+        "lineStart": 375,
+        "lineEnd": 375,
+        "charStart": 11765,
+        "charEnd": 11876
+      },
+      {
+        "lineStart": 409,
+        "lineEnd": 409,
+        "charStart": 13424,
+        "charEnd": 13491
+      },
+      {
+        "lineStart": 424,
+        "lineEnd": 424,
+        "charStart": 14414,
+        "charEnd": 14463
+      },
+      {
+        "lineStart": 425,
+        "lineEnd": 425,
+        "charStart": 14464,
+        "charEnd": 14581
+      },
+      {
+        "lineStart": 476,
+        "lineEnd": 476,
+        "charStart": 17320,
+        "charEnd": 17369
+      },
+      {
+        "lineStart": 477,
+        "lineEnd": 477,
+        "charStart": 17370,
+        "charEnd": 17487
+      }
+    ]
+  },
+  {
+    "sectionName": "other_clinical_notes",
+    "extractedTextSpans": [
+      "WI clinical notes E demographias",
+      "Notes",
+      "Default Progress Note",
+      "Default Progress Note",
+      "Default Progress Note",
+      "Default Progress Note",
+      "Pain assessment negative using a standardized tool and no follow-up plan needed. (In-House)",
+      "Patient is negtive for clinical depression and a follow-up plan is not required (In-House)",
+      "Plan:",
+      "Default Progress Note",
+      "Patient is NEGATIVE for clinical depression, a follow-up plan",
+      "and pain assessment negative using a standardized tool and no follow-up plan is needed.",
+      "G8731 Pain assessment negative using a standardized tool and no follow-up plan needed. (In-House)",
+      "G8510 Patient is negtive for clinical depression and a follow-up plan is not required (In-House)",
+      "Default Progress Note",
+      "G8731 Pain assessment negative using a standardized tool and no follow-up plan needed. (In-House)",
+      "G8510 Patient is negtive for clinical depression and a follow-up plan is not required (In-House)",
+      "Default Progress Note"
+    ],
+    "normalizedSummary": "WI clinical notes E demographias Notes Default Progress Note",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 31,
+        "lineEnd": 31,
+        "charStart": 426,
+        "charEnd": 458
+      },
+      {
+        "lineStart": 128,
+        "lineEnd": 128,
+        "charStart": 2313,
+        "charEnd": 2318
+      },
+      {
+        "lineStart": 171,
+        "lineEnd": 171,
+        "charStart": 3235,
+        "charEnd": 3256
+      },
+      {
+        "lineStart": 235,
+        "lineEnd": 235,
+        "charStart": 4947,
+        "charEnd": 4968
+      },
+      {
+        "lineStart": 280,
+        "lineEnd": 280,
+        "charStart": 6576,
+        "charEnd": 6597
+      },
+      {
+        "lineStart": 341,
+        "lineEnd": 341,
+        "charStart": 10117,
+        "charEnd": 10138
+      },
+      {
+        "lineStart": 369,
+        "lineEnd": 369,
+        "charStart": 11335,
+        "charEnd": 11426
+      },
+      {
+        "lineStart": 373,
+        "lineEnd": 373,
+        "charStart": 11630,
+        "charEnd": 11720
+      },
+      {
+        "lineStart": 378,
+        "lineEnd": 378,
+        "charStart": 12069,
+        "charEnd": 12074
+      },
+      {
+        "lineStart": 386,
+        "lineEnd": 386,
+        "charStart": 12240,
+        "charEnd": 12261
+      },
+      {
+        "lineStart": 407,
+        "lineEnd": 407,
+        "charStart": 13348,
+        "charEnd": 13409
+      },
+      {
+        "lineStart": 412,
+        "lineEnd": 412,
+        "charStart": 13722,
+        "charEnd": 13809
+      },
+      {
+        "lineStart": 420,
+        "lineEnd": 420,
+        "charStart": 14111,
+        "charEnd": 14208
+      },
+      {
+        "lineStart": 423,
+        "lineEnd": 423,
+        "charStart": 14317,
+        "charEnd": 14413
+      },
+      {
+        "lineStart": 442,
+        "lineEnd": 442,
+        "charStart": 15553,
+        "charEnd": 15574
+      },
+      {
+        "lineStart": 472,
+        "lineEnd": 472,
+        "charStart": 17017,
+        "charEnd": 17114
+      },
+      {
+        "lineStart": 475,
+        "lineEnd": 475,
+        "charStart": 17223,
+        "charEnd": 17319
+      },
+      {
+        "lineStart": 492,
+        "lineEnd": 492,
+        "charStart": 18031,
+        "charEnd": 18052
+      }
+    ]
+  }
+]

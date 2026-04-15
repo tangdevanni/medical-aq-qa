@@ -1,0 +1,3995 @@
+[
+  {
+    "id": "ALAN_BEGUN__500f20d6c49fea76",
+    "subsidiaryId": "avery-home-health",
+    "patientIdentity": {
+      "displayName": "Alan Begun",
+      "normalizedName": "ALAN BEGUN",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-03-04",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Kuehl, Wade PT",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "09-DC"
+    },
+    "workflowTypes": [
+      "SOC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 29,
+      "daysInPeriod": null,
+      "daysLeft": 29,
+      "daysLeftBeforeOasisDueDate": 29,
+      "rawTrackingValues": [
+        "29"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "IN_PROGRESS",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "In Progress"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "04/14/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 9
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 9,
+        "values": {
+          "patientName": "BEGUN, ALAN",
+          "episodeDate": "03/04/2026",
+          "assignedStaff": "Kuehl, Wade PT",
+          "payer": "Medicare",
+          "rfa": "09-DC",
+          "trackingDays": "29",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "In Progress",
+          "oasisQaRemarks": "04/14/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "ALICE_HYLTON__6e713dfeb89b7e0d",
+    "subsidiaryId": "avery-home-health",
+    "patientIdentity": {
+      "displayName": "Alice Hylton",
+      "normalizedName": "ALICE HYLTON",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-02-18",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Garcia Alfonso, Kelvyn RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "03-ROC"
+    },
+    "workflowTypes": [
+      "ROC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 15,
+      "daysInPeriod": null,
+      "daysLeft": 15,
+      "daysLeftBeforeOasisDueDate": 15,
+      "rawTrackingValues": [
+        "15"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "IN_PROGRESS",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "ROC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "Validated"
+      },
+      {
+        "workflowTypes": [
+          "ROC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "03/31/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "ROC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 35
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 35,
+        "values": {
+          "patientName": "HYLTON, ALICE",
+          "episodeDate": "02/18/2026",
+          "assignedStaff": "Garcia Alfonso, Kelvyn RN",
+          "payer": "Medicare",
+          "rfa": "03-ROC",
+          "trackingDays": "15",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "Validated",
+          "oasisQaRemarks": "03/31/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "AURORA_BRIGGS__652606c084914675",
+    "subsidiaryId": "avery-home-health",
+    "patientIdentity": {
+      "displayName": "Aurora Briggs",
+      "normalizedName": "AURORA BRIGGS",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-01-29",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Ruiz, Marie Franz RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "04-REC"
+    },
+    "workflowTypes": [
+      "RECERT"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 12,
+      "daysInPeriod": null,
+      "daysLeft": 12,
+      "daysLeftBeforeOasisDueDate": 12,
+      "rawTrackingValues": [
+        "12"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "DONE",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "RECERT"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "Locked"
+      },
+      {
+        "workflowTypes": [
+          "RECERT"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "03/28/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "RECERT"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 42
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 42,
+        "values": {
+          "patientName": "BRIGGS, AURORA",
+          "episodeDate": "01/29/2026",
+          "assignedStaff": "Ruiz, Marie Franz RN",
+          "payer": "Medicare",
+          "rfa": "04-REC",
+          "trackingDays": "12",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "Locked",
+          "oasisQaRemarks": "03/28/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "BEVERLY_KLEINER__f9dbe231f1773b2b",
+    "subsidiaryId": "avery-home-health",
+    "patientIdentity": {
+      "displayName": "Beverly Kleiner",
+      "normalizedName": "BEVERLY KLEINER",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-03-31",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Ruiz, Marie Franz RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "01-SOC"
+    },
+    "workflowTypes": [
+      "SOC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 15,
+      "daysInPeriod": null,
+      "daysLeft": 15,
+      "daysLeftBeforeOasisDueDate": 15,
+      "rawTrackingValues": [
+        "15"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "IN_PROGRESS",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "Validated"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "03/31/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 36
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 36,
+        "values": {
+          "patientName": "KLEINER, BEVERLY",
+          "episodeDate": "03/31/2026",
+          "assignedStaff": "Ruiz, Marie Franz RN",
+          "payer": "Medicare",
+          "rfa": "01-SOC",
+          "trackingDays": "15",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "Validated",
+          "oasisQaRemarks": "03/31/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "CAMTHUONG_CONG__db10a005da7640dc",
+    "subsidiaryId": "avery-home-health",
+    "patientIdentity": {
+      "displayName": "Camthuong Cong",
+      "normalizedName": "CAMTHUONG CONG",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2025-12-14",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Berberova, Emiliya RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "04-REC"
+    },
+    "workflowTypes": [
+      "RECERT",
+      "ROC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 24,
+      "daysInPeriod": null,
+      "daysLeft": 24,
+      "daysLeftBeforeOasisDueDate": 24,
+      "rawTrackingValues": [
+        "24",
+        "14"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "IN_PROGRESS",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "RECERT"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "In Progress"
+      },
+      {
+        "workflowTypes": [
+          "RECERT"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "04/09/2026"
+      },
+      {
+        "workflowTypes": [
+          "ROC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "In Progress"
+      },
+      {
+        "workflowTypes": [
+          "ROC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "03/30/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "RECERT"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 19
+      },
+      {
+        "workflowTypes": [
+          "ROC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 39
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 19,
+        "values": {
+          "patientName": "CONG, CAMTHUONG",
+          "episodeDate": "12/14/2025",
+          "assignedStaff": "Berberova, Emiliya RN",
+          "payer": "Medicare",
+          "rfa": "04-REC",
+          "trackingDays": "24",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "In Progress",
+          "oasisQaRemarks": "04/09/2026",
+          "pocQaRemarks": null
+        }
+      },
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 39,
+        "values": {
+          "patientName": "CONG, CAMTHUONG",
+          "episodeDate": "12/14/2025",
+          "assignedStaff": "Ruiz, Marie Franz RN",
+          "payer": "Medicare",
+          "rfa": "03-ROC",
+          "trackingDays": "14",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "In Progress",
+          "oasisQaRemarks": "03/30/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "CHARLOTTE_ONEIL__c51626e1f7250d60",
+    "subsidiaryId": "avery-home-health",
+    "patientIdentity": {
+      "displayName": "Charlotte Oneil",
+      "normalizedName": "CHARLOTTE ONEIL",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-03-19",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Berberova, Emiliya RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "03-ROC"
+    },
+    "workflowTypes": [
+      "ROC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 9,
+      "daysInPeriod": null,
+      "daysLeft": 9,
+      "daysLeftBeforeOasisDueDate": 9,
+      "rawTrackingValues": [
+        "9"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "DONE",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "ROC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "Locked"
+      },
+      {
+        "workflowTypes": [
+          "ROC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "03/25/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "ROC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 52
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 52,
+        "values": {
+          "patientName": "ONEIL, CHARLOTTE",
+          "episodeDate": "03/19/2026",
+          "assignedStaff": "Berberova, Emiliya RN",
+          "payer": "Medicare",
+          "rfa": "03-ROC",
+          "trackingDays": "9",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "Locked",
+          "oasisQaRemarks": "03/25/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "DAVID_CASWELL__8f291227a8bca845",
+    "subsidiaryId": "avery-home-health",
+    "patientIdentity": {
+      "displayName": "David Caswell",
+      "normalizedName": "DAVID CASWELL",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-01-23",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Maghari, Edriane RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "04-REC"
+    },
+    "workflowTypes": [
+      "RECERT"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 7,
+      "daysInPeriod": null,
+      "daysLeft": 7,
+      "daysLeftBeforeOasisDueDate": 7,
+      "rawTrackingValues": [
+        "7"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "DONE",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "RECERT"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "Locked"
+      },
+      {
+        "workflowTypes": [
+          "RECERT"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "03/23/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "RECERT"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 54
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 54,
+        "values": {
+          "patientName": "CASWELL, DAVID",
+          "episodeDate": "01/23/2026",
+          "assignedStaff": "Maghari, Edriane RN",
+          "payer": "Medicare",
+          "rfa": "04-REC",
+          "trackingDays": "7",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "Locked",
+          "oasisQaRemarks": "03/23/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "DAVID_KEETCH__21a3cad4cc64dbac",
+    "subsidiaryId": "avery-home-health",
+    "patientIdentity": {
+      "displayName": "David Keetch",
+      "normalizedName": "DAVID KEETCH",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2025-10-15",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Maghari, Edriane RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "09-DC"
+    },
+    "workflowTypes": [
+      "SOC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 11,
+      "daysInPeriod": null,
+      "daysLeft": 11,
+      "daysLeftBeforeOasisDueDate": 11,
+      "rawTrackingValues": [
+        "11"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "IN_PROGRESS",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "In Progress"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "03/27/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 43
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 43,
+        "values": {
+          "patientName": "KEETCH, DAVID",
+          "episodeDate": "10/15/2025",
+          "assignedStaff": "Maghari, Edriane RN",
+          "payer": "Medicare",
+          "rfa": "09-DC",
+          "trackingDays": "11",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "In Progress",
+          "oasisQaRemarks": "03/27/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "DELORES_ENGLISH__7fb0e5ca3472cff3",
+    "subsidiaryId": "avery-home-health",
+    "patientIdentity": {
+      "displayName": "Delores English",
+      "normalizedName": "DELORES ENGLISH",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-03-25",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Morano, Val Martin RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "01-SOC"
+    },
+    "workflowTypes": [
+      "SOC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 9,
+      "daysInPeriod": null,
+      "daysLeft": 9,
+      "daysLeftBeforeOasisDueDate": 9,
+      "rawTrackingValues": [
+        "9"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "IN_PROGRESS",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "Validated"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "03/25/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 51
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 51,
+        "values": {
+          "patientName": "ENGLISH, DELORES",
+          "episodeDate": "03/25/2026",
+          "assignedStaff": "Morano, Val Martin RN",
+          "payer": "Medicare",
+          "rfa": "01-SOC",
+          "trackingDays": "9",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "Validated",
+          "oasisQaRemarks": "03/25/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "DONNA_WOLFBRANDT__55ee66376d586667",
+    "subsidiaryId": "avery-home-health",
+    "patientIdentity": {
+      "displayName": "Donna Wolfbrandt",
+      "normalizedName": "DONNA WOLFBRANDT",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-03-24",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Berberova, Emiliya RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "01-SOC"
+    },
+    "workflowTypes": [
+      "SOC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 8,
+      "daysInPeriod": null,
+      "daysLeft": 8,
+      "daysLeftBeforeOasisDueDate": 8,
+      "rawTrackingValues": [
+        "8"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "DONE",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "Locked"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "03/24/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 53
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 53,
+        "values": {
+          "patientName": "WOLFBRANDT, DONNA",
+          "episodeDate": "03/24/2026",
+          "assignedStaff": "Berberova, Emiliya RN",
+          "payer": "Medicare",
+          "rfa": "01-SOC",
+          "trackingDays": "8",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "Locked",
+          "oasisQaRemarks": "03/24/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "ELIZABETH_ROOT__a8793dac222319bb",
+    "subsidiaryId": "avery-home-health",
+    "patientIdentity": {
+      "displayName": "Elizabeth Root",
+      "normalizedName": "ELIZABETH ROOT",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-03-30",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Berberova, Emiliya RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "01-SOC"
+    },
+    "workflowTypes": [
+      "SOC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 14,
+      "daysInPeriod": null,
+      "daysLeft": 14,
+      "daysLeftBeforeOasisDueDate": 14,
+      "rawTrackingValues": [
+        "14"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "DONE",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "Locked"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "03/30/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 41
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 41,
+        "values": {
+          "patientName": "ROOT, ELIZABETH",
+          "episodeDate": "03/30/2026",
+          "assignedStaff": "Berberova, Emiliya RN",
+          "payer": "Medicare",
+          "rfa": "01-SOC",
+          "trackingDays": "14",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "Locked",
+          "oasisQaRemarks": "03/30/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "EMILIO_GARCIA_LOURDES__4d26640954605a68",
+    "subsidiaryId": "avery-home-health",
+    "patientIdentity": {
+      "displayName": "Emilio Garcia Lourdes",
+      "normalizedName": "EMILIO GARCIA LOURDES",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-02-10",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Agustin, Josephine RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "04-REC"
+    },
+    "workflowTypes": [
+      "RECERT"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 24,
+      "daysInPeriod": null,
+      "daysLeft": 24,
+      "daysLeftBeforeOasisDueDate": 24,
+      "rawTrackingValues": [
+        "24"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "IN_PROGRESS",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "RECERT"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "Validated"
+      },
+      {
+        "workflowTypes": [
+          "RECERT"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "04/09/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "RECERT"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 18
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 18,
+        "values": {
+          "patientName": "GARCIA LOURDES, EMILIO",
+          "episodeDate": "02/10/2026",
+          "assignedStaff": "Agustin, Josephine RN",
+          "payer": "Medicare",
+          "rfa": "04-REC",
+          "trackingDays": "24",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "Validated",
+          "oasisQaRemarks": "04/09/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "ESTER_WHEELER__74eb54ec94810c0a",
+    "subsidiaryId": "avery-home-health",
+    "patientIdentity": {
+      "displayName": "Ester Wheeler",
+      "normalizedName": "ESTER WHEELER",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-02-03",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Puga-Acosta, Melissa RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "09-DC"
+    },
+    "workflowTypes": [
+      "SOC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 17,
+      "daysInPeriod": null,
+      "daysLeft": 17,
+      "daysLeftBeforeOasisDueDate": 17,
+      "rawTrackingValues": [
+        "17"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "IN_PROGRESS",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "In Progress"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "04/02/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 32
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 32,
+        "values": {
+          "patientName": "WHEELER, ESTER",
+          "episodeDate": "02/03/2026",
+          "assignedStaff": "Puga-Acosta, Melissa RN",
+          "payer": "Medicare",
+          "rfa": "09-DC",
+          "trackingDays": "17",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "In Progress",
+          "oasisQaRemarks": "04/02/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "ETHEL_ROBINSON__2c0899029307ccdb",
+    "subsidiaryId": "avery-home-health",
+    "patientIdentity": {
+      "displayName": "Ethel Robinson",
+      "normalizedName": "ETHEL ROBINSON",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-03-30",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Garcia Alfonso, Kelvyn RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "01-SOC"
+    },
+    "workflowTypes": [
+      "SOC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 14,
+      "daysInPeriod": null,
+      "daysLeft": 14,
+      "daysLeftBeforeOasisDueDate": 14,
+      "rawTrackingValues": [
+        "14"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "IN_PROGRESS",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "Validated"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "03/30/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 40
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 40,
+        "values": {
+          "patientName": "ROBINSON, ETHEL",
+          "episodeDate": "03/30/2026",
+          "assignedStaff": "Garcia Alfonso, Kelvyn RN",
+          "payer": "Medicare",
+          "rfa": "01-SOC",
+          "trackingDays": "14",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "Validated",
+          "oasisQaRemarks": "03/30/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "FRANK_MENDOZA__929ab353eb89d6f8",
+    "subsidiaryId": "avery-home-health",
+    "patientIdentity": {
+      "displayName": "Frank Mendoza",
+      "normalizedName": "FRANK MENDOZA",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-02-05",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Macaraeg, Kristin RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "04-REC"
+    },
+    "workflowTypes": [
+      "RECERT"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 17,
+      "daysInPeriod": null,
+      "daysLeft": 17,
+      "daysLeftBeforeOasisDueDate": 17,
+      "rawTrackingValues": [
+        "17"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "IN_PROGRESS",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "RECERT"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "In Progress"
+      },
+      {
+        "workflowTypes": [
+          "RECERT"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "04/02/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "RECERT"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 31
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 31,
+        "values": {
+          "patientName": "MENDOZA, FRANK",
+          "episodeDate": "02/05/2026",
+          "assignedStaff": "Macaraeg, Kristin RN",
+          "payer": "Medicare",
+          "rfa": "04-REC",
+          "trackingDays": "17",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "In Progress",
+          "oasisQaRemarks": "04/02/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "GABY_MIZRAHI__964945b498cc9319",
+    "subsidiaryId": "avery-home-health",
+    "patientIdentity": {
+      "displayName": "Gaby Mizrahi",
+      "normalizedName": "GABY MIZRAHI",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-03-26",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Berberova, Emiliya RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "01-SOC"
+    },
+    "workflowTypes": [
+      "SOC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 10,
+      "daysInPeriod": null,
+      "daysLeft": 10,
+      "daysLeftBeforeOasisDueDate": 10,
+      "rawTrackingValues": [
+        "10"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "DONE",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "Locked"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "03/26/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 48
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 48,
+        "values": {
+          "patientName": "MIZRAHI, GABY",
+          "episodeDate": "03/26/2026",
+          "assignedStaff": "Berberova, Emiliya RN",
+          "payer": "Medicare",
+          "rfa": "01-SOC",
+          "trackingDays": "10",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "Locked",
+          "oasisQaRemarks": "03/26/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "GARY_THOMPSON__f59e01091116b703",
+    "subsidiaryId": "avery-home-health",
+    "patientIdentity": {
+      "displayName": "Gary Thompson",
+      "normalizedName": "GARY THOMPSON",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2025-10-16",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Hinds, Nariah RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "06-XFER"
+    },
+    "workflowTypes": [
+      "SOC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 18,
+      "daysInPeriod": null,
+      "daysLeft": 18,
+      "daysLeftBeforeOasisDueDate": 18,
+      "rawTrackingValues": [
+        "18"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "IN_PROGRESS",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "Validated"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "04/03/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 28
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 28,
+        "values": {
+          "patientName": "THOMPSON, GARY",
+          "episodeDate": "10/16/2025",
+          "assignedStaff": "Hinds, Nariah RN",
+          "payer": "Medicare",
+          "rfa": "06-XFER",
+          "trackingDays": "18",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "Validated",
+          "oasisQaRemarks": "04/03/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "GERTRUDE_DIXON__4a920b9d998d6f39",
+    "subsidiaryId": "avery-home-health",
+    "patientIdentity": {
+      "displayName": "Gertrude Dixon",
+      "normalizedName": "GERTRUDE DIXON",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-04-01",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Berberova, Emiliya RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "01-SOC"
+    },
+    "workflowTypes": [
+      "SOC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 16,
+      "daysInPeriod": null,
+      "daysLeft": 16,
+      "daysLeftBeforeOasisDueDate": 16,
+      "rawTrackingValues": [
+        "16"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "DONE",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "Locked"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "04/01/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 34
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 34,
+        "values": {
+          "patientName": "DIXON, GERTRUDE",
+          "episodeDate": "04/01/2026",
+          "assignedStaff": "Berberova, Emiliya RN",
+          "payer": "Medicare",
+          "rfa": "01-SOC",
+          "trackingDays": "16",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "Locked",
+          "oasisQaRemarks": "04/01/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "GLEN_FREYTAG__b26b690e3018681b",
+    "subsidiaryId": "avery-home-health",
+    "patientIdentity": {
+      "displayName": "Glen Freytag",
+      "normalizedName": "GLEN FREYTAG",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-03-03",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Casuso-Aguila, Odaimy RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "03-ROC"
+    },
+    "workflowTypes": [
+      "ROC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 22,
+      "daysInPeriod": null,
+      "daysLeft": 22,
+      "daysLeftBeforeOasisDueDate": 22,
+      "rawTrackingValues": [
+        "22"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "IN_PROGRESS",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "ROC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "Validated"
+      },
+      {
+        "workflowTypes": [
+          "ROC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "04/07/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "ROC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 24
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 24,
+        "values": {
+          "patientName": "FREYTAG, GLEN",
+          "episodeDate": "03/03/2026",
+          "assignedStaff": "Casuso-Aguila, Odaimy RN",
+          "payer": "Medicare",
+          "rfa": "03-ROC",
+          "trackingDays": "22",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "Validated",
+          "oasisQaRemarks": "04/07/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "GUSTAVO_DURAN__dc63f49de575cb6a",
+    "subsidiaryId": "avery-home-health",
+    "patientIdentity": {
+      "displayName": "Gustavo Duran",
+      "normalizedName": "GUSTAVO DURAN",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-03-25",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Garcia Alfonso, Kelvyn RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "03-ROC"
+    },
+    "workflowTypes": [
+      "ROC",
+      "SOC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 28,
+      "daysInPeriod": null,
+      "daysLeft": 28,
+      "daysLeftBeforeOasisDueDate": 28,
+      "rawTrackingValues": [
+        "28",
+        "24",
+        "9"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "IN_PROGRESS",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "ROC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "In Progress"
+      },
+      {
+        "workflowTypes": [
+          "ROC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "04/13/2026"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "Validated"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "04/09/2026"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "Locked"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "03/25/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "ROC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 10
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 17
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 50
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 10,
+        "values": {
+          "patientName": "DURAN, GUSTAVO",
+          "episodeDate": "03/25/2026",
+          "assignedStaff": "Garcia Alfonso, Kelvyn RN",
+          "payer": "Medicare",
+          "rfa": "03-ROC",
+          "trackingDays": "28",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "In Progress",
+          "oasisQaRemarks": "04/13/2026",
+          "pocQaRemarks": null
+        }
+      },
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 17,
+        "values": {
+          "patientName": "DURAN, GUSTAVO",
+          "episodeDate": "03/25/2026",
+          "assignedStaff": "Hinds, Nariah RN",
+          "payer": "Medicare",
+          "rfa": "06-XFER",
+          "trackingDays": "24",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "Validated",
+          "oasisQaRemarks": "04/09/2026",
+          "pocQaRemarks": null
+        }
+      },
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 50,
+        "values": {
+          "patientName": "DURAN, GUSTAVO",
+          "episodeDate": "03/25/2026",
+          "assignedStaff": "Garcia Alfonso, Kelvyn RN",
+          "payer": "Medicare",
+          "rfa": "01-SOC",
+          "trackingDays": "9",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "Locked",
+          "oasisQaRemarks": "03/25/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "HENRY_ZEE__774bee242aef675b",
+    "subsidiaryId": "avery-home-health",
+    "patientIdentity": {
+      "displayName": "Henry Zee",
+      "normalizedName": "HENRY ZEE",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-02-14",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Puga-Acosta, Melissa RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "04-REC"
+    },
+    "workflowTypes": [
+      "RECERT"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 29,
+      "daysInPeriod": null,
+      "daysLeft": 29,
+      "daysLeftBeforeOasisDueDate": 29,
+      "rawTrackingValues": [
+        "29"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "IN_PROGRESS",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "RECERT"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "In Progress"
+      },
+      {
+        "workflowTypes": [
+          "RECERT"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "04/14/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "RECERT"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 8
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 8,
+        "values": {
+          "patientName": "ZEE, HENRY",
+          "episodeDate": "02/14/2026",
+          "assignedStaff": "Puga-Acosta, Melissa RN",
+          "payer": "Medicare",
+          "rfa": "04-REC",
+          "trackingDays": "29",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "In Progress",
+          "oasisQaRemarks": "04/14/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "JACK_HARRAH__15c676234feae7aa",
+    "subsidiaryId": "avery-home-health",
+    "patientIdentity": {
+      "displayName": "Jack Harrah",
+      "normalizedName": "JACK HARRAH",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2025-12-10",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Alfafara, Khristle Ann RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "04-REC"
+    },
+    "workflowTypes": [
+      "RECERT"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 23,
+      "daysInPeriod": null,
+      "daysLeft": 23,
+      "daysLeftBeforeOasisDueDate": 23,
+      "rawTrackingValues": [
+        "23"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "IN_PROGRESS",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "RECERT"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "Validated"
+      },
+      {
+        "workflowTypes": [
+          "RECERT"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "04/08/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "RECERT"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 21
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 21,
+        "values": {
+          "patientName": "HARRAH, JACK",
+          "episodeDate": "12/10/2025",
+          "assignedStaff": "Alfafara, Khristle Ann RN",
+          "payer": "Medicare",
+          "rfa": "04-REC",
+          "trackingDays": "23",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "Validated",
+          "oasisQaRemarks": "04/08/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "JEFFREY_MARSHALL__dae149fbe75db13d",
+    "subsidiaryId": "avery-home-health",
+    "patientIdentity": {
+      "displayName": "Jeffrey Marshall",
+      "normalizedName": "JEFFREY MARSHALL",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-03-26",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Garcia Alfonso, Kelvyn RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "01-SOC"
+    },
+    "workflowTypes": [
+      "SOC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 10,
+      "daysInPeriod": null,
+      "daysLeft": 10,
+      "daysLeftBeforeOasisDueDate": 10,
+      "rawTrackingValues": [
+        "10"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "DONE",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "Locked"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "03/26/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 47
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 47,
+        "values": {
+          "patientName": "MARSHALL, JEFFREY",
+          "episodeDate": "03/26/2026",
+          "assignedStaff": "Garcia Alfonso, Kelvyn RN",
+          "payer": "Medicare",
+          "rfa": "01-SOC",
+          "trackingDays": "10",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "Locked",
+          "oasisQaRemarks": "03/26/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "JOEL_NEWMAN__b6a7adc49e0c40ce",
+    "subsidiaryId": "avery-home-health",
+    "patientIdentity": {
+      "displayName": "Joel Newman",
+      "normalizedName": "JOEL NEWMAN",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-04-04",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Berberova, Emiliya RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "01-SOC"
+    },
+    "workflowTypes": [
+      "SOC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 19,
+      "daysInPeriod": null,
+      "daysLeft": 19,
+      "daysLeftBeforeOasisDueDate": 19,
+      "rawTrackingValues": [
+        "19"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "DONE",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "Locked"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "04/04/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 27
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 27,
+        "values": {
+          "patientName": "NEWMAN, JOEL",
+          "episodeDate": "04/04/2026",
+          "assignedStaff": "Berberova, Emiliya RN",
+          "payer": "Medicare",
+          "rfa": "01-SOC",
+          "trackingDays": "19",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "Locked",
+          "oasisQaRemarks": "04/04/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "JOSE_LEMUS__8d18ddc36d9637fa",
+    "subsidiaryId": "avery-home-health",
+    "patientIdentity": {
+      "displayName": "Jose Lemus",
+      "normalizedName": "JOSE LEMUS",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-04-03",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Singco, Alison RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "01-SOC"
+    },
+    "workflowTypes": [
+      "SOC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 18,
+      "daysInPeriod": null,
+      "daysLeft": 18,
+      "daysLeftBeforeOasisDueDate": 18,
+      "rawTrackingValues": [
+        "18"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "DONE",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "Locked"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "04/03/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 30
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 30,
+        "values": {
+          "patientName": "LEMUS, JOSE",
+          "episodeDate": "04/03/2026",
+          "assignedStaff": "Singco, Alison RN",
+          "payer": "Medicare",
+          "rfa": "01-SOC",
+          "trackingDays": "18",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "Locked",
+          "oasisQaRemarks": "04/03/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "JUDITH_DANIELS__d2f6961606e12b69",
+    "subsidiaryId": "avery-home-health",
+    "patientIdentity": {
+      "displayName": "Judith Daniels",
+      "normalizedName": "JUDITH DANIELS",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2025-12-04",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Garcia Alfonso, Kelvyn RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "04-REC"
+    },
+    "workflowTypes": [
+      "RECERT"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 15,
+      "daysInPeriod": null,
+      "daysLeft": 15,
+      "daysLeftBeforeOasisDueDate": 15,
+      "rawTrackingValues": [
+        "15"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "DONE",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "RECERT"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "Locked"
+      },
+      {
+        "workflowTypes": [
+          "RECERT"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "03/31/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "RECERT"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 37
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 37,
+        "values": {
+          "patientName": "DANIELS, JUDITH",
+          "episodeDate": "12/04/2025",
+          "assignedStaff": "Garcia Alfonso, Kelvyn RN",
+          "payer": "Medicare",
+          "rfa": "04-REC",
+          "trackingDays": "15",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "Locked",
+          "oasisQaRemarks": "03/31/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "KENNETH_FIORE__c4f0a5f74c40c83c",
+    "subsidiaryId": "avery-home-health",
+    "patientIdentity": {
+      "displayName": "Kenneth Fiore",
+      "normalizedName": "KENNETH FIORE",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-04-03",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Berberova, Emiliya RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "01-SOC"
+    },
+    "workflowTypes": [
+      "SOC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 18,
+      "daysInPeriod": null,
+      "daysLeft": 18,
+      "daysLeftBeforeOasisDueDate": 18,
+      "rawTrackingValues": [
+        "18"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "DONE",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "Locked"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "04/03/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 29
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 29,
+        "values": {
+          "patientName": "FIORE, KENNETH",
+          "episodeDate": "04/03/2026",
+          "assignedStaff": "Berberova, Emiliya RN",
+          "payer": "Medicare",
+          "rfa": "01-SOC",
+          "trackingDays": "18",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "Locked",
+          "oasisQaRemarks": "04/03/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "KIEM_TRUONG__ffd5e6f2cf16ea37",
+    "subsidiaryId": "avery-home-health",
+    "patientIdentity": {
+      "displayName": "Kiem Truong",
+      "normalizedName": "KIEM TRUONG",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2025-12-07",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Isidro-Martinez, Ma Fatima Criselda PT",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "09-DC"
+    },
+    "workflowTypes": [
+      "SOC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 10,
+      "daysInPeriod": null,
+      "daysLeft": 10,
+      "daysLeftBeforeOasisDueDate": 10,
+      "rawTrackingValues": [
+        "10"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "IN_PROGRESS",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "Validated"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "03/26/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 46
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 46,
+        "values": {
+          "patientName": "TRUONG, KIEM",
+          "episodeDate": "12/07/2025",
+          "assignedStaff": "Isidro-Martinez, Ma Fatima Criselda PT",
+          "payer": "Medicare",
+          "rfa": "09-DC",
+          "trackingDays": "10",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "Validated",
+          "oasisQaRemarks": "03/26/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "LAURA_SIMMONS__b12000720630cff5",
+    "subsidiaryId": "avery-home-health",
+    "patientIdentity": {
+      "displayName": "Laura Simmons",
+      "normalizedName": "LAURA SIMMONS",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-01-29",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Garcia Alfonso, Kelvyn RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "04-REC"
+    },
+    "workflowTypes": [
+      "RECERT"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 11,
+      "daysInPeriod": null,
+      "daysLeft": 11,
+      "daysLeftBeforeOasisDueDate": 11,
+      "rawTrackingValues": [
+        "11"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "DONE",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "RECERT"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "Locked"
+      },
+      {
+        "workflowTypes": [
+          "RECERT"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "03/27/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "RECERT"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 44
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 44,
+        "values": {
+          "patientName": "SIMMONS, LAURA",
+          "episodeDate": "01/29/2026",
+          "assignedStaff": "Garcia Alfonso, Kelvyn RN",
+          "payer": "Medicare",
+          "rfa": "04-REC",
+          "trackingDays": "11",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "Locked",
+          "oasisQaRemarks": "03/27/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "MARIA_PALERMO__1db30d01c01d2a9a",
+    "subsidiaryId": "avery-home-health",
+    "patientIdentity": {
+      "displayName": "Maria Palermo",
+      "normalizedName": "MARIA PALERMO",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-02-03",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Casuso-Aguila, Odaimy RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "04-REC"
+    },
+    "workflowTypes": [
+      "RECERT"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 16,
+      "daysInPeriod": null,
+      "daysLeft": 16,
+      "daysLeftBeforeOasisDueDate": 16,
+      "rawTrackingValues": [
+        "16"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "IN_PROGRESS",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "RECERT"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "In Progress"
+      },
+      {
+        "workflowTypes": [
+          "RECERT"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "04/01/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "RECERT"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 33
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 33,
+        "values": {
+          "patientName": "PALERMO, MARIA",
+          "episodeDate": "02/03/2026",
+          "assignedStaff": "Casuso-Aguila, Odaimy RN",
+          "payer": "Medicare",
+          "rfa": "04-REC",
+          "trackingDays": "16",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "In Progress",
+          "oasisQaRemarks": "04/01/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "MARILYN_HENDERSON__f2ab850e7a6a7421",
+    "subsidiaryId": "avery-home-health",
+    "patientIdentity": {
+      "displayName": "Marilyn Henderson",
+      "normalizedName": "MARILYN HENDERSON",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-04-13",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Agustin, Josephine RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "01-SOC"
+    },
+    "workflowTypes": [
+      "SOC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 28,
+      "daysInPeriod": null,
+      "daysLeft": 28,
+      "daysLeftBeforeOasisDueDate": 28,
+      "rawTrackingValues": [
+        "28"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "IN_PROGRESS",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "In Progress"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "04/13/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 11
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 11,
+        "values": {
+          "patientName": "HENDERSON, MARILYN",
+          "episodeDate": "04/13/2026",
+          "assignedStaff": "Agustin, Josephine RN",
+          "payer": "Medicare",
+          "rfa": "01-SOC",
+          "trackingDays": "28",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "In Progress",
+          "oasisQaRemarks": "04/13/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "MARY_GOLDWATER__b5db7f03dbf96cbe",
+    "subsidiaryId": "avery-home-health",
+    "patientIdentity": {
+      "displayName": "Mary Goldwater",
+      "normalizedName": "MARY GOLDWATER",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-04-10",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Agustin, Josephine RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "01-SOC"
+    },
+    "workflowTypes": [
+      "SOC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 25,
+      "daysInPeriod": null,
+      "daysLeft": 25,
+      "daysLeftBeforeOasisDueDate": 25,
+      "rawTrackingValues": [
+        "25"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "IN_PROGRESS",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "Validated"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "04/10/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 14
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 14,
+        "values": {
+          "patientName": "GOLDWATER, MARY",
+          "episodeDate": "04/10/2026",
+          "assignedStaff": "Agustin, Josephine RN",
+          "payer": "Medicare",
+          "rfa": "01-SOC",
+          "trackingDays": "25",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "Validated",
+          "oasisQaRemarks": "04/10/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "MELODEE_ANN_PARSONS__0078243fde5ea8a3",
+    "subsidiaryId": "avery-home-health",
+    "patientIdentity": {
+      "displayName": "Melodee Ann Parsons",
+      "normalizedName": "MELODEE ANN PARSONS",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-03-31",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Maghari, Edriane RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "01-SOC"
+    },
+    "workflowTypes": [
+      "SOC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 15,
+      "daysInPeriod": null,
+      "daysLeft": 15,
+      "daysLeftBeforeOasisDueDate": 15,
+      "rawTrackingValues": [
+        "15"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "IN_PROGRESS",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "In Progress"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "03/31/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 38
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 38,
+        "values": {
+          "patientName": "PARSONS, MELODEE ANN",
+          "episodeDate": "03/31/2026",
+          "assignedStaff": "Maghari, Edriane RN",
+          "payer": "Medicare",
+          "rfa": "01-SOC",
+          "trackingDays": "15",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "In Progress",
+          "oasisQaRemarks": "03/31/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "MOIRA_FENTON__21bb6fb7c33f89e9",
+    "subsidiaryId": "avery-home-health",
+    "patientIdentity": {
+      "displayName": "Moira Fenton",
+      "normalizedName": "MOIRA FENTON",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-02-13",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Casuso-Aguila, Odaimy RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "04-REC"
+    },
+    "workflowTypes": [
+      "RECERT"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 25,
+      "daysInPeriod": null,
+      "daysLeft": 25,
+      "daysLeftBeforeOasisDueDate": 25,
+      "rawTrackingValues": [
+        "25"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "IN_PROGRESS",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "RECERT"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "In Progress"
+      },
+      {
+        "workflowTypes": [
+          "RECERT"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "04/10/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "RECERT"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 13
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 13,
+        "values": {
+          "patientName": "FENTON, MOIRA",
+          "episodeDate": "02/13/2026",
+          "assignedStaff": "Casuso-Aguila, Odaimy RN",
+          "payer": "Medicare",
+          "rfa": "04-REC",
+          "trackingDays": "25",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "In Progress",
+          "oasisQaRemarks": "04/10/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "NANCY_GORHAM__ce335e1a423df498",
+    "subsidiaryId": "avery-home-health",
+    "patientIdentity": {
+      "displayName": "Nancy Gorham",
+      "normalizedName": "NANCY GORHAM",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-03-17",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Hinds, Nariah RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "09-DC"
+    },
+    "workflowTypes": [
+      "SOC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 19,
+      "daysInPeriod": null,
+      "daysLeft": 19,
+      "daysLeftBeforeOasisDueDate": 19,
+      "rawTrackingValues": [
+        "19"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "IN_PROGRESS",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "In Progress"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "04/04/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 26
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 26,
+        "values": {
+          "patientName": "GORHAM, NANCY",
+          "episodeDate": "03/17/2026",
+          "assignedStaff": "Hinds, Nariah RN",
+          "payer": "Medicare",
+          "rfa": "09-DC",
+          "trackingDays": "19",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "In Progress",
+          "oasisQaRemarks": "04/04/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "NICHOLAS_ASARO__f5cfc31b63c536e1",
+    "subsidiaryId": "avery-home-health",
+    "patientIdentity": {
+      "displayName": "Nicholas Asaro",
+      "normalizedName": "NICHOLAS ASARO",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-04-09",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Limayo, Sherwin RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "01-SOC"
+    },
+    "workflowTypes": [
+      "SOC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 24,
+      "daysInPeriod": null,
+      "daysLeft": 24,
+      "daysLeftBeforeOasisDueDate": 24,
+      "rawTrackingValues": [
+        "24"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "DONE",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "Locked"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "04/09/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 15
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 15,
+        "values": {
+          "patientName": "ASARO, NICHOLAS",
+          "episodeDate": "04/09/2026",
+          "assignedStaff": "Limayo, Sherwin RN",
+          "payer": "Medicare",
+          "rfa": "01-SOC",
+          "trackingDays": "24",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "Locked",
+          "oasisQaRemarks": "04/09/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "NORBERTO_GALINDO__4d8300080d52c903",
+    "subsidiaryId": "avery-home-health",
+    "patientIdentity": {
+      "displayName": "Norberto Galindo",
+      "normalizedName": "NORBERTO GALINDO",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-04-06",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Garcia Alfonso, Kelvyn RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "01-SOC"
+    },
+    "workflowTypes": [
+      "SOC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 21,
+      "daysInPeriod": null,
+      "daysLeft": 21,
+      "daysLeftBeforeOasisDueDate": 21,
+      "rawTrackingValues": [
+        "21"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "IN_PROGRESS",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "Validated"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "04/06/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 25
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 25,
+        "values": {
+          "patientName": "GALINDO, NORBERTO",
+          "episodeDate": "04/06/2026",
+          "assignedStaff": "Garcia Alfonso, Kelvyn RN",
+          "payer": "Medicare",
+          "rfa": "01-SOC",
+          "trackingDays": "21",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "Validated",
+          "oasisQaRemarks": "04/06/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "PHILOMENA_GILHEANY__2e2a95d614d53db4",
+    "subsidiaryId": "avery-home-health",
+    "patientIdentity": {
+      "displayName": "Philomena Gilheany",
+      "normalizedName": "PHILOMENA GILHEANY",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-02-12",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Gaspar, Arnel PT",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "09-DC"
+    },
+    "workflowTypes": [
+      "SOC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 23,
+      "daysInPeriod": null,
+      "daysLeft": 23,
+      "daysLeftBeforeOasisDueDate": 23,
+      "rawTrackingValues": [
+        "23"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "IN_PROGRESS",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "In Progress"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "04/08/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 22
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 22,
+        "values": {
+          "patientName": "GILHEANY, PHILOMENA",
+          "episodeDate": "02/12/2026",
+          "assignedStaff": "Gaspar, Arnel PT",
+          "payer": "Medicare",
+          "rfa": "09-DC",
+          "trackingDays": "23",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "In Progress",
+          "oasisQaRemarks": "04/08/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "RICHARD_TIERS__dcd6944ff0b82478",
+    "subsidiaryId": "avery-home-health",
+    "patientIdentity": {
+      "displayName": "Richard Tiers",
+      "normalizedName": "RICHARD TIERS",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-04-08",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Hinds, Nariah RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "06-XFER"
+    },
+    "workflowTypes": [
+      "SOC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 26,
+      "daysInPeriod": null,
+      "daysLeft": 26,
+      "daysLeftBeforeOasisDueDate": 26,
+      "rawTrackingValues": [
+        "26",
+        "23"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "IN_PROGRESS",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "Validated"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "04/11/2026"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "Validated"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "04/08/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 12
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 20
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 12,
+        "values": {
+          "patientName": "TIERS, RICHARD",
+          "episodeDate": "04/08/2026",
+          "assignedStaff": "Hinds, Nariah RN",
+          "payer": "Medicare",
+          "rfa": "06-XFER",
+          "trackingDays": "26",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "Validated",
+          "oasisQaRemarks": "04/11/2026",
+          "pocQaRemarks": null
+        }
+      },
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 20,
+        "values": {
+          "patientName": "TIERS, RICHARD",
+          "episodeDate": "04/08/2026",
+          "assignedStaff": "Casuso-Aguila, Odaimy RN",
+          "payer": "Medicare",
+          "rfa": "01-SOC",
+          "trackingDays": "23",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "Validated",
+          "oasisQaRemarks": "04/08/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "ROBERT_BOWMAN__ad5f409d4e3ab17f",
+    "subsidiaryId": "avery-home-health",
+    "patientIdentity": {
+      "displayName": "Robert Bowman",
+      "normalizedName": "ROBERT BOWMAN",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2025-12-18",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Macaraeg, Kristin RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "03-ROC"
+    },
+    "workflowTypes": [
+      "ROC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 9,
+      "daysInPeriod": null,
+      "daysLeft": 9,
+      "daysLeftBeforeOasisDueDate": 9,
+      "rawTrackingValues": [
+        "9"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "IN_PROGRESS",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "ROC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "In Progress"
+      },
+      {
+        "workflowTypes": [
+          "ROC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "03/25/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "ROC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 49
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 49,
+        "values": {
+          "patientName": "BOWMAN, ROBERT",
+          "episodeDate": "12/18/2025",
+          "assignedStaff": "Macaraeg, Kristin RN",
+          "payer": "Medicare",
+          "rfa": "03-ROC",
+          "trackingDays": "9",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "In Progress",
+          "oasisQaRemarks": "03/25/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "SANFORD_STUDENT__c5653560c422bc99",
+    "subsidiaryId": "avery-home-health",
+    "patientIdentity": {
+      "displayName": "Sanford Student",
+      "normalizedName": "SANFORD STUDENT",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-01-30",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Miller, Julie RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "04-REC"
+    },
+    "workflowTypes": [
+      "RECERT"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 10,
+      "daysInPeriod": null,
+      "daysLeft": 10,
+      "daysLeftBeforeOasisDueDate": 10,
+      "rawTrackingValues": [
+        "10"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "IN_PROGRESS",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "RECERT"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "Validated"
+      },
+      {
+        "workflowTypes": [
+          "RECERT"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "03/26/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "RECERT"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 45
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 45,
+        "values": {
+          "patientName": "STUDENT, SANFORD",
+          "episodeDate": "01/30/2026",
+          "assignedStaff": "Miller, Julie RN",
+          "payer": "Medicare",
+          "rfa": "04-REC",
+          "trackingDays": "10",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "Validated",
+          "oasisQaRemarks": "03/26/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "SHIRLEY_JOHNSON__61e1245292bdddda",
+    "subsidiaryId": "avery-home-health",
+    "patientIdentity": {
+      "displayName": "Shirley Johnson",
+      "normalizedName": "SHIRLEY JOHNSON",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-02-19",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Casuso-Aguila, Odaimy RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "09-DC"
+    },
+    "workflowTypes": [
+      "SOC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 23,
+      "daysInPeriod": null,
+      "daysLeft": 23,
+      "daysLeftBeforeOasisDueDate": 23,
+      "rawTrackingValues": [
+        "23"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "IN_PROGRESS",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "In Progress"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "04/08/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 23
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 23,
+        "values": {
+          "patientName": "JOHNSON, SHIRLEY",
+          "episodeDate": "02/19/2026",
+          "assignedStaff": "Casuso-Aguila, Odaimy RN",
+          "payer": "Medicare",
+          "rfa": "09-DC",
+          "trackingDays": "23",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "In Progress",
+          "oasisQaRemarks": "04/08/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "TACIANA_TIMBERS__04fe44c40497932e",
+    "subsidiaryId": "avery-home-health",
+    "patientIdentity": {
+      "displayName": "Taciana Timbers",
+      "normalizedName": "TACIANA TIMBERS",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-04-09",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Agustin, Josephine RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "01-SOC"
+    },
+    "workflowTypes": [
+      "SOC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 24,
+      "daysInPeriod": null,
+      "daysLeft": 24,
+      "daysLeftBeforeOasisDueDate": 24,
+      "rawTrackingValues": [
+        "24"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "DONE",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "Locked"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "04/09/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 16
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 16,
+        "values": {
+          "patientName": "TIMBERS, TACIANA",
+          "episodeDate": "04/09/2026",
+          "assignedStaff": "Agustin, Josephine RN",
+          "payer": "Medicare",
+          "rfa": "01-SOC",
+          "trackingDays": "24",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "Locked",
+          "oasisQaRemarks": "04/09/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  }
+]

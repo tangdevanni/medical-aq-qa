@@ -1,0 +1,71 @@
+{
+  "generatedAt": "2026-04-15T07:03:43.154Z",
+  "source": "printed_note_ocr",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\evidence\\EDWARD_CARRIERE__caa92c80cda8171f\\oasis-printed-note\\extracted-text.txt",
+  "extractedFieldCount": 6,
+  "invocationModelId": "us.amazon.nova-lite-v1:0",
+  "currentChartValues": {
+    "patient_name": "CARRIERE, EDWARD",
+    "dob": "1948-04-04",
+    "primary_reason_for_home_health_medical_necessity": "The patient is considered homebound because they have a symptomatic pathologic fracture of the right fibula with an expansile, infiltrative destructive lesion and soft-tissue extension on MRI, producing moderate tenderness and aching with weightbearing (pain 7/10) that limits safe ambulation and makes exiting the home without assistance unsafe. Objective findings supporting homebound status include: pathologic fracture of the right fibula on plain radiograph with bridging callus, an expansile destructive fibular le",
+    "recent_hospitalization_discharge_date": "04/08/2026",
+    "recent_hospitalization_facility": "Not applicable",
+    "pain_assessment_narrative": "Pain Assessment Wong-Baker FACES® Pain Rating Scale Numeric Rating Scale 0 0 0 2 4 6 8 10 0 1 2 3 4 5 6 7 8 9 10 No Hurts Hurts Hurts Hurts Hurts No Moderate Worst Hurt Little Bit Little More Even More Whole Lot Worst Pain Pain Possible Pain Location and Description: Location Start Date Activity What makes pain worse? Movementx Right lower extremity 04/08/2026 Intensity Duration What makes pain better? Does pain affect quality of life? 4x hours Med/Restx Yes Unable to Assess Unable to Assess Description Frequency T"
+  },
+  "extractedFieldValues": [
+    {
+      "field_key": "patient_name",
+      "current_value": "CARRIERE, EDWARD",
+      "confidence": 0.95,
+      "source_spans": [
+        "Name: CARRIERE, EDWARD",
+        "Patient Name: EDWARD CARRIERE"
+      ]
+    },
+    {
+      "field_key": "dob",
+      "current_value": "1948-04-04",
+      "confidence": 0.95,
+      "source_spans": [
+        "DOB: 04/04/1948"
+      ]
+    },
+    {
+      "field_key": "primary_reason_for_home_health_medical_necessity",
+      "current_value": "The patient is considered homebound because they have a symptomatic pathologic fracture of the right fibula with an expansile, infiltrative destructive lesion and soft-tissue extension on MRI, producing moderate tenderness and aching with weightbearing (pain 7/10) that limits safe ambulation and makes exiting the home without assistance unsafe. Objective findings supporting homebound status include: pathologic fracture of the right fibula on plain radiograph with bridging callus, an expansile destructive fibular lesion with soft-tissue extension on MRI concerning for sarcoma, a palpable mass with localized moderate tenderness on exam, and documented pain with weightbearing. These conditions create a risk of further fracture, acute pain exacerbation, and soft-tissue compromise with ambulation; the patient is elderly (77 years) and has comorbid chronic lymphocytic leukemia and is taking antiplatelet therapy (clopidogrel), which increase peri-procedural risk and complicate safe transport and unsupervised activity outside the home. Leaving the home requires a considerable and taxing effort because any weightbearing provokes significant pain, there is structural instability of the fibula due to the pathologic fracture and destructive lesion, and there is no home assistance available to provide safe transfer or supervised mobility. Allowable, limited absences are restricted to medically necessary trips (preoperative evaluation, diagnostic imaging, and planned surgical care) only. Given the need for pre-operative evaluation and coordination, peri-procedural risk management, skilled wound and pain management planning, and close monitoring of a malignant/pathologic fracture, these objective limitations meet Medicare homebound criteria and justify the medical necessity for skilled home health services.",
+      "confidence": 0.95,
+      "source_spans": [
+        "Primary Reason for Home Health/Medical Necessity",
+        "Homebound Reason"
+      ]
+    },
+    {
+      "field_key": "recent_hospitalization_discharge_date",
+      "current_value": "04/08/2026",
+      "confidence": 0.95,
+      "source_spans": [
+        "Start of Care Date: 04/08/2026"
+      ]
+    },
+    {
+      "field_key": "recent_hospitalization_facility",
+      "current_value": "Not applicable",
+      "confidence": 0.95,
+      "source_spans": [
+        "Patient was not discharged from an inpatient facility"
+      ]
+    },
+    {
+      "field_key": "pain_assessment_narrative",
+      "current_value": "Pain Assessment Wong-Baker FACES® Pain Rating Scale Numeric Rating Scale 0 0 0 2 4 6 8 10 0 1 2 3 4 5 6 7 8 9 10 No Hurts Hurts Hurts Hurts Hurts No Moderate Worst Hurt Little Bit Little More Even More Whole Lot Worst Pain Pain Possible Pain Location and Description: Location Start Date Activity What makes pain worse? Movementx Right lower extremity 04/08/2026 Intensity Duration What makes pain better? Does pain affect quality of life? 4x hours Med/Restx Yes Unable to Assess Unable to Assess Description Frequency Type of Intervention Throbbingx Frequentx Opiod Analgesicx How well it is working Status Fairly Wellx Treatx Comments: Pain Effect on Sleep: Ask patient: \"Over the past 5 days, how much of the time has pain made it hard for you to sleep at night\" 0. Does not apply - I have not had any pain or hurting in the past 5 days 3. Frequently 1. Rarely or not at all 4. Almost constantly 2. Occasionally 8. Unable to answer Pain Interference with Therapy Activities: Ask patient: \"Over the past 5 days, how often have you limited your participation in rehabilitation therapy sessions due to pain?\" 0. Does not apply - I have not received rehabilitation therapy in the past 5 days 3. Frequently 1. Rarely or not at all 4. Almost constantly 2. Occasionally 8. Unable to answer Pain Interference with Day-to-Day Activities: Ask patient: \"Over the past 5 days, how often you have limited your day to day activities (excluding rehabilitation therapy session) because of pain?\" 1. Rarely or not at all 2. Occasionally 3. Frequently 4. Almost Constantly 8. Unable to answer",
+      "confidence": 0.95,
+      "source_spans": [
+        "Pain Assessment Wong-Baker FACES® Pain Rating Scale",
+        "Pain Location and Description"
+      ]
+    }
+  ],
+  "warnings": [
+    "Printed-note chart-value extraction used inference profile us.amazon.nova-lite-v1:0."
+  ]
+}

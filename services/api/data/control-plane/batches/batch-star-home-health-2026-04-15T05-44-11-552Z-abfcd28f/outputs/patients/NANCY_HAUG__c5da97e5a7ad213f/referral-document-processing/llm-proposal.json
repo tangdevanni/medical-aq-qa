@@ -1,0 +1,114 @@
+{
+  "patient_context": {
+    "patient_name": null,
+    "dob": "12/15/1934",
+    "soc_date": null,
+    "referral_date": null
+  },
+  "proposed_field_values": [
+    {
+      "field_key": "homebound_narrative",
+      "proposed_value": "Using walker 12/30/2024 Do you use or have you been advised to use a cane or walker to get around safely? 03/31/2025 Do you use or have you been advised to use a cane or walker to get around safely?",
+      "confidence": 0.8,
+      "source_spans": [
+        "Using walker 12/30/2024 Do you use or have you been advised to use a cane or walker to get around safely? 03/31/2025 Do you use or have you been advised to use a cane or walker to get around safely?"
+      ],
+      "rationale": "Homebound evidence was summarized from referral text.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "homebound_supporting_factors",
+      "proposed_value": [
+        "uses_walker"
+      ],
+      "confidence": 0.73,
+      "source_spans": [
+        "Using walker 12/30/2024 Do you use or have you been advised to use a cane or walker to get around safely? 03/31/2025 Do you use or have you been advised to use a cane or walker to get around safely?"
+      ],
+      "rationale": "Homebound supporting factors were extracted from referral text.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "functional_limitations",
+      "proposed_value": [
+        "weakness",
+        "reduced_endurance"
+      ],
+      "confidence": 0.76,
+      "source_spans": [
+        "PT for back strengthening and endurance 2-3x/week for 4-6 weeks Chief complaint: pain; weakness She also notes numbness/tingling and weakness in both hands."
+      ],
+      "rationale": "Functional limitations were extracted from referral text.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "therapy_need",
+      "proposed_value": "Physical Therapy: physical therapy - did not help physical therapy some improvement",
+      "confidence": 0.77,
+      "source_spans": [
+        "Physical Therapy: physical therapy - did not help physical therapy some improvement"
+      ],
+      "rationale": "Therapy need was summarized from referral text.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "fall_risk_narrative",
+      "proposed_value": "She is low risk for opiod abuse per ORT. 03/07/2023 Opioid Risk 12/30/2024 STEADI Fall Risk",
+      "confidence": 0.7,
+      "source_spans": [
+        "She is low risk for opiod abuse per ORT."
+      ],
+      "rationale": "Risk and safety narrative was summarized from referral text.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "skilled_interventions",
+      "proposed_value": "Physical Therapy: physical therapy - did not help physical therapy some improvement",
+      "confidence": 0.8,
+      "source_spans": [
+        "Physical Therapy: physical therapy - did not help physical therapy some improvement"
+      ],
+      "rationale": "Skilled interventions were summarized from the therapy plan.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "plan_for_next_visit",
+      "proposed_value": "Physical Therapy: physical therapy - did not help physical therapy some improvement",
+      "confidence": 0.78,
+      "source_spans": [
+        "Physical Therapy: physical therapy - did not help physical therapy some improvement"
+      ],
+      "rationale": "Next-visit plan was summarized from the therapy plan.",
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "preferred_language",
+    "interpreter_needed",
+    "primary_reason_for_home_health_medical_necessity",
+    "admit_reason_to_home_health",
+    "recent_hospitalization_discharge_date",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "living_situation",
+    "patient_summary_narrative",
+    "discipline_frequencies",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status",
+    "code_status"
+  ],
+  "warnings": [
+    "Deterministic referral facts extraction was used."
+  ]
+}

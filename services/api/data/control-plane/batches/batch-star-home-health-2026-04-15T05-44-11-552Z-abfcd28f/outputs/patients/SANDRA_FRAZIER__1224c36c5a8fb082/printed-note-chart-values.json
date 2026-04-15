@@ -1,0 +1,25 @@
+{
+  "generatedAt": "2026-04-15T08:29:48.773Z",
+  "source": "printed_note_ocr",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-star-home-health-2026-04-15T05-44-11-552Z-abfcd28f\\outputs\\evidence\\SANDRA_FRAZIER__1224c36c5a8fb082\\oasis-printed-note\\extracted-text.txt",
+  "extractedFieldCount": 1,
+  "invocationModelId": "us.amazon.nova-lite-v1:0",
+  "currentChartValues": {
+    "patient_name": "Sandra Frazier"
+  },
+  "extractedFieldValues": [
+    {
+      "field_key": "patient_name",
+      "current_value": "Sandra Frazier",
+      "confidence": 0.95,
+      "source_spans": [
+        "FRAZIER, SANDRA",
+        "Sandra Frazier",
+        "Sandra Frazier"
+      ]
+    }
+  ],
+  "warnings": [
+    "Printed-note chart-value extraction used inference profile us.amazon.nova-lite-v1:0."
+  ]
+}

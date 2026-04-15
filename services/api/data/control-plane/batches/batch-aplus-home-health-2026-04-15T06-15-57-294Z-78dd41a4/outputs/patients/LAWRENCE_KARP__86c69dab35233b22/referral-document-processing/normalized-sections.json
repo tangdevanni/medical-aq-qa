@@ -1,0 +1,113 @@
+[
+  {
+    "sectionName": "patient_identity",
+    "extractedTextSpans": [
+      "DOB: 11/17/42 AGE: 83"
+    ],
+    "normalizedSummary": "DOB: 11/17/42 AGE: 83",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 9,
+        "lineEnd": 9,
+        "charStart": 238,
+        "charEnd": 259
+      }
+    ]
+  },
+  {
+    "sectionName": "hospitalization_history",
+    "extractedTextSpans": [
+      "Southern Hills Hospital and Medical Center (COCSNV)",
+      "Hospitalist Discharge Summary",
+      "Discharge date: 04/06/26",
+      "Discharge meds:",
+      "Discharge Instructions",
+      "Discharge to: Home Health wPlan of Care",
+      "Additional Discharge Routines: PCP Follow-Up, Consultant Follow-Up",
+      "Discharge management: greater than 30 mins",
+      "Discharge instruction:"
+    ],
+    "normalizedSummary": "Southern Hills Hospital and Medical Center (COCSNV) Hospitalist Discharge Summary Discharge date: 04/06/26",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 1,
+        "lineEnd": 1,
+        "charStart": 0,
+        "charEnd": 51
+      },
+      {
+        "lineStart": 2,
+        "lineEnd": 2,
+        "charStart": 52,
+        "charEnd": 81
+      },
+      {
+        "lineStart": 20,
+        "lineEnd": 20,
+        "charStart": 472,
+        "charEnd": 496
+      },
+      {
+        "lineStart": 23,
+        "lineEnd": 23,
+        "charStart": 513,
+        "charEnd": 528
+      },
+      {
+        "lineStart": 204,
+        "lineEnd": 204,
+        "charStart": 3513,
+        "charEnd": 3535
+      },
+      {
+        "lineStart": 208,
+        "lineEnd": 208,
+        "charStart": 3581,
+        "charEnd": 3620
+      },
+      {
+        "lineStart": 209,
+        "lineEnd": 209,
+        "charStart": 3621,
+        "charEnd": 3687
+      },
+      {
+        "lineStart": 213,
+        "lineEnd": 213,
+        "charStart": 3819,
+        "charEnd": 3861
+      },
+      {
+        "lineStart": 234,
+        "lineEnd": 234,
+        "charStart": 4296,
+        "charEnd": 4318
+      }
+    ]
+  },
+  {
+    "sectionName": "other_clinical_notes",
+    "extractedTextSpans": [
+      "Free Text DC Notes",
+      "Free Text DC Notes:"
+    ],
+    "normalizedSummary": "Free Text DC Notes Free Text DC Notes:",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 232,
+        "lineEnd": 232,
+        "charStart": 4257,
+        "charEnd": 4275
+      },
+      {
+        "lineStart": 233,
+        "lineEnd": 233,
+        "charStart": 4276,
+        "charEnd": 4295
+      }
+    ]
+  }
+]

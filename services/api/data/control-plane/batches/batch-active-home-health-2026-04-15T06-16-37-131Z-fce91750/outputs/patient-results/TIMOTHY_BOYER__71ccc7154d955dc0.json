@@ -1,0 +1,2978 @@
+{
+  "runId": "batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750-TIMOTHY_BOYER__71ccc7154d955dc0",
+  "batchId": "batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750",
+  "subsidiaryId": "active-home-health",
+  "workItemId": "TIMOTHY_BOYER__71ccc7154d955dc0",
+  "patientName": "Timothy Boyer",
+  "processingStatus": "BLOCKED",
+  "executionStep": "BLOCKED",
+  "progressPercent": 100,
+  "startedAt": "2026-04-15T08:21:08.905Z",
+  "completedAt": "2026-04-15T08:27:31.487Z",
+  "lastUpdatedAt": "2026-04-15T08:27:31.454Z",
+  "matchResult": {
+    "status": "EXACT",
+    "searchQuery": "boyer, timothy",
+    "portalPatientId": null,
+    "portalDisplayName": "BOYER, TIMOTHY MR# 116275 Active SOC: 4/4/2026 / DOB: 3/12/1956 LOS: 11 days Medicare 2195 Twin Falls Drive Henderson NV 89044 (909)800-9963 Last Visit Confirmed by SN : 04/13/2026 (1 days ago)",
+    "candidateNames": [
+      "BOYER, TIMOTHY MR# 116275 Active SOC: 4/4/2026 / DOB: 3/12/1956 LOS: 11 days Medicare 2195 Twin Falls Drive Henderson NV 89044 (909)800-9963 Last Visit Confirmed by SN : 04/13/2026 (1 days ago)"
+    ],
+    "note": null
+  },
+  "artifacts": [
+    {
+      "artifactType": "OASIS",
+      "status": "MISSING",
+      "portalLabel": "OASIS documents page",
+      "locatorUsed": null,
+      "discoveredAt": "2026-04-15T08:23:38.666Z",
+      "downloadPath": null,
+      "extractedFields": {
+        "oasisMenuClicked": "false",
+        "oasisDocumentListDetected": "false",
+        "socDocumentFound": "false",
+        "socDocumentClicked": "false",
+        "matchedSocRowText": null,
+        "matchedSocAnchorText": null,
+        "diagnosisSectionOpened": "false",
+        "diagnosisListFound": "false",
+        "diagnosisNavigationMethod": null,
+        "diagnosisListSamples": "",
+        "diagnosisSnapshotRowCount": "0",
+        "oasisReadyDiagnosisPath": null,
+        "primaryDiagnosisSelected": "none",
+        "otherDiagnosisCount": "0",
+        "codeConfidenceSummary": "high:0 medium:0 low:0",
+        "oasisLockState": null,
+        "unlockControlVisible": "false",
+        "unlockControlText": null,
+        "fieldsEditable": "false",
+        "verificationOnly": "true",
+        "inputEligible": "false",
+        "fileUploadsAccessible": "true",
+        "fileUploadsUrl": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads",
+        "visibleUploadedDocuments": "📄 timothy boyer new referral.pdf | 📄 timothy boyer new referral.pdf 📝 ✏️ 🗑️ 🔗",
+        "admissionOrderAccessible": "true",
+        "admissionOrderTitle": "📄 timothy boyer new referral.pdf 📝 ✏️ 🗑️ 🔗",
+        "admissionReasonPrimary": null,
+        "admissionReasonSnippets": "",
+        "rawExtractedTextSource": "dom",
+        "domExtractionRejectedReasons": "viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS",
+        "possibleIcd10Codes": "I00 | I25 | I50",
+        "admissionOrderTextExcerpt": "of ⁨4⁩ Automatic Zoom Actual Size Page Fit Page Width ⁨50⁩% ⁨100⁩% ⁨125⁩% ⁨150⁩% ⁨200⁩% ⁨300⁩% ⁨400⁩% 90% Tools",
+        "admissionOrderSourcePdfPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\documents\\timothy-boyer-new-referral-pdf\\source.pdf",
+        "admissionOrderPrintedPdfPath": null,
+        "admissionOrderSourceMetaPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\documents\\timothy-boyer-new-referral-pdf\\source-meta.json",
+        "admissionOrderExtractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\documents\\timothy-boyer-new-referral-pdf\\extracted-text.txt",
+        "admissionOrderExtractionResultPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\documents\\timothy-boyer-new-referral-pdf\\extraction-result.json",
+        "diagnosisMentionCount": "9",
+        "diagnosisMentions": "Heart Failure, unspecified | Heart Failure | Dysphagia, unspecified | COPD, unspecified | COPD | Diabetes mellitus without complications | Diabetes mellitus | DM | CVA",
+        "diagnosisCodeCount": "4",
+        "diagnosisCodes": "I50.9 | R13.10 | J44.9 | E11.9",
+        "diagnosisCodeCategories": "I50.9:Diseases of the circulatory system | R13.10:Symptoms, signs and abnormal findings | J44.9:Diseases of the respiratory system | E11.9:Endocrine, nutritional and metabolic diseases",
+        "diagnosisCanonicalJson": "{\"reason_for_admission\":null,\"diagnosis_phrases\":[\"Heart Failure, unspecified\",\"Heart Failure\",\"Dysphagia, unspecified\",\"COPD, unspecified\",\"COPD\",\"Diabetes mellitus without complications\",\"Diabetes mellitus\",\"DM\",\"CVA\"],\"diagnosis_code_pairs\":[{\"diagnosis\":\"Heart Failure, unspecified\",\"code\":\"I50.9\",\"code_source\":\"ocr text explicit or inferred\"},{\"diagnosis\":\"Heart Failure\",\"code\":\"I50.9\",\"code_source\":\"ocr text explicit or inferred\"},{\"diagnosis\":\"Dysphagia, unspecified\",\"code\":\"R13.10\",\"code_source\":\"ocr text explicit or inferred\"},{\"diagnosis\":\"COPD, unspecified\",\"code\":\"J44.9\",\"code_source\":\"ocr text explicit or inferred\"},{\"diagnosis\":\"COPD\",\"code\":\"J44.9\",\"code_source\":\"ocr text explicit or inferred\"},{\"diagnosis\":\"Diabetes mellitus without complications\",\"code\":\"E11.9\",\"code_source\":\"ocr text explicit or inferred\"},{\"diagnosis\":\"Diabetes mellitus\",\"code\":\"E11.9\",\"code_source\":\"ocr text explicit or inferred\"},{\"diagnosis\":\"Heart Failure\",\"code\":null,\"code_source\":null},{\"diagnosis\":\"COPD\",\"code\":null,\"code_source\":null},{\"diagnosis\":\"DM\",\"code\":null,\"code_source\":null},{\"diagnosis\":\"CVA\",\"code\":null,\"code_source\":null}],\"icd10_codes_found_verbatim\":[\"I50.9\",\"R13.10\",\"J44.9\",\"E11.9\"],\"ordered_services\":[],\"clinical_summary\":null,\"source_quotes\":[],\"uncertain_items\":[\"diagnosis code pairs diagnosis invalid: Dysphagia\"],\"document_type\":\"Admission Order\",\"extraction_confidence\":\"high\"}",
+        "codingInputPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\coding-input.json",
+        "codingInputJson": "{\"primaryDiagnosis\":{\"code\":\"I50.9\",\"description\":\"Heart Failure, unspecified\",\"confidence\":\"high\"},\"otherDiagnoses\":[{\"code\":\"R13.10\",\"description\":\"Dysphagia, unspecified\",\"confidence\":\"high\"},{\"code\":\"J44.9\",\"description\":\"COPD, unspecified\",\"confidence\":\"high\"},{\"code\":\"E11.9\",\"description\":\"Diabetes mellitus without complications\",\"confidence\":\"high\"},{\"code\":\"\",\"description\":\"DM\",\"confidence\":\"medium\"},{\"code\":\"\",\"description\":\"CVA\",\"confidence\":\"medium\"}],\"suggestedOnsetType\":\"onset\",\"suggestedSeverity\":3,\"comorbidityFlags\":{\"pvd_pad\":false,\"diabetes\":true,\"none\":false},\"notes\":[]}",
+        "reasonForAdmission": null,
+        "diagnosisCodePairs": "Heart Failure, unspecified => I50.9 (ocr text explicit or inferred) | Heart Failure => I50.9 (ocr text explicit or inferred) | Dysphagia, unspecified => R13.10 (ocr text explicit or inferred) | COPD, unspecified => J44.9 (ocr text explicit or inferred) | COPD => J44.9 (ocr text explicit or inferred) | Diabetes mellitus without complications => E11.9 (ocr text explicit or inferred) | Diabetes mellitus => E11.9 (ocr text explicit or inferred) | Heart Failure => null (null) | COPD => null (null) | DM => null (null) | CVA => null (null)",
+        "primaryDiagnosis": "Heart Failure, unspecified",
+        "primaryDiagnosisCode": "I50.9",
+        "otherDiagnoses": "Dysphagia, unspecified (R13.10) | COPD, unspecified (J44.9) | Diabetes mellitus without complications (E11.9) | DM | CVA",
+        "suggestedOnsetType": "onset",
+        "suggestedSeverity": "3",
+        "comorbidityFlags": "{\"pvd_pad\":false,\"diabetes\":true,\"none\":false}",
+        "orderedServices": "",
+        "extractionConfidence": "high",
+        "uncertainDiagnosisItems": "diagnosis code pairs diagnosis invalid: Dysphagia",
+        "codingLlmUsed": "true",
+        "codingLlmModel": "us.amazon.nova-lite-v1:0",
+        "codingLlmError": null,
+        "documentTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\document-text.json"
+      },
+      "notes": [
+        "Active OASIS workflow did not open the OASIS documents page."
+      ]
+    }
+  ],
+  "artifactCount": 1,
+  "findings": [
+    {
+      "ruleId": "oasis-qa.oasis.fail",
+      "stage": "OASIS_QA",
+      "outcome": "MISSING_DOCUMENTS",
+      "message": "OASIS QA is fail.",
+      "evidence": [
+        "Medical necessity is stated",
+        "Homebound reason is stated",
+        "Health assessment is documented",
+        "Skilled interventions during the OASIS visit are documented"
+      ]
+    },
+    {
+      "ruleId": "oasis-qa.poc.missing",
+      "stage": "POC_QA",
+      "outcome": "MISSING_DOCUMENTS",
+      "message": "Plan Of Care QA is missing.",
+      "evidence": [
+        "Plan of care content extracted",
+        "POC QA completed in workbook",
+        "Diagnoses or codes are present in the plan of care",
+        "Interventions, goals, and frequency are present in the plan of care",
+        "Conditions or exacerbations are reflected in the plan of care"
+      ]
+    },
+    {
+      "ruleId": "oasis-qa.visit_notes.missing",
+      "stage": "VISIT_NOTES_REVIEW",
+      "outcome": "MISSING_DOCUMENTS",
+      "message": "Visit Notes Review is missing.",
+      "evidence": [
+        "Visit note content extracted",
+        "Visit notes review completed in workbook",
+        "Skilled need is clearly documented",
+        "Interventions performed are specific and detailed",
+        "Patient response to interventions is documented",
+        "Progress toward goals is noted",
+        "Vitals and focused assessment are documented",
+        "Medication review is documented",
+        "Changes in condition are clearly reported and addressed",
+        "Documentation supports billed services",
+        "Documentation remains consistent with OASIS and diagnoses"
+      ]
+    },
+    {
+      "ruleId": "oasis-qa.technical_review.missing",
+      "stage": "TECHNICAL_REVIEW",
+      "outcome": "MISSING_DOCUMENTS",
+      "message": "Technical Review is missing.",
+      "evidence": [
+        "SN visits were identified from visit-note content",
+        "Applicable disciplines were detected"
+      ]
+    },
+    {
+      "ruleId": "oasis-qa.final_check.fail",
+      "stage": "FINAL_BILLING_PREP_READINESS",
+      "outcome": "MISSING_DOCUMENTS",
+      "message": "Final Check is fail.",
+      "evidence": [
+        "Critical QA sections are complete before billing prep",
+        "Billing prep status in workbook"
+      ]
+    }
+  ],
+  "hasFindings": false,
+  "qaOutcome": "MISSING_DOCUMENTS",
+  "oasisQaSummary": {
+    "overallStatus": "BLOCKED",
+    "urgency": "ON_TRACK",
+    "daysInPeriod": 30,
+    "daysLeft": 19,
+    "sections": [
+      {
+        "key": "timing",
+        "label": "Timing / OASIS Due",
+        "status": "PASS",
+        "items": [
+          {
+            "key": "days_in_period",
+            "label": "Days in the 30-day period captured",
+            "status": "PASS",
+            "notes": "Workbook shows 30 days in period.",
+            "evidence": [
+              "Workbook days in period: 30"
+            ]
+          },
+          {
+            "key": "days_left",
+            "label": "Days left before OASIS due date verified",
+            "status": "PASS",
+            "notes": "19 day(s) remain before OASIS is due.",
+            "evidence": [
+              "Workbook days left: 19"
+            ]
+          },
+          {
+            "key": "urgency_bucket",
+            "label": "Urgency bucket",
+            "status": "PASS",
+            "notes": "ON TRACK",
+            "evidence": [
+              "Derived urgency from 19 day(s) left."
+            ]
+          }
+        ]
+      },
+      {
+        "key": "coding",
+        "label": "Coding Review",
+        "status": "PASS",
+        "items": [
+          {
+            "key": "coding_review_complete",
+            "label": "Coding review completed in workbook",
+            "status": "PASS",
+            "notes": "Workbook status: DONE",
+            "evidence": [
+              "DONE"
+            ]
+          },
+          {
+            "key": "coding_supported_by_oasis",
+            "label": "OASIS content is available to support coding review",
+            "status": "PASS",
+            "notes": "OASIS content extracted for coding review support.",
+            "evidence": [
+              "OASIS OASIS documents page"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "oasis",
+        "label": "OASIS QA",
+        "status": "FAIL",
+        "items": [
+          {
+            "key": "oasis_document",
+            "label": "OASIS document content extracted",
+            "status": "PASS",
+            "notes": "1 supporting document(s) extracted.",
+            "evidence": [
+              "OASIS OASIS documents page"
+            ]
+          },
+          {
+            "key": "oasis_workbook_status",
+            "label": "OASIS QA completed in workbook",
+            "status": "NEEDS_REVIEW",
+            "notes": "Workbook status: IN_PROGRESS",
+            "evidence": [
+              "IN_PROGRESS"
+            ]
+          },
+          {
+            "key": "medical_necessity",
+            "label": "Medical necessity is stated",
+            "status": "FAIL",
+            "notes": "OASIS text did not show medical necessity language.",
+            "evidence": []
+          },
+          {
+            "key": "homebound_reason",
+            "label": "Homebound reason is stated",
+            "status": "FAIL",
+            "notes": "OASIS text did not show a homebound reason.",
+            "evidence": []
+          },
+          {
+            "key": "health_assessment",
+            "label": "Health assessment is documented",
+            "status": "FAIL",
+            "notes": "OASIS text did not show a health assessment section or phrase.",
+            "evidence": []
+          },
+          {
+            "key": "skilled_interventions",
+            "label": "Skilled interventions during the OASIS visit are documented",
+            "status": "FAIL",
+            "notes": "OASIS text did not show skilled interventions performed during the visit.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "poc",
+        "label": "Plan Of Care QA",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "poc_document",
+            "label": "Plan of care content extracted",
+            "status": "MISSING",
+            "notes": "No plan-of-care content was available for extraction.",
+            "evidence": []
+          },
+          {
+            "key": "poc_workbook_status",
+            "label": "POC QA completed in workbook",
+            "status": "MISSING",
+            "notes": "Workbook status: NOT_STARTED",
+            "evidence": [
+              "NOT_STARTED"
+            ]
+          },
+          {
+            "key": "poc_diagnoses_codes",
+            "label": "Diagnoses or codes are present in the plan of care",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "poc_interventions_goals_frequency",
+            "label": "Interventions, goals, and frequency are present in the plan of care",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "poc_conditions_exacerbations",
+            "label": "Conditions or exacerbations are reflected in the plan of care",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "visit_notes",
+        "label": "Visit Notes Review",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "visit_notes_document",
+            "label": "Visit note content extracted",
+            "status": "MISSING",
+            "notes": "No visit-note content was available for extraction.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_workbook_status",
+            "label": "Visit notes review completed in workbook",
+            "status": "MISSING",
+            "notes": "Workbook status: NOT_STARTED",
+            "evidence": [
+              "NOT_STARTED"
+            ]
+          },
+          {
+            "key": "visit_notes_skilled_need",
+            "label": "Skilled need is clearly documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_intervention_detail",
+            "label": "Interventions performed are specific and detailed",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_patient_response",
+            "label": "Patient response to interventions is documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_progress",
+            "label": "Progress toward goals is noted",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_vitals",
+            "label": "Vitals and focused assessment are documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_medication_review",
+            "label": "Medication review is documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_condition_changes",
+            "label": "Changes in condition are clearly reported and addressed",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_billed_services_support",
+            "label": "Documentation supports billed services",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_consistency",
+            "label": "Documentation remains consistent with OASIS and diagnoses",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "technical_review",
+        "label": "Technical Review",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "portal_patient_match",
+            "label": "Portal patient match resolved",
+            "status": "PASS",
+            "notes": "Portal match status: EXACT",
+            "evidence": [
+              "boyer, timothy",
+              "BOYER, TIMOTHY MR# 116275 Active SOC: 4/4/2026 / DOB: 3/12/1956 LOS: 11 days Medicare 2195 Twin Falls Drive Henderson NV 89044 (909)800-9963 Last Visit Confirmed by SN : 04/13/2026 (1 days ago)"
+            ]
+          },
+          {
+            "key": "sn_visit_count",
+            "label": "SN visits were identified from visit-note content",
+            "status": "MISSING",
+            "notes": "Visit-note content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "discipline_detection",
+            "label": "Applicable disciplines were detected",
+            "status": "MISSING",
+            "notes": "Visit-note content is not available for discipline detection.",
+            "evidence": []
+          },
+          {
+            "key": "physician_orders",
+            "label": "Physician orders were checked",
+            "status": "NEEDS_REVIEW",
+            "notes": "Orders evidence was discovered (1 candidate(s)).",
+            "evidence": [
+              "Detected 1 order document candidate(s)."
+            ]
+          },
+          {
+            "key": "supporting_notes",
+            "label": "Supporting note categories were reviewed",
+            "status": "NOT_APPLICABLE",
+            "notes": "No additional supporting note categories were discovered for this patient.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "final_check",
+        "label": "Final Check",
+        "status": "FAIL",
+        "items": [
+          {
+            "key": "critical_sections_clear",
+            "label": "Critical QA sections are complete before billing prep",
+            "status": "FAIL",
+            "notes": "Blocking sections: Medical necessity is stated, Homebound reason is stated, Health assessment is documented, Skilled interventions during the OASIS visit are documented, Plan of care content extracted, POC QA completed in workbook, Diagnoses or codes are present in the plan of care, Interventions, goals, and frequency are present in the plan of care, Conditions or exacerbations are reflected in the plan of care, Visit note content extracted, Visit notes review completed in workbook, Skilled need is clearly documented, Interventions performed are specific and detailed, Patient response to interventions is documented, Progress toward goals is noted, Vitals and focused assessment are documented, Medication review is documented, Changes in condition are clearly reported and addressed, Documentation supports billed services, Documentation remains consistent with OASIS and diagnoses, SN visits were identified from visit-note content, Applicable disciplines were detected",
+            "evidence": [
+              "Timing / OASIS Due: PASS",
+              "Coding Review: PASS",
+              "OASIS QA: FAIL",
+              "Plan Of Care QA: MISSING",
+              "Visit Notes Review: MISSING",
+              "Technical Review: MISSING"
+            ]
+          },
+          {
+            "key": "billing_prep_status",
+            "label": "Billing prep status in workbook",
+            "status": "MISSING",
+            "notes": "Workbook status: NOT_STARTED",
+            "evidence": [
+              "NOT_STARTED"
+            ]
+          }
+        ]
+      }
+    ],
+    "blockers": [
+      "Medical necessity is stated",
+      "Homebound reason is stated",
+      "Health assessment is documented",
+      "Skilled interventions during the OASIS visit are documented",
+      "Plan of care content extracted",
+      "POC QA completed in workbook",
+      "Diagnoses or codes are present in the plan of care",
+      "Interventions, goals, and frequency are present in the plan of care",
+      "Conditions or exacerbations are reflected in the plan of care",
+      "Visit note content extracted",
+      "Visit notes review completed in workbook",
+      "Skilled need is clearly documented",
+      "Interventions performed are specific and detailed",
+      "Patient response to interventions is documented",
+      "Progress toward goals is noted",
+      "Vitals and focused assessment are documented",
+      "Medication review is documented",
+      "Changes in condition are clearly reported and addressed",
+      "Documentation supports billed services",
+      "Documentation remains consistent with OASIS and diagnoses",
+      "SN visits were identified from visit-note content",
+      "Applicable disciplines were detected"
+    ]
+  },
+  "documentInventory": [
+    {
+      "sourceLabel": "timothy boyer new referral.pdf",
+      "normalizedType": "ORDER",
+      "discipline": "UNKNOWN",
+      "confidence": 0.92,
+      "evidence": [
+        "Workflow phase: file_uploads_only",
+        "oasisReadyDiagnosisPath:none",
+        "primaryDiagnosisSelected:none",
+        "otherDiagnosisCount:0",
+        "codeConfidenceSummary:high:0 medium:0 low:0",
+        "oasisLockState:none",
+        "unlockControlVisible:false",
+        "unlockControlText:none",
+        "fieldsEditable:false",
+        "verificationOnly:true",
+        "inputEligible:false",
+        "Active OASIS workflow path: chart -> File Uploads/referral -> OASIS sidebar -> OASIS document table -> SOC document -> Active Diagnoses",
+        "Dangerous controls detected: none",
+        "oasisMenuClicked:false",
+        "oasisDocumentListDetected:false",
+        "socDocumentFound:false",
+        "socDocumentClicked:false",
+        "matchedSocRowText:none",
+        "matchedSocAnchorText:none",
+        "diagnosisSectionOpened:false",
+        "diagnosisListFound:false",
+        "diagnosisNavigationMethod:none",
+        "diagnosisListSamples:none",
+        "diagnosisSnapshotRowCount:0",
+        "fileUploadsAccessible:true",
+        "fileUploadsUrl:https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads",
+        "visibleUploadedDocuments:📄 timothy boyer new referral.pdf | 📄 timothy boyer new referral.pdf 📝 ✏️ 🗑️ 🔗",
+        "admissionOrderAccessible:true",
+        "admissionOrderTitle:📄 timothy boyer new referral.pdf 📝 ✏️ 🗑️ 🔗",
+        "admissionReasonPrimary:none",
+        "admissionReasonSnippets:none",
+        "rawExtractedTextSource:dom",
+        "domExtractionRejectedReasons:viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS",
+        "possibleIcd10Codes:I00 | I25 | I50",
+        "sourceMetaPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\documents\\timothy-boyer-new-referral-pdf\\source-meta.json",
+        "sourcePdfPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\documents\\timothy-boyer-new-referral-pdf\\source.pdf",
+        "extractedTextPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\documents\\timothy-boyer-new-referral-pdf\\extracted-text.txt",
+        "printedPdfPath:none"
+      ],
+      "sourceUrl": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads",
+      "sourcePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\documents\\timothy-boyer-new-referral-pdf\\source.pdf",
+      "discoveredAt": "2026-04-15T08:23:38.666Z",
+      "openBehavior": "SAME_PAGE"
+    }
+  ],
+  "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patient-results\\TIMOTHY_BOYER__71ccc7154d955dc0.json",
+  "bundleAvailable": true,
+  "logPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\logs\\TIMOTHY_BOYER__71ccc7154d955dc0.json",
+  "logAvailable": true,
+  "retryEligible": false,
+  "errorSummary": "Diagnosis code candidates: I50.9, R13.10, J44.9, E11.9",
+  "auditArtifacts": {
+    "tracePath": null,
+    "screenshotPaths": [],
+    "downloadPaths": []
+  },
+  "workflowRuns": [
+    {
+      "workflowRunId": "batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750-TIMOTHY_BOYER__71ccc7154d955dc0:coding",
+      "workflowDomain": "coding",
+      "status": "BLOCKED",
+      "stepName": "BLOCKED",
+      "message": "Diagnosis code candidates: I50.9, R13.10, J44.9, E11.9",
+      "chartUrl": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/calendar",
+      "startedAt": "2026-04-15T08:27:31.404Z",
+      "completedAt": "2026-04-15T08:27:31.486Z",
+      "lastUpdatedAt": "2026-04-15T08:27:31.486Z",
+      "workflowResultPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patient-results\\TIMOTHY_BOYER__71ccc7154d955dc0.json",
+      "workflowLogPath": null
+    },
+    {
+      "workflowRunId": "batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750-TIMOTHY_BOYER__71ccc7154d955dc0:qa",
+      "workflowDomain": "qa",
+      "status": "COMPLETED",
+      "stepName": "OASIS_QA_ENTRY_COMPLETE",
+      "message": "OASIS QA entry completed with warnings: Deterministic referral facts extraction was used.",
+      "chartUrl": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/calendar",
+      "startedAt": "2026-04-15T08:21:08.927Z",
+      "completedAt": "2026-04-15T08:27:07.618Z",
+      "lastUpdatedAt": "2026-04-15T08:27:07.618Z",
+      "workflowResultPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\qa-prefetch-result.json",
+      "workflowLogPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\logs\\TIMOTHY_BOYER__71ccc7154d955dc0.json"
+    }
+  ],
+  "workItemSnapshot": {
+    "id": "TIMOTHY_BOYER__71ccc7154d955dc0",
+    "subsidiaryId": "active-home-health",
+    "patientIdentity": {
+      "displayName": "Timothy Boyer",
+      "normalizedName": "TIMOTHY BOYER",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-04-04",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Clemente, Jose Luis PT",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "01-SOC"
+    },
+    "workflowTypes": [
+      "SOC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 19,
+      "daysInPeriod": null,
+      "daysLeft": 19,
+      "daysLeftBeforeOasisDueDate": 19,
+      "rawTrackingValues": [
+        "19"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "DONE",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "Locked"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "04/04/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 26
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 26,
+        "values": {
+          "patientName": "BOYER, TIMOTHY",
+          "episodeDate": "04/04/2026",
+          "assignedStaff": "Clemente, Jose Luis PT",
+          "payer": "Medicare",
+          "rfa": "01-SOC",
+          "trackingDays": "19",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "Locked",
+          "oasisQaRemarks": "04/04/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  "automationStepLogs": [
+    {
+      "timestamp": "2026-04-15T08:22:50.761Z",
+      "step": "login",
+      "message": "Reused the authenticated portal session established for this batch.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:21:08.927Z",
+      "step": "run_started",
+      "message": "Patient run started from the shared Playwright portal runner.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c19ab4ec5befad6fbad84e/intake/69c19b1187875df48a1299f2/documents/note/oasis/69c19b226ae59046fafcc16e",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c19ab4ec5befad6fbad84e/intake/69c19b1187875df48a1299f2/documents/note/oasis/69c19b226ae59046fafcc16e",
+      "selectorUsed": null,
+      "found": [
+        "currentUrl=https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c19ab4ec5befad6fbad84e/intake/69c19b1187875df48a1299f2/documents/note/oasis/69c19b226ae59046fafcc16e"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "subsidiaryId=active-home-health",
+        "portalBaseUrl=https://app.finalehealth.com",
+        "configuredDashboardUrl=https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+        "resolvedDashboardUrl=https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+        "currentContextRequiresReset=true"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:21:16.962Z",
+      "step": "dashboard_reset",
+      "message": "Reset the portal session to the provider dashboard before patient matching.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c19ab4ec5befad6fbad84e/intake/69c19b1187875df48a1299f2/documents/note/oasis/69c19b226ae59046fafcc16e",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+      "selectorUsed": null,
+      "found": [
+        "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Reset triggered: true",
+        "Current URL before patient: https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c19ab4ec5befad6fbad84e/intake/69c19b1187875df48a1299f2/documents/note/oasis/69c19b226ae59046fafcc16e",
+        "Current URL after reset: https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+        "Dashboard reset target URL: https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+        "Dashboard markers found: true",
+        "goto_base_url: dashboardDetected=true currentUrl=https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:21:16.962Z",
+      "step": "dashboard_ready",
+      "message": "Provider dashboard ready confirmed using 'button:has-text(\"Search Patient\")'.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+      "selectorUsed": null,
+      "found": [
+        "button:has-text(\"Search Patient\")"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "attempt=1 signal=button:has-text(\"Search Patient\") stableDom=false url=https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard title=Finale Health buttons=111 inputs=7 text=Active Home Healthcare LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notification"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:21:32.536Z",
+      "step": "patient_lookup_entry",
+      "message": "Global patient search is available from the current authenticated page context.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+      "selectorUsed": "getByText(/Search Patient/i) -> nearest clickable parent (present)",
+      "found": [
+        "getByText(/Search Patient/i) -> nearest clickable parent (present)"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Current URL before patient lookup: https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+        "Global search available in current context: true",
+        "Global search availability selector used: getByText(/Search Patient/i) -> nearest clickable parent (present)",
+        "Resolved global search trigger with present manual selector 'getByText(/Search Patient/i) -> nearest clickable parent (present)' even though Playwright visibility did not confirm it in the probe path.",
+        "[not_found] Global patient search button by accessible name count=0 visible=0 elapsedMs=35",
+        "[not_visible] Global patient search button containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=29 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=71 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search button containing Search Patient text count=1 visible=0 elapsedMs=63 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search visible control containing Search Patient text count=1 visible=0 elapsedMs=37 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search fin-button wrapper containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=33 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control inside fin-button wrapper count=1 visible=0 elapsedMs=41 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by shortcut hint count=0 visible=0 elapsedMs=23",
+        "[not_visible] Global patient search button containing search icon and patient-search text count=1 visible=0 elapsedMs=38 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by accessible name count=0 visible=0 elapsedMs=66",
+        "[not_visible] Global patient search button containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=241 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=75 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search button containing Search Patient text count=1 visible=0 elapsedMs=32 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search visible control containing Search Patient text count=1 visible=0 elapsedMs=31 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search fin-button wrapper containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=31 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control inside fin-button wrapper count=1 visible=0 elapsedMs=29 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by shortcut hint count=0 visible=0 elapsedMs=22",
+        "[not_visible] Global patient search button containing search icon and patient-search text count=1 visible=0 elapsedMs=41 samples=Search Patient...Ctrl K"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:21:32.536Z",
+      "step": "patient_lookup_entry",
+      "message": "Patient lookup will start after shared dashboard bootstrap confirmed provider dashboard readiness and global search availability.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c19ab4ec5befad6fbad84e/intake/69c19b1187875df48a1299f2/documents/note/oasis/69c19b226ae59046fafcc16e",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+      "selectorUsed": null,
+      "found": [
+        "patientLookupEntryContext=dashboard_reset_then_global_search",
+        "dashboard_context_established",
+        "globalSearchAvailable=true"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "currentUrlAfterLogin=https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c19ab4ec5befad6fbad84e/intake/69c19b1187875df48a1299f2/documents/note/oasis/69c19b226ae59046fafcc16e",
+        "currentUrlBeforeSearch=https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+        "resolvedDashboardUrl=https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+        "globalSearchSelectorUsed=getByText(/Search Patient/i) -> nearest clickable parent (present)"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:21:32.536Z",
+      "step": "patient_search_start",
+      "message": "Starting patient search with 3 query variant(s).",
+      "patientName": "Timothy Boyer",
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+      "selectorUsed": null,
+      "found": [
+        "boyer, timothy",
+        "BOYER, TIMOTHY",
+        "Timothy Boyer",
+        "TIMOTHY BOYER",
+        "BOYER, TIMOTHY"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Original workbook patient name: Timothy Boyer",
+        "Normalized global search query: boyer, timothy",
+        "Normalized expected display name: BOYER, TIMOTHY",
+        "Workbook name variants: Timothy Boyer | TIMOTHY BOYER | BOYER, TIMOTHY"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:22:03.385Z",
+      "step": "global_patient_search_open",
+      "message": "Clicked the global Search Patient trigger and found the visible search input.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+      "selectorUsed": "getByText(/Search Patient/i) -> nearest clickable parent (present)",
+      "found": [
+        "Search Patient trigger",
+        "search input"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Original workbook patient name: Timothy Boyer",
+        "Normalized global search query: boyer, timothy",
+        "Search trigger clicked: true",
+        "Trigger click method: dom_click",
+        "Search modal visible: true",
+        "Global search control selector used: getByText(/Search Patient/i) -> nearest clickable parent (present)",
+        "Global search surface selector used: Global patient search overlay/dialog containing an input",
+        "Global search modal selector used: div.search-header.open",
+        "Resolved global search trigger with present manual selector 'getByText(/Search Patient/i) -> nearest clickable parent (present)' even though Playwright visibility did not confirm it in the probe path.",
+        "[not_found] Global patient search button by accessible name count=0 visible=0 elapsedMs=22",
+        "[not_visible] Global patient search button containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=92 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=42 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search button containing Search Patient text count=1 visible=0 elapsedMs=45 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search visible control containing Search Patient text count=1 visible=0 elapsedMs=33 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search fin-button wrapper containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=36 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control inside fin-button wrapper count=1 visible=0 elapsedMs=33 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by shortcut hint count=0 visible=0 elapsedMs=20",
+        "[not_visible] Global patient search button containing search icon and patient-search text count=1 visible=0 elapsedMs=32 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by accessible name count=0 visible=0 elapsedMs=17",
+        "[not_visible] Global patient search button containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=24 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=44 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search button containing Search Patient text count=1 visible=0 elapsedMs=24 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search visible control containing Search Patient text count=1 visible=0 elapsedMs=35 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search fin-button wrapper containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=36 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control inside fin-button wrapper count=1 visible=0 elapsedMs=33 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by shortcut hint count=0 visible=0 elapsedMs=17",
+        "[not_visible] Global patient search button containing search icon and patient-search text count=1 visible=0 elapsedMs=24 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search dialog by accessible name count=0 visible=0 elapsedMs=16",
+        "[matched] Global patient search overlay/dialog containing an input count=1 visible=1 elapsedMs=28 samples=EscPatients Sort By 3Sort By×Full Name×asc×SOC Date×desc×Status×ascAdd another sort itemNo recent searchesSearch by:Status:ActivePendingOn-HoldLeadNon-AdmitDischarged",
+        "Search input found by confirmed Search patients placeholder selector.",
+        "[matched] Global patient search input by confirmed Search patients placeholder count=1 visible=1 elapsedMs=29"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:22:15.876Z",
+      "step": "patient_search_input",
+      "message": "Typed the normalized query into the global patient search and waited for results.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+      "selectorUsed": "input[type=\"text\"][placeholder*=\"Search patients\"]",
+      "found": [
+        "BOYER, TIMOTHY MR# 116275 Active SOC: 4/4/2026 / DOB: 3/12/1956 LOS: 11 daysMedicare2195 Twin Falls Drive Henderson NV 89044(909)800-9963Last Visit Confirmed by SN : 04/13/2026 (1 days ago)"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Search trigger clicked: true",
+        "Search input found: true",
+        "Typing into focused field succeeded: true",
+        "Used direct input fallback: false",
+        "Search query typed: boyer, timothy",
+        "Result count: 1",
+        "Candidate search result texts: BOYER, TIMOTHY MR# 116275 Active SOC: 4/4/2026 / DOB: 3/12/1956 LOS: 11 daysMedicare2195 Twin Falls Drive Henderson NV 89044(909)800-9963Last Visit Confirmed by SN : 04/13/2026 (1 days ago)",
+        "attempt=1 rowCount=1 text=BOYER, TIMOTHY MR# 116275 Active SOC: 4/4/2026 / DOB: 3/12/1956 LOS: 11 daysMedicare2195 Twin Falls Drive Henderson NV 89044(909)800-9963Last Visit Confirmed by SN : 04/13/2026 (1 days ago)"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:22:40.749Z",
+      "step": "patient_search",
+      "message": "Global patient search completed with 1 candidate(s).",
+      "patientName": "Timothy Boyer",
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+      "selectorUsed": "getByText(/Search Patient/i) -> nearest clickable parent (present) -> input[type=\"text\"][placeholder*=\"Search patients\"] -> Global patient search result tiles containing ngb-highlight",
+      "found": [
+        "BOYER, TIMOTHY MR# 116275 Active SOC: 4/4/2026 / DOB: 3/12/1956 LOS: 11 days Medicare 2195 Twin Falls Drive Henderson NV 89044 (909)800-9963 Last Visit Confirmed by SN : 04/13/2026 (1 days ago)"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Original workbook patient name: Timothy Boyer",
+        "Normalized global search query: boyer, timothy",
+        "Normalized expected display name: BOYER, TIMOTHY",
+        "Global search control selector used: getByText(/Search Patient/i) -> nearest clickable parent (present)",
+        "Global search surface selector used: Global patient search overlay/dialog containing an input",
+        "Global search input selector used: input[type=\"text\"][placeholder*=\"Search patients\"]",
+        "Result selector used: Global patient search result tiles containing ngb-highlight",
+        "Search results ready: true",
+        "Visible result row count: 1",
+        "No results marker visible: false",
+        "Candidate search result texts: BOYER, TIMOTHY MR# 116275 Active SOC: 4/4/2026 / DOB: 3/12/1956 LOS: 11 days Medicare 2195 Twin Falls Drive Henderson NV 89044 (909)800-9963 Last Visit Confirmed by SN : 04/13/2026 (1 days ago)",
+        "Result text sample: BOYER, TIMOTHY MR# 116275 Active SOC: 4/4/2026 / DOB: 3/12/1956 LOS: 11 days Medicare 2195 Twin Falls Drive Henderson NV 89044 (909)800-9963 Last Visit Confirmed by SN : 04/13/2026 (1 days ago)",
+        "attempt=1 rowCount=1 text=BOYER, TIMOTHY MR# 116275 Active SOC: 4/4/2026 / DOB: 3/12/1956 LOS: 11 daysMedicare2195 Twin Falls Drive Henderson NV 89044(909)800-9963Last Visit Confirmed by SN : 04/13/2026 (1 days ago)",
+        "rowCount=1",
+        "noResultsVisible=false",
+        "Normalized query typed=boyer, timothy",
+        "Normalized expected display name=BOYER, TIMOTHY",
+        "candidate[1]=BOYER, TIMOTHY MR# 116275 Active SOC: 4/4/2026 / DOB: 3/12/1956 LOS: 11 days Medicare 2195 Twin Falls Drive Henderson NV 89044 (909)800-9963 Last Visit Confirmed by SN : 04/13/2026 (1 days ago)",
+        "Candidate 'BOYER, TIMOTHY MR# 116275 Active SOC: 4/4/2026 / DOB: 3/12/1956 LOS: 11 days Medicare 2195 Twin Falls Drive Henderson NV 89044 (909)800-9963 Last Visit Confirmed by SN : 04/13/2026 (1 days ago)' row='BOYER, TIMOTHY MR# 116275 Active SOC: 4/4/2026 / DOB: 3/12/1956 LOS: 11 days Medicare 2195 Twin Falls Drive Henderson NV 89044 (909)800-9963 Last Visit Confirmed by SN : 04/13/2026 (1 days ago)' selector='Global patient search result tiles containing ngb-highlight' container='search-body__item ng-star-inserted' score=420 exact=true containsFullQuery=true containsFirstAndLast=true reasons=all patient name tokens present; ngb-highlight patient-name text starts with the normalized LAST, FIRST display name; row/card text contains both last and first name tokens; row text contains the full first-name segment"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:22:50.761Z",
+      "step": "patient_search_match_resolution",
+      "message": "Selected patient result 'BOYER, TIMOTHY MR# 116275 Active SOC: 4/4/2026 / DOB: 3/12/1956 LOS: 11 days Medicare 2195 Twin Falls Drive Henderson NV 89044 (909)800-9963 Last Visit Confirmed by SN : 04/13/2026 (1 days ago)' from the global search.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/calendar",
+      "selectorUsed": null,
+      "found": [
+        "BOYER, TIMOTHY MR# 116275 Active SOC: 4/4/2026 / DOB: 3/12/1956 LOS: 11 days Medicare 2195 Twin Falls Drive Henderson NV 89044 (909)800-9963 Last Visit Confirmed by SN : 04/13/2026 (1 days ago)"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Matched patient result text: BOYER, TIMOTHY MR# 116275 Active SOC: 4/4/2026 / DOB: 3/12/1956 LOS: 11 days Medicare 2195 Twin Falls Drive Henderson NV 89044 (909)800-9963 Last Visit Confirmed by SN : 04/13/2026 (1 days ago)",
+        "Matched row text: BOYER, TIMOTHY MR# 116275 Active SOC: 4/4/2026 / DOB: 3/12/1956 LOS: 11 days Medicare 2195 Twin Falls Drive Henderson NV 89044 (909)800-9963 Last Visit Confirmed by SN : 04/13/2026 (1 days ago)",
+        "Normalized global search query: boyer, timothy",
+        "Normalized expected display name: BOYER, TIMOTHY",
+        "Clicked tile selector/container summary: Global patient search result tiles containing ngb-highlight :: search-body__item ng-star-inserted",
+        "all patient name tokens present",
+        "ngb-highlight patient-name text starts with the normalized LAST, FIRST display name",
+        "row/card text contains both last and first name tokens",
+        "row text contains the full first-name segment"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:22:50.761Z",
+      "step": "chart_open",
+      "message": "Opened the patient page from global search in read-only mode for BOYER, TIMOTHY MR# 116275 Active SOC: 4/4/2026 / DOB: 3/12/1956 LOS: 11 days Medicare 2195 Twin Falls Drive Henderson NV 89044 (909)800-9963 Last Visit Confirmed by SN : 04/13/2026 (1 days ago).",
+      "patientName": "Timothy Boyer",
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/calendar",
+      "selectorUsed": "Global patient search result tiles containing ngb-highlight :: nearest clickable parent around ngb-highlight",
+      "found": [
+        "Documents"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Matched patient result text: BOYER, TIMOTHY MR# 116275 Active SOC: 4/4/2026 / DOB: 3/12/1956 LOS: 11 days Medicare 2195 Twin Falls Drive Henderson NV 89044 (909)800-9963 Last Visit Confirmed by SN : 04/13/2026 (1 days ago)",
+        "Clicked patient result text: BOYER, TIMOTHY MR# 116275 Active SOC: 4/4/2026 / DOB: 3/12/1956 LOS: 11 days Medicare 2195 Twin Falls Drive Henderson NV 89044 (909)800-9963 Last Visit Confirmed by SN : 04/13/2026 (1 days ago)",
+        "Clicked tile selector/container summary: Global patient search result tiles containing ngb-highlight :: search-body__item ng-star-inserted",
+        "Click target summary: Global patient search result tiles containing ngb-highlight :: nearest clickable parent around ngb-highlight",
+        "URL after patient navigation: https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/calendar",
+        "Used Enter retry: false",
+        "Dashboard URL changed: true",
+        "Chart/page markers found: Documents",
+        "Preferred click target was the nearest clickable parent around the highlighted patient name.",
+        "all patient name tokens present",
+        "ngb-highlight patient-name text starts with the normalized LAST, FIRST display name",
+        "row/card text contains both last and first name tokens",
+        "row text contains the full first-name segment",
+        "attempt=1 urlChanged=true dashboardUrlChanged=true urlLooksLikePatientIntakePage=true chartMarkersFound=true markers=Documents url=https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/calendar"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:22:50.761Z",
+      "step": "shared_portal_access",
+      "message": "Shared portal access reached the patient chart and produced 2 workflow context(s).",
+      "patientName": "Timothy Boyer",
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/calendar",
+      "selectorUsed": null,
+      "found": [
+        "coding:https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/calendar",
+        "qa:https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/calendar"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "matchStatus=EXACT",
+        "portalPatientId=none",
+        "dashboardUrl=https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+        "chartUrl=https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/calendar"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:22:50.761Z",
+      "step": "shared_evidence_discovery_start",
+      "message": "Shared evidence workflow started from the patient chart context.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/calendar",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=coding",
+        "patientRunId=batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750-TIMOTHY_BOYER__71ccc7154d955dc0",
+        "status=started",
+        "chartUrl=https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/calendar"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:23:38.666Z",
+      "step": "file_uploads_open",
+      "message": "Opened File Uploads section and enumerated available uploaded records.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads",
+      "selectorUsed": "patient File Uploads sidebar anchor by /file-uploads href",
+      "found": [
+        "fileUploadsAccessible:true",
+        "patientFileUploadsRouteDetected:true",
+        "genericProviderDocumentsRouteDetected:false",
+        "fileUploadsSidebarClickSucceeded:true",
+        "pageComponentDetected:true",
+        "traversalMode:file_list_view",
+        "usedChartDocumentsFallback:false",
+        "matchedFileUploadsLabel:File Uploads",
+        "matchedFileUploadsHref:/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads",
+        "referralFolderSelected:true",
+        "referralFolderLabel:📁 Referral Files 🔀 ✏️ 🗑️",
+        "matchedReferralFileLabel:📄 timothy boyer new referral.pdf",
+        "normalizedFileLabels:timothy boyer new referral.pdf",
+        "matchedSourceDocuments:timothy boyer new referral.pdf | timothy boyer new referral.pdf",
+        "selectedSourceFile:timothy boyer new referral.pdf",
+        "viewerDetected:true",
+        "printButtonDetected:true",
+        "printButtonVisible:true",
+        "printClickSucceeded:false",
+        "pdfResponseDetected:true",
+        "pdfResponseUrl:https://api.finalehealth.com/api/v1/files/69c43a0e8174edf48726b999?index=documents",
+        "pdfContentType:application/pdf",
+        "pdfSavedPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\documents\\timothy-boyer-new-referral-pdf\\source.pdf",
+        "pdfByteSize:264699",
+        "printAcquisitionMethodUsed:network_pdf_response",
+        "sourcePdfPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\documents\\timothy-boyer-new-referral-pdf\\source.pdf",
+        "printedPdfPath:none",
+        "extractionMethodUsed:click",
+        "rawExtractedTextSource:dom",
+        "domExtractionRejectedReasons:viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS",
+        "extractionSuccess:false",
+        "uploadedDocumentCount:2"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Sidebar container count: 5",
+        "Sidebar diagnostics: [{\"index\":0,\"visible\":true,\"fileUploadsLabelCount\":0,\"fileUploadsAnchorCount\":1}]",
+        "[matched] patient File Uploads sidebar anchor by /file-uploads href count=1 visible=1 elapsedMs=51 samples=File Uploads",
+        "Matched File Uploads sidebar label: File Uploads",
+        "Matched File Uploads sidebar href: /provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads",
+        "File Uploads sidebar click succeeded: true",
+        "File Uploads URL after sidebar click: https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads",
+        "File Uploads ready attempt=1 url=https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads urlChanged=true patientFileUploadsRouteDetected=true genericProviderDocumentsRouteDetected=false pageComponentDetected=true traversalMode=folder_view folderCount=2 fileCount=0 markers=Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root 📁 Referral Files 🔀 ✏️ 🗑️ 📁 Admission Packet 🔀 ✏️ 🗑️ Select FILE to view or a FOLDER to upload file into. anchorCount=3",
+        "[matched] File Uploads page root component app-client-file-upload count=1 visible=1 elapsedMs=30 samples=Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root 📁 Referral Files 🔀 ✏️ 🗑️ 📁 Admission Packet 🔀 ✏️ 🗑️ Select FILE to view or a FOLDER to uploa",
+        "[not_found] File Uploads downloadable file rows by .file-item count=0 visible=0 elapsedMs=12",
+        "[not_found] File Uploads downloadable file labels by .file-label count=0 visible=0 elapsedMs=10",
+        "[not_found] File Uploads document row click targets count=0 visible=0 elapsedMs=11",
+        "[not_found] File Uploads referral click targets outside table rows count=0 visible=0 elapsedMs=12",
+        "[matched] Admission-related click targets count=3 visible=3 elapsedMs=43 samples=Admission 04-04-2026 | Admission Info | Admission Packets",
+        "[matched] File Uploads Referral folder row by .folder-item count=2 visible=2 elapsedMs=42 samples=📁 Referral Files 🔀 ✏️ 🗑️ | 📁 Admission Packet 🔀 ✏️ 🗑️",
+        "Referral folder target clicked: 📁 Referral Files 🔀 ✏️ 🗑️ via File Uploads Referral folder row by .folder-item",
+        "File Uploads ready attempt=1 url=https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads urlChanged=true patientFileUploadsRouteDetected=true genericProviderDocumentsRouteDetected=false pageComponentDetected=true traversalMode=file_list_view folderCount=0 fileCount=1 markers=Patient File Uploads View All Uploaded Files View Logs Reorder Root / Referral Files⬅️ Back 🔄 ➕ ⬆️ 📄 timothy boyer new referral.pdf 📝 ✏️ 🗑️ 🔗 Uploading file(s) to Referral FilesDRAG FILES HEREBrowse anchorCount=1",
+        "[matched] File Uploads page root component app-client-file-upload count=1 visible=1 elapsedMs=19 samples=Patient File Uploads View All Uploaded Files View Logs Reorder Root / Referral Files⬅️ Back 🔄 ➕ ⬆️ 📄 timothy boyer new referral.pdf 📝 ✏️ 🗑️ 🔗 Uploading file(s) to Referral Fil",
+        "[matched] File Uploads downloadable file rows by .file-item count=1 visible=1 elapsedMs=18 samples=📄 timothy boyer new referral.pdf 📝 ✏️ 🗑️ 🔗",
+        "File Uploads accessible: true",
+        "Patient-specific File Uploads route detected: true",
+        "Generic provider Documents route detected: false",
+        "Matched File Uploads sidebar label: File Uploads",
+        "Matched File Uploads sidebar href: /provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads",
+        "File Uploads sidebar click succeeded: true",
+        "File Uploads page component detected: true",
+        "File Uploads traversal mode: file_list_view",
+        "Used chart Documents fallback: false",
+        "File Uploads URL: https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads",
+        "File Uploads URL changed from prior page: true",
+        "File Uploads ready attempt count: 1",
+        "File Uploads page markers: Patient File Uploads View All Uploaded Files View Logs Reorder Root / Referral Files⬅️ Back 🔄 ➕ ⬆️ 📄 timothy boyer new referral.pdf 📝 ✏️ 🗑️ 🔗 Uploading file(s) to Referral FilesDRAG FILES HEREBrowse",
+        "Referral folder selected: true",
+        "Referral folder label: 📁 Referral Files 🔀 ✏️ 🗑️",
+        "Referral file label (if resolved instead of folder): 📄 timothy boyer new referral.pdf",
+        "Discovered folder labels: none",
+        "Discovered file labels: 📄 timothy boyer new referral.pdf",
+        "Normalized file labels: timothy boyer new referral.pdf",
+        "Matched source documents: 📄 timothy boyer new referral.pdf [normalized=timothy boyer new referral.pdf] [score=150] | 📄 timothy boyer new referral.pdf 📝 ✏️ 🗑️ 🔗 [normalized=timothy boyer new referral.pdf] [score=150]",
+        "Visible uploaded documents: 📄 timothy boyer new referral.pdf | 📄 timothy boyer new referral.pdf 📝 ✏️ 🗑️ 🔗",
+        "Admission Order candidate count: 1",
+        "Admission Order candidate labels: 📄 timothy boyer new referral.pdf 📝 ✏️ 🗑️ 🔗 [score=340]",
+        "[matched] embedded PDF viewer toolbar and print controls count=5 visible=4 elapsedMs=93 samples=of ⁨4⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools | of ⁨4⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools | Tools",
+        "[not_found] Admission Order text marker count=0 visible=0 elapsedMs=17",
+        "[not_found] Admission clinical reason/diagnosis text markers count=0 visible=0 elapsedMs=17",
+        "[not_found] Admission order wrapper by class/id count=0 visible=0 elapsedMs=14",
+        "Selected source file: timothy boyer new referral.pdf",
+        "Selected source file normalized: timothy boyer new referral.pdf",
+        "Viewer detected: true",
+        "Viewer marker samples: of ⁨4⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools | Tools | Print",
+        "Print button detected: true",
+        "Print button visible: true",
+        "Print button selector used: pdf-print #printButton, #printButton, pdf-shy-button[primarytoolbarid='printButton'] button",
+        "Print click succeeded: false",
+        "PDF response detected: true",
+        "PDF response URL: https://api.finalehealth.com/api/v1/files/69c43a0e8174edf48726b999?index=documents",
+        "PDF content type: application/pdf",
+        "PDF saved path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\documents\\timothy-boyer-new-referral-pdf\\source.pdf",
+        "PDF byte size: 264699",
+        "Print acquisition method used: network_pdf_response",
+        "Printed PDF saved: false",
+        "Printed PDF path: none",
+        "Source meta path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\documents\\timothy-boyer-new-referral-pdf\\source-meta.json",
+        "Extracted text path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\documents\\timothy-boyer-new-referral-pdf\\extracted-text.txt",
+        "Extraction result path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\documents\\timothy-boyer-new-referral-pdf\\extraction-result.json",
+        "Extracted text length: 111",
+        "Raw extracted text source: dom",
+        "DOM extraction rejected reasons: viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS",
+        "Extraction method used: click",
+        "Extraction success: false",
+        "Queued for LLM: true",
+        "Admission Order title: 📄 timothy boyer new referral.pdf 📝 ✏️ 🗑️ 🔗",
+        "Admission Order URL after click: https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads",
+        "Admission Order markers: none",
+        "Admission text candidates ranked: [1] score=2.8 text=of ⁨4⁩ Automatic Zoom Actual Size Page Fit Page Width ⁨50⁩% ⁨100⁩% ⁨125⁩% ⁨150⁩% ⁨200⁩% ⁨300⁩% ⁨400⁩% 90% Tools || [2] score=1.1 text=📄 timothy boyer new referral.pdf 📝 ✏️ 🗑️ 🔗",
+        "Admission reason primary: none",
+        "Admission reason snippets: none",
+        "Possible ICD-10 codes: I00 | I25 | I50",
+        "Admission order text excerpt: of ⁨4⁩ Automatic Zoom Actual Size Page Fit Page Width ⁨50⁩% ⁨100⁩% ⁨125⁩% ⁨150⁩% ⁨200⁩% ⁨300⁩% ⁨400⁩% 90% Tools"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:23:38.666Z",
+      "step": "admission_order_open",
+      "message": "Opened Admission Order from File Uploads for coding-reference verification.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads",
+      "selectorUsed": "File Uploads source document row by .file-item/.file-label or table row",
+      "found": [
+        "fileUploadsAccessible:true",
+        "patientFileUploadsRouteDetected:true",
+        "genericProviderDocumentsRouteDetected:false",
+        "fileUploadsSidebarClickSucceeded:true",
+        "pageComponentDetected:true",
+        "traversalMode:file_list_view",
+        "usedChartDocumentsFallback:false",
+        "referralFolderSelected:true",
+        "admissionOrderAccessible:true",
+        "admissionOrderTitle:📄 timothy boyer new referral.pdf 📝 ✏️ 🗑️ 🔗",
+        "selectedSourceFile:timothy boyer new referral.pdf",
+        "viewerDetected:true",
+        "printButtonDetected:true",
+        "printClickSucceeded:false",
+        "pdfResponseDetected:true",
+        "pdfResponseUrl:https://api.finalehealth.com/api/v1/files/69c43a0e8174edf48726b999?index=documents",
+        "pdfContentType:application/pdf",
+        "pdfSavedPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\documents\\timothy-boyer-new-referral-pdf\\source.pdf",
+        "pdfByteSize:264699",
+        "printAcquisitionMethodUsed:network_pdf_response",
+        "sourcePdfPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\documents\\timothy-boyer-new-referral-pdf\\source.pdf",
+        "printedPdfPath:none",
+        "extractionMethodUsed:click",
+        "rawExtractedTextSource:dom",
+        "domExtractionRejectedReasons:viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS",
+        "extractionSuccess:false",
+        "admissionReasonPrimary:none",
+        "possibleIcd10Codes:I00 | I25 | I50"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Sidebar container count: 5",
+        "Sidebar diagnostics: [{\"index\":0,\"visible\":true,\"fileUploadsLabelCount\":0,\"fileUploadsAnchorCount\":1}]",
+        "[matched] patient File Uploads sidebar anchor by /file-uploads href count=1 visible=1 elapsedMs=51 samples=File Uploads",
+        "Matched File Uploads sidebar label: File Uploads",
+        "Matched File Uploads sidebar href: /provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads",
+        "File Uploads sidebar click succeeded: true",
+        "File Uploads URL after sidebar click: https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads",
+        "File Uploads ready attempt=1 url=https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads urlChanged=true patientFileUploadsRouteDetected=true genericProviderDocumentsRouteDetected=false pageComponentDetected=true traversalMode=folder_view folderCount=2 fileCount=0 markers=Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root 📁 Referral Files 🔀 ✏️ 🗑️ 📁 Admission Packet 🔀 ✏️ 🗑️ Select FILE to view or a FOLDER to upload file into. anchorCount=3",
+        "[matched] File Uploads page root component app-client-file-upload count=1 visible=1 elapsedMs=30 samples=Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root 📁 Referral Files 🔀 ✏️ 🗑️ 📁 Admission Packet 🔀 ✏️ 🗑️ Select FILE to view or a FOLDER to uploa",
+        "[not_found] File Uploads downloadable file rows by .file-item count=0 visible=0 elapsedMs=12",
+        "[not_found] File Uploads downloadable file labels by .file-label count=0 visible=0 elapsedMs=10",
+        "[not_found] File Uploads document row click targets count=0 visible=0 elapsedMs=11",
+        "[not_found] File Uploads referral click targets outside table rows count=0 visible=0 elapsedMs=12",
+        "[matched] Admission-related click targets count=3 visible=3 elapsedMs=43 samples=Admission 04-04-2026 | Admission Info | Admission Packets",
+        "[matched] File Uploads Referral folder row by .folder-item count=2 visible=2 elapsedMs=42 samples=📁 Referral Files 🔀 ✏️ 🗑️ | 📁 Admission Packet 🔀 ✏️ 🗑️",
+        "Referral folder target clicked: 📁 Referral Files 🔀 ✏️ 🗑️ via File Uploads Referral folder row by .folder-item",
+        "File Uploads ready attempt=1 url=https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads urlChanged=true patientFileUploadsRouteDetected=true genericProviderDocumentsRouteDetected=false pageComponentDetected=true traversalMode=file_list_view folderCount=0 fileCount=1 markers=Patient File Uploads View All Uploaded Files View Logs Reorder Root / Referral Files⬅️ Back 🔄 ➕ ⬆️ 📄 timothy boyer new referral.pdf 📝 ✏️ 🗑️ 🔗 Uploading file(s) to Referral FilesDRAG FILES HEREBrowse anchorCount=1",
+        "[matched] File Uploads page root component app-client-file-upload count=1 visible=1 elapsedMs=19 samples=Patient File Uploads View All Uploaded Files View Logs Reorder Root / Referral Files⬅️ Back 🔄 ➕ ⬆️ 📄 timothy boyer new referral.pdf 📝 ✏️ 🗑️ 🔗 Uploading file(s) to Referral Fil",
+        "[matched] File Uploads downloadable file rows by .file-item count=1 visible=1 elapsedMs=18 samples=📄 timothy boyer new referral.pdf 📝 ✏️ 🗑️ 🔗",
+        "File Uploads accessible: true",
+        "Patient-specific File Uploads route detected: true",
+        "Generic provider Documents route detected: false",
+        "Matched File Uploads sidebar label: File Uploads",
+        "Matched File Uploads sidebar href: /provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads",
+        "File Uploads sidebar click succeeded: true",
+        "File Uploads page component detected: true",
+        "File Uploads traversal mode: file_list_view",
+        "Used chart Documents fallback: false",
+        "File Uploads URL: https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads",
+        "File Uploads URL changed from prior page: true",
+        "File Uploads ready attempt count: 1",
+        "File Uploads page markers: Patient File Uploads View All Uploaded Files View Logs Reorder Root / Referral Files⬅️ Back 🔄 ➕ ⬆️ 📄 timothy boyer new referral.pdf 📝 ✏️ 🗑️ 🔗 Uploading file(s) to Referral FilesDRAG FILES HEREBrowse",
+        "Referral folder selected: true",
+        "Referral folder label: 📁 Referral Files 🔀 ✏️ 🗑️",
+        "Referral file label (if resolved instead of folder): 📄 timothy boyer new referral.pdf",
+        "Discovered folder labels: none",
+        "Discovered file labels: 📄 timothy boyer new referral.pdf",
+        "Normalized file labels: timothy boyer new referral.pdf",
+        "Matched source documents: 📄 timothy boyer new referral.pdf [normalized=timothy boyer new referral.pdf] [score=150] | 📄 timothy boyer new referral.pdf 📝 ✏️ 🗑️ 🔗 [normalized=timothy boyer new referral.pdf] [score=150]",
+        "Visible uploaded documents: 📄 timothy boyer new referral.pdf | 📄 timothy boyer new referral.pdf 📝 ✏️ 🗑️ 🔗",
+        "Admission Order candidate count: 1",
+        "Admission Order candidate labels: 📄 timothy boyer new referral.pdf 📝 ✏️ 🗑️ 🔗 [score=340]",
+        "[matched] embedded PDF viewer toolbar and print controls count=5 visible=4 elapsedMs=93 samples=of ⁨4⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools | of ⁨4⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools | Tools",
+        "[not_found] Admission Order text marker count=0 visible=0 elapsedMs=17",
+        "[not_found] Admission clinical reason/diagnosis text markers count=0 visible=0 elapsedMs=17",
+        "[not_found] Admission order wrapper by class/id count=0 visible=0 elapsedMs=14",
+        "Selected source file: timothy boyer new referral.pdf",
+        "Selected source file normalized: timothy boyer new referral.pdf",
+        "Viewer detected: true",
+        "Viewer marker samples: of ⁨4⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools | Tools | Print",
+        "Print button detected: true",
+        "Print button visible: true",
+        "Print button selector used: pdf-print #printButton, #printButton, pdf-shy-button[primarytoolbarid='printButton'] button",
+        "Print click succeeded: false",
+        "PDF response detected: true",
+        "PDF response URL: https://api.finalehealth.com/api/v1/files/69c43a0e8174edf48726b999?index=documents",
+        "PDF content type: application/pdf",
+        "PDF saved path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\documents\\timothy-boyer-new-referral-pdf\\source.pdf",
+        "PDF byte size: 264699",
+        "Print acquisition method used: network_pdf_response",
+        "Printed PDF saved: false",
+        "Printed PDF path: none",
+        "Source meta path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\documents\\timothy-boyer-new-referral-pdf\\source-meta.json",
+        "Extracted text path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\documents\\timothy-boyer-new-referral-pdf\\extracted-text.txt",
+        "Extraction result path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\documents\\timothy-boyer-new-referral-pdf\\extraction-result.json",
+        "Extracted text length: 111",
+        "Raw extracted text source: dom",
+        "DOM extraction rejected reasons: viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS",
+        "Extraction method used: click",
+        "Extraction success: false",
+        "Queued for LLM: true",
+        "Admission Order title: 📄 timothy boyer new referral.pdf 📝 ✏️ 🗑️ 🔗",
+        "Admission Order URL after click: https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads",
+        "Admission Order markers: none",
+        "Admission text candidates ranked: [1] score=2.8 text=of ⁨4⁩ Automatic Zoom Actual Size Page Fit Page Width ⁨50⁩% ⁨100⁩% ⁨125⁩% ⁨150⁩% ⁨200⁩% ⁨300⁩% ⁨400⁩% 90% Tools || [2] score=1.1 text=📄 timothy boyer new referral.pdf 📝 ✏️ 🗑️ 🔗",
+        "Admission reason primary: none",
+        "Admission reason snippets: none",
+        "Possible ICD-10 codes: I00 | I25 | I50",
+        "Admission order text excerpt: of ⁨4⁩ Automatic Zoom Actual Size Page Fit Page Width ⁨50⁩% ⁨100⁩% ⁨125⁩% ⁨150⁩% ⁨200⁩% ⁨300⁩% ⁨400⁩% 90% Tools"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:23:38.666Z",
+      "step": "qa_summary",
+      "message": "File Uploads and Admission Order were successfully accessed for coding reference.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads",
+      "selectorUsed": "File Uploads source document row by .file-item/.file-label or table row",
+      "found": [
+        "fileUploadsAccessible:true",
+        "patientFileUploadsRouteDetected:true",
+        "genericProviderDocumentsRouteDetected:false",
+        "fileUploadsSidebarClickSucceeded:true",
+        "pageComponentDetected:true",
+        "traversalMode:file_list_view",
+        "usedChartDocumentsFallback:false",
+        "referralFolderSelected:true",
+        "admissionOrderAccessible:true",
+        "admissionOrderTitle:📄 timothy boyer new referral.pdf 📝 ✏️ 🗑️ 🔗",
+        "selectedSourceFile:timothy boyer new referral.pdf",
+        "viewerDetected:true",
+        "printButtonDetected:true",
+        "printClickSucceeded:false",
+        "pdfResponseDetected:true",
+        "pdfResponseUrl:https://api.finalehealth.com/api/v1/files/69c43a0e8174edf48726b999?index=documents",
+        "pdfContentType:application/pdf",
+        "pdfSavedPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\documents\\timothy-boyer-new-referral-pdf\\source.pdf",
+        "pdfByteSize:264699",
+        "printAcquisitionMethodUsed:network_pdf_response",
+        "sourcePdfPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\documents\\timothy-boyer-new-referral-pdf\\source.pdf",
+        "printedPdfPath:none",
+        "extractionMethodUsed:click",
+        "rawExtractedTextSource:dom",
+        "domExtractionRejectedReasons:viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS",
+        "extractionSuccess:false",
+        "admissionReasonPrimary:none",
+        "possibleIcd10Codes:I00 | I25 | I50"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Sidebar container count: 5",
+        "Sidebar diagnostics: [{\"index\":0,\"visible\":true,\"fileUploadsLabelCount\":0,\"fileUploadsAnchorCount\":1}]",
+        "[matched] patient File Uploads sidebar anchor by /file-uploads href count=1 visible=1 elapsedMs=51 samples=File Uploads",
+        "Matched File Uploads sidebar label: File Uploads",
+        "Matched File Uploads sidebar href: /provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads",
+        "File Uploads sidebar click succeeded: true",
+        "File Uploads URL after sidebar click: https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads",
+        "File Uploads ready attempt=1 url=https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads urlChanged=true patientFileUploadsRouteDetected=true genericProviderDocumentsRouteDetected=false pageComponentDetected=true traversalMode=folder_view folderCount=2 fileCount=0 markers=Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root 📁 Referral Files 🔀 ✏️ 🗑️ 📁 Admission Packet 🔀 ✏️ 🗑️ Select FILE to view or a FOLDER to upload file into. anchorCount=3",
+        "[matched] File Uploads page root component app-client-file-upload count=1 visible=1 elapsedMs=30 samples=Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root 📁 Referral Files 🔀 ✏️ 🗑️ 📁 Admission Packet 🔀 ✏️ 🗑️ Select FILE to view or a FOLDER to uploa",
+        "[not_found] File Uploads downloadable file rows by .file-item count=0 visible=0 elapsedMs=12",
+        "[not_found] File Uploads downloadable file labels by .file-label count=0 visible=0 elapsedMs=10",
+        "[not_found] File Uploads document row click targets count=0 visible=0 elapsedMs=11",
+        "[not_found] File Uploads referral click targets outside table rows count=0 visible=0 elapsedMs=12",
+        "[matched] Admission-related click targets count=3 visible=3 elapsedMs=43 samples=Admission 04-04-2026 | Admission Info | Admission Packets",
+        "[matched] File Uploads Referral folder row by .folder-item count=2 visible=2 elapsedMs=42 samples=📁 Referral Files 🔀 ✏️ 🗑️ | 📁 Admission Packet 🔀 ✏️ 🗑️",
+        "Referral folder target clicked: 📁 Referral Files 🔀 ✏️ 🗑️ via File Uploads Referral folder row by .folder-item",
+        "File Uploads ready attempt=1 url=https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads urlChanged=true patientFileUploadsRouteDetected=true genericProviderDocumentsRouteDetected=false pageComponentDetected=true traversalMode=file_list_view folderCount=0 fileCount=1 markers=Patient File Uploads View All Uploaded Files View Logs Reorder Root / Referral Files⬅️ Back 🔄 ➕ ⬆️ 📄 timothy boyer new referral.pdf 📝 ✏️ 🗑️ 🔗 Uploading file(s) to Referral FilesDRAG FILES HEREBrowse anchorCount=1",
+        "[matched] File Uploads page root component app-client-file-upload count=1 visible=1 elapsedMs=19 samples=Patient File Uploads View All Uploaded Files View Logs Reorder Root / Referral Files⬅️ Back 🔄 ➕ ⬆️ 📄 timothy boyer new referral.pdf 📝 ✏️ 🗑️ 🔗 Uploading file(s) to Referral Fil",
+        "[matched] File Uploads downloadable file rows by .file-item count=1 visible=1 elapsedMs=18 samples=📄 timothy boyer new referral.pdf 📝 ✏️ 🗑️ 🔗",
+        "File Uploads accessible: true",
+        "Patient-specific File Uploads route detected: true",
+        "Generic provider Documents route detected: false",
+        "Matched File Uploads sidebar label: File Uploads",
+        "Matched File Uploads sidebar href: /provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads",
+        "File Uploads sidebar click succeeded: true",
+        "File Uploads page component detected: true",
+        "File Uploads traversal mode: file_list_view",
+        "Used chart Documents fallback: false",
+        "File Uploads URL: https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads",
+        "File Uploads URL changed from prior page: true",
+        "File Uploads ready attempt count: 1",
+        "File Uploads page markers: Patient File Uploads View All Uploaded Files View Logs Reorder Root / Referral Files⬅️ Back 🔄 ➕ ⬆️ 📄 timothy boyer new referral.pdf 📝 ✏️ 🗑️ 🔗 Uploading file(s) to Referral FilesDRAG FILES HEREBrowse",
+        "Referral folder selected: true",
+        "Referral folder label: 📁 Referral Files 🔀 ✏️ 🗑️",
+        "Referral file label (if resolved instead of folder): 📄 timothy boyer new referral.pdf",
+        "Discovered folder labels: none",
+        "Discovered file labels: 📄 timothy boyer new referral.pdf",
+        "Normalized file labels: timothy boyer new referral.pdf",
+        "Matched source documents: 📄 timothy boyer new referral.pdf [normalized=timothy boyer new referral.pdf] [score=150] | 📄 timothy boyer new referral.pdf 📝 ✏️ 🗑️ 🔗 [normalized=timothy boyer new referral.pdf] [score=150]",
+        "Visible uploaded documents: 📄 timothy boyer new referral.pdf | 📄 timothy boyer new referral.pdf 📝 ✏️ 🗑️ 🔗",
+        "Admission Order candidate count: 1",
+        "Admission Order candidate labels: 📄 timothy boyer new referral.pdf 📝 ✏️ 🗑️ 🔗 [score=340]",
+        "[matched] embedded PDF viewer toolbar and print controls count=5 visible=4 elapsedMs=93 samples=of ⁨4⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools | of ⁨4⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools | Tools",
+        "[not_found] Admission Order text marker count=0 visible=0 elapsedMs=17",
+        "[not_found] Admission clinical reason/diagnosis text markers count=0 visible=0 elapsedMs=17",
+        "[not_found] Admission order wrapper by class/id count=0 visible=0 elapsedMs=14",
+        "Selected source file: timothy boyer new referral.pdf",
+        "Selected source file normalized: timothy boyer new referral.pdf",
+        "Viewer detected: true",
+        "Viewer marker samples: of ⁨4⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools | Tools | Print",
+        "Print button detected: true",
+        "Print button visible: true",
+        "Print button selector used: pdf-print #printButton, #printButton, pdf-shy-button[primarytoolbarid='printButton'] button",
+        "Print click succeeded: false",
+        "PDF response detected: true",
+        "PDF response URL: https://api.finalehealth.com/api/v1/files/69c43a0e8174edf48726b999?index=documents",
+        "PDF content type: application/pdf",
+        "PDF saved path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\documents\\timothy-boyer-new-referral-pdf\\source.pdf",
+        "PDF byte size: 264699",
+        "Print acquisition method used: network_pdf_response",
+        "Printed PDF saved: false",
+        "Printed PDF path: none",
+        "Source meta path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\documents\\timothy-boyer-new-referral-pdf\\source-meta.json",
+        "Extracted text path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\documents\\timothy-boyer-new-referral-pdf\\extracted-text.txt",
+        "Extraction result path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\documents\\timothy-boyer-new-referral-pdf\\extraction-result.json",
+        "Extracted text length: 111",
+        "Raw extracted text source: dom",
+        "DOM extraction rejected reasons: viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS",
+        "Extraction method used: click",
+        "Extraction success: false",
+        "Queued for LLM: true",
+        "Admission Order title: 📄 timothy boyer new referral.pdf 📝 ✏️ 🗑️ 🔗",
+        "Admission Order URL after click: https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads",
+        "Admission Order markers: none",
+        "Admission text candidates ranked: [1] score=2.8 text=of ⁨4⁩ Automatic Zoom Actual Size Page Fit Page Width ⁨50⁩% ⁨100⁩% ⁨125⁩% ⁨150⁩% ⁨200⁩% ⁨300⁩% ⁨400⁩% 90% Tools || [2] score=1.1 text=📄 timothy boyer new referral.pdf 📝 ✏️ 🗑️ 🔗",
+        "Admission reason primary: none",
+        "Admission reason snippets: none",
+        "Possible ICD-10 codes: I00 | I25 | I50",
+        "Admission order text excerpt: of ⁨4⁩ Automatic Zoom Actual Size Page Fit Page Width ⁨50⁩% ⁨100⁩% ⁨125⁩% ⁨150⁩% ⁨200⁩% ⁨300⁩% ⁨400⁩% 90% Tools"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:23:51.970Z",
+      "step": "document_text_export",
+      "message": "Wrote normalized extracted document text for read-only dashboard reference and troubleshooting.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "documentTextPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\document-text.json",
+        "documentCount:2",
+        "orderDocumentCount:1",
+        "hasAdmissionOrderText:true"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "[0] type=OASIS source=artifact_fallback effectiveTextSource=viewer_text_fallback textLength=1533",
+        "[0] rawExtractedTextSource=dom textSelectionReason=artifact_fallback_text",
+        "[0] domExtractionRejectedReasons=none",
+        "[0] preview=OASIS documents page false false false false false false 0 none 0 high:0 medium:0 low:0 false false true false true https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads 📄 timothy boyer new referral.pdf | 📄 timothy boyer new referral.pdf 📝 ✏️ 🗑️ 🔗 true 📄 timothy boyer new referral.pdf 📝 ✏️ 🗑️ 🔗 dom viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS I00 | I25 | I50 of ⁨4⁩ Automatic Zoom Actual Size Page Fit Page W",
+        "[1] type=ORDER source=printed_pdf effectiveTextSource=ocr_text textLength=7132",
+        "[1] rawExtractedTextSource=ocr textSelectionReason=preferred_ocr_for_scanned_image_pdf",
+        "[1] domExtractionRejectedReasons=none",
+        "[1] preview=Activeth Health Home Health Referral 6765 W Charleston Blvd Ste 170 Las Vegas, NV 89146 Gaby Fuentes I Account Executive Office: (775) 471 - 9815 Cell: (702) 957 - 3472 Fax: (702) 726 - 9551 - Email: Gaby@activehomehealtcare.net Email: admin@activehomehealthcare.net Patient Name: DOB: Boyer , Timmothy 3/12/1956 Address: skip if demographic sheet is attached Tel #: 909.800.9963 Emergency Contact #: 1st Insurance & Policy #: Medicare 2nd Insurance & Policy #: Medical Condition related to Home Heal"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:23:53.675Z",
+      "step": "diagnosis_code_extract",
+      "message": "Extracted 4 diagnosis code candidate(s) from admission/referral/OASIS text.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "icd10CodeCount:4",
+        "diagnosisMentionCount:9",
+        "diagnosisCodePairCount:11",
+        "extractionConfidence:high",
+        "llmUsed:true"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "selectedOrderDocumentCount:1",
+        "bestOrderEffectiveTextSource:ocr_text",
+        "[0] type=ORDER effectiveTextSource=ocr_text source=printed_pdf textLength=7132 pdfType=scanned_image_pdf ocrSuccess=true ocrTextLength=7132",
+        "[1] type=OASIS effectiveTextSource=viewer_text_fallback source=artifact_fallback textLength=1533 pdfType=none ocrSuccess=false ocrTextLength=0",
+        "sourceDocumentCount:2",
+        "sourceCharacterCount:59",
+        "sourceTextPreview:Clinical Diagnoses: Heart Failure; Dysphagia; COPD; DM; CVA",
+        "llmProvider:bedrock",
+        "llmUsed:true",
+        "llmModel:us.amazon.nova-lite-v1:0",
+        "llmError:none",
+        "reasonForAdmission:none",
+        "diagnosisPhraseCount:9",
+        "diagnosisCodePairCount:11",
+        "icd10Codes:I50.9 | R13.10 | J44.9 | E11.9",
+        "orderedServices:none",
+        "documentType:Admission Order",
+        "extractionConfidence:high",
+        "uncertainItems:diagnosis code pairs diagnosis invalid: Dysphagia",
+        "codeCategories:I50.9:Diseases of the circulatory system | R13.10:Symptoms, signs and abnormal findings | J44.9:Diseases of the respiratory system | E11.9:Endocrine, nutritional and metabolic diseases"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:23:53.696Z",
+      "step": "source_document_identified",
+      "message": "Identified referral/admission-order source document candidates and selected the best source for processing.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "TIMOTHY_BOYER__71ccc7154d955dc0-referral-1:REFERRAL_ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\documents\\timothy-boyer-new-referral-pdf\\source.pdf"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "selectedDocumentId=TIMOTHY_BOYER__71ccc7154d955dc0-referral-1"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:23:53.696Z",
+      "step": "source_document_acquired",
+      "message": "Selected referral/admission-order file is available locally for read-only processing.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\documents\\timothy-boyer-new-referral-pdf\\source.pdf"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "acquisitionMethod=printed_pdf"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:23:53.696Z",
+      "step": "document_extraction_started",
+      "message": "Started referral/admission-order document extraction from the canonical local file when available.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\documents\\timothy-boyer-new-referral-pdf\\source.pdf"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:23:53.697Z",
+      "step": "document_extraction_completed",
+      "message": "Completed referral/admission-order extraction.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "extractionMethod=ocr_text",
+        "effectiveTextSource=ocr_text",
+        "textLength=7132"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:23:53.697Z",
+      "step": "extraction_quality_evaluated",
+      "message": "Evaluated extraction quality with usability status usable.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "characterCount=7132",
+        "tokenCount=1040",
+        "likelyUsableForLlm=true",
+        "likelyRequiresOcrRetry=false"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:23:53.699Z",
+      "step": "referral_sections_normalized",
+      "message": "Normalized referral text into 9 semantic sections.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "patient_identity:0.95",
+        "referral_metadata:0.55",
+        "medical_necessity:0.55",
+        "homebound_evidence:0.75",
+        "medications:1",
+        "functional_limitations:0.55",
+        "therapy_need:0.55",
+        "risk_factors:0.55",
+        "other_clinical_notes:0.55"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:23:53.700Z",
+      "step": "chart_snapshot_created",
+      "message": "Built a read-only chart/OASIS field snapshot and categorization buckets for referral comparison.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "alreadyPopulated=1",
+        "llmCandidates=31",
+        "humanReviewRequired=27",
+        "referenceOnly=3"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:23:53.700Z",
+      "step": "referral_facts_extracted",
+      "message": "Extracted 8 referral facts before field mapping.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "medical_necessity_summary:medical_necessity",
+        "homebound_narrative:homebound",
+        "homebound_supporting_factors:homebound",
+        "functional_limitations:functional",
+        "therapy_need:therapy",
+        "fall_risk_narrative:risk",
+        "skilled_interventions:therapy",
+        "plan_for_next_visit:therapy"
+      ],
+      "missing": [
+        "referral_date",
+        "preferred_language",
+        "interpreter_needed",
+        "recent_hospitalization_discharge_date",
+        "recent_hospitalization_facility",
+        "caregiver_name",
+        "caregiver_relationship",
+        "caregiver_phone",
+        "living_situation",
+        "patient_summary_narrative",
+        "discipline_frequencies",
+        "patient_caregiver_goals",
+        "care_plan_problems_goals_interventions",
+        "respiratory_status",
+        "integumentary_wound_status",
+        "pain_assessment_narrative",
+        "emotional_behavioral_status",
+        "past_medical_history",
+        "immunization_status",
+        "code_status"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Skilled Nursing",
+        "Homebound due to (i.e inability to leave home, leaving medically contraindicated or requires assistance/ DME):",
+        "Homebound due to (i.e inability to leave home, leaving medically contraindicated or requires assistance/ DME):",
+        "endurance",
+        "Occupational Therapy",
+        "Home safety /fall precaution endurance",
+        "Occupational Therapy",
+        "Occupational Therapy"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:23:53.700Z",
+      "step": "llm_field_proposal_started",
+      "message": "Started referral-to-field proposal generation using the strict JSON contract.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "candidateFieldCount=31"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:23:59.080Z",
+      "step": "llm_field_proposal_completed",
+      "message": "Completed referral-to-field proposal generation with 7 field proposals.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "proposalCount=7",
+        "diagnosisCandidateCount=1"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Deterministic referral facts extraction was used.",
+        "Rejected noisy or unsupported referral proposals for fields: medical_necessity_summary."
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:23:59.080Z",
+      "step": "field_comparison_completed",
+      "message": "Completed referral proposal comparison across 34 fields.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "patient_name:unsupported",
+        "dob:unsupported",
+        "soc_date:unsupported",
+        "referral_date:requires_human_review",
+        "preferred_language:unsupported",
+        "interpreter_needed:requires_human_review",
+        "primary_reason_for_home_health_medical_necessity:requires_human_review",
+        "admit_reason_to_home_health:requires_human_review",
+        "homebound_narrative:requires_human_review",
+        "homebound_supporting_factors:requires_human_review",
+        "recent_hospitalization_discharge_date:requires_human_review",
+        "recent_hospitalization_facility:requires_human_review",
+        "caregiver_name:unsupported",
+        "caregiver_relationship:unsupported",
+        "caregiver_phone:requires_human_review",
+        "living_situation:unsupported",
+        "prior_functioning:requires_human_review",
+        "functional_limitations:requires_human_review",
+        "therapy_need:requires_human_review",
+        "patient_summary_narrative:requires_human_review",
+        "skilled_interventions:requires_human_review",
+        "discipline_frequencies:requires_human_review",
+        "plan_for_next_visit:requires_human_review",
+        "patient_caregiver_goals:requires_human_review",
+        "care_plan_problems_goals_interventions:requires_human_review",
+        "fall_risk_narrative:requires_human_review",
+        "respiratory_status:requires_human_review",
+        "integumentary_wound_status:requires_human_review",
+        "pain_assessment_narrative:requires_human_review",
+        "emotional_behavioral_status:requires_human_review",
+        "past_medical_history:requires_human_review",
+        "immunization_status:requires_human_review",
+        "diagnosis_candidates:requires_human_review",
+        "code_status:requires_human_review"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:23:59.080Z",
+      "step": "llm_qa_insights_started",
+      "message": "Started referral QA insight synthesis for comparisons, source highlights, and draft narratives.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:24:06.262Z",
+      "step": "llm_qa_insights_completed",
+      "message": "Completed referral QA insight synthesis with 7 consistency checks and 7 narrative drafts.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "consistencyChecks=7",
+        "sourceHighlights=7",
+        "draftNarratives=7"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Deterministic referral QA insights fallback was used.",
+        "Bedrock returned invalid referral QA insights output; deterministic fallback was used."
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:24:06.281Z",
+      "step": "qa_document_summary_persisted",
+      "message": "Persisted read-only referral document QA artifacts.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\referral-document-processing\\source-meta.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\referral-document-processing\\extraction-result.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\referral-document-processing\\normalized-sections.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\referral-document-processing\\extracted-facts.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\referral-document-processing\\field-map-snapshot.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\referral-document-processing\\llm-proposal.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\referral-document-processing\\field-comparison.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\referral-document-processing\\patient-qa-reference.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\referral-document-processing\\qa-document-summary.json"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:24:06.281Z",
+      "step": "shared_evidence_discovery_complete",
+      "message": "Shared evidence workflow completed and produced reusable extracted chart evidence.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/calendar",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=coding",
+        "patientRunId=batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750-TIMOTHY_BOYER__71ccc7154d955dc0",
+        "status=completed",
+        "chartUrl=https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/calendar",
+        "artifactCount=1",
+        "documentInventoryCount=1",
+        "extractedDocumentCount=2",
+        "diagnosisCodeCount=4"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:24:06.282Z",
+      "step": "referral_document_check",
+      "message": "Referral/admission-order evidence was found in shared chart documents.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "artifactOrderCount:0",
+        "inventoryOrderCount:1",
+        "extractedOrderCount:1"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "📄 timothy boyer new referral.pdf 📝 ✏️ 🗑️ 🔗:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\documents\\timothy-boyer-new-referral-pdf\\source.pdf:Activeth\nHealth\nHome Health Referral\n6765 W Charleston Blvd Ste 170\nLas Vegas, NV 89146\nGaby Fuentes I Account Executive\nOffice: (775) 471 - 9815\nCell: (702) 957 - 3472\nFax: (702) "
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:24:10.202Z",
+      "step": "episode_option_selection_failed",
+      "message": "Episode of dropdown with a valid date range could not be located on the patient dashboard.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=qa",
+        "patientRunId=batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750-TIMOTHY_BOYER__71ccc7154d955dc0"
+      ],
+      "missing": [
+        "Episode of dropdown"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Episode of dropdown with a valid date range could not be located on the patient dashboard."
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:24:10.202Z",
+      "step": "episode_option_selection_failed",
+      "message": "Episode of selection could not be resolved to a concrete dropdown option.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=qa",
+        "patientRunId=batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750-TIMOTHY_BOYER__71ccc7154d955dc0"
+      ],
+      "missing": [
+        "matching Episode of option"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Episode of dropdown with a valid date range could not be located on the patient dashboard.",
+        "Episode of selection could not be resolved because no matching option was found."
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:24:10.202Z",
+      "step": "oasis_episode_resolution",
+      "message": "Resolved the target episode for OASIS review using workbook context plus the Episode of dropdown.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/calendar",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=qa",
+        "patientRunId=batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750-TIMOTHY_BOYER__71ccc7154d955dc0",
+        "episodeSelectionStatus=UNRESOLVED",
+        "targetEpisodeLabel=2026-04-04",
+        "rfa=01-SOC",
+        "selectionMethod=unresolved",
+        "changedSelection=false",
+        "selectedRange=none"
+      ],
+      "missing": [
+        "Episode of review target"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "billingPeriod=none",
+        "episodePeriod=none",
+        "availableRanges=none",
+        "Episode of dropdown with a valid date range could not be located on the patient dashboard.",
+        "Episode of selection could not be resolved because no matching option was found."
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:24:13.989Z",
+      "step": "billing_calendar_parse_start",
+      "message": "Started read-only billing calendar parsing from the patient dashboard.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=qa",
+        "patientRunId=batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750-TIMOTHY_BOYER__71ccc7154d955dc0",
+        "selectedEpisode=none"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:24:14.395Z",
+      "step": "billing_calendar_grid_located",
+      "message": "Located the patient dashboard calendar grid.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=qa",
+        "patientRunId=batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750-TIMOTHY_BOYER__71ccc7154d955dc0",
+        "Calendar root by grid/calendar container selectors"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "dayCellCount=0"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:24:14.395Z",
+      "step": "billing_calendar_day_cells_discovered",
+      "message": "Discovered 0 visible calendar day cell(s).",
+      "patientName": "Timothy Boyer",
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=qa",
+        "patientRunId=batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750-TIMOTHY_BOYER__71ccc7154d955dc0"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:24:14.395Z",
+      "step": "billing_calendar_cards_extracted",
+      "message": "Extracted 0 visible calendar card(s) from the current dashboard window.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=qa",
+        "patientRunId=batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750-TIMOTHY_BOYER__71ccc7154d955dc0"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "cardCount=0"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:24:14.395Z",
+      "step": "billing_period_classification_complete",
+      "message": "Completed billing period classification for visible calendar days and cards.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=qa",
+        "patientRunId=batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750-TIMOTHY_BOYER__71ccc7154d955dc0"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "first30=0",
+        "second30=0",
+        "outside=0"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:24:14.409Z",
+      "step": "billing_calendar_summary_persisted",
+      "message": "Persisted the billing-period calendar summary artifact for downstream dashboard use.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=qa",
+        "patientRunId=batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750-TIMOTHY_BOYER__71ccc7154d955dc0"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\evidence\\TIMOTHY_BOYER__71ccc7154d955dc0\\billing-period-calendar-summary.json"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:24:57.780Z",
+      "step": "oasis_menu",
+      "message": "Opened the OASIS documents page from the in-app sidebar and verified it opened.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/documents?type=oasis",
+      "selectorUsed": "li.notes-sub-menu #documents span:has-text(\"OASIS\")",
+      "found": [
+        "Document TypeDateAssigned StaffStatusAssigned PhysicianCreated ByAction OASIS-OASIS E2 - PT SOC 04/04/2026 00:00 Clemente, Jose Luis PT - Physical Therapy Locked e-Signed by Staff HILLOCK, RONALD Manguiat, Allen 1-1 of 1 items 1"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Current chart URL: https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads",
+        "Sidebar navigation attempted: true",
+        "Selected label: OASIS",
+        "Selected span selector: li.notes-sub-menu #documents span:has-text(\"OASIS\")",
+        "Selected click selector: li.notes-sub-menu #documents span:has-text(\"OASIS\")",
+        "Click method used: li.notes-sub-menu #documents span:has-text(\"OASIS\") :: scrollIntoViewIfNeeded()+click()",
+        "Post-navigation URL: https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/documents?type=oasis",
+        "OASIS documents URL detected: true",
+        "OASIS documents page detected: true",
+        "OASIS document list count: 1",
+        "OASIS content ready attempts: 1",
+        "OASIS page markers: Document TypeDateAssigned StaffStatusAssigned PhysicianCreated ByAction OASIS-OASIS E2 - PT SOC 04/04/2026 00:00 Clemente, Jose Luis PT - Physical Therapy Locked e-Signed by Staff HILLOCK, RONALD Manguiat, Allen 1-1 of 1 items 1",
+        "Candidate li.notes-sub-menu #documents count=1 visible=true text=OASIS box=x=78 y=143 w=195 h=18",
+        "Attempt li.notes-sub-menu #documents :: scrollIntoViewIfNeeded()+click() -> url=https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads opened=false urlDetected=false listCount=0",
+        "Attempt li.notes-sub-menu #documents :: click({ force: true }) -> url=https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads opened=false urlDetected=false listCount=0",
+        "Attempt li.notes-sub-menu #documents :: evaluate(el => el.click()) -> url=https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads opened=false urlDetected=false listCount=0",
+        "Candidate li.notes-sub-menu #documents span:has-text(\"OASIS\") count=1 visible=true text=OASIS box=x=99 y=668 w=40 h=18",
+        "Attempt li.notes-sub-menu #documents span:has-text(\"OASIS\") :: scrollIntoViewIfNeeded()+click() -> url=https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/documents?type=oasis opened=true urlDetected=true listCount=1",
+        "[matched] OASIS document table rows by app-private-documents/fin-datatable/table tbody tr count=1 visible=1 elapsedMs=19 samples=OASIS-OASIS E2 - PT SOC 04/04/2026 00:00 Clemente, Jose Luis PT - Physical Therapy Locked e-Signed by Staff HILLOCK, RONALD Manguiat, Allen",
+        "Final URL: https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/documents?type=oasis",
+        "OASIS documents rows detected: 1"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:24:57.780Z",
+      "step": "qa_summary",
+      "message": "Active OASIS workflow confirmed the OASIS documents page is open.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/documents?type=oasis",
+      "selectorUsed": "li.notes-sub-menu #documents span:has-text(\"OASIS\")",
+      "found": [
+        "oasisMenuClicked:true",
+        "oasisDocumentListDetected:true",
+        "socDocumentFound:false",
+        "socDocumentClicked:false"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Current chart URL: https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads",
+        "Sidebar navigation attempted: true",
+        "Selected label: OASIS",
+        "Selected span selector: li.notes-sub-menu #documents span:has-text(\"OASIS\")",
+        "Selected click selector: li.notes-sub-menu #documents span:has-text(\"OASIS\")",
+        "Click method used: li.notes-sub-menu #documents span:has-text(\"OASIS\") :: scrollIntoViewIfNeeded()+click()",
+        "Post-navigation URL: https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/documents?type=oasis",
+        "OASIS documents URL detected: true",
+        "OASIS documents page detected: true",
+        "OASIS document list count: 1",
+        "OASIS content ready attempts: 1",
+        "OASIS page markers: Document TypeDateAssigned StaffStatusAssigned PhysicianCreated ByAction OASIS-OASIS E2 - PT SOC 04/04/2026 00:00 Clemente, Jose Luis PT - Physical Therapy Locked e-Signed by Staff HILLOCK, RONALD Manguiat, Allen 1-1 of 1 items 1",
+        "Candidate li.notes-sub-menu #documents count=1 visible=true text=OASIS box=x=78 y=143 w=195 h=18",
+        "Attempt li.notes-sub-menu #documents :: scrollIntoViewIfNeeded()+click() -> url=https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads opened=false urlDetected=false listCount=0",
+        "Attempt li.notes-sub-menu #documents :: click({ force: true }) -> url=https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads opened=false urlDetected=false listCount=0",
+        "Attempt li.notes-sub-menu #documents :: evaluate(el => el.click()) -> url=https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads opened=false urlDetected=false listCount=0",
+        "Candidate li.notes-sub-menu #documents span:has-text(\"OASIS\") count=1 visible=true text=OASIS box=x=99 y=668 w=40 h=18",
+        "Attempt li.notes-sub-menu #documents span:has-text(\"OASIS\") :: scrollIntoViewIfNeeded()+click() -> url=https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/documents?type=oasis opened=true urlDetected=true listCount=1",
+        "[matched] OASIS document table rows by app-private-documents/fin-datatable/table tbody tr count=1 visible=1 elapsedMs=19 samples=OASIS-OASIS E2 - PT SOC 04/04/2026 00:00 Clemente, Jose Luis PT - Physical Therapy Locked e-Signed by Staff HILLOCK, RONALD Manguiat, Allen",
+        "OASIS menu clicked: true",
+        "OASIS documents page detected: true",
+        "Final URL: https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/documents?type=oasis"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:24:57.800Z",
+      "step": "oasis_type_selected",
+      "message": "Selected SOC as the target OASIS assessment type for read-only review.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/documents?type=oasis",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=qa",
+        "requestedAssessmentType=SOC",
+        "selectedAssessmentType=SOC",
+        "selectionReason=requested_exact"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "availableAssessmentTypes=SOC"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:25:07.000Z",
+      "step": "oasis_soc_document",
+      "message": "Clicked the SOC OASIS document anchor from the OASIS document list.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/documents?type=oasis",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/documents/note/oasis/69c43b8da5b2f646f5ec5546",
+      "selectorUsed": "table tbody tr a.tbl-link",
+      "found": [
+        "OASIS E2 - PT SOC 04/04/2026 | BOYER, TIMOTHY Visit Time In/Out: 04/04/2026 18:45 - 20:00 Doc Uploads View logs OASIS Compare View QA Remarks signedLOCKED 04/14/2026 Print Un-sign Unlock - Oasis Non M-ItemsOasis×Administrative Information× "
+      ],
+      "missing": [],
+      "openedDocumentLabel": "OASIS-OASIS E2 - PT SOC",
+      "openedDocumentUrl": null,
+      "evidence": [
+        "[matched] OASIS document table rows by app-private-documents/fin-datatable/table tbody tr count=1 visible=1 elapsedMs=22 samples=OASIS-OASIS E2 - PT SOC 04/04/2026 00:00 Clemente, Jose Luis PT - Physical Therapy Locked e-Signed by Staff HILLOCK, RONALD Manguiat, Allen",
+        "[matched] SOC document page app-oasis wrapper count=1 visible=1 elapsedMs=53 samples=OASIS E2 - PT SOC 04/04/2026 | BOYER, TIMOTHY Visit Time In/Out: 04/04/2026 18:45 - 20:00 Doc Uploads View logs OASIS Compare View QA Remarks signedLOCKED 04/14/2026 Print Un-sign",
+        "Total table tbody tr count: 1",
+        "Total a.tbl-link anchor count: 1",
+        "All anchor texts: OASIS-OASIS E2 - PT SOC",
+        "Normalized anchor texts: OASIS-OASIS E2 - PT SOC",
+        "Candidate SOC anchors found: 1",
+        "Ranked SOC candidate texts: OASIS-OASIS E2 - PT SOC",
+        "Chosen SOC anchor text: OASIS-OASIS E2 - PT SOC",
+        "socDocumentFound emitted: true",
+        "Matched SOC row text: OASIS-OASIS E2 - PT SOC 04/04/2026 00:00 Clemente, Jose Luis PT - Physical Therapy Locked e-Signed by Staff HILLOCK, RONALD Manguiat, Allen",
+        "Matched SOC anchor text: OASIS-OASIS E2 - PT SOC",
+        "Clicked selector/container: table tbody tr a.tbl-link -> class=tbl-link | label=OASIS-OASIS E2 - PT SOC",
+        "Click method used: clickReadOnlyTarget(a.tbl-link)",
+        "Post-click URL: https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/documents/note/oasis/69c43b8da5b2f646f5ec5546",
+        "Post-click markers: OASIS E2 - PT SOC 04/04/2026 | BOYER, TIMOTHY Visit Time In/Out: 04/04/2026 18:45 - 20:00 Doc Uploads View logs OASIS Compare View QA Remarks signedLOCKED 04/14/2026 Print Un-sign Unlock - Oasis Non M-ItemsOasis×Administrative Information× ",
+        "socDocumentClicked emitted: true",
+        "socCandidate[1] score=220 anchor='OASIS-OASIS E2 - PT SOC' row='OASIS-OASIS E2 - PT SOC 04/04/2026 00:00 Clemente, Jose Luis PT - Physical Therapy Locked e-Signed by Staff HILLOCK, RONALD Manguiat, Allen' selector='table tbody tr a.tbl-link'"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:25:07.000Z",
+      "step": "qa_summary",
+      "message": "SOC document selection summary: socDocumentFound=true, socDocumentClicked=true.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/documents/note/oasis/69c43b8da5b2f646f5ec5546",
+      "selectorUsed": "table tbody tr a.tbl-link",
+      "found": [
+        "oasisMenuClicked:true",
+        "oasisDocumentListDetected:true",
+        "socDocumentFound:true",
+        "socDocumentClicked:true",
+        "postClickUrl:https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/documents/note/oasis/69c43b8da5b2f646f5ec5546"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "[matched] OASIS document table rows by app-private-documents/fin-datatable/table tbody tr count=1 visible=1 elapsedMs=22 samples=OASIS-OASIS E2 - PT SOC 04/04/2026 00:00 Clemente, Jose Luis PT - Physical Therapy Locked e-Signed by Staff HILLOCK, RONALD Manguiat, Allen",
+        "[matched] SOC document page app-oasis wrapper count=1 visible=1 elapsedMs=53 samples=OASIS E2 - PT SOC 04/04/2026 | BOYER, TIMOTHY Visit Time In/Out: 04/04/2026 18:45 - 20:00 Doc Uploads View logs OASIS Compare View QA Remarks signedLOCKED 04/14/2026 Print Un-sign",
+        "Total table tbody tr count: 1",
+        "Total a.tbl-link anchor count: 1",
+        "All anchor texts: OASIS-OASIS E2 - PT SOC",
+        "Normalized anchor texts: OASIS-OASIS E2 - PT SOC",
+        "Candidate SOC anchors found: 1",
+        "Ranked SOC candidate texts: OASIS-OASIS E2 - PT SOC",
+        "Chosen SOC anchor text: OASIS-OASIS E2 - PT SOC",
+        "socDocumentFound emitted: true",
+        "Matched SOC row text: OASIS-OASIS E2 - PT SOC 04/04/2026 00:00 Clemente, Jose Luis PT - Physical Therapy Locked e-Signed by Staff HILLOCK, RONALD Manguiat, Allen",
+        "Matched SOC anchor text: OASIS-OASIS E2 - PT SOC",
+        "Clicked selector/container: table tbody tr a.tbl-link -> class=tbl-link | label=OASIS-OASIS E2 - PT SOC",
+        "Click method used: clickReadOnlyTarget(a.tbl-link)",
+        "Post-click URL: https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/documents/note/oasis/69c43b8da5b2f646f5ec5546",
+        "Post-click markers: OASIS E2 - PT SOC 04/04/2026 | BOYER, TIMOTHY Visit Time In/Out: 04/04/2026 18:45 - 20:00 Doc Uploads View logs OASIS Compare View QA Remarks signedLOCKED 04/14/2026 Print Un-sign Unlock - Oasis Non M-ItemsOasis×Administrative Information× ",
+        "socDocumentClicked emitted: true",
+        "socCandidate[1] score=220 anchor='OASIS-OASIS E2 - PT SOC' row='OASIS-OASIS E2 - PT SOC 04/04/2026 00:00 Clemente, Jose Luis PT - Physical Therapy Locked e-Signed by Staff HILLOCK, RONALD Manguiat, Allen' selector='table tbody tr a.tbl-link'"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:25:16.361Z",
+      "step": "oasis_lock_state_detected",
+      "message": "Detected a locked OASIS SOC note after routing to the SOC page; continuing in verification-only mode.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/documents/note/oasis/69c43b8da5b2f646f5ec5546",
+      "selectorUsed": "table tbody tr a.tbl-link",
+      "found": [
+        "oasis_lock_state_detected:locked",
+        "unlockControlVisible:true",
+        "unlockControlText:Unlock - Oasis",
+        "fieldsEditable:false",
+        "verificationOnly:true",
+        "inputEligible:false"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "SOC selector used: table tbody tr a.tbl-link",
+        "SOC anchor text: OASIS-OASIS E2 - PT SOC",
+        "[not_found] OASIS top action bar / toolbar container count=0 visible=0 elapsedMs=24",
+        "[matched] Unlock - Oasis button by accessible role count=1 visible=1 elapsedMs=64 samples=Unlock - Oasis",
+        "[matched] Enabled OASIS form fields without disabled/readonly markers count=77 visible=2 elapsedMs=200",
+        "[matched] Disabled or readonly OASIS fields count=131 visible=3 elapsedMs=163",
+        "Top action bar was not confidently resolved while probing lock state.",
+        "Unlock control and editable field signals were both visible; lock signal takes precedence.",
+        "Unlock - Oasis control is visible in the top action bar; treat the note as locked.",
+        "Diagnosis workflow must remain verification-only until the note is explicitly unlocked."
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:25:50.134Z",
+      "step": "oasis_diagnosis_section",
+      "message": "Opened OASIS Active Diagnoses section and scanned for diagnosis list.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/documents/note/oasis/69c43b8da5b2f646f5ec5546",
+      "selectorUsed": "table tbody tr a.tbl-link",
+      "found": [
+        "oasisMenuClicked:true",
+        "oasisDocumentListDetected:true",
+        "socDocumentFound:true",
+        "socDocumentClicked:true",
+        "activeDiagnosesSelected:true",
+        "diagnosisSectionOpened:true",
+        "diagnosisListFound:false",
+        "diagnosisListStatus:EMPTY_OR_NOT_VISIBLE",
+        "diagnosisNavigationMethod:dropdown_active_diagnoses"
+      ],
+      "missing": [
+        "Diagnosis list (may be empty on first pass)"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "SOC selector used: table tbody tr a.tbl-link",
+        "SOC anchor text: OASIS-OASIS E2 - PT SOC",
+        "Diagnosis navigation method: dropdown_active_diagnoses",
+        "Active Diagnoses selected: true",
+        "Diagnosis section opened: true",
+        "Diagnosis list found: false",
+        "Diagnosis list status: EMPTY_OR_NOT_VISIBLE",
+        "Diagnosis snapshot row count: 0",
+        "Diagnosis snapshot existing rows: 0",
+        "Diagnosis snapshot empty editable slots: 0",
+        "Diagnosis snapshot visible editable slots: 0",
+        "Diagnosis snapshot warnings: Diagnosis row browser inspection failed: locator.evaluate: ReferenceError: __name is not defined\n    at eval (eval at evaluate (:290:30), <anonymous>:1:31)\n    at UtilityScript.evaluate (<anonymous>:292:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)",
+        "OASIS lock state: locked",
+        "Unlock control visible: true",
+        "Unlock control text: Unlock - Oasis",
+        "Fields editable: false",
+        "Verification only: true",
+        "Input eligible: false",
+        "Diagnosis section samples: Active Diagnoses | (M1028) Active Diagnoses:",
+        "Diagnosis list samples: none",
+        "[matched] SOC document page app-oasis wrapper count=1 visible=1 elapsedMs=42 samples=OASIS E2 - PT SOC 04/04/2026 | BOYER, TIMOTHY Visit Time In/Out: 04/04/2026 18:45 - 20:00 Doc Uploads View logs OASIS Compare View QA Remarks signedLOCKED 04/14/2026 Print Un-sign",
+        "[not_found] Active Diagnoses currently selected in section dropdown count=0 visible=0 elapsedMs=21",
+        "[not_found] Active Diagnoses visible text marker count=0 visible=0 elapsedMs=28",
+        "[not_found] Active Diagnoses section marker count=0 visible=0 elapsedMs=26",
+        "[matched] Diagnosis section marker count=2 visible=1 elapsedMs=124 samples=Diagnosis | Recommended Diagnosis",
+        "[not_found] Diagnosis List heading/label count=0 visible=0 elapsedMs=28",
+        "[not_found] Diagnosis list/table wrappers count=0 visible=0 elapsedMs=20",
+        "[matched] OASIS section dropdown ng-select under fin-select.select-oasis-pages count=2 visible=1 elapsedMs=60 samples=×Administrative Information× | ×Administrative Information×",
+        "[matched] OASIS section dropdown trigger count=3 visible=3 elapsedMs=85 samples=×Administrative Information×",
+        "[matched] Active Diagnoses option in ng-dropdown-panel count=2 visible=2 elapsedMs=124 samples=Active Diagnoses | Active Diagnoses",
+        "[matched] Active Diagnoses currently selected in section dropdown count=4 visible=2 elapsedMs=80 samples=×Active Diagnoses× | ×Active Diagnoses | ×Active Diagnoses×",
+        "[matched] Active Diagnoses section marker count=3 visible=2 elapsedMs=70 samples=Active Diagnoses | Active Diagnoses | (M1028) Active Diagnoses:",
+        "[not_found] Diagnosis List heading/label count=0 visible=0 elapsedMs=24",
+        "[not_found] Diagnosis list/table wrappers count=0 visible=0 elapsedMs=28",
+        "[not_found] Diagnosis List heading/label count=0 visible=0 elapsedMs=16",
+        "[not_found] Diagnosis list/table wrappers count=0 visible=0 elapsedMs=14",
+        "Diagnosis snapshot captured: rows=0 selectorEvidenceCount=14",
+        "Diagnosis snapshot warnings: Diagnosis row browser inspection failed: locator.evaluate: ReferenceError: __name is not defined\n    at eval (eval at evaluate (:290:30), <anonymous>:1:31)\n    at UtilityScript.evaluate (<anonymous>:292:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)",
+        "Diagnosis snapshot counts: existingRows=0 emptyEditableSlots=0 emptyReadonlySlots=0 visibleEditableSlots=0",
+        "oasisLockState:locked unlockControlVisible:true fieldsEditable:false verificationOnly:true inputEligible:false"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:25:50.134Z",
+      "step": "oasis_diagnosis_snapshot",
+      "message": "Captured read-only diagnosis page snapshot for DOM-aware QA mapping and future autofill planning.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/documents/note/oasis/69c43b8da5b2f646f5ec5546",
+      "selectorUsed": "OASIS diagnosis form body by #m1021 / .form-body.m1021.show-component",
+      "found": [
+        "rowCount:0",
+        "existingDiagnosisRowCount:0",
+        "emptyEditableSlotCount:0",
+        "visibleEditableSlotCount:0",
+        "insertDiagnosisVisible:true",
+        "sectionMarkerCount:2"
+      ],
+      "missing": [
+        "diagnosis controls"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "[not_found] OASIS diagnosis card container by #diagnosis id count=0 visible=0 elapsedMs=32",
+        "[matched] OASIS diagnosis form body by #m1021 / .form-body.m1021.show-component count=1 visible=1 elapsedMs=31 samples=(M1021/1023) Diagnoses and Symptom Control (POC Element (§484.60 (2.i))):List each diagnosis for which the patient is receiving home care in Column 1, and enter its ICD-10-CM code",
+        "[matched] Active Diagnoses section marker count=3 visible=2 elapsedMs=68 samples=Active Diagnoses | Active Diagnoses | (M1028) Active Diagnoses:",
+        "[matched] Insert Diagnosis action button count=1 visible=1 elapsedMs=26 samples=Insert Diagnosis",
+        "[matched] Primary diagnosis row/label marker count=2 visible=2 elapsedMs=79 samples=Column 1: Enter the description of the diagnosis. Sequencing of diagnoses should reflect the seriousness of each condition and support the disciplines and services provided. Column | PRIMARY DIAGNOSIS 🩺",
+        "[matched] Other diagnosis row/label marker count=5 visible=5 elapsedMs=98 samples=OTHER DIAGNOSIS - 1 | OTHER DIAGNOSIS - 2 | OTHER DIAGNOSIS - 3",
+        "[not_found] Diagnosis rows by formgroupname inside formarrayname=diagnosis count=0 visible=0 elapsedMs=12",
+        "[matched] Diagnosis rows inferred from icdcode field anchors count=6 visible=5 elapsedMs=80",
+        "[not_found] Editable ICD code field anchors for visible diagnosis slots count=0 visible=0 elapsedMs=12",
+        "[not_found] Editable description field anchors for visible diagnosis slots count=0 visible=0 elapsedMs=13",
+        "primaryDiagnosisRowVisible:true",
+        "otherDiagnosisRowCount:5",
+        "emptyEditableSlotCount:0",
+        "insertDiagnosisButtonVisible:true",
+        "mappingNotes:Prefer formcontrolname selectors for stable row/field mapping in Angular forms. | Fallback to row text heuristics only when direct control selectors are absent. | Snapshot is read-only and intended for QA comparison/autofill planning. | Rows are classified as existing diagnoses vs empty editable slots vs empty readonly slots before action planning.",
+        "extractionWarnings:Diagnosis row browser inspection failed: locator.evaluate: ReferenceError: __name is not defined\n    at eval (eval at evaluate (:290:30), <anonymous>:1:31)\n    at UtilityScript.evaluate (<anonymous>:292:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:25:50.134Z",
+      "step": "qa_summary",
+      "message": "Active Diagnoses section reached after SOC open.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/documents/note/oasis/69c43b8da5b2f646f5ec5546",
+      "selectorUsed": "table tbody tr a.tbl-link",
+      "found": [
+        "oasisMenuClicked:true",
+        "oasisDocumentListDetected:true",
+        "socDocumentFound:true",
+        "socDocumentClicked:true",
+        "activeDiagnosesSelected:true",
+        "diagnosisSectionOpened:true",
+        "diagnosisListFound:false",
+        "diagnosisListStatus:EMPTY_OR_NOT_VISIBLE",
+        "diagnosisNavigationMethod:dropdown_active_diagnoses"
+      ],
+      "missing": [
+        "Diagnosis list (may be empty on first pass)"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "SOC selector used: table tbody tr a.tbl-link",
+        "SOC anchor text: OASIS-OASIS E2 - PT SOC",
+        "Diagnosis navigation method: dropdown_active_diagnoses",
+        "Active Diagnoses selected: true",
+        "Diagnosis section opened: true",
+        "Diagnosis list found: false",
+        "Diagnosis list status: EMPTY_OR_NOT_VISIBLE",
+        "Diagnosis snapshot row count: 0",
+        "Diagnosis snapshot existing rows: 0",
+        "Diagnosis snapshot empty editable slots: 0",
+        "Diagnosis snapshot visible editable slots: 0",
+        "Diagnosis snapshot warnings: Diagnosis row browser inspection failed: locator.evaluate: ReferenceError: __name is not defined\n    at eval (eval at evaluate (:290:30), <anonymous>:1:31)\n    at UtilityScript.evaluate (<anonymous>:292:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)",
+        "OASIS lock state: locked",
+        "Unlock control visible: true",
+        "Unlock control text: Unlock - Oasis",
+        "Fields editable: false",
+        "Verification only: true",
+        "Input eligible: false",
+        "Diagnosis section samples: Active Diagnoses | (M1028) Active Diagnoses:",
+        "Diagnosis list samples: none",
+        "[matched] SOC document page app-oasis wrapper count=1 visible=1 elapsedMs=42 samples=OASIS E2 - PT SOC 04/04/2026 | BOYER, TIMOTHY Visit Time In/Out: 04/04/2026 18:45 - 20:00 Doc Uploads View logs OASIS Compare View QA Remarks signedLOCKED 04/14/2026 Print Un-sign",
+        "[not_found] Active Diagnoses currently selected in section dropdown count=0 visible=0 elapsedMs=21",
+        "[not_found] Active Diagnoses visible text marker count=0 visible=0 elapsedMs=28",
+        "[not_found] Active Diagnoses section marker count=0 visible=0 elapsedMs=26",
+        "[matched] Diagnosis section marker count=2 visible=1 elapsedMs=124 samples=Diagnosis | Recommended Diagnosis",
+        "[not_found] Diagnosis List heading/label count=0 visible=0 elapsedMs=28",
+        "[not_found] Diagnosis list/table wrappers count=0 visible=0 elapsedMs=20",
+        "[matched] OASIS section dropdown ng-select under fin-select.select-oasis-pages count=2 visible=1 elapsedMs=60 samples=×Administrative Information× | ×Administrative Information×",
+        "[matched] OASIS section dropdown trigger count=3 visible=3 elapsedMs=85 samples=×Administrative Information×",
+        "[matched] Active Diagnoses option in ng-dropdown-panel count=2 visible=2 elapsedMs=124 samples=Active Diagnoses | Active Diagnoses",
+        "[matched] Active Diagnoses currently selected in section dropdown count=4 visible=2 elapsedMs=80 samples=×Active Diagnoses× | ×Active Diagnoses | ×Active Diagnoses×",
+        "[matched] Active Diagnoses section marker count=3 visible=2 elapsedMs=70 samples=Active Diagnoses | Active Diagnoses | (M1028) Active Diagnoses:",
+        "[not_found] Diagnosis List heading/label count=0 visible=0 elapsedMs=24",
+        "[not_found] Diagnosis list/table wrappers count=0 visible=0 elapsedMs=28",
+        "[not_found] Diagnosis List heading/label count=0 visible=0 elapsedMs=16",
+        "[not_found] Diagnosis list/table wrappers count=0 visible=0 elapsedMs=14",
+        "Diagnosis snapshot captured: rows=0 selectorEvidenceCount=14",
+        "Diagnosis snapshot warnings: Diagnosis row browser inspection failed: locator.evaluate: ReferenceError: __name is not defined\n    at eval (eval at evaluate (:290:30), <anonymous>:1:31)\n    at UtilityScript.evaluate (<anonymous>:292:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)",
+        "Diagnosis snapshot counts: existingRows=0 emptyEditableSlots=0 emptyReadonlySlots=0 visibleEditableSlots=0",
+        "oasisLockState:locked unlockControlVisible:true fieldsEditable:false verificationOnly:true inputEligible:false"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:27:07.595Z",
+      "step": "oasis_print_capture",
+      "message": "Captured the OASIS assessment print view for read-only OCR review.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/documents/note/oasis/69c43b8da5b2f646f5ec5546",
+      "selectorUsed": "fin-button[title='Print Preview'] > button",
+      "found": [
+        "assessmentType=SOC",
+        "printProfileKey=soc_full_document_v1",
+        "printButtonDetected=true",
+        "printClickSucceeded=false",
+        "printModalDetected=true",
+        "printModalConfirmSucceeded=true",
+        "extractionMethod=printed_pdf_ocr",
+        "textLength=90043"
+      ],
+      "missing": [],
+      "openedDocumentLabel": "OASIS-OASIS E2 - PT SOC",
+      "openedDocumentUrl": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/documents/note/oasis/69c43b8da5b2f646f5ec5546",
+      "evidence": [
+        "printedPdfPath=C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\evidence\\TIMOTHY_BOYER__71ccc7154d955dc0\\oasis-printed-note\\printed-source.pdf",
+        "selectedSectionLabels=Administrative Information | Active Diagnoses | Vital Signs & Pain Assessment | Medication & Allergies (Injectable Medications) | Neurological (Head, Mood, Eyes, Ears) | Cardiopulmonary (Chest & Thorax) | Gastrointestinal & Genitourinary | Integumentary (Skin & Wound) | Safety & Risk Assessment | Functional Assessment (Self Care) | Functional Assessment (Mobility & Musculoskeletal) | Functional Assessment (Gait and Range Of Motion) | Plan of Care Orders and Discharge Plan | Patient Summary & Clinical Narrative | Care Plan (Problems / Goals / Interventions) | Footer (Not visible in Print Preview)",
+        "extractedTextPath=C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\evidence\\TIMOTHY_BOYER__71ccc7154d955dc0\\oasis-printed-note\\extracted-text.txt",
+        "ocrResultPath=C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\evidence\\TIMOTHY_BOYER__71ccc7154d955dc0\\oasis-printed-note\\ocr-result.json",
+        "extractionResultPath=C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\evidence\\TIMOTHY_BOYER__71ccc7154d955dc0\\oasis-printed-note\\extraction-result.json",
+        "warnings=none"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:27:07.618Z",
+      "step": "oasis_printed_note_review",
+      "message": "Persisted read-only OASIS printed-note review with 18 section summaries.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/documents/note/oasis/69c43b8da5b2f646f5ec5546",
+      "selectorUsed": null,
+      "found": [
+        "assessmentType=SOC",
+        "printProfileKey=soc_full_document_v1",
+        "printButtonDetected=true",
+        "printClickSucceeded=false",
+        "textLength=90043",
+        "overallStatus=PARTIAL"
+      ],
+      "missing": [],
+      "openedDocumentLabel": "OASIS-OASIS E2 - PT SOC",
+      "openedDocumentUrl": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/documents/note/oasis/69c43b8da5b2f646f5ec5546",
+      "evidence": [
+        "reviewPath=C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\oasis-printed-note-review.json",
+        "extractedTextPath=C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\evidence\\TIMOTHY_BOYER__71ccc7154d955dc0\\oasis-printed-note\\extracted-text.txt",
+        "ocrResultPath=C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\evidence\\TIMOTHY_BOYER__71ccc7154d955dc0\\oasis-printed-note\\ocr-result.json",
+        "sourcePdfPath=C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\evidence\\TIMOTHY_BOYER__71ccc7154d955dc0\\oasis-printed-note\\printed-source.pdf",
+        "printedPdfPath=C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\evidence\\TIMOTHY_BOYER__71ccc7154d955dc0\\oasis-printed-note\\printed-source.pdf",
+        "selectedSectionLabels=Administrative Information | Active Diagnoses | Vital Signs & Pain Assessment | Medication & Allergies (Injectable Medications) | Neurological (Head, Mood, Eyes, Ears) | Cardiopulmonary (Chest & Thorax) | Gastrointestinal & Genitourinary | Integumentary (Skin & Wound) | Safety & Risk Assessment | Functional Assessment (Self Care) | Functional Assessment (Mobility & Musculoskeletal) | Functional Assessment (Gait and Range Of Motion) | Plan of Care Orders and Discharge Plan | Patient Summary & Clinical Narrative | Care Plan (Problems / Goals / Interventions) | Footer (Not visible in Print Preview)",
+        "administrative_information:PARTIAL:3/12",
+        "primary_reason_medical_necessity:COMPLETED:4/1",
+        "vital_signs:COMPLETED:5/0",
+        "neurological:COMPLETED:4/0",
+        "eyes_ears:COMPLETED:6/0",
+        "cardiovascular:COMPLETED:2/2",
+        "respiratory:COMPLETED:3/2",
+        "gastrointestinal:COMPLETED:4/1"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:27:31.404Z",
+      "step": "printed_note_chart_values",
+      "message": "Printed OASIS note text did not yield usable chart field values.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "fieldCount=0",
+        "artifactPath=C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\printed-note-chart-values.json",
+        "invocationModelId=us.amazon.nova-lite-v1:0"
+      ],
+      "missing": [
+        "usable chart field values from printed OASIS note"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Printed-note chart-value extraction returned invalid JSON after retrying with inference profile us.amazon.nova-lite-v1:0."
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:27:31.404Z",
+      "step": "coding_workflow_start",
+      "message": "Coding workflow branch started from the shared patient chart context.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/calendar",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=coding",
+        "patientRunId=batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750-TIMOTHY_BOYER__71ccc7154d955dc0",
+        "status=started",
+        "chartUrl=https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/calendar"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:27:31.484Z",
+      "step": "document_extraction",
+      "message": "Extracted 2 document(s) for QA evaluation.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "0:OASIS:viewer_text_fallback:artifact_fallback:1533",
+        "1:ORDER:ocr_text:printed_pdf:7132"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "[0] type=OASIS source=artifact_fallback effectiveTextSource=viewer_text_fallback portalLabel=OASIS documents page textLength=1533",
+        "[0] rawExtractedTextSource=dom textSelectionReason=artifact_fallback_text",
+        "[0] domExtractionRejectedReasons=none",
+        "[0] preview=OASIS documents page false false false false false false 0 none 0 high:0 medium:0 low:0 false false true false true https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/file-uploads 📄 timothy boyer new referral.pdf | 📄 timothy boyer new referral.pdf 📝 ✏️ 🗑️ 🔗 true 📄 timothy boyer new referral.pdf 📝 ✏️ 🗑️ 🔗 dom viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS I00 | I25 | I50 of ⁨4⁩ Automatic Zoom Actual Size Page Fit Page W",
+        "[1] type=ORDER source=printed_pdf effectiveTextSource=ocr_text portalLabel=📄 timothy boyer new referral.pdf 📝 ✏️ 🗑️ 🔗 textLength=7132",
+        "[1] rawExtractedTextSource=ocr textSelectionReason=preferred_ocr_for_scanned_image_pdf",
+        "[1] domExtractionRejectedReasons=none",
+        "[1] preview=Activeth\nHealth\nHome Health Referral\n6765 W Charleston Blvd Ste 170\nLas Vegas, NV 89146\nGaby Fuentes I Account Executive\nOffice: (775) 471 - 9815\nCell: (702) 957 - 3472\nFax: (702) 726 - 9551 -\nEmail: Gaby@activehomehealtcare.net\nEmail: admin@activehomehealthcare.net\nPatient Name:\nDOB:\nBoyer , Timmothy\n3/12/1956\nAddress:\nskip if demographic\nsheet is attached\nTel #: 909.800.9963\nEmergency Contact #:\n1st Insurance & Policy #: Medicare\n2nd Insurance & Policy #:\nMedical Condition related to Home Heal",
+        "[1] admissionReasonPrimary=none",
+        "[1] admissionReasonSnippets=none",
+        "[1] possibleIcd10Codes=I70 | I60 | M17.12 | I00 | I25 | I50",
+        "[1] possibleIcd10CodeCount=6"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:27:31.484Z",
+      "step": "admission_document_extract",
+      "message": "Extracted 1 Admission Order/referral document text block(s).",
+      "patientName": "Timothy Boyer",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "📄 timothy boyer new referral.pdf 📝 ✏️ 🗑️ 🔗:7132"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "[0] source=printed_pdf",
+        "[0] effectiveTextSource=ocr_text",
+        "[0] rawExtractedTextSource=ocr",
+        "[0] textSelectionReason=preferred_ocr_for_scanned_image_pdf",
+        "[0] domExtractionRejectedReasons=none",
+        "[0] preview=Activeth\nHealth\nHome Health Referral\n6765 W Charleston Blvd Ste 170\nLas Vegas, NV 89146\nGaby Fuentes I Account Executive\nOffice: (775) 471 - 9815\nCell: (702) 957 - 3472\nFax: (702) 726 - 9551 -\nEmail: Gaby@activehomehealtcare.net\nEmail: admin@activehomehealthcare.net\nPatient Name:\nDOB:\nBoyer , Timmothy\n3/12/1956\nAddress:\nskip if demographic\nsheet is attached\nTel #: 909.800.9963\nEmergency Contact #:\n1st Insurance & Policy #: Medicare\n2nd Insurance & Policy #:\nMedical Condition related to Home Heal",
+        "[0] admissionReasonPrimary=none",
+        "[0] admissionReasonSnippets=none",
+        "[0] possibleIcd10Codes=I70 | I60 | M17.12 | I00 | I25 | I50"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:27:31.484Z",
+      "step": "oasis_extract",
+      "message": "Extracted 1 OASIS document(s).",
+      "patientName": "Timothy Boyer",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "OASIS documents page"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:27:31.484Z",
+      "step": "poc_extract",
+      "message": "No plan-of-care content was extracted.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [],
+      "missing": [
+        "POC"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:27:31.484Z",
+      "step": "visit_note_extract",
+      "message": "No visit-note content was extracted.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [],
+      "missing": [
+        "VISIT_NOTE"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:27:31.484Z",
+      "step": "technical_review_extract",
+      "message": "Aggregated technical-review evidence from document inventory and extracted content.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "orders:1",
+        "summaries:0",
+        "supervisory:0",
+        "communication:0",
+        "missed_visits:0",
+        "sn_visits:0"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Detected 1 order document candidate(s)."
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:27:31.486Z",
+      "step": "coding_input_export",
+      "message": "Wrote read-only diagnosis reference output for dashboard consumption.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "codingInputPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\coding-input.json",
+        "diagnosisCount:6",
+        "primaryDiagnosisSelected:I50.9 Heart Failure, unspecified",
+        "otherDiagnosisCount:5",
+        "codeConfidenceSummary:high:4 medium:2 low:0",
+        "noteCount:0",
+        "primaryDiagnosisCode:I50.9"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "primaryDiagnosisDescription:Heart Failure, unspecified",
+        "suggestedOnsetType:onset",
+        "suggestedSeverity:3",
+        "comorbidityFlags:{\"pvd_pad\":false,\"diabetes\":true,\"none\":false}"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:27:31.486Z",
+      "step": "qa_summary",
+      "message": "QA summary computed with overallStatus=BLOCKED.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "timing:PASS",
+        "coding:PASS",
+        "oasis:FAIL",
+        "poc:MISSING",
+        "visit_notes:MISSING",
+        "technical_review:MISSING",
+        "final_check:FAIL"
+      ],
+      "missing": [
+        "Medical necessity is stated",
+        "Homebound reason is stated",
+        "Health assessment is documented",
+        "Skilled interventions during the OASIS visit are documented",
+        "Plan of care content extracted",
+        "POC QA completed in workbook",
+        "Diagnoses or codes are present in the plan of care",
+        "Interventions, goals, and frequency are present in the plan of care",
+        "Conditions or exacerbations are reflected in the plan of care",
+        "Visit note content extracted",
+        "Visit notes review completed in workbook",
+        "Skilled need is clearly documented",
+        "Interventions performed are specific and detailed",
+        "Patient response to interventions is documented",
+        "Progress toward goals is noted",
+        "Vitals and focused assessment are documented",
+        "Medication review is documented",
+        "Changes in condition are clearly reported and addressed",
+        "Documentation supports billed services",
+        "Documentation remains consistent with OASIS and diagnoses",
+        "SN visits were identified from visit-note content",
+        "Applicable disciplines were detected"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Medical necessity is stated",
+        "Homebound reason is stated",
+        "Health assessment is documented",
+        "Skilled interventions during the OASIS visit are documented",
+        "Plan of care content extracted",
+        "POC QA completed in workbook",
+        "Diagnoses or codes are present in the plan of care",
+        "Interventions, goals, and frequency are present in the plan of care",
+        "Conditions or exacerbations are reflected in the plan of care",
+        "Visit note content extracted",
+        "Visit notes review completed in workbook",
+        "Skilled need is clearly documented",
+        "Interventions performed are specific and detailed",
+        "Patient response to interventions is documented",
+        "Progress toward goals is noted",
+        "Vitals and focused assessment are documented",
+        "Medication review is documented",
+        "Changes in condition are clearly reported and addressed",
+        "Documentation supports billed services",
+        "Documentation remains consistent with OASIS and diagnoses",
+        "SN visits were identified from visit-note content",
+        "Applicable disciplines were detected"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:27:31.486Z",
+      "step": "coding_workflow_complete",
+      "message": "Coding workflow branch completed.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/calendar",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=coding",
+        "patientRunId=batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750-TIMOTHY_BOYER__71ccc7154d955dc0",
+        "status=completed",
+        "chartUrl=https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69c43af88ef5b6f48529b02b/intake/69c43b7c6808a6f489204f69/calendar"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T08:27:31.487Z",
+      "step": "coding_input_export",
+      "message": "Wrote fallback coding-input.json for downstream read-only diagnosis consumers.",
+      "patientName": "Timothy Boyer",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "codingInputPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\coding-input.json",
+        "diagnosisCount:0",
+        "primaryDiagnosisSelected:none",
+        "otherDiagnosisCount:0",
+        "codeConfidenceSummary:high:0 medium:0 low:0"
+      ],
+      "missing": [
+        "primary diagnosis"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "suggestedOnsetType:onset",
+        "matchStatus:EXACT"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    }
+  ],
+  "notes": [
+    "Document inventory exported: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\document-inventory.json",
+    "Document text exported: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\document-text.json",
+    "Referral document QA summary persisted: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\referral-document-processing\\qa-document-summary.json",
+    "QA prefetch result persisted: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\qa-prefetch-result.json",
+    "Printed-note chart values persisted: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\printed-note-chart-values.json",
+    "Document inventory exported: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\document-inventory.json",
+    "Document text exported: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\document-text.json",
+    "Extracted 2 document(s) for QA evaluation.",
+    "Coding input exported: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\coding-input.json",
+    "Diagnosis code candidates: I50.9, R13.10, J44.9, E11.9",
+    "Fallback coding input exported: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\TIMOTHY_BOYER__71ccc7154d955dc0\\coding-input.json"
+  ]
+}

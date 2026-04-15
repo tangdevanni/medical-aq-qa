@@ -1,0 +1,38 @@
+{
+  "documentId": "SUSAN_EISENBERG__c79c0fed028cf5c6-referral-1",
+  "localFilePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\SUSAN_EISENBERG__c79c0fed028cf5c6\\documents\\susan-eisenberg-01-07-2026-pdf\\source.pdf",
+  "fileType": "pdf",
+  "extractionMethod": "digital_pdf_text",
+  "extractionSuccess": true,
+  "effectiveTextSource": "digital_pdf_text",
+  "rawExtractedTextSource": "dom",
+  "textSelectionReason": "accepted_dom_text",
+  "domExtractionRejectedReasons": [],
+  "pdfType": "digital_text_pdf",
+  "ocrUsed": false,
+  "ocrProvider": null,
+  "ocrResultPath": null,
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\SUSAN_EISENBERG__c79c0fed028cf5c6\\referral-document-processing\\extracted-text.txt",
+  "extractionQuality": {
+    "characterCount": 4395,
+    "lineCount": 1,
+    "normalizedTokenCount": 791,
+    "containsClinicalVocabulary": false,
+    "containsDiagnosisLikePatterns": false,
+    "containsDatePatterns": false,
+    "containsSectionLikeHeadings": false,
+    "likelyUsableForLlm": false,
+    "likelyRequiresOcrRetry": false,
+    "likelyCorruptedEncoding": false,
+    "rejectedReasons": [
+      "no_clinical_vocabulary",
+      "no_date_patterns"
+    ],
+    "usabilityStatus": "rejected"
+  },
+  "failureReasons": [
+    "Extraction quality rejected: no_clinical_vocabulary, no_date_patterns"
+  ],
+  "warnings": [],
+  "generatedAt": "2026-04-15T08:05:31.270Z"
+}

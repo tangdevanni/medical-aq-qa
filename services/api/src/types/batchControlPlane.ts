@@ -7,6 +7,8 @@ import {
   patientMatchResultSchema,
   patientProcessingStatusSchema,
   qaOutcomeSchema,
+  workbookAcquisitionMetadataSchema,
+  workbookVerificationSchema,
 } from "@medical-ai-qa/shared-types";
 
 const workbookSourceTypeSchema = z.enum(["socPoc", "dc", "visitNotes", "diz", "trackingReport"]);
@@ -32,6 +34,8 @@ export const batchRecordSchema = z.object({
     active: z.boolean(),
     rerunEnabled: z.boolean(),
     intervalHours: z.number().int().positive(),
+    timezone: z.string().min(1).default("Asia/Manila"),
+    localTimes: z.array(z.string().min(1)).default(["15:00", "23:30"]),
     lastRunAt: z.string().min(1).nullable(),
     nextScheduledRunAt: z.string().min(1).nullable(),
   }).default({
@@ -39,6 +43,8 @@ export const batchRecordSchema = z.object({
     active: true,
     rerunEnabled: true,
     intervalHours: 24,
+    timezone: "Asia/Manila",
+    localTimes: ["15:00", "23:30"],
     lastRunAt: null,
     nextScheduledRunAt: null,
   }),
@@ -48,9 +54,11 @@ export const batchRecordSchema = z.object({
     acquisitionStatus: z.enum(["ACQUIRED", "FAILED", "PENDING"]),
     acquisitionReference: z.string().min(1).nullable(),
     acquisitionNotes: z.array(z.string().min(1)),
+    acquisitionMetadata: workbookAcquisitionMetadataSchema.nullable().default(null),
     originalFileName: z.string().min(1),
     storedPath: z.string().min(1),
     uploadedAt: z.string().min(1),
+    verification: workbookVerificationSchema.nullable().default(null),
   }),
   storage: z.object({
     batchRoot: z.string().min(1),

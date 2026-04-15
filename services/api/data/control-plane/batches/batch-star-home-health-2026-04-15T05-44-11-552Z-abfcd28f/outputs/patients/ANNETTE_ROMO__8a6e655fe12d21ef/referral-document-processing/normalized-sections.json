@@ -1,0 +1,231 @@
+[
+  {
+    "sectionName": "patient_identity",
+    "extractedTextSpans": [
+      "DOB/Age/Gender: 3/25/1972 54 years",
+      "Patient Name: ROMO, ANNETTE",
+      "DOB: 03/25/1972",
+      "DOB/Age/Gender: 3/25/1972 54 years Female",
+      "DOB: 03/25/1972",
+      "DOB/Age/Gender: 3/25/1972 54 years Female",
+      "DOB/Age/Gender: 3/25/1972 54 years"
+    ],
+    "normalizedSummary": "DOB/Age/Gender: 3/25/1972 54 years Patient Name: ROMO, ANNETTE DOB: 03/25/1972",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 13,
+        "lineEnd": 13,
+        "charStart": 251,
+        "charEnd": 285
+      },
+      {
+        "lineStart": 54,
+        "lineEnd": 54,
+        "charStart": 1136,
+        "charEnd": 1163
+      },
+      {
+        "lineStart": 58,
+        "lineEnd": 58,
+        "charStart": 1208,
+        "charEnd": 1223
+      },
+      {
+        "lineStart": 124,
+        "lineEnd": 124,
+        "charStart": 2681,
+        "charEnd": 2722
+      },
+      {
+        "lineStart": 139,
+        "lineEnd": 139,
+        "charStart": 3056,
+        "charEnd": 3071
+      },
+      {
+        "lineStart": 189,
+        "lineEnd": 189,
+        "charStart": 4772,
+        "charEnd": 4813
+      },
+      {
+        "lineStart": 258,
+        "lineEnd": 258,
+        "charStart": 7060,
+        "charEnd": 7094
+      }
+    ]
+  },
+  {
+    "sectionName": "hospitalization_history",
+    "extractedTextSpans": [
+      "Encompass Health Rehabilitation Hospital of Scottsdale",
+      "Discharge Date:",
+      "Encompass Health Rehabilitation Hospital of Scottsdale",
+      "Patient Type: Inpatient",
+      "Encompass Health Rehabilitation Hospital of Scottsdale",
+      "Discharge Date:",
+      "Encompass Health Rehabilitation Hospital of Scottsdale",
+      "Discharge Date:",
+      "Encompass Health Rehabilitation Hospital of Scottsdale",
+      "Discharge Date:"
+    ],
+    "normalizedSummary": "Encompass Health Rehabilitation Hospital of Scottsdale Discharge Date: Encompass Health Rehabilitation Hospital of Scottsdale",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 3,
+        "lineEnd": 3,
+        "charStart": 63,
+        "charEnd": 117
+      },
+      {
+        "lineStart": 12,
+        "lineEnd": 12,
+        "charStart": 235,
+        "charEnd": 250
+      },
+      {
+        "lineStart": 30,
+        "lineEnd": 30,
+        "charStart": 566,
+        "charEnd": 620
+      },
+      {
+        "lineStart": 36,
+        "lineEnd": 36,
+        "charStart": 720,
+        "charEnd": 743
+      },
+      {
+        "lineStart": 117,
+        "lineEnd": 117,
+        "charStart": 2534,
+        "charEnd": 2588
+      },
+      {
+        "lineStart": 123,
+        "lineEnd": 123,
+        "charStart": 2665,
+        "charEnd": 2680
+      },
+      {
+        "lineStart": 182,
+        "lineEnd": 182,
+        "charStart": 4625,
+        "charEnd": 4679
+      },
+      {
+        "lineStart": 188,
+        "lineEnd": 188,
+        "charStart": 4756,
+        "charEnd": 4771
+      },
+      {
+        "lineStart": 251,
+        "lineEnd": 251,
+        "charStart": 6913,
+        "charEnd": 6967
+      },
+      {
+        "lineStart": 257,
+        "lineEnd": 257,
+        "charStart": 7044,
+        "charEnd": 7059
+      }
+    ]
+  },
+  {
+    "sectionName": "medications",
+    "extractedTextSpans": [
+      "Continue to this medication as needed for her blood"
+    ],
+    "normalizedSummary": "Continue to this medication as needed for her blood",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 234,
+        "lineEnd": 234,
+        "charStart": 6424,
+        "charEnd": 6475
+      }
+    ]
+  },
+  {
+    "sectionName": "therapy_need",
+    "extractedTextSpans": [
+      "Continue work with PT/OT, pain"
+    ],
+    "normalizedSummary": "Continue work with PT/OT, pain",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 218,
+        "lineEnd": 218,
+        "charStart": 5971,
+        "charEnd": 6001
+      }
+    ]
+  },
+  {
+    "sectionName": "risk_factors",
+    "extractedTextSpans": [
+      "This is a 54-year-old complaining of fall.",
+      "Presented to the ED after another fall at home.",
+      "admitted to an outside facility for nosebleed and fall.",
+      "Fall, left leg pain."
+    ],
+    "normalizedSummary": "This is a 54-year-old complaining of fall. Presented to the ED after another fall at home. admitted to an outside facility for nosebleed and fall.",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 146,
+        "lineEnd": 146,
+        "charStart": 3275,
+        "charEnd": 3317
+      },
+      {
+        "lineStart": 150,
+        "lineEnd": 150,
+        "charStart": 3520,
+        "charEnd": 3567
+      },
+      {
+        "lineStart": 152,
+        "lineEnd": 152,
+        "charStart": 3577,
+        "charEnd": 3632
+      },
+      {
+        "lineStart": 216,
+        "lineEnd": 216,
+        "charStart": 5922,
+        "charEnd": 5942
+      }
+    ]
+  },
+  {
+    "sectionName": "other_clinical_notes",
+    "extractedTextSpans": [
+      "ASSESSMENT AND PLAN:",
+      "Coronary artery disease, history of prior PCI s x5 per the notes."
+    ],
+    "normalizedSummary": "ASSESSMENT AND PLAN: Coronary artery disease, history of prior PCI s x5 per the notes.",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 214,
+        "lineEnd": 214,
+        "charStart": 5898,
+        "charEnd": 5918
+      },
+      {
+        "lineStart": 227,
+        "lineEnd": 227,
+        "charStart": 6146,
+        "charEnd": 6211
+      }
+    ]
+  }
+]

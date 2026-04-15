@@ -1,6 +1,5 @@
 import {
   BedrockRuntimeClient,
-  ConverseCommand,
   type ConverseCommandOutput,
 } from "@aws-sdk/client-bedrock-runtime";
 import type { FinaleBatchEnv } from "../config/env";
@@ -10,9 +9,17 @@ import {
   type ExtractedDocument,
 } from "./documentExtractionService";
 import {
+  buildDocumentFactPack,
+  type DocumentFactPack,
+} from "./documentFactPackBuilder";
+import {
   extractPossibleIcd10Codes,
   normalizeIcd10Code,
 } from "./documentTextAnalysis";
+import {
+  resolveBedrockConfig,
+  sendBedrockConverseWithProfileFallback,
+} from "../config/bedrock";
 
 export type CanonicalDiagnosisCodePair = {
   diagnosis: string;
@@ -42,6 +49,7 @@ export type CanonicalDiagnosisExtraction = {
 export type DiagnosisCodingExtractionResult = {
   sourceDocumentCount: number;
   sourceCharacterCount: number;
+  llmInputSource: LlmInputSource;
   diagnosisMentions: string[];
   icd10Codes: string[];
   codeCategories: string[];
@@ -55,6 +63,11 @@ export type DiagnosisCodingExtractionResult = {
 type LoggerLike = {
   info?: (obj: Record<string, unknown>, msg: string) => void;
 };
+
+export type LlmInputSource =
+  | "fact_pack_primary"
+  | "raw_text_fallback"
+  | "fact_pack_plus_raw_fallback";
 
 type BedrockCodingExtractionResult = {
   canonical: CanonicalDiagnosisExtraction | null;
@@ -1014,7 +1027,7 @@ function mapIcdCategory(code: string): string {
   return "Uncategorized";
 }
 
-function buildSourceText(extractedDocuments: ExtractedDocument[]): {
+function buildRawSourceText(extractedDocuments: ExtractedDocument[]): {
   sourceText: string;
   selectedDocuments: ExtractedDocument[];
   evidence: string[];
@@ -1057,6 +1070,130 @@ function buildSourceText(extractedDocuments: ExtractedDocument[]): {
   };
 }
 
+function formatFactPackSection(label: string, values: string[]): string | null {
+  const cleaned = uniqueCaseInsensitive(
+    values
+      .map((value) => sanitizeFreeText(value))
+      .filter(Boolean),
+  ).slice(0, 8);
+  if (cleaned.length === 0) {
+    return null;
+  }
+  return `${label}:\n${cleaned.map((value) => `- ${value}`).join("\n")}`;
+}
+
+function buildFactPackPromptText(factPack: DocumentFactPack): string {
+  const diagnosisSection = formatFactPackSection(
+    "Diagnoses",
+    factPack.diagnoses.map((diagnosis) =>
+      [
+        diagnosis.rank ? `${diagnosis.rank}` : "",
+        diagnosis.code ?? "",
+        diagnosis.description,
+      ].filter(Boolean).join(" "),
+    ),
+  );
+  const medicationSection = formatFactPackSection(
+    "Medications",
+    factPack.medications.map((medication) =>
+      [
+        medication.name,
+        medication.dose ?? "",
+        medication.route ?? "",
+        medication.frequency ?? "",
+      ].filter(Boolean).join(" "),
+    ),
+  );
+  const allergySection = formatFactPackSection("Allergies", factPack.allergies);
+  const homeboundSection = formatFactPackSection(
+    "Homebound Evidence",
+    factPack.homeboundEvidence.map((snippet) => snippet.text),
+  );
+  const skilledNeedSection = formatFactPackSection(
+    "Skilled Need Evidence",
+    factPack.skilledNeedEvidence.map((snippet) => snippet.text),
+  );
+  const hospitalizationSection = formatFactPackSection(
+    "Hospitalization / Referral Reasons",
+    factPack.hospitalizationReasons.map((snippet) => snippet.text),
+  );
+  const assessmentSection = formatFactPackSection(
+    "Assessment Values",
+    factPack.assessmentValues.map((snippet) => snippet.text),
+  );
+  const supportSection = formatFactPackSection(
+    "Supporting Snippets",
+    factPack.uncategorizedEvidence.map((snippet) => snippet.text),
+  );
+
+  return [
+    diagnosisSection,
+    medicationSection,
+    allergySection,
+    homeboundSection,
+    skilledNeedSection,
+    hospitalizationSection,
+    assessmentSection,
+    supportSection,
+  ].filter((section): section is string => Boolean(section)).join("\n\n");
+}
+
+function buildSourceText(extractedDocuments: ExtractedDocument[]): {
+  sourceText: string;
+  selectedDocuments: ExtractedDocument[];
+  evidence: string[];
+  llmInputSource: LlmInputSource;
+} {
+  const rawBuild = buildRawSourceText(extractedDocuments);
+  const factPack = buildDocumentFactPack(rawBuild.selectedDocuments);
+  const factPackText = buildFactPackPromptText(factPack);
+
+  if (!factPackText) {
+    return {
+      sourceText: rawBuild.sourceText,
+      selectedDocuments: rawBuild.selectedDocuments,
+      evidence: [
+        ...rawBuild.evidence,
+        "llmInputSource:raw_text_fallback",
+        "factPackStatus:empty_or_unusable",
+      ],
+      llmInputSource: "raw_text_fallback",
+    };
+  }
+
+  const needsRawFallback =
+    factPack.diagnoses.length === 0 ||
+    (factPack.hospitalizationReasons.length === 0 && factPack.skilledNeedEvidence.length === 0);
+
+  if (needsRawFallback && rawBuild.sourceText) {
+    return {
+      sourceText: `${factPackText}\n\nRaw Fallback Excerpts:\n${rawBuild.sourceText.slice(0, 3_000)}`,
+      selectedDocuments: rawBuild.selectedDocuments,
+      evidence: [
+        ...rawBuild.evidence,
+        "llmInputSource:fact_pack_plus_raw_fallback",
+        `factPackRawCharacters:${factPack.stats.rawCharacters}`,
+        `factPackPackedCharacters:${factPack.stats.packedCharacters}`,
+        `factPackReductionPercent:${factPack.stats.reductionPercent}`,
+      ],
+      llmInputSource: "fact_pack_plus_raw_fallback",
+    };
+  }
+
+  return {
+    sourceText: factPackText,
+    selectedDocuments: rawBuild.selectedDocuments,
+    evidence: [
+      ...rawBuild.evidence,
+      "llmInputSource:fact_pack_primary",
+      `factPackRawCharacters:${factPack.stats.rawCharacters}`,
+      `factPackPackedCharacters:${factPack.stats.packedCharacters}`,
+      `factPackReductionPercent:${factPack.stats.reductionPercent}`,
+    ],
+    llmInputSource: "fact_pack_primary",
+  };
+}
+
 function getBedrockClient(region: string): BedrockRuntimeClient {
   const existing = bedrockClientByRegion.get(region);
   if (existing) {
@@ -1069,18 +1206,6 @@ function getBedrockClient(region: string): BedrockRuntimeClient {
 
 function isBedrockCodingLlmEnabled(env: FinaleBatchEnv): boolean {
   return Boolean(env.CODE_LLM_ENABLED && env.LLM_PROVIDER === "bedrock");
-}
-
-function resolveBedrockConfig(env: FinaleBatchEnv): { region: string; modelId: string } {
-  const region = normalizeWhitespace(env.BEDROCK_REGION);
-  const modelId = normalizeWhitespace(env.BEDROCK_MODEL_ID);
-  if (!region) {
-    throw new Error("CODE_LLM_ENABLED=true requires BEDROCK_REGION when LLM_PROVIDER=bedrock.");
-  }
-  if (!modelId) {
-    throw new Error("CODE_LLM_ENABLED=true requires BEDROCK_MODEL_ID when LLM_PROVIDER=bedrock.");
-  }
-  return { region, modelId };
 }
 
 function extractConverseText(response: ConverseCommandOutput): string {
@@ -1364,35 +1489,39 @@ export async function verifyDiagnosisCodingLlmAccess(input: {
     return;
   }
 
-  const { region, modelId } = resolveBedrockConfig(input.env);
-  const client = getBedrockClient(region);
+  const config = resolveBedrockConfig(input.env);
+  const client = getBedrockClient(config.region);
 
   try {
-    const response = await client.send(
-      new ConverseCommand({
-        modelId,
-        system: [{ text: BEDROCK_SYSTEM_PROMPT }],
-        messages: [
-          {
-            role: "user",
-            content: [{
-              text:
-                "Return strict JSON only for this short note: Patient admitted for weakness and uncontrolled diabetes (E11.9). Skilled nursing and PT ordered.",
-            }],
+    const { response, invocationModelId, autoResolvedInferenceProfile } =
+      await sendBedrockConverseWithProfileFallback({
+        client,
+        config,
+        command: {
+          system: [{ text: BEDROCK_SYSTEM_PROMPT }],
+          messages: [
+            {
+              role: "user",
+              content: [{
+                text:
+                  "Return strict JSON only for this short note: Patient admitted for weakness and uncontrolled diabetes (E11.9). Skilled nursing and PT ordered.",
+              }],
+            },
+          ],
+          inferenceConfig: {
+            temperature: 0,
+            maxTokens: 250,
           },
-        ],
-        inferenceConfig: {
-          temperature: 0,
-          maxTokens: 250,
         },
-      }),
-    );
+      });
 
     input.logger?.info?.(
       {
         llmProvider: "bedrock",
-        bedrockRegion: region,
-        bedrockModelId: modelId,
+        bedrockRegion: config.region,
+        configuredBedrockModelId: config.configuredModelId,
+        bedrockInvocationModelId: invocationModelId,
+        autoResolvedInferenceProfile,
         verificationOutputPresent: Boolean(extractConverseText(response)),
       },
       "Bedrock Converse startup verification succeeded",
@@ -1400,9 +1529,10 @@ export async function verifyDiagnosisCodingLlmAccess(input: {
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);
     throw new Error(
-      `Bedrock Converse startup verification failed for model '${modelId}' in region '${region}'. ` +
+      `Bedrock Converse startup verification failed for configured model '${config.configuredModelId}' in region '${config.region}'. ` +
         "Confirm model access, AWS credentials, and IAM action bedrock:InvokeModel " +
         "(plus bedrock:InvokeModelWithResponseStream if streaming is enabled). " +
+        "If this model requires an inference profile, set BEDROCK_INFERENCE_PROFILE_ID explicitly. " +
         `Original error: ${errorMessage}`,
     );
   }
@@ -1421,13 +1551,14 @@ async function runBedrockCodingExtraction(input: {
     };
   }
 
-  const { region, modelId } = resolveBedrockConfig(input.env);
-  const client = getBedrockClient(region);
+  const config = resolveBedrockConfig(input.env);
+  const client = getBedrockClient(config.region);
 
   try {
-    const response = await client.send(
-      new ConverseCommand({
-        modelId,
+    const { response, invocationModelId } = await sendBedrockConverseWithProfileFallback({
+      client,
+      config,
+      command: {
         system: [{ text: BEDROCK_SYSTEM_PROMPT }],
         messages: [
           {
@@ -1447,14 +1578,14 @@ async function runBedrockCodingExtraction(input: {
           temperature: 0,
           maxTokens: 1_400,
         },
-      }),
-    );
+      },
+    });
 
     const content = extractConverseText(response);
     if (!content) {
       return {
         canonical: null,
-        model: modelId,
+        model: invocationModelId,
         error: "bedrock_empty_content",
       };
     }
@@ -1463,7 +1594,7 @@ async function runBedrockCodingExtraction(input: {
     if (!parsed) {
       return {
         canonical: null,
-        model: modelId,
+        model: invocationModelId,
         error: "bedrock_invalid_json",
       };
     }
@@ -1481,13 +1612,13 @@ async function runBedrockCodingExtraction(input: {
 
     return {
       canonical,
-      model: modelId,
+      model: invocationModelId,
       error: null,
     };
   } catch (error) {
     return {
       canonical: null,
-      model: modelId,
+      model: config.invocationModelId,
       error: error instanceof Error ? error.message : String(error),
     };
   }
@@ -1530,6 +1661,7 @@ export async function extractDiagnosisCodingContext(input: {
   return {
     sourceDocumentCount: sourceBuild.selectedDocuments.length,
     sourceCharacterCount: sourceText.length,
+    llmInputSource: sourceBuild.llmInputSource,
     diagnosisMentions: canonical.diagnosis_phrases,
     icd10Codes: allCodes,
     codeCategories: categories,
@@ -1541,6 +1673,7 @@ export async function extractDiagnosisCodingContext(input: {
       ...sourceBuild.evidence,
       `sourceDocumentCount:${sourceBuild.selectedDocuments.length}`,
       `sourceCharacterCount:${sourceText.length}`,
+      `llmInputSource:${sourceBuild.llmInputSource}`,
       `sourceTextPreview:${sourceTextPreview}`,
       `llmProvider:${input.env.LLM_PROVIDER}`,
       `llmUsed:${llmUsed}`,

@@ -1,0 +1,27 @@
+{
+  "patientId": "JONATHAN_COLVIN__11dafa910e272165",
+  "selectedDocumentId": "JONATHAN_COLVIN__11dafa910e272165-referral-1",
+  "sourceDocuments": [
+    {
+      "documentId": "JONATHAN_COLVIN__11dafa910e272165-referral-1",
+      "sourceIndex": 0,
+      "sourceLabel": "Admission 04-04-2026",
+      "normalizedSourceLabel": "admission-04-04-2026",
+      "sourceType": "ADMISSION_ORDER",
+      "acquisitionMethod": "local_file",
+      "selectionStatus": "selected",
+      "portalLabel": "Admission 04-04-2026",
+      "localFilePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-star-home-health-2026-04-15T05-44-11-552Z-abfcd28f\\outputs\\patients\\JONATHAN_COLVIN__11dafa910e272165\\documents\\admission-04-04-2026\\source.pdf",
+      "effectiveTextSource": "viewer_text_fallback",
+      "fileType": "pdf",
+      "fileSizeBytes": null,
+      "extractedTextLength": 1672,
+      "selectedReason": "highest-ranked referral/admission-order source with local file preference",
+      "rejectedReasons": []
+    }
+  ],
+  "warnings": [
+    "Local file extraction failed for C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-star-home-health-2026-04-15T05-44-11-552Z-abfcd28f\\outputs\\patients\\JONATHAN_COLVIN__11dafa910e272165\\documents\\admission-04-04-2026\\source.pdf: ENOENT: no such file or directory, open 'C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-star-home-health-2026-04-15T05-44-11-552Z-abfcd28f\\outputs\\patients\\JONATHAN_COLVIN__11dafa910e272165\\documents\\admission-04-04-2026\\source.pdf'"
+  ],
+  "generatedAt": "2026-04-15T07:40:35.392Z"
+}

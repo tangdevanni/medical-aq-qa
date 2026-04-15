@@ -1,0 +1,75 @@
+{
+  "selectedSourceFile": "BARARA DOUGHTY DEMO.pdf",
+  "selectedSourceFileNormalized": "barara doughty demo.pdf",
+  "admissionOrderTitle": "📄 BARARA DOUGHTY DEMO.pdf 📝 ✏️ 🗑️ 🔗",
+  "admissionOrderSelectorUsed": "File Uploads source document row by .file-item/.file-label or table row",
+  "sourceUrlBeforeClick": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69d53d7ee513e7da4436ad4a/file-uploads",
+  "sourceUrlAfterClick": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69d53d7ee513e7da4436ad4a/file-uploads",
+  "matchedReferralFileLabel": "BARARA DOUGHTY DEMO.pdf",
+  "normalizedFileLabels": [
+    "barara doughty demo.pdf",
+    "barbara doughty active hho.pdf",
+    "barbara doughty 04.01.2026.pdf"
+  ],
+  "matchedSourceDocuments": [
+    {
+      "label": "📄 BARARA DOUGHTY DEMO.pdf",
+      "normalizedLabel": "barara doughty demo.pdf",
+      "score": 20
+    },
+    {
+      "label": "📄 BARARA DOUGHTY DEMO.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedLabel": "barara doughty demo.pdf",
+      "score": 20
+    },
+    {
+      "label": "📄 BARBARA DOUGHTY 04.01.2026.pdf",
+      "normalizedLabel": "barbara doughty 04.01.2026.pdf",
+      "score": 20
+    },
+    {
+      "label": "📄 BARBARA DOUGHTY 04.01.2026.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedLabel": "barbara doughty 04.01.2026.pdf",
+      "score": 20
+    },
+    {
+      "label": "📄 BARBARA DOUGHTY ACTIVE HHO.pdf",
+      "normalizedLabel": "barbara doughty active hho.pdf",
+      "score": 20
+    },
+    {
+      "label": "📄 BARBARA DOUGHTY ACTIVE HHO.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedLabel": "barbara doughty active hho.pdf",
+      "score": 20
+    }
+  ],
+  "viewerDetected": true,
+  "viewerMarkerSamples": [
+    "of ⁨2⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%⁨90⁩% Tools",
+    "Tools",
+    "Print"
+  ],
+  "printButtonDetected": true,
+  "printButtonVisible": true,
+  "printButtonSelectorUsed": "pdf-print #printButton, #printButton, pdf-shy-button[primarytoolbarid='printButton'] button",
+  "printClickSucceeded": false,
+  "pdfResponseDetected": true,
+  "pdfResponseUrl": "https://api.finalehealth.com/api/v1/files/69d53d707277567222a58154?index=documents",
+  "pdfContentType": "application/pdf",
+  "pdfSavedPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\BARBARA_DOUGHTY__298dfd0458ac078e\\documents\\barara-doughty-demo-pdf\\source.pdf",
+  "pdfByteSize": 41073,
+  "printAcquisitionMethodUsed": "network_pdf_response",
+  "printedPdfSaved": false,
+  "printedPdfPath": null,
+  "sourcePdfPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\BARBARA_DOUGHTY__298dfd0458ac078e\\documents\\barara-doughty-demo-pdf\\source.pdf",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\BARBARA_DOUGHTY__298dfd0458ac078e\\documents\\barara-doughty-demo-pdf\\extracted-text.txt",
+  "extractionResultPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\BARBARA_DOUGHTY__298dfd0458ac078e\\documents\\barara-doughty-demo-pdf\\extraction-result.json",
+  "extractedTextLength": 113,
+  "rawExtractedTextSource": "dom",
+  "domExtractionRejectedReasons": [
+    "viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS"
+  ],
+  "extractionSuccess": false,
+  "queuedForLlm": true,
+  "generatedAt": "2026-04-15T06:21:56.610Z"
+}

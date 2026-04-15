@@ -1,0 +1,212 @@
+[
+  {
+    "sectionName": "patient_identity",
+    "extractedTextSpans": [
+      "Patient Name: Doris wathins",
+      "DOB:"
+    ],
+    "normalizedSummary": "Patient Name: Doris wathins DOB:",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 15,
+        "lineEnd": 15,
+        "charStart": 277,
+        "charEnd": 304
+      },
+      {
+        "lineStart": 120,
+        "lineEnd": 120,
+        "charStart": 2087,
+        "charEnd": 2091
+      }
+    ]
+  },
+  {
+    "sectionName": "referral_metadata",
+    "extractedTextSpans": [
+      "Referral",
+      "Referral Source Information:",
+      "THANK YOU FOR YOUR REFERRAL!!!"
+    ],
+    "normalizedSummary": "Referral Referral Source Information: THANK YOU FOR YOUR REFERRAL!!!",
+    "confidence": 0.95,
+    "lineReferences": [
+      {
+        "lineStart": 3,
+        "lineEnd": 3,
+        "charStart": 34,
+        "charEnd": 42
+      },
+      {
+        "lineStart": 10,
+        "lineEnd": 10,
+        "charStart": 174,
+        "charEnd": 202
+      },
+      {
+        "lineStart": 48,
+        "lineEnd": 48,
+        "charStart": 1021,
+        "charEnd": 1051
+      }
+    ]
+  },
+  {
+    "sectionName": "medical_necessity",
+    "extractedTextSpans": [
+      "Skilled Nursing"
+    ],
+    "normalizedSummary": "Skilled Nursing",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 22,
+        "lineEnd": 22,
+        "charStart": 460,
+        "charEnd": 475
+      }
+    ]
+  },
+  {
+    "sectionName": "diagnoses",
+    "extractedTextSpans": [
+      "Primary Diagnosis: OSTeoarThriTis knee",
+      "Diagnosis: Knee Arthritis, Left - M17.12"
+    ],
+    "normalizedSummary": "Primary Diagnosis: OSTeoarThriTis knee Diagnosis: Knee Arthritis, Left - M17.12",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 18,
+        "lineEnd": 18,
+        "charStart": 329,
+        "charEnd": 367
+      },
+      {
+        "lineStart": 193,
+        "lineEnd": 193,
+        "charStart": 3849,
+        "charEnd": 3889
+      }
+    ]
+  },
+  {
+    "sectionName": "medications",
+    "extractedTextSpans": [
+      "Medication Management",
+      "Medication List",
+      "Allergies"
+    ],
+    "normalizedSummary": "Medication Management Medication List Allergies",
+    "confidence": 0.95,
+    "lineReferences": [
+      {
+        "lineStart": 23,
+        "lineEnd": 23,
+        "charStart": 476,
+        "charEnd": 497
+      },
+      {
+        "lineStart": 47,
+        "lineEnd": 47,
+        "charStart": 1005,
+        "charEnd": 1020
+      },
+      {
+        "lineStart": 124,
+        "lineEnd": 124,
+        "charStart": 2149,
+        "charEnd": 2158
+      }
+    ]
+  },
+  {
+    "sectionName": "therapy_need",
+    "extractedTextSpans": [
+      "Physical Therapy",
+      "Occupational Therapy",
+      "physical therapy, and use of supportive devices or change in footwear."
+    ],
+    "normalizedSummary": "Physical Therapy Occupational Therapy physical therapy, and use of supportive devices or change in footwear.",
+    "confidence": 0.95,
+    "lineReferences": [
+      {
+        "lineStart": 29,
+        "lineEnd": 29,
+        "charStart": 565,
+        "charEnd": 581
+      },
+      {
+        "lineStart": 30,
+        "lineEnd": 30,
+        "charStart": 582,
+        "charEnd": 602
+      },
+      {
+        "lineStart": 204,
+        "lineEnd": 204,
+        "charStart": 4287,
+        "charEnd": 4357
+      }
+    ]
+  },
+  {
+    "sectionName": "other_clinical_notes",
+    "extractedTextSpans": [
+      "Recent H&P or recent progress notes",
+      "Visit Note - March 5, 2026",
+      "Impression/Plan:",
+      "Plan: Additional Notes.",
+      "Patient Specific Notes: The patient has osteoarthritis left knee.",
+      "Plan: Order Surgery: Knee Arthroplasty.",
+      "Plan: Counseling - Knee DJD."
+    ],
+    "normalizedSummary": "Recent H&P or recent progress notes Visit Note - March 5, 2026 Impression/Plan:",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 45,
+        "lineEnd": 45,
+        "charStart": 967,
+        "charEnd": 1002
+      },
+      {
+        "lineStart": 117,
+        "lineEnd": 117,
+        "charStart": 2047,
+        "charEnd": 2073
+      },
+      {
+        "lineStart": 156,
+        "lineEnd": 156,
+        "charStart": 2822,
+        "charEnd": 2838
+      },
+      {
+        "lineStart": 164,
+        "lineEnd": 164,
+        "charStart": 2983,
+        "charEnd": 3006
+      },
+      {
+        "lineStart": 167,
+        "lineEnd": 167,
+        "charStart": 3035,
+        "charEnd": 3100
+      },
+      {
+        "lineStart": 180,
+        "lineEnd": 180,
+        "charStart": 3544,
+        "charEnd": 3583
+      },
+      {
+        "lineStart": 198,
+        "lineEnd": 198,
+        "charStart": 3959,
+        "charEnd": 3987
+      }
+    ]
+  }
+]

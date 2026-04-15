@@ -1,0 +1,35 @@
+{
+  "documentId": "LOURDES_CARREON__14dd451f854e521e-referral-1",
+  "localFilePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\outputs\\patients\\LOURDES_CARREON__14dd451f854e521e\\documents\\admission-03-25-2026\\source.pdf",
+  "fileType": "pdf",
+  "extractionMethod": "in_memory_fallback",
+  "extractionSuccess": true,
+  "effectiveTextSource": null,
+  "rawExtractedTextSource": null,
+  "textSelectionReason": "selected_in_memory_fallback_text",
+  "domExtractionRejectedReasons": [],
+  "pdfType": null,
+  "ocrUsed": false,
+  "ocrProvider": null,
+  "ocrResultPath": null,
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\outputs\\patients\\LOURDES_CARREON__14dd451f854e521e\\referral-document-processing\\extracted-text.txt",
+  "extractionQuality": {
+    "characterCount": 1950,
+    "lineCount": 1,
+    "normalizedTokenCount": 251,
+    "containsClinicalVocabulary": true,
+    "containsDiagnosisLikePatterns": true,
+    "containsDatePatterns": false,
+    "containsSectionLikeHeadings": true,
+    "likelyUsableForLlm": true,
+    "likelyRequiresOcrRetry": false,
+    "likelyCorruptedEncoding": false,
+    "rejectedReasons": [
+      "no_date_patterns"
+    ],
+    "usabilityStatus": "usable"
+  },
+  "failureReasons": [],
+  "warnings": [],
+  "generatedAt": "2026-04-15T08:51:37.928Z"
+}

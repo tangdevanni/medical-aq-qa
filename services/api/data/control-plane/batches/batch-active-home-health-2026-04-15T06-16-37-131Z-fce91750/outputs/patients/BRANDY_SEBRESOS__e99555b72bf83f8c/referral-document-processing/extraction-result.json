@@ -1,0 +1,38 @@
+{
+  "documentId": "BRANDY_SEBRESOS__e99555b72bf83f8c-referral-1",
+  "localFilePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\BRANDY_SEBRESOS__e99555b72bf83f8c\\documents\\brandy-sebresos-12-06-2025-pdf\\source.pdf",
+  "fileType": "pdf",
+  "extractionMethod": "digital_pdf_text",
+  "extractionSuccess": true,
+  "effectiveTextSource": "digital_pdf_text",
+  "rawExtractedTextSource": "dom",
+  "textSelectionReason": "accepted_dom_text",
+  "domExtractionRejectedReasons": [],
+  "pdfType": "digital_text_pdf",
+  "ocrUsed": false,
+  "ocrProvider": null,
+  "ocrResultPath": null,
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\BRANDY_SEBRESOS__e99555b72bf83f8c\\referral-document-processing\\extracted-text.txt",
+  "extractionQuality": {
+    "characterCount": 3674,
+    "lineCount": 1,
+    "normalizedTokenCount": 639,
+    "containsClinicalVocabulary": false,
+    "containsDiagnosisLikePatterns": true,
+    "containsDatePatterns": false,
+    "containsSectionLikeHeadings": false,
+    "likelyUsableForLlm": false,
+    "likelyRequiresOcrRetry": false,
+    "likelyCorruptedEncoding": false,
+    "rejectedReasons": [
+      "no_clinical_vocabulary",
+      "no_date_patterns"
+    ],
+    "usabilityStatus": "rejected"
+  },
+  "failureReasons": [
+    "Extraction quality rejected: no_clinical_vocabulary, no_date_patterns"
+  ],
+  "warnings": [],
+  "generatedAt": "2026-04-15T06:31:44.683Z"
+}

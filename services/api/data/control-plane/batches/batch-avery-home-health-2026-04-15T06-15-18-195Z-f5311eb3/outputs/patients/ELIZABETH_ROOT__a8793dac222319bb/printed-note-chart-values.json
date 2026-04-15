@@ -1,0 +1,110 @@
+{
+  "generatedAt": "2026-04-15T07:24:39.743Z",
+  "source": "printed_note_ocr",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-avery-home-health-2026-04-15T06-15-18-195Z-f5311eb3\\outputs\\evidence\\ELIZABETH_ROOT__a8793dac222319bb\\oasis-printed-note\\extracted-text.txt",
+  "extractedFieldCount": 7,
+  "invocationModelId": "us.amazon.nova-lite-v1:0",
+  "currentChartValues": {
+    "patient_name": "Elizabeth Root",
+    "dob": "1945-04-20",
+    "soc_date": "2026-03-30",
+    "primary_reason_for_home_health_medical_necessity": "The patient is considered homebound because she is an 80-year-old female with severe functional and medical impairments that prevent safe, independent leaving of the home without assistance.",
+    "homebound_narrative": "The patient is an 80-year-old female with severe functional and medical impairments that prevent safe, independent leaving of the home without assistance.",
+    "homebound_supporting_factors": [
+      "morbid obesity",
+      "bilateral primary osteoarthritis of the knees",
+      "bilateral lower-extremity lymphedema/venous stasis",
+      "chronic hypoxic respiratory failure/COPD",
+      "chronic kidney disease stage 3"
+    ],
+    "functional_limitations": [
+      "Dyspnea with minimal exertion",
+      "Ambulation"
+    ]
+  },
+  "extractedFieldValues": [
+    {
+      "field_key": "patient_name",
+      "current_value": "Elizabeth Root",
+      "confidence": 0.95,
+      "source_spans": [
+        "Name: ROOT, ELIZABETH",
+        "Name: ROOT, ELIZABETH",
+        "Name: ROOT, ELIZABETH"
+      ]
+    },
+    {
+      "field_key": "dob",
+      "current_value": "1945-04-20",
+      "confidence": 0.95,
+      "source_spans": [
+        "DOB: 04/20/1945",
+        "DOB: 04/20/1945",
+        "DOB: 04/20/1945"
+      ]
+    },
+    {
+      "field_key": "soc_date",
+      "current_value": "2026-03-30",
+      "confidence": 0.95,
+      "source_spans": [
+        "Start of Care Date",
+        "Start of Care Date",
+        "Start of Care Date"
+      ]
+    },
+    {
+      "field_key": "primary_reason_for_home_health_medical_necessity",
+      "current_value": "The patient is considered homebound because she is an 80-year-old female with severe functional and medical impairments that prevent safe, independent leaving of the home without assistance.",
+      "confidence": 0.95,
+      "source_spans": [
+        "Primary Reason for Home Health / Medical Necessity",
+        "Primary Reason for Home Health / Medical Necessity",
+        "Primary Reason for Home Health / Medical Necessity"
+      ]
+    },
+    {
+      "field_key": "homebound_narrative",
+      "current_value": "The patient is an 80-year-old female with severe functional and medical impairments that prevent safe, independent leaving of the home without assistance.",
+      "confidence": 0.95,
+      "source_spans": [
+        "The patient is considered homebound because she is an 80-year-old female with severe functional and medical impairments that prevent safe, independent leaving of the home without assistance.",
+        "The patient is considered homebound because she is an 80-year-old female with severe functional and medical impairments that prevent safe, independent leaving of the home without assistance.",
+        "The patient is considered homebound because she is an 80-year-old female with severe functional and medical impairments that prevent safe, independent leaving of the home without assistance."
+      ]
+    },
+    {
+      "field_key": "homebound_supporting_factors",
+      "current_value": [
+        "morbid obesity",
+        "bilateral primary osteoarthritis of the knees",
+        "bilateral lower-extremity lymphedema/venous stasis",
+        "chronic hypoxic respiratory failure/COPD",
+        "chronic kidney disease stage 3"
+      ],
+      "confidence": 0.95,
+      "source_spans": [
+        "morbid obesity (BMI 52.4)",
+        "bilateral primary osteoarthritis of the knees",
+        "bilateral lower-extremity lymphedema/venous stasis with dependent edema",
+        "chronic hypoxic respiratory failure/COPD (on supplemental oxygen as needed)",
+        "chronic kidney disease stage 3"
+      ]
+    },
+    {
+      "field_key": "functional_limitations",
+      "current_value": [
+        "Dyspnea with minimal exertion",
+        "Ambulation"
+      ],
+      "confidence": 0.95,
+      "source_spans": [
+        "Dyspnea with minimal exertion",
+        "Ambulation"
+      ]
+    }
+  ],
+  "warnings": [
+    "Printed-note chart-value extraction used inference profile us.amazon.nova-lite-v1:0."
+  ]
+}

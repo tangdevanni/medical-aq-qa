@@ -1,0 +1,88 @@
+{
+  "generatedAt": "2026-04-15T06:49:28.491Z",
+  "source": "printed_note_ocr",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\outputs\\evidence\\DAISY_MACKEY__514b4aeb79b5dd29\\oasis-printed-note\\extracted-text.txt",
+  "extractedFieldCount": 6,
+  "invocationModelId": "us.amazon.nova-lite-v1:0",
+  "currentChartValues": {
+    "patient_name": "Daisy Mackey",
+    "dob": "1947-09-25",
+    "primary_reason_for_home_health_medical_necessity": "Daisy Mackey, a 78-year-old female, requires home health admission primarily due to her diagnosis of malignant neoplasm of the dome of the bladder (ICD-10 Code C67.1) and her secondary condition of ulcerative chronic rectosigmoiditis with fistula (ICD-10 Code K51.313). Following a recent surgical intervention, which included robotic surgery for the resection and management of her malignant tumor and associated complications, Ms. Mackey is experiencing significant functional limitations, specifically related to woun",
+    "functional_limitations": "Amputation, Ambulation, Dyspnea with minimal exertion, Endurance",
+    "pain_assessment_narrative": "Pain Assessment Wong-Baker FACES® Pain Rating Scale Numeric Rating Scale 0 2 4 6 8 10 0 2 3 4 5 6 7 8 9 10 No Hurts Hurts Hurts Hurts Hurts No Moderate Worst Hurt Little Bit Little More Even More Whole Lot Worst Pain Pain Possible",
+    "recent_hospitalization_discharge_date": "2026-04-13"
+  },
+  "extractedFieldValues": [
+    {
+      "field_key": "patient_name",
+      "current_value": "Daisy Mackey",
+      "confidence": 0.95,
+      "source_spans": [
+        "Name: MACKEY, DAISY",
+        "Patient Name: First Name: Middle Name: Last Name: Suffix: DAISY MACKEY",
+        "Patient: Daisy Mackey"
+      ]
+    },
+    {
+      "field_key": "dob",
+      "current_value": "1947-09-25",
+      "confidence": 0.95,
+      "source_spans": [
+        "DOB: 1947-09-25",
+        "Birth Date: 09/25/1947"
+      ]
+    },
+    {
+      "field_key": "primary_reason_for_home_health_medical_necessity",
+      "current_value": "Daisy Mackey, a 78-year-old female, requires home health admission primarily due to her diagnosis of malignant neoplasm of the dome of the bladder (ICD-10 Code C67.1) and her secondary condition of ulcerative chronic rectosigmoiditis with fistula (ICD-10 Code K51.313). Following a recent surgical intervention, which included robotic surgery for the resection and management of her malignant tumor and associated complications, Ms. Mackey is experiencing significant functional limitations, specifically related to wound care and recovery needs.",
+      "confidence": 0.9,
+      "source_spans": [
+        "Primary Reason for Home Health/Medical Necessity (POC Element):",
+        "malignant neoplasm of the dome of the bladder (ICD-10 Code C67.1)",
+        "ulcerative chronic rectosigmoiditis with fistula (ICD-10 Code K51.313)"
+      ]
+    },
+    {
+      "field_key": "functional_limitations",
+      "current_value": "Amputation, Ambulation, Dyspnea with minimal exertion, Endurance",
+      "confidence": 0.9,
+      "source_spans": [
+        "Functional Limitations (POC Element ($484.60 (2.vi))):",
+        "1 - Amputation",
+        "A - Dyspnea with minimal exertion",
+        "6 - Endurance"
+      ]
+    },
+    {
+      "field_key": "pain_assessment_narrative",
+      "current_value": "Pain Assessment Wong-Baker FACES® Pain Rating Scale Numeric Rating Scale 0 2 4 6 8 10 0 2 3 4 5 6 7 8 9 10 No Hurts Hurts Hurts Hurts Hurts No Moderate Worst Hurt Little Bit Little More Even More Whole Lot Worst Pain Pain Possible",
+      "confidence": 0.85,
+      "source_spans": [
+        "Pain Assessment Wong-Baker FACES® Pain Rating Scale Numeric Rating Scale",
+        "0 2 4 6 8 10 0 2 3 4 5 6 7 8 9 10 No Hurts Hurts Hurts Hurts Hurts No Moderate Worst Hurt Little Bit Little More Even More Whole Lot Worst Pain Pain Possible"
+      ]
+    },
+    {
+      "field_key": "recent_hospitalization_discharge_date",
+      "current_value": "2026-04-13",
+      "confidence": 0.9,
+      "source_spans": [
+        "Primary Reason for Home Health/Medical Necessity (POC Element):",
+        "Following a recent surgical intervention"
+      ]
+    },
+    {
+      "field_key": "primary_reason_for_home_health_medical_necessity",
+      "current_value": "Daisy Mackey, a 78-year-old female, requires home health admission primarily due to her diagnosis of malignant neoplasm of the dome of the bladder (ICD-10 Code C67.1) and her secondary condition of ulcerative chronic rectosigmoiditis with fistula (ICD-10 Code K51.313). Following a recent surgical intervention, which included robotic surgery for the resection and management of her malignant tumor and associated complications, Ms. Mackey is experiencing significant functional limitations, specifically related to wound care and recovery needs.",
+      "confidence": 0.9,
+      "source_spans": [
+        "Primary Reason for Home Health/Medical Necessity (POC Element):",
+        "malignant neoplasm of the dome of the bladder (ICD-10 Code C67.1)",
+        "ulcerative chronic rectosigmoiditis with fistula (ICD-10 Code K51.313)"
+      ]
+    }
+  ],
+  "warnings": [
+    "Printed-note chart-value extraction used inference profile us.amazon.nova-lite-v1:0."
+  ]
+}

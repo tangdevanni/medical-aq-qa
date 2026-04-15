@@ -1,0 +1,407 @@
+[
+  {
+    "field_key": "patient_name",
+    "current_chart_value": "WOLFBRANDT, DONNA",
+    "proposed_value": null,
+    "comparison_status": "unsupported",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "medium"
+  },
+  {
+    "field_key": "dob",
+    "current_chart_value": "1957-03-25",
+    "proposed_value": null,
+    "comparison_status": "unsupported",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "medium"
+  },
+  {
+    "field_key": "soc_date",
+    "current_chart_value": "2026-03-24",
+    "proposed_value": null,
+    "comparison_status": "unsupported",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "medium"
+  },
+  {
+    "field_key": "referral_date",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "preferred_language",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "unsupported",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "medium"
+  },
+  {
+    "field_key": "interpreter_needed",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "primary_reason_for_home_health_medical_necessity",
+    "current_chart_value": "The patient is considered homebound because she has significant functional limitations and medical conditions that make leaving her home difficult and unsafe without assistance.",
+    "proposed_value": "The patient is a 66-year-old female admitted today from home Discharge To, Anticipated: Skilled Nursing Unit/Facility Discharge To, Anticipated: Skilled Nursing Unit/Facility Discharge To, Anticipated: Skilled Nursing Unit/Facility",
+    "comparison_status": "requires_human_review",
+    "confidence": 0.78,
+    "rationale": "Medical necessity was summarized from referral narrative and skilled-need evidence.",
+    "source_spans": [
+      "The patient is a 66-year-old female admitted today from home Discharge To, Anticipated: Skilled Nursing Unit/Facility Discharge To, Anticipated: Skilled Nursing Unit/Facility Discharge To, Anticipated: Skilled Nursing Unit/Facility"
+    ],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "admit_reason_to_home_health",
+    "current_chart_value": null,
+    "proposed_value": "The patient is a 66-year-old female admitted today from home Discharge To, Anticipated: Skilled Nursing Unit/Facility Discharge To, Anticipated: Skilled Nursing Unit/Facility Discharge To, Anticipated: Skilled Nursing Unit/Facility",
+    "comparison_status": "requires_human_review",
+    "confidence": 0.78,
+    "rationale": "Medical necessity was summarized from referral narrative and skilled-need evidence.",
+    "source_spans": [
+      "The patient is a 66-year-old female admitted today from home Discharge To, Anticipated: Skilled Nursing Unit/Facility Discharge To, Anticipated: Skilled Nursing Unit/Facility Discharge To, Anticipated: Skilled Nursing Unit/Facility"
+    ],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "homebound_narrative",
+    "current_chart_value": "The patient is considered homebound because she has significant functional limitations and medical conditions that make leaving her home difficult and unsafe without assistance.",
+    "proposed_value": "Device : Front-wheel walker (FWW) Ambulation with Roller Walker : Verbalizes understanding, Demonstrates, Needs further teaching Home Equipment Rehab : 4-Wheel walker, Manual wheelchair Device utilized oT : Front-wheel walker (FWW) Devices/Equipment at Home: 4-Wheel walker, Manual wheelchair Performed By: Aikels PT, MPT, Dawn",
+    "comparison_status": "requires_human_review",
+    "confidence": 0.8,
+    "rationale": "Homebound evidence was summarized from referral text.",
+    "source_spans": [
+      "Device : Front-wheel walker (FWW) Ambulation with Roller Walker : Verbalizes understanding, Demonstrates, Needs further teaching Home Equipment Rehab : 4-Wheel walker, Manual wheelchair Device utilized oT : Front-wheel walker (FWW) Devices/Equipment at Home: 4"
+    ],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "homebound_supporting_factors",
+    "current_chart_value": "Dyspnea with minimal exertion, Generalized weakness, Speech, Legally blind",
+    "proposed_value": [
+      "uses_walker"
+    ],
+    "comparison_status": "requires_human_review",
+    "confidence": 0.73,
+    "rationale": "Homebound supporting factors were extracted from referral text.",
+    "source_spans": [
+      "Device : Front-wheel walker (FWW) Ambulation with Roller Walker : Verbalizes understanding, Demonstrates, Needs further teaching Home Equipment Rehab : 4-Wheel walker, Manual wheelchair Device utilized oT : Front-wheel walker (FWW) Devices/Equipment at Home: 4"
+    ],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "recent_hospitalization_discharge_date",
+    "current_chart_value": "2026-03-24",
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "recent_hospitalization_facility",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "caregiver_name",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "unsupported",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "medium"
+  },
+  {
+    "field_key": "caregiver_relationship",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "unsupported",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "medium"
+  },
+  {
+    "field_key": "caregiver_phone",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "living_situation",
+    "current_chart_value": "The patient requires assistance of another person to leave the home due to her multiple comorbidities, limited mobility, muscle weakness, and safety risks associated with falls and functional decline.",
+    "proposed_value": "Home with family care Performed By",
+    "comparison_status": "possible_conflict",
+    "confidence": 0.72,
+    "rationale": "Living situation was summarized from referral text.",
+    "source_spans": [
+      "Home with family care Performed By"
+    ],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "prior_functioning",
+    "current_chart_value": "The patient required maximal assistance for mobility and activities of daily living during her recent hospitalization but progressed to ambulating with a walker.",
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "functional_limitations",
+    "current_chart_value": "Dyspnea with minimal exertion, Generalized weakness, Speech, Legally blind",
+    "proposed_value": [
+      "weakness",
+      "ambulation_limitations",
+      "reduced_endurance"
+    ],
+    "comparison_status": "requires_human_review",
+    "confidence": 0.76,
+    "rationale": "Functional limitations were extracted from referral text.",
+    "source_spans": [
+      "Ambulation Level : Min A Ambulation Distance : 5 ft Ambulation with Roller Walker : Verbalizes understanding, Demonstrates, Needs further teaching Ambulation Level : Does not occur PT Impairments or Limitations : Ambulat"
+    ],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "therapy_need",
+    "current_chart_value": "The patient requires ongoing skilled therapy for rehabilitation and medical management due to her multiple comorbidities, limited mobility, muscle weakness, and safety risks associated with falls and functional decline.",
+    "proposed_value": "Physical Therapy Forms Physical Therapy Orders : No active Physical Therapy Orders.",
+    "comparison_status": "requires_human_review",
+    "confidence": 0.77,
+    "rationale": "Therapy need was summarized from referral text.",
+    "source_spans": [
+      "Physical Therapy Forms Physical Therapy Orders : No active Physical Therapy Orders."
+    ],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "patient_summary_narrative",
+    "current_chart_value": "The patient is a 69-year-old female with a history of a minimally displaced fracture of the left inferior pubic ramus and left pubic symphysis due to a mechanical fall, resulting in impaired mobility and requiring use of a wheelchair and walker for ambulation. She has generalized muscle weakness and other abnormalities of gait and mobility, compounded by morbid obesity, chronic kidney disease, chronic heart failure with reduced ejection fraction (35%), and a history of recurrent mechanical falls. These conditions c",
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "skilled_interventions",
+    "current_chart_value": null,
+    "proposed_value": "Physical Therapy Forms Physical Therapy Orders : No active Physical Therapy Orders.",
+    "comparison_status": "requires_human_review",
+    "confidence": 0.8,
+    "rationale": "Skilled interventions were summarized from the therapy plan.",
+    "source_spans": [
+      "Physical Therapy Forms Physical Therapy Orders : No active Physical Therapy Orders."
+    ],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "discipline_frequencies",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "plan_for_next_visit",
+    "current_chart_value": null,
+    "proposed_value": "Physical Therapy Forms Physical Therapy Orders : No active Physical Therapy Orders.",
+    "comparison_status": "requires_human_review",
+    "confidence": 0.78,
+    "rationale": "Next-visit plan was summarized from the therapy plan.",
+    "source_spans": [
+      "Physical Therapy Forms Physical Therapy Orders : No active Physical Therapy Orders."
+    ],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "patient_caregiver_goals",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "care_plan_problems_goals_interventions",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "fall_risk_narrative",
+    "current_chart_value": null,
+    "proposed_value": "reduce fall risk Px: fall risk, foley cath Barriers to DC: fall risk Treatment time: 40 minutes Aikels PT, MPT, Dawn - 3/6/2024 13:53 PST Environmental Safety Implemented : Adequate room lighting, Bed in low position, Call device within reach, Personal items within reach Aikels PT, MPT, Dawn - 3/6/2024 13:33 PST PT Non Timed Modalities 2024 PT Eval Moderate Complexity Total Number Min : 15 PT Total Non Timed : 15 Aik",
+    "comparison_status": "requires_human_review",
+    "confidence": 0.7,
+    "rationale": "Risk and safety narrative was summarized from referral text.",
+    "source_spans": [
+      "reduce fall risk Px: fall risk, foley cath Barriers to DC: fall risk Treatment time: 40 minutes Aikels PT, MPT, Dawn - 3/6/2024 13:53 PST Environmental Safety Implemented : Adequate room lighting, Bed in low position, Ca"
+    ],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "respiratory_status",
+    "current_chart_value": "The patient has dyspnea with minimal exertion and requires ongoing skilled therapy for rehabilitation and medical management.",
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "integumentary_wound_status",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "pain_assessment_narrative",
+    "current_chart_value": "The patient experiences chronic left shoulder pain and tremor, fine motor decline, and speech difficulty, all impairing her physical function.",
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "emotional_behavioral_status",
+    "current_chart_value": "The patient is alert, oriented, forgetful at times, able to communicate needs, able to follow instructions, cooperative, and verbally responsive. Patient experiences episodes of depression.",
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "past_medical_history",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "immunization_status",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "diagnosis_candidates",
+    "current_chart_value": null,
+    "proposed_value": [
+      {
+        "description": "Facial cellulitis (L03",
+        "icd10_code": "K04.7"
+      },
+      {
+        "description": "Weakness (R53",
+        "icd10_code": "R65.20"
+      },
+      {
+        "description": "Dental abscess (K04",
+        "icd10_code": "N17.9"
+      },
+      {
+        "description": "Hypochloremia (E87",
+        "icd10_code": "L03.211"
+      },
+      {
+        "description": "Hyponatremia (E87",
+        "icd10_code": "E87.6"
+      },
+      {
+        "description": "Assessment",
+        "icd10_code": "E87.1"
+      },
+      {
+        "description": "Dental abscess ( K04",
+        "icd10_code": "N17.9"
+      }
+    ],
+    "comparison_status": "requires_human_review",
+    "confidence": 0.74,
+    "rationale": "Diagnosis candidates extracted from referral evidence.",
+    "source_spans": [
+      "K04.7) Facial cellulitis (L03",
+      "R65.20) Weakness (R53",
+      "N17.9) Dental abscess (K04",
+      "L03.211) Hypochloremia (E87",
+      "E87.6) Hyponatremia (E87",
+      "E87.1) Assessment",
+      "N17.9) Dental abscess ( K04"
+    ],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "code_status",
+    "current_chart_value": null,
+    "proposed_value": "full_code",
+    "comparison_status": "requires_human_review",
+    "confidence": 0.75,
+    "rationale": "Code status was explicitly stated in referral text.",
+    "source_spans": [
+      "Code status: full_code"
+    ],
+    "reviewer_priority": "high"
+  }
+]

@@ -1,0 +1,42 @@
+{
+  "generatedAt": "2026-04-14T23:55:42.379Z",
+  "source": "printed_note_ocr",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-2026-04-14T22-15-27-367Z-64c9d561\\outputs\\evidence\\SHUMEI_BENNETT__f4273ff7974d09cf\\oasis-printed-note\\extracted-text.txt",
+  "extractedFieldCount": 3,
+  "invocationModelId": "us.amazon.nova-lite-v1:0",
+  "currentChartValues": {
+    "patient_name": "BENNETT, SHUMEI",
+    "dob": "1939-02-01",
+    "soc_date": "2026-03-26"
+  },
+  "extractedFieldValues": [
+    {
+      "field_key": "patient_name",
+      "current_value": "BENNETT, SHUMEI",
+      "confidence": 0.95,
+      "source_spans": [
+        "Name: BENNETT, SHUMEI",
+        "Patient Name First Name: Middle Name: Last Name: Suffix: SHUMEI BENNETT"
+      ]
+    },
+    {
+      "field_key": "dob",
+      "current_value": "1939-02-01",
+      "confidence": 0.95,
+      "source_spans": [
+        "DOB: 1939-02-01"
+      ]
+    },
+    {
+      "field_key": "soc_date",
+      "current_value": "2026-03-26",
+      "confidence": 0.95,
+      "source_spans": [
+        "Start of Care Date BAL, HARJINDER 03/26/2026"
+      ]
+    }
+  ],
+  "warnings": [
+    "Printed-note chart-value extraction used inference profile us.amazon.nova-lite-v1:0."
+  ]
+}

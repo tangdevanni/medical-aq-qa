@@ -1,0 +1,39 @@
+{
+  "documentId": "STEVEN_LIU__f767b9073531b5f2-referral-1",
+  "localFilePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\STEVEN_LIU__f767b9073531b5f2\\documents\\liu-steven-g-referral-03262026-pdf\\source.pdf",
+  "fileType": "pdf",
+  "extractionMethod": "in_memory_fallback",
+  "extractionSuccess": true,
+  "effectiveTextSource": null,
+  "rawExtractedTextSource": null,
+  "textSelectionReason": "selected_in_memory_fallback_text",
+  "domExtractionRejectedReasons": [],
+  "pdfType": null,
+  "ocrUsed": false,
+  "ocrProvider": null,
+  "ocrResultPath": null,
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\STEVEN_LIU__f767b9073531b5f2\\referral-document-processing\\extracted-text.txt",
+  "extractionQuality": {
+    "characterCount": 51,
+    "lineCount": 1,
+    "normalizedTokenCount": 10,
+    "containsClinicalVocabulary": false,
+    "containsDiagnosisLikePatterns": false,
+    "containsDatePatterns": false,
+    "containsSectionLikeHeadings": false,
+    "likelyUsableForLlm": false,
+    "likelyRequiresOcrRetry": false,
+    "likelyCorruptedEncoding": false,
+    "rejectedReasons": [
+      "too_short",
+      "no_clinical_vocabulary",
+      "no_date_patterns"
+    ],
+    "usabilityStatus": "rejected"
+  },
+  "failureReasons": [
+    "Extraction quality rejected: too_short, no_clinical_vocabulary, no_date_patterns"
+  ],
+  "warnings": [],
+  "generatedAt": "2026-04-15T07:56:49.677Z"
+}

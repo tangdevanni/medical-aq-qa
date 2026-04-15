@@ -1,0 +1,21 @@
+{
+  "/api/session/dashboard/route": "/api/session/dashboard",
+  "/api/session/runs/[...segments]/route": "/api/session/runs/[...segments]",
+  "/api/session/runs/route": "/api/session/runs",
+  "/auth/login/route": "/auth/login",
+  "/auth/logout/route": "/auth/logout",
+  "/auth/select-agency/route": "/auth/select-agency",
+  "/healthz/route": "/healthz",
+  "/_not-found/page": "/_not-found",
+  "/login/page": "/login",
+  "/page": "/",
+  "/select-agency/page": "/select-agency",
+  "/batches/[batchId]/page": "/batches/[batchId]",
+  "/agency/page": "/agency",
+  "/batches/page": "/batches",
+  "/runs/[runId]/page": "/runs/[runId]",
+  "/batches/[batchId]/patients/[patientId]/page": "/batches/[batchId]/patients/[patientId]",
+  "/runs/new/page": "/runs/new",
+  "/runs/page": "/runs",
+  "/runs/[runId]/patients/[patientId]/page": "/runs/[runId]/patients/[patientId]"
+}

@@ -1,0 +1,2659 @@
+{
+  "schemaVersion": "1",
+  "generatedAt": "2026-04-15T08:08:35.563Z",
+  "sourcePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-avery-home-health-2026-04-15T06-15-18-195Z-f5311eb3\\outputs\\patients\\GUSTAVO_DURAN__dc63f49de575cb6a\\documents\\duran-g-demos-3-18-26-pdf\\source.pdf",
+  "pdfType": "digital_text_pdf",
+  "ocrUsed": true,
+  "ocrMode": "async_s3",
+  "ocrProvider": "textract",
+  "ocrSuccess": true,
+  "ocrTextLength": 2027,
+  "configuredAwsRegion": "us-east-2",
+  "resolvedBucketRegion": "us-east-2",
+  "textractRegion": "us-east-2",
+  "regionMatch": true,
+  "regionOverrideUsed": true,
+  "s3UploadSucceeded": true,
+  "s3UploadError": null,
+  "textractStartSucceeded": true,
+  "textractStartError": null,
+  "ocrErrorCategory": null,
+  "syncError": "Request has unsupported document format",
+  "textractS3Bucket": "medical-qa-textract-docs-devanni",
+  "textractS3Key": "finale-workbook-intake/textract/64023cd5b2aba142eebdae888c610cc0cb1d1555/source.pdf",
+  "textractJobId": "5151c51e8e754072463b9de9e07253f5969b1f2cead7e99cd52ca130599c2ee1",
+  "textractJobStatus": "SUCCEEDED",
+  "textractStatusMessage": null,
+  "textractPollAttemptCount": 24,
+  "blockCount": 438,
+  "blocks": [
+    {
+      "blockType": "PAGE",
+      "text": null,
+      "confidence": null,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Basic Demographics",
+      "confidence": 99.9853515625,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Name",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "MRN",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "SSN",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Sex",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Date of Birth",
+      "confidence": 99.98371887207031,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Duran, Gustavo",
+      "confidence": 99.94548797607422,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "0001676319",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "xxx-xx-3179",
+      "confidence": 63.62344741821289,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Male",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "11/22/1957 (68 yrs)",
+      "confidence": 98.00130462646484,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Ethnic Group",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Marital Status",
+      "confidence": 99.9853515625,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Patient Status",
+      "confidence": 99.98046875,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Sex assigned at birth",
+      "confidence": 99.98046875,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Gender identity",
+      "confidence": 99.98046875,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Mexican, Mexican",
+      "confidence": 99.92028045654297,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Married",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Alive",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Male",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Male",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "American, or",
+      "confidence": 99.72745513916016,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Chicano/a",
+      "confidence": 99.80388641357422,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Contact Information",
+      "confidence": 99.97030639648438,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Address",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Phone",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "E-mail Address",
+      "confidence": 99.9609375,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "3818 HADDOCK AVE",
+      "confidence": 99.8828125,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "702-300-7394 (Home) *Preferred*",
+      "confidence": 99.64119720458984,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "oye2915@gmail.com",
+      "confidence": 99.93083953857422,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "LAS VEGAS NV 89115",
+      "confidence": 99.90966796875,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "702-300-7394 (Mobile)",
+      "confidence": 99.79940795898438,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Additional Info",
+      "confidence": 99.9853515625,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Preferred Language",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Interpreter Needed",
+      "confidence": 99.94548797607422,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Spanish",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Yes",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "PCP and Center",
+      "confidence": 99.51869201660156,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Primary Care Provider",
+      "confidence": 99.96392822265625,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Phone",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Center",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Elchin F Zeynalov, MD",
+      "confidence": 99.82038116455078,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "702-383-2273",
+      "confidence": 99.89098358154297,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "UMC Hospital",
+      "confidence": 99.9560546875,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Pharmacy Preferences",
+      "confidence": 99.89546203613281,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Pharmacies",
+      "confidence": 99.95037078857422,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "CVS/PHARMACY #8800 - LAS VEGAS, NV - 6705 E LAKE MEAD BLVD / CVS/PHARMACY #8808 - NORTH LAS",
+      "confidence": 97.73101806640625,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "VEGAS, NV - 2011 E LAKE MEAD BLVD AT CRNR CIV CNTR DR/ACROS LAKE MEAD H",
+      "confidence": 98.7411880493164,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Employment Information",
+      "confidence": 99.9109115600586,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Status",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Retired",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Administrative",
+      "confidence": 99.80069732666016,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Signature on File",
+      "confidence": 99.9609375,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Date Filed",
+      "confidence": 99.98046875,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Yes",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "None on file",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Power of Attorney",
+      "confidence": 99.99349212646484,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Date Asked",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "No",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "None on file",
+      "confidence": 99.9574203491211,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Advance Directive",
+      "confidence": 99.9951171875,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Date Asked",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "No",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "None on file",
+      "confidence": 99.97721099853516,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Emergency Contacts",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Preferred",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Name",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Relation",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Home",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Work",
+      "confidence": 99.96014404296875,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Mobile",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Language",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Arias,Elizabeth",
+      "confidence": 94.65641021728516,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Niece",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "702-332-8812",
+      "confidence": 99.9609375,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "English",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Interpreter",
+      "confidence": 99.72098541259766,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "needed? No",
+      "confidence": 99.9609375,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Duran,Alejandro",
+      "confidence": 97.15103149414062,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Son",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "702-300-7394",
+      "confidence": 99.89178466796875,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Interpreter",
+      "confidence": 99.67135620117188,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "needed? No",
+      "confidence": 99.951171875,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Duran,Delfina",
+      "confidence": 94.71858978271484,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Sister",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "702-332-9098",
+      "confidence": 99.89098358154297,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Interpreter",
+      "confidence": 99.87065887451172,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "needed? Yes",
+      "confidence": 99.9658203125,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Other Contacts",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "None on File",
+      "confidence": 99.94764709472656,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Active Insurance as of 3/20/2026",
+      "confidence": 99.978515625,
+      "page": 1
+    },
+    {
+      "blockType": "LINE",
+      "text": "Printed by SABELLANO, JOSH [35451]",
+      "confidence": 99.76841735839844,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Basic",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Demographics",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Name",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "MRN",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "SSN",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Sex",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Date",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "of",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Birth",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Duran,",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Gustavo",
+      "confidence": 99.89098358154297,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "0001676319",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "xxx-xx-3179",
+      "confidence": 63.62344741821289,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Male",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "11/22/1957",
+      "confidence": 99.462890625,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "(68",
+      "confidence": 97.1875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "yrs)",
+      "confidence": 97.353515625,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Ethnic",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Group",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Marital",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Status",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Patient",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Status",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Sex",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "assigned",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "at",
+      "confidence": 99.951171875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "birth",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Gender",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "identity",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Mexican,",
+      "confidence": 99.88042449951172,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Mexican",
+      "confidence": 99.96014404296875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Married",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Alive",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Male",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Male",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "American,",
+      "confidence": 99.64126586914062,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "or",
+      "confidence": 99.81365966796875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Chicano/a",
+      "confidence": 99.80388641357422,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Contact",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Information",
+      "confidence": 99.95037078857422,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Address",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Phone",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "E-mail",
+      "confidence": 99.951171875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Address",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "3818",
+      "confidence": 99.912109375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "HADDOCK",
+      "confidence": 99.892578125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "AVE",
+      "confidence": 99.84375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "702-300-7394",
+      "confidence": 99.69647216796875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "(Home)",
+      "confidence": 99.83318328857422,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "*Preferred*",
+      "confidence": 99.39393615722656,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "oye2915@gmail.com",
+      "confidence": 99.93083953857422,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "LAS",
+      "confidence": 99.931640625,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "VEGAS",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "NV",
+      "confidence": 99.84375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "89115",
+      "confidence": 99.892578125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "702-300-7394",
+      "confidence": 99.794921875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "(Mobile)",
+      "confidence": 99.80388641357422,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Additional",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Info",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Preferred",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Language",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Interpreter",
+      "confidence": 99.92028045654297,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Needed",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Spanish",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Yes",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "PCP",
+      "confidence": 98.59513854980469,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "and",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Center",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Primary",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Care",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Provider",
+      "confidence": 99.93083953857422,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Phone",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Center",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Elchin",
+      "confidence": 99.85112762451172,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "F",
+      "confidence": 99.56871795654297,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Zeynalov,",
+      "confidence": 99.89098358154297,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "MD",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "702-383-2273",
+      "confidence": 99.89098358154297,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "UMC",
+      "confidence": 99.951171875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Hospital",
+      "confidence": 99.9609375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Pharmacy",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Preferences",
+      "confidence": 99.80069732666016,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Pharmacies",
+      "confidence": 99.95037078857422,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "CVS/PHARMACY",
+      "confidence": 99.84375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "#8800",
+      "confidence": 99.46208953857422,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "-",
+      "confidence": 89.25861358642578,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "LAS",
+      "confidence": 99.345703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "VEGAS,",
+      "confidence": 99.87145233154297,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "NV",
+      "confidence": 99.580078125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "-",
+      "confidence": 86.9581069946289,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "6705",
+      "confidence": 99.609375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "E",
+      "confidence": 98.83988189697266,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "LAKE",
+      "confidence": 99.951171875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "MEAD",
+      "confidence": 99.951171875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "BLVD",
+      "confidence": 99.384765625,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "/",
+      "confidence": 98.94132995605469,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "CVS/PHARMACY",
+      "confidence": 99.658203125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "#8808",
+      "confidence": 99.560546875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "-",
+      "confidence": 89.55735778808594,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "NORTH",
+      "confidence": 99.541015625,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "LAS",
+      "confidence": 99.84375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "VEGAS,",
+      "confidence": 99.83079528808594,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "NV",
+      "confidence": 99.521484375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "-",
+      "confidence": 89.56433868408203,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "2011",
+      "confidence": 99.404296875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "E",
+      "confidence": 96.99398040771484,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "LAKE",
+      "confidence": 99.912109375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "MEAD",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "BLVD",
+      "confidence": 99.951171875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "AT",
+      "confidence": 99.5752944946289,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "CRNR",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "CIV",
+      "confidence": 99.9609375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "CNTR",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "DR/ACROS",
+      "confidence": 99.79412841796875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "LAKE",
+      "confidence": 99.873046875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "MEAD",
+      "confidence": 99.951171875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "H",
+      "confidence": 95.5947036743164,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Employment",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Information",
+      "confidence": 99.83159637451172,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Status",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Retired",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Administrative",
+      "confidence": 99.80069732666016,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Signature",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "on",
+      "confidence": 99.921875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "File",
+      "confidence": 99.9609375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Date",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Filed",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Yes",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "None",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "on",
+      "confidence": 99.931640625,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "file",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Power",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "of",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Attorney",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Date",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Asked",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "No",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "None",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "on",
+      "confidence": 99.89178466796875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "file",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Advance",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Directive",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Date",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Asked",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "No",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "None",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "on",
+      "confidence": 99.931640625,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "file",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Emergency",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Contacts",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Preferred",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Name",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Relation",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Home",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Work",
+      "confidence": 99.96014404296875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Mobile",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Language",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Arias,Elizabeth",
+      "confidence": 94.65641021728516,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Niece",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "702-332-8812",
+      "confidence": 99.9609375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "English",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Interpreter",
+      "confidence": 99.72098541259766,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "needed?",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "No",
+      "confidence": 99.951171875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Duran,Alejandro",
+      "confidence": 97.15103149414062,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Son",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "702-300-7394",
+      "confidence": 99.89178466796875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Interpreter",
+      "confidence": 99.67135620117188,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "needed?",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "No",
+      "confidence": 99.931640625,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Duran,Delfina",
+      "confidence": 94.71858978271484,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Sister",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "702-332-9098",
+      "confidence": 99.89098358154297,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Interpreter",
+      "confidence": 99.87065887451172,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "needed?",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Yes",
+      "confidence": 99.9609375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Other",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Contacts",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "None",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "on",
+      "confidence": 99.88201141357422,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "File",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Active",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Insurance",
+      "confidence": 100,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "as",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "of",
+      "confidence": 99.951171875,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "3/20/2026",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "Printed",
+      "confidence": 99.990234375,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "by",
+      "confidence": 99.970703125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "SABELLANO,",
+      "confidence": 99.7217788696289,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "JOSH",
+      "confidence": 99.736328125,
+      "page": 1
+    },
+    {
+      "blockType": "WORD",
+      "text": "[35451]",
+      "confidence": 99.42303466796875,
+      "page": 1
+    },
+    {
+      "blockType": "PAGE",
+      "text": null,
+      "confidence": null,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "MEDICARE - MEDICARE A & B",
+      "confidence": 91.9327621459961,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Payor",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Plan",
+      "confidence": 99.96014404296875,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Insurance Group",
+      "confidence": 99.9853515625,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Employer/Plan Group",
+      "confidence": 99.75505828857422,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "MEDICARE",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "MEDICARE A & B",
+      "confidence": 93.9197998046875,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Payor Plan Fax",
+      "confidence": 99.99349212646484,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Payor Plan Address",
+      "confidence": 99.98697662353516,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Payor Plan Phone Number",
+      "confidence": 99.9951171875,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Number",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Effective Dates",
+      "confidence": 99.9951171875,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "900 42ND STREET SOUTH",
+      "confidence": 99.443359375,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "11/1/2022 - None",
+      "confidence": 96.63238525390625,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Entered",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "FARGO ND 58103-6776",
+      "confidence": 99.94140625,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Subscriber Name",
+      "confidence": 99.9951171875,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Subscriber Birth Date",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Member ID",
+      "confidence": 99.9853515625,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "DURAN,GUSTAVO",
+      "confidence": 93.73983764648438,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "11/22/1957",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "6CV8TP1QR67",
+      "confidence": 99.951171875,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "NEVADA MEDICAID - MEDICAID MED/CO PAY ONLY",
+      "confidence": 98.91706848144531,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Payor",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Plan",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Insurance Group",
+      "confidence": 99.9951171875,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Employer/Plan Group",
+      "confidence": 99.8291015625,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "NEVADA MEDICAID",
+      "confidence": 99.9755859375,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "MEDICAID MED/CO PAY ONLY",
+      "confidence": 99.74609375,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Payor Plan Fax",
+      "confidence": 99.99349212646484,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Payor Plan Address",
+      "confidence": 99.9802017211914,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Payor Plan Phone Number",
+      "confidence": 99.96766662597656,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Number",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Effective Dates",
+      "confidence": 99.9951171875,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "PO BOX 30042",
+      "confidence": 99.85517883300781,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "9/18/2025 - None",
+      "confidence": 97.4349594116211,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Entered",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "RENO NV 89520-3042",
+      "confidence": 99.93489074707031,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Subscriber Name",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Subscriber Birth Date",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Member ID",
+      "confidence": 99.9853515625,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "DURAN,GUSTAVO",
+      "confidence": 94.02603149414062,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "11/22/1957",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "00001814359",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "LINE",
+      "text": "Printed by SABELLANO, JOSH [35451]",
+      "confidence": 99.84964752197266,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "MEDICARE",
+      "confidence": 99.921875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "-",
+      "confidence": 92.28196716308594,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "MEDICARE",
+      "confidence": 99.833984375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "A",
+      "confidence": 79.29029846191406,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "&",
+      "confidence": 99.765625,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "B",
+      "confidence": 80.5028305053711,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Payor",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Plan",
+      "confidence": 99.96014404296875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Insurance",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Group",
+      "confidence": 99.970703125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Employer/Plan",
+      "confidence": 99.67613983154297,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Group",
+      "confidence": 99.833984375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "MEDICARE",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "MEDICARE",
+      "confidence": 99.921875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "A",
+      "confidence": 98.54432678222656,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "&",
+      "confidence": 99.6875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "B",
+      "confidence": 77.52550506591797,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Payor",
+      "confidence": 99.990234375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Plan",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Fax",
+      "confidence": 99.990234375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Payor",
+      "confidence": 99.970703125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Plan",
+      "confidence": 99.990234375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Address",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Payor",
+      "confidence": 99.990234375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Plan",
+      "confidence": 99.990234375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Phone",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Number",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Number",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Effective",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Dates",
+      "confidence": 99.990234375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "900",
+      "confidence": 98.701171875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "42ND",
+      "confidence": 99.140625,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "STREET",
+      "confidence": 99.970703125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "SOUTH",
+      "confidence": 99.9609375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "11/1/2022",
+      "confidence": 99.912109375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "-",
+      "confidence": 90.22919464111328,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "None",
+      "confidence": 99.755859375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Entered",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "FARGO",
+      "confidence": 99.990234375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "ND",
+      "confidence": 99.990234375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "58103-6776",
+      "confidence": 99.84375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Subscriber",
+      "confidence": 99.990234375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Name",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Subscriber",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Birth",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Date",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Member",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "ID",
+      "confidence": 99.970703125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "DURAN,GUSTAVO",
+      "confidence": 93.73983764648438,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "11/22/1957",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "6CV8TP1QR67",
+      "confidence": 99.951171875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "NEVADA",
+      "confidence": 99.970703125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "MEDICAID",
+      "confidence": 99.970703125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "-",
+      "confidence": 93.15190124511719,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "MEDICAID",
+      "confidence": 99.951171875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "MED/CO",
+      "confidence": 99.443359375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "PAY",
+      "confidence": 99.9609375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "ONLY",
+      "confidence": 99.970703125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Payor",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Plan",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Insurance",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Group",
+      "confidence": 99.990234375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Employer/Plan",
+      "confidence": 99.765625,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Group",
+      "confidence": 99.892578125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "NEVADA",
+      "confidence": 99.9609375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "MEDICAID",
+      "confidence": 99.990234375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "MEDICAID",
+      "confidence": 99.970703125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "MED/CO",
+      "confidence": 99.1015625,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "PAY",
+      "confidence": 99.921875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "ONLY",
+      "confidence": 99.990234375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Payor",
+      "confidence": 99.990234375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Plan",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Fax",
+      "confidence": 99.990234375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Payor",
+      "confidence": 99.990234375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Plan",
+      "confidence": 99.95037078857422,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Address",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Payor",
+      "confidence": 99.990234375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Plan",
+      "confidence": 99.88042449951172,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Phone",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Number",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Number",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Effective",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Dates",
+      "confidence": 99.990234375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "PO",
+      "confidence": 99.76243591308594,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "BOX",
+      "confidence": 99.83238983154297,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "30042",
+      "confidence": 99.970703125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "9/18/2025",
+      "confidence": 99.892578125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "-",
+      "confidence": 92.68574523925781,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "None",
+      "confidence": 99.7265625,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Entered",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "RENO",
+      "confidence": 99.970703125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "NV",
+      "confidence": 99.9609375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "89520-3042",
+      "confidence": 99.873046875,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Subscriber",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Name",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Subscriber",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Birth",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Date",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Member",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "ID",
+      "confidence": 99.970703125,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "DURAN,GUSTAVO",
+      "confidence": 94.02603149414062,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "11/22/1957",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "00001814359",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "Printed",
+      "confidence": 99.990234375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "by",
+      "confidence": 100,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "SABELLANO,",
+      "confidence": 99.6314926147461,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "JOSH",
+      "confidence": 99.912109375,
+      "page": 2
+    },
+    {
+      "blockType": "WORD",
+      "text": "[35451]",
+      "confidence": 99.71440124511719,
+      "page": 2
+    }
+  ]
+}

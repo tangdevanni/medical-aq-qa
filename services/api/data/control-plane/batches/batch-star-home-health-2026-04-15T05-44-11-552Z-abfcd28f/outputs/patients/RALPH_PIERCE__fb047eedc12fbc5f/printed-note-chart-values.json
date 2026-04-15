@@ -1,0 +1,86 @@
+{
+  "generatedAt": "2026-04-15T08:25:53.684Z",
+  "source": "printed_note_ocr",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-star-home-health-2026-04-15T05-44-11-552Z-abfcd28f\\outputs\\evidence\\RALPH_PIERCE__fb047eedc12fbc5f\\oasis-printed-note\\extracted-text.txt",
+  "extractedFieldCount": 6,
+  "invocationModelId": "us.amazon.nova-lite-v1:0",
+  "currentChartValues": {
+    "patient_name": "Ralph Pierce",
+    "dob": "1947-11-12",
+    "soc_date": "2026-02-28",
+    "primary_reason_for_home_health_medical_necessity": "Ralph E. Pierce, a 78-year-old male, is being admitted to home health care following a recent right total hip arthroplasty performed on February 26, 2026. This surgical intervention was necessitated by significant pain that impaired his activities of daily living, despite previous conservative treatments. Post-operatively, Mr. Pierce demonstrates functional limitations, including decreased mobility and difficulty ambulating without assistance, necessitating a structured rehabilitation program. Mr. Pierce requires s",
+    "recent_hospitalization_discharge_date": "2026-02-27",
+    "pain_assessment_narrative": "Pain in the right hip with a scale of 5 out of 10; comfort measures and pain medication were provided. Re-checked after 30 minutes, resulting with a good relief."
+  },
+  "extractedFieldValues": [
+    {
+      "field_key": "patient_name",
+      "current_value": "Ralph Pierce",
+      "confidence": 0.95,
+      "source_spans": [
+        "Name: PIERCE, RALPH",
+        "Patient Name First Name: Middle Name: Last Name: Suffix: RALPH PIERCE"
+      ]
+    },
+    {
+      "field_key": "dob",
+      "current_value": "1947-11-12",
+      "confidence": 0.95,
+      "source_spans": [
+        "Birth Date * (M0066) 11/12/1947"
+      ]
+    },
+    {
+      "field_key": "soc_date",
+      "current_value": "2026-02-28",
+      "confidence": 0.95,
+      "source_spans": [
+        "Start of Care Date DOMER, MICHAEL 02/28/2026"
+      ]
+    },
+    {
+      "field_key": "primary_reason_for_home_health_medical_necessity",
+      "current_value": "Ralph E. Pierce, a 78-year-old male, is being admitted to home health care following a recent right total hip arthroplasty performed on February 26, 2026. This surgical intervention was necessitated by significant pain that impaired his activities of daily living, despite previous conservative treatments. Post-operatively, Mr. Pierce demonstrates functional limitations, including decreased mobility and difficulty ambulating without assistance, necessitating a structured rehabilitation program. Mr. Pierce requires skilled nursing services to monitor his surgical site for signs of infection, manage pain effectively, and ensure adherence to prescribed medications, including anticoagulation therapy with Eliquis to mitigate his risk of venous thromboembolism (VTE). Additionally, he will benefit from physical therapy services to facilitate recovery through therapeutic exercises, manual therapy, and modalities as indicated in his post-operative care plan, with a recommendation for therapy 2-3 times per week for 6-8 weeks. The medical necessity for home health services is underscored by his recent hospital discharge, chronic illness management related to his osteoarthritis, and the need for ongoing rehabilitation due to his advanced age and existing comorbidities, including a history of chronic pain and cardiovascular concerns. These factors collectively justify the need for home health admission, ensuring that Mr. Pierce receives comprehensive and coordinated care in the comfort of his home, promoting optimal recovery outcomes and enhancing his quality of life.",
+      "confidence": 0.9,
+      "source_spans": [
+        "Primary Reason for Home Health/Medical Necessity:",
+        "Ralph E. Pierce, a 78-year-old male, is being admitted to home health care following a recent right total hip arthroplasty performed on February 26, 2026."
+      ]
+    },
+    {
+      "field_key": "recent_hospitalization_discharge_date",
+      "current_value": "2026-02-27",
+      "confidence": 0.95,
+      "source_spans": [
+        "Inpatient Discharge Date (most recent): 02/27/2026"
+      ]
+    },
+    {
+      "field_key": "height",
+      "current_value": "68",
+      "confidence": 0.95,
+      "source_spans": [
+        "A. Height (in inches). Record most recent height measure since the most recent SOC/ROC: 68"
+      ]
+    },
+    {
+      "field_key": "weight",
+      "current_value": "235",
+      "confidence": 0.95,
+      "source_spans": [
+        "B. Weight (in pounds). Base weight on most recent measure in last 30 days; measure weight consistently, according to standard agency practice (for example, in a.m. after voiding, before meal, with shoes off, etc.: 235"
+      ]
+    },
+    {
+      "field_key": "pain_assessment_narrative",
+      "current_value": "Pain in the right hip with a scale of 5 out of 10; comfort measures and pain medication were provided. Re-checked after 30 minutes, resulting with a good relief.",
+      "confidence": 0.9,
+      "source_spans": [
+        "Pain in the right hip with a scale of 5 out of 10; comfort measures and pain medication were provided. Re-checked after 30 minutes, resulting with a good relief."
+      ]
+    }
+  ],
+  "warnings": [
+    "Printed-note chart-value extraction used inference profile us.amazon.nova-lite-v1:0."
+  ]
+}

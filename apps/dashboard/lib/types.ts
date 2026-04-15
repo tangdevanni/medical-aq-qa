@@ -48,6 +48,8 @@ export interface ReferralFieldView {
   reviewMode: string;
   notes: string | null;
   currentChartValue: unknown;
+  currentChartValueSource: string;
+  populatedInChart: boolean;
   documentSupportedValue: unknown;
   comparisonStatus: string;
   workflowState: string;

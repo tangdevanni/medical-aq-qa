@@ -41,16 +41,17 @@ class SmokePortalClient implements BatchPortalAutomationClient {
     workItem: PatientEpisodeWorkItem;
     evidenceDir?: string;
   }): Promise<ResolvedPatientPortalAccess> {
-    return {
-      patientName: input.workItem.patientIdentity.displayName,
-      patientId: "PT-SMOKE-1",
-      chartUrl: "https://demo.portal/provider/branch/client/PT-SMOKE-1/intake",
-      dashboardUrl: "https://demo.portal/provider/branch/dashboard",
-      resolvedAt: new Date().toISOString(),
-      traceId: `${input.batchId}:${input.patientRunId}`,
-      matchResult: {
-        status: "EXACT",
-        searchQuery: input.workItem.patientIdentity.displayName,
+      return {
+        patientName: input.workItem.patientIdentity.displayName,
+        patientId: "PT-SMOKE-1",
+        chartUrl: "https://demo.portal/provider/branch/client/PT-SMOKE-1/intake",
+        dashboardUrl: "https://demo.portal/provider/branch/dashboard",
+        resolvedAt: new Date().toISOString(),
+        portalAdmissionStatus: null,
+        traceId: `${input.batchId}:${input.patientRunId}`,
+        matchResult: {
+          status: "EXACT",
+          searchQuery: input.workItem.patientIdentity.displayName,
         portalPatientId: "PT-SMOKE-1",
         portalDisplayName: input.workItem.patientIdentity.displayName,
         candidateNames: [input.workItem.patientIdentity.displayName],

@@ -53,6 +53,16 @@ function normalizeWhitespace(value: string | null | undefined): string {
   return value?.replace(/\s+/g, " ").trim() ?? "";
 }
 
+function normalizeDocumentText(value: string | null | undefined): string {
+  return value
+    ?.replace(/\r\n?/g, "\n")
+    .split("\n")
+    .map((line) => normalizeWhitespace(line))
+    .filter(Boolean)
+    .join("\n")
+    .trim() ?? "";
+}
+
 function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
@@ -147,7 +157,7 @@ export function selectPreferredDocumentText(input: {
   ocrSuccess?: boolean;
 }): PreferredDocumentTextSelection {
   const domAnalysis = analyzeDocumentText(input.domText);
-  const normalizedOcrText = normalizeWhitespace(input.ocrText ?? "");
+  const normalizedOcrText = normalizeDocumentText(input.ocrText ?? "");
   const ocrSuccess = Boolean(input.ocrSuccess && normalizedOcrText);
 
   if (ocrSuccess && input.pdfType === "scanned_image_pdf") {

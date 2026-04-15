@@ -1,0 +1,25 @@
+{
+  "generatedAt": "2026-04-15T06:22:36.566Z",
+  "source": "printed_note_ocr",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\outputs\\evidence\\ADRIENNE_DUNCAN__4fd51f724ccc5821\\oasis-printed-note\\extracted-text.txt",
+  "extractedFieldCount": 1,
+  "invocationModelId": "us.amazon.nova-lite-v1:0",
+  "currentChartValues": {
+    "patient_name": "Adrienne Duncan"
+  },
+  "extractedFieldValues": [
+    {
+      "field_key": "patient_name",
+      "current_value": "Adrienne Duncan",
+      "confidence": 0.95,
+      "source_spans": [
+        "Adrienne Duncan",
+        "Duncan, Adrienne E.",
+        "Duncan, Adrienne E."
+      ]
+    }
+  ],
+  "warnings": [
+    "Printed-note chart-value extraction used inference profile us.amazon.nova-lite-v1:0."
+  ]
+}
