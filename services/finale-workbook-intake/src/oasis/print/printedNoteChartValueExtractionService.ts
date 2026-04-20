@@ -12,12 +12,30 @@ import {
   sendBedrockConverseWithProfileFallback,
 } from "../../config/bedrock";
 import { REFERRAL_FIELD_CONTRACT } from "../../referralProcessing/fieldContract";
+import type { LlmInputSource } from "../../services/diagnosisCodingExtractionService";
+import {
+  buildDocumentFactPack,
+  type DocumentFactPack,
+} from "../../services/documentFactPackBuilder";
+import type { ExtractedDocument } from "../../services/documentExtractionService";
 import {
   parsePrintedNoteChartValueExtractionPayload,
   type PrintedNoteChartValueExtractionSchema,
 } from "./printedNoteChartValueSchema";
 
 const bedrockClientByRegion = new Map<string, BedrockRuntimeClient>();
+const FACT_PACK_SECTION_ITEM_LIMITS = {
+  diagnoses: 8,
+  assessmentValues: 8,
+  homeboundEvidence: 5,
+  skilledNeedEvidence: 5,
+  hospitalizationReasons: 5,
+  medications: 6,
+  allergies: 6,
+  supportingSnippets: 4,
+} as const;
+const RAW_FALLBACK_CHARACTER_LIMIT = 2_500;
+const FACT_PACK_PRIMARY_MINIMUM_SCORE = 0.55;
 
 function normalizeWhitespace(value: string | null | undefined): string {
   return value?.replace(/\s+/g, " ").trim() ?? "";
@@ -52,6 +70,251 @@ function extractConverseText(response: ConverseCommandOutput): string {
 
 function isChartValueLlmEnabled(env: FinaleBatchEnv): boolean {
   return Boolean(env.CODE_LLM_ENABLED && env.LLM_PROVIDER === "bedrock");
+}
+
+function dedupeNormalizedValues(values: string[], maxItems: number): string[] {
+  const seen = new Set<string>();
+  const deduped: string[] = [];
+
+  for (const value of values) {
+    const normalized = normalizeWhitespace(value);
+    if (!normalized) {
+      continue;
+    }
+    const key = normalized.toLowerCase();
+    if (seen.has(key)) {
+      continue;
+    }
+    seen.add(key);
+    deduped.push(normalized);
+    if (deduped.length >= maxItems) {
+      break;
+    }
+  }
+
+  return deduped;
+}
+
+function formatFactPackSection(label: string, values: string[], maxItems: number): string | null {
+  const cleaned = dedupeNormalizedValues(values, maxItems);
+  if (cleaned.length === 0) {
+    return null;
+  }
+  return `${label}:\n${cleaned.map((value) => `- ${value}`).join("\n")}`;
+}
+
+function buildFactPackPromptText(factPack: DocumentFactPack): string {
+  const diagnosisSection = formatFactPackSection(
+    "Diagnoses",
+    factPack.diagnoses.map((diagnosis) =>
+      [
+        diagnosis.rank ? `${diagnosis.rank}` : "",
+        diagnosis.code ?? "",
+        diagnosis.description,
+      ].filter(Boolean).join(" "),
+    ),
+    FACT_PACK_SECTION_ITEM_LIMITS.diagnoses,
+  );
+  const assessmentSection = formatFactPackSection(
+    "Assessment Values",
+    factPack.assessmentValues.map((snippet) => snippet.text),
+    FACT_PACK_SECTION_ITEM_LIMITS.assessmentValues,
+  );
+  const homeboundSection = formatFactPackSection(
+    "Homebound Evidence",
+    factPack.homeboundEvidence.map((snippet) => snippet.text),
+    FACT_PACK_SECTION_ITEM_LIMITS.homeboundEvidence,
+  );
+  const skilledNeedSection = formatFactPackSection(
+    "Skilled Need Evidence",
+    factPack.skilledNeedEvidence.map((snippet) => snippet.text),
+    FACT_PACK_SECTION_ITEM_LIMITS.skilledNeedEvidence,
+  );
+  const hospitalizationSection = formatFactPackSection(
+    "Hospitalization / Referral Reasons",
+    factPack.hospitalizationReasons.map((snippet) => snippet.text),
+    FACT_PACK_SECTION_ITEM_LIMITS.hospitalizationReasons,
+  );
+  const medicationSection = formatFactPackSection(
+    "Medications",
+    factPack.medications.map((medication) =>
+      [
+        medication.name,
+        medication.dose ?? "",
+        medication.route ?? "",
+        medication.frequency ?? "",
+      ].filter(Boolean).join(" "),
+    ),
+    FACT_PACK_SECTION_ITEM_LIMITS.medications,
+  );
+  const allergySection = formatFactPackSection(
+    "Allergies",
+    factPack.allergies,
+    FACT_PACK_SECTION_ITEM_LIMITS.allergies,
+  );
+  const supportSection = formatFactPackSection(
+    "Supporting Snippets",
+    factPack.uncategorizedEvidence.map((snippet) => snippet.text),
+    FACT_PACK_SECTION_ITEM_LIMITS.supportingSnippets,
+  );
+
+  return [
+    diagnosisSection,
+    assessmentSection,
+    homeboundSection,
+    skilledNeedSection,
+    hospitalizationSection,
+    medicationSection,
+    allergySection,
+    supportSection,
+  ].filter((section): section is string => Boolean(section)).join("\n\n");
+}
+
+function buildSyntheticPrintedNoteDocument(sourceText: string): ExtractedDocument[] {
+  const normalized = normalizeWhitespace(sourceText);
+  if (!normalized) {
+    return [];
+  }
+  return [{
+    type: "OASIS",
+    text: normalized,
+    metadata: {
+      source: "artifact_fallback",
+      effectiveTextSource: "viewer_text_fallback",
+      textSelectionReason: "synthetic_fact_pack_input",
+      textLength: normalized.length,
+    },
+  }];
+}
+
+function buildRawFallbackExcerpt(sourceText: string): string {
+  const normalized = normalizeWhitespace(sourceText);
+  if (!normalized) {
+    return "";
+  }
+  return normalized.slice(0, RAW_FALLBACK_CHARACTER_LIMIT);
+}
+
+function buildFactPackCoverageSummary(factPack: DocumentFactPack): {
+  populatedSections: string[];
+  missingCriticalSections: string[];
+  factPackCoverageScore: number;
+  hasStrongCoverage: boolean;
+} {
+  const populatedSections = [
+    factPack.diagnoses.length > 0 ? "diagnoses" : null,
+    factPack.assessmentValues.length > 0 ? "assessmentValues" : null,
+    factPack.homeboundEvidence.length > 0 ? "homeboundEvidence" : null,
+    factPack.skilledNeedEvidence.length > 0 ? "skilledNeedEvidence" : null,
+    factPack.hospitalizationReasons.length > 0 ? "hospitalizationReasons" : null,
+    factPack.medications.length > 0 ? "medications" : null,
+    factPack.allergies.length > 0 ? "allergies" : null,
+    factPack.uncategorizedEvidence.length > 0 ? "supportingSnippets" : null,
+  ].filter((section): section is string => Boolean(section));
+
+  const hasAssessmentCoverage = factPack.assessmentValues.length > 0;
+  const hasDiagnosisCoverage = factPack.diagnoses.length > 0;
+  const hasNarrativeCoverage =
+    factPack.homeboundEvidence.length > 0 ||
+    factPack.skilledNeedEvidence.length > 0 ||
+    factPack.hospitalizationReasons.length > 0 ||
+    factPack.uncategorizedEvidence.length > 0;
+  const hasMedicationCoverage =
+    factPack.medications.length > 0 ||
+    factPack.allergies.length > 0;
+
+  const missingCriticalSections = [
+    hasAssessmentCoverage ? null : "assessmentValues",
+    hasDiagnosisCoverage ? null : "diagnoses",
+    hasNarrativeCoverage ? null : "narrativeEvidence",
+    hasMedicationCoverage ? null : "medicationsOrAllergies",
+  ].filter((section): section is string => Boolean(section));
+  const factPackCoverageScore = Number((
+    (hasAssessmentCoverage ? 0.35 : 0) +
+    (hasDiagnosisCoverage ? 0.2 : 0) +
+    (hasNarrativeCoverage ? 0.2 : 0) +
+    (hasMedicationCoverage ? 0.15 : 0) +
+    (factPack.uncategorizedEvidence.length > 0 ? 0.1 : 0)
+  ).toFixed(2));
+  const strongCriticalSectionCount = 4 - missingCriticalSections.length;
+
+  return {
+    populatedSections,
+    missingCriticalSections,
+    factPackCoverageScore,
+    hasStrongCoverage:
+      factPackCoverageScore >= FACT_PACK_PRIMARY_MINIMUM_SCORE &&
+      strongCriticalSectionCount >= 2,
+  };
+}
+
+function resolveChartValueInputSource(sourceText: string): {
+  factPackText: string;
+  rawFallbackText: string;
+  llmInputSource: LlmInputSource;
+  diagnostics: string[];
+} {
+  const sourceDocuments = buildSyntheticPrintedNoteDocument(sourceText);
+  const rawFallbackText = buildRawFallbackExcerpt(sourceText);
+
+  if (sourceDocuments.length === 0) {
+    return {
+      factPackText: "",
+      rawFallbackText,
+      llmInputSource: "raw_text_fallback",
+      diagnostics: [
+        "LLM input source: raw_text_fallback.",
+        "Fact pack unavailable or empty; using bounded raw text fallback.",
+      ],
+    };
+  }
+
+  const factPack = buildDocumentFactPack(sourceDocuments);
+  const factPackText = buildFactPackPromptText(factPack);
+  if (!factPackText) {
+    return {
+      factPackText: "",
+      rawFallbackText,
+      llmInputSource: "raw_text_fallback",
+      diagnostics: [
+        "LLM input source: raw_text_fallback.",
+        "Fact pack unavailable or empty; using bounded raw text fallback.",
+      ],
+    };
+  }
+
+  const coverage = buildFactPackCoverageSummary(factPack);
+  const promptCharacterEstimate = factPackText.length + (coverage.hasStrongCoverage ? 0 : rawFallbackText.length);
+  const diagnostics = [
+    `Fact pack coverage: ${coverage.populatedSections.join(", ") || "none"}.`,
+    `Fact pack coverage score: ${coverage.factPackCoverageScore}.`,
+    `Prompt character estimate: ${promptCharacterEstimate}.`,
+  ];
+
+  if (coverage.hasStrongCoverage || !rawFallbackText) {
+    return {
+      factPackText,
+      rawFallbackText: "",
+      llmInputSource: "fact_pack_primary",
+      diagnostics: [
+        "LLM input source: fact_pack_primary.",
+        ...diagnostics,
+        "Fallback reason: none.",
+      ],
+    };
+  }
+
+  return {
+    factPackText,
+    rawFallbackText,
+    llmInputSource: "fact_pack_plus_raw_fallback",
+    diagnostics: [
+      "LLM input source: fact_pack_plus_raw_fallback.",
+      ...diagnostics,
+      `Fallback reason: ${coverage.missingCriticalSections.join(", ") || "coverage_score_below_threshold"}.`,
+      `Raw fallback appended for missing coverage: ${coverage.missingCriticalSections.join(", ") || "coverage_score_below_threshold"}.`,
+    ],
+  };
 }
 
 function sanitizeValue(fieldKey: string, value: unknown): unknown {
@@ -105,7 +368,11 @@ function sanitizeValue(fieldKey: string, value: unknown): unknown {
 
 function buildPrompt(input: {
   workItem: PatientEpisodeWorkItem;
-  sourceText: string;
+  resolvedInput: {
+    factPackText: string;
+    rawFallbackText: string;
+    llmInputSource: LlmInputSource;
+  };
 }): string {
   const fieldGuide = REFERRAL_FIELD_CONTRACT.map((field) =>
     [
@@ -121,7 +388,10 @@ function buildPrompt(input: {
   return [
     "Return strict JSON only.",
     "You are extracting current chart values from a printed OASIS note captured from the portal.",
-    "Use only PRINTED_OASIS_NOTE_TEXT. Do not use referral facts, workbook values, or outside assumptions.",
+    `Selected input source: ${input.resolvedInput.llmInputSource}.`,
+    "Use DOCUMENT_FACT_PACK first. It is compact evidence derived from the printed OASIS note text.",
+    "Use RAW_FALLBACK_EXCERPTS only when DOCUMENT_FACT_PACK is insufficient for a field or lacks needed nuance.",
+    "Do not use referral facts, workbook values, or outside assumptions.",
     "Only include fields when the printed portal note explicitly provides a patient-specific current value.",
     "Do not treat section headings, unlabeled checkbox groups, fax headers, page counters, field labels, or surrounding boilerplate as values.",
     "If a field appears blank, unchecked, omitted, or not confidently extractable, omit it from current_field_values.",
@@ -144,8 +414,15 @@ function buildPrompt(input: {
     }),
     "",
     `Patient: ${input.workItem.patientIdentity.displayName}`,
-    "PRINTED_OASIS_NOTE_TEXT:",
-    input.sourceText.slice(0, 20_000),
+    "DOCUMENT_FACT_PACK:",
+    input.resolvedInput.factPackText || "(empty)",
+    ...(input.resolvedInput.rawFallbackText
+      ? [
+          "",
+          "RAW_FALLBACK_EXCERPTS:",
+          input.resolvedInput.rawFallbackText,
+        ]
+      : []),
   ].join("\n");
 }
 
@@ -228,10 +505,12 @@ async function invokeChartValueLlm(input: {
 
 export interface PrintedNoteChartValueExtractionResult {
   currentChartValues: Record<string, unknown>;
+  currentChartValueSource: "printed_note_ocr" | null;
   artifactPath: string | null;
   extractedFieldCount: number;
   warnings: string[];
   invocationModelId: string | null;
+  llmInputSource: LlmInputSource | null;
 }
 
 export async function extractCurrentChartValuesFromPrintedNote(input: {
@@ -244,10 +523,12 @@ export async function extractCurrentChartValuesFromPrintedNote(input: {
   if (!input.extractedTextPath) {
     return {
       currentChartValues: {},
+      currentChartValueSource: null,
       artifactPath: null,
       extractedFieldCount: 0,
       warnings: ["Printed-note chart-value extraction skipped because no extracted text path was available."],
       invocationModelId: null,
+      llmInputSource: null,
     };
   }
 
@@ -255,19 +536,22 @@ export async function extractCurrentChartValuesFromPrintedNote(input: {
   if (!sourceText) {
     return {
       currentChartValues: {},
+      currentChartValueSource: null,
       artifactPath: null,
       extractedFieldCount: 0,
       warnings: ["Printed-note chart-value extraction skipped because the extracted text was empty."],
       invocationModelId: null,
+      llmInputSource: null,
     };
   }
 
+  const resolvedInput = resolveChartValueInputSource(sourceText);
   const llmResult = await invokeChartValueLlm({
     env: input.env,
     logger: input.logger,
     prompt: buildPrompt({
       workItem: input.workItem,
-      sourceText,
+      resolvedInput,
     }),
   });
 
@@ -292,11 +576,13 @@ export async function extractCurrentChartValuesFromPrintedNote(input: {
       generatedAt: new Date().toISOString(),
       source: "printed_note_ocr",
       extractedTextPath: input.extractedTextPath,
+      llmInputSource: resolvedInput.llmInputSource,
       extractedFieldCount: Object.keys(currentChartValues).length,
       invocationModelId: llmResult.invocationModelId,
       currentChartValues,
       extractedFieldValues: llmResult.payload?.current_field_values ?? [],
       warnings: [
+        ...resolvedInput.diagnostics,
         ...(llmResult.payload?.warnings ?? []),
         ...llmResult.warnings,
       ],
@@ -306,12 +592,15 @@ export async function extractCurrentChartValuesFromPrintedNote(input: {
 
   return {
     currentChartValues,
+    currentChartValueSource: "printed_note_ocr",
     artifactPath,
     extractedFieldCount: Object.keys(currentChartValues).length,
     warnings: [
+      ...resolvedInput.diagnostics,
       ...(llmResult.payload?.warnings ?? []),
       ...llmResult.warnings,
     ],
     invocationModelId: llmResult.invocationModelId,
+    llmInputSource: resolvedInput.llmInputSource,
   };
 }

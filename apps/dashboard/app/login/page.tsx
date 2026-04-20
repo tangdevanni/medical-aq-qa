@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getDashboardSession } from "../../lib/auth/session";
+import { loadDashboardEnv } from "../../lib/env";
 import { redirect } from "next/navigation";
 
 type LoginPageProps = {
@@ -24,6 +25,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
 
   const resolvedSearchParams = await searchParams;
   const error = getErrorMessage(resolvedSearchParams?.error);
+  const env = loadDashboardEnv();
 
   return (
     <main className="page-shell stack">
@@ -39,12 +41,26 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
         <form className="hero-form" action="/auth/login" method="post">
           <label className="field">
             <span>Email</span>
-            <input className="input" name="email" type="email" required />
+            <input
+              autoCapitalize="none"
+              autoComplete="username"
+              className="input"
+              name="email"
+              spellCheck={false}
+              type="email"
+              required
+            />
           </label>
 
           <label className="field">
             <span>Password</span>
-            <input className="input" name="password" type="password" required />
+            <input
+              autoComplete="current-password"
+              className="input"
+              name="password"
+              type="password"
+              required
+            />
           </label>
 
           <div className="actions">
@@ -52,7 +68,11 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           </div>
 
           {error ? <div className="badge danger">{error}</div> : null}
-          <div className="muted">Local default user: `qa@starhhc.local` / `star1234`.</div>
+          {!env.isProduction && env.allowPlaintextPasswords ? (
+            <div className="muted">
+              Local development is allowing plaintext passwords from `DASHBOARD_QA_USERS_JSON`.
+            </div>
+          ) : null}
           <Link className="link" href="/healthz">Health check</Link>
         </form>
       </section>

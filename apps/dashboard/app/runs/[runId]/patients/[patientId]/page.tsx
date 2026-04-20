@@ -38,6 +38,15 @@ function formatStatusLabel(value: string | null | undefined): string {
     .replace(/\b\w/g, (character) => character.toUpperCase());
 }
 
+function normalizeLabelForComparison(value: string): string {
+  return value.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+}
+
+function shouldShowReviewStatus(comparison: FieldComparison): boolean {
+  return normalizeLabelForComparison(comparison.reviewStatus)
+    !== normalizeLabelForComparison(getResultLabel(comparison.comparisonResult));
+}
+
 function PatientCompareHeader({ workspace }: { workspace: ComparisonWorkspaceModel }) {
   return (
     <section className="workspace-header panel compare-header">
@@ -67,7 +76,7 @@ function ComparisonSummaryBar({ workspace }: { workspace: ComparisonWorkspaceMod
   const cards = [
     { label: "Total Mismatches", value: workspace.summary.mismatchCount, tone: "danger" },
     { label: "Missing in Portal", value: workspace.summary.missingInPortalCount, tone: "warning" },
-    { label: "Missing in Referral", value: workspace.summary.missingInReferralCount, tone: "warning" },
+    { label: "Missing Referral Documentation", value: workspace.summary.missingInReferralCount, tone: "warning" },
     { label: "Exact Matches", value: workspace.summary.exactMatchCount, tone: "success" },
     { label: "Uncertain Comparisons", value: workspace.summary.uncertainCount, tone: "default" },
     { label: "Coding-Sensitive", value: workspace.summary.codingReviewCount, tone: "danger" },
@@ -79,11 +88,113 @@ function ComparisonSummaryBar({ workspace }: { workspace: ComparisonWorkspaceMod
         <article className="priority-summary-card comparison-summary-card" key={card.label}>
           <div className="metric-label">{card.label}</div>
           <div className="priority-summary-value">{card.value}</div>
-          <span className={`badge${card.tone === "danger" ? " danger" : card.tone === "warning" ? " warning" : card.tone === "success" ? " success" : ""}`}>
-            {card.label}
-          </span>
         </article>
       ))}
+    </section>
+  );
+}
+
+function deriveProposalPipelineWarnings(warnings: string[]): string[] {
+  return warnings.filter((warning) => /llm|bedrock|fallback|proposal/i.test(warning));
+}
+
+function InvestigationSignalsPanel({
+  proposalWarnings,
+  hiddenMeaningfulRows,
+  onInspectHiddenRow,
+  onOpenDebug,
+  onReviewHiddenRows,
+}: {
+  proposalWarnings: string[];
+  hiddenMeaningfulRows: FieldComparison[];
+  onInspectHiddenRow: (fieldKey: string) => void;
+  onOpenDebug: () => void;
+  onReviewHiddenRows: () => void;
+}) {
+  if (proposalWarnings.length === 0 && hiddenMeaningfulRows.length === 0) {
+    return null;
+  }
+
+  const hiddenMatchCount = hiddenMeaningfulRows.filter(
+    (row) => row.visibilityDecision === "hidden_match",
+  ).length;
+  const hiddenResolvedCount = hiddenMeaningfulRows.filter(
+    (row) => row.visibilityDecision === "hidden_resolved",
+  ).length;
+
+  return (
+    <section className="panel stack">
+      <div className="panel-header-inline">
+        <div>
+          <h2>Investigation Signals</h2>
+          <p className="page-subtitle">
+            These signals separate referral-proposal failures from dashboard visibility rules.
+          </p>
+        </div>
+        <div className="comparison-status-block comparison-status-block-inline">
+          {proposalWarnings.length > 0 ? (
+            <span className="badge danger">{proposalWarnings.length} proposal warning(s)</span>
+          ) : null}
+          {hiddenMeaningfulRows.length > 0 ? (
+            <span className="badge warning">{hiddenMeaningfulRows.length} hidden meaningful row(s)</span>
+          ) : null}
+        </div>
+      </div>
+
+      {proposalWarnings.length > 0 ? (
+        <div className="checklist-item">
+          <div className="checklist-item-header">
+            <strong>Referral proposal pipeline</strong>
+            <button className="button secondary compact" onClick={onOpenDebug} type="button">
+              Open Debug
+            </button>
+          </div>
+          <div className="muted">
+            The referral processing warnings indicate the proposal stage may be falling back or returning unusable model output.
+          </div>
+          <div className="checklist compact-checklist">
+            {proposalWarnings.map((warning) => (
+              <div key={warning}>{warning}</div>
+            ))}
+          </div>
+        </div>
+      ) : null}
+
+      {hiddenMeaningfulRows.length > 0 ? (
+        <div className="checklist-item">
+          <div className="checklist-item-header">
+            <strong>Meaningful rows hidden by default</strong>
+            <button className="button secondary compact" onClick={onReviewHiddenRows} type="button">
+              Review Hidden Rows
+            </button>
+          </div>
+          <div className="muted">
+            {hiddenMeaningfulRows.length} row(s) still have referral or chart values, but the dashboard hides them by default.
+          </div>
+          <div className="comparison-status-block comparison-status-block-inline">
+            {hiddenMatchCount > 0 ? <span className="badge">{hiddenMatchCount} resolved match(es)</span> : null}
+            {hiddenResolvedCount > 0 ? <span className="badge">{hiddenResolvedCount} non-actionable row(s)</span> : null}
+          </div>
+          <div className="checklist compact-checklist">
+            {hiddenMeaningfulRows.slice(0, 6).map((row) => (
+              <div className="checklist-item" key={row.fieldKey}>
+                <div className="checklist-item-header">
+                  <strong>{row.fieldLabel}</strong>
+                  <button
+                    className="button secondary compact"
+                    onClick={() => onInspectHiddenRow(row.fieldKey)}
+                    type="button"
+                  >
+                    Inspect
+                  </button>
+                </div>
+                <div className="muted">{formatStatusLabel(row.visibilityDecision ?? "hidden")} | {row.sectionLabel}</div>
+                <div>{row.visibilityReason ?? row.shortReason}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : null}
     </section>
   );
 }
@@ -143,7 +254,7 @@ function CompareFilterBar({
             <option value="all">All visible results</option>
             <option value="mismatch">Mismatch</option>
             <option value="missing_in_portal">Missing in Portal</option>
-            <option value="missing_in_referral">Missing in Referral</option>
+            <option value="missing_in_referral">Missing Referral Documentation</option>
             <option value="uncertain">Uncertain</option>
             <option value="coding_review">Coding Review</option>
             <option value="equivalent_match">Equivalent Match</option>
@@ -155,7 +266,7 @@ function CompareFilterBar({
       <div className="compare-filter-actions">
         <label className="compare-toggle">
           <input checked={showMatches} onChange={(event) => onShowMatchesChange(event.target.checked)} type="checkbox" />
-          <span>Show matches</span>
+          <span>Show hidden / resolved rows</span>
         </label>
         <span className="badge">{visibleCount} visible</span>
       </div>
@@ -175,6 +286,14 @@ function DocumentSnippetPopover({ comparison }: { comparison: FieldComparison })
           <div className="checklist-item">
             <div className="metric-label">Why this still needs review</div>
             <div>{comparison.sourceQualityWarning}</div>
+          </div>
+        ) : null}
+
+        {comparison.visibilityReason ? (
+          <div className="checklist-item">
+            <div className="metric-label">Visibility decision</div>
+            <div>{comparison.visibilityReason}</div>
+            {comparison.visibilityDecision ? <div className="muted">{comparison.visibilityDecision}</div> : null}
           </div>
         ) : null}
 
@@ -229,7 +348,7 @@ function ComparisonRow({
         </div>
 
         <div className="comparison-value-block">
-          <div className="comparison-value-label">Portal Shows</div>
+          <div className="comparison-value-label">Chart Snapshot</div>
           <div className="comparison-value-text">{comparison.displayPortalValue}</div>
           {comparison.portalValueSource !== "chart_read" ? (
             <div className="muted">Source: {comparison.portalValueSourceLabel}</div>
@@ -238,7 +357,7 @@ function ComparisonRow({
 
         <div className="comparison-status-block">
           <span className={getResultBadgeClass(comparison.comparisonResult)}>{getResultLabel(comparison.comparisonResult)}</span>
-          <span className="badge">{comparison.reviewStatus}</span>
+          {shouldShowReviewStatus(comparison) ? <span className="badge">{comparison.reviewStatus}</span> : null}
           <span className="badge">{getConfidenceLabel(comparison.confidence)}</span>
           {comparison.isFormattingOnlyDifference ? <span className="badge success">Formatting only</span> : null}
           {comparison.isFieldLeakSuspected ? <span className="badge warning">Possible field leak</span> : null}
@@ -250,7 +369,9 @@ function ComparisonRow({
         <div className="comparison-row-actions">
           <span className="badge">{getSourceSupportLabel(comparison.sourceSupportStrength)}</span>
           <span className="badge">{getMappingStrengthLabel(comparison.mappingStrength)}</span>
-          {comparison.referralSnippet ? <span className="muted comparison-inline-snippet">{comparison.referralSnippet}</span> : null}
+          {comparison.visibilityDecision && comparison.visibilityDecision !== "show" ? (
+            <span className="badge">{formatStatusLabel(comparison.visibilityDecision)}</span>
+          ) : null}
           <DocumentSnippetPopover comparison={comparison} />
           {onInspect ? (
             <button className="button secondary compact" onClick={() => onInspect(comparison.fieldKey)} type="button">
@@ -272,6 +393,14 @@ function ComparisonSectionAccordion({
   rows: FieldComparison[];
   onInspect: (fieldKey: string) => void;
 }) {
+  const sectionCounts = [
+    { count: section.mismatchCount, label: "mismatch", className: "badge danger" },
+    { count: section.missingInPortalCount, label: "missing in portal", className: "badge warning" },
+    { count: section.missingInReferralCount, label: "missing referral documentation", className: "badge warning" },
+    { count: section.uncertainCount, label: "uncertain", className: "badge" },
+    { count: section.matchCount, label: "match", className: "badge success" },
+  ].filter((entry) => entry.count > 0);
+
   return (
     <details className="section-queue-card comparison-section-accordion" open={rows.length > 0}>
       <summary className="comparison-section-summary">
@@ -280,11 +409,11 @@ function ComparisonSectionAccordion({
           <div className="muted">{rows.length} row(s) surfaced in this section</div>
         </div>
         <div className="comparison-section-counts">
-          <span className="badge danger">{section.mismatchCount} mismatch</span>
-          <span className="badge warning">{section.missingInPortalCount} missing in portal</span>
-          <span className="badge warning">{section.missingInReferralCount} missing in referral</span>
-          <span className="badge">{section.uncertainCount} uncertain</span>
-          <span className="badge success">{section.matchCount} match</span>
+          {sectionCounts.map((entry) => (
+            <span className={entry.className} key={entry.label}>
+              {entry.count} {entry.label}
+            </span>
+          ))}
         </div>
       </summary>
 
@@ -528,7 +657,9 @@ function SourceDocumentsWorkspace({
               <span className={getResultBadgeClass(selectedComparison.comparisonResult)}>
                 {getResultLabel(selectedComparison.comparisonResult)}
               </span>
-              <span className="badge">{selectedComparison.reviewStatus}</span>
+              {shouldShowReviewStatus(selectedComparison) ? (
+                <span className="badge">{selectedComparison.reviewStatus}</span>
+              ) : null}
               <span className="badge">{getConfidenceLabel(selectedComparison.confidence)}</span>
             </div>
           ) : null}
@@ -593,9 +724,9 @@ function SourceDocumentsWorkspace({
               title="Portal Output"
             >
               <HighlightedSnippet
-                helperText="Current charted value"
+                helperText="Captured chart value"
                 highlighted
-                label="Portal shows"
+                label="Chart snapshot"
                 snippetRef={portalHighlightRef}
                 value={selectedComparison.displayPortalValue}
               />
@@ -734,6 +865,53 @@ function DebugTab({ patient, workspace }: { patient: PatientDetail; workspace: C
           </tbody>
         </table>
       </DebugDrawer>
+
+      {workspace.debug.visibilitySummary ? (
+        <DebugDrawer title="Visibility Decisions" count={workspace.debug.visibilitySummary.hiddenRows}>
+          <div className="artifact-stack compact-artifact-stack">
+            <div className="checklist-item">
+              <div className="metric-label">Total rows</div>
+              <div>{workspace.debug.visibilitySummary.totalRows}</div>
+            </div>
+            <div className="checklist-item">
+              <div className="metric-label">Shown by default</div>
+              <div>{workspace.debug.visibilitySummary.shownRows}</div>
+            </div>
+            <div className="checklist-item">
+              <div className="metric-label">Hidden by default</div>
+              <div>{workspace.debug.visibilitySummary.hiddenRows}</div>
+            </div>
+            {Object.entries(workspace.debug.visibilitySummary.hiddenByReason).length > 0 ? (
+              <div className="checklist-item">
+                <div className="metric-label">Hidden by reason</div>
+                <div className="checklist compact-checklist">
+                  {Object.entries(workspace.debug.visibilitySummary.hiddenByReason).map(([reason, count]) => (
+                    <div key={reason}>{formatStatusLabel(reason)}: {count}</div>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+            {workspace.debug.visibilitySummary.potentiallyTooStrictRows.length > 0 ? (
+              <div className="checklist-item">
+                <div className="metric-label">Potentially too strict</div>
+                <div>{workspace.debug.visibilitySummary.potentiallyTooStrictRows.join(", ")}</div>
+              </div>
+            ) : null}
+            {workspace.debug.hiddenRows.slice(0, 8).length > 0 ? (
+              <div className="checklist-item">
+                <div className="metric-label">Hidden row examples</div>
+                <div className="checklist compact-checklist">
+                  {workspace.debug.hiddenRows.slice(0, 8).map((row) => (
+                    <div key={row.fieldKey}>
+                      <strong>{row.fieldLabel}</strong>: {row.visibilityReason ?? row.shortReason}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+          </div>
+        </DebugDrawer>
+      ) : null}
     </section>
   );
 }
@@ -755,6 +933,18 @@ export default function PatientDetailPage() {
   function handleInspect(fieldKey: string): void {
     setSelectedFieldKey(fieldKey);
     setActiveTab("source_documents");
+  }
+
+  function handleInspectHiddenRow(fieldKey: string): void {
+    setShowMatches(true);
+    setSelectedFieldKey(fieldKey);
+    setActiveTab("source_documents");
+  }
+
+  function handleReviewHiddenRows(): void {
+    setShowMatches(true);
+    setResultFilter("all");
+    setActiveTab("compare_all");
   }
 
   useEffect(() => {
@@ -826,6 +1016,14 @@ export default function PatientDetailPage() {
         }))
         .filter((entry) => entry.rows.length > 0)
     : [];
+  const proposalWarnings = workspace
+    ? deriveProposalPipelineWarnings(workspace.debug.referralWarnings)
+    : [];
+  const hiddenMeaningfulRows = workspace
+    ? workspace.debug.hiddenRows.filter((row) =>
+        row.strictnessFlags?.includes("hidden_with_meaningful_value"),
+      )
+    : [];
   const tabs: Array<{ key: WorkspaceTab; label: string; count?: number }> = workspace
     ? [
         { key: "compare_all", label: "Compare All", count: compareAllRows.length },
@@ -844,8 +1042,18 @@ export default function PatientDetailPage() {
           <Link className="link" href="/agency">Back to agency overview</Link>
           <p className="eyebrow">Referral vs Portal Reconciliation Workspace</p>
           <p className="page-subtitle">
-            Open the patient, compare what the referral says against what the portal shows, and work the discrepancies from the top down.
+            Open the patient, compare what the referral says against the captured chart snapshot, and work the discrepancies from the top down.
           </p>
+        </div>
+        <div className="actions">
+          <Link className="button secondary" href="/select-agency?change=1">
+            Change Agency
+          </Link>
+          <form action="/auth/logout" method="post">
+            <button className="button secondary" type="submit">
+              Sign Out
+            </button>
+          </form>
         </div>
       </div>
 
@@ -862,6 +1070,13 @@ export default function PatientDetailPage() {
             </section>
           ) : null}
           <ComparisonSummaryBar workspace={workspace} />
+          <InvestigationSignalsPanel
+            hiddenMeaningfulRows={hiddenMeaningfulRows}
+            onInspectHiddenRow={handleInspectHiddenRow}
+            onOpenDebug={() => setActiveTab("debug")}
+            onReviewHiddenRows={handleReviewHiddenRows}
+            proposalWarnings={proposalWarnings}
+          />
 
           <div aria-label="Patient review tabs" className="workspace-tab-bar" role="tablist">
             {tabs.map((tab) => (
@@ -899,7 +1114,7 @@ export default function PatientDetailPage() {
               <div className="panel-header-inline">
                 <div>
                   <h2>Compare All</h2>
-                  <p className="page-subtitle">This is the default work queue. Matches stay hidden unless you turn them on.</p>
+                  <p className="page-subtitle">This is the default work queue. Resolved rows and backend-hidden rows stay hidden unless you turn them on.</p>
                 </div>
                 <span className="badge">{compareAllRows.length}</span>
               </div>

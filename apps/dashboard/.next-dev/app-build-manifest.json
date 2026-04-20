@@ -21,11 +21,6 @@
       "static/chunks/main-app.js",
       "static/chunks/app/auth/login/route.js"
     ],
-    "/healthz/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/healthz/route.js"
-    ],
     "/select-agency/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
@@ -46,16 +41,6 @@
       "static/chunks/main-app.js",
       "static/chunks/app/agency/page.js"
     ],
-    "/auth/logout/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/auth/logout/route.js"
-    ],
-    "/api/session/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/api/session/route.js"
-    ],
     "/runs/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
@@ -71,10 +56,10 @@
       "static/chunks/main-app.js",
       "static/chunks/app/api/session/runs/[...segments]/route.js"
     ],
-    "/runs/[runId]/page": [
+    "/api/session/route": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/runs/[runId]/page.js"
+      "static/chunks/app/api/session/route.js"
     ]
   }
 }

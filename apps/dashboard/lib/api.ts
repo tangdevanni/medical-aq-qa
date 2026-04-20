@@ -61,6 +61,22 @@ export function getPatientArtifacts(
   );
 }
 
+export function createSampleRun(
+  runId: string,
+  input: {
+    limit?: number;
+    patientIds?: string[];
+  } = {},
+): Promise<RunDetail> {
+  return fetchJson<RunDetail>(`/api/session/runs/${encodeURIComponent(runId)}/sample`, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify(input),
+  });
+}
+
 export async function uploadWorkbook(input: {
   file: File;
   billingPeriod: string;

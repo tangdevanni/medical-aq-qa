@@ -21,6 +21,11 @@ const batchPatientParamsSchema = z.object({
   patientId: z.string().min(1),
 });
 
+const sampleBatchBodySchema = z.object({
+  limit: z.number().int().positive().max(50).optional(),
+  patientIds: z.array(z.string().min(1)).max(50).optional(),
+});
+
 async function getBatchId(request: FastifyRequest): Promise<string> {
   const params = batchIdParamsSchema.parse(request.params);
   return params.id;
@@ -321,6 +326,19 @@ export async function registerBatchRoutes(
     await service.startBatchRun(batchId);
     reply.code(202);
     return buildDashboardRunDetail(service, batchId);
+  });
+
+  app.post("/api/runs/:id/sample", async (request, reply) => {
+    const batchId = await getBatchId(request);
+    const body = sampleBatchBodySchema.parse((request.body ?? {}) as unknown);
+    const sampleBatch = await service.createPatientSampleBatch({
+      sourceBatchId: batchId,
+      limit: body.limit,
+      patientIds: body.patientIds,
+    });
+    await service.startBatchRun(sampleBatch.id);
+    reply.code(202);
+    return buildDashboardRunDetail(service, sampleBatch.id);
   });
 
   app.post("/api/runs/:id/deactivate", async (request) => {

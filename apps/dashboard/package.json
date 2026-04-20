@@ -11,6 +11,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
+    "@aws-sdk/client-cloudwatch-logs": "^3.1033.0",
     "@medical-ai-qa/shared-types": "workspace:*",
     "next": "^15.2.0",
     "react": "^19.0.0",

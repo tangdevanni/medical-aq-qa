@@ -1,4 +1,4 @@
-import { mkdir, readdir } from "node:fs/promises";
+import { mkdir, readdir, rm } from "node:fs/promises";
 import path from "node:path";
 import type { ScheduledRunRecord } from "../types/scheduledRun";
 import { scheduledRunRecordSchema } from "../types/scheduledRun";
@@ -60,5 +60,9 @@ export class FilesystemScheduledRunRepository {
     return schedules
       .filter((schedule): schedule is ScheduledRunRecord => schedule !== null)
       .sort((left, right) => right.createdAt.localeCompare(left.createdAt));
+  }
+
+  async deleteScheduledRun(scheduleId: string): Promise<void> {
+    await rm(this.getMetadataPath(scheduleId), { force: true });
   }
 }

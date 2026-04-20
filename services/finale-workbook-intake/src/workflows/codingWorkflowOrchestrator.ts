@@ -43,6 +43,7 @@ export async function runCodingWorkflowOrchestrator(
     stepName: string;
     message: string;
     completedAt?: string | null;
+    workflowResultPath?: string | null;
   }) => {
     params.run.workflowRuns = upsertWorkflowRun(
       params.run.workflowRuns,
@@ -56,6 +57,7 @@ export async function runCodingWorkflowOrchestrator(
         timestamp: new Date().toISOString(),
         startedAt,
         completedAt: input.completedAt ?? null,
+        workflowResultPath: input.workflowResultPath ?? null,
       }),
     );
   };
@@ -264,6 +266,7 @@ export async function runCodingWorkflowOrchestrator(
       stepName: params.run.executionStep,
       message: params.run.errorSummary ?? "Coding workflow completed successfully.",
       completedAt: new Date().toISOString(),
+      workflowResultPath: codingInputExport?.filePath ?? null,
     });
     stepLogs.push(createWorkflowBranchStepLog({
       context: params.context,

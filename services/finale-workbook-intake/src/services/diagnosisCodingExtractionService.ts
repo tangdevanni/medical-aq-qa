@@ -257,6 +257,8 @@ const BEDROCK_SYSTEM_PROMPT = [
 ].join(" ");
 
 const bedrockClientByRegion = new Map<string, BedrockRuntimeClient>();
+const RAW_FALLBACK_CHARACTER_LIMIT = 2_500;
+const FACT_PACK_PRIMARY_MINIMUM_SCORE = 0.6;
 
 function normalizeWhitespace(value: string | null | undefined): string {
   return value?.replace(/\s+/g, " ").trim() ?? "";
@@ -1147,6 +1149,7 @@ function buildSourceText(extractedDocuments: ExtractedDocument[]): {
   const rawBuild = buildRawSourceText(extractedDocuments);
   const factPack = buildDocumentFactPack(rawBuild.selectedDocuments);
   const factPackText = buildFactPackPromptText(factPack);
+  const rawFallbackText = rawBuild.sourceText.slice(0, RAW_FALLBACK_CHARACTER_LIMIT);
 
   if (!factPackText) {
     return {
@@ -1156,18 +1159,47 @@ function buildSourceText(extractedDocuments: ExtractedDocument[]): {
         ...rawBuild.evidence,
         "llmInputSource:raw_text_fallback",
         "factPackStatus:empty_or_unusable",
+        "fallbackReason:missing_fact_pack",
       ],
       llmInputSource: "raw_text_fallback",
     };
   }
 
-  const needsRawFallback =
-    factPack.diagnoses.length === 0 ||
-    (factPack.hospitalizationReasons.length === 0 && factPack.skilledNeedEvidence.length === 0);
+  const hasDiagnoses = factPack.diagnoses.length > 0;
+  const hasNeedSignal =
+    factPack.hospitalizationReasons.length > 0 ||
+    factPack.skilledNeedEvidence.length > 0;
+  const hasClinicalSupport =
+    factPack.homeboundEvidence.length > 0 ||
+    factPack.assessmentValues.length > 0 ||
+    factPack.uncategorizedEvidence.length > 0;
+  const hasMedicationContext =
+    factPack.medications.length > 0 ||
+    factPack.allergies.length > 0;
+  const factPackCoverageScore = Number((
+    (hasDiagnoses ? 0.45 : 0) +
+    (hasNeedSignal ? 0.25 : 0) +
+    (hasClinicalSupport ? 0.2 : 0) +
+    (hasMedicationContext ? 0.1 : 0)
+  ).toFixed(2));
+  const satisfiedCriticalSections = [
+    hasDiagnoses ? "diagnoses" : null,
+    hasNeedSignal ? "needSignal" : null,
+    hasClinicalSupport ? "clinicalSupport" : null,
+  ].filter((section): section is string => Boolean(section));
+  const missingCriticalSections = [
+    hasDiagnoses ? null : "diagnoses",
+    hasNeedSignal ? null : "needSignal",
+    hasClinicalSupport ? null : "clinicalSupport",
+  ].filter((section): section is string => Boolean(section));
+  const shouldPreferFactPackPrimary =
+    factPackCoverageScore >= FACT_PACK_PRIMARY_MINIMUM_SCORE &&
+    satisfiedCriticalSections.length >= 2;
+  const promptCharacterEstimate = factPackText.length + (shouldPreferFactPackPrimary ? 0 : rawFallbackText.length);
 
-  if (needsRawFallback && rawBuild.sourceText) {
+  if (!shouldPreferFactPackPrimary && rawFallbackText) {
     return {
-      sourceText: `${factPackText}\n\nRaw Fallback Excerpts:\n${rawBuild.sourceText.slice(0, 3_000)}`,
+      sourceText: `${factPackText}\n\nRaw Fallback Excerpts:\n${rawFallbackText}`,
       selectedDocuments: rawBuild.selectedDocuments,
       evidence: [
         ...rawBuild.evidence,
@@ -1175,6 +1207,10 @@ function buildSourceText(extractedDocuments: ExtractedDocument[]): {
         `factPackRawCharacters:${factPack.stats.rawCharacters}`,
         `factPackPackedCharacters:${factPack.stats.packedCharacters}`,
         `factPackReductionPercent:${factPack.stats.reductionPercent}`,
+        `factPackCoverageScore:${factPackCoverageScore}`,
+        `missingCriticalSections:${missingCriticalSections.join("|") || "none"}`,
+        `fallbackReason:${missingCriticalSections.join("|") || "score_below_threshold"}`,
+        `promptCharacterEstimate:${promptCharacterEstimate}`,
       ],
       llmInputSource: "fact_pack_plus_raw_fallback",
     };
@@ -1189,6 +1225,10 @@ function buildSourceText(extractedDocuments: ExtractedDocument[]): {
       `factPackRawCharacters:${factPack.stats.rawCharacters}`,
       `factPackPackedCharacters:${factPack.stats.packedCharacters}`,
       `factPackReductionPercent:${factPack.stats.reductionPercent}`,
+      `factPackCoverageScore:${factPackCoverageScore}`,
+      `missingCriticalSections:${missingCriticalSections.join("|") || "none"}`,
+      "fallbackReason:none",
+      `promptCharacterEstimate:${promptCharacterEstimate}`,
     ],
     llmInputSource: "fact_pack_primary",
   };

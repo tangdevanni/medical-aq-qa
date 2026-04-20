@@ -1,0 +1,85 @@
+{
+  "batchId": "batch-star-home-health-sample-2026-04-17T20-42-33-610Z-02ec7962",
+  "status": "COMPLETED",
+  "startedAt": "2026-04-17T20:42:33.653Z",
+  "completedAt": "2026-04-17T21:07:35.019Z",
+  "lastUpdatedAt": "2026-04-17T21:07:35.019Z",
+  "totalWorkItems": 5,
+  "automationEligible": 5,
+  "processed": 5,
+  "totalCompleted": 0,
+  "totalBlocked": 5,
+  "totalFailed": 0,
+  "totalNeedsHumanReview": 0,
+  "totalReadyForBillingPrep": 0,
+  "totalParserExceptions": 0,
+  "percentComplete": 100,
+  "currentlyRunningCount": 0,
+  "currentBatchStatus": "COMPLETED",
+  "complete": 0,
+  "blocked": 5,
+  "failed": 0,
+  "needsHumanReview": 0,
+  "parserExceptions": 0,
+  "qaOutcomes": {
+    "READY_FOR_BILLING_PREP": 0,
+    "INCOMPLETE": 0,
+    "MISSING_DOCUMENTS": 3,
+    "PORTAL_NOT_FOUND": 0,
+    "PORTAL_MISMATCH": 2,
+    "AMBIGUOUS_PATIENT": 0,
+    "NEEDS_MANUAL_QA": 0
+  },
+  "patientRuns": [
+    {
+      "workItemId": "AMEERA_ALSAEDI__5844dd3b5b7e0b21",
+      "patientName": "Ameera Alsaedi",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Diagnosis code candidates: Z48.89, M17.0, M47.812, R20.0, M54.12, G56.01",
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-star-home-health-sample-2026-04-17T20-42-33-610Z-02ec7962\\outputs\\patient-results\\AMEERA_ALSAEDI__5844dd3b5b7e0b21.json"
+    },
+    {
+      "workItemId": "ANNETTE_ROMO__8a6e655fe12d21ef",
+      "patientName": "Annette Romo",
+      "processingStatus": "BLOCKED",
+      "executionStep": "PATIENT_STATUS_EXCLUDED",
+      "progressPercent": 100,
+      "qaOutcome": "PORTAL_MISMATCH",
+      "errorSummary": "Portal patient status 'Pending' excludes this patient from autonomous QA evaluation.",
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-star-home-health-sample-2026-04-17T20-42-33-610Z-02ec7962\\outputs\\patient-results\\ANNETTE_ROMO__8a6e655fe12d21ef.json"
+    },
+    {
+      "workItemId": "BARBARA_DAVIS__c5977c0a548b703f",
+      "patientName": "Barbara Davis",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Diagnosis code candidates: R47.01, G23.1, G90.9, G62.9, R42, K62.3, K57.30, I36",
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-star-home-health-sample-2026-04-17T20-42-33-610Z-02ec7962\\outputs\\patient-results\\BARBARA_DAVIS__c5977c0a548b703f.json"
+    },
+    {
+      "workItemId": "CHRISTINE_YOUNG__52c5fc31a7ba9d78",
+      "patientName": "Christine Young",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Diagnosis code candidates: J18.9, J96.01, R13.12, G93.41, R41.841, M62.81, R26.2, I11.0, E03.9, F32.A, M62, I00.0",
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-star-home-health-sample-2026-04-17T20-42-33-610Z-02ec7962\\outputs\\patient-results\\CHRISTINE_YOUNG__52c5fc31a7ba9d78.json"
+    },
+    {
+      "workItemId": "JAMES_GALEK__d5a27c176c33c4d5",
+      "patientName": "James Galek",
+      "processingStatus": "BLOCKED",
+      "executionStep": "PATIENT_STATUS_EXCLUDED",
+      "progressPercent": 100,
+      "qaOutcome": "PORTAL_MISMATCH",
+      "errorSummary": "Portal patient status 'Pending' excludes this patient from autonomous QA evaluation.",
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-star-home-health-sample-2026-04-17T20-42-33-610Z-02ec7962\\outputs\\patient-results\\JAMES_GALEK__d5a27c176c33c4d5.json"
+    }
+  ]
+}

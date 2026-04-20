@@ -1,0 +1,51 @@
+{
+  "documentType": "ORDER",
+  "sourceLabel": "New Referral Ameera Alsaedi 04092026.pdf",
+  "normalizedSourceLabel": "new referral ameera alsaedi 04092026.pdf",
+  "viewerDetected": true,
+  "printButtonDetected": true,
+  "printButtonSelectorUsed": "pdf-print #printButton, #printButton, pdf-shy-button[primarytoolbarid='printButton'] button",
+  "printClickSucceeded": false,
+  "pdfResponseDetected": true,
+  "pdfResponseUrl": "https://api.finalehealth.com/api/v1/files/69d7fbb71e9c2e0c503a7664?index=documents",
+  "pdfContentType": "application/pdf",
+  "pdfSavedPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-star-home-health-sample-2026-04-17T20-42-33-610Z-02ec7962\\outputs\\patients\\AMEERA_ALSAEDI__5844dd3b5b7e0b21\\documents\\new-referral-ameera-alsaedi-04092026-pdf\\source.pdf",
+  "pdfByteSize": 4156518,
+  "printAcquisitionMethodUsed": "network_pdf_response",
+  "printedPdfSaved": false,
+  "printedPdfPath": null,
+  "sourcePdfPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-star-home-health-sample-2026-04-17T20-42-33-610Z-02ec7962\\outputs\\patients\\AMEERA_ALSAEDI__5844dd3b5b7e0b21\\documents\\new-referral-ameera-alsaedi-04092026-pdf\\source.pdf",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-star-home-health-sample-2026-04-17T20-42-33-610Z-02ec7962\\outputs\\patients\\AMEERA_ALSAEDI__5844dd3b5b7e0b21\\documents\\new-referral-ameera-alsaedi-04092026-pdf\\extracted-text.txt",
+  "extractedTextLength": 104,
+  "extractionMethodUsed": "click",
+  "rawExtractedTextSource": "dom",
+  "domExtractionRejectedReasons": [
+    "viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS"
+  ],
+  "extractionSuccess": false,
+  "queuedForLlm": true,
+  "extractionPolicyDecision": {
+    "mode": "ocr_required",
+    "confidence": "high",
+    "reasons": [
+      "PDF appears image-based/scanned; OCR likely required",
+      "No printed PDF available",
+      "OCR is the cheapest acceptable option that preserves clinically meaningful content"
+    ],
+    "recommendedSourcePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-star-home-health-sample-2026-04-17T20-42-33-610Z-02ec7962\\outputs\\patients\\AMEERA_ALSAEDI__5844dd3b5b7e0b21\\documents\\new-referral-ameera-alsaedi-04092026-pdf\\source.pdf",
+    "fallbackSourcePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-star-home-health-sample-2026-04-17T20-42-33-610Z-02ec7962\\outputs\\patients\\AMEERA_ALSAEDI__5844dd3b5b7e0b21\\documents\\new-referral-ameera-alsaedi-04092026-pdf\\source.pdf",
+    "hasUsablePdfTextLayer": false,
+    "hasPdfSource": true,
+    "hasPrintedPdfSource": false,
+    "hasHtmlSource": false
+  },
+  "admissionReasonPrimary": null,
+  "admissionReasonSnippets": [],
+  "possibleIcd10Codes": [
+    "I00",
+    "I25",
+    "I50"
+  ],
+  "textPreview": "Automatic Zoom Actual Size Page Fit Page Width ⁨50⁩% ⁨100⁩% ⁨125⁩% ⁨150⁩% ⁨200⁩% ⁨300⁩% ⁨400⁩% 90% Tools",
+  "generatedAt": "2026-04-17T20:45:25.542Z"
+}

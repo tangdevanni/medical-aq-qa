@@ -1,0 +1,19 @@
+{
+  "generatedAt": "2026-04-17T17:04:43.101Z",
+  "source": "printed_note_ocr",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts\\demo\\oasis-qa-demo-2026-04-11T00-33-01-425Z\\run\\evidence\\CHRISTINE_YOUNG__a89bc267c323fb6a\\oasis-printed-note\\extracted-text.txt",
+  "llmInputSource": "fact_pack_plus_raw_fallback",
+  "extractedFieldCount": 0,
+  "invocationModelId": null,
+  "currentChartValues": {},
+  "extractedFieldValues": [],
+  "warnings": [
+    "LLM input source: fact_pack_plus_raw_fallback.",
+    "Fact pack coverage: diagnoses, skilledNeedEvidence.",
+    "Fact pack coverage score: 0.4.",
+    "Prompt character estimate: 2509.",
+    "Fallback reason: assessmentValues, medicationsOrAllergies.",
+    "Raw fallback appended for missing coverage: assessmentValues, medicationsOrAllergies.",
+    "Printed-note chart-value extraction skipped because the LLM is disabled or unavailable."
+  ]
+}

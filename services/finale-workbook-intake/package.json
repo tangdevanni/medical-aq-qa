@@ -9,6 +9,7 @@
     "dev": "tsx src/cli/run-finale-batch.ts",
     "demo:oasis-qa": "pnpm run build && node dist/services/finale-workbook-intake/src/testing/run-oasis-demo.js",
     "verify:oasis-demo-live": "pnpm run build && node dist/services/finale-workbook-intake/src/testing/verify-oasis-live-demo.js",
+    "summary:artifact-quality": "pnpm exec tsx src/testing/runArtifactQualitySummary.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
     "test:oasis-demo": "pnpm run build && node dist/services/finale-workbook-intake/src/testing/run-oasis-demo.js --output-dir artifacts/test/oasis-qa-demo"

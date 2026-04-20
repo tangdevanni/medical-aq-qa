@@ -1,4 +1,5 @@
 import { randomUUID } from "node:crypto";
+import { copyFile, mkdir } from "node:fs/promises";
 import path from "node:path";
 import type {
   AgencyDashboardSnapshot,
@@ -6,6 +7,7 @@ import type {
   BatchManifest,
   BatchSummary,
   DashboardPatientRecord,
+  PatientDashboardState,
   ParserException,
   PatientQueueArtifact,
   PatientEpisodeWorkItem,
@@ -33,6 +35,7 @@ import type { FilesystemBatchRepository } from "../repositories/filesystemBatchR
 import type { FilesystemScheduledRunRepository } from "../repositories/filesystemScheduledRunRepository";
 import type { BatchRecord } from "../types/batchControlPlane";
 import type { ScheduledRunRecord } from "../types/scheduledRun";
+import { writeJsonFile } from "../utils/jsonFile";
 import { isWorkbookRotationDue } from "../utils/workbookRotation";
 import type { SubsidiaryConfigService } from "./subsidiaryConfigService";
 
@@ -309,6 +312,24 @@ function filterEligibleWorkItems(
   return workItems.filter((workItem) => eligibleIds.has(workItem.id));
 }
 
+function selectSampleWorkItems(input: {
+  workItems: PatientEpisodeWorkItem[];
+  patientIds?: string[] | null;
+  limit?: number | null;
+}): PatientEpisodeWorkItem[] {
+  const limit = input.limit && input.limit > 0 ? input.limit : 5;
+  if (input.patientIds && input.patientIds.length > 0) {
+    const requestedIds = Array.from(
+      new Set(input.patientIds.map((patientId) => patientId.trim()).filter((patientId) => patientId.length > 0)),
+    );
+    return requestedIds
+      .map((patientId) => input.workItems.find((workItem) => workItem.id === patientId) ?? null)
+      .filter((workItem): workItem is PatientEpisodeWorkItem => workItem !== null);
+  }
+
+  return input.workItems.slice(0, limit);
+}
+
 export class BatchControlPlaneService {
   private readonly activeBatchJobs = new Map<string, Promise<void>>();
   private rerunTimer: ReturnType<typeof setInterval> | null = null;
@@ -508,7 +529,118 @@ export class BatchControlPlaneService {
     });
 
     await this.parseBatch(batch.id);
-    return this.startBatchRun(batch.id);
+    const refreshedBatch = await this.startBatchRun(batch.id);
+    await this.removeSupersededAgencyBatches(refreshedBatch);
+    return refreshedBatch;
+  }
+
+  async createPatientSampleBatch(input: {
+    sourceBatchId: string;
+    patientIds?: string[] | null;
+    limit?: number | null;
+  }): Promise<BatchRecord> {
+    const sourceBatch = await this.mustGetBatch(input.sourceBatchId);
+    if (this.activeBatchJobs.has(sourceBatch.id)) {
+      throw new Error(`Source batch is already running: ${sourceBatch.id}`);
+    }
+
+    const sourceManifest = await this.repository.readManifest(sourceBatch);
+    const sourceWorkItems = await this.repository.readWorkItems(sourceBatch);
+    const parserExceptions = await this.repository.readParserExceptions(sourceBatch);
+    const eligibleWorkItems = filterEligibleWorkItems(sourceWorkItems, sourceManifest);
+    const selectedWorkItems = selectSampleWorkItems({
+      workItems: eligibleWorkItems,
+      patientIds: input.patientIds ?? null,
+      limit: input.limit ?? 5,
+    });
+
+    if (selectedWorkItems.length === 0) {
+      throw new Error(`No eligible patients were selected from batch: ${sourceBatch.id}`);
+    }
+
+    const batchId = createBatchId(`${sourceBatch.subsidiary.slug}-sample`);
+    const paths = this.repository.createBatchPaths(batchId, sourceBatch.sourceWorkbook.originalFileName);
+    const now = new Date().toISOString();
+    const manifestPath = path.join(paths.outputRoot, "batch-manifest.json");
+    const workItemsPath = path.join(paths.outputRoot, "work-items.json");
+    const parserExceptionsPath = path.join(paths.outputRoot, "parser-exceptions.json");
+    await mkdir(path.dirname(paths.sourceWorkbookPath), { recursive: true });
+    await copyFile(sourceBatch.sourceWorkbook.storedPath, paths.sourceWorkbookPath);
+    const manifest: BatchManifest = {
+      ...sourceManifest,
+      batchId,
+      workbookPath: paths.sourceWorkbookPath,
+      outputDirectory: paths.outputRoot,
+      totalWorkItems: selectedWorkItems.length,
+      parserExceptionCount: parserExceptions.length,
+      automationEligibleWorkItemIds: selectedWorkItems.map((workItem) => workItem.id),
+      blockedWorkItemIds: [],
+    };
+
+    await writeJsonFile(manifestPath, manifest);
+    await writeJsonFile(workItemsPath, selectedWorkItems);
+    await writeJsonFile(parserExceptionsPath, parserExceptions);
+
+    const batch: BatchRecord = {
+      id: batchId,
+      subsidiary: {
+        ...sourceBatch.subsidiary,
+      },
+      createdAt: now,
+      updatedAt: now,
+      runMode: sourceBatch.runMode,
+      billingPeriod: sourceBatch.billingPeriod,
+      status: "READY",
+      schedule: {
+        scheduledRunId: null,
+        active: false,
+        rerunEnabled: false,
+        intervalHours: sourceBatch.schedule.intervalHours,
+        timezone: sourceBatch.schedule.timezone,
+        localTimes: [...sourceBatch.schedule.localTimes],
+        lastRunAt: null,
+        nextScheduledRunAt: null,
+      },
+      sourceWorkbook: {
+        ...sourceBatch.sourceWorkbook,
+        acquisitionNotes: [
+          ...sourceBatch.sourceWorkbook.acquisitionNotes,
+          `Sample patient batch created from ${sourceBatch.id}.`,
+        ],
+        storedPath: paths.sourceWorkbookPath,
+      },
+      storage: {
+        batchRoot: paths.batchRoot,
+        outputRoot: paths.outputRoot,
+        manifestPath,
+        workItemsPath,
+        parserExceptionsPath,
+        batchSummaryPath: null,
+        patientResultsDirectory: paths.patientResultsDirectory,
+        evidenceDirectory: paths.evidenceDirectory,
+      },
+      parse: {
+        requestedAt: sourceBatch.parse.requestedAt ?? sourceBatch.createdAt,
+        completedAt: sourceBatch.parse.completedAt ?? now,
+        workItemCount: selectedWorkItems.length,
+        eligibleWorkItemCount: selectedWorkItems.length,
+        parserExceptionCount: parserExceptions.length,
+        sourceDetections: sourceBatch.parse.sourceDetections,
+        sheetSummaries: sourceBatch.parse.sheetSummaries,
+        lastError: null,
+      },
+      run: {
+        requestedAt: null,
+        completedAt: null,
+        patientRunCount: 0,
+        lastError: null,
+      },
+      patientRuns: [],
+    };
+
+    batch.patientRuns = selectedWorkItems.map((workItem) => createPendingPatientRunState(batch, workItem));
+    await this.repository.saveBatch(batch);
+    return batch;
   }
 
   private async ensureAutonomousAgencyBatches(): Promise<void> {
@@ -540,7 +672,8 @@ export class BatchControlPlaneService {
           },
         });
         await this.parseBatch(batch.id);
-        await this.startBatchRun(batch.id);
+        const startedBatch = await this.startBatchRun(batch.id);
+        await this.removeSupersededAgencyBatches(startedBatch);
         this.logger.info(
           {
             batchId: batch.id,
@@ -1009,6 +1142,8 @@ export class BatchControlPlaneService {
       patientQaReference: string;
       qaDocumentSummary: string;
       fieldMapSnapshot: string;
+      printedNoteChartValues: string | null;
+      printedNoteReview: string | null;
     };
     artifactContents: {
       codingInput: unknown | null;
@@ -1017,6 +1152,8 @@ export class BatchControlPlaneService {
       patientQaReference: unknown | null;
       qaDocumentSummary: unknown | null;
       fieldMapSnapshot: unknown | null;
+      printedNoteChartValues: unknown | null;
+      printedNoteReview: unknown | null;
     };
   } | null> {
     const patient = await this.getBatchPatient(batchId, patientId);
@@ -1026,7 +1163,66 @@ export class BatchControlPlaneService {
 
     const workItem = await this.getBatchWorkItem(batchId, patientId);
     const patientArtifactsDirectory = path.join(patient.batch.storage.outputRoot, "patients", patientId);
+    const patientDashboardStatePath = path.join(
+      patientArtifactsDirectory,
+      "patient-dashboard-state.json",
+    );
+    const patientDashboardState = await this.repository.readJsonIfExists<PatientDashboardState>(
+      patientDashboardStatePath,
+    );
+    if (patientDashboardState) {
+      return {
+        batch: patient.batch,
+        summary: patient.summary,
+        detail: patient.detail,
+        workItem: patientDashboardState.workItem ?? workItem,
+        patientArtifactsDirectory,
+        artifactPaths: {
+          codingInput: patientDashboardState.artifactPaths.codingInput,
+          documentText: patientDashboardState.artifactPaths.documentText,
+          qaPrefetch: patientDashboardState.artifactPaths.qaPrefetch,
+          patientQaReference: patientDashboardState.artifactPaths.patientQaReference,
+          qaDocumentSummary: patientDashboardState.artifactPaths.qaDocumentSummary,
+          fieldMapSnapshot: patientDashboardState.artifactPaths.fieldMapSnapshot,
+          printedNoteChartValues:
+            patientDashboardState.artifactPaths.printedNoteChartValues ??
+            path.join(patientArtifactsDirectory, "printed-note-chart-values.json"),
+          printedNoteReview:
+            patientDashboardState.artifactPaths.printedNoteReview ??
+            path.join(patientArtifactsDirectory, "oasis-printed-note-review.json"),
+        },
+        artifactContents: {
+          codingInput: patientDashboardState.artifactContents.codingInput ?? null,
+          documentText: patientDashboardState.artifactContents.documentText ?? null,
+          qaPrefetch: patientDashboardState.artifactContents.qaPrefetch ?? null,
+          patientQaReference: patientDashboardState.artifactContents.patientQaReference ?? null,
+          qaDocumentSummary: patientDashboardState.artifactContents.qaDocumentSummary ?? null,
+          fieldMapSnapshot: patientDashboardState.artifactContents.fieldMapSnapshot ?? null,
+          printedNoteChartValues: patientDashboardState.artifactContents.printedNoteChartValues ?? null,
+          printedNoteReview: patientDashboardState.artifactContents.printedNoteReview ?? null,
+        },
+      };
+    }
+
+    const codingWorkflowRun = patient.summary.workflowRuns.find(
+      (workflowRun) => workflowRun.workflowDomain === "coding",
+    );
     const qaWorkflowRun = patient.summary.workflowRuns.find((workflowRun) => workflowRun.workflowDomain === "qa");
+    const codingInputPathCandidates = Array.from(
+      new Set(
+        [
+          codingWorkflowRun?.workflowResultPath ?? null,
+          path.join(patientArtifactsDirectory, "coding-input.json"),
+        ].filter((candidate): candidate is string => Boolean(candidate)),
+      ),
+    );
+    let codingInputPath = codingInputPathCandidates[0] ?? path.join(patientArtifactsDirectory, "coding-input.json");
+    for (const candidate of codingInputPathCandidates) {
+      if (await this.repository.fileExists(candidate)) {
+        codingInputPath = candidate;
+        break;
+      }
+    }
     const qaPrefetchPathCandidates = Array.from(
       new Set(
         [
@@ -1046,7 +1242,7 @@ export class BatchControlPlaneService {
       qaPrefetchPath = qaPrefetchPathCandidates[0] ?? null;
     }
     const artifactPaths = {
-      codingInput: path.join(patientArtifactsDirectory, "coding-input.json"),
+      codingInput: codingInputPath,
       documentText: path.join(patientArtifactsDirectory, "document-text.json"),
       qaPrefetch: qaPrefetchPath,
       patientQaReference: path.join(
@@ -1064,6 +1260,8 @@ export class BatchControlPlaneService {
         "referral-document-processing",
         "field-map-snapshot.json",
       ),
+      printedNoteChartValues: path.join(patientArtifactsDirectory, "printed-note-chart-values.json"),
+      printedNoteReview: path.join(patientArtifactsDirectory, "oasis-printed-note-review.json"),
     };
 
     return {
@@ -1082,6 +1280,12 @@ export class BatchControlPlaneService {
         patientQaReference: await this.repository.readJsonIfExists(artifactPaths.patientQaReference),
         qaDocumentSummary: await this.repository.readJsonIfExists(artifactPaths.qaDocumentSummary),
         fieldMapSnapshot: await this.repository.readJsonIfExists(artifactPaths.fieldMapSnapshot),
+        printedNoteChartValues: artifactPaths.printedNoteChartValues
+          ? await this.repository.readJsonIfExists(artifactPaths.printedNoteChartValues)
+          : null,
+        printedNoteReview: artifactPaths.printedNoteReview
+          ? await this.repository.readJsonIfExists(artifactPaths.printedNoteReview)
+          : null,
       },
     };
   }
@@ -1668,6 +1872,34 @@ export class BatchControlPlaneService {
           replacedByBatchId: currentBatchId,
         },
         "deactivated older workbook rerun schedule",
+      );
+    }
+  }
+
+  private async removeSupersededAgencyBatches(currentBatch: BatchRecord): Promise<void> {
+    const batches = await this.repository.listBatches();
+
+    for (const batch of batches) {
+      if (
+        batch.id === currentBatch.id ||
+        batch.subsidiary.id !== currentBatch.subsidiary.id ||
+        this.activeBatchJobs.has(batch.id)
+      ) {
+        continue;
+      }
+
+      if (batch.schedule.scheduledRunId) {
+        await this.scheduledRunRepository.deleteScheduledRun(batch.schedule.scheduledRunId);
+      }
+
+      await this.repository.deleteBatch(batch.id);
+      this.logger.info(
+        {
+          batchId: batch.id,
+          subsidiaryId: batch.subsidiary.id,
+          preservedBatchId: currentBatch.id,
+        },
+        "removed superseded batch for agency cleanup",
       );
     }
   }

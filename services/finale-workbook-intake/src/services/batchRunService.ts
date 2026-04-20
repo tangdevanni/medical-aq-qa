@@ -42,6 +42,7 @@ import { buildOasisQaSummary } from "./oasisQaEvaluator";
 import { extractTechnicalReview } from "./technicalReviewExtractor";
 import { writePatientRunLog } from "./patientRunLogWriter";
 import { writePatientResultBundle } from "./patientResultBundleWriter";
+import { writePatientDashboardState } from "./patientDashboardStateWriter";
 import { intakeWorkbook } from "./workbookIntakeService";
 import { extractCurrentChartValuesFromPrintedNote } from "../oasis/print/printedNoteChartValueExtractionService";
 import type { OasisPrintedNoteReviewResult } from "../oasis/types/oasisPrintedNoteReview";
@@ -714,11 +715,15 @@ async function emitPatientRunUpdate(
     workflowResultPath:
       workflowRun.workflowDomain === "coding" &&
       workflowRun.status !== "NOT_STARTED" &&
-      run.resultBundlePath
-        ? run.resultBundlePath
+      (workflowRun.workflowResultPath ?? run.resultBundlePath)
+        ? workflowRun.workflowResultPath ?? run.resultBundlePath
         : workflowRun.workflowResultPath ?? null,
   }));
   run.logPath = await writePatientRunLog(outputDirectory, run);
+  await writePatientDashboardState({
+    outputDirectory,
+    run,
+  });
   if (onPatientRunUpdate) {
     await onPatientRunUpdate({
       ...run,
@@ -1114,6 +1119,7 @@ export async function executePatientWorkItems(
                 extractedDocuments: sharedEvidenceResult.sharedEvidence.extractedDocuments
                   .filter((document) => document.type === "ORDER"),
                 currentChartValues: printedNoteChartValues.currentChartValues,
+                currentChartValueSource: printedNoteChartValues.currentChartValueSource ?? undefined,
               });
               appendAutomationLogs(run, refreshedReferralProcessing.stepLogs);
               if (refreshedReferralProcessing.result) {
@@ -1320,10 +1326,13 @@ export async function executePatientWorkItems(
         run.workflowRuns = run.workflowRuns.map((workflowRun) =>
           workflowRun.workflowDomain === "coding" &&
           workflowRun.status !== "NOT_STARTED" &&
-          run.resultBundlePath
+          (workflowRun.workflowResultPath ?? codingInputExportPath ?? run.resultBundlePath)
             ? {
                 ...workflowRun,
-                workflowResultPath: run.resultBundlePath,
+                workflowResultPath:
+                  workflowRun.workflowResultPath ??
+                  codingInputExportPath ??
+                  run.resultBundlePath,
               }
             : workflowRun,
         );

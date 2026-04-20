@@ -1,0 +1,488 @@
+[
+  {
+    "id": "AMEERA_ALSAEDI__5844dd3b5b7e0b21",
+    "subsidiaryId": "default",
+    "patientIdentity": {
+      "displayName": "Ameera Alsaedi",
+      "normalizedName": "AMEERA ALSAEDI",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-04-14",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Lara, Toni RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "01-SOC"
+    },
+    "workflowTypes": [
+      "SOC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 29,
+      "daysInPeriod": null,
+      "daysLeft": 29,
+      "daysLeftBeforeOasisDueDate": 29,
+      "rawTrackingValues": [
+        "29"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "IN_PROGRESS",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "Validated"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "04/14/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 9
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 9,
+        "values": {
+          "patientName": "ALSAEDI, AMEERA",
+          "episodeDate": "04/14/2026",
+          "assignedStaff": "Lara, Toni RN",
+          "payer": "Medicare",
+          "rfa": "01-SOC",
+          "trackingDays": "29",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "Validated",
+          "oasisQaRemarks": "04/14/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "ANNETTE_ROMO__8a6e655fe12d21ef",
+    "subsidiaryId": "default",
+    "patientIdentity": {
+      "displayName": "Annette Romo",
+      "normalizedName": "ANNETTE ROMO",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-04-11",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": null,
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "01-SOC"
+    },
+    "workflowTypes": [
+      "SOC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 19,
+      "daysInPeriod": null,
+      "daysLeft": 19,
+      "daysLeftBeforeOasisDueDate": 19,
+      "rawTrackingValues": [
+        "19"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "IN_PROGRESS",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "In Progress"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "04/04/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 14
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 14,
+        "values": {
+          "patientName": "ROMO, ANNETTE",
+          "episodeDate": "04/11/2026",
+          "assignedStaff": null,
+          "payer": "Medicare",
+          "rfa": "01-SOC",
+          "trackingDays": "19",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "In Progress",
+          "oasisQaRemarks": "04/04/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "BARBARA_DAVIS__c5977c0a548b703f",
+    "subsidiaryId": "default",
+    "patientIdentity": {
+      "displayName": "Barbara Davis",
+      "normalizedName": "BARBARA DAVIS",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-03-10",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Nowland, Daniel PT",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "09-DC"
+    },
+    "workflowTypes": [
+      "SOC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 16,
+      "daysInPeriod": null,
+      "daysLeft": 16,
+      "daysLeftBeforeOasisDueDate": 16,
+      "rawTrackingValues": [
+        "16"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "IN_PROGRESS",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "Validated"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "04/01/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 17
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 17,
+        "values": {
+          "patientName": "DAVIS, BARBARA",
+          "episodeDate": "03/10/2026",
+          "assignedStaff": "Nowland, Daniel PT",
+          "payer": "Medicare",
+          "rfa": "09-DC",
+          "trackingDays": "16",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "Validated",
+          "oasisQaRemarks": "04/01/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "CHRISTINE_YOUNG__52c5fc31a7ba9d78",
+    "subsidiaryId": "default",
+    "patientIdentity": {
+      "displayName": "Christine Young",
+      "normalizedName": "CHRISTINE YOUNG",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-02-27",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Floresca, Aimee Assistant Administrator",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "08-DC-DEATH"
+    },
+    "workflowTypes": [
+      "SOC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 11,
+      "daysInPeriod": null,
+      "daysLeft": 11,
+      "daysLeftBeforeOasisDueDate": 11,
+      "rawTrackingValues": [
+        "11",
+        "2"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "IN_PROGRESS",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "Validated"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "03/27/2026"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "Validated"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "03/18/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 22
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 24
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 22,
+        "values": {
+          "patientName": "YOUNG, CHRISTINE",
+          "episodeDate": "02/27/2026",
+          "assignedStaff": "Floresca, Aimee Assistant Administrator",
+          "payer": "Medicare",
+          "rfa": "08-DC-DEATH",
+          "trackingDays": "11",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "Validated",
+          "oasisQaRemarks": "03/27/2026",
+          "pocQaRemarks": null
+        }
+      },
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 24,
+        "values": {
+          "patientName": "YOUNG, CHRISTINE",
+          "episodeDate": "02/27/2026",
+          "assignedStaff": "Lara, Toni RN",
+          "payer": "Medicare",
+          "rfa": "06-XFER",
+          "trackingDays": "2",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "Validated",
+          "oasisQaRemarks": "03/18/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  {
+    "id": "JAMES_GALEK__d5a27c176c33c4d5",
+    "subsidiaryId": "default",
+    "patientIdentity": {
+      "displayName": "James Galek",
+      "normalizedName": "JAMES GALEK",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-04-10",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": null,
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "01-SOC"
+    },
+    "workflowTypes": [
+      "SOC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 25,
+      "daysInPeriod": null,
+      "daysLeft": 25,
+      "daysLeftBeforeOasisDueDate": 25,
+      "rawTrackingValues": [
+        "25"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "IN_PROGRESS",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "In Progress"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "04/10/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 10
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 10,
+        "values": {
+          "patientName": "GALEK, JAMES",
+          "episodeDate": "04/10/2026",
+          "assignedStaff": null,
+          "payer": "Medicare",
+          "rfa": "01-SOC",
+          "trackingDays": "25",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "In Progress",
+          "oasisQaRemarks": "04/10/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  }
+]

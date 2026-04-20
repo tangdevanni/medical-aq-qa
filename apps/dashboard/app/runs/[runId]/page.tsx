@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import { getRun } from "../../../lib/api";
+import { createSampleRun, getRun } from "../../../lib/api";
 import {
   batchStatusClass,
   discrepancyBadgeClass,
@@ -15,9 +15,11 @@ import type { RunDetail } from "../../../lib/types";
 
 export default function RunDetailPage() {
   const params = useParams<{ runId: string }>();
+  const router = useRouter();
   const runId = params.runId;
   const [run, setRun] = useState<RunDetail | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [startingSample, setStartingSample] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -57,12 +59,26 @@ export default function RunDetailPage() {
       referralDataReady:
         run?.patients.filter((patient) => patient.referralQa.referralDataAvailable).length ?? 0,
       redDiscrepancies:
-        run?.patients.filter((patient) => patient.referralQa.discrepancyRating === "red").length ?? 0,
+        run?.patients.filter((patient) => patient.dashboardReview.severity === "red").length ?? 0,
       yellowDiscrepancies:
-        run?.patients.filter((patient) => patient.referralQa.discrepancyRating === "yellow").length ?? 0,
+        run?.patients.filter((patient) => patient.dashboardReview.severity === "yellow").length ?? 0,
+      totalOpenRows:
+        run?.patients.reduce((total, patient) => total + patient.dashboardReview.openRowCount, 0) ?? 0,
     }),
     [run],
   );
+
+  async function handleStartSampleRun(): Promise<void> {
+    setStartingSample(true);
+    try {
+      const sampleRun = await createSampleRun(runId, { limit: 5 });
+      setError(null);
+      router.push(`/runs/${sampleRun.id}`);
+    } catch (nextError) {
+      setError(nextError instanceof Error ? nextError.message : "Failed to start sample run.");
+      setStartingSample(false);
+    }
+  }
 
   return (
     <main className="page-shell stack">
@@ -76,6 +92,16 @@ export default function RunDetailPage() {
             Patient queue for referral-vs-portal review. Open a patient to see what the referral supports, what the portal is missing, and where human review is still required inside the currently selected agency.
           </p>
           {run ? <p className="muted">Active subsidiary: {run.subsidiaryName}</p> : null}
+        </div>
+        <div className="actions">
+          <button className="button" disabled={startingSample} onClick={() => void handleStartSampleRun()} type="button">
+            {startingSample ? "Starting 5-patient test..." : "Run 5-Patient OCR Test"}
+          </button>
+          <form action="/auth/logout" method="post">
+            <button className="button secondary" type="submit">
+              Sign Out
+            </button>
+          </form>
         </div>
       </div>
 
@@ -105,10 +131,10 @@ export default function RunDetailPage() {
             <div className="panel">
               <div className="metric-label">Discrepancy Queue</div>
               <div className="metric-value">
-                {metrics.redDiscrepancies + metrics.yellowDiscrepancies}
+                {metrics.totalOpenRows}
               </div>
               <div className="muted">
-                {metrics.redDiscrepancies} high-risk, {metrics.yellowDiscrepancies} moderate-risk patients.
+                {metrics.redDiscrepancies} high-risk patients, {metrics.yellowDiscrepancies} moderate-risk patients.
               </div>
             </div>
           </section>
@@ -198,11 +224,11 @@ export default function RunDetailPage() {
                       </div>
                     </td>
                     <td>
-                      <span className={discrepancyBadgeClass(patient.referralQa.discrepancyRating)}>
-                        {discrepancyLabel(patient.referralQa.discrepancyRating)}
+                      <span className={discrepancyBadgeClass(patient.dashboardReview.severity)}>
+                        {discrepancyLabel(patient.dashboardReview.severity)}
                       </span>
                       <div className="muted">
-                        {patient.referralQa.discrepancyCounts.total} flagged | {patient.referralQa.discrepancyCounts.critical} critical
+                        {patient.dashboardReview.openRowCount} open | {patient.dashboardReview.highPriorityOpenCount} high priority
                       </div>
                     </td>
                     <td className="table-action-cell">

@@ -11,6 +11,12 @@ import {
   QA_REFERENCE_FIELD_REGISTRY,
   QA_SECTION_METADATA,
 } from "../qaReference/registry";
+import type { LlmInputSource } from "../services/diagnosisCodingExtractionService";
+import {
+  buildDocumentFactPack,
+  type DocumentFactPack,
+} from "../services/documentFactPackBuilder";
+import type { ExtractedDocument } from "../services/documentExtractionService";
 import type {
   FieldMapSnapshot,
   ReferralDiagnosisCandidate,
@@ -22,6 +28,42 @@ import { buildReferralFactLookup } from "./factsExtractionService";
 import { parseReferralLlmProposalPayload } from "./llmProposalSchema";
 
 const bedrockClientByRegion = new Map<string, BedrockRuntimeClient>();
+const FACT_PACK_SECTION_ITEM_LIMITS = {
+  diagnoses: 8,
+  medications: 8,
+  allergies: 6,
+  homeboundEvidence: 5,
+  skilledNeedEvidence: 5,
+  hospitalizationReasons: 5,
+  assessmentValues: 5,
+  supportingSnippets: 4,
+} as const;
+const RAW_FALLBACK_CHARACTER_LIMIT = 2_500;
+const FACT_PACK_PRIMARY_MINIMUM_SCORE = 0.65;
+const NEED_COVERAGE_FACT_KEYS = new Set([
+  "medical_necessity_summary",
+  "admit_reason_to_home_health",
+  "skilled_interventions",
+  "therapy_need",
+  "plan_for_next_visit",
+  "care_plan_problems_goals_interventions",
+]);
+const HOMEBOUND_COVERAGE_FACT_KEYS = new Set([
+  "homebound_narrative",
+  "homebound_supporting_factors",
+  "functional_limitations",
+  "prior_functioning",
+  "fall_risk_narrative",
+  "living_situation",
+]);
+const SUPPORTING_COVERAGE_FACT_KEYS = new Set([
+  "pain_assessment_narrative",
+  "respiratory_status",
+  "integumentary_wound_status",
+  "emotional_behavioral_status",
+  "past_medical_history",
+  "patient_summary_narrative",
+]);
 
 function normalizeWhitespace(value: string | null | undefined): string {
   return value?.replace(/\s+/g, " ").trim() ?? "";
@@ -130,10 +172,328 @@ function buildDeterministicFallback(input: {
   };
 }
 
+function dedupeNormalizedValues(values: string[], maxItems: number): string[] {
+  const seen = new Set<string>();
+  const deduped: string[] = [];
+
+  for (const value of values) {
+    const normalized = normalizeWhitespace(value);
+    if (!normalized) {
+      continue;
+    }
+    const key = normalized.toLowerCase();
+    if (seen.has(key)) {
+      continue;
+    }
+    seen.add(key);
+    deduped.push(normalized);
+    if (deduped.length >= maxItems) {
+      break;
+    }
+  }
+
+  return deduped;
+}
+
+function formatFactPackSection(label: string, values: string[], maxItems: number): string | null {
+  const cleaned = dedupeNormalizedValues(values, maxItems);
+  if (cleaned.length === 0) {
+    return null;
+  }
+  return `${label}:\n${cleaned.map((value) => `- ${value}`).join("\n")}`;
+}
+
+function buildFactPackPromptText(factPack: DocumentFactPack): string {
+  const diagnosisSection = formatFactPackSection(
+    "Diagnoses",
+    factPack.diagnoses.map((diagnosis) =>
+      [
+        diagnosis.rank ? `${diagnosis.rank}` : "",
+        diagnosis.code ?? "",
+        diagnosis.description,
+      ].filter(Boolean).join(" "),
+    ),
+    FACT_PACK_SECTION_ITEM_LIMITS.diagnoses,
+  );
+  const medicationSection = formatFactPackSection(
+    "Medications",
+    factPack.medications.map((medication) =>
+      [
+        medication.name,
+        medication.dose ?? "",
+        medication.route ?? "",
+        medication.frequency ?? "",
+      ].filter(Boolean).join(" "),
+    ),
+    FACT_PACK_SECTION_ITEM_LIMITS.medications,
+  );
+  const allergySection = formatFactPackSection(
+    "Allergies",
+    factPack.allergies,
+    FACT_PACK_SECTION_ITEM_LIMITS.allergies,
+  );
+  const homeboundSection = formatFactPackSection(
+    "Homebound Evidence",
+    factPack.homeboundEvidence.map((snippet) => snippet.text),
+    FACT_PACK_SECTION_ITEM_LIMITS.homeboundEvidence,
+  );
+  const skilledNeedSection = formatFactPackSection(
+    "Skilled Need Evidence",
+    factPack.skilledNeedEvidence.map((snippet) => snippet.text),
+    FACT_PACK_SECTION_ITEM_LIMITS.skilledNeedEvidence,
+  );
+  const hospitalizationSection = formatFactPackSection(
+    "Hospitalization / Referral Reasons",
+    factPack.hospitalizationReasons.map((snippet) => snippet.text),
+    FACT_PACK_SECTION_ITEM_LIMITS.hospitalizationReasons,
+  );
+  const assessmentSection = formatFactPackSection(
+    "Assessment Values",
+    factPack.assessmentValues.map((snippet) => snippet.text),
+    FACT_PACK_SECTION_ITEM_LIMITS.assessmentValues,
+  );
+  const supportSection = formatFactPackSection(
+    "Supporting Snippets",
+    factPack.uncategorizedEvidence.map((snippet) => snippet.text),
+    FACT_PACK_SECTION_ITEM_LIMITS.supportingSnippets,
+  );
+
+  return [
+    diagnosisSection,
+    medicationSection,
+    allergySection,
+    homeboundSection,
+    skilledNeedSection,
+    hospitalizationSection,
+    assessmentSection,
+    supportSection,
+  ].filter((section): section is string => Boolean(section)).join("\n\n");
+}
+
+function buildCompactExtractedFactsPayload(extractedFacts: ReferralExtractedFacts): string {
+  const patientContext = Object.fromEntries(
+    Object.entries(extractedFacts.patient_context).filter(([, value]) => value !== null && value !== ""),
+  );
+  const compactFacts = extractedFacts.facts.map((fact) => ({
+    fact_key: fact.fact_key,
+    category: fact.category,
+    value: fact.value,
+    confidence: fact.confidence,
+    evidence_spans: fact.evidence_spans.slice(0, 2),
+    requires_human_review: fact.requires_human_review,
+  }));
+  const compactDiagnosisCandidates = extractedFacts.diagnosis_candidates.map((candidate) => ({
+    description: candidate.description,
+    icd10_code: candidate.icd10_code,
+    confidence: candidate.confidence,
+    source_spans: candidate.source_spans.slice(0, 2),
+    is_primary_candidate: candidate.is_primary_candidate,
+    requires_human_review: candidate.requires_human_review,
+  }));
+
+  const payload: Record<string, unknown> = {};
+  if (Object.keys(patientContext).length > 0) {
+    payload.patient_context = patientContext;
+  }
+  if (compactFacts.length > 0) {
+    payload.facts = compactFacts;
+  }
+  if (compactDiagnosisCandidates.length > 0) {
+    payload.diagnosis_candidates = compactDiagnosisCandidates;
+  }
+  if (extractedFacts.caregiver_candidates.length > 0) {
+    payload.caregiver_candidates = extractedFacts.caregiver_candidates.slice(0, 4);
+  }
+  if (extractedFacts.unsupported_or_missing_fields.length > 0) {
+    payload.unsupported_or_missing_fields = extractedFacts.unsupported_or_missing_fields;
+  }
+
+  return JSON.stringify(payload);
+}
+
+function buildRawFallbackExcerpt(sourceText: string): string {
+  const normalized = normalizeWhitespace(sourceText);
+  if (!normalized) {
+    return "";
+  }
+  return normalized.slice(0, RAW_FALLBACK_CHARACTER_LIMIT);
+}
+
+function buildSyntheticExtractedDocuments(sourceText: string): ExtractedDocument[] {
+  const normalized = normalizeWhitespace(sourceText);
+  if (!normalized) {
+    return [];
+  }
+  return [{
+    type: "ORDER",
+    text: normalized,
+    metadata: {
+      source: "artifact_fallback",
+      effectiveTextSource: "viewer_text_fallback",
+      textSelectionReason: "synthetic_fact_pack_input",
+      textLength: normalized.length,
+    },
+  }];
+}
+
+function extractedFactsContainAny(extractedFacts: ReferralExtractedFacts, factKeys: Set<string>): boolean {
+  return extractedFacts.facts.some((fact) => factKeys.has(fact.fact_key));
+}
+
+function buildFactPackCoverageSummary(input: {
+  factPack: DocumentFactPack;
+  extractedFacts: ReferralExtractedFacts;
+}): {
+  populatedSections: string[];
+  missingCriticalSections: string[];
+  factPackCoverageScore: number;
+  hasStrongCoverage: boolean;
+} {
+  const { factPack, extractedFacts } = input;
+  const populatedSections = [
+    factPack.diagnoses.length > 0 ? "diagnoses" : null,
+    factPack.medications.length > 0 ? "medications" : null,
+    factPack.allergies.length > 0 ? "allergies" : null,
+    factPack.homeboundEvidence.length > 0 ? "homeboundEvidence" : null,
+    factPack.skilledNeedEvidence.length > 0 ? "skilledNeedEvidence" : null,
+    factPack.hospitalizationReasons.length > 0 ? "hospitalizationReasons" : null,
+    factPack.assessmentValues.length > 0 ? "assessmentValues" : null,
+    factPack.uncategorizedEvidence.length > 0 ? "supportingSnippets" : null,
+  ].filter((section): section is string => Boolean(section));
+
+  const hasDiagnosisCoverage =
+    factPack.diagnoses.length > 0 ||
+    extractedFacts.diagnosis_candidates.length > 0;
+  const hasNeedCoverage =
+    factPack.hospitalizationReasons.length > 0 ||
+    factPack.skilledNeedEvidence.length > 0 ||
+    extractedFactsContainAny(extractedFacts, NEED_COVERAGE_FACT_KEYS);
+  const hasHomeboundCoverage =
+    factPack.homeboundEvidence.length > 0 ||
+    extractedFactsContainAny(extractedFacts, HOMEBOUND_COVERAGE_FACT_KEYS);
+  const hasSupportingCoverage =
+    factPack.assessmentValues.length > 0 ||
+    factPack.uncategorizedEvidence.length > 0 ||
+    extractedFactsContainAny(extractedFacts, SUPPORTING_COVERAGE_FACT_KEYS);
+
+  const missingCriticalSections = [
+    hasDiagnosisCoverage ? null : "diagnoses",
+    hasNeedCoverage ? null : "needEvidence",
+    hasHomeboundCoverage ? null : "homeboundEvidence",
+    hasSupportingCoverage ? null : "supportingEvidence",
+  ].filter((section): section is string => Boolean(section));
+  const factPackCoverageScore = Number((
+    (hasDiagnosisCoverage ? 0.25 : 0) +
+    (hasNeedCoverage ? 0.25 : 0) +
+    (hasHomeboundCoverage ? 0.2 : 0) +
+    (hasSupportingCoverage ? 0.15 : 0) +
+    ((factPack.medications.length > 0 || factPack.allergies.length > 0) ? 0.1 : 0) +
+    (factPack.assessmentValues.length > 0 ? 0.05 : 0)
+  ).toFixed(2));
+  const strongCriticalSectionCount = 4 - missingCriticalSections.length;
+
+  return {
+    populatedSections,
+    missingCriticalSections,
+    factPackCoverageScore,
+    hasStrongCoverage:
+      factPackCoverageScore >= FACT_PACK_PRIMARY_MINIMUM_SCORE &&
+      strongCriticalSectionCount >= 3,
+  };
+}
+
+function resolveProposalInputSource(input: {
+  extractedFacts: ReferralExtractedFacts;
+  extractedDocuments?: ExtractedDocument[];
+  sourceText: string;
+}): {
+  extractedFactsText: string;
+  factPackText: string;
+  rawFallbackText: string;
+  llmInputSource: LlmInputSource;
+  diagnostics: string[];
+} {
+  const extractedFactsText = buildCompactExtractedFactsPayload(input.extractedFacts);
+  const sourceDocuments = input.extractedDocuments?.length
+    ? input.extractedDocuments
+    : buildSyntheticExtractedDocuments(input.sourceText);
+  const rawFallbackText = buildRawFallbackExcerpt(input.sourceText);
+
+  if (sourceDocuments.length === 0) {
+    return {
+      extractedFactsText,
+      factPackText: "",
+      rawFallbackText,
+      llmInputSource: "raw_text_fallback",
+      diagnostics: [
+        "LLM input source: raw_text_fallback.",
+        "Fact pack unavailable or empty; using bounded raw text fallback.",
+      ],
+    };
+  }
+
+  const factPack = buildDocumentFactPack(sourceDocuments);
+  const factPackText = buildFactPackPromptText(factPack);
+  if (!factPackText) {
+    return {
+      extractedFactsText,
+      factPackText: "",
+      rawFallbackText,
+      llmInputSource: "raw_text_fallback",
+      diagnostics: [
+        "LLM input source: raw_text_fallback.",
+        "Fact pack unavailable or empty; using bounded raw text fallback.",
+      ],
+    };
+  }
+
+  const coverage = buildFactPackCoverageSummary({
+    factPack,
+    extractedFacts: input.extractedFacts,
+  });
+  const promptCharacterEstimate = factPackText.length + (coverage.hasStrongCoverage ? 0 : rawFallbackText.length);
+  const diagnostics = [
+    `Fact pack coverage: ${coverage.populatedSections.join(", ") || "none"}.`,
+    `Fact pack coverage score: ${coverage.factPackCoverageScore}.`,
+    `Prompt character estimate: ${promptCharacterEstimate}.`,
+  ];
+
+  if (coverage.hasStrongCoverage || !rawFallbackText) {
+    return {
+      extractedFactsText,
+      factPackText,
+      rawFallbackText: "",
+      llmInputSource: "fact_pack_primary",
+      diagnostics: [
+        "LLM input source: fact_pack_primary.",
+        ...diagnostics,
+        "Fallback reason: none.",
+      ],
+    };
+  }
+
+  return {
+    extractedFactsText,
+    factPackText,
+    rawFallbackText,
+    llmInputSource: "fact_pack_plus_raw_fallback",
+    diagnostics: [
+      "LLM input source: fact_pack_plus_raw_fallback.",
+      ...diagnostics,
+      `Fallback reason: ${coverage.missingCriticalSections.join(", ") || "coverage_score_below_threshold"}.`,
+      `Raw fallback appended for missing coverage: ${coverage.missingCriticalSections.join(", ") || "coverage_score_below_threshold"}.`,
+    ],
+  };
+}
+
 function buildLlmPrompt(input: {
   fieldMapSnapshot: FieldMapSnapshot;
-  extractedFacts: ReferralExtractedFacts;
-  sourceText: string;
+  resolvedInput: {
+    extractedFactsText: string;
+    factPackText: string;
+    rawFallbackText: string;
+    llmInputSource: LlmInputSource;
+  };
 }): string {
   const candidateFields = new Set(input.fieldMapSnapshot.candidate_fields_for_llm_inference_from_referral);
   const registryByKey = new Map(QA_REFERENCE_FIELD_REGISTRY.map((entry) => [entry.fieldKey, entry]));
@@ -161,8 +521,9 @@ function buildLlmPrompt(input: {
     "You are mapping extracted referral/admission facts into QA reference fields for a filled OASIS assessment.",
     "This is read-only QA support. Do not invent chart values, do not write back, and do not recommend committing values.",
     "Use an internal two-pass workflow before writing JSON: pass 1 extracts atomic patient-specific facts with verbatim evidence, pass 2 maps only those facts into field proposals.",
-    "The primary input is EXTRACTED_FACTS. Use those facts first.",
-    "You may also use REFERRAL_SOURCE_TEXT directly for patient-specific narrative, therapy, PMH, wound, respiratory, function, mood, diet/fluid, and care-plan details when those details are explicitly present but not already structured in EXTRACTED_FACTS.",
+    `Selected input source: ${input.resolvedInput.llmInputSource}.`,
+    "Use DOCUMENT_FACT_PACK first for compact evidence. Use EXTRACTED_FACTS next for normalized field-level facts and diagnosis candidates.",
+    "Use RAW_FALLBACK_EXCERPTS only when a needed field is not sufficiently supported by DOCUMENT_FACT_PACK or EXTRACTED_FACTS.",
     "Do not use fax headers, page counters, viewer chrome, facility letterhead, column headers, blank form labels, or neighboring unrelated table labels as proposed values.",
     "If a field is not directly supported, omit it from proposed_field_values and list the field_key in unsupported_or_missing_fields.",
     "Every non-null proposal must include 1-3 concise source_spans copied from the source text. Each source_span should be the shortest useful evidence span, normally under 240 characters.",
@@ -175,8 +536,11 @@ function buildLlmPrompt(input: {
     "Homebound and functional fields should only be proposed when the text supports leaving-home burden, assistance, device use, gait/endurance limitation, or similar facts.",
     "Use this field placement guide:",
     ...fieldGuide.map((entry) => `- ${entry}`),
+    "DOCUMENT_FACT_PACK:",
+    input.resolvedInput.factPackText || "(empty)",
+    "",
     "EXTRACTED_FACTS:",
-    JSON.stringify(input.extractedFacts),
+    input.resolvedInput.extractedFactsText,
     "",
     "Required JSON shape:",
     JSON.stringify({
@@ -206,9 +570,13 @@ function buildLlmPrompt(input: {
       unsupported_or_missing_fields: [],
       warnings: [],
     }),
-    "",
-    "Referral source text:",
-    input.sourceText.slice(0, 18_000),
+    ...(input.resolvedInput.rawFallbackText
+      ? [
+          "",
+          "RAW_FALLBACK_EXCERPTS:",
+          input.resolvedInput.rawFallbackText,
+        ]
+      : []),
   ].join("\n");
 }
 
@@ -401,7 +769,13 @@ export async function generateReferralFieldProposals(input: {
   fieldMapSnapshot: FieldMapSnapshot;
   extractedFacts: ReferralExtractedFacts;
   sourceText: string;
+  extractedDocuments?: ExtractedDocument[];
 }): Promise<ReferralLlmProposal> {
+  const resolvedInput = resolveProposalInputSource({
+    extractedFacts: input.extractedFacts,
+    extractedDocuments: input.extractedDocuments,
+    sourceText: input.sourceText,
+  });
   const deterministicFallback = sanitizeReferralProposal({
     proposal: buildDeterministicFallback({
       fieldMapSnapshot: input.fieldMapSnapshot,
@@ -409,8 +783,15 @@ export async function generateReferralFieldProposals(input: {
     }),
     fieldMapSnapshot: input.fieldMapSnapshot,
   });
+  const deterministicFallbackWithDiagnostics = {
+    ...deterministicFallback,
+    warnings: Array.from(new Set([
+      ...deterministicFallback.warnings,
+      ...resolvedInput.diagnostics,
+    ])),
+  };
   if (!isReferralProposalLlmEnabled(input.env)) {
-    return deterministicFallback;
+    return deterministicFallbackWithDiagnostics;
   }
 
   const config = resolveBedrockConfig(input.env);
@@ -425,8 +806,7 @@ export async function generateReferralFieldProposals(input: {
           role: "user",
           content: [{ text: buildLlmPrompt({
             fieldMapSnapshot: input.fieldMapSnapshot,
-            extractedFacts: input.extractedFacts,
-            sourceText: input.sourceText,
+            resolvedInput,
           }) }],
         }],
         inferenceConfig: {
@@ -440,23 +820,30 @@ export async function generateReferralFieldProposals(input: {
     const parsed = parseReferralLlmProposalPayload(content);
     if (!parsed) {
       return {
-        ...deterministicFallback,
+        ...deterministicFallbackWithDiagnostics,
         warnings: [
-          ...deterministicFallback.warnings,
+          ...deterministicFallbackWithDiagnostics.warnings,
           "Bedrock returned invalid or non-JSON referral proposal output; deterministic fallback was used.",
         ],
       };
     }
 
-    return sanitizeReferralProposal({
+    const sanitizedProposal = sanitizeReferralProposal({
       proposal: parsed,
       fieldMapSnapshot: input.fieldMapSnapshot,
     });
+    return {
+      ...sanitizedProposal,
+      warnings: Array.from(new Set([
+        ...sanitizedProposal.warnings,
+        ...resolvedInput.diagnostics,
+      ])),
+    };
   } catch (error) {
     return {
-      ...deterministicFallback,
+      ...deterministicFallbackWithDiagnostics,
       warnings: [
-        ...deterministicFallback.warnings,
+        ...deterministicFallbackWithDiagnostics.warnings,
         `Bedrock referral proposal failed: ${error instanceof Error ? error.message : String(error)}`,
       ],
     };

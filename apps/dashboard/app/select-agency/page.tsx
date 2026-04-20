@@ -39,6 +39,11 @@ export default async function SelectAgencyPage({ searchParams }: SelectAgencyPag
             Agency selection controls which autonomous refresh cycle, workbook review window, and patient reconciliation queue are loaded into the dashboard session.
           </p>
         </div>
+        <div className="actions">
+          <form action="/auth/logout" method="post">
+            <button className="button secondary" type="submit">Sign Out</button>
+          </form>
+        </div>
       </div>
 
       {error ? <div className="badge danger">{error}</div> : null}

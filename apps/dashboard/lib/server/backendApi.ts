@@ -37,13 +37,17 @@ async function fetchBackendJson<T>(pathname: string): Promise<T> {
   return response.json() as Promise<T>;
 }
 
-async function postBackendJson<T>(pathname: string): Promise<T> {
+async function postBackendJson<T>(pathname: string, body?: unknown): Promise<T> {
   const url = buildBackendUrl(pathname);
   let response: Response;
   try {
     response = await fetch(url, {
       method: "POST",
       cache: "no-store",
+      headers: body === undefined ? undefined : {
+        "content-type": "application/json",
+      },
+      body: body === undefined ? undefined : JSON.stringify(body),
     });
   } catch (error) {
     const cause = error instanceof Error ? error.message : "unknown fetch error";
@@ -74,6 +78,16 @@ export function triggerBackendAgencyRefresh(agencyId: string): Promise<{
   storedPath: string;
 }> {
   return postBackendJson(`/agencies/${encodeURIComponent(agencyId)}/refresh`);
+}
+
+export function createBackendRunSample(
+  runId: string,
+  input: {
+    limit?: number;
+    patientIds?: string[];
+  } = {},
+): Promise<RunDetail> {
+  return postBackendJson(`/runs/${encodeURIComponent(runId)}/sample`, input);
 }
 
 export function listBackendRuns(): Promise<RunListItem[]> {

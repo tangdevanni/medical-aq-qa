@@ -331,7 +331,7 @@ const patientViewInput = {
           compare_strategy: "narrative_support_compare",
           evidence_strategy: "section_summary",
           currentChartValue: null,
-          currentChartValueSource: "unavailable",
+          currentChartValueSource: "printed_note_ocr",
           populatedInChart: false,
         },
       ],
@@ -425,6 +425,24 @@ const patientViewInput = {
       llmProposalCount: 12,
       warnings: ["Deterministic referral facts extraction was used."],
     },
+    printedNoteChartValues: {
+      currentChartValues: {
+        primary_reason_for_home_health_medical_necessity:
+          "Skilled nursing for medication management and wound care.",
+      },
+    },
+    printedNoteReview: {
+      reviewSource: "printed_note_ocr",
+      sections: [
+        {
+          key: "primary_reason_medical_necessity",
+          label: "Primary Reason / Medical Necessity",
+          status: "COMPLETED",
+          filledFieldCount: 4,
+          missingFieldCount: 0,
+        },
+      ],
+    },
   },
 };
 
@@ -464,6 +482,10 @@ describe("dashboardRunViews", () => {
     assert.equal(summary.referralQa.extractionUsabilityStatus, "usable");
     assert.equal(summary.referralQa.discrepancyRating, "yellow");
     assert.equal(summary.referralQa.discrepancyCounts.total, 1);
+    assert.equal(summary.dashboardReview.severity, "yellow");
+    assert.equal(summary.dashboardReview.openRowCount, 1);
+    assert.equal(summary.dashboardReview.highPriorityOpenCount, 1);
+    assert.equal(summary.dashboardReview.resolvedCount, 0);
     assert.equal(summary.referralQa.sections.length, 1);
     assert.equal(summary.referralQa.preAuditFindings.length > 0, true);
     assert.equal(summary.referralQa.sourceHighlights.length > 0, true);
@@ -495,8 +517,18 @@ describe("dashboardRunViews", () => {
     assert.equal(detail.referralPatientContext?.referralDate, "02/17/2026");
     assert.equal(detail.referralSections.length, 1);
     assert.equal(detail.referralSections[0]?.fields[0]?.comparisonStatus, "supported_by_referral");
-    assert.equal(detail.referralSections[0]?.fields[0]?.currentChartValueSource, "unavailable");
+    assert.equal(detail.referralSections[0]?.fields[0]?.currentChartValueSource, "printed_note_ocr");
     assert.equal(detail.referralSections[0]?.fields[0]?.populatedInChart, false);
+    assert.equal(detail.dashboardState.rows.length, 1);
+    assert.equal(detail.dashboardState.rows[0]?.comparisonResult, "uncertain");
+    assert.equal(detail.dashboardState.rows[0]?.backendComparisonStatus, "supported_by_referral");
+    assert.equal(detail.dashboardState.rows[0]?.currentChartValueSource, "printed_note_ocr");
+    assert.equal(
+      detail.dashboardState.rows[0]?.valuePresence.hasPrintedNoteChartValue,
+      true,
+    );
+    assert.equal(detail.dashboardState.visibilitySummary.hiddenRows, 0);
+    assert.equal(detail.dashboardReview.openRowCount, 1);
     assert.equal(
       detail.referralSections[0]?.fields[0]?.recommendation.label,
       "The referral documents provide a chart-ready answer for Primary Reason For Home Health / Medical Necessity.",
@@ -709,5 +741,162 @@ describe("dashboardRunViews", () => {
       summary.referralQa.consistencyChecks[0]?.detail,
       "Referral records indicate mental or cognitive concerns. Mental-status chart selections are blank or incomplete.",
     );
+  });
+
+  it("tracks meaningful rows that are hidden because the backend marked them resolved", () => {
+    const resolvedReference: PatientQaReference = {
+      ...patientQaReference,
+      comparisonResults: {
+        ...patientQaReference.comparisonResults,
+        primary_reason_for_home_health_medical_necessity: {
+          ...patientQaReference.comparisonResults.primary_reason_for_home_health_medical_necessity,
+          currentChartValue: "Skilled nursing for medication management and wound care.",
+          comparisonStatus: "match",
+          workflowState: "already_satisfactory",
+          recommendedAction: "none",
+        },
+      },
+      qaReviewQueue: [],
+    };
+
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        fieldMapSnapshot: {
+          ...patientViewInput.artifactContents.fieldMapSnapshot,
+          fields: [
+            {
+              ...patientViewInput.artifactContents.fieldMapSnapshot.fields[0]!,
+              currentChartValue: "Skilled nursing for medication management and wound care.",
+              currentChartValueSource: "chart_read",
+              populatedInChart: true,
+            },
+          ],
+        },
+        patientQaReference: resolvedReference,
+      },
+    });
+
+    assert.equal(detail.dashboardState.rows.length, 1);
+    assert.equal(detail.dashboardState.rows[0]?.shownByDefault, false);
+    assert.equal(detail.dashboardState.rows[0]?.visibilityDecision, "hidden_match");
+    assert.deepEqual(detail.dashboardState.rows[0]?.strictnessFlags, [
+      "hidden_with_meaningful_value",
+      "hidden_match_by_default",
+    ]);
+    assert.equal(detail.dashboardState.visibilitySummary.hiddenRows, 1);
+    assert.deepEqual(detail.dashboardState.visibilitySummary.hiddenByReason, {
+      hidden_match: 1,
+    });
+    assert.deepEqual(detail.dashboardState.visibilitySummary.potentiallyTooStrictRows, [
+      "primary_reason_for_home_health_medical_necessity",
+    ]);
+  });
+
+  it("shows missing referral documentation when the chart is filled but the referral value is absent", () => {
+    const chartOnlyReference: PatientQaReference = {
+      ...patientQaReference,
+      comparisonResults: {
+        ...patientQaReference.comparisonResults,
+        primary_reason_for_home_health_medical_necessity: {
+          ...patientQaReference.comparisonResults.primary_reason_for_home_health_medical_necessity,
+          currentChartValue: "Skilled nursing for medication management and wound care.",
+          documentSupportedValue: null,
+          comparisonStatus: "needs_qa_readback",
+          workflowState: "needs_qa_readback",
+          recommendedAction: "qa_readback_and_confirm",
+          sourceEvidence: [],
+        },
+      },
+      qaReviewQueue: [
+        {
+          fieldKey: "primary_reason_for_home_health_medical_necessity",
+          groupKey: "medical_necessity_and_homebound",
+          sectionKey: "patient_summary_and_clinical_narrative",
+          qaPriority: "critical",
+          comparisonStatus: "needs_qa_readback",
+          workflowState: "needs_qa_readback",
+          recommendedAction: "qa_readback_and_confirm",
+        },
+      ],
+    };
+
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        fieldMapSnapshot: {
+          ...patientViewInput.artifactContents.fieldMapSnapshot,
+          fields: [
+            {
+              ...patientViewInput.artifactContents.fieldMapSnapshot.fields[0]!,
+              currentChartValue: "Skilled nursing for medication management and wound care.",
+              currentChartValueSource: "chart_read",
+              populatedInChart: true,
+            },
+          ],
+        },
+        patientQaReference: chartOnlyReference,
+        printedNoteChartValues: {
+          currentChartValues: {},
+        },
+      },
+    });
+
+    assert.equal(detail.dashboardState.rows.length, 1);
+    assert.equal(detail.dashboardState.rows[0]?.comparisonResult, "missing_in_referral");
+    assert.equal(detail.dashboardState.rows[0]?.reviewStatus, "Missing Referral Documentation");
+    assert.equal(detail.dashboardState.rows[0]?.shownByDefault, true);
+    assert.equal(detail.dashboardReview.missingInReferralCount, 1);
+    assert.equal(detail.dashboardReview.openRowCount, 1);
+  });
+
+  it("does not hide chart-only values as resolved when referral support is missing", () => {
+    const resolvedButUnsupportedReference: PatientQaReference = {
+      ...patientQaReference,
+      comparisonResults: {
+        ...patientQaReference.comparisonResults,
+        primary_reason_for_home_health_medical_necessity: {
+          ...patientQaReference.comparisonResults.primary_reason_for_home_health_medical_necessity,
+          currentChartValue: "Skilled nursing for medication management and wound care.",
+          documentSupportedValue: null,
+          comparisonStatus: "match",
+          workflowState: "already_satisfactory",
+          recommendedAction: "none",
+          sourceEvidence: [],
+        },
+      },
+      qaReviewQueue: [],
+    };
+
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        fieldMapSnapshot: {
+          ...patientViewInput.artifactContents.fieldMapSnapshot,
+          fields: [
+            {
+              ...patientViewInput.artifactContents.fieldMapSnapshot.fields[0]!,
+              currentChartValue: "Skilled nursing for medication management and wound care.",
+              currentChartValueSource: "chart_read",
+              populatedInChart: true,
+            },
+          ],
+        },
+        patientQaReference: resolvedButUnsupportedReference,
+        printedNoteChartValues: {
+          currentChartValues: {},
+        },
+      },
+    });
+
+    assert.equal(detail.dashboardState.rows.length, 1);
+    assert.equal(detail.dashboardState.rows[0]?.comparisonResult, "missing_in_referral");
+    assert.equal(detail.dashboardState.rows[0]?.shownByDefault, true);
+    assert.equal(detail.dashboardState.rows[0]?.visibilityDecision, "show");
+    assert.equal(detail.dashboardState.visibilitySummary.hiddenRows, 0);
+    assert.equal(detail.dashboardReview.missingInReferralCount, 1);
   });
 });

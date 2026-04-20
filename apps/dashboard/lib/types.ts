@@ -199,6 +199,108 @@ export interface QaPrefetchSummary {
   }>;
 }
 
+export type PatientDashboardDisplayStatus =
+  | "match"
+  | "equivalent_match"
+  | "mismatch"
+  | "missing_in_portal"
+  | "missing_in_referral"
+  | "uncertain"
+  | "coding_review";
+
+export type PatientDashboardVisibilityDecision =
+  | "show"
+  | "hidden_match"
+  | "hidden_resolved"
+  | "hidden_missing_chart_value"
+  | "hidden_missing_document_value"
+  | "hidden_filtered_by_default";
+
+export interface PatientDashboardFieldRow {
+  fieldKey: string;
+  fieldLabel: string;
+  sectionKey: string;
+  sectionLabel: string;
+  sourceSectionLabel: string;
+  reviewMode: string;
+  qaPriority: "critical" | "high" | "medium" | "low";
+  oasisItemId: string | null;
+  backendComparisonStatus: string;
+  backendWorkflowState: string;
+  displayStatus: PatientDashboardDisplayStatus;
+  comparisonResult: PatientDashboardDisplayStatus;
+  documentSupportedValue: unknown;
+  currentChartValue: unknown;
+  normalizedDocumentValue: string | null;
+  normalizedChartValue: string | null;
+  currentChartValueSource: string;
+  currentChartValueSourceLabel: string;
+  displayReferralValue: string;
+  displayPortalValue: string;
+  shortReason: string;
+  reviewStatus: string;
+  confidence: "high" | "medium" | "low" | "uncertain";
+  sourceSupportStrength: "strong" | "moderate" | "weak" | "none";
+  mappingStrength: "strong" | "moderate" | "weak";
+  referralSnippet: string | null;
+  portalSnippet: string | null;
+  evidence: Array<{
+    id: string;
+    sourceType: string;
+    sourceLabel: string;
+    snippet: string | null;
+    confidence: "high" | "medium" | "low" | "uncertain";
+    confidenceLabel: string;
+    pageHint: number | null;
+  }>;
+  shownByDefault: boolean;
+  visibilityDecision: PatientDashboardVisibilityDecision;
+  visibilityReason: string;
+  strictnessFlags: string[];
+  sourceArtifacts: string[];
+  valuePresence: {
+    hasDocumentValue: boolean;
+    hasChartValue: boolean;
+    hasPrintedNoteChartValue: boolean;
+    printedNoteSectionKey: string | null;
+    printedNoteSectionStatus: string | null;
+    printedNoteReviewSource: string | null;
+  };
+}
+
+export interface PatientDashboardVisibilitySummary {
+  totalRows: number;
+  shownRows: number;
+  hiddenRows: number;
+  hiddenByReason: Record<string, number>;
+  potentiallyTooStrictRows: string[];
+}
+
+export interface PatientDashboardDetailState {
+  rows: PatientDashboardFieldRow[];
+  visibilitySummary: PatientDashboardVisibilitySummary;
+  sourceCoverage: {
+    printedNoteReviewSource: string | null;
+    printedNoteCompletedSectionCount: number;
+    printedNoteChartValueCount: number;
+  };
+}
+
+export interface PatientDashboardReviewSummary {
+  severity: "green" | "yellow" | "red";
+  openRowCount: number;
+  shownRowCount: number;
+  hiddenRowCount: number;
+  mismatchCount: number;
+  missingInPortalCount: number;
+  missingInReferralCount: number;
+  uncertainCount: number;
+  codingReviewCount: number;
+  resolvedCount: number;
+  highPriorityOpenCount: number;
+  potentiallyTooStrictCount: number;
+}
+
 export interface PatientSummary {
   subsidiaryId: string;
   subsidiarySlug: string;
@@ -230,6 +332,7 @@ export interface PatientSummary {
   qaWorkflow: WorkflowTrackSummary | null;
   qaPrefetch: QaPrefetchSummary | null;
   referralQa: ReferralQaSummary;
+  dashboardReview: PatientDashboardReviewSummary;
 }
 
 export interface RunListItem {
@@ -277,6 +380,7 @@ export interface PatientDetail extends PatientSummary {
     workflowTypes: string[];
     rawDaysLeftValues: string[];
   };
+  dashboardState: PatientDashboardDetailState;
   qaPrefetch: QaPrefetchSummary | null;
   referralPatientContext: ReferralPatientContext | null;
   referralSections: ReferralSectionView[];

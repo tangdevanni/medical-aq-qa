@@ -181,7 +181,11 @@ export interface ReferralFieldDefinition {
   evidence_strategy: ReferralEvidenceStrategy;
 }
 
-export type ChartSnapshotValueSource = "chart_read" | "workbook_context" | "unavailable";
+export type ChartSnapshotValueSource =
+  | "chart_read"
+  | "printed_note_ocr"
+  | "workbook_context"
+  | "unavailable";
 
 export interface ChartSnapshotValue {
   fieldKey: string;

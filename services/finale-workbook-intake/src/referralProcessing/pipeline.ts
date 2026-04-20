@@ -16,6 +16,7 @@ import { normalizeReferralSections } from "./sectionNormalization";
 import { buildPatientQaReference } from "../qaReference/projection";
 import { normalizePatientName } from "../utils/patientName";
 import type {
+  ChartSnapshotValueSource,
   FieldComparisonResult,
   QaDocumentSummary,
   ReferralDocumentProcessingArtifacts,
@@ -476,6 +477,7 @@ export async function runReferralDocumentProcessingPipeline(input: {
   logger: Logger;
   extractedDocuments: ExtractedDocument[];
   currentChartValues?: Record<string, unknown>;
+  currentChartValueSource?: ChartSnapshotValueSource;
 }): Promise<{ result: ReferralDocumentProcessingResult | null; stepLogs: AutomationStepLog[] }> {
   const patientName = input.workItem.patientIdentity.displayName;
   const stepLogs: AutomationStepLog[] = [];
@@ -527,6 +529,7 @@ export async function runReferralDocumentProcessingPipeline(input: {
       chartSnapshotValues: createInitialChartSnapshotValues({
         workItem: input.workItem,
         currentChartValues: input.currentChartValues,
+        currentChartValueSource: input.currentChartValueSource,
       }),
     });
     const extractedFacts = buildEmptyExtractedFacts(fieldMapSnapshot);
@@ -680,6 +683,7 @@ export async function runReferralDocumentProcessingPipeline(input: {
     chartSnapshotValues: createInitialChartSnapshotValues({
       workItem: input.workItem,
       currentChartValues: input.currentChartValues,
+      currentChartValueSource: input.currentChartValueSource,
     }),
   });
   const extractedFacts = extractReferralFacts({
@@ -722,6 +726,7 @@ export async function runReferralDocumentProcessingPipeline(input: {
     fieldMapSnapshot,
     extractedFacts,
     sourceText: extractedText,
+    extractedDocuments: input.extractedDocuments,
   });
   stepLogs.push(createAutomationStepLog({
     step: "llm_field_proposal_completed",

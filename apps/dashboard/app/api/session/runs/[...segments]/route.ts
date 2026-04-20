@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import {
+  createBackendRunSample,
   getBackendPatient,
   getBackendPatientArtifacts,
   getBackendRun,
@@ -62,6 +63,37 @@ export async function GET(_request: Request, { params }: Params) {
   } catch (error) {
     return NextResponse.json(
       { message: error instanceof Error ? error.message : "Failed to load run resource." },
+      { status: 500 },
+    );
+  }
+}
+
+export async function POST(request: Request, { params }: Params) {
+  const { segments } = await params;
+  const session = await requireSelectedAgencySession();
+
+  try {
+    if (segments.length === 2 && segments[1] === "sample") {
+      const sourceRun = await getBackendRun(segments[0]!);
+      if (sourceRun.subsidiaryId !== session.selectedAgencyId) {
+        return unauthorizedAgencyResponse();
+      }
+
+      const body = (await request.json().catch(() => ({}))) as {
+        limit?: number;
+        patientIds?: string[];
+      };
+      const sampleRun = await createBackendRunSample(segments[0]!, {
+        limit: body.limit,
+        patientIds: body.patientIds,
+      });
+      return NextResponse.json(sampleRun, { status: 202 });
+    }
+
+    return NextResponse.json({ message: "Unsupported dashboard session route." }, { status: 404 });
+  } catch (error) {
+    return NextResponse.json(
+      { message: error instanceof Error ? error.message : "Failed to run dashboard action." },
       { status: 500 },
     );
   }

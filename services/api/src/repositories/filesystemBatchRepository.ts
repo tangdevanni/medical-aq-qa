@@ -1,4 +1,4 @@
-import { access, mkdir, readFile, readdir, stat } from "node:fs/promises";
+import { access, mkdir, readFile, readdir, rm, stat } from "node:fs/promises";
 import path from "node:path";
 import type {
   BatchManifest,
@@ -18,9 +18,13 @@ function sanitizeFileName(fileName: string): string {
 export class FilesystemBatchRepository {
   constructor(private readonly storageRoot: string) {}
 
+  private get batchesRoot(): string {
+    return path.join(this.storageRoot, "batches");
+  }
+
   async ensureReady(): Promise<void> {
     await mkdir(this.storageRoot, { recursive: true });
-    await mkdir(path.join(this.storageRoot, "batches"), { recursive: true });
+    await mkdir(this.batchesRoot, { recursive: true });
   }
 
   createBatchPaths(batchId: string, originalFileName: string): {
@@ -60,9 +64,8 @@ export class FilesystemBatchRepository {
   }
 
   async listBatches(): Promise<BatchRecord[]> {
-    const batchesRoot = path.join(this.storageRoot, "batches");
-    await mkdir(batchesRoot, { recursive: true });
-    const entries = await readdir(batchesRoot, { withFileTypes: true });
+    await mkdir(this.batchesRoot, { recursive: true });
+    const entries = await readdir(this.batchesRoot, { withFileTypes: true });
     const batches = await Promise.all(
       entries
         .filter((entry) => entry.isDirectory())
@@ -227,5 +230,16 @@ export class FilesystemBatchRepository {
     } catch {
       return false;
     }
+  }
+
+  async deleteBatch(batchId: string): Promise<void> {
+    const batchRoot = path.resolve(this.batchesRoot, batchId);
+    const expectedRoot = path.resolve(this.batchesRoot);
+
+    if (!batchRoot.startsWith(`${expectedRoot}${path.sep}`)) {
+      throw new Error(`Refusing to delete batch outside storage root: ${batchId}`);
+    }
+
+    await rm(batchRoot, { recursive: true, force: true });
   }
 }

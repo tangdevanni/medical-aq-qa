@@ -15,9 +15,26 @@ type KnownArtifactContents = {
   patientQaReference: unknown | null;
   qaDocumentSummary: unknown | null;
   fieldMapSnapshot: unknown | null;
+  printedNoteChartValues: unknown | null;
+  printedNoteReview: unknown | null;
 };
 
 type DashboardDiscrepancyRating = "green" | "yellow" | "red";
+type DashboardComparisonResult =
+  | "match"
+  | "equivalent_match"
+  | "mismatch"
+  | "missing_in_portal"
+  | "missing_in_referral"
+  | "uncertain"
+  | "coding_review";
+type DashboardVisibilityDecision =
+  | "show"
+  | "hidden_match"
+  | "hidden_resolved"
+  | "hidden_missing_chart_value"
+  | "hidden_missing_document_value"
+  | "hidden_filtered_by_default";
 
 type PatientViewInput = {
   batch: BatchRecord;
@@ -1590,6 +1607,504 @@ function deriveReferralQaSummary(input: PatientViewInput) {
   };
 }
 
+function normalizeDashboardComparisonText(value: string): string {
+  return value.replace(/\s+/g, " ").trim().toLowerCase().replace(/[^\p{L}\p{N}\s]/gu, "");
+}
+
+function getDashboardPortalValueSourceLabel(source: string): string {
+  if (source === "chart_read") {
+    return "Portal read";
+  }
+  if (source === "printed_note_ocr") {
+    return "Printed note OCR";
+  }
+  if (source === "workbook_context") {
+    return "Workbook context";
+  }
+  if (source === "unavailable") {
+    return "Portal capture unavailable";
+  }
+
+  return source
+    .replace(/_/g, " ")
+    .replace(/\b\w/g, (character) => character.toUpperCase());
+}
+
+function getDashboardConfidence(input: {
+  sourceEvidence: Array<{ confidence?: number | null }>;
+  requiresHumanReview: boolean;
+  hasDocumentValue: boolean;
+}): "high" | "medium" | "low" | "uncertain" {
+  const scoredConfidence = input.sourceEvidence
+    .map((entry) => (typeof entry.confidence === "number" ? entry.confidence : null))
+    .filter((entry): entry is number => entry !== null)
+    .sort((left, right) => right - left)[0];
+
+  if (typeof scoredConfidence === "number") {
+    if (scoredConfidence >= 0.9) {
+      return "high";
+    }
+    if (scoredConfidence >= 0.75) {
+      return "medium";
+    }
+    return "low";
+  }
+
+  if (input.hasDocumentValue) {
+    return input.requiresHumanReview ? "medium" : "high";
+  }
+
+  return "uncertain";
+}
+
+function getDashboardStrengthLabel(value: number): "strong" | "moderate" | "weak" | "none" {
+  if (value >= 3) {
+    return "strong";
+  }
+  if (value >= 1) {
+    return "moderate";
+  }
+  if (value === 0) {
+    return "weak";
+  }
+  return "none";
+}
+
+function getDashboardSourceSupportStrength(input: {
+  hasDocumentValue: boolean;
+  evidenceCount: number;
+  confidence: "high" | "medium" | "low" | "uncertain";
+}): "strong" | "moderate" | "weak" | "none" {
+  if (!input.hasDocumentValue && input.evidenceCount === 0) {
+    return "none";
+  }
+
+  let score = 0;
+  if (input.hasDocumentValue) {
+    score += 1;
+  }
+  if (input.evidenceCount >= 2) {
+    score += 1;
+  }
+  if (input.confidence === "high") {
+    score += 2;
+  } else if (input.confidence === "medium") {
+    score += 1;
+  }
+
+  return getDashboardStrengthLabel(score);
+}
+
+function getDashboardMappingStrength(input: {
+  reviewMode: string;
+  fieldType: string;
+  groupKey: string;
+  requiresHumanReview: boolean;
+}): "strong" | "moderate" | "weak" {
+  if (input.reviewMode === "reference_only") {
+    return "weak";
+  }
+  if (
+    input.fieldType.includes("diagnosis") ||
+    input.fieldType === "date" ||
+    input.fieldType === "phone" ||
+    input.groupKey.includes("diagnosis")
+  ) {
+    return "strong";
+  }
+  if (input.requiresHumanReview) {
+    return "moderate";
+  }
+  return "weak";
+}
+
+function getPrintedNoteSectionCandidates(fieldKey: string, sectionKey: string): string[] {
+  const directMappings: Record<string, string[]> = {
+    patient_name: ["administrative_information"],
+    dob: ["administrative_information"],
+    soc_date: ["administrative_information"],
+    caregiver_name: ["administrative_information"],
+    caregiver_relationship: ["administrative_information"],
+    caregiver_phone: ["administrative_information"],
+    primary_reason_for_home_health_medical_necessity: ["primary_reason_medical_necessity"],
+    pain_assessment_narrative: ["pain_assessment"],
+    code_status: ["other_supplementals", "care_plan"],
+    mahc10_fall_risk: ["other_supplementals", "musculoskeletal_functional_status"],
+    norton_scale: ["integumentary"],
+    gg_self_care: ["musculoskeletal_functional_status"],
+    gg_mobility: ["musculoskeletal_functional_status"],
+    neurological_status: ["neurological"],
+    eyes_ears_status: ["eyes_ears"],
+    cardiovascular_status: ["cardiovascular"],
+    respiratory_status: ["respiratory"],
+    gastrointestinal_status: ["gastrointestinal"],
+    genitourinary_status: ["genitourinary"],
+  };
+
+  if (directMappings[fieldKey]) {
+    return directMappings[fieldKey]!;
+  }
+
+  switch (sectionKey) {
+    case "administrative_information":
+      return ["administrative_information"];
+    case "patient_summary_and_clinical_narrative":
+      return ["primary_reason_medical_necessity", "care_plan"];
+    case "functional_assessment_self_care":
+    case "functional_assessment_mobility_and_musculoskeletal":
+    case "plan_of_care_and_physical_therapy_evaluation":
+    case "care_plan_problems_goals_interventions":
+      return ["musculoskeletal_functional_status", "care_plan"];
+    case "neurological_head_mood_eyes_ears":
+      return ["neurological", "eyes_ears", "emotional"];
+    case "cardiopulmonary_chest_thorax":
+      return ["cardiovascular", "respiratory"];
+    case "gastrointestinal_and_genitourinary_assessment":
+      return ["gastrointestinal", "genitourinary"];
+    case "integumentary_skin_and_wound":
+      return ["integumentary"];
+    case "safety_and_risk_assessment":
+      return ["other_supplementals", "integumentary", "musculoskeletal_functional_status"];
+    case "active_diagnoses":
+      return ["diagnosis"];
+    default:
+      return [];
+  }
+}
+
+function derivePatientDashboardState(input: {
+  referralQa: ReturnType<typeof deriveReferralQaSummary>;
+  qaPrefetch: ReturnType<typeof deriveQaPrefetchSummary>;
+  artifactContents: KnownArtifactContents;
+}) {
+  const printedNoteReview =
+    asRecord(input.artifactContents.printedNoteReview) ??
+    asRecord(asRecord(input.artifactContents.qaPrefetch)?.printedNoteReview);
+  const printedNoteSections = new Map(
+    asArray(printedNoteReview?.sections)
+      .map((value) => {
+        const section = asRecord(value);
+        const key = asString(section?.key);
+        const label = asString(section?.label);
+        const status = asString(section?.status);
+        if (!key || !label || !status) {
+          return null;
+        }
+
+        return [
+          key,
+          {
+            key,
+            label,
+            status,
+            filledFieldCount: typeof section?.filledFieldCount === "number" ? section.filledFieldCount : 0,
+            missingFieldCount: typeof section?.missingFieldCount === "number" ? section.missingFieldCount : 0,
+          },
+        ] as const;
+      })
+      .filter((entry): entry is readonly [string, {
+        key: string;
+        label: string;
+        status: string;
+        filledFieldCount: number;
+        missingFieldCount: number;
+      }] => entry !== null),
+  );
+  const printedNoteChartValuesRecord = asRecord(input.artifactContents.printedNoteChartValues);
+  const printedNoteChartValues = asRecord(printedNoteChartValuesRecord?.currentChartValues) ?? {};
+  const printedNoteReviewSource =
+    asString(printedNoteReview?.reviewSource) ?? input.qaPrefetch?.printedNoteReviewSource ?? null;
+
+  const rows = input.referralQa.sections.flatMap((section) =>
+    section.fields.map((field) => {
+      const recoveredChartValue = printedNoteChartValues[field.fieldKey];
+      const currentChartValue =
+        hasMeaningfulValue(field.currentChartValue)
+          ? field.currentChartValue
+          : hasMeaningfulValue(recoveredChartValue)
+            ? recoveredChartValue
+            : field.currentChartValue;
+      const currentChartValueSource =
+        hasMeaningfulValue(field.currentChartValue)
+          ? field.currentChartValueSource
+          : hasMeaningfulValue(recoveredChartValue)
+            ? "printed_note_ocr"
+            : field.currentChartValueSource || "unavailable";
+      const documentValue = field.documentSupportedValue;
+      const documentValueText = stringifyDashboardValue(documentValue).trim() || null;
+      const chartValueText = stringifyDashboardValue(currentChartValue).trim() || null;
+      const normalizedDocumentValue = documentValueText
+        ? normalizeDashboardComparisonText(documentValueText)
+        : null;
+      const normalizedChartValue = chartValueText
+        ? normalizeDashboardComparisonText(chartValueText)
+        : null;
+      const hasDocumentValue = documentValueText !== null;
+      const hasChartValue = chartValueText !== null;
+      const printedNoteSectionCandidates = getPrintedNoteSectionCandidates(field.fieldKey, field.sectionKey);
+      const matchedPrintedNoteSections = printedNoteSectionCandidates
+        .map((sectionKey) => printedNoteSections.get(sectionKey) ?? null)
+        .filter((sectionValue): sectionValue is NonNullable<typeof sectionValue> => sectionValue !== null);
+      const bestPrintedNoteSection =
+        matchedPrintedNoteSections.find((sectionValue) => sectionValue.status === "COMPLETED") ??
+        matchedPrintedNoteSections[0] ??
+        null;
+      const sourceArtifacts = [
+        "patient-qa-reference.json",
+        ...(hasMeaningfulValue(field.currentChartValue) ? ["field-map-snapshot.json"] : []),
+        ...(hasMeaningfulValue(recoveredChartValue) || currentChartValueSource === "printed_note_ocr"
+          ? ["printed-note-chart-values.json"]
+          : []),
+        ...(bestPrintedNoteSection ? ["oasis-printed-note-review.json"] : []),
+      ];
+      const confidence = getDashboardConfidence({
+        sourceEvidence: field.sourceEvidence,
+        requiresHumanReview: field.requiresHumanReview,
+        hasDocumentValue,
+      });
+      const sourceSupportStrength = getDashboardSourceSupportStrength({
+        hasDocumentValue,
+        evidenceCount: field.sourceEvidence.length,
+        confidence,
+      });
+      const mappingStrength = getDashboardMappingStrength({
+        reviewMode: field.reviewMode,
+        fieldType: field.fieldType,
+        groupKey: field.groupKey,
+        requiresHumanReview: field.requiresHumanReview,
+      });
+      const comparisonSignals = new Set(
+        [field.comparisonStatus, field.workflowState, field.recommendedAction]
+          .map((value) => value.trim())
+          .filter((value) => value.length > 0),
+      );
+
+      let displayStatus: DashboardComparisonResult;
+      if (
+        comparisonSignals.has("needs_coding_review") ||
+        comparisonSignals.has("send_to_coding") ||
+        field.recommendation.owner.toLowerCase().includes("coding")
+      ) {
+        displayStatus = "coding_review";
+      } else if (comparisonSignals.has("possible_conflict")) {
+        displayStatus = "mismatch";
+      } else if (!hasDocumentValue && hasChartValue) {
+        displayStatus = "missing_in_referral";
+      } else if (
+        comparisonSignals.has("missing_in_chart") ||
+        (comparisonSignals.has("supported_by_referral") && !hasChartValue)
+      ) {
+        displayStatus = "missing_in_portal";
+      } else if (hasDocumentValue && !hasChartValue) {
+        displayStatus = "missing_in_portal";
+      } else if (comparisonSignals.has("needs_qa_readback") || comparisonSignals.has("supported_by_referral")) {
+        displayStatus = "uncertain";
+      } else if (
+        comparisonSignals.has("match") ||
+        comparisonSignals.has("already_satisfactory") ||
+        comparisonSignals.has("not_relevant_for_dashboard")
+      ) {
+        displayStatus = "match";
+      } else if (hasDocumentValue && hasChartValue && normalizedDocumentValue === normalizedChartValue) {
+        displayStatus = "match";
+      } else {
+        displayStatus = "uncertain";
+      }
+
+      let visibilityDecision: DashboardVisibilityDecision = "show";
+      let visibilityReason = "Backend marked this field as requiring review.";
+      if (comparisonSignals.has("not_relevant_for_dashboard") || field.reviewMode === "reference_only") {
+        visibilityDecision = "hidden_resolved";
+        visibilityReason = "Backend marked this field as non-actionable for the QA dashboard.";
+      } else if (displayStatus === "match") {
+        visibilityDecision = "hidden_match";
+        visibilityReason = "Backend comparison is resolved and hidden by default.";
+      } else if (!hasChartValue && !hasDocumentValue) {
+        visibilityDecision = "hidden_filtered_by_default";
+        visibilityReason = "Neither the chart snapshot nor the referral produced a comparable value.";
+      }
+
+      const strictnessFlags = [
+        ...(visibilityDecision !== "show" && (hasDocumentValue || hasChartValue)
+          ? ["hidden_with_meaningful_value"]
+          : []),
+        ...(visibilityDecision === "hidden_match" ? ["hidden_match_by_default"] : []),
+        ...(hasMeaningfulValue(recoveredChartValue) && !hasMeaningfulValue(field.currentChartValue)
+          ? ["chart_value_recovered_from_printed_note_artifact"]
+          : []),
+        ...(bestPrintedNoteSection?.status === "COMPLETED" && !hasChartValue
+          ? ["printed_note_review_completed_but_chart_value_missing"]
+          : []),
+        ...(comparisonSignals.has("supported_by_referral") && !hasChartValue
+          ? ["referral_support_without_chart_snapshot"]
+          : []),
+      ];
+
+      return {
+        fieldKey: field.fieldKey,
+        fieldLabel: field.label,
+        sectionKey: field.sectionKey,
+        sectionLabel: field.sectionLabel,
+        sourceSectionLabel: section.label,
+        reviewMode: field.reviewMode,
+        qaPriority: field.qaPriority,
+        oasisItemId: field.oasisItemId,
+        backendComparisonStatus: field.comparisonStatus,
+        backendWorkflowState: field.workflowState,
+        displayStatus,
+        documentSupportedValue: documentValue,
+        currentChartValue,
+        normalizedDocumentValue,
+        normalizedChartValue,
+        currentChartValueSource,
+        currentChartValueSourceLabel: getDashboardPortalValueSourceLabel(currentChartValueSource),
+        displayReferralValue: documentValueText ?? "No reliable referral value extracted",
+        displayPortalValue:
+          chartValueText ??
+          (currentChartValueSource === "printed_note_ocr"
+            ? "Printed note OCR did not capture a value"
+            : field.populatedInChart
+              ? "Chart value is blank"
+              : "No chart data captured"),
+        comparisonResult: displayStatus,
+        shortReason:
+          visibilityDecision === "show"
+            ? comparisonSignals.has("possible_conflict")
+              ? "Backend marked this field as a possible conflict."
+              : comparisonSignals.has("missing_in_chart")
+                ? "Backend marked this field as missing in the chart snapshot."
+                : comparisonSignals.has("needs_qa_readback")
+                  ? "Backend requires QA readback before treating this field as resolved."
+                  : comparisonSignals.has("supported_by_referral")
+                    ? "Referral evidence supports this field, but backend did not treat it as fully resolved."
+                    : "Backend surfaced this field for QA review."
+            : visibilityReason,
+        reviewStatus:
+          displayStatus === "match"
+            ? "Resolved"
+            : displayStatus === "coding_review"
+              ? "Review with Coding"
+              : displayStatus === "missing_in_portal"
+                ? "Missing in Chart Snapshot"
+                : displayStatus === "missing_in_referral"
+                  ? "Missing Referral Documentation"
+                  : displayStatus === "mismatch"
+                    ? "Needs Review"
+                    : "Needs Source Review",
+        confidence,
+        sourceSupportStrength,
+        mappingStrength,
+        referralSnippet: asString(field.sourceEvidence[0]?.textSpan) ?? documentValueText,
+        portalSnippet: chartValueText,
+        evidence: field.sourceEvidence.map((entry, index) => ({
+          id: `${field.fieldKey}:${index}`,
+          sourceType: entry.sourceType,
+          sourceLabel: entry.sourceLabel,
+          snippet: entry.textSpan ?? null,
+          confidence:
+            typeof entry.confidence === "number"
+              ? entry.confidence >= 0.9
+                ? "high"
+                : entry.confidence >= 0.75
+                  ? "medium"
+                  : "low"
+              : "uncertain",
+          confidenceLabel:
+            typeof entry.confidence === "number"
+              ? `${Math.round(entry.confidence * 100)}% confidence`
+              : "Confidence not scored",
+          pageHint: null,
+        })),
+        shownByDefault: visibilityDecision === "show",
+        visibilityDecision,
+        visibilityReason,
+        strictnessFlags,
+        sourceArtifacts: Array.from(new Set(sourceArtifacts)),
+        valuePresence: {
+          hasDocumentValue,
+          hasChartValue,
+          hasPrintedNoteChartValue: hasMeaningfulValue(recoveredChartValue),
+          printedNoteSectionKey: bestPrintedNoteSection?.key ?? null,
+          printedNoteSectionStatus: bestPrintedNoteSection?.status ?? null,
+          printedNoteReviewSource,
+        },
+      };
+    }),
+  );
+
+  const hiddenByReason = rows.reduce<Record<string, number>>((accumulator, row) => {
+    if (row.visibilityDecision === "show") {
+      return accumulator;
+    }
+
+    accumulator[row.visibilityDecision] = (accumulator[row.visibilityDecision] ?? 0) + 1;
+    return accumulator;
+  }, {});
+
+  return {
+    rows,
+    visibilitySummary: {
+      totalRows: rows.length,
+      shownRows: rows.filter((row) => row.shownByDefault).length,
+      hiddenRows: rows.filter((row) => !row.shownByDefault).length,
+      hiddenByReason,
+      potentiallyTooStrictRows: rows
+        .filter((row) => row.strictnessFlags.length > 0)
+        .map((row) => row.fieldKey),
+    },
+    sourceCoverage: {
+      printedNoteReviewSource,
+      printedNoteCompletedSectionCount: Array.from(printedNoteSections.values()).filter(
+        (sectionValue) => sectionValue.status === "COMPLETED",
+      ).length,
+      printedNoteChartValueCount: Object.keys(printedNoteChartValues).length,
+    },
+  };
+}
+
+function derivePatientDashboardReviewSummary(
+  dashboardState: ReturnType<typeof derivePatientDashboardState>,
+) {
+  const shownRows = dashboardState.rows.filter((row) => row.shownByDefault);
+  const mismatchCount = shownRows.filter((row) => row.comparisonResult === "mismatch").length;
+  const missingInPortalCount = shownRows.filter((row) => row.comparisonResult === "missing_in_portal").length;
+  const missingInReferralCount = shownRows.filter((row) => row.comparisonResult === "missing_in_referral").length;
+  const uncertainCount = shownRows.filter((row) => row.comparisonResult === "uncertain").length;
+  const codingReviewCount = shownRows.filter((row) => row.comparisonResult === "coding_review").length;
+  const resolvedCount = dashboardState.rows.filter(
+    (row) => row.comparisonResult === "match",
+  ).length;
+  const openRowCount =
+    mismatchCount +
+    missingInPortalCount +
+    missingInReferralCount +
+    uncertainCount +
+    codingReviewCount;
+  const highPriorityOpenCount = shownRows.filter(
+    (row) => row.qaPriority === "critical" || row.qaPriority === "high",
+  ).length;
+
+  return {
+    severity:
+      mismatchCount > 0 || missingInPortalCount > 0 || codingReviewCount > 0
+        ? ("red" as const)
+        : openRowCount > 0
+          ? ("yellow" as const)
+          : ("green" as const),
+    openRowCount,
+    shownRowCount: dashboardState.visibilitySummary.shownRows,
+    hiddenRowCount: dashboardState.visibilitySummary.hiddenRows,
+    mismatchCount,
+    missingInPortalCount,
+    missingInReferralCount,
+    uncertainCount,
+    codingReviewCount,
+    resolvedCount,
+    highPriorityOpenCount,
+    potentiallyTooStrictCount: dashboardState.visibilitySummary.potentiallyTooStrictRows.length,
+  };
+}
+
 function derivePatientStatusSummary(
   input: PatientViewInput,
   referralQaSummary: ReturnType<typeof deriveReferralQaSummary>,
@@ -1652,6 +2167,12 @@ export function toDashboardPatientSummary(input: PatientViewInput) {
   const qaWorkflow = deriveWorkflowTrack(input, "qa");
   const qaPrefetch = deriveQaPrefetchSummary(input);
   const referralQa = deriveReferralQaSummary(input);
+  const dashboardState = derivePatientDashboardState({
+    referralQa,
+    qaPrefetch,
+    artifactContents: input.artifactContents,
+  });
+  const dashboardReview = derivePatientDashboardReviewSummary(dashboardState);
 
   return {
     ...toSubsidiarySummary(input.batch),
@@ -1683,6 +2204,7 @@ export function toDashboardPatientSummary(input: PatientViewInput) {
     qaWorkflow,
     qaPrefetch,
     referralQa,
+    dashboardReview,
   };
 }
 
@@ -1712,6 +2234,11 @@ export function toDashboardRunDetail(input: {
 
 export function toDashboardPatientDetail(input: PatientViewInput) {
   const summary = toDashboardPatientSummary(input);
+  const dashboardState = derivePatientDashboardState({
+    referralQa: summary.referralQa,
+    qaPrefetch: summary.qaPrefetch,
+    artifactContents: input.artifactContents,
+  });
 
   return {
     ...summary,
@@ -1720,6 +2247,7 @@ export function toDashboardPatientDetail(input: PatientViewInput) {
       workflowTypes: input.workItem?.workflowTypes ?? [],
       rawDaysLeftValues: input.workItem?.timingMetadata?.rawDaysLeftValues ?? [],
     },
+    dashboardState,
     referralPatientContext: summary.referralQa.patientContext,
     referralSections: summary.referralQa.sections,
   };

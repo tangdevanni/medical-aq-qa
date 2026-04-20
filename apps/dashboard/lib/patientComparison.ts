@@ -1,5 +1,11 @@
 import { formatDaysLeft, formatTimestamp } from "./qa";
-import type { PatientDetail, ReferralFieldView, ReferralSectionView } from "./types";
+import type {
+  PatientDashboardFieldRow,
+  PatientDashboardVisibilitySummary,
+  PatientDetail,
+  ReferralFieldView,
+  ReferralSectionView,
+} from "./types";
 
 export type ComparisonResult =
   | "match"
@@ -75,6 +81,21 @@ export interface FieldComparison {
   sourceDocuments: string[];
   inspectTarget?: InspectTarget;
   evidence: ComparisonEvidence[];
+  backendComparisonStatus?: string;
+  backendWorkflowState?: string;
+  visibilityDecision?: string;
+  visibilityReason?: string;
+  shownByDefault?: boolean;
+  strictnessFlags?: string[];
+  sourceArtifacts?: string[];
+  valuePresence?: {
+    hasDocumentValue: boolean;
+    hasChartValue: boolean;
+    hasPrintedNoteChartValue: boolean;
+    printedNoteSectionKey: string | null;
+    printedNoteSectionStatus: string | null;
+    printedNoteReviewSource: string | null;
+  };
 }
 
 export interface ComparisonSectionSummary {
@@ -112,6 +133,8 @@ export interface ComparisonWorkspaceModel {
     referralWarnings: string[];
     referralUsability: string;
     qaStatus: string;
+    visibilitySummary: PatientDashboardVisibilitySummary | null;
+    hiddenRows: FieldComparison[];
   };
 }
 
@@ -349,6 +372,9 @@ function humanizeStatus(value: string): string {
 function getPortalValueSourceLabel(source: string): string {
   if (source === "chart_read") {
     return "Portal read";
+  }
+  if (source === "printed_note_ocr") {
+    return "Printed note OCR";
   }
   if (source === "workbook_context") {
     return "Workbook context";
@@ -668,8 +694,11 @@ function getDisplayPortalValue(input: {
   if (input.portalValue) {
     return input.portalValue;
   }
+  if (input.portalValueSource === "printed_note_ocr") {
+    return "Printed note OCR did not capture a value";
+  }
   if (input.portalValueSource === "unavailable") {
-    return "Portal value not captured";
+    return "No chart snapshot value captured";
   }
   if (input.portalValueSource === "workbook_context") {
     return "No workbook context value";
@@ -688,8 +717,11 @@ function getPortalCaptureWarning(input: {
   if (input.portalValue) {
     return null;
   }
+  if (input.portalValueSource === "printed_note_ocr") {
+    return "Printed-note OCR did not capture a value for this field.";
+  }
   if (input.portalValueSource === "unavailable") {
-    return "Portal value was not captured in the available portal snapshot.";
+    return "No portal or printed-note snapshot captured this value.";
   }
   if (input.portalValueSource === "workbook_context") {
     return "Portal value is only available from workbook context, not a portal chart read.";
@@ -697,7 +729,7 @@ function getPortalCaptureWarning(input: {
   if (input.portalValueSource === "chart_read" && !input.populatedInChart) {
     return null;
   }
-  return "Portal value could not be confirmed from the available snapshot.";
+  return "Chart value could not be confirmed from the available snapshot.";
 }
 
 function getSnippetUsageMap(patient: PatientDetail): Map<string, number> {
@@ -957,12 +989,18 @@ function getComparisonResult(input: {
 
 function getReviewStatus(result: ComparisonResult, equivalenceType: EquivalenceType): string {
   if (result === "match") {
-    return "Confirmed Match";
+    return "Resolved";
   }
   if (result === "equivalent_match") {
     return equivalenceType === "name_format_only" || equivalenceType === "date_format_only"
       ? "Formatting Only"
       : "Equivalent Match";
+  }
+  if (result === "missing_in_portal") {
+    return "Missing in Portal";
+  }
+  if (result === "missing_in_referral") {
+    return "Missing Referral Documentation";
   }
   if (result === "coding_review") {
     return "Review with Coding";
@@ -1004,7 +1042,7 @@ function getShortReason(input: {
     return "Referral clearly supports this value, but the portal field is blank.";
   }
   if (input.result === "missing_in_referral") {
-    return "Portal shows a value the referral did not support.";
+    return "Portal shows a value without referral documentation.";
   }
   if (input.result === "coding_review") {
     return "Diagnosis-related difference should be reviewed with coding.";
@@ -1200,19 +1238,7 @@ function buildFieldComparison(
   return comparison;
 }
 
-export function buildComparisonWorkspaceModel(patient: PatientDetail): ComparisonWorkspaceModel {
-  const snippetUsage = getSnippetUsageMap(patient);
-  const comparisons = patient.referralSections
-    .flatMap((section) =>
-      section.fields.map((field) => buildFieldComparison(patient, section, field, snippetUsage)),
-    )
-    .filter((comparison): comparison is FieldComparison => comparison !== null)
-    .sort(
-      (left, right) =>
-        left.reviewerPriority - right.reviewerPriority ||
-        left.fieldLabel.localeCompare(right.fieldLabel),
-    );
-
+function buildSectionSummaries(comparisons: FieldComparison[]): ComparisonSectionSummary[] {
   const sectionsByKey = new Map<string, ComparisonSectionSummary>();
   for (const row of comparisons) {
     const section = sectionsByKey.get(row.sectionKey) ?? {
@@ -1238,13 +1264,15 @@ export function buildComparisonWorkspaceModel(patient: PatientDetail): Compariso
     sectionsByKey.set(row.sectionKey, section);
   }
 
-  const sections = Array.from(sectionsByKey.values()).sort(
+  return Array.from(sectionsByKey.values()).sort(
     (left, right) =>
       getSectionOrder(left.sectionKey) - getSectionOrder(right.sectionKey) ||
       left.sectionLabel.localeCompare(right.sectionLabel),
   );
+}
 
-  const summary = {
+function buildSummary(comparisons: FieldComparison[]) {
+  return {
     mismatchCount: comparisons.filter((row) => row.comparisonResult === "mismatch").length,
     missingInPortalCount: comparisons.filter((row) => row.comparisonResult === "missing_in_portal")
       .length,
@@ -1256,6 +1284,144 @@ export function buildComparisonWorkspaceModel(patient: PatientDetail): Compariso
     uncertainCount: comparisons.filter((row) => row.comparisonResult === "uncertain").length,
     codingReviewCount: comparisons.filter((row) => row.comparisonResult === "coding_review").length,
   };
+}
+
+function mapBackendFieldRowToComparison(row: PatientDashboardFieldRow): FieldComparison {
+  const isResolved = row.comparisonResult === "match" || row.comparisonResult === "equivalent_match";
+  const sourceDocuments = Array.from(
+    new Set([
+      ...row.evidence.map((entry) => entry.sourceLabel),
+      ...row.sourceArtifacts,
+    ]),
+  );
+  const comparison: FieldComparison = {
+    fieldKey: row.fieldKey,
+    fieldLabel: row.fieldLabel,
+    sectionKey: row.sectionKey,
+    sectionLabel: row.sectionLabel,
+    sourceSectionLabel: row.sourceSectionLabel,
+    referralValue: row.displayReferralValue || null,
+    portalValue: row.displayPortalValue || null,
+    portalValueSource: row.currentChartValueSource,
+    portalValueSourceLabel: row.currentChartValueSourceLabel,
+    normalizedReferralValue: row.normalizedDocumentValue,
+    normalizedPortalValue: row.normalizedChartValue,
+    displayReferralValue: row.displayReferralValue,
+    displayPortalValue: row.displayPortalValue,
+    comparisonDisplayValue: [row.displayReferralValue, row.displayPortalValue].join(" | "),
+    comparisonResult: row.comparisonResult,
+    equivalenceType: row.comparisonResult === "equivalent_match" ? "whitespace_only" : "none",
+    isFormattingOnlyDifference: row.comparisonResult === "equivalent_match",
+    isFieldLeakSuspected: false,
+    isCodingSensitive: row.comparisonResult === "coding_review" || row.reviewMode.includes("coding"),
+    sourceSupportStrength: row.sourceSupportStrength,
+    mappingStrength: row.mappingStrength,
+    confidence: row.confidence,
+    reviewerPriority: getReviewerPriority(
+      row.comparisonResult,
+      {
+        qaPriority: row.qaPriority,
+      } as ReferralFieldView,
+      row.confidence,
+      row.comparisonResult === "equivalent_match",
+    ),
+    shortReason: row.shortReason,
+    reviewStatus: row.reviewStatus,
+    referralSnippet: row.referralSnippet,
+    portalSnippet: row.portalSnippet,
+    portalCaptureWarning:
+      !row.valuePresence.hasChartValue && row.currentChartValueSource === "printed_note_ocr"
+        ? "Printed note OCR did not capture a value."
+        : !row.valuePresence.hasChartValue
+          ? "No chart data captured."
+          : null,
+    sourceQualityWarning:
+      row.valuePresence.printedNoteSectionStatus === "COMPLETED" && !row.valuePresence.hasChartValue
+        ? "Printed-note review completed this section, but no chart snapshot value was promoted."
+        : null,
+    oasisItemId: row.oasisItemId,
+    sourceDocuments,
+    evidence: row.evidence,
+    backendComparisonStatus: row.backendComparisonStatus,
+    backendWorkflowState: row.backendWorkflowState,
+    visibilityDecision: row.visibilityDecision,
+    visibilityReason: row.visibilityReason,
+    shownByDefault: row.shownByDefault,
+    strictnessFlags: row.strictnessFlags,
+    sourceArtifacts: row.sourceArtifacts,
+    valuePresence: row.valuePresence,
+  };
+
+  comparison.inspectTarget = buildInspectTarget(comparison);
+  if (isResolved && row.shownByDefault === false && !comparison.reviewStatus) {
+    comparison.reviewStatus = "Resolved";
+  }
+  return comparison;
+}
+
+export function buildComparisonWorkspaceModel(patient: PatientDetail): ComparisonWorkspaceModel {
+  if (patient.dashboardState) {
+    const comparisons = patient.dashboardState.rows
+      .map((row) => mapBackendFieldRowToComparison(row))
+      .sort(
+        (left, right) =>
+          left.reviewerPriority - right.reviewerPriority ||
+          left.fieldLabel.localeCompare(right.fieldLabel),
+      );
+    const sections = buildSectionSummaries(comparisons);
+    const summary = buildSummary(comparisons);
+    const openItems =
+      summary.mismatchCount +
+      summary.missingInPortalCount +
+      summary.missingInReferralCount +
+      summary.uncertainCount +
+      summary.codingReviewCount;
+    const globalTrustWarning =
+      !patient.referralQa.referralDataAvailable
+        ? "Referral evidence is missing, so portal discrepancies cannot be trusted yet."
+        : patient.referralQa.extractionUsabilityStatus !== "usable"
+          ? "Referral extraction quality is limited. Treat surfaced differences as tentative until the source document is confirmed."
+          : null;
+
+    return {
+      header: {
+        patientName: patient.patientName,
+        subsidiaryName: patient.subsidiaryName,
+        daysLeftLabel: formatDaysLeft(patient.daysLeftBeforeOasisDueDate),
+        lastRefreshLabel: formatTimestamp(patient.lastUpdatedAt),
+        overallReviewVerdict:
+          globalTrustWarning ??
+          (openItems > 0
+            ? `${openItems} item(s) still need reconciliation against the referral.`
+            : "No surfaced discrepancies outside exact matches."),
+      },
+      summary,
+      globalTrustWarning,
+      comparisons,
+      sections,
+      debug: {
+        referralWarnings: patient.referralQa.warnings,
+        referralUsability: patient.referralQa.extractionUsabilityStatus,
+        qaStatus: patient.referralQa.qaStatus,
+        visibilitySummary: patient.dashboardState.visibilitySummary,
+        hiddenRows: comparisons.filter((row) => row.shownByDefault === false),
+      },
+    };
+  }
+
+  const snippetUsage = getSnippetUsageMap(patient);
+  const comparisons = patient.referralSections
+    .flatMap((section) =>
+      section.fields.map((field) => buildFieldComparison(patient, section, field, snippetUsage)),
+    )
+    .filter((comparison): comparison is FieldComparison => comparison !== null)
+    .sort(
+      (left, right) =>
+        left.reviewerPriority - right.reviewerPriority ||
+        left.fieldLabel.localeCompare(right.fieldLabel),
+    );
+  const sections = buildSectionSummaries(comparisons);
+  const summary = buildSummary(comparisons);
 
   const openItems =
     summary.mismatchCount +
@@ -1290,6 +1456,10 @@ export function buildComparisonWorkspaceModel(patient: PatientDetail): Compariso
       referralWarnings: patient.referralQa.warnings,
       referralUsability: patient.referralQa.extractionUsabilityStatus,
       qaStatus: patient.referralQa.qaStatus,
+      visibilitySummary: null,
+      hiddenRows: comparisons.filter(
+        (row) => row.comparisonResult === "match" || row.comparisonResult === "equivalent_match",
+      ),
     },
   };
 }
@@ -1307,8 +1477,9 @@ export function filterComparisonRows(
   return rows.filter((row) => {
     const isResolved =
       row.comparisonResult === "match" || row.comparisonResult === "equivalent_match";
+    const hiddenByDefault = row.shownByDefault === false;
 
-    if (!input.showMatches && isResolved) return false;
+    if (!input.showMatches && (isResolved || hiddenByDefault)) return false;
     if (input.sectionFilter && row.sectionKey !== input.sectionFilter) return false;
     if (input.resultFilter === "open" && isResolved) return false;
     if (
@@ -1338,7 +1509,7 @@ export function getResultLabel(result: ComparisonResult): string {
   return result === "missing_in_portal"
     ? "Missing in Portal"
     : result === "missing_in_referral"
-      ? "Missing in Referral"
+      ? "Missing Referral Documentation"
       : result === "coding_review"
         ? "Coding Review"
         : result === "uncertain"

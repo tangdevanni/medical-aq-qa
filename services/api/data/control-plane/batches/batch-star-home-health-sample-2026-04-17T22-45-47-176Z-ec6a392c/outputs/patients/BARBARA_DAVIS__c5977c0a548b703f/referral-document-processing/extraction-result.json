@@ -1,0 +1,33 @@
+{
+  "documentId": "BARBARA_DAVIS__c5977c0a548b703f-referral-1",
+  "localFilePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-star-home-health-sample-2026-04-17T22-45-47-176Z-ec6a392c\\outputs\\patients\\BARBARA_DAVIS__c5977c0a548b703f\\documents\\new-referral-barbara-davis-updated-hnp-pdf\\source.pdf",
+  "fileType": "pdf",
+  "extractionMethod": "ocr_text",
+  "extractionSuccess": true,
+  "effectiveTextSource": "ocr_text",
+  "rawExtractedTextSource": "ocr",
+  "textSelectionReason": "policy_ocr_required_direct_ocr:PDF appears image-based/scanned; OCR likely required|No printed PDF available|OCR is the cheapest acceptable option that preserves clinically meaningful content",
+  "domExtractionRejectedReasons": [],
+  "pdfType": "scanned_image_pdf",
+  "ocrUsed": true,
+  "ocrProvider": "textract",
+  "ocrResultPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-star-home-health-sample-2026-04-17T22-45-47-176Z-ec6a392c\\outputs\\patients\\BARBARA_DAVIS__c5977c0a548b703f\\documents\\new-referral-barbara-davis-updated-hnp-pdf\\ocr-result.json",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\batch-star-home-health-sample-2026-04-17T22-45-47-176Z-ec6a392c\\outputs\\patients\\BARBARA_DAVIS__c5977c0a548b703f\\referral-document-processing\\extracted-text.txt",
+  "extractionQuality": {
+    "characterCount": 26355,
+    "lineCount": 1013,
+    "normalizedTokenCount": 3906,
+    "containsClinicalVocabulary": true,
+    "containsDiagnosisLikePatterns": true,
+    "containsDatePatterns": true,
+    "containsSectionLikeHeadings": true,
+    "likelyUsableForLlm": true,
+    "likelyRequiresOcrRetry": false,
+    "likelyCorruptedEncoding": false,
+    "rejectedReasons": [],
+    "usabilityStatus": "usable"
+  },
+  "failureReasons": [],
+  "warnings": [],
+  "generatedAt": "2026-04-17T22:57:37.874Z"
+}

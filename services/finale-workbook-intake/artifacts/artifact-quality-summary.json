@@ -1,0 +1,110 @@
+{
+  "generatedAt": "2026-04-17T17:04:43.104Z",
+  "sampleCount": 19,
+  "sampleRoots": [
+    "C:\\dev\\medical-aq-qa\\services\\finale-workbook-intake\\artifacts"
+  ],
+  "consumers": {
+    "diagnosisCoding": {
+      "sampleCount": 3,
+      "evaluatedSampleCount": 3,
+      "llmInputSourceCounts": {
+        "fact_pack_primary": 3,
+        "fact_pack_plus_raw_fallback": 0,
+        "raw_text_fallback": 0
+      },
+      "avgFactPackCoverageScore": 1,
+      "avgPromptCharacterEstimate": 7739,
+      "avgRawCharacters": 21022,
+      "avgPackedCharacters": 8628,
+      "commonMissingCriticalSections": [],
+      "commonFallbackReasons": [
+        "none"
+      ],
+      "warnings": [],
+      "artifactCompleteness": {
+        "extractedTextPresentCount": 3,
+        "factPackArtifactPresentCount": 0,
+        "consumerArtifactPresentCount": 3,
+        "missingExtractedTextCount": 0,
+        "missingFactPackArtifactCount": 3,
+        "missingConsumerArtifactCount": 0
+      },
+      "likelyTooStrictCount": 0,
+      "likelyTooLooseCount": 0
+    },
+    "referralProposal": {
+      "sampleCount": 6,
+      "evaluatedSampleCount": 2,
+      "llmInputSourceCounts": {
+        "fact_pack_primary": 2,
+        "fact_pack_plus_raw_fallback": 0,
+        "raw_text_fallback": 0
+      },
+      "avgFactPackCoverageScore": 1,
+      "avgPromptCharacterEstimate": 6683,
+      "avgRawCharacters": 19467,
+      "avgPackedCharacters": 8628,
+      "commonMissingCriticalSections": [],
+      "commonFallbackReasons": [
+        "none"
+      ],
+      "warnings": [
+        "Referral processing artifacts were incomplete; could not re-evaluate proposal input source."
+      ],
+      "artifactCompleteness": {
+        "extractedTextPresentCount": 6,
+        "factPackArtifactPresentCount": 0,
+        "consumerArtifactPresentCount": 6,
+        "missingExtractedTextCount": 0,
+        "missingFactPackArtifactCount": 6,
+        "missingConsumerArtifactCount": 0
+      },
+      "likelyTooStrictCount": 0,
+      "likelyTooLooseCount": 0
+    },
+    "printedNoteChartValues": {
+      "sampleCount": 10,
+      "evaluatedSampleCount": 10,
+      "llmInputSourceCounts": {
+        "fact_pack_primary": 2,
+        "fact_pack_plus_raw_fallback": 8,
+        "raw_text_fallback": 0
+      },
+      "avgFactPackCoverageScore": 0.5,
+      "avgPromptCharacterEstimate": 2480.2,
+      "avgRawCharacters": 2324.2,
+      "avgPackedCharacters": 1277.8,
+      "commonMissingCriticalSections": [
+        "assessmentValues",
+        "medicationsOrAllergies"
+      ],
+      "commonFallbackReasons": [
+        "assessmentValues, medicationsOrAllergies",
+        "none"
+      ],
+      "warnings": [],
+      "artifactCompleteness": {
+        "extractedTextPresentCount": 10,
+        "factPackArtifactPresentCount": 0,
+        "consumerArtifactPresentCount": 0,
+        "missingExtractedTextCount": 0,
+        "missingFactPackArtifactCount": 10,
+        "missingConsumerArtifactCount": 10
+      },
+      "likelyTooStrictCount": 0,
+      "likelyTooLooseCount": 0
+    }
+  },
+  "commonIssues": [
+    "Diagnosis samples did not include persisted document-fact-pack artifacts; validation relied on recomputation from extracted documents.",
+    "Referral-processing samples did not include persisted document-fact-pack artifacts; validation relied on recomputation from extracted text.",
+    "Printed-note chart-value consumer artifacts were absent in the sampled runs; only recomputed evaluations were available."
+  ],
+  "recommendedThresholdActions": [
+    "Diagnosis coding: keep current thresholds; mixed fallback appears appropriately constrained.",
+    "Referral proposal: keep current thresholds; weighted coverage looks reasonable on sampled runs.",
+    "Printed-note chart values: add more direct consumer artifacts before making a final freeze decision."
+  ],
+  "warnings": []
+}

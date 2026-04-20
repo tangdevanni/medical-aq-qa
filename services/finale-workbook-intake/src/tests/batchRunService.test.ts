@@ -7,6 +7,7 @@ import type {
   ArtifactRecord,
   AutomationStepLog,
   DocumentInventoryItem,
+  PatientDashboardState,
   PatientEpisodeWorkItem,
   PatientMatchResult,
 } from "@medical-ai-qa/shared-types";
@@ -795,7 +796,7 @@ describe("runFinaleBatch", () => {
       expect(result.patientRuns[0]?.logPath).toMatch(/logs/);
       expect(result.patientRuns[0]?.logAvailable).toBe(true);
       expect(result.patientRuns[0]?.workflowRuns.find((workflowRun) => workflowRun.workflowDomain === "coding")?.status).toBe("COMPLETED");
-      expect(result.patientRuns[0]?.workflowRuns.find((workflowRun) => workflowRun.workflowDomain === "qa")?.status).toBe("NOT_STARTED");
+      expect(result.patientRuns[0]?.workflowRuns.find((workflowRun) => workflowRun.workflowDomain === "qa")?.status).toBe("COMPLETED");
       expect(portalClient.oasisExecutionCalls).toBe(0);
       expect(portalClient.discoverArtifactsCalls).toBe(1);
       expect(portalClient.discoverArtifactWorkflowPhases).toEqual(["file_uploads_only"]);
@@ -853,6 +854,20 @@ describe("runFinaleBatch", () => {
       expect(logPayload.workItemId).toBe(patientRun.workItemId);
       expect(logPayload.processingStatus).toBe("COMPLETE");
       expect(logPayload.workflowRuns.some((workflowRun) => workflowRun.workflowDomain === "coding")).toBe(true);
+
+      const dashboardStatePath = path.join(
+        fixture.outputDir,
+        "patients",
+        patientRun.workItemId,
+        "patient-dashboard-state.json",
+      );
+      expect(existsSync(dashboardStatePath)).toBe(true);
+      const dashboardState = JSON.parse(readFileSync(dashboardStatePath, "utf8")) as PatientDashboardState;
+      expect(dashboardState.patientId).toBe(patientRun.workItemId);
+      expect(dashboardState.workItem?.id).toBe(patientRun.workItemId);
+      expect(dashboardState.artifactContents.codingInput).toBeTruthy();
+      expect(dashboardState.artifactContents.qaPrefetch).toBeTruthy();
+      expect(dashboardState.artifactContents.patientQaReference).toBeTruthy();
     } finally {
       fixture.cleanup();
     }
@@ -964,11 +979,11 @@ describe("runFinaleBatch", () => {
       expect(result.patientRuns[0]?.executionStep).toBe("REFERRAL_DOCUMENT_REQUIRED");
       expect(result.patientRuns[0]?.automationStepLogs.some((log) => log.step === "referral_document_check")).toBe(true);
       expect(result.patientRuns[0]?.workflowRuns.find((workflowRun) => workflowRun.workflowDomain === "coding")?.status).toBe("BLOCKED");
-      expect(result.patientRuns[0]?.workflowRuns.find((workflowRun) => workflowRun.workflowDomain === "qa")?.status).toBe("NOT_STARTED");
+      expect(result.patientRuns[0]?.workflowRuns.find((workflowRun) => workflowRun.workflowDomain === "qa")?.status).toBe("BLOCKED");
       expect(result.patientRuns[0]?.automationStepLogs.some((log) => log.step === "oasis_print_capture")).toBe(false);
       expect(result.patientRuns[1]?.qaOutcome).toBe("READY_FOR_BILLING_PREP");
       expect(result.patientRuns[1]?.processingStatus).toBe("COMPLETE");
-      expect(result.patientRuns[1]?.automationStepLogs.some((log) => log.step === "oasis_print_capture")).toBe(false);
+      expect(result.patientRuns[1]?.automationStepLogs.some((log) => log.step === "oasis_print_capture")).toBe(true);
       expect(result.batchSummary.qaOutcomes.MISSING_DOCUMENTS).toBe(1);
       expect(result.batchSummary.qaOutcomes.READY_FOR_BILLING_PREP).toBe(1);
     } finally {
@@ -1085,7 +1100,7 @@ describe("runFinaleBatch", () => {
 
       expect(codingWorkflow?.status).toBe("COMPLETED");
       expect(qaWorkflow?.status).toBe("COMPLETED");
-      expect(codingWorkflow?.workflowResultPath).toBe(patientRun.resultBundlePath);
+      expect(codingWorkflow?.workflowResultPath).toMatch(/coding-input\.json$/);
       expect(qaWorkflow?.workflowResultPath).toMatch(/qa-prefetch-result\.json$/);
       expect(portalClient.discoverArtifactsCalls).toBe(1);
       expect(portalClient.discoverArtifactWorkflowPhases).toEqual(["file_uploads_only"]);

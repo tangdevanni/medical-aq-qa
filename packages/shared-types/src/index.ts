@@ -15,6 +15,7 @@ export * from "./reliability-intelligence";
 export * from "./runtime-diagnostics";
 export * from "./oasis-qa";
 export * from "./patient-episode-work-item";
+export * from "./patient-dashboard-state";
 export * from "./patient-workflow-run";
 export * from "./patient-run-log";
 export * from "./subsidiary";
