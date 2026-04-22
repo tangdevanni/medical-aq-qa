@@ -1,0 +1,75 @@
+{
+  "selectedSourceFile": "DEMO GREEN_ DIANE.pdf",
+  "selectedSourceFileNormalized": "demo green diane.pdf",
+  "admissionOrderTitle": "📄 DEMO GREEN_ DIANE.pdf 📝 ✏️ 🗑️ 🔗",
+  "admissionOrderSelectorUsed": "File Uploads source document row by .file-item/.file-label or table row",
+  "sourceUrlBeforeClick": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69a9a38c801ffe0c5ab84515/file-uploads",
+  "sourceUrlAfterClick": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69a9a38c801ffe0c5ab84515/file-uploads",
+  "matchedReferralFileLabel": "DEMO GREEN_ DIANE.pdf",
+  "normalizedFileLabels": [
+    "diane green active hho.pdf",
+    "diane green 03.02.2026.pdf",
+    "demo green diane.pdf"
+  ],
+  "matchedSourceDocuments": [
+    {
+      "label": "📄 DEMO GREEN_ DIANE.pdf",
+      "normalizedLabel": "demo green diane.pdf",
+      "score": 20
+    },
+    {
+      "label": "📄 DEMO GREEN_ DIANE.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedLabel": "demo green diane.pdf",
+      "score": 20
+    },
+    {
+      "label": "📄 DIANE GREEN 03.02.2026.pdf",
+      "normalizedLabel": "diane green 03.02.2026.pdf",
+      "score": 20
+    },
+    {
+      "label": "📄 DIANE GREEN 03.02.2026.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedLabel": "diane green 03.02.2026.pdf",
+      "score": 20
+    },
+    {
+      "label": "📄 DIANE GREEN ACTIVE HHO.pdf",
+      "normalizedLabel": "diane green active hho.pdf",
+      "score": 20
+    },
+    {
+      "label": "📄 DIANE GREEN ACTIVE HHO.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedLabel": "diane green active hho.pdf",
+      "score": 20
+    }
+  ],
+  "viewerDetected": true,
+  "viewerMarkerSamples": [
+    "of ⁨2⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools",
+    "Tools",
+    "Print"
+  ],
+  "printButtonDetected": true,
+  "printButtonVisible": true,
+  "printButtonSelectorUsed": "pdf-print #printButton, #printButton, pdf-shy-button[primarytoolbarid='printButton'] button",
+  "printClickSucceeded": false,
+  "pdfResponseDetected": true,
+  "pdfResponseUrl": "https://api.finalehealth.com/api/v1/files/69a9a4a72a66c5208649befc?index=patient",
+  "pdfContentType": "application/pdf",
+  "pdfSavedPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\DIANE_GREEN__fcad06b148342e68\\documents\\demo-green-diane-pdf\\source.pdf",
+  "pdfByteSize": 9139,
+  "printAcquisitionMethodUsed": "network_pdf_response",
+  "printedPdfSaved": false,
+  "printedPdfPath": null,
+  "sourcePdfPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\DIANE_GREEN__fcad06b148342e68\\documents\\demo-green-diane-pdf\\source.pdf",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\DIANE_GREEN__fcad06b148342e68\\documents\\demo-green-diane-pdf\\extracted-text.txt",
+  "extractionResultPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\DIANE_GREEN__fcad06b148342e68\\documents\\demo-green-diane-pdf\\extraction-result.json",
+  "extractedTextLength": 128,
+  "rawExtractedTextSource": "dom",
+  "domExtractionRejectedReasons": [
+    "viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS"
+  ],
+  "extractionSuccess": false,
+  "queuedForLlm": true,
+  "generatedAt": "2026-04-15T06:43:08.578Z"
+}

@@ -1,0 +1,45 @@
+{
+  "batchId": "batch-star-home-health-sample-2026-04-21T16-21-02-737Z-6238a733",
+  "status": "COMPLETED",
+  "startedAt": "2026-04-21T16:21:02.778Z",
+  "completedAt": "2026-04-21T16:28:32.267Z",
+  "lastUpdatedAt": "2026-04-21T16:28:32.267Z",
+  "totalWorkItems": 1,
+  "automationEligible": 1,
+  "processed": 1,
+  "totalCompleted": 0,
+  "totalBlocked": 1,
+  "totalFailed": 0,
+  "totalNeedsHumanReview": 0,
+  "totalReadyForBillingPrep": 0,
+  "totalParserExceptions": 0,
+  "percentComplete": 100,
+  "currentlyRunningCount": 0,
+  "currentBatchStatus": "COMPLETED",
+  "complete": 0,
+  "blocked": 1,
+  "failed": 0,
+  "needsHumanReview": 0,
+  "parserExceptions": 0,
+  "qaOutcomes": {
+    "READY_FOR_BILLING_PREP": 0,
+    "INCOMPLETE": 0,
+    "MISSING_DOCUMENTS": 1,
+    "PORTAL_NOT_FOUND": 0,
+    "PORTAL_MISMATCH": 0,
+    "AMBIGUOUS_PATIENT": 0,
+    "NEEDS_MANUAL_QA": 0
+  },
+  "patientRuns": [
+    {
+      "workItemId": "CHRISTINE_YOUNG__52c5fc31a7ba9d78",
+      "patientName": "Christine Young",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Diagnosis code candidates: J18.9, J96.01, R13.12, G93.41, R41.841, M62.81, R26.2, I11.0, E03.9, F32.A, M62, I00.0",
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-sample-2026-04-21T16-21-02-737Z-6238a733\\outputs\\patient-results\\CHRISTINE_YOUNG__52c5fc31a7ba9d78.json"
+    }
+  ]
+}

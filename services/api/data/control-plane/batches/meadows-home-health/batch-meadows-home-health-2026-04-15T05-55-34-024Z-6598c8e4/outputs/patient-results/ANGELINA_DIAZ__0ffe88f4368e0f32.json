@@ -1,0 +1,3006 @@
+{
+  "runId": "batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4-ANGELINA_DIAZ__0ffe88f4368e0f32",
+  "batchId": "batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4",
+  "subsidiaryId": "meadows-home-health",
+  "workItemId": "ANGELINA_DIAZ__0ffe88f4368e0f32",
+  "patientName": "Angelina Diaz",
+  "processingStatus": "BLOCKED",
+  "executionStep": "BLOCKED",
+  "progressPercent": 100,
+  "startedAt": "2026-04-15T05:56:06.940Z",
+  "completedAt": "2026-04-15T06:03:04.156Z",
+  "lastUpdatedAt": "2026-04-15T06:03:04.124Z",
+  "matchResult": {
+    "status": "EXACT",
+    "searchQuery": "diaz, angelina",
+    "portalPatientId": null,
+    "portalDisplayName": "DIAZ, ANGELINA MR# 3119 ActiveALIGNMENT SOC: 4/1/2026 / DOB: 2/4/1952 LOS: 14 days Alignment Health Care 1939 Nitida Street Las Vegas NV 89108 (702)890-3677 Last Visit Confirmed by PT : 04/03/2026 (11 days ago)",
+    "candidateNames": [
+      "DIAZ, ANGELINA MR# 3119 ActiveALIGNMENT SOC: 4/1/2026 / DOB: 2/4/1952 LOS: 14 days Alignment Health Care 1939 Nitida Street Las Vegas NV 89108 (702)890-3677 Last Visit Confirmed by PT : 04/03/2026 (11 days ago)"
+    ],
+    "note": null
+  },
+  "artifacts": [
+    {
+      "artifactType": "OASIS",
+      "status": "MISSING",
+      "portalLabel": "OASIS documents page",
+      "locatorUsed": null,
+      "discoveredAt": "2026-04-15T05:58:59.012Z",
+      "downloadPath": null,
+      "extractedFields": {
+        "oasisMenuClicked": "false",
+        "oasisDocumentListDetected": "false",
+        "socDocumentFound": "false",
+        "socDocumentClicked": "false",
+        "matchedSocRowText": null,
+        "matchedSocAnchorText": null,
+        "diagnosisSectionOpened": "false",
+        "diagnosisListFound": "false",
+        "diagnosisNavigationMethod": null,
+        "diagnosisListSamples": "",
+        "diagnosisSnapshotRowCount": "0",
+        "oasisReadyDiagnosisPath": null,
+        "primaryDiagnosisSelected": "none",
+        "otherDiagnosisCount": "0",
+        "codeConfidenceSummary": "high:0 medium:0 low:0",
+        "oasisLockState": null,
+        "unlockControlVisible": "false",
+        "unlockControlText": null,
+        "fieldsEditable": "false",
+        "verificationOnly": "true",
+        "inputEligible": "false",
+        "fileUploadsAccessible": "true",
+        "fileUploadsUrl": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads",
+        "visibleUploadedDocuments": "📄 DIAZ, ANGELINA DEMOS 02132026.pdf | 📄 DIAZ, ANGELINA notes 02182026.pdf | 📄 diaz auth.pdf | 📄 diaz mdo hp fr trellis.pdf | 📄 DIAZ, ANGELINA Alignment OT Auth.pdf | 📄 DIAZ, ANGELINA DEMOS 02132026.pdf 📝 ✏️ 🗑️ 🔗 | 📄 DIAZ, ANGELINA notes 02182026.pdf 📝 ✏️ 🗑️ 🔗 | 📄 diaz auth.pdf 📝 ✏️ 🗑️ 🔗 | 📄 diaz mdo hp fr trellis.pdf 📝 ✏️ 🗑️ 🔗 | 📄 DIAZ, ANGELINA Alignment OT Auth.pdf 📝 ✏️ 🗑️ 🔗",
+        "admissionOrderAccessible": "true",
+        "admissionOrderTitle": "📄 diaz auth.pdf 📝 ✏️ 🗑️ 🔗",
+        "admissionReasonPrimary": null,
+        "admissionReasonSnippets": "",
+        "rawExtractedTextSource": "dom",
+        "domExtractionRejectedReasons": "viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS",
+        "possibleIcd10Codes": "I00 | I25 | I50",
+        "admissionOrderTextExcerpt": "of ⁨1⁩ Automatic Zoom Actual Size Page Fit Page Width ⁨50⁩% ⁨100⁩% ⁨125⁩% ⁨150⁩% ⁨200⁩% ⁨300⁩% ⁨400⁩% 90% Tools",
+        "admissionOrderSourcePdfPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\documents\\diaz-auth-pdf\\source.pdf",
+        "admissionOrderPrintedPdfPath": null,
+        "admissionOrderSourceMetaPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\documents\\diaz-auth-pdf\\source-meta.json",
+        "admissionOrderExtractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\documents\\diaz-auth-pdf\\extracted-text.txt",
+        "admissionOrderExtractionResultPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\documents\\diaz-auth-pdf\\extraction-result.json",
+        "diagnosisMentionCount": "0",
+        "diagnosisMentions": "",
+        "diagnosisCodeCount": "5",
+        "diagnosisCodes": "I20 | M21.061 | M21.162 | M17.12 | M17.11",
+        "diagnosisCodeCategories": "I20:Diseases of the circulatory system | M21.061:Diseases of the musculoskeletal system and connective tissue | M21.162:Diseases of the musculoskeletal system and connective tissue | M17.12:Diseases of the musculoskeletal system and connective tissue | M17.11:Diseases of the musculoskeletal system and connective tissue",
+        "diagnosisCanonicalJson": "{\"reason_for_admission\":null,\"diagnosis_phrases\":[],\"diagnosis_code_pairs\":[],\"icd10_codes_found_verbatim\":[\"I20\",\"M21.061\",\"M21.162\",\"M17.12\",\"M17.11\"],\"ordered_services\":[],\"clinical_summary\":\"LAS VEGAS NV 89106 Member Phone 702-245-3530 Member Plan Alignment Health Plan Nevada Company NEVA / Alignment Health Plan Network PCP Name: KEE B NO MD / ID: 300000153804 / Phone: (702) 957-5975 / Fax: Authorization Number 001040990 Expiration Date 08/17/2026 Priority Urgent Referred From Provider ID: 300000059099 / N\",\"source_quotes\":[\"LAS VEGAS NV 89106 Member Phone 702-245-3530 Member Plan Alignment Health Plan Nevada Company NEVA / Alignment Health Plan Network PCP Name: KEE B NO MD / ID: 300000153804 / Phone: (702) 957-5975 / Fax: Authorization Number 001040990 Expiration Date 08/17/2026 Priority Urgent Referred From Provider ID: 300000059099 / N\"],\"uncertain_items\":[],\"document_type\":\"Admission Order\",\"extraction_confidence\":\"medium\"}",
+        "codingInputPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\coding-input.json",
+        "codingInputJson": "{\"primaryDiagnosis\":{\"code\":\"\",\"description\":\"\",\"confidence\":\"low\"},\"otherDiagnoses\":[],\"suggestedOnsetType\":\"onset\",\"suggestedSeverity\":0,\"comorbidityFlags\":{\"pvd_pad\":false,\"diabetes\":false,\"none\":true},\"notes\":[\"Primary diagnosis code left blank because no explicit or strongly inferable ICD-10 mapping was retained.\"]}",
+        "reasonForAdmission": null,
+        "diagnosisCodePairs": "",
+        "primaryDiagnosis": "",
+        "primaryDiagnosisCode": "",
+        "otherDiagnoses": "",
+        "suggestedOnsetType": "onset",
+        "suggestedSeverity": "0",
+        "comorbidityFlags": "{\"pvd_pad\":false,\"diabetes\":false,\"none\":true}",
+        "orderedServices": "",
+        "extractionConfidence": "medium",
+        "uncertainDiagnosisItems": "",
+        "codingLlmUsed": "true",
+        "codingLlmModel": "us.amazon.nova-lite-v1:0",
+        "codingLlmError": null,
+        "documentTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\document-text.json"
+      },
+      "notes": [
+        "Active OASIS workflow did not open the OASIS documents page."
+      ]
+    }
+  ],
+  "artifactCount": 1,
+  "findings": [
+    {
+      "ruleId": "oasis-qa.coding.needs_review",
+      "stage": "CODING_REVIEW",
+      "outcome": "MISSING_DOCUMENTS",
+      "message": "Coding Review is needs review.",
+      "evidence": []
+    },
+    {
+      "ruleId": "oasis-qa.oasis.fail",
+      "stage": "OASIS_QA",
+      "outcome": "MISSING_DOCUMENTS",
+      "message": "OASIS QA is fail.",
+      "evidence": [
+        "Medical necessity is stated",
+        "Homebound reason is stated",
+        "Health assessment is documented",
+        "Skilled interventions during the OASIS visit are documented"
+      ]
+    },
+    {
+      "ruleId": "oasis-qa.poc.missing",
+      "stage": "POC_QA",
+      "outcome": "MISSING_DOCUMENTS",
+      "message": "Plan Of Care QA is missing.",
+      "evidence": [
+        "Plan of care content extracted",
+        "POC QA completed in workbook",
+        "Diagnoses or codes are present in the plan of care",
+        "Interventions, goals, and frequency are present in the plan of care",
+        "Conditions or exacerbations are reflected in the plan of care"
+      ]
+    },
+    {
+      "ruleId": "oasis-qa.visit_notes.missing",
+      "stage": "VISIT_NOTES_REVIEW",
+      "outcome": "MISSING_DOCUMENTS",
+      "message": "Visit Notes Review is missing.",
+      "evidence": [
+        "Visit note content extracted",
+        "Visit notes review completed in workbook",
+        "Skilled need is clearly documented",
+        "Interventions performed are specific and detailed",
+        "Patient response to interventions is documented",
+        "Progress toward goals is noted",
+        "Vitals and focused assessment are documented",
+        "Medication review is documented",
+        "Changes in condition are clearly reported and addressed",
+        "Documentation supports billed services",
+        "Documentation remains consistent with OASIS and diagnoses"
+      ]
+    },
+    {
+      "ruleId": "oasis-qa.technical_review.missing",
+      "stage": "TECHNICAL_REVIEW",
+      "outcome": "MISSING_DOCUMENTS",
+      "message": "Technical Review is missing.",
+      "evidence": [
+        "SN visits were identified from visit-note content",
+        "Applicable disciplines were detected"
+      ]
+    },
+    {
+      "ruleId": "oasis-qa.final_check.fail",
+      "stage": "FINAL_BILLING_PREP_READINESS",
+      "outcome": "MISSING_DOCUMENTS",
+      "message": "Final Check is fail.",
+      "evidence": [
+        "Critical QA sections are complete before billing prep",
+        "Billing prep status in workbook"
+      ]
+    }
+  ],
+  "hasFindings": false,
+  "qaOutcome": "MISSING_DOCUMENTS",
+  "oasisQaSummary": {
+    "overallStatus": "BLOCKED",
+    "urgency": "ON_TRACK",
+    "daysInPeriod": 30,
+    "daysLeft": 16,
+    "sections": [
+      {
+        "key": "timing",
+        "label": "Timing / OASIS Due",
+        "status": "PASS",
+        "items": [
+          {
+            "key": "days_in_period",
+            "label": "Days in the 30-day period captured",
+            "status": "PASS",
+            "notes": "Workbook shows 30 days in period.",
+            "evidence": [
+              "Workbook days in period: 30"
+            ]
+          },
+          {
+            "key": "days_left",
+            "label": "Days left before OASIS due date verified",
+            "status": "PASS",
+            "notes": "16 day(s) remain before OASIS is due.",
+            "evidence": [
+              "Workbook days left: 16"
+            ]
+          },
+          {
+            "key": "urgency_bucket",
+            "label": "Urgency bucket",
+            "status": "PASS",
+            "notes": "ON TRACK",
+            "evidence": [
+              "Derived urgency from 16 day(s) left."
+            ]
+          }
+        ]
+      },
+      {
+        "key": "coding",
+        "label": "Coding Review",
+        "status": "NEEDS_REVIEW",
+        "items": [
+          {
+            "key": "coding_review_complete",
+            "label": "Coding review completed in workbook",
+            "status": "NEEDS_REVIEW",
+            "notes": "Workbook status: IN_PROGRESS",
+            "evidence": [
+              "IN_PROGRESS"
+            ]
+          },
+          {
+            "key": "coding_supported_by_oasis",
+            "label": "OASIS content is available to support coding review",
+            "status": "PASS",
+            "notes": "OASIS content extracted for coding review support.",
+            "evidence": [
+              "OASIS OASIS documents page"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "oasis",
+        "label": "OASIS QA",
+        "status": "FAIL",
+        "items": [
+          {
+            "key": "oasis_document",
+            "label": "OASIS document content extracted",
+            "status": "PASS",
+            "notes": "1 supporting document(s) extracted.",
+            "evidence": [
+              "OASIS OASIS documents page"
+            ]
+          },
+          {
+            "key": "oasis_workbook_status",
+            "label": "OASIS QA completed in workbook",
+            "status": "NEEDS_REVIEW",
+            "notes": "Workbook status: IN_PROGRESS",
+            "evidence": [
+              "IN_PROGRESS"
+            ]
+          },
+          {
+            "key": "medical_necessity",
+            "label": "Medical necessity is stated",
+            "status": "FAIL",
+            "notes": "OASIS text did not show medical necessity language.",
+            "evidence": []
+          },
+          {
+            "key": "homebound_reason",
+            "label": "Homebound reason is stated",
+            "status": "FAIL",
+            "notes": "OASIS text did not show a homebound reason.",
+            "evidence": []
+          },
+          {
+            "key": "health_assessment",
+            "label": "Health assessment is documented",
+            "status": "FAIL",
+            "notes": "OASIS text did not show a health assessment section or phrase.",
+            "evidence": []
+          },
+          {
+            "key": "skilled_interventions",
+            "label": "Skilled interventions during the OASIS visit are documented",
+            "status": "FAIL",
+            "notes": "OASIS text did not show skilled interventions performed during the visit.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "poc",
+        "label": "Plan Of Care QA",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "poc_document",
+            "label": "Plan of care content extracted",
+            "status": "MISSING",
+            "notes": "No plan-of-care content was available for extraction.",
+            "evidence": []
+          },
+          {
+            "key": "poc_workbook_status",
+            "label": "POC QA completed in workbook",
+            "status": "MISSING",
+            "notes": "Workbook status: NOT_STARTED",
+            "evidence": [
+              "NOT_STARTED"
+            ]
+          },
+          {
+            "key": "poc_diagnoses_codes",
+            "label": "Diagnoses or codes are present in the plan of care",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "poc_interventions_goals_frequency",
+            "label": "Interventions, goals, and frequency are present in the plan of care",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "poc_conditions_exacerbations",
+            "label": "Conditions or exacerbations are reflected in the plan of care",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "visit_notes",
+        "label": "Visit Notes Review",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "visit_notes_document",
+            "label": "Visit note content extracted",
+            "status": "MISSING",
+            "notes": "No visit-note content was available for extraction.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_workbook_status",
+            "label": "Visit notes review completed in workbook",
+            "status": "MISSING",
+            "notes": "Workbook status: NOT_STARTED",
+            "evidence": [
+              "NOT_STARTED"
+            ]
+          },
+          {
+            "key": "visit_notes_skilled_need",
+            "label": "Skilled need is clearly documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_intervention_detail",
+            "label": "Interventions performed are specific and detailed",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_patient_response",
+            "label": "Patient response to interventions is documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_progress",
+            "label": "Progress toward goals is noted",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_vitals",
+            "label": "Vitals and focused assessment are documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_medication_review",
+            "label": "Medication review is documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_condition_changes",
+            "label": "Changes in condition are clearly reported and addressed",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_billed_services_support",
+            "label": "Documentation supports billed services",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_consistency",
+            "label": "Documentation remains consistent with OASIS and diagnoses",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "technical_review",
+        "label": "Technical Review",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "portal_patient_match",
+            "label": "Portal patient match resolved",
+            "status": "PASS",
+            "notes": "Portal match status: EXACT",
+            "evidence": [
+              "diaz, angelina",
+              "DIAZ, ANGELINA MR# 3119 ActiveALIGNMENT SOC: 4/1/2026 / DOB: 2/4/1952 LOS: 14 days Alignment Health Care 1939 Nitida Street Las Vegas NV 89108 (702)890-3677 Last Visit Confirmed by PT : 04/03/2026 (11 days ago)"
+            ]
+          },
+          {
+            "key": "sn_visit_count",
+            "label": "SN visits were identified from visit-note content",
+            "status": "MISSING",
+            "notes": "Visit-note content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "discipline_detection",
+            "label": "Applicable disciplines were detected",
+            "status": "MISSING",
+            "notes": "Visit-note content is not available for discipline detection.",
+            "evidence": []
+          },
+          {
+            "key": "physician_orders",
+            "label": "Physician orders were checked",
+            "status": "NEEDS_REVIEW",
+            "notes": "Orders evidence was discovered (1 candidate(s)).",
+            "evidence": [
+              "Detected 1 order document candidate(s)."
+            ]
+          },
+          {
+            "key": "supporting_notes",
+            "label": "Supporting note categories were reviewed",
+            "status": "NOT_APPLICABLE",
+            "notes": "No additional supporting note categories were discovered for this patient.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "final_check",
+        "label": "Final Check",
+        "status": "FAIL",
+        "items": [
+          {
+            "key": "critical_sections_clear",
+            "label": "Critical QA sections are complete before billing prep",
+            "status": "FAIL",
+            "notes": "Blocking sections: Medical necessity is stated, Homebound reason is stated, Health assessment is documented, Skilled interventions during the OASIS visit are documented, Plan of care content extracted, POC QA completed in workbook, Diagnoses or codes are present in the plan of care, Interventions, goals, and frequency are present in the plan of care, Conditions or exacerbations are reflected in the plan of care, Visit note content extracted, Visit notes review completed in workbook, Skilled need is clearly documented, Interventions performed are specific and detailed, Patient response to interventions is documented, Progress toward goals is noted, Vitals and focused assessment are documented, Medication review is documented, Changes in condition are clearly reported and addressed, Documentation supports billed services, Documentation remains consistent with OASIS and diagnoses, SN visits were identified from visit-note content, Applicable disciplines were detected",
+            "evidence": [
+              "Timing / OASIS Due: PASS",
+              "Coding Review: NEEDS_REVIEW",
+              "OASIS QA: FAIL",
+              "Plan Of Care QA: MISSING",
+              "Visit Notes Review: MISSING",
+              "Technical Review: MISSING"
+            ]
+          },
+          {
+            "key": "billing_prep_status",
+            "label": "Billing prep status in workbook",
+            "status": "MISSING",
+            "notes": "Workbook status: NOT_STARTED",
+            "evidence": [
+              "NOT_STARTED"
+            ]
+          }
+        ]
+      }
+    ],
+    "blockers": [
+      "Medical necessity is stated",
+      "Homebound reason is stated",
+      "Health assessment is documented",
+      "Skilled interventions during the OASIS visit are documented",
+      "Plan of care content extracted",
+      "POC QA completed in workbook",
+      "Diagnoses or codes are present in the plan of care",
+      "Interventions, goals, and frequency are present in the plan of care",
+      "Conditions or exacerbations are reflected in the plan of care",
+      "Visit note content extracted",
+      "Visit notes review completed in workbook",
+      "Skilled need is clearly documented",
+      "Interventions performed are specific and detailed",
+      "Patient response to interventions is documented",
+      "Progress toward goals is noted",
+      "Vitals and focused assessment are documented",
+      "Medication review is documented",
+      "Changes in condition are clearly reported and addressed",
+      "Documentation supports billed services",
+      "Documentation remains consistent with OASIS and diagnoses",
+      "SN visits were identified from visit-note content",
+      "Applicable disciplines were detected"
+    ]
+  },
+  "documentInventory": [
+    {
+      "sourceLabel": "diaz auth.pdf",
+      "normalizedType": "ORDER",
+      "discipline": "UNKNOWN",
+      "confidence": 0.92,
+      "evidence": [
+        "Workflow phase: file_uploads_only",
+        "oasisReadyDiagnosisPath:none",
+        "primaryDiagnosisSelected:none",
+        "otherDiagnosisCount:0",
+        "codeConfidenceSummary:high:0 medium:0 low:0",
+        "oasisLockState:none",
+        "unlockControlVisible:false",
+        "unlockControlText:none",
+        "fieldsEditable:false",
+        "verificationOnly:true",
+        "inputEligible:false",
+        "Active OASIS workflow path: chart -> File Uploads/referral -> OASIS sidebar -> OASIS document table -> SOC document -> Active Diagnoses",
+        "Dangerous controls detected: none",
+        "oasisMenuClicked:false",
+        "oasisDocumentListDetected:false",
+        "socDocumentFound:false",
+        "socDocumentClicked:false",
+        "matchedSocRowText:none",
+        "matchedSocAnchorText:none",
+        "diagnosisSectionOpened:false",
+        "diagnosisListFound:false",
+        "diagnosisNavigationMethod:none",
+        "diagnosisListSamples:none",
+        "diagnosisSnapshotRowCount:0",
+        "fileUploadsAccessible:true",
+        "fileUploadsUrl:https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads",
+        "visibleUploadedDocuments:📄 DIAZ, ANGELINA DEMOS 02132026.pdf | 📄 DIAZ, ANGELINA notes 02182026.pdf | 📄 diaz auth.pdf | 📄 diaz mdo hp fr trellis.pdf | 📄 DIAZ, ANGELINA Alignment OT Auth.pdf | 📄 DIAZ, ANGELINA DEMOS 02132026.pdf 📝 ✏️ 🗑️ 🔗 | 📄 DIAZ, ANGELINA notes 02182026.pdf 📝 ✏️ 🗑️ 🔗 | 📄 diaz auth.pdf 📝 ✏️ 🗑️ 🔗 | 📄 diaz mdo hp fr trellis.pdf 📝 ✏️ 🗑️ 🔗 | 📄 DIAZ, ANGELINA Alignment OT Auth.pdf 📝 ✏️ 🗑️ 🔗",
+        "admissionOrderAccessible:true",
+        "admissionOrderTitle:📄 diaz auth.pdf 📝 ✏️ 🗑️ 🔗",
+        "admissionReasonPrimary:none",
+        "admissionReasonSnippets:none",
+        "rawExtractedTextSource:dom",
+        "domExtractionRejectedReasons:viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS",
+        "possibleIcd10Codes:I00 | I25 | I50",
+        "sourceMetaPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\documents\\diaz-auth-pdf\\source-meta.json",
+        "sourcePdfPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\documents\\diaz-auth-pdf\\source.pdf",
+        "extractedTextPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\documents\\diaz-auth-pdf\\extracted-text.txt",
+        "printedPdfPath:none"
+      ],
+      "sourceUrl": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads",
+      "sourcePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\documents\\diaz-auth-pdf\\source.pdf",
+      "discoveredAt": "2026-04-15T05:58:59.012Z",
+      "openBehavior": "SAME_PAGE"
+    }
+  ],
+  "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patient-results\\ANGELINA_DIAZ__0ffe88f4368e0f32.json",
+  "bundleAvailable": true,
+  "logPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\logs\\ANGELINA_DIAZ__0ffe88f4368e0f32.json",
+  "logAvailable": true,
+  "retryEligible": false,
+  "errorSummary": "Diagnosis code candidates: I20, M21.061, M21.162, M17.12, M17.11",
+  "auditArtifacts": {
+    "tracePath": null,
+    "screenshotPaths": [],
+    "downloadPaths": []
+  },
+  "workflowRuns": [
+    {
+      "workflowRunId": "batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4-ANGELINA_DIAZ__0ffe88f4368e0f32:coding",
+      "workflowDomain": "coding",
+      "status": "BLOCKED",
+      "stepName": "BLOCKED",
+      "message": "Diagnosis code candidates: I20, M21.061, M21.162, M17.12, M17.11",
+      "chartUrl": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/calendar",
+      "startedAt": "2026-04-15T06:03:04.073Z",
+      "completedAt": "2026-04-15T06:03:04.154Z",
+      "lastUpdatedAt": "2026-04-15T06:03:04.154Z",
+      "workflowResultPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patient-results\\ANGELINA_DIAZ__0ffe88f4368e0f32.json",
+      "workflowLogPath": null
+    },
+    {
+      "workflowRunId": "batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4-ANGELINA_DIAZ__0ffe88f4368e0f32:qa",
+      "workflowDomain": "qa",
+      "status": "COMPLETED",
+      "stepName": "OASIS_QA_ENTRY_COMPLETE",
+      "message": "OASIS QA entry completed with warnings: Deterministic referral facts extraction was used.",
+      "chartUrl": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/calendar",
+      "startedAt": "2026-04-15T05:56:07.000Z",
+      "completedAt": "2026-04-15T06:02:55.714Z",
+      "lastUpdatedAt": "2026-04-15T06:02:55.714Z",
+      "workflowResultPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\qa-prefetch-result.json",
+      "workflowLogPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\logs\\ANGELINA_DIAZ__0ffe88f4368e0f32.json"
+    }
+  ],
+  "workItemSnapshot": {
+    "id": "ANGELINA_DIAZ__0ffe88f4368e0f32",
+    "subsidiaryId": "meadows-home-health",
+    "patientIdentity": {
+      "displayName": "Angelina Diaz",
+      "normalizedName": "ANGELINA DIAZ",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-04-01",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Alignment Health Care",
+      "assignedStaff": "Reyes, Petra RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "01-SOC"
+    },
+    "workflowTypes": [
+      "SOC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 16,
+      "daysInPeriod": null,
+      "daysLeft": 16,
+      "daysLeftBeforeOasisDueDate": 16,
+      "rawTrackingValues": [
+        "16"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "IN_PROGRESS",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "In Progress"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "04/01/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 27
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 27,
+        "values": {
+          "patientName": "DIAZ, ANGELINA",
+          "episodeDate": "04/01/2026",
+          "assignedStaff": "Reyes, Petra RN",
+          "payer": "Alignment Health Care",
+          "rfa": "01-SOC",
+          "trackingDays": "16",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "In Progress",
+          "oasisQaRemarks": "04/01/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  "automationStepLogs": [
+    {
+      "timestamp": "2026-04-15T05:56:06.939Z",
+      "step": "login",
+      "message": "Completed portal login flow in AUTH_ONLY mode.",
+      "patientName": null,
+      "urlBefore": "about:blank",
+      "urlAfter": "https://app.finalehealth.com/users/user-agencies",
+      "selectorUsed": "login submit button by accessible role",
+      "found": [
+        "https://app.finalehealth.com/users/user-agencies"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "[not_found] login username field by label count=0 visible=0 elapsedMs=20",
+        "[matched] login username field by placeholder count=1 visible=1 elapsedMs=16",
+        "[not_found] login password field by label count=0 visible=0 elapsedMs=5",
+        "[matched] login password field by placeholder count=1 visible=1 elapsedMs=10",
+        "[matched] login submit button by accessible role count=1 visible=1 elapsedMs=12 samples=Login"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T05:56:06.940Z",
+      "step": "playwright_session",
+      "message": "Initialized Playwright session for active workbook-driven QA flow.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com",
+      "urlAfter": "https://app.finalehealth.com/users/user-agencies",
+      "selectorUsed": null,
+      "found": [
+        "https://app.finalehealth.com/users/user-agencies"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "subsidiaryId=meadows-home-health",
+        "debugSelectors=false",
+        "saveDebugHtml=false",
+        "pauseOnFailure=false",
+        "stepTimeoutMs=6000",
+        "selectorRetryCount=2",
+        "configuredDashboardUrl=https://app.finalehealth.com/provider/691de9e967052347d890e991/dashboard",
+        "dashboardResetUrl=https://app.finalehealth.com/provider/691de9e967052347d890e991/dashboard"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T05:56:07.000Z",
+      "step": "run_started",
+      "message": "Patient run started from the shared Playwright portal runner.",
+      "patientName": "Angelina Diaz",
+      "urlBefore": "https://app.finalehealth.com/users/user-agencies",
+      "urlAfter": "https://app.finalehealth.com/users/user-agencies",
+      "selectorUsed": null,
+      "found": [
+        "currentUrl=https://app.finalehealth.com/users/user-agencies"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "subsidiaryId=meadows-home-health",
+        "portalBaseUrl=https://app.finalehealth.com",
+        "configuredDashboardUrl=https://app.finalehealth.com/provider/691de9e967052347d890e991/dashboard",
+        "resolvedDashboardUrl=https://app.finalehealth.com/provider/691de9e967052347d890e991/dashboard",
+        "currentContextRequiresReset=true"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T05:56:14.638Z",
+      "step": "dashboard_reset",
+      "message": "Reset the portal session to the provider dashboard before patient matching.",
+      "patientName": "Angelina Diaz",
+      "urlBefore": "https://app.finalehealth.com/users/user-agencies",
+      "urlAfter": "https://app.finalehealth.com/provider/691de9e967052347d890e991/dashboard",
+      "selectorUsed": null,
+      "found": [
+        "https://app.finalehealth.com/provider/691de9e967052347d890e991/dashboard"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Reset triggered: true",
+        "Current URL before patient: https://app.finalehealth.com/users/user-agencies",
+        "Current URL after reset: https://app.finalehealth.com/provider/691de9e967052347d890e991/dashboard",
+        "Dashboard reset target URL: https://app.finalehealth.com/provider/691de9e967052347d890e991/dashboard",
+        "Dashboard markers found: true",
+        "goto_base_url: dashboardDetected=true currentUrl=https://app.finalehealth.com/provider/691de9e967052347d890e991/dashboard"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T05:56:14.638Z",
+      "step": "dashboard_ready",
+      "message": "Provider dashboard ready confirmed using 'button:has-text(\"Search Patient\")'.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/691de9e967052347d890e991/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/691de9e967052347d890e991/dashboard",
+      "selectorUsed": null,
+      "found": [
+        "button:has-text(\"Search Patient\")"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "attempt=1 signal=button:has-text(\"Search Patient\") stableDom=false url=https://app.finalehealth.com/provider/691de9e967052347d890e991/dashboard title=Finale Health buttons=106 inputs=7 text=Meadows Home Health A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifications1Messa"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T05:56:29.147Z",
+      "step": "patient_lookup_entry",
+      "message": "Global patient search is available from the current authenticated page context.",
+      "patientName": "Angelina Diaz",
+      "urlBefore": "https://app.finalehealth.com/provider/691de9e967052347d890e991/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/691de9e967052347d890e991/dashboard",
+      "selectorUsed": "getByText(/Search Patient/i) -> nearest clickable parent (present)",
+      "found": [
+        "getByText(/Search Patient/i) -> nearest clickable parent (present)"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Current URL before patient lookup: https://app.finalehealth.com/provider/691de9e967052347d890e991/dashboard",
+        "Global search available in current context: true",
+        "Global search availability selector used: getByText(/Search Patient/i) -> nearest clickable parent (present)",
+        "Resolved global search trigger with present manual selector 'getByText(/Search Patient/i) -> nearest clickable parent (present)' even though Playwright visibility did not confirm it in the probe path.",
+        "[not_found] Global patient search button by accessible name count=0 visible=0 elapsedMs=22",
+        "[not_visible] Global patient search button containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=23 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=26 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search button containing Search Patient text count=1 visible=0 elapsedMs=23 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search visible control containing Search Patient text count=1 visible=0 elapsedMs=28 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search fin-button wrapper containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=25 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control inside fin-button wrapper count=1 visible=0 elapsedMs=26 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by shortcut hint count=0 visible=0 elapsedMs=17",
+        "[not_visible] Global patient search button containing search icon and patient-search text count=1 visible=0 elapsedMs=25 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by accessible name count=0 visible=0 elapsedMs=20",
+        "[not_visible] Global patient search button containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=33 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=29 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search button containing Search Patient text count=1 visible=0 elapsedMs=38 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search visible control containing Search Patient text count=1 visible=0 elapsedMs=31 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search fin-button wrapper containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=25 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control inside fin-button wrapper count=1 visible=0 elapsedMs=29 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by shortcut hint count=0 visible=0 elapsedMs=18",
+        "[not_visible] Global patient search button containing search icon and patient-search text count=1 visible=0 elapsedMs=25 samples=Search Patient...Ctrl K"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T05:56:29.147Z",
+      "step": "patient_lookup_entry",
+      "message": "Patient lookup will start after shared dashboard bootstrap confirmed provider dashboard readiness and global search availability.",
+      "patientName": "Angelina Diaz",
+      "urlBefore": "https://app.finalehealth.com/users/user-agencies",
+      "urlAfter": "https://app.finalehealth.com/provider/691de9e967052347d890e991/dashboard",
+      "selectorUsed": null,
+      "found": [
+        "patientLookupEntryContext=dashboard_reset_then_global_search",
+        "dashboard_context_established",
+        "globalSearchAvailable=true"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "currentUrlAfterLogin=https://app.finalehealth.com/users/user-agencies",
+        "currentUrlBeforeSearch=https://app.finalehealth.com/provider/691de9e967052347d890e991/dashboard",
+        "resolvedDashboardUrl=https://app.finalehealth.com/provider/691de9e967052347d890e991/dashboard",
+        "globalSearchSelectorUsed=getByText(/Search Patient/i) -> nearest clickable parent (present)"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T05:56:29.148Z",
+      "step": "patient_search_start",
+      "message": "Starting patient search with 3 query variant(s).",
+      "patientName": "Angelina Diaz",
+      "urlBefore": "https://app.finalehealth.com/provider/691de9e967052347d890e991/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/691de9e967052347d890e991/dashboard",
+      "selectorUsed": null,
+      "found": [
+        "diaz, angelina",
+        "DIAZ, ANGELINA",
+        "Angelina Diaz",
+        "ANGELINA DIAZ",
+        "DIAZ, ANGELINA"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Original workbook patient name: Angelina Diaz",
+        "Normalized global search query: diaz, angelina",
+        "Normalized expected display name: DIAZ, ANGELINA",
+        "Workbook name variants: Angelina Diaz | ANGELINA DIAZ | DIAZ, ANGELINA"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T05:56:59.470Z",
+      "step": "global_patient_search_open",
+      "message": "Clicked the global Search Patient trigger and found the visible search input.",
+      "patientName": "Angelina Diaz",
+      "urlBefore": "https://app.finalehealth.com/provider/691de9e967052347d890e991/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/691de9e967052347d890e991/dashboard",
+      "selectorUsed": "getByText(/Search Patient/i) -> nearest clickable parent (present)",
+      "found": [
+        "Search Patient trigger",
+        "search input"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Original workbook patient name: Angelina Diaz",
+        "Normalized global search query: diaz, angelina",
+        "Search trigger clicked: true",
+        "Trigger click method: dom_click",
+        "Search modal visible: true",
+        "Global search control selector used: getByText(/Search Patient/i) -> nearest clickable parent (present)",
+        "Global search surface selector used: Global patient search overlay/dialog containing an input",
+        "Global search modal selector used: div.search-header.open",
+        "Resolved global search trigger with present manual selector 'getByText(/Search Patient/i) -> nearest clickable parent (present)' even though Playwright visibility did not confirm it in the probe path.",
+        "[not_found] Global patient search button by accessible name count=0 visible=0 elapsedMs=20",
+        "[not_visible] Global patient search button containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=24 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=49 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search button containing Search Patient text count=1 visible=0 elapsedMs=24 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search visible control containing Search Patient text count=1 visible=0 elapsedMs=40 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search fin-button wrapper containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=24 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control inside fin-button wrapper count=1 visible=0 elapsedMs=25 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by shortcut hint count=0 visible=0 elapsedMs=17",
+        "[not_visible] Global patient search button containing search icon and patient-search text count=1 visible=0 elapsedMs=24 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by accessible name count=0 visible=0 elapsedMs=17",
+        "[not_visible] Global patient search button containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=40 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=25 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search button containing Search Patient text count=1 visible=0 elapsedMs=30 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search visible control containing Search Patient text count=1 visible=0 elapsedMs=24 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search fin-button wrapper containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=23 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control inside fin-button wrapper count=1 visible=0 elapsedMs=27 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by shortcut hint count=0 visible=0 elapsedMs=18",
+        "[not_visible] Global patient search button containing search icon and patient-search text count=1 visible=0 elapsedMs=28 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search dialog by accessible name count=0 visible=0 elapsedMs=26",
+        "[matched] Global patient search overlay/dialog containing an input count=1 visible=1 elapsedMs=41 samples=EscPatients Sort By 3Sort By×Full Name×asc×SOC Date×desc×Status×ascAdd another sort itemNo recent searchesSearch by:Status:ActivePendingOn-HoldLeadNon-AdmitDischarged",
+        "Search input found by confirmed Search patients placeholder selector.",
+        "[matched] Global patient search input by confirmed Search patients placeholder count=1 visible=1 elapsedMs=67"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T05:57:12.002Z",
+      "step": "patient_search_input",
+      "message": "Typed the normalized query into the global patient search and waited for results.",
+      "patientName": "Angelina Diaz",
+      "urlBefore": "https://app.finalehealth.com/provider/691de9e967052347d890e991/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/691de9e967052347d890e991/dashboard",
+      "selectorUsed": "input[type=\"text\"][placeholder*=\"Search patients\"]",
+      "found": [
+        "DIAZ, ANGELINA MR# 3119 Active ALIGNMENTSOC: 4/1/2026 / DOB: 2/4/1952 LOS: 14 daysAlignment Health Care1939 Nitida Street Las Vegas NV 89108(702)890-3677Last Visit Confirmed by PT : 04/03/2026 (11 days ago)"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Search trigger clicked: true",
+        "Search input found: true",
+        "Typing into focused field succeeded: true",
+        "Used direct input fallback: false",
+        "Search query typed: diaz, angelina",
+        "Result count: 1",
+        "Candidate search result texts: DIAZ, ANGELINA MR# 3119 Active ALIGNMENTSOC: 4/1/2026 / DOB: 2/4/1952 LOS: 14 daysAlignment Health Care1939 Nitida Street Las Vegas NV 89108(702)890-3677Last Visit Confirmed by PT : 04/03/2026 (11 days ago)",
+        "attempt=1 rowCount=1 text=DIAZ, ANGELINA MR# 3119 Active ALIGNMENTSOC: 4/1/2026 / DOB: 2/4/1952 LOS: 14 daysAlignment Health Care1939 Nitida Street Las Vegas NV 89108(702)890-3677Last Visit Confirmed by PT : 04/03/2026 (11 days ago)"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T05:57:36.850Z",
+      "step": "patient_search",
+      "message": "Global patient search completed with 1 candidate(s).",
+      "patientName": "Angelina Diaz",
+      "urlBefore": "https://app.finalehealth.com/provider/691de9e967052347d890e991/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/691de9e967052347d890e991/dashboard",
+      "selectorUsed": "getByText(/Search Patient/i) -> nearest clickable parent (present) -> input[type=\"text\"][placeholder*=\"Search patients\"] -> Global patient search result tiles containing ngb-highlight",
+      "found": [
+        "DIAZ, ANGELINA MR# 3119 ActiveALIGNMENT SOC: 4/1/2026 / DOB: 2/4/1952 LOS: 14 days Alignment Health Care 1939 Nitida Street Las Vegas NV 89108 (702)890-3677 Last Visit Confirmed by PT : 04/03/2026 (11 days ago)"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Original workbook patient name: Angelina Diaz",
+        "Normalized global search query: diaz, angelina",
+        "Normalized expected display name: DIAZ, ANGELINA",
+        "Global search control selector used: getByText(/Search Patient/i) -> nearest clickable parent (present)",
+        "Global search surface selector used: Global patient search overlay/dialog containing an input",
+        "Global search input selector used: input[type=\"text\"][placeholder*=\"Search patients\"]",
+        "Result selector used: Global patient search result tiles containing ngb-highlight",
+        "Search results ready: true",
+        "Visible result row count: 1",
+        "No results marker visible: false",
+        "Candidate search result texts: DIAZ, ANGELINA MR# 3119 ActiveALIGNMENT SOC: 4/1/2026 / DOB: 2/4/1952 LOS: 14 days Alignment Health Care 1939 Nitida Street Las Vegas NV 89108 (702)890-3677 Last Visit Confirmed by PT : 04/03/2026 (11 days ago)",
+        "Result text sample: DIAZ, ANGELINA MR# 3119 ActiveALIGNMENT SOC: 4/1/2026 / DOB: 2/4/1952 LOS: 14 days Alignment Health Care 1939 Nitida Street Las Vegas NV 89108 (702)890-3677 Last Visit Confirmed by PT : 04/03/2026 (11 days ago)",
+        "attempt=1 rowCount=1 text=DIAZ, ANGELINA MR# 3119 Active ALIGNMENTSOC: 4/1/2026 / DOB: 2/4/1952 LOS: 14 daysAlignment Health Care1939 Nitida Street Las Vegas NV 89108(702)890-3677Last Visit Confirmed by PT : 04/03/2026 (11 days ago)",
+        "rowCount=1",
+        "noResultsVisible=false",
+        "Normalized query typed=diaz, angelina",
+        "Normalized expected display name=DIAZ, ANGELINA",
+        "candidate[1]=DIAZ, ANGELINA MR# 3119 ActiveALIGNMENT SOC: 4/1/2026 / DOB: 2/4/1952 LOS: 14 days Alignment Health Care 1939 Nitida Street Las Vegas NV 89108 (702)890-3677 Last Visit Confirmed by PT : 04/03/2026 (11 days ago)",
+        "Candidate 'DIAZ, ANGELINA MR# 3119 ActiveALIGNMENT SOC: 4/1/2026 / DOB: 2/4/1952 LOS: 14 days Alignment Health Care 1939 Nitida Street Las Vegas NV 89108 (702)890-3677 Last Visit Confirmed by PT : 04/03/2026 (11 days ago)' row='DIAZ, ANGELINA MR# 3119 ActiveALIGNMENT SOC: 4/1/2026 / DOB: 2/4/1952 LOS: 14 days Alignment Health Care 1939 Nitida Street Las Vegas NV 89108 (702)890-3677 Last Visit Confirmed by PT : 04/03/2026 (11 days ago)' selector='Global patient search result tiles containing ngb-highlight' container='search-body__item ng-star-inserted' score=420 exact=true containsFullQuery=true containsFirstAndLast=true reasons=all patient name tokens present; ngb-highlight patient-name text starts with the normalized LAST, FIRST display name; row/card text contains both last and first name tokens; row text contains the full first-name segment"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T05:57:46.838Z",
+      "step": "patient_search_match_resolution",
+      "message": "Selected patient result 'DIAZ, ANGELINA MR# 3119 ActiveALIGNMENT SOC: 4/1/2026 / DOB: 2/4/1952 LOS: 14 days Alignment Health Care 1939 Nitida Street Las Vegas NV 89108 (702)890-3677 Last Visit Confirmed by PT : 04/03/2026 (11 days ago)' from the global search.",
+      "patientName": "Angelina Diaz",
+      "urlBefore": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/calendar",
+      "selectorUsed": null,
+      "found": [
+        "DIAZ, ANGELINA MR# 3119 ActiveALIGNMENT SOC: 4/1/2026 / DOB: 2/4/1952 LOS: 14 days Alignment Health Care 1939 Nitida Street Las Vegas NV 89108 (702)890-3677 Last Visit Confirmed by PT : 04/03/2026 (11 days ago)"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Matched patient result text: DIAZ, ANGELINA MR# 3119 ActiveALIGNMENT SOC: 4/1/2026 / DOB: 2/4/1952 LOS: 14 days Alignment Health Care 1939 Nitida Street Las Vegas NV 89108 (702)890-3677 Last Visit Confirmed by PT : 04/03/2026 (11 days ago)",
+        "Matched row text: DIAZ, ANGELINA MR# 3119 ActiveALIGNMENT SOC: 4/1/2026 / DOB: 2/4/1952 LOS: 14 days Alignment Health Care 1939 Nitida Street Las Vegas NV 89108 (702)890-3677 Last Visit Confirmed by PT : 04/03/2026 (11 days ago)",
+        "Normalized global search query: diaz, angelina",
+        "Normalized expected display name: DIAZ, ANGELINA",
+        "Clicked tile selector/container summary: Global patient search result tiles containing ngb-highlight :: search-body__item ng-star-inserted",
+        "all patient name tokens present",
+        "ngb-highlight patient-name text starts with the normalized LAST, FIRST display name",
+        "row/card text contains both last and first name tokens",
+        "row text contains the full first-name segment"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T05:57:46.838Z",
+      "step": "chart_open",
+      "message": "Opened the patient page from global search in read-only mode for DIAZ, ANGELINA MR# 3119 ActiveALIGNMENT SOC: 4/1/2026 / DOB: 2/4/1952 LOS: 14 days Alignment Health Care 1939 Nitida Street Las Vegas NV 89108 (702)890-3677 Last Visit Confirmed by PT : 04/03/2026 (11 days ago).",
+      "patientName": "Angelina Diaz",
+      "urlBefore": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/calendar",
+      "selectorUsed": "Global patient search result tiles containing ngb-highlight :: nearest clickable parent around ngb-highlight",
+      "found": [
+        "Documents"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Matched patient result text: DIAZ, ANGELINA MR# 3119 ActiveALIGNMENT SOC: 4/1/2026 / DOB: 2/4/1952 LOS: 14 days Alignment Health Care 1939 Nitida Street Las Vegas NV 89108 (702)890-3677 Last Visit Confirmed by PT : 04/03/2026 (11 days ago)",
+        "Clicked patient result text: DIAZ, ANGELINA MR# 3119 ActiveALIGNMENT SOC: 4/1/2026 / DOB: 2/4/1952 LOS: 14 days Alignment Health Care 1939 Nitida Street Las Vegas NV 89108 (702)890-3677 Last Visit Confirmed by PT : 04/03/2026 (11 days ago)",
+        "Clicked tile selector/container summary: Global patient search result tiles containing ngb-highlight :: search-body__item ng-star-inserted",
+        "Click target summary: Global patient search result tiles containing ngb-highlight :: nearest clickable parent around ngb-highlight",
+        "URL after patient navigation: https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/calendar",
+        "Used Enter retry: false",
+        "Dashboard URL changed: true",
+        "Chart/page markers found: Documents",
+        "Preferred click target was the nearest clickable parent around the highlighted patient name.",
+        "all patient name tokens present",
+        "ngb-highlight patient-name text starts with the normalized LAST, FIRST display name",
+        "row/card text contains both last and first name tokens",
+        "row text contains the full first-name segment",
+        "attempt=1 urlChanged=true dashboardUrlChanged=true urlLooksLikePatientIntakePage=true chartMarkersFound=true markers=Documents url=https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/calendar"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T05:57:46.838Z",
+      "step": "shared_portal_access",
+      "message": "Shared portal access reached the patient chart and produced 2 workflow context(s).",
+      "patientName": "Angelina Diaz",
+      "urlBefore": "https://app.finalehealth.com/provider/691de9e967052347d890e991/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/calendar",
+      "selectorUsed": null,
+      "found": [
+        "coding:https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/calendar",
+        "qa:https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/calendar"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "matchStatus=EXACT",
+        "portalPatientId=none",
+        "dashboardUrl=https://app.finalehealth.com/provider/691de9e967052347d890e991/dashboard",
+        "chartUrl=https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/calendar"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T05:57:46.838Z",
+      "step": "shared_evidence_discovery_start",
+      "message": "Shared evidence workflow started from the patient chart context.",
+      "patientName": "Angelina Diaz",
+      "urlBefore": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/calendar",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=coding",
+        "patientRunId=batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4-ANGELINA_DIAZ__0ffe88f4368e0f32",
+        "status=started",
+        "chartUrl=https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/calendar"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T05:58:59.012Z",
+      "step": "file_uploads_open",
+      "message": "Opened File Uploads section and enumerated available uploaded records.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads",
+      "selectorUsed": "patient File Uploads sidebar anchor by /file-uploads href",
+      "found": [
+        "fileUploadsAccessible:true",
+        "patientFileUploadsRouteDetected:true",
+        "genericProviderDocumentsRouteDetected:false",
+        "fileUploadsSidebarClickSucceeded:true",
+        "pageComponentDetected:true",
+        "traversalMode:file_list_view",
+        "usedChartDocumentsFallback:false",
+        "matchedFileUploadsLabel:File Uploads",
+        "matchedFileUploadsHref:/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads",
+        "referralFolderSelected:true",
+        "referralFolderLabel:📁 Referral Files 🔀 ✏️ 🗑️",
+        "matchedReferralFileLabel:📄 diaz auth.pdf",
+        "normalizedFileLabels:diaz angelina demos 02132026.pdf | diaz angelina notes 02182026.pdf | diaz auth.pdf | diaz mdo hp fr trellis.pdf | diaz angelina alignment ot auth.pdf",
+        "matchedSourceDocuments:diaz auth.pdf | diaz auth.pdf | diaz mdo hp fr trellis.pdf | diaz mdo hp fr trellis.pdf | diaz angelina alignment ot auth.pdf | diaz angelina alignment ot auth.pdf | diaz angelina demos 02132026.pdf | diaz angelina demos 02132026.pdf | diaz angelina notes 02182026.pdf | diaz angelina notes 02182026.pdf",
+        "selectedSourceFile:diaz auth.pdf",
+        "viewerDetected:true",
+        "printButtonDetected:true",
+        "printButtonVisible:true",
+        "printClickSucceeded:false",
+        "pdfResponseDetected:true",
+        "pdfResponseUrl:https://api.finalehealth.com/api/v1/files/69974be9a1a13ab107e40e7d?index=patient",
+        "pdfContentType:application/pdf",
+        "pdfSavedPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\documents\\diaz-auth-pdf\\source.pdf",
+        "pdfByteSize:179543",
+        "printAcquisitionMethodUsed:network_pdf_response",
+        "sourcePdfPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\documents\\diaz-auth-pdf\\source.pdf",
+        "printedPdfPath:none",
+        "extractionMethodUsed:click",
+        "rawExtractedTextSource:dom",
+        "domExtractionRejectedReasons:viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS",
+        "extractionSuccess:false",
+        "uploadedDocumentCount:10"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Sidebar container count: 5",
+        "Sidebar diagnostics: [{\"index\":0,\"visible\":true,\"fileUploadsLabelCount\":0,\"fileUploadsAnchorCount\":1}]",
+        "[matched] patient File Uploads sidebar anchor by /file-uploads href count=1 visible=1 elapsedMs=25 samples=File Uploads",
+        "Matched File Uploads sidebar label: File Uploads",
+        "Matched File Uploads sidebar href: /provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads",
+        "File Uploads sidebar click succeeded: true",
+        "File Uploads URL after sidebar click: https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads",
+        "File Uploads ready attempt=1 url=https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads urlChanged=true patientFileUploadsRouteDetected=true genericProviderDocumentsRouteDetected=false pageComponentDetected=true traversalMode=folder_view folderCount=1 fileCount=0 markers=Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root 📁 Referral Files 🔀 ✏️ 🗑️ Select FILE to view or a FOLDER to upload file into. anchorCount=3",
+        "[matched] File Uploads page root component app-client-file-upload count=1 visible=1 elapsedMs=23 samples=Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root 📁 Referral Files 🔀 ✏️ 🗑️ Select FILE to view or a FOLDER to upload file into.",
+        "[not_found] File Uploads downloadable file rows by .file-item count=0 visible=0 elapsedMs=10",
+        "[not_found] File Uploads downloadable file labels by .file-label count=0 visible=0 elapsedMs=25",
+        "[not_found] File Uploads document row click targets count=0 visible=0 elapsedMs=10",
+        "[not_found] File Uploads referral click targets outside table rows count=0 visible=0 elapsedMs=10",
+        "[matched] Admission-related click targets count=3 visible=3 elapsedMs=40 samples=Admission 04-01-2026 | Admission Info | Admission Packets",
+        "[matched] File Uploads Referral folder row by .folder-item count=1 visible=1 elapsedMs=18 samples=📁 Referral Files 🔀 ✏️ 🗑️",
+        "Referral folder target clicked: 📁 Referral Files 🔀 ✏️ 🗑️ via File Uploads Referral folder row by .folder-item",
+        "File Uploads ready attempt=1 url=https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads urlChanged=true patientFileUploadsRouteDetected=true genericProviderDocumentsRouteDetected=false pageComponentDetected=true traversalMode=file_list_view folderCount=0 fileCount=5 markers=Patient File Uploads View All Uploaded Files View Logs Reorder Root / Referral Files⬅️ Back 🔄 ➕ ⬆️ 📄 DIAZ, ANGELINA DEMOS 02132026.pdf 📝 ✏️ 🗑️ 🔗 📄 DIAZ, ANGELINA notes 02182026.pdf 📝 ✏️ 🗑️ 🔗 📄 diaz auth.pdf 📝 ✏️ 🗑️ 🔗 📄 diaz md anchorCount=5",
+        "[matched] File Uploads page root component app-client-file-upload count=1 visible=1 elapsedMs=22 samples=Patient File Uploads View All Uploaded Files View Logs Reorder Root / Referral Files⬅️ Back 🔄 ➕ ⬆️ 📄 DIAZ, ANGELINA DEMOS 02132026.pdf 📝 ✏️ 🗑️ 🔗 📄 DIAZ, ANGELINA notes 021820",
+        "[matched] File Uploads downloadable file rows by .file-item count=5 visible=5 elapsedMs=58 samples=📄 DIAZ, ANGELINA DEMOS 02132026.pdf 📝 ✏️ 🗑️ 🔗 | 📄 DIAZ, ANGELINA notes 02182026.pdf 📝 ✏️ 🗑️ 🔗 | 📄 diaz auth.pdf 📝 ✏️ 🗑️ 🔗",
+        "File Uploads accessible: true",
+        "Patient-specific File Uploads route detected: true",
+        "Generic provider Documents route detected: false",
+        "Matched File Uploads sidebar label: File Uploads",
+        "Matched File Uploads sidebar href: /provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads",
+        "File Uploads sidebar click succeeded: true",
+        "File Uploads page component detected: true",
+        "File Uploads traversal mode: file_list_view",
+        "Used chart Documents fallback: false",
+        "File Uploads URL: https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads",
+        "File Uploads URL changed from prior page: true",
+        "File Uploads ready attempt count: 1",
+        "File Uploads page markers: Patient File Uploads View All Uploaded Files View Logs Reorder Root / Referral Files⬅️ Back 🔄 ➕ ⬆️ 📄 DIAZ, ANGELINA DEMOS 02132026.pdf 📝 ✏️ 🗑️ 🔗 📄 DIAZ, ANGELINA notes 02182026.pdf 📝 ✏️ 🗑️ 🔗 📄 diaz auth.pdf 📝 ✏️ 🗑️ 🔗 📄 diaz md",
+        "Referral folder selected: true",
+        "Referral folder label: 📁 Referral Files 🔀 ✏️ 🗑️",
+        "Referral file label (if resolved instead of folder): 📄 diaz auth.pdf",
+        "Discovered folder labels: none",
+        "Discovered file labels: 📄 DIAZ, ANGELINA DEMOS 02132026.pdf | 📄 DIAZ, ANGELINA notes 02182026.pdf | 📄 diaz auth.pdf | 📄 diaz mdo hp fr trellis.pdf | 📄 DIAZ, ANGELINA Alignment OT Auth.pdf",
+        "Normalized file labels: diaz angelina demos 02132026.pdf | diaz angelina notes 02182026.pdf | diaz auth.pdf | diaz mdo hp fr trellis.pdf | diaz angelina alignment ot auth.pdf",
+        "Matched source documents: 📄 diaz auth.pdf [normalized=diaz auth.pdf] [score=20] | 📄 diaz auth.pdf 📝 ✏️ 🗑️ 🔗 [normalized=diaz auth.pdf] [score=20] | 📄 diaz mdo hp fr trellis.pdf [normalized=diaz mdo hp fr trellis.pdf] [score=20] | 📄 diaz mdo hp fr trellis.pdf 📝 ✏️ 🗑️ 🔗 [normalized=diaz mdo hp fr trellis.pdf] [score=20] | 📄 DIAZ, ANGELINA Alignment OT Auth.pdf [normalized=diaz angelina alignment ot auth.pdf] [score=20] | 📄 DIAZ, ANGELINA Alignment OT Auth.pdf 📝 ✏️ 🗑️ 🔗 [normalized=diaz angelina alignment ot auth.pdf] [score=20] | 📄 DIAZ, ANGELINA DEMOS 02132026.pdf [normalized=diaz angelina demos 02132026.pdf] [score=20] | 📄 DIAZ, ANGELINA DEMOS 02132026.pdf 📝 ✏️ 🗑️ 🔗 [normalized=diaz angelina demos 02132026.pdf] [score=20] | 📄 DIAZ, ANGELINA notes 02182026.pdf [normalized=diaz angelina notes 02182026.pdf] [score=20] | 📄 DIAZ, ANGELINA notes 02182026.pdf 📝 ✏️ 🗑️ 🔗 [normalized=diaz angelina notes 02182026.pdf] [score=20]",
+        "Visible uploaded documents: 📄 DIAZ, ANGELINA DEMOS 02132026.pdf | 📄 DIAZ, ANGELINA notes 02182026.pdf | 📄 diaz auth.pdf | 📄 diaz mdo hp fr trellis.pdf | 📄 DIAZ, ANGELINA Alignment OT Auth.pdf | 📄 DIAZ, ANGELINA DEMOS 02132026.pdf 📝 ✏️ 🗑️ 🔗 | 📄 DIAZ, ANGELINA notes 02182026.pdf 📝 ✏️ 🗑️ 🔗 | 📄 diaz auth.pdf 📝 ✏️ 🗑️ 🔗 | 📄 diaz mdo hp fr trellis.pdf 📝 ✏️ 🗑️ 🔗 | 📄 DIAZ, ANGELINA Alignment OT Auth.pdf 📝 ✏️ 🗑️ 🔗",
+        "Admission Order candidate count: 5",
+        "Admission Order candidate labels: 📄 DIAZ, ANGELINA DEMOS 02132026.pdf 📝 ✏️ 🗑️ 🔗 [score=120] | 📄 DIAZ, ANGELINA notes 02182026.pdf 📝 ✏️ 🗑️ 🔗 [score=119] | 📄 diaz auth.pdf 📝 ✏️ 🗑️ 🔗 [score=208] | 📄 diaz mdo hp fr trellis.pdf 📝 ✏️ 🗑️ 🔗 [score=117] | 📄 DIAZ, ANGELINA Alignment OT Auth.pdf 📝 ✏️ 🗑️ 🔗 [score=116]",
+        "[matched] embedded PDF viewer toolbar and print controls count=5 visible=4 elapsedMs=103 samples=of ⁨1⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools | of ⁨1⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools | Tools",
+        "[not_found] Admission Order text marker count=0 visible=0 elapsedMs=18",
+        "[not_found] Admission clinical reason/diagnosis text markers count=0 visible=0 elapsedMs=18",
+        "[not_found] Admission order wrapper by class/id count=0 visible=0 elapsedMs=35",
+        "Selected source file: diaz auth.pdf",
+        "Selected source file normalized: diaz auth.pdf",
+        "Viewer detected: true",
+        "Viewer marker samples: of ⁨1⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools | Tools | Print",
+        "Print button detected: true",
+        "Print button visible: true",
+        "Print button selector used: pdf-print #printButton, #printButton, pdf-shy-button[primarytoolbarid='printButton'] button",
+        "Print click succeeded: false",
+        "PDF response detected: true",
+        "PDF response URL: https://api.finalehealth.com/api/v1/files/69974be9a1a13ab107e40e7d?index=patient",
+        "PDF content type: application/pdf",
+        "PDF saved path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\documents\\diaz-auth-pdf\\source.pdf",
+        "PDF byte size: 179543",
+        "Print acquisition method used: network_pdf_response",
+        "Printed PDF saved: false",
+        "Printed PDF path: none",
+        "Source meta path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\documents\\diaz-auth-pdf\\source-meta.json",
+        "Extracted text path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\documents\\diaz-auth-pdf\\extracted-text.txt",
+        "Extraction result path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\documents\\diaz-auth-pdf\\extraction-result.json",
+        "Extracted text length: 111",
+        "Raw extracted text source: dom",
+        "DOM extraction rejected reasons: viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS",
+        "Extraction method used: click",
+        "Extraction success: false",
+        "Queued for LLM: true",
+        "Admission Order title: 📄 diaz auth.pdf 📝 ✏️ 🗑️ 🔗",
+        "Admission Order URL after click: https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads",
+        "Admission Order markers: none",
+        "Admission text candidates ranked: [1] score=2.8 text=of ⁨1⁩ Automatic Zoom Actual Size Page Fit Page Width ⁨50⁩% ⁨100⁩% ⁨125⁩% ⁨150⁩% ⁨200⁩% ⁨300⁩% ⁨400⁩% 90% Tools",
+        "Admission reason primary: none",
+        "Admission reason snippets: none",
+        "Possible ICD-10 codes: I00 | I25 | I50",
+        "Admission order text excerpt: of ⁨1⁩ Automatic Zoom Actual Size Page Fit Page Width ⁨50⁩% ⁨100⁩% ⁨125⁩% ⁨150⁩% ⁨200⁩% ⁨300⁩% ⁨400⁩% 90% Tools"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T05:58:59.012Z",
+      "step": "admission_order_open",
+      "message": "Opened Admission Order from File Uploads for coding-reference verification.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads",
+      "selectorUsed": "File Uploads source document row by .file-item/.file-label or table row",
+      "found": [
+        "fileUploadsAccessible:true",
+        "patientFileUploadsRouteDetected:true",
+        "genericProviderDocumentsRouteDetected:false",
+        "fileUploadsSidebarClickSucceeded:true",
+        "pageComponentDetected:true",
+        "traversalMode:file_list_view",
+        "usedChartDocumentsFallback:false",
+        "referralFolderSelected:true",
+        "admissionOrderAccessible:true",
+        "admissionOrderTitle:📄 diaz auth.pdf 📝 ✏️ 🗑️ 🔗",
+        "selectedSourceFile:diaz auth.pdf",
+        "viewerDetected:true",
+        "printButtonDetected:true",
+        "printClickSucceeded:false",
+        "pdfResponseDetected:true",
+        "pdfResponseUrl:https://api.finalehealth.com/api/v1/files/69974be9a1a13ab107e40e7d?index=patient",
+        "pdfContentType:application/pdf",
+        "pdfSavedPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\documents\\diaz-auth-pdf\\source.pdf",
+        "pdfByteSize:179543",
+        "printAcquisitionMethodUsed:network_pdf_response",
+        "sourcePdfPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\documents\\diaz-auth-pdf\\source.pdf",
+        "printedPdfPath:none",
+        "extractionMethodUsed:click",
+        "rawExtractedTextSource:dom",
+        "domExtractionRejectedReasons:viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS",
+        "extractionSuccess:false",
+        "admissionReasonPrimary:none",
+        "possibleIcd10Codes:I00 | I25 | I50"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Sidebar container count: 5",
+        "Sidebar diagnostics: [{\"index\":0,\"visible\":true,\"fileUploadsLabelCount\":0,\"fileUploadsAnchorCount\":1}]",
+        "[matched] patient File Uploads sidebar anchor by /file-uploads href count=1 visible=1 elapsedMs=25 samples=File Uploads",
+        "Matched File Uploads sidebar label: File Uploads",
+        "Matched File Uploads sidebar href: /provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads",
+        "File Uploads sidebar click succeeded: true",
+        "File Uploads URL after sidebar click: https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads",
+        "File Uploads ready attempt=1 url=https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads urlChanged=true patientFileUploadsRouteDetected=true genericProviderDocumentsRouteDetected=false pageComponentDetected=true traversalMode=folder_view folderCount=1 fileCount=0 markers=Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root 📁 Referral Files 🔀 ✏️ 🗑️ Select FILE to view or a FOLDER to upload file into. anchorCount=3",
+        "[matched] File Uploads page root component app-client-file-upload count=1 visible=1 elapsedMs=23 samples=Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root 📁 Referral Files 🔀 ✏️ 🗑️ Select FILE to view or a FOLDER to upload file into.",
+        "[not_found] File Uploads downloadable file rows by .file-item count=0 visible=0 elapsedMs=10",
+        "[not_found] File Uploads downloadable file labels by .file-label count=0 visible=0 elapsedMs=25",
+        "[not_found] File Uploads document row click targets count=0 visible=0 elapsedMs=10",
+        "[not_found] File Uploads referral click targets outside table rows count=0 visible=0 elapsedMs=10",
+        "[matched] Admission-related click targets count=3 visible=3 elapsedMs=40 samples=Admission 04-01-2026 | Admission Info | Admission Packets",
+        "[matched] File Uploads Referral folder row by .folder-item count=1 visible=1 elapsedMs=18 samples=📁 Referral Files 🔀 ✏️ 🗑️",
+        "Referral folder target clicked: 📁 Referral Files 🔀 ✏️ 🗑️ via File Uploads Referral folder row by .folder-item",
+        "File Uploads ready attempt=1 url=https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads urlChanged=true patientFileUploadsRouteDetected=true genericProviderDocumentsRouteDetected=false pageComponentDetected=true traversalMode=file_list_view folderCount=0 fileCount=5 markers=Patient File Uploads View All Uploaded Files View Logs Reorder Root / Referral Files⬅️ Back 🔄 ➕ ⬆️ 📄 DIAZ, ANGELINA DEMOS 02132026.pdf 📝 ✏️ 🗑️ 🔗 📄 DIAZ, ANGELINA notes 02182026.pdf 📝 ✏️ 🗑️ 🔗 📄 diaz auth.pdf 📝 ✏️ 🗑️ 🔗 📄 diaz md anchorCount=5",
+        "[matched] File Uploads page root component app-client-file-upload count=1 visible=1 elapsedMs=22 samples=Patient File Uploads View All Uploaded Files View Logs Reorder Root / Referral Files⬅️ Back 🔄 ➕ ⬆️ 📄 DIAZ, ANGELINA DEMOS 02132026.pdf 📝 ✏️ 🗑️ 🔗 📄 DIAZ, ANGELINA notes 021820",
+        "[matched] File Uploads downloadable file rows by .file-item count=5 visible=5 elapsedMs=58 samples=📄 DIAZ, ANGELINA DEMOS 02132026.pdf 📝 ✏️ 🗑️ 🔗 | 📄 DIAZ, ANGELINA notes 02182026.pdf 📝 ✏️ 🗑️ 🔗 | 📄 diaz auth.pdf 📝 ✏️ 🗑️ 🔗",
+        "File Uploads accessible: true",
+        "Patient-specific File Uploads route detected: true",
+        "Generic provider Documents route detected: false",
+        "Matched File Uploads sidebar label: File Uploads",
+        "Matched File Uploads sidebar href: /provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads",
+        "File Uploads sidebar click succeeded: true",
+        "File Uploads page component detected: true",
+        "File Uploads traversal mode: file_list_view",
+        "Used chart Documents fallback: false",
+        "File Uploads URL: https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads",
+        "File Uploads URL changed from prior page: true",
+        "File Uploads ready attempt count: 1",
+        "File Uploads page markers: Patient File Uploads View All Uploaded Files View Logs Reorder Root / Referral Files⬅️ Back 🔄 ➕ ⬆️ 📄 DIAZ, ANGELINA DEMOS 02132026.pdf 📝 ✏️ 🗑️ 🔗 📄 DIAZ, ANGELINA notes 02182026.pdf 📝 ✏️ 🗑️ 🔗 📄 diaz auth.pdf 📝 ✏️ 🗑️ 🔗 📄 diaz md",
+        "Referral folder selected: true",
+        "Referral folder label: 📁 Referral Files 🔀 ✏️ 🗑️",
+        "Referral file label (if resolved instead of folder): 📄 diaz auth.pdf",
+        "Discovered folder labels: none",
+        "Discovered file labels: 📄 DIAZ, ANGELINA DEMOS 02132026.pdf | 📄 DIAZ, ANGELINA notes 02182026.pdf | 📄 diaz auth.pdf | 📄 diaz mdo hp fr trellis.pdf | 📄 DIAZ, ANGELINA Alignment OT Auth.pdf",
+        "Normalized file labels: diaz angelina demos 02132026.pdf | diaz angelina notes 02182026.pdf | diaz auth.pdf | diaz mdo hp fr trellis.pdf | diaz angelina alignment ot auth.pdf",
+        "Matched source documents: 📄 diaz auth.pdf [normalized=diaz auth.pdf] [score=20] | 📄 diaz auth.pdf 📝 ✏️ 🗑️ 🔗 [normalized=diaz auth.pdf] [score=20] | 📄 diaz mdo hp fr trellis.pdf [normalized=diaz mdo hp fr trellis.pdf] [score=20] | 📄 diaz mdo hp fr trellis.pdf 📝 ✏️ 🗑️ 🔗 [normalized=diaz mdo hp fr trellis.pdf] [score=20] | 📄 DIAZ, ANGELINA Alignment OT Auth.pdf [normalized=diaz angelina alignment ot auth.pdf] [score=20] | 📄 DIAZ, ANGELINA Alignment OT Auth.pdf 📝 ✏️ 🗑️ 🔗 [normalized=diaz angelina alignment ot auth.pdf] [score=20] | 📄 DIAZ, ANGELINA DEMOS 02132026.pdf [normalized=diaz angelina demos 02132026.pdf] [score=20] | 📄 DIAZ, ANGELINA DEMOS 02132026.pdf 📝 ✏️ 🗑️ 🔗 [normalized=diaz angelina demos 02132026.pdf] [score=20] | 📄 DIAZ, ANGELINA notes 02182026.pdf [normalized=diaz angelina notes 02182026.pdf] [score=20] | 📄 DIAZ, ANGELINA notes 02182026.pdf 📝 ✏️ 🗑️ 🔗 [normalized=diaz angelina notes 02182026.pdf] [score=20]",
+        "Visible uploaded documents: 📄 DIAZ, ANGELINA DEMOS 02132026.pdf | 📄 DIAZ, ANGELINA notes 02182026.pdf | 📄 diaz auth.pdf | 📄 diaz mdo hp fr trellis.pdf | 📄 DIAZ, ANGELINA Alignment OT Auth.pdf | 📄 DIAZ, ANGELINA DEMOS 02132026.pdf 📝 ✏️ 🗑️ 🔗 | 📄 DIAZ, ANGELINA notes 02182026.pdf 📝 ✏️ 🗑️ 🔗 | 📄 diaz auth.pdf 📝 ✏️ 🗑️ 🔗 | 📄 diaz mdo hp fr trellis.pdf 📝 ✏️ 🗑️ 🔗 | 📄 DIAZ, ANGELINA Alignment OT Auth.pdf 📝 ✏️ 🗑️ 🔗",
+        "Admission Order candidate count: 5",
+        "Admission Order candidate labels: 📄 DIAZ, ANGELINA DEMOS 02132026.pdf 📝 ✏️ 🗑️ 🔗 [score=120] | 📄 DIAZ, ANGELINA notes 02182026.pdf 📝 ✏️ 🗑️ 🔗 [score=119] | 📄 diaz auth.pdf 📝 ✏️ 🗑️ 🔗 [score=208] | 📄 diaz mdo hp fr trellis.pdf 📝 ✏️ 🗑️ 🔗 [score=117] | 📄 DIAZ, ANGELINA Alignment OT Auth.pdf 📝 ✏️ 🗑️ 🔗 [score=116]",
+        "[matched] embedded PDF viewer toolbar and print controls count=5 visible=4 elapsedMs=103 samples=of ⁨1⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools | of ⁨1⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools | Tools",
+        "[not_found] Admission Order text marker count=0 visible=0 elapsedMs=18",
+        "[not_found] Admission clinical reason/diagnosis text markers count=0 visible=0 elapsedMs=18",
+        "[not_found] Admission order wrapper by class/id count=0 visible=0 elapsedMs=35",
+        "Selected source file: diaz auth.pdf",
+        "Selected source file normalized: diaz auth.pdf",
+        "Viewer detected: true",
+        "Viewer marker samples: of ⁨1⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools | Tools | Print",
+        "Print button detected: true",
+        "Print button visible: true",
+        "Print button selector used: pdf-print #printButton, #printButton, pdf-shy-button[primarytoolbarid='printButton'] button",
+        "Print click succeeded: false",
+        "PDF response detected: true",
+        "PDF response URL: https://api.finalehealth.com/api/v1/files/69974be9a1a13ab107e40e7d?index=patient",
+        "PDF content type: application/pdf",
+        "PDF saved path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\documents\\diaz-auth-pdf\\source.pdf",
+        "PDF byte size: 179543",
+        "Print acquisition method used: network_pdf_response",
+        "Printed PDF saved: false",
+        "Printed PDF path: none",
+        "Source meta path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\documents\\diaz-auth-pdf\\source-meta.json",
+        "Extracted text path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\documents\\diaz-auth-pdf\\extracted-text.txt",
+        "Extraction result path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\documents\\diaz-auth-pdf\\extraction-result.json",
+        "Extracted text length: 111",
+        "Raw extracted text source: dom",
+        "DOM extraction rejected reasons: viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS",
+        "Extraction method used: click",
+        "Extraction success: false",
+        "Queued for LLM: true",
+        "Admission Order title: 📄 diaz auth.pdf 📝 ✏️ 🗑️ 🔗",
+        "Admission Order URL after click: https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads",
+        "Admission Order markers: none",
+        "Admission text candidates ranked: [1] score=2.8 text=of ⁨1⁩ Automatic Zoom Actual Size Page Fit Page Width ⁨50⁩% ⁨100⁩% ⁨125⁩% ⁨150⁩% ⁨200⁩% ⁨300⁩% ⁨400⁩% 90% Tools",
+        "Admission reason primary: none",
+        "Admission reason snippets: none",
+        "Possible ICD-10 codes: I00 | I25 | I50",
+        "Admission order text excerpt: of ⁨1⁩ Automatic Zoom Actual Size Page Fit Page Width ⁨50⁩% ⁨100⁩% ⁨125⁩% ⁨150⁩% ⁨200⁩% ⁨300⁩% ⁨400⁩% 90% Tools"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T05:58:59.012Z",
+      "step": "qa_summary",
+      "message": "File Uploads and Admission Order were successfully accessed for coding reference.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads",
+      "selectorUsed": "File Uploads source document row by .file-item/.file-label or table row",
+      "found": [
+        "fileUploadsAccessible:true",
+        "patientFileUploadsRouteDetected:true",
+        "genericProviderDocumentsRouteDetected:false",
+        "fileUploadsSidebarClickSucceeded:true",
+        "pageComponentDetected:true",
+        "traversalMode:file_list_view",
+        "usedChartDocumentsFallback:false",
+        "referralFolderSelected:true",
+        "admissionOrderAccessible:true",
+        "admissionOrderTitle:📄 diaz auth.pdf 📝 ✏️ 🗑️ 🔗",
+        "selectedSourceFile:diaz auth.pdf",
+        "viewerDetected:true",
+        "printButtonDetected:true",
+        "printClickSucceeded:false",
+        "pdfResponseDetected:true",
+        "pdfResponseUrl:https://api.finalehealth.com/api/v1/files/69974be9a1a13ab107e40e7d?index=patient",
+        "pdfContentType:application/pdf",
+        "pdfSavedPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\documents\\diaz-auth-pdf\\source.pdf",
+        "pdfByteSize:179543",
+        "printAcquisitionMethodUsed:network_pdf_response",
+        "sourcePdfPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\documents\\diaz-auth-pdf\\source.pdf",
+        "printedPdfPath:none",
+        "extractionMethodUsed:click",
+        "rawExtractedTextSource:dom",
+        "domExtractionRejectedReasons:viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS",
+        "extractionSuccess:false",
+        "admissionReasonPrimary:none",
+        "possibleIcd10Codes:I00 | I25 | I50"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Sidebar container count: 5",
+        "Sidebar diagnostics: [{\"index\":0,\"visible\":true,\"fileUploadsLabelCount\":0,\"fileUploadsAnchorCount\":1}]",
+        "[matched] patient File Uploads sidebar anchor by /file-uploads href count=1 visible=1 elapsedMs=25 samples=File Uploads",
+        "Matched File Uploads sidebar label: File Uploads",
+        "Matched File Uploads sidebar href: /provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads",
+        "File Uploads sidebar click succeeded: true",
+        "File Uploads URL after sidebar click: https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads",
+        "File Uploads ready attempt=1 url=https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads urlChanged=true patientFileUploadsRouteDetected=true genericProviderDocumentsRouteDetected=false pageComponentDetected=true traversalMode=folder_view folderCount=1 fileCount=0 markers=Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root 📁 Referral Files 🔀 ✏️ 🗑️ Select FILE to view or a FOLDER to upload file into. anchorCount=3",
+        "[matched] File Uploads page root component app-client-file-upload count=1 visible=1 elapsedMs=23 samples=Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root 📁 Referral Files 🔀 ✏️ 🗑️ Select FILE to view or a FOLDER to upload file into.",
+        "[not_found] File Uploads downloadable file rows by .file-item count=0 visible=0 elapsedMs=10",
+        "[not_found] File Uploads downloadable file labels by .file-label count=0 visible=0 elapsedMs=25",
+        "[not_found] File Uploads document row click targets count=0 visible=0 elapsedMs=10",
+        "[not_found] File Uploads referral click targets outside table rows count=0 visible=0 elapsedMs=10",
+        "[matched] Admission-related click targets count=3 visible=3 elapsedMs=40 samples=Admission 04-01-2026 | Admission Info | Admission Packets",
+        "[matched] File Uploads Referral folder row by .folder-item count=1 visible=1 elapsedMs=18 samples=📁 Referral Files 🔀 ✏️ 🗑️",
+        "Referral folder target clicked: 📁 Referral Files 🔀 ✏️ 🗑️ via File Uploads Referral folder row by .folder-item",
+        "File Uploads ready attempt=1 url=https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads urlChanged=true patientFileUploadsRouteDetected=true genericProviderDocumentsRouteDetected=false pageComponentDetected=true traversalMode=file_list_view folderCount=0 fileCount=5 markers=Patient File Uploads View All Uploaded Files View Logs Reorder Root / Referral Files⬅️ Back 🔄 ➕ ⬆️ 📄 DIAZ, ANGELINA DEMOS 02132026.pdf 📝 ✏️ 🗑️ 🔗 📄 DIAZ, ANGELINA notes 02182026.pdf 📝 ✏️ 🗑️ 🔗 📄 diaz auth.pdf 📝 ✏️ 🗑️ 🔗 📄 diaz md anchorCount=5",
+        "[matched] File Uploads page root component app-client-file-upload count=1 visible=1 elapsedMs=22 samples=Patient File Uploads View All Uploaded Files View Logs Reorder Root / Referral Files⬅️ Back 🔄 ➕ ⬆️ 📄 DIAZ, ANGELINA DEMOS 02132026.pdf 📝 ✏️ 🗑️ 🔗 📄 DIAZ, ANGELINA notes 021820",
+        "[matched] File Uploads downloadable file rows by .file-item count=5 visible=5 elapsedMs=58 samples=📄 DIAZ, ANGELINA DEMOS 02132026.pdf 📝 ✏️ 🗑️ 🔗 | 📄 DIAZ, ANGELINA notes 02182026.pdf 📝 ✏️ 🗑️ 🔗 | 📄 diaz auth.pdf 📝 ✏️ 🗑️ 🔗",
+        "File Uploads accessible: true",
+        "Patient-specific File Uploads route detected: true",
+        "Generic provider Documents route detected: false",
+        "Matched File Uploads sidebar label: File Uploads",
+        "Matched File Uploads sidebar href: /provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads",
+        "File Uploads sidebar click succeeded: true",
+        "File Uploads page component detected: true",
+        "File Uploads traversal mode: file_list_view",
+        "Used chart Documents fallback: false",
+        "File Uploads URL: https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads",
+        "File Uploads URL changed from prior page: true",
+        "File Uploads ready attempt count: 1",
+        "File Uploads page markers: Patient File Uploads View All Uploaded Files View Logs Reorder Root / Referral Files⬅️ Back 🔄 ➕ ⬆️ 📄 DIAZ, ANGELINA DEMOS 02132026.pdf 📝 ✏️ 🗑️ 🔗 📄 DIAZ, ANGELINA notes 02182026.pdf 📝 ✏️ 🗑️ 🔗 📄 diaz auth.pdf 📝 ✏️ 🗑️ 🔗 📄 diaz md",
+        "Referral folder selected: true",
+        "Referral folder label: 📁 Referral Files 🔀 ✏️ 🗑️",
+        "Referral file label (if resolved instead of folder): 📄 diaz auth.pdf",
+        "Discovered folder labels: none",
+        "Discovered file labels: 📄 DIAZ, ANGELINA DEMOS 02132026.pdf | 📄 DIAZ, ANGELINA notes 02182026.pdf | 📄 diaz auth.pdf | 📄 diaz mdo hp fr trellis.pdf | 📄 DIAZ, ANGELINA Alignment OT Auth.pdf",
+        "Normalized file labels: diaz angelina demos 02132026.pdf | diaz angelina notes 02182026.pdf | diaz auth.pdf | diaz mdo hp fr trellis.pdf | diaz angelina alignment ot auth.pdf",
+        "Matched source documents: 📄 diaz auth.pdf [normalized=diaz auth.pdf] [score=20] | 📄 diaz auth.pdf 📝 ✏️ 🗑️ 🔗 [normalized=diaz auth.pdf] [score=20] | 📄 diaz mdo hp fr trellis.pdf [normalized=diaz mdo hp fr trellis.pdf] [score=20] | 📄 diaz mdo hp fr trellis.pdf 📝 ✏️ 🗑️ 🔗 [normalized=diaz mdo hp fr trellis.pdf] [score=20] | 📄 DIAZ, ANGELINA Alignment OT Auth.pdf [normalized=diaz angelina alignment ot auth.pdf] [score=20] | 📄 DIAZ, ANGELINA Alignment OT Auth.pdf 📝 ✏️ 🗑️ 🔗 [normalized=diaz angelina alignment ot auth.pdf] [score=20] | 📄 DIAZ, ANGELINA DEMOS 02132026.pdf [normalized=diaz angelina demos 02132026.pdf] [score=20] | 📄 DIAZ, ANGELINA DEMOS 02132026.pdf 📝 ✏️ 🗑️ 🔗 [normalized=diaz angelina demos 02132026.pdf] [score=20] | 📄 DIAZ, ANGELINA notes 02182026.pdf [normalized=diaz angelina notes 02182026.pdf] [score=20] | 📄 DIAZ, ANGELINA notes 02182026.pdf 📝 ✏️ 🗑️ 🔗 [normalized=diaz angelina notes 02182026.pdf] [score=20]",
+        "Visible uploaded documents: 📄 DIAZ, ANGELINA DEMOS 02132026.pdf | 📄 DIAZ, ANGELINA notes 02182026.pdf | 📄 diaz auth.pdf | 📄 diaz mdo hp fr trellis.pdf | 📄 DIAZ, ANGELINA Alignment OT Auth.pdf | 📄 DIAZ, ANGELINA DEMOS 02132026.pdf 📝 ✏️ 🗑️ 🔗 | 📄 DIAZ, ANGELINA notes 02182026.pdf 📝 ✏️ 🗑️ 🔗 | 📄 diaz auth.pdf 📝 ✏️ 🗑️ 🔗 | 📄 diaz mdo hp fr trellis.pdf 📝 ✏️ 🗑️ 🔗 | 📄 DIAZ, ANGELINA Alignment OT Auth.pdf 📝 ✏️ 🗑️ 🔗",
+        "Admission Order candidate count: 5",
+        "Admission Order candidate labels: 📄 DIAZ, ANGELINA DEMOS 02132026.pdf 📝 ✏️ 🗑️ 🔗 [score=120] | 📄 DIAZ, ANGELINA notes 02182026.pdf 📝 ✏️ 🗑️ 🔗 [score=119] | 📄 diaz auth.pdf 📝 ✏️ 🗑️ 🔗 [score=208] | 📄 diaz mdo hp fr trellis.pdf 📝 ✏️ 🗑️ 🔗 [score=117] | 📄 DIAZ, ANGELINA Alignment OT Auth.pdf 📝 ✏️ 🗑️ 🔗 [score=116]",
+        "[matched] embedded PDF viewer toolbar and print controls count=5 visible=4 elapsedMs=103 samples=of ⁨1⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools | of ⁨1⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools | Tools",
+        "[not_found] Admission Order text marker count=0 visible=0 elapsedMs=18",
+        "[not_found] Admission clinical reason/diagnosis text markers count=0 visible=0 elapsedMs=18",
+        "[not_found] Admission order wrapper by class/id count=0 visible=0 elapsedMs=35",
+        "Selected source file: diaz auth.pdf",
+        "Selected source file normalized: diaz auth.pdf",
+        "Viewer detected: true",
+        "Viewer marker samples: of ⁨1⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools | Tools | Print",
+        "Print button detected: true",
+        "Print button visible: true",
+        "Print button selector used: pdf-print #printButton, #printButton, pdf-shy-button[primarytoolbarid='printButton'] button",
+        "Print click succeeded: false",
+        "PDF response detected: true",
+        "PDF response URL: https://api.finalehealth.com/api/v1/files/69974be9a1a13ab107e40e7d?index=patient",
+        "PDF content type: application/pdf",
+        "PDF saved path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\documents\\diaz-auth-pdf\\source.pdf",
+        "PDF byte size: 179543",
+        "Print acquisition method used: network_pdf_response",
+        "Printed PDF saved: false",
+        "Printed PDF path: none",
+        "Source meta path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\documents\\diaz-auth-pdf\\source-meta.json",
+        "Extracted text path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\documents\\diaz-auth-pdf\\extracted-text.txt",
+        "Extraction result path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\documents\\diaz-auth-pdf\\extraction-result.json",
+        "Extracted text length: 111",
+        "Raw extracted text source: dom",
+        "DOM extraction rejected reasons: viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS",
+        "Extraction method used: click",
+        "Extraction success: false",
+        "Queued for LLM: true",
+        "Admission Order title: 📄 diaz auth.pdf 📝 ✏️ 🗑️ 🔗",
+        "Admission Order URL after click: https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads",
+        "Admission Order markers: none",
+        "Admission text candidates ranked: [1] score=2.8 text=of ⁨1⁩ Automatic Zoom Actual Size Page Fit Page Width ⁨50⁩% ⁨100⁩% ⁨125⁩% ⁨150⁩% ⁨200⁩% ⁨300⁩% ⁨400⁩% 90% Tools",
+        "Admission reason primary: none",
+        "Admission reason snippets: none",
+        "Possible ICD-10 codes: I00 | I25 | I50",
+        "Admission order text excerpt: of ⁨1⁩ Automatic Zoom Actual Size Page Fit Page Width ⁨50⁩% ⁨100⁩% ⁨125⁩% ⁨150⁩% ⁨200⁩% ⁨300⁩% ⁨400⁩% 90% Tools"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T05:59:01.633Z",
+      "step": "document_text_export",
+      "message": "Wrote normalized extracted document text for read-only dashboard reference and troubleshooting.",
+      "patientName": "Angelina Diaz",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "documentTextPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\document-text.json",
+        "documentCount:2",
+        "orderDocumentCount:1",
+        "hasAdmissionOrderText:true"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "[0] type=OASIS source=artifact_fallback effectiveTextSource=viewer_text_fallback textLength=1774",
+        "[0] rawExtractedTextSource=dom textSelectionReason=artifact_fallback_text",
+        "[0] domExtractionRejectedReasons=none",
+        "[0] preview=OASIS documents page false false false false false false 0 none 0 high:0 medium:0 low:0 false false true false true https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads 📄 DIAZ, ANGELINA DEMOS 02132026.pdf | 📄 DIAZ, ANGELINA notes 02182026.pdf | 📄 diaz auth.pdf | 📄 diaz mdo hp fr trellis.pdf | 📄 DIAZ, ANGELINA Alignment OT Auth.pdf | 📄 DIAZ, ANGELINA DEMOS 02132026.pdf 📝 ✏️ 🗑️ 🔗 | 📄 DIAZ, ANGELINA notes 02182026.pdf 📝 ✏️ 🗑️ 🔗 | \ud83d",
+        "[1] type=ORDER source=printed_pdf effectiveTextSource=ocr_text textLength=1638",
+        "[1] rawExtractedTextSource=ocr textSelectionReason=preferred_ocr_for_scanned_image_pdf",
+        "[1] domExtractionRejectedReasons=none",
+        "[1] preview=Alignment Health Plan® Authorization: 001040990 Member 00000208630 DIAZ, ANGELINA Date of Birth 02/04/1952 Member Address 1939 NITIDA ST. LAS VEGAS NV 89106 Member Phone 702-245-3530 Member Plan Alignment Health Plan Nevada Company NEVA / Alignment Health Plan Network PCP Name: KEE B NO MD / ID: 300000153804 / Phone: (702) 957-5975 / Fax: Authorization Number 001040990 Expiration Date 08/17/2026 Priority Urgent Referred From Provider ID: 300000059099 / Name: MEADOWS HOME HEALTH SERVICES / Addres"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T05:59:03.628Z",
+      "step": "diagnosis_code_extract",
+      "message": "Extracted 5 diagnosis code candidate(s) from admission/referral/OASIS text.",
+      "patientName": "Angelina Diaz",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "icd10CodeCount:5",
+        "diagnosisMentionCount:0",
+        "diagnosisCodePairCount:0",
+        "extractionConfidence:medium",
+        "llmUsed:true"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "selectedOrderDocumentCount:1",
+        "bestOrderEffectiveTextSource:ocr_text",
+        "[0] type=ORDER effectiveTextSource=ocr_text source=printed_pdf textLength=1638 pdfType=scanned_image_pdf ocrSuccess=true ocrTextLength=1638",
+        "[1] type=OASIS effectiveTextSource=viewer_text_fallback source=artifact_fallback textLength=1774 pdfType=none ocrSuccess=false ocrTextLength=0",
+        "sourceDocumentCount:2",
+        "sourceCharacterCount:1384",
+        "sourceTextPreview:LAS VEGAS NV 89106 Member Phone 702-245-3530 Member Plan Alignment Health Plan Nevada Company NEVA / Alignment Health Plan Network PCP Name: KEE B NO MD / ID: 300000153804 / Phone: (702) 957-5975 / Fax: Authorization Number 001040990 Expiration Date 08/17/2026 Priority Urgent Referred From Provider ID: 300000059099 / Name: MEADOWS HOME HEALTH SERVICES / Address: 6438 S TENAYA WAY, STE 120, LAS VEGAS, NV, 89113 / Phone: 7024054415 / Fax: 7027270345 Referred To Provider ID: 300000059099 / Name: ME",
+        "llmProvider:bedrock",
+        "llmUsed:true",
+        "llmModel:us.amazon.nova-lite-v1:0",
+        "llmError:none",
+        "reasonForAdmission:none",
+        "diagnosisPhraseCount:0",
+        "diagnosisCodePairCount:0",
+        "icd10Codes:I20 | M21.061 | M21.162 | M17.12 | M17.11",
+        "orderedServices:none",
+        "documentType:Admission Order",
+        "extractionConfidence:medium",
+        "uncertainItems:none",
+        "codeCategories:I20:Diseases of the circulatory system | M21.061:Diseases of the musculoskeletal system and connective tissue | M21.162:Diseases of the musculoskeletal system and connective tissue | M17.12:Diseases of the musculoskeletal system and connective tissue | M17.11:Diseases of the musculoskeletal system and connective tissue"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T05:59:03.635Z",
+      "step": "source_document_identified",
+      "message": "Identified referral/admission-order source document candidates and selected the best source for processing.",
+      "patientName": "Angelina Diaz",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "ANGELINA_DIAZ__0ffe88f4368e0f32-referral-1:REFERRAL_ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\documents\\diaz-auth-pdf\\source.pdf"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "selectedDocumentId=ANGELINA_DIAZ__0ffe88f4368e0f32-referral-1"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T05:59:03.635Z",
+      "step": "source_document_acquired",
+      "message": "Selected referral/admission-order file is available locally for read-only processing.",
+      "patientName": "Angelina Diaz",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\documents\\diaz-auth-pdf\\source.pdf"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "acquisitionMethod=printed_pdf"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T05:59:03.635Z",
+      "step": "document_extraction_started",
+      "message": "Started referral/admission-order document extraction from the canonical local file when available.",
+      "patientName": "Angelina Diaz",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\documents\\diaz-auth-pdf\\source.pdf"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T05:59:03.636Z",
+      "step": "document_extraction_completed",
+      "message": "Completed referral/admission-order extraction.",
+      "patientName": "Angelina Diaz",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "extractionMethod=ocr_text",
+        "effectiveTextSource=ocr_text",
+        "textLength=1638"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T05:59:03.636Z",
+      "step": "extraction_quality_evaluated",
+      "message": "Evaluated extraction quality with usability status usable.",
+      "patientName": "Angelina Diaz",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "characterCount=1638",
+        "tokenCount=253",
+        "likelyUsableForLlm=true",
+        "likelyRequiresOcrRetry=false"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T05:59:03.637Z",
+      "step": "referral_sections_normalized",
+      "message": "Normalized referral text into 2 semantic sections.",
+      "patientName": "Angelina Diaz",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "diagnoses:0.55",
+        "other_clinical_notes:1"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T05:59:03.645Z",
+      "step": "chart_snapshot_created",
+      "message": "Built a read-only chart/OASIS field snapshot and categorization buckets for referral comparison.",
+      "patientName": "Angelina Diaz",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "alreadyPopulated=1",
+        "llmCandidates=31",
+        "humanReviewRequired=27",
+        "referenceOnly=3"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T05:59:03.645Z",
+      "step": "referral_facts_extracted",
+      "message": "Extracted 0 referral facts before field mapping.",
+      "patientName": "Angelina Diaz",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [],
+      "missing": [
+        "referral_date",
+        "preferred_language",
+        "interpreter_needed",
+        "primary_reason_for_home_health_medical_necessity",
+        "admit_reason_to_home_health",
+        "homebound_narrative",
+        "homebound_supporting_factors",
+        "recent_hospitalization_discharge_date",
+        "recent_hospitalization_facility",
+        "caregiver_name",
+        "caregiver_relationship",
+        "caregiver_phone",
+        "living_situation",
+        "prior_functioning",
+        "functional_limitations",
+        "therapy_need",
+        "patient_summary_narrative",
+        "skilled_interventions",
+        "discipline_frequencies",
+        "plan_for_next_visit",
+        "patient_caregiver_goals",
+        "care_plan_problems_goals_interventions",
+        "fall_risk_narrative",
+        "respiratory_status",
+        "integumentary_wound_status",
+        "pain_assessment_narrative",
+        "emotional_behavioral_status",
+        "past_medical_history",
+        "immunization_status",
+        "code_status"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T05:59:03.645Z",
+      "step": "llm_field_proposal_started",
+      "message": "Started referral-to-field proposal generation using the strict JSON contract.",
+      "patientName": "Angelina Diaz",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "candidateFieldCount=31"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T05:59:07.574Z",
+      "step": "llm_field_proposal_completed",
+      "message": "Completed referral-to-field proposal generation with 0 field proposals.",
+      "patientName": "Angelina Diaz",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "proposalCount=0",
+        "diagnosisCandidateCount=3"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Deterministic referral facts extraction was used.",
+        "LLM disabled or unavailable; deterministic referral proposal fallback was used.",
+        "Bedrock returned invalid or non-JSON referral proposal output; deterministic fallback was used."
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T05:59:07.574Z",
+      "step": "field_comparison_completed",
+      "message": "Completed referral proposal comparison across 34 fields.",
+      "patientName": "Angelina Diaz",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "patient_name:unsupported",
+        "dob:unsupported",
+        "soc_date:unsupported",
+        "referral_date:requires_human_review",
+        "preferred_language:unsupported",
+        "interpreter_needed:requires_human_review",
+        "primary_reason_for_home_health_medical_necessity:requires_human_review",
+        "admit_reason_to_home_health:requires_human_review",
+        "homebound_narrative:requires_human_review",
+        "homebound_supporting_factors:requires_human_review",
+        "recent_hospitalization_discharge_date:requires_human_review",
+        "recent_hospitalization_facility:requires_human_review",
+        "caregiver_name:unsupported",
+        "caregiver_relationship:unsupported",
+        "caregiver_phone:requires_human_review",
+        "living_situation:unsupported",
+        "prior_functioning:requires_human_review",
+        "functional_limitations:requires_human_review",
+        "therapy_need:requires_human_review",
+        "patient_summary_narrative:requires_human_review",
+        "skilled_interventions:requires_human_review",
+        "discipline_frequencies:requires_human_review",
+        "plan_for_next_visit:requires_human_review",
+        "patient_caregiver_goals:requires_human_review",
+        "care_plan_problems_goals_interventions:requires_human_review",
+        "fall_risk_narrative:requires_human_review",
+        "respiratory_status:requires_human_review",
+        "integumentary_wound_status:requires_human_review",
+        "pain_assessment_narrative:requires_human_review",
+        "emotional_behavioral_status:requires_human_review",
+        "past_medical_history:requires_human_review",
+        "immunization_status:requires_human_review",
+        "diagnosis_candidates:requires_human_review",
+        "code_status:requires_human_review"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T05:59:07.574Z",
+      "step": "llm_qa_insights_started",
+      "message": "Started referral QA insight synthesis for comparisons, source highlights, and draft narratives.",
+      "patientName": "Angelina Diaz",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T05:59:14.134Z",
+      "step": "llm_qa_insights_completed",
+      "message": "Completed referral QA insight synthesis with 7 consistency checks and 7 narrative drafts.",
+      "patientName": "Angelina Diaz",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "consistencyChecks=7",
+        "sourceHighlights=7",
+        "draftNarratives=7"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T05:59:14.151Z",
+      "step": "qa_document_summary_persisted",
+      "message": "Persisted read-only referral document QA artifacts.",
+      "patientName": "Angelina Diaz",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\referral-document-processing\\source-meta.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\referral-document-processing\\extraction-result.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\referral-document-processing\\normalized-sections.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\referral-document-processing\\extracted-facts.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\referral-document-processing\\field-map-snapshot.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\referral-document-processing\\llm-proposal.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\referral-document-processing\\field-comparison.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\referral-document-processing\\patient-qa-reference.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\referral-document-processing\\qa-document-summary.json"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T05:59:14.151Z",
+      "step": "shared_evidence_discovery_complete",
+      "message": "Shared evidence workflow completed and produced reusable extracted chart evidence.",
+      "patientName": "Angelina Diaz",
+      "urlBefore": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/calendar",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=coding",
+        "patientRunId=batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4-ANGELINA_DIAZ__0ffe88f4368e0f32",
+        "status=completed",
+        "chartUrl=https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/calendar",
+        "artifactCount=1",
+        "documentInventoryCount=1",
+        "extractedDocumentCount=2",
+        "diagnosisCodeCount=5"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T05:59:14.152Z",
+      "step": "referral_document_check",
+      "message": "Referral/admission-order evidence was found in shared chart documents.",
+      "patientName": "Angelina Diaz",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "artifactOrderCount:0",
+        "inventoryOrderCount:1",
+        "extractedOrderCount:1"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "📄 diaz auth.pdf 📝 ✏️ 🗑️ 🔗:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\documents\\diaz-auth-pdf\\source.pdf:Alignment\nHealth Plan®\nAuthorization: 001040990\nMember\n00000208630 DIAZ, ANGELINA\nDate of Birth\n02/04/1952\nMember Address\n1939 NITIDA ST. LAS VEGAS NV 89106\nMember Phone\n702-245-35"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T05:59:18.107Z",
+      "step": "episode_option_selection_failed",
+      "message": "Episode of dropdown with a valid date range could not be located on the patient dashboard.",
+      "patientName": "Angelina Diaz",
+      "urlBefore": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=qa",
+        "patientRunId=batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4-ANGELINA_DIAZ__0ffe88f4368e0f32"
+      ],
+      "missing": [
+        "Episode of dropdown"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Episode of dropdown with a valid date range could not be located on the patient dashboard."
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T05:59:18.107Z",
+      "step": "episode_option_selection_failed",
+      "message": "Episode of selection could not be resolved to a concrete dropdown option.",
+      "patientName": "Angelina Diaz",
+      "urlBefore": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=qa",
+        "patientRunId=batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4-ANGELINA_DIAZ__0ffe88f4368e0f32"
+      ],
+      "missing": [
+        "matching Episode of option"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Episode of dropdown with a valid date range could not be located on the patient dashboard.",
+        "Episode of selection could not be resolved because no matching option was found."
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T05:59:18.107Z",
+      "step": "oasis_episode_resolution",
+      "message": "Resolved the target episode for OASIS review using workbook context plus the Episode of dropdown.",
+      "patientName": "Angelina Diaz",
+      "urlBefore": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/calendar",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=qa",
+        "patientRunId=batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4-ANGELINA_DIAZ__0ffe88f4368e0f32",
+        "episodeSelectionStatus=UNRESOLVED",
+        "targetEpisodeLabel=2026-04-01",
+        "rfa=01-SOC",
+        "selectionMethod=unresolved",
+        "changedSelection=false",
+        "selectedRange=none"
+      ],
+      "missing": [
+        "Episode of review target"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "billingPeriod=none",
+        "episodePeriod=none",
+        "availableRanges=none",
+        "Episode of dropdown with a valid date range could not be located on the patient dashboard.",
+        "Episode of selection could not be resolved because no matching option was found."
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T05:59:21.896Z",
+      "step": "billing_calendar_parse_start",
+      "message": "Started read-only billing calendar parsing from the patient dashboard.",
+      "patientName": "Angelina Diaz",
+      "urlBefore": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads",
+      "urlAfter": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=qa",
+        "patientRunId=batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4-ANGELINA_DIAZ__0ffe88f4368e0f32",
+        "selectedEpisode=none"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T05:59:22.202Z",
+      "step": "billing_calendar_grid_located",
+      "message": "Located the patient dashboard calendar grid.",
+      "patientName": "Angelina Diaz",
+      "urlBefore": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads",
+      "urlAfter": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=qa",
+        "patientRunId=batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4-ANGELINA_DIAZ__0ffe88f4368e0f32",
+        "Calendar root by grid/calendar container selectors"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "dayCellCount=0"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T05:59:22.202Z",
+      "step": "billing_calendar_day_cells_discovered",
+      "message": "Discovered 0 visible calendar day cell(s).",
+      "patientName": "Angelina Diaz",
+      "urlBefore": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads",
+      "urlAfter": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=qa",
+        "patientRunId=batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4-ANGELINA_DIAZ__0ffe88f4368e0f32"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T05:59:22.202Z",
+      "step": "billing_calendar_cards_extracted",
+      "message": "Extracted 0 visible calendar card(s) from the current dashboard window.",
+      "patientName": "Angelina Diaz",
+      "urlBefore": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads",
+      "urlAfter": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=qa",
+        "patientRunId=batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4-ANGELINA_DIAZ__0ffe88f4368e0f32"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "cardCount=0"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T05:59:22.202Z",
+      "step": "billing_period_classification_complete",
+      "message": "Completed billing period classification for visible calendar days and cards.",
+      "patientName": "Angelina Diaz",
+      "urlBefore": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads",
+      "urlAfter": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=qa",
+        "patientRunId=batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4-ANGELINA_DIAZ__0ffe88f4368e0f32"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "first30=0",
+        "second30=0",
+        "outside=0"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T05:59:22.203Z",
+      "step": "billing_calendar_summary_persisted",
+      "message": "Persisted the billing-period calendar summary artifact for downstream dashboard use.",
+      "patientName": "Angelina Diaz",
+      "urlBefore": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads",
+      "urlAfter": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=qa",
+        "patientRunId=batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4-ANGELINA_DIAZ__0ffe88f4368e0f32"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\evidence\\ANGELINA_DIAZ__0ffe88f4368e0f32\\billing-period-calendar-summary.json"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T06:00:05.161Z",
+      "step": "oasis_menu",
+      "message": "Opened the OASIS documents page from the in-app sidebar and verified it opened.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads",
+      "urlAfter": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/documents?type=oasis",
+      "selectorUsed": "li.notes-sub-menu #documents span:has-text(\"OASIS\")",
+      "found": [
+        "Document TypeDateAssigned StaffStatusAssigned PhysicianCreated ByAction OASIS-OASIS E2 - ST SOC 04/01/2026 00:00 Reyes, Petra RN - Skilled Nursing In Progress EGHTERAFI, BADI Lamparas, Annabelle 1-1 of 1 items 1"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Current chart URL: https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads",
+        "Sidebar navigation attempted: true",
+        "Selected label: OASIS",
+        "Selected span selector: li.notes-sub-menu #documents span:has-text(\"OASIS\")",
+        "Selected click selector: li.notes-sub-menu #documents span:has-text(\"OASIS\")",
+        "Click method used: li.notes-sub-menu #documents span:has-text(\"OASIS\") :: scrollIntoViewIfNeeded()+click()",
+        "Post-navigation URL: https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/documents?type=oasis",
+        "OASIS documents URL detected: true",
+        "OASIS documents page detected: true",
+        "OASIS document list count: 1",
+        "OASIS content ready attempts: 1",
+        "OASIS page markers: Document TypeDateAssigned StaffStatusAssigned PhysicianCreated ByAction OASIS-OASIS E2 - ST SOC 04/01/2026 00:00 Reyes, Petra RN - Skilled Nursing In Progress EGHTERAFI, BADI Lamparas, Annabelle 1-1 of 1 items 1",
+        "Candidate li.notes-sub-menu #documents count=1 visible=true text=OASIS box=x=78 y=143 w=195 h=18",
+        "Attempt li.notes-sub-menu #documents :: scrollIntoViewIfNeeded()+click() -> url=https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads opened=false urlDetected=false listCount=0",
+        "Attempt li.notes-sub-menu #documents :: click({ force: true }) -> url=https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads opened=false urlDetected=false listCount=0",
+        "Attempt li.notes-sub-menu #documents :: evaluate(el => el.click()) -> url=https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads opened=false urlDetected=false listCount=0",
+        "Candidate li.notes-sub-menu #documents span:has-text(\"OASIS\") count=1 visible=true text=OASIS box=x=99 y=668 w=40 h=18",
+        "Attempt li.notes-sub-menu #documents span:has-text(\"OASIS\") :: scrollIntoViewIfNeeded()+click() -> url=https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/documents?type=oasis opened=true urlDetected=true listCount=1",
+        "[matched] OASIS document table rows by app-private-documents/fin-datatable/table tbody tr count=1 visible=1 elapsedMs=20 samples=OASIS-OASIS E2 - ST SOC 04/01/2026 00:00 Reyes, Petra RN - Skilled Nursing In Progress EGHTERAFI, BADI Lamparas, Annabelle",
+        "Final URL: https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/documents?type=oasis",
+        "OASIS documents rows detected: 1"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T06:00:05.161Z",
+      "step": "qa_summary",
+      "message": "Active OASIS workflow confirmed the OASIS documents page is open.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads",
+      "urlAfter": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/documents?type=oasis",
+      "selectorUsed": "li.notes-sub-menu #documents span:has-text(\"OASIS\")",
+      "found": [
+        "oasisMenuClicked:true",
+        "oasisDocumentListDetected:true",
+        "socDocumentFound:false",
+        "socDocumentClicked:false"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Current chart URL: https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads",
+        "Sidebar navigation attempted: true",
+        "Selected label: OASIS",
+        "Selected span selector: li.notes-sub-menu #documents span:has-text(\"OASIS\")",
+        "Selected click selector: li.notes-sub-menu #documents span:has-text(\"OASIS\")",
+        "Click method used: li.notes-sub-menu #documents span:has-text(\"OASIS\") :: scrollIntoViewIfNeeded()+click()",
+        "Post-navigation URL: https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/documents?type=oasis",
+        "OASIS documents URL detected: true",
+        "OASIS documents page detected: true",
+        "OASIS document list count: 1",
+        "OASIS content ready attempts: 1",
+        "OASIS page markers: Document TypeDateAssigned StaffStatusAssigned PhysicianCreated ByAction OASIS-OASIS E2 - ST SOC 04/01/2026 00:00 Reyes, Petra RN - Skilled Nursing In Progress EGHTERAFI, BADI Lamparas, Annabelle 1-1 of 1 items 1",
+        "Candidate li.notes-sub-menu #documents count=1 visible=true text=OASIS box=x=78 y=143 w=195 h=18",
+        "Attempt li.notes-sub-menu #documents :: scrollIntoViewIfNeeded()+click() -> url=https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads opened=false urlDetected=false listCount=0",
+        "Attempt li.notes-sub-menu #documents :: click({ force: true }) -> url=https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads opened=false urlDetected=false listCount=0",
+        "Attempt li.notes-sub-menu #documents :: evaluate(el => el.click()) -> url=https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads opened=false urlDetected=false listCount=0",
+        "Candidate li.notes-sub-menu #documents span:has-text(\"OASIS\") count=1 visible=true text=OASIS box=x=99 y=668 w=40 h=18",
+        "Attempt li.notes-sub-menu #documents span:has-text(\"OASIS\") :: scrollIntoViewIfNeeded()+click() -> url=https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/documents?type=oasis opened=true urlDetected=true listCount=1",
+        "[matched] OASIS document table rows by app-private-documents/fin-datatable/table tbody tr count=1 visible=1 elapsedMs=20 samples=OASIS-OASIS E2 - ST SOC 04/01/2026 00:00 Reyes, Petra RN - Skilled Nursing In Progress EGHTERAFI, BADI Lamparas, Annabelle",
+        "OASIS menu clicked: true",
+        "OASIS documents page detected: true",
+        "Final URL: https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/documents?type=oasis"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T06:00:05.181Z",
+      "step": "oasis_type_selected",
+      "message": "Selected SOC as the target OASIS assessment type for read-only review.",
+      "patientName": "Angelina Diaz",
+      "urlBefore": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/documents?type=oasis",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=qa",
+        "requestedAssessmentType=SOC",
+        "selectedAssessmentType=SOC",
+        "selectionReason=requested_exact"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "availableAssessmentTypes=SOC"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T06:00:14.425Z",
+      "step": "oasis_soc_document",
+      "message": "Clicked the SOC OASIS document anchor from the OASIS document list.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/documents?type=oasis",
+      "urlAfter": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/documents/note/oasis/6998f49b301e7ab10588ac5d",
+      "selectorUsed": "table tbody tr a.tbl-link",
+      "found": [
+        "OASIS E2 - ST SOC 04/01/2026 | DIAZ, ANGELINA Visit Time In/Out: 04/01/2026 15:00 - 16:00 Doc Uploads View logs OASIS Compare QA Remarks in-progress Print Save Validate - ALL AllPageClinical×Administrative Information× PDGM Download XML Imp"
+      ],
+      "missing": [],
+      "openedDocumentLabel": "OASIS-OASIS E2 - ST SOC",
+      "openedDocumentUrl": null,
+      "evidence": [
+        "[matched] OASIS document table rows by app-private-documents/fin-datatable/table tbody tr count=1 visible=1 elapsedMs=51 samples=OASIS-OASIS E2 - ST SOC 04/01/2026 00:00 Reyes, Petra RN - Skilled Nursing In Progress EGHTERAFI, BADI Lamparas, Annabelle",
+        "[matched] SOC document page app-oasis wrapper count=1 visible=1 elapsedMs=62 samples=OASIS E2 - ST SOC 04/01/2026 | DIAZ, ANGELINA Visit Time In/Out: 04/01/2026 15:00 - 16:00 Doc Uploads View logs OASIS Compare QA Remarks in-progress Print Save Validate - ALL AllPa",
+        "Total table tbody tr count: 1",
+        "Total a.tbl-link anchor count: 1",
+        "All anchor texts: OASIS-OASIS E2 - ST SOC",
+        "Normalized anchor texts: OASIS-OASIS E2 - ST SOC",
+        "Candidate SOC anchors found: 1",
+        "Ranked SOC candidate texts: OASIS-OASIS E2 - ST SOC",
+        "Chosen SOC anchor text: OASIS-OASIS E2 - ST SOC",
+        "socDocumentFound emitted: true",
+        "Matched SOC row text: OASIS-OASIS E2 - ST SOC 04/01/2026 00:00 Reyes, Petra RN - Skilled Nursing In Progress EGHTERAFI, BADI Lamparas, Annabelle",
+        "Matched SOC anchor text: OASIS-OASIS E2 - ST SOC",
+        "Clicked selector/container: table tbody tr a.tbl-link -> class=tbl-link | label=OASIS-OASIS E2 - ST SOC",
+        "Click method used: clickReadOnlyTarget(a.tbl-link)",
+        "Post-click URL: https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/documents/note/oasis/6998f49b301e7ab10588ac5d",
+        "Post-click markers: OASIS E2 - ST SOC 04/01/2026 | DIAZ, ANGELINA Visit Time In/Out: 04/01/2026 15:00 - 16:00 Doc Uploads View logs OASIS Compare QA Remarks in-progress Print Save Validate - ALL AllPageClinical×Administrative Information× PDGM Download XML Imp",
+        "socDocumentClicked emitted: true",
+        "socCandidate[1] score=200 anchor='OASIS-OASIS E2 - ST SOC' row='OASIS-OASIS E2 - ST SOC 04/01/2026 00:00 Reyes, Petra RN - Skilled Nursing In Progress EGHTERAFI, BADI Lamparas, Annabelle' selector='table tbody tr a.tbl-link'"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T06:00:14.425Z",
+      "step": "qa_summary",
+      "message": "SOC document selection summary: socDocumentFound=true, socDocumentClicked=true.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/documents/note/oasis/6998f49b301e7ab10588ac5d",
+      "selectorUsed": "table tbody tr a.tbl-link",
+      "found": [
+        "oasisMenuClicked:true",
+        "oasisDocumentListDetected:true",
+        "socDocumentFound:true",
+        "socDocumentClicked:true",
+        "postClickUrl:https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/documents/note/oasis/6998f49b301e7ab10588ac5d"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "[matched] OASIS document table rows by app-private-documents/fin-datatable/table tbody tr count=1 visible=1 elapsedMs=51 samples=OASIS-OASIS E2 - ST SOC 04/01/2026 00:00 Reyes, Petra RN - Skilled Nursing In Progress EGHTERAFI, BADI Lamparas, Annabelle",
+        "[matched] SOC document page app-oasis wrapper count=1 visible=1 elapsedMs=62 samples=OASIS E2 - ST SOC 04/01/2026 | DIAZ, ANGELINA Visit Time In/Out: 04/01/2026 15:00 - 16:00 Doc Uploads View logs OASIS Compare QA Remarks in-progress Print Save Validate - ALL AllPa",
+        "Total table tbody tr count: 1",
+        "Total a.tbl-link anchor count: 1",
+        "All anchor texts: OASIS-OASIS E2 - ST SOC",
+        "Normalized anchor texts: OASIS-OASIS E2 - ST SOC",
+        "Candidate SOC anchors found: 1",
+        "Ranked SOC candidate texts: OASIS-OASIS E2 - ST SOC",
+        "Chosen SOC anchor text: OASIS-OASIS E2 - ST SOC",
+        "socDocumentFound emitted: true",
+        "Matched SOC row text: OASIS-OASIS E2 - ST SOC 04/01/2026 00:00 Reyes, Petra RN - Skilled Nursing In Progress EGHTERAFI, BADI Lamparas, Annabelle",
+        "Matched SOC anchor text: OASIS-OASIS E2 - ST SOC",
+        "Clicked selector/container: table tbody tr a.tbl-link -> class=tbl-link | label=OASIS-OASIS E2 - ST SOC",
+        "Click method used: clickReadOnlyTarget(a.tbl-link)",
+        "Post-click URL: https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/documents/note/oasis/6998f49b301e7ab10588ac5d",
+        "Post-click markers: OASIS E2 - ST SOC 04/01/2026 | DIAZ, ANGELINA Visit Time In/Out: 04/01/2026 15:00 - 16:00 Doc Uploads View logs OASIS Compare QA Remarks in-progress Print Save Validate - ALL AllPageClinical×Administrative Information× PDGM Download XML Imp",
+        "socDocumentClicked emitted: true",
+        "socCandidate[1] score=200 anchor='OASIS-OASIS E2 - ST SOC' row='OASIS-OASIS E2 - ST SOC 04/01/2026 00:00 Reyes, Petra RN - Skilled Nursing In Progress EGHTERAFI, BADI Lamparas, Annabelle' selector='table tbody tr a.tbl-link'"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T06:00:27.340Z",
+      "step": "oasis_lock_state_detected",
+      "message": "Detected an unlocked OASIS SOC note after routing to the SOC page; the workflow is input-capable but live writes remain disabled.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/documents/note/oasis/6998f49b301e7ab10588ac5d",
+      "selectorUsed": "table tbody tr a.tbl-link",
+      "found": [
+        "oasis_lock_state_detected:unlocked",
+        "unlockControlVisible:false",
+        "unlockControlText:none",
+        "fieldsEditable:true",
+        "verificationOnly:false",
+        "inputEligible:true"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "SOC selector used: table tbody tr a.tbl-link",
+        "SOC anchor text: OASIS-OASIS E2 - ST SOC",
+        "[not_found] OASIS top action bar / toolbar container count=0 visible=0 elapsedMs=26",
+        "[not_found] Unlock - Oasis button by accessible role count=0 visible=0 elapsedMs=38",
+        "[not_found] Unlock - Oasis text marker count=0 visible=0 elapsedMs=33",
+        "[not_found] Unlock - Oasis actionable control count=0 visible=0 elapsedMs=24",
+        "[not_found] Unlock - Oasis button by accessible role count=0 visible=0 elapsedMs=40",
+        "[not_found] Unlock - Oasis text marker count=0 visible=0 elapsedMs=27",
+        "[not_found] Unlock - Oasis actionable control count=0 visible=0 elapsedMs=21",
+        "[matched] Enabled OASIS form fields without disabled/readonly markers count=175 visible=2 elapsedMs=165",
+        "[matched] Disabled or readonly OASIS fields count=41 visible=3 elapsedMs=131",
+        "Top action bar was not confidently resolved while probing lock state.",
+        "Editable field signals are visible and Unlock - Oasis is not visible; treat the note as unlocked.",
+        "The diagnosis workflow is input-capable, but live writes remain disabled unless separately feature-flagged."
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T06:01:01.296Z",
+      "step": "oasis_diagnosis_section",
+      "message": "Opened OASIS Active Diagnoses section and scanned for diagnosis list.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/documents/note/oasis/6998f49b301e7ab10588ac5d",
+      "selectorUsed": "table tbody tr a.tbl-link",
+      "found": [
+        "oasisMenuClicked:true",
+        "oasisDocumentListDetected:true",
+        "socDocumentFound:true",
+        "socDocumentClicked:true",
+        "activeDiagnosesSelected:true",
+        "diagnosisSectionOpened:true",
+        "diagnosisListFound:false",
+        "diagnosisListStatus:EMPTY_OR_NOT_VISIBLE",
+        "diagnosisNavigationMethod:dropdown_active_diagnoses"
+      ],
+      "missing": [
+        "Diagnosis list (may be empty on first pass)"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "SOC selector used: table tbody tr a.tbl-link",
+        "SOC anchor text: OASIS-OASIS E2 - ST SOC",
+        "Diagnosis navigation method: dropdown_active_diagnoses",
+        "Active Diagnoses selected: true",
+        "Diagnosis section opened: true",
+        "Diagnosis list found: false",
+        "Diagnosis list status: EMPTY_OR_NOT_VISIBLE",
+        "Diagnosis snapshot row count: 0",
+        "Diagnosis snapshot existing rows: 0",
+        "Diagnosis snapshot empty editable slots: 0",
+        "Diagnosis snapshot visible editable slots: 0",
+        "Diagnosis snapshot warnings: Diagnosis row browser inspection failed: locator.evaluate: ReferenceError: __name is not defined\n    at eval (eval at evaluate (:290:30), <anonymous>:1:31)\n    at UtilityScript.evaluate (<anonymous>:292:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)",
+        "OASIS lock state: unlocked",
+        "Unlock control visible: false",
+        "Unlock control text: none",
+        "Fields editable: true",
+        "Verification only: false",
+        "Input eligible: true",
+        "Diagnosis section samples: Active Diagnoses | (M1028) Active Diagnoses:",
+        "Diagnosis list samples: none",
+        "[matched] SOC document page app-oasis wrapper count=1 visible=1 elapsedMs=37 samples=OASIS E2 - ST SOC 04/01/2026 | DIAZ, ANGELINA Visit Time In/Out: 04/01/2026 15:00 - 16:00 Doc Uploads View logs OASIS Compare QA Remarks in-progress Print Save Validate - ALL AllPa",
+        "[not_found] Active Diagnoses currently selected in section dropdown count=0 visible=0 elapsedMs=21",
+        "[not_found] Active Diagnoses visible text marker count=0 visible=0 elapsedMs=29",
+        "[not_found] Active Diagnoses section marker count=0 visible=0 elapsedMs=27",
+        "[matched] Diagnosis section marker count=2 visible=1 elapsedMs=83 samples=Diagnosis | Recommended Diagnosis",
+        "[not_found] Diagnosis List heading/label count=0 visible=0 elapsedMs=28",
+        "[not_found] Diagnosis list/table wrappers count=0 visible=0 elapsedMs=21",
+        "[matched] OASIS section dropdown ng-select under fin-select.select-oasis-pages count=2 visible=1 elapsedMs=57 samples=×Administrative Information× | ×Administrative Information×",
+        "[matched] OASIS section dropdown trigger count=3 visible=3 elapsedMs=141 samples=×Administrative Information×",
+        "[matched] Active Diagnoses option in ng-dropdown-panel count=2 visible=2 elapsedMs=67 samples=Active Diagnoses | Active Diagnoses",
+        "[matched] Active Diagnoses currently selected in section dropdown count=4 visible=2 elapsedMs=74 samples=×Active Diagnoses× | ×Active Diagnoses | ×Active Diagnoses×",
+        "[matched] Active Diagnoses section marker count=3 visible=2 elapsedMs=80 samples=Active Diagnoses | Active Diagnoses | (M1028) Active Diagnoses:",
+        "[not_found] Diagnosis List heading/label count=0 visible=0 elapsedMs=44",
+        "[not_found] Diagnosis list/table wrappers count=0 visible=0 elapsedMs=15",
+        "[not_found] Diagnosis List heading/label count=0 visible=0 elapsedMs=15",
+        "[not_found] Diagnosis list/table wrappers count=0 visible=0 elapsedMs=14",
+        "Diagnosis snapshot captured: rows=0 selectorEvidenceCount=13",
+        "Diagnosis snapshot warnings: Diagnosis row browser inspection failed: locator.evaluate: ReferenceError: __name is not defined\n    at eval (eval at evaluate (:290:30), <anonymous>:1:31)\n    at UtilityScript.evaluate (<anonymous>:292:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)",
+        "Diagnosis snapshot counts: existingRows=0 emptyEditableSlots=0 emptyReadonlySlots=0 visibleEditableSlots=0",
+        "oasisLockState:unlocked unlockControlVisible:false fieldsEditable:true verificationOnly:false inputEligible:true"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T06:01:01.296Z",
+      "step": "oasis_diagnosis_snapshot",
+      "message": "Captured read-only diagnosis page snapshot for DOM-aware QA mapping and future autofill planning.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/documents/note/oasis/6998f49b301e7ab10588ac5d",
+      "selectorUsed": "OASIS diagnosis form body by #m1021 / .form-body.m1021.show-component",
+      "found": [
+        "rowCount:0",
+        "existingDiagnosisRowCount:0",
+        "emptyEditableSlotCount:0",
+        "visibleEditableSlotCount:0",
+        "insertDiagnosisVisible:true",
+        "sectionMarkerCount:2"
+      ],
+      "missing": [
+        "diagnosis controls"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "[not_found] OASIS diagnosis card container by #diagnosis id count=0 visible=0 elapsedMs=15",
+        "[matched] OASIS diagnosis form body by #m1021 / .form-body.m1021.show-component count=1 visible=1 elapsedMs=27 samples=(M1021/1023) Diagnoses and Symptom Control (POC Element (§484.60 (2.i))):List each diagnosis for which the patient is receiving home care in Column 1, and enter its ICD-10-CM code",
+        "[matched] Active Diagnoses section marker count=3 visible=2 elapsedMs=130 samples=Active Diagnoses | Active Diagnoses | (M1028) Active Diagnoses:",
+        "[matched] Insert Diagnosis action button count=2 visible=2 elapsedMs=40 samples=Insert Diagnosis | Insert Diagnosis",
+        "[matched] Primary diagnosis row/label marker count=2 visible=2 elapsedMs=47 samples=Column 1: Enter the description of the diagnosis. Sequencing of diagnoses should reflect the seriousness of each condition and support the disciplines and services provided. Column | PRIMARY DIAGNOSIS 🩺",
+        "[matched] Other diagnosis row/label marker count=5 visible=5 elapsedMs=118 samples=OTHER DIAGNOSIS - 1 | OTHER DIAGNOSIS - 2 | OTHER DIAGNOSIS - 3",
+        "[not_found] Diagnosis rows by formgroupname inside formarrayname=diagnosis count=0 visible=0 elapsedMs=13",
+        "[matched] Diagnosis rows inferred from icdcode field anchors count=6 visible=5 elapsedMs=94",
+        "[matched] Editable ICD code field anchors for visible diagnosis slots count=6 visible=5 elapsedMs=81",
+        "primaryDiagnosisRowVisible:true",
+        "otherDiagnosisRowCount:5",
+        "emptyEditableSlotCount:0",
+        "insertDiagnosisButtonVisible:true",
+        "mappingNotes:Prefer formcontrolname selectors for stable row/field mapping in Angular forms. | Fallback to row text heuristics only when direct control selectors are absent. | Snapshot is read-only and intended for QA comparison/autofill planning. | Rows are classified as existing diagnoses vs empty editable slots vs empty readonly slots before action planning.",
+        "extractionWarnings:Diagnosis row browser inspection failed: locator.evaluate: ReferenceError: __name is not defined\n    at eval (eval at evaluate (:290:30), <anonymous>:1:31)\n    at UtilityScript.evaluate (<anonymous>:292:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T06:01:01.296Z",
+      "step": "qa_summary",
+      "message": "Active Diagnoses section reached after SOC open.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/documents/note/oasis/6998f49b301e7ab10588ac5d",
+      "selectorUsed": "table tbody tr a.tbl-link",
+      "found": [
+        "oasisMenuClicked:true",
+        "oasisDocumentListDetected:true",
+        "socDocumentFound:true",
+        "socDocumentClicked:true",
+        "activeDiagnosesSelected:true",
+        "diagnosisSectionOpened:true",
+        "diagnosisListFound:false",
+        "diagnosisListStatus:EMPTY_OR_NOT_VISIBLE",
+        "diagnosisNavigationMethod:dropdown_active_diagnoses"
+      ],
+      "missing": [
+        "Diagnosis list (may be empty on first pass)"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "SOC selector used: table tbody tr a.tbl-link",
+        "SOC anchor text: OASIS-OASIS E2 - ST SOC",
+        "Diagnosis navigation method: dropdown_active_diagnoses",
+        "Active Diagnoses selected: true",
+        "Diagnosis section opened: true",
+        "Diagnosis list found: false",
+        "Diagnosis list status: EMPTY_OR_NOT_VISIBLE",
+        "Diagnosis snapshot row count: 0",
+        "Diagnosis snapshot existing rows: 0",
+        "Diagnosis snapshot empty editable slots: 0",
+        "Diagnosis snapshot visible editable slots: 0",
+        "Diagnosis snapshot warnings: Diagnosis row browser inspection failed: locator.evaluate: ReferenceError: __name is not defined\n    at eval (eval at evaluate (:290:30), <anonymous>:1:31)\n    at UtilityScript.evaluate (<anonymous>:292:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)",
+        "OASIS lock state: unlocked",
+        "Unlock control visible: false",
+        "Unlock control text: none",
+        "Fields editable: true",
+        "Verification only: false",
+        "Input eligible: true",
+        "Diagnosis section samples: Active Diagnoses | (M1028) Active Diagnoses:",
+        "Diagnosis list samples: none",
+        "[matched] SOC document page app-oasis wrapper count=1 visible=1 elapsedMs=37 samples=OASIS E2 - ST SOC 04/01/2026 | DIAZ, ANGELINA Visit Time In/Out: 04/01/2026 15:00 - 16:00 Doc Uploads View logs OASIS Compare QA Remarks in-progress Print Save Validate - ALL AllPa",
+        "[not_found] Active Diagnoses currently selected in section dropdown count=0 visible=0 elapsedMs=21",
+        "[not_found] Active Diagnoses visible text marker count=0 visible=0 elapsedMs=29",
+        "[not_found] Active Diagnoses section marker count=0 visible=0 elapsedMs=27",
+        "[matched] Diagnosis section marker count=2 visible=1 elapsedMs=83 samples=Diagnosis | Recommended Diagnosis",
+        "[not_found] Diagnosis List heading/label count=0 visible=0 elapsedMs=28",
+        "[not_found] Diagnosis list/table wrappers count=0 visible=0 elapsedMs=21",
+        "[matched] OASIS section dropdown ng-select under fin-select.select-oasis-pages count=2 visible=1 elapsedMs=57 samples=×Administrative Information× | ×Administrative Information×",
+        "[matched] OASIS section dropdown trigger count=3 visible=3 elapsedMs=141 samples=×Administrative Information×",
+        "[matched] Active Diagnoses option in ng-dropdown-panel count=2 visible=2 elapsedMs=67 samples=Active Diagnoses | Active Diagnoses",
+        "[matched] Active Diagnoses currently selected in section dropdown count=4 visible=2 elapsedMs=74 samples=×Active Diagnoses× | ×Active Diagnoses | ×Active Diagnoses×",
+        "[matched] Active Diagnoses section marker count=3 visible=2 elapsedMs=80 samples=Active Diagnoses | Active Diagnoses | (M1028) Active Diagnoses:",
+        "[not_found] Diagnosis List heading/label count=0 visible=0 elapsedMs=44",
+        "[not_found] Diagnosis list/table wrappers count=0 visible=0 elapsedMs=15",
+        "[not_found] Diagnosis List heading/label count=0 visible=0 elapsedMs=15",
+        "[not_found] Diagnosis list/table wrappers count=0 visible=0 elapsedMs=14",
+        "Diagnosis snapshot captured: rows=0 selectorEvidenceCount=13",
+        "Diagnosis snapshot warnings: Diagnosis row browser inspection failed: locator.evaluate: ReferenceError: __name is not defined\n    at eval (eval at evaluate (:290:30), <anonymous>:1:31)\n    at UtilityScript.evaluate (<anonymous>:292:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)",
+        "Diagnosis snapshot counts: existingRows=0 emptyEditableSlots=0 emptyReadonlySlots=0 visibleEditableSlots=0",
+        "oasisLockState:unlocked unlockControlVisible:false fieldsEditable:true verificationOnly:false inputEligible:true"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T06:02:55.703Z",
+      "step": "oasis_print_capture",
+      "message": "Captured the OASIS assessment print view for read-only OCR review.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/documents/note/oasis/6998f49b301e7ab10588ac5d",
+      "selectorUsed": "fin-button[title='Print Preview'] > button",
+      "found": [
+        "assessmentType=SOC",
+        "printProfileKey=soc_full_document_v1",
+        "printButtonDetected=true",
+        "printClickSucceeded=false",
+        "printModalDetected=true",
+        "printModalConfirmSucceeded=true",
+        "extractionMethod=printed_pdf_ocr",
+        "textLength=71543"
+      ],
+      "missing": [],
+      "openedDocumentLabel": "OASIS-OASIS E2 - ST SOC",
+      "openedDocumentUrl": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/documents/note/oasis/6998f49b301e7ab10588ac5d",
+      "evidence": [
+        "printedPdfPath=C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\evidence\\ANGELINA_DIAZ__0ffe88f4368e0f32\\oasis-printed-note\\printed-source.pdf",
+        "selectedSectionLabels=Administrative Information | Active Diagnoses | Vital Signs & Pain Assessment | Medication & Allergies (Injectable Medications) | Neurological (Head, Mood, Eyes, Ears) | Cardiopulmonary (Chest & Thorax) | Gastrointestinal & Genitourinary | Integumentary (Skin & Wound) | Safety & Risk Assessment | Functional Assessment (Self Care) | Functional Assessment (Mobility & Musculoskeletal) | Plan of Care Orders and Discharge Plan | Patient Summary & Clinical Narrative | Care Plan (Problems / Goals / Interventions) | Footer (Not visible in Print Preview)",
+        "extractedTextPath=C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\evidence\\ANGELINA_DIAZ__0ffe88f4368e0f32\\oasis-printed-note\\extracted-text.txt",
+        "ocrResultPath=C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\evidence\\ANGELINA_DIAZ__0ffe88f4368e0f32\\oasis-printed-note\\ocr-result.json",
+        "extractionResultPath=C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\evidence\\ANGELINA_DIAZ__0ffe88f4368e0f32\\oasis-printed-note\\extraction-result.json",
+        "warnings=none"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T06:02:55.714Z",
+      "step": "oasis_printed_note_review",
+      "message": "Persisted read-only OASIS printed-note review with 18 section summaries.",
+      "patientName": "Angelina Diaz",
+      "urlBefore": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/documents/note/oasis/6998f49b301e7ab10588ac5d",
+      "selectorUsed": null,
+      "found": [
+        "assessmentType=SOC",
+        "printProfileKey=soc_full_document_v1",
+        "printButtonDetected=true",
+        "printClickSucceeded=false",
+        "textLength=71543",
+        "overallStatus=PARTIAL"
+      ],
+      "missing": [],
+      "openedDocumentLabel": "OASIS-OASIS E2 - ST SOC",
+      "openedDocumentUrl": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/documents/note/oasis/6998f49b301e7ab10588ac5d",
+      "evidence": [
+        "reviewPath=C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\oasis-printed-note-review.json",
+        "extractedTextPath=C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\evidence\\ANGELINA_DIAZ__0ffe88f4368e0f32\\oasis-printed-note\\extracted-text.txt",
+        "ocrResultPath=C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\evidence\\ANGELINA_DIAZ__0ffe88f4368e0f32\\oasis-printed-note\\ocr-result.json",
+        "sourcePdfPath=C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\evidence\\ANGELINA_DIAZ__0ffe88f4368e0f32\\oasis-printed-note\\printed-source.pdf",
+        "printedPdfPath=C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\evidence\\ANGELINA_DIAZ__0ffe88f4368e0f32\\oasis-printed-note\\printed-source.pdf",
+        "selectedSectionLabels=Administrative Information | Active Diagnoses | Vital Signs & Pain Assessment | Medication & Allergies (Injectable Medications) | Neurological (Head, Mood, Eyes, Ears) | Cardiopulmonary (Chest & Thorax) | Gastrointestinal & Genitourinary | Integumentary (Skin & Wound) | Safety & Risk Assessment | Functional Assessment (Self Care) | Functional Assessment (Mobility & Musculoskeletal) | Plan of Care Orders and Discharge Plan | Patient Summary & Clinical Narrative | Care Plan (Problems / Goals / Interventions) | Footer (Not visible in Print Preview)",
+        "administrative_information:PARTIAL:3/12",
+        "primary_reason_medical_necessity:COMPLETED:4/1",
+        "vital_signs:COMPLETED:3/2",
+        "neurological:COMPLETED:4/0",
+        "eyes_ears:COMPLETED:6/0",
+        "cardiovascular:COMPLETED:2/2",
+        "respiratory:COMPLETED:3/2",
+        "gastrointestinal:COMPLETED:3/2"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T06:03:04.073Z",
+      "step": "printed_note_chart_values",
+      "message": "Printed OASIS note text did not yield usable chart field values.",
+      "patientName": "Angelina Diaz",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "fieldCount=0",
+        "artifactPath=C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\printed-note-chart-values.json",
+        "invocationModelId=us.amazon.nova-lite-v1:0"
+      ],
+      "missing": [
+        "usable chart field values from printed OASIS note"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Printed-note chart-value extraction returned invalid JSON after retrying with inference profile us.amazon.nova-lite-v1:0."
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T06:03:04.073Z",
+      "step": "coding_workflow_start",
+      "message": "Coding workflow branch started from the shared patient chart context.",
+      "patientName": "Angelina Diaz",
+      "urlBefore": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/calendar",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=coding",
+        "patientRunId=batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4-ANGELINA_DIAZ__0ffe88f4368e0f32",
+        "status=started",
+        "chartUrl=https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/calendar"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T06:03:04.149Z",
+      "step": "document_extraction",
+      "message": "Extracted 2 document(s) for QA evaluation.",
+      "patientName": "Angelina Diaz",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "0:OASIS:viewer_text_fallback:artifact_fallback:1774",
+        "1:ORDER:ocr_text:printed_pdf:1638"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "[0] type=OASIS source=artifact_fallback effectiveTextSource=viewer_text_fallback portalLabel=OASIS documents page textLength=1774",
+        "[0] rawExtractedTextSource=dom textSelectionReason=artifact_fallback_text",
+        "[0] domExtractionRejectedReasons=none",
+        "[0] preview=OASIS documents page false false false false false false 0 none 0 high:0 medium:0 low:0 false false true false true https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/file-uploads 📄 DIAZ, ANGELINA DEMOS 02132026.pdf | 📄 DIAZ, ANGELINA notes 02182026.pdf | 📄 diaz auth.pdf | 📄 diaz mdo hp fr trellis.pdf | 📄 DIAZ, ANGELINA Alignment OT Auth.pdf | 📄 DIAZ, ANGELINA DEMOS 02132026.pdf 📝 ✏️ 🗑️ 🔗 | 📄 DIAZ, ANGELINA notes 02182026.pdf 📝 ✏️ 🗑️ 🔗 | \ud83d",
+        "[1] type=ORDER source=printed_pdf effectiveTextSource=ocr_text portalLabel=📄 diaz auth.pdf 📝 ✏️ 🗑️ 🔗 textLength=1638",
+        "[1] rawExtractedTextSource=ocr textSelectionReason=preferred_ocr_for_scanned_image_pdf",
+        "[1] domExtractionRejectedReasons=none",
+        "[1] preview=Alignment\nHealth Plan®\nAuthorization: 001040990\nMember\n00000208630 DIAZ, ANGELINA\nDate of Birth\n02/04/1952\nMember Address\n1939 NITIDA ST. LAS VEGAS NV 89106\nMember Phone\n702-245-3530\nMember Plan\nAlignment Health Plan Nevada\nCompany\nNEVA / Alignment Health Plan Network\nPCP\nName: KEE B NO MD / ID: 300000153804 / Phone: (702) 957-5975 / Fax:\nAuthorization Number\n001040990\nExpiration Date\n08/17/2026\nPriority\nUrgent\nReferred From\nProvider ID: 300000059099 / Name: MEADOWS HOME HEALTH SERVICES / Addres",
+        "[1] admissionReasonPrimary=none",
+        "[1] admissionReasonSnippets=none",
+        "[1] possibleIcd10Codes=I20 | M21.061 | M21.162 | M17.12 | M17.11 | I00 | I25 | I50",
+        "[1] possibleIcd10CodeCount=8"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T06:03:04.149Z",
+      "step": "admission_document_extract",
+      "message": "Extracted 1 Admission Order/referral document text block(s).",
+      "patientName": "Angelina Diaz",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "📄 diaz auth.pdf 📝 ✏️ 🗑️ 🔗:1638"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "[0] source=printed_pdf",
+        "[0] effectiveTextSource=ocr_text",
+        "[0] rawExtractedTextSource=ocr",
+        "[0] textSelectionReason=preferred_ocr_for_scanned_image_pdf",
+        "[0] domExtractionRejectedReasons=none",
+        "[0] preview=Alignment\nHealth Plan®\nAuthorization: 001040990\nMember\n00000208630 DIAZ, ANGELINA\nDate of Birth\n02/04/1952\nMember Address\n1939 NITIDA ST. LAS VEGAS NV 89106\nMember Phone\n702-245-3530\nMember Plan\nAlignment Health Plan Nevada\nCompany\nNEVA / Alignment Health Plan Network\nPCP\nName: KEE B NO MD / ID: 300000153804 / Phone: (702) 957-5975 / Fax:\nAuthorization Number\n001040990\nExpiration Date\n08/17/2026\nPriority\nUrgent\nReferred From\nProvider ID: 300000059099 / Name: MEADOWS HOME HEALTH SERVICES / Addres",
+        "[0] admissionReasonPrimary=none",
+        "[0] admissionReasonSnippets=none",
+        "[0] possibleIcd10Codes=I20 | M21.061 | M21.162 | M17.12 | M17.11 | I00 | I25 | I50"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T06:03:04.149Z",
+      "step": "oasis_extract",
+      "message": "Extracted 1 OASIS document(s).",
+      "patientName": "Angelina Diaz",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "OASIS documents page"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T06:03:04.149Z",
+      "step": "poc_extract",
+      "message": "No plan-of-care content was extracted.",
+      "patientName": "Angelina Diaz",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [],
+      "missing": [
+        "POC"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T06:03:04.149Z",
+      "step": "visit_note_extract",
+      "message": "No visit-note content was extracted.",
+      "patientName": "Angelina Diaz",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [],
+      "missing": [
+        "VISIT_NOTE"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T06:03:04.149Z",
+      "step": "technical_review_extract",
+      "message": "Aggregated technical-review evidence from document inventory and extracted content.",
+      "patientName": "Angelina Diaz",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "orders:1",
+        "summaries:0",
+        "supervisory:0",
+        "communication:0",
+        "missed_visits:0",
+        "sn_visits:0"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Detected 1 order document candidate(s)."
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T06:03:04.154Z",
+      "step": "coding_input_export",
+      "message": "Wrote read-only diagnosis reference output for dashboard consumption.",
+      "patientName": "Angelina Diaz",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "codingInputPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\coding-input.json",
+        "diagnosisCount:0",
+        "primaryDiagnosisSelected:none",
+        "otherDiagnosisCount:0",
+        "codeConfidenceSummary:high:0 medium:0 low:0",
+        "noteCount:1",
+        "primaryDiagnosisCode:none"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "primaryDiagnosisDescription:none",
+        "suggestedOnsetType:onset",
+        "suggestedSeverity:0",
+        "comorbidityFlags:{\"pvd_pad\":false,\"diabetes\":false,\"none\":true}"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T06:03:04.154Z",
+      "step": "qa_summary",
+      "message": "QA summary computed with overallStatus=BLOCKED.",
+      "patientName": "Angelina Diaz",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "timing:PASS",
+        "coding:NEEDS_REVIEW",
+        "oasis:FAIL",
+        "poc:MISSING",
+        "visit_notes:MISSING",
+        "technical_review:MISSING",
+        "final_check:FAIL"
+      ],
+      "missing": [
+        "Medical necessity is stated",
+        "Homebound reason is stated",
+        "Health assessment is documented",
+        "Skilled interventions during the OASIS visit are documented",
+        "Plan of care content extracted",
+        "POC QA completed in workbook",
+        "Diagnoses or codes are present in the plan of care",
+        "Interventions, goals, and frequency are present in the plan of care",
+        "Conditions or exacerbations are reflected in the plan of care",
+        "Visit note content extracted",
+        "Visit notes review completed in workbook",
+        "Skilled need is clearly documented",
+        "Interventions performed are specific and detailed",
+        "Patient response to interventions is documented",
+        "Progress toward goals is noted",
+        "Vitals and focused assessment are documented",
+        "Medication review is documented",
+        "Changes in condition are clearly reported and addressed",
+        "Documentation supports billed services",
+        "Documentation remains consistent with OASIS and diagnoses",
+        "SN visits were identified from visit-note content",
+        "Applicable disciplines were detected"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Medical necessity is stated",
+        "Homebound reason is stated",
+        "Health assessment is documented",
+        "Skilled interventions during the OASIS visit are documented",
+        "Plan of care content extracted",
+        "POC QA completed in workbook",
+        "Diagnoses or codes are present in the plan of care",
+        "Interventions, goals, and frequency are present in the plan of care",
+        "Conditions or exacerbations are reflected in the plan of care",
+        "Visit note content extracted",
+        "Visit notes review completed in workbook",
+        "Skilled need is clearly documented",
+        "Interventions performed are specific and detailed",
+        "Patient response to interventions is documented",
+        "Progress toward goals is noted",
+        "Vitals and focused assessment are documented",
+        "Medication review is documented",
+        "Changes in condition are clearly reported and addressed",
+        "Documentation supports billed services",
+        "Documentation remains consistent with OASIS and diagnoses",
+        "SN visits were identified from visit-note content",
+        "Applicable disciplines were detected"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T06:03:04.154Z",
+      "step": "coding_workflow_complete",
+      "message": "Coding workflow branch completed.",
+      "patientName": "Angelina Diaz",
+      "urlBefore": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/calendar",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=coding",
+        "patientRunId=batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4-ANGELINA_DIAZ__0ffe88f4368e0f32",
+        "status=completed",
+        "chartUrl=https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69963b7e92c792b109ec1d46/intake/69963c44c1fbf340893ef894/calendar"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T06:03:04.156Z",
+      "step": "coding_input_export",
+      "message": "Wrote fallback coding-input.json for downstream read-only diagnosis consumers.",
+      "patientName": "Angelina Diaz",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "codingInputPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\coding-input.json",
+        "diagnosisCount:0",
+        "primaryDiagnosisSelected:none",
+        "otherDiagnosisCount:0",
+        "codeConfidenceSummary:high:0 medium:0 low:0"
+      ],
+      "missing": [
+        "primary diagnosis"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "suggestedOnsetType:onset",
+        "matchStatus:EXACT"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    }
+  ],
+  "notes": [
+    "Document inventory exported: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\document-inventory.json",
+    "Document text exported: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\document-text.json",
+    "Referral document QA summary persisted: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\referral-document-processing\\qa-document-summary.json",
+    "QA prefetch result persisted: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\qa-prefetch-result.json",
+    "Printed-note chart values persisted: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\printed-note-chart-values.json",
+    "Document inventory exported: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\document-inventory.json",
+    "Document text exported: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\document-text.json",
+    "Extracted 2 document(s) for QA evaluation.",
+    "Coding input exported: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\coding-input.json",
+    "Diagnosis code candidates: I20, M21.061, M21.162, M17.12, M17.11",
+    "Fallback coding input exported: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-15T05-55-34-024Z-6598c8e4\\outputs\\patients\\ANGELINA_DIAZ__0ffe88f4368e0f32\\coding-input.json"
+  ]
+}

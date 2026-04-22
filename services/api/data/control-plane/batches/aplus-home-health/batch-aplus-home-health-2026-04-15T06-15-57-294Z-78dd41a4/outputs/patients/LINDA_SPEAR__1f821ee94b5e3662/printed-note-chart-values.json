@@ -1,0 +1,88 @@
+{
+  "generatedAt": "2026-04-15T08:40:26.847Z",
+  "source": "printed_note_ocr",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\outputs\\evidence\\LINDA_SPEAR__1f821ee94b5e3662\\oasis-printed-note\\extracted-text.txt",
+  "extractedFieldCount": 7,
+  "invocationModelId": "us.amazon.nova-lite-v1:0",
+  "currentChartValues": {
+    "patient_name": "SPEAR, LINDA M.",
+    "dob": "1951-08-26",
+    "soc_date": "2026-02-18",
+    "primary_reason_for_home_health_medical_necessity": "Linda M. Spear, a 74-year-old female, presents with significant clinical complexities that warrant her admission to home health care following a recent hospitalization for chest pain, lower extremity edema, and right-sided paresthesias. Her primary diagnosis is chest pain, and she has multiple secondary conditions including diabetes mellitus, hypertension, atrial fibrillation, and a chronic sacral decubitus ulcer. The patient's functional status is notably impaired; she is experiencing bilateral lower extremity ede",
+    "homebound_narrative": "Linda is categorized as homebound based on several criteria. She experiences significant challenges in leaving her home due to her medical conditions and physical limitations. Specifically, her inability to tolerate standing or walking for extended periods, along with pain that restricts her mobility, contributes to her homebound status. It is exhausting for her to leave home, and she requires human assistance due to an unsteady gait and poor balance. The effort needed to leave her home is considerable, necessitati",
+    "skilled_interventions": "The skilled care required includes skilled nursing for ongoing monitoring of her anticoagulation therapy, medication management, and wound care for her decubitus ulcer. Additionally, physical therapy will be critical to aid in her mobility and to prevent further complications associated with her condition.",
+    "respiratory_status": "Vital Signs Temperature: 97.8 Temporal Pulse (per minute): Apical = Radial = 79 Respiratory (per minute): 18 Weight: 137 reported Blood Pressure mm/Hg (R): 130 / sitting Blood Pressure mm/Hg (L): Blood Sugar (mg/dl): 135 Non-Fasting O2 Sat: 97 O2 Sat in: Room Air"
+  },
+  "extractedFieldValues": [
+    {
+      "field_key": "patient_name",
+      "current_value": "SPEAR, LINDA M.",
+      "confidence": 0.95,
+      "source_spans": [
+        "Name: SPEAR, LINDA M.",
+        "Patient Name First Name Middle Name Last Name Suffix LINDA M SPEAR"
+      ]
+    },
+    {
+      "field_key": "dob",
+      "current_value": "1951-08-26",
+      "confidence": 0.95,
+      "source_spans": [
+        "DOB: 08/26/1951",
+        "Birth Date 08/26/1951"
+      ]
+    },
+    {
+      "field_key": "soc_date",
+      "current_value": "2026-02-18",
+      "confidence": 0.95,
+      "source_spans": [
+        "Start of Care Date JORGENSON, CRAIG 02/18/2026"
+      ]
+    },
+    {
+      "field_key": "primary_reason_for_home_health_medical_necessity",
+      "current_value": "Linda M. Spear, a 74-year-old female, presents with significant clinical complexities that warrant her admission to home health care following a recent hospitalization for chest pain, lower extremity edema, and right-sided paresthesias. Her primary diagnosis is chest pain, and she has multiple secondary conditions including diabetes mellitus, hypertension, atrial fibrillation, and a chronic sacral decubitus ulcer. The patient's functional status is notably impaired; she is experiencing bilateral lower extremity edema and has difficulty mobilizing due to her recent hospitalization and acute symptoms. Given her history of chronic conditions and the recent onset of edema and paresthesias, home health care is essential for her recovery.",
+      "confidence": 0.9,
+      "source_spans": [
+        "Primary Reason for Home Health I Medical Necessity",
+        "Linda M. Spear, a 74-year-old female, presents with significant clinical complexities",
+        "Given her history of chronic conditions and the recent onset of edema and paresthesias, home health care is essential for her recovery."
+      ]
+    },
+    {
+      "field_key": "homebound_narrative",
+      "current_value": "Linda is categorized as homebound based on several criteria. She experiences significant challenges in leaving her home due to her medical conditions and physical limitations. Specifically, her inability to tolerate standing or walking for extended periods, along with pain that restricts her mobility, contributes to her homebound status. It is exhausting for her to leave home, and she requires human assistance due to an unsteady gait and poor balance. The effort needed to leave her home is considerable, necessitating the use of an assistive device to ambulate, making it strenuous and often leading to extended rest periods for recovery.",
+      "confidence": 0.85,
+      "source_spans": [
+        "Linda is categorized as homebound based on several criteria.",
+        "It is exhausting for her to leave home, and she requires human assistance due to an unsteady gait and poor balance.",
+        "The effort needed to leave her home is considerable, necessitating the use of an assistive device to ambulate, making it strenuous and often leading to extended rest periods for recovery."
+      ]
+    },
+    {
+      "field_key": "skilled_interventions",
+      "current_value": "The skilled care required includes skilled nursing for ongoing monitoring of her anticoagulation therapy, medication management, and wound care for her decubitus ulcer. Additionally, physical therapy will be critical to aid in her mobility and to prevent further complications associated with her condition.",
+      "confidence": 0.85,
+      "source_spans": [
+        "The skilled care required includes skilled nursing for ongoing monitoring of her anticoagulation therapy, medication management, and wound care for her decubitus ulcer.",
+        "Additionally, physical therapy will be critical to aid in her mobility and to prevent further complications associated with her condition."
+      ]
+    },
+    {
+      "field_key": "respiratory_status",
+      "current_value": "Vital Signs Temperature: 97.8 Temporal Pulse (per minute): Apical = Radial = 79 Respiratory (per minute): 18 Weight: 137 reported Blood Pressure mm/Hg (R): 130 / sitting Blood Pressure mm/Hg (L): Blood Sugar (mg/dl): 135 Non-Fasting O2 Sat: 97 O2 Sat in: Room Air",
+      "confidence": 0.9,
+      "source_spans": [
+        "Vital Signs",
+        "Temperature: 97.8",
+        "Respiratory (per minute): 18",
+        "O2 Sat: 97",
+        "O2 Sat in: Room Air"
+      ]
+    }
+  ],
+  "warnings": [
+    "Printed-note chart-value extraction used inference profile us.amazon.nova-lite-v1:0."
+  ]
+}

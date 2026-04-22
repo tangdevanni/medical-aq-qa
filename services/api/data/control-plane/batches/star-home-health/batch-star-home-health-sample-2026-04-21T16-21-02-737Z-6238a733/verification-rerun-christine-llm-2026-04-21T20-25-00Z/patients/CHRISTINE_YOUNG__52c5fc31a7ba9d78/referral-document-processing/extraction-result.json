@@ -1,0 +1,41 @@
+{
+  "documentId": "unselected",
+  "localFilePath": null,
+  "fileType": "unknown",
+  "extractionMethod": "failed",
+  "extractionSuccess": false,
+  "effectiveTextSource": null,
+  "rawExtractedTextSource": null,
+  "textSelectionReason": null,
+  "domExtractionRejectedReasons": [],
+  "pdfType": null,
+  "ocrUsed": false,
+  "ocrProvider": null,
+  "ocrResultPath": null,
+  "extractedTextPath": null,
+  "extractionQuality": {
+    "characterCount": 0,
+    "lineCount": 0,
+    "normalizedTokenCount": 0,
+    "containsClinicalVocabulary": false,
+    "containsDiagnosisLikePatterns": false,
+    "containsDatePatterns": false,
+    "containsSectionLikeHeadings": false,
+    "likelyUsableForLlm": false,
+    "likelyRequiresOcrRetry": false,
+    "likelyCorruptedEncoding": false,
+    "rejectedReasons": [
+      "empty_text",
+      "no_clinical_vocabulary",
+      "no_date_patterns",
+      "unsupported_file_type"
+    ],
+    "usabilityStatus": "rejected"
+  },
+  "failureReasons": [
+    "No extracted text was produced from the selected referral source.",
+    "Extraction quality rejected: empty_text, no_clinical_vocabulary, no_date_patterns, unsupported_file_type"
+  ],
+  "warnings": [],
+  "generatedAt": "2026-04-21T20:32:36.175Z"
+}

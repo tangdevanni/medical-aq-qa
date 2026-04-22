@@ -1,0 +1,25 @@
+{
+  "patientId": "LAURA_SIMMONS__b12000720630cff5",
+  "selectedDocumentId": "LAURA_SIMMONS__b12000720630cff5-referral-1",
+  "sourceDocuments": [
+    {
+      "documentId": "LAURA_SIMMONS__b12000720630cff5-referral-1",
+      "sourceIndex": 0,
+      "sourceLabel": "📄 LAURA SIMMONS DEMO.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedSourceLabel": "laura-simmons-demo-pdf",
+      "sourceType": "REFERRAL_ORDER",
+      "acquisitionMethod": "printed_pdf",
+      "selectionStatus": "selected",
+      "portalLabel": "📄 LAURA SIMMONS DEMO.pdf 📝 ✏️ 🗑️ 🔗",
+      "localFilePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-15T06-15-18-195Z-f5311eb3\\outputs\\patients\\LAURA_SIMMONS__b12000720630cff5\\documents\\laura-simmons-demo-pdf\\source.pdf",
+      "effectiveTextSource": "digital_pdf_text",
+      "fileType": "pdf",
+      "fileSizeBytes": 80660,
+      "extractedTextLength": 31681,
+      "selectedReason": "highest-ranked referral/admission-order source with local file preference",
+      "rejectedReasons": []
+    }
+  ],
+  "warnings": [],
+  "generatedAt": "2026-04-15T09:00:29.221Z"
+}

@@ -1,0 +1,74 @@
+{
+  "generatedAt": "2026-04-15T08:12:51.084Z",
+  "source": "printed_note_ocr",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\outputs\\evidence\\JOHN_SLATAUSKI__617b3259c8221cef\\oasis-printed-note\\extracted-text.txt",
+  "extractedFieldCount": 6,
+  "invocationModelId": "us.amazon.nova-lite-v1:0",
+  "currentChartValues": {
+    "patient_name": "SLATAUSKI, JOHN",
+    "dob": "1940-09-25",
+    "primary_reason_for_home_health_medical_necessity": "The patient, John Slatauski, age 85, has been referred for home health services following a recent left shoulder arthroscopy and rotator cuff repair performed on April 10, 2026, due to a complete rotator cuff tear. His primary diagnosis is the post-surgical condition related to the left shoulder surgery (ICD-10-CM M75.122), and he has multiple comorbidities, including type 2 diabetes mellitus, hypertension, and a history of vitamin D deficiency, which further complicate his recovery process. Post-operatively, the p",
+    "pain_assessment_narrative": "Pain Location and Description: Location Start Date Activity What makes pain worse? Left shoulder 04/01/2026 With Activityx Activityx Intensity Duration What makes pain better? Does pain affect quality of life? 5x Intermittent Med/Restx Yes Unable to Assess Unable to Assess Description Frequency Type of Intervention Sharpx Occasionalx Non Opiod Analgesicx How well it is working Status Fairly Wellx COCx Comments: Pain Used with permission 5 Collected Using: Face Scale Numeric Rating Scale Pain Effect on Sleep: Ask pa",
+    "recent_hospitalization_discharge_date": "04/11/2026",
+    "diagnosis_candidates": "Complete rotator cuff tear/ruptr of left shoulder, not trauma, Other specified disorders of tendon, left shoulder, Type 2 diabetes mellitus without complications, Nontoxic single thyroid nodule, Essential (primary) hypertension, Hyperlipidemia, unspecified, Iron deficiency anemia, unspecified, Benign neoplasm of unspecified adrenal gland, Vitamin D deficiency, unspecified, Benign prostatic hyperplasia without lower urinary tract symptoms, Other specified diseases of liver"
+  },
+  "extractedFieldValues": [
+    {
+      "field_key": "patient_name",
+      "current_value": "SLATAUSKI, JOHN",
+      "confidence": 0.95,
+      "source_spans": [
+        "Name: SLATAUSKI, JOHN",
+        "Patient Name: First Name: Middle Name: Last Name: Suffix: JOHN SLATAUSKI"
+      ]
+    },
+    {
+      "field_key": "dob",
+      "current_value": "1940-09-25",
+      "confidence": 0.95,
+      "source_spans": [
+        "DOB: 1940-09-25"
+      ]
+    },
+    {
+      "field_key": "primary_reason_for_home_health_medical_necessity",
+      "current_value": "The patient, John Slatauski, age 85, has been referred for home health services following a recent left shoulder arthroscopy and rotator cuff repair performed on April 10, 2026, due to a complete rotator cuff tear. His primary diagnosis is the post-surgical condition related to the left shoulder surgery (ICD-10-CM M75.122), and he has multiple comorbidities, including type 2 diabetes mellitus, hypertension, and a history of vitamin D deficiency, which further complicate his recovery process. Post-operatively, the patient presents with significant functional limitations including severe left shoulder pain (rated 9/10), which restricts his ability to perform activities of daily living (ADLs) such as dressing, bathing, and mobility. He requires skilled nursing care for monitoring his surgical site, medication management, and education on disease processes and post-hospital management. Additionally, he will benefit from physical therapy to aid in rehabilitation, focusing on pain management, strengthening, and establishing a safe home exercise program to prevent falls and aid in recovery.",
+      "confidence": 0.95,
+      "source_spans": [
+        "Primary Reason for Home Health/Medical Necessity (POC Element):",
+        "Post-operatively, the patient presents with significant functional limitations including severe left shoulder pain (rated 9/10)"
+      ]
+    },
+    {
+      "field_key": "pain_assessment_narrative",
+      "current_value": "Pain Location and Description: Location Start Date Activity What makes pain worse? Left shoulder 04/01/2026 With Activityx Activityx Intensity Duration What makes pain better? Does pain affect quality of life? 5x Intermittent Med/Restx Yes Unable to Assess Unable to Assess Description Frequency Type of Intervention Sharpx Occasionalx Non Opiod Analgesicx How well it is working Status Fairly Wellx COCx Comments: Pain Used with permission 5 Collected Using: Face Scale Numeric Rating Scale Pain Effect on Sleep: Ask patient: \"Over the past 5 days, how much of the time has pain made it hard for you to sleep at night\" 0. Does not apply I have not had any pain or hurting in the past 5 days 3. Frequently 1. Rarely or not at all 4. Almost constantly 2. Occasionally 8. Unable to answer Pain Interference with Therapy Activities: Ask patient: \"Over the past 5 days, how often have you limited your participation in rehabilitation therapy sessions due to pain?\" 0. Does not apply - I have not received rehabilitation therapy in the past 5 days 3. Frequently 1. Rarely or not at all 4. Almost constantly 2. Occasionally 8. Unable to answer Pain Interference with Day-to-Day Activities: Ask patient: \"Over the past 5 days, how often you have limited your day to day activities (excluding rehabilitation therapy session) because of pain?\" 1. Rarely or not at all 2. Occasionally 3. Frequently 4. Almost Constantly 8. Unable to answer",
+      "confidence": 0.95,
+      "source_spans": [
+        "Pain Location and Description:",
+        "Pain Used with permission 5 Collected Using: Face Scale Numeric Rating Scale"
+      ]
+    },
+    {
+      "field_key": "recent_hospitalization_discharge_date",
+      "current_value": "04/11/2026",
+      "confidence": 0.95,
+      "source_spans": [
+        "Inpatient Discharge Date (Most Recent):",
+        "04/11/2026"
+      ]
+    },
+    {
+      "field_key": "diagnosis_candidates",
+      "current_value": "Complete rotator cuff tear/ruptr of left shoulder, not trauma, Other specified disorders of tendon, left shoulder, Type 2 diabetes mellitus without complications, Nontoxic single thyroid nodule, Essential (primary) hypertension, Hyperlipidemia, unspecified, Iron deficiency anemia, unspecified, Benign neoplasm of unspecified adrenal gland, Vitamin D deficiency, unspecified, Benign prostatic hyperplasia without lower urinary tract symptoms, Other specified diseases of liver",
+      "confidence": 0.95,
+      "source_spans": [
+        "Complete rotatr-cuff tear/ruptr of left shoulder, not trauma",
+        "Other specified disorders of tendon, left shoulder",
+        "Type 2 diabetes mellitus without complications"
+      ]
+    }
+  ],
+  "warnings": [
+    "Printed-note chart-value extraction used inference profile us.amazon.nova-lite-v1:0."
+  ]
+}

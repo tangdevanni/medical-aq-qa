@@ -1,0 +1,1022 @@
+{
+  "runId": "batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4-DONNA_MAE_CHILDS__3d86a3715a0ef753",
+  "batchId": "batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4",
+  "subsidiaryId": "aplus-home-health",
+  "workItemId": "DONNA_MAE_CHILDS__3d86a3715a0ef753",
+  "patientName": "Donna Mae Childs",
+  "processingStatus": "BLOCKED",
+  "executionStep": "BLOCKED",
+  "progressPercent": 100,
+  "startedAt": "2026-04-15T06:57:03.643Z",
+  "completedAt": "2026-04-15T06:59:17.250Z",
+  "lastUpdatedAt": "2026-04-15T06:59:17.190Z",
+  "matchResult": {
+    "status": "NOT_FOUND",
+    "searchQuery": "childs, donna mae",
+    "portalPatientId": null,
+    "portalDisplayName": null,
+    "candidateNames": [],
+    "note": "Global patient search completed, but no matching patient result was available to open."
+  },
+  "artifacts": [],
+  "artifactCount": 0,
+  "findings": [
+    {
+      "ruleId": "patient.match.not-found",
+      "stage": "TECHNICAL_REVIEW",
+      "outcome": "PORTAL_NOT_FOUND",
+      "message": "Portal patient search completed, but the patient is not currently available in portal results.",
+      "evidence": [
+        "childs, donna mae",
+        "Global patient search completed, but no matching patient result was available to open."
+      ]
+    },
+    {
+      "ruleId": "oasis-qa.coding.missing",
+      "stage": "CODING_REVIEW",
+      "outcome": "PORTAL_NOT_FOUND",
+      "message": "Coding Review is missing.",
+      "evidence": [
+        "OASIS content is available to support coding review"
+      ]
+    },
+    {
+      "ruleId": "oasis-qa.oasis.missing",
+      "stage": "OASIS_QA",
+      "outcome": "PORTAL_NOT_FOUND",
+      "message": "OASIS QA is missing.",
+      "evidence": [
+        "OASIS document content extracted",
+        "Medical necessity is stated",
+        "Homebound reason is stated",
+        "Health assessment is documented",
+        "Skilled interventions during the OASIS visit are documented"
+      ]
+    },
+    {
+      "ruleId": "oasis-qa.poc.missing",
+      "stage": "POC_QA",
+      "outcome": "PORTAL_NOT_FOUND",
+      "message": "Plan Of Care QA is missing.",
+      "evidence": [
+        "Plan of care content extracted",
+        "POC QA completed in workbook",
+        "Diagnoses or codes are present in the plan of care",
+        "Interventions, goals, and frequency are present in the plan of care",
+        "Conditions or exacerbations are reflected in the plan of care"
+      ]
+    },
+    {
+      "ruleId": "oasis-qa.visit_notes.missing",
+      "stage": "VISIT_NOTES_REVIEW",
+      "outcome": "PORTAL_NOT_FOUND",
+      "message": "Visit Notes Review is missing.",
+      "evidence": [
+        "Visit note content extracted",
+        "Visit notes review completed in workbook",
+        "Skilled need is clearly documented",
+        "Interventions performed are specific and detailed",
+        "Patient response to interventions is documented",
+        "Progress toward goals is noted",
+        "Vitals and focused assessment are documented",
+        "Medication review is documented",
+        "Changes in condition are clearly reported and addressed",
+        "Documentation supports billed services",
+        "Documentation remains consistent with OASIS and diagnoses"
+      ]
+    },
+    {
+      "ruleId": "oasis-qa.technical_review.missing",
+      "stage": "TECHNICAL_REVIEW",
+      "outcome": "PORTAL_NOT_FOUND",
+      "message": "Technical Review is missing.",
+      "evidence": [
+        "Portal patient match resolved",
+        "SN visits were identified from visit-note content",
+        "Applicable disciplines were detected"
+      ]
+    },
+    {
+      "ruleId": "oasis-qa.final_check.fail",
+      "stage": "FINAL_BILLING_PREP_READINESS",
+      "outcome": "PORTAL_NOT_FOUND",
+      "message": "Final Check is fail.",
+      "evidence": [
+        "Critical QA sections are complete before billing prep",
+        "Billing prep status in workbook"
+      ]
+    }
+  ],
+  "hasFindings": true,
+  "qaOutcome": "PORTAL_NOT_FOUND",
+  "oasisQaSummary": {
+    "overallStatus": "BLOCKED",
+    "urgency": "ON_TRACK",
+    "daysInPeriod": 30,
+    "daysLeft": 28,
+    "sections": [
+      {
+        "key": "timing",
+        "label": "Timing / OASIS Due",
+        "status": "PASS",
+        "items": [
+          {
+            "key": "days_in_period",
+            "label": "Days in the 30-day period captured",
+            "status": "PASS",
+            "notes": "Workbook shows 30 days in period.",
+            "evidence": [
+              "Workbook days in period: 30"
+            ]
+          },
+          {
+            "key": "days_left",
+            "label": "Days left before OASIS due date verified",
+            "status": "PASS",
+            "notes": "28 day(s) remain before OASIS is due.",
+            "evidence": [
+              "Workbook days left: 28"
+            ]
+          },
+          {
+            "key": "urgency_bucket",
+            "label": "Urgency bucket",
+            "status": "PASS",
+            "notes": "ON TRACK",
+            "evidence": [
+              "Derived urgency from 28 day(s) left."
+            ]
+          }
+        ]
+      },
+      {
+        "key": "coding",
+        "label": "Coding Review",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "coding_review_complete",
+            "label": "Coding review completed in workbook",
+            "status": "PASS",
+            "notes": "Workbook status: DONE",
+            "evidence": [
+              "DONE"
+            ]
+          },
+          {
+            "key": "coding_supported_by_oasis",
+            "label": "OASIS content is available to support coding review",
+            "status": "MISSING",
+            "notes": "No OASIS content was extracted for coding validation.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "oasis",
+        "label": "OASIS QA",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "oasis_document",
+            "label": "OASIS document content extracted",
+            "status": "MISSING",
+            "notes": "No OASIS document content was available for extraction.",
+            "evidence": []
+          },
+          {
+            "key": "oasis_workbook_status",
+            "label": "OASIS QA completed in workbook",
+            "status": "NEEDS_REVIEW",
+            "notes": "Workbook status: IN_PROGRESS",
+            "evidence": [
+              "IN_PROGRESS"
+            ]
+          },
+          {
+            "key": "medical_necessity",
+            "label": "Medical necessity is stated",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "homebound_reason",
+            "label": "Homebound reason is stated",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "health_assessment",
+            "label": "Health assessment is documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "skilled_interventions",
+            "label": "Skilled interventions during the OASIS visit are documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "poc",
+        "label": "Plan Of Care QA",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "poc_document",
+            "label": "Plan of care content extracted",
+            "status": "MISSING",
+            "notes": "No plan-of-care content was available for extraction.",
+            "evidence": []
+          },
+          {
+            "key": "poc_workbook_status",
+            "label": "POC QA completed in workbook",
+            "status": "MISSING",
+            "notes": "Workbook status: NOT_STARTED",
+            "evidence": [
+              "NOT_STARTED"
+            ]
+          },
+          {
+            "key": "poc_diagnoses_codes",
+            "label": "Diagnoses or codes are present in the plan of care",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "poc_interventions_goals_frequency",
+            "label": "Interventions, goals, and frequency are present in the plan of care",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "poc_conditions_exacerbations",
+            "label": "Conditions or exacerbations are reflected in the plan of care",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "visit_notes",
+        "label": "Visit Notes Review",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "visit_notes_document",
+            "label": "Visit note content extracted",
+            "status": "MISSING",
+            "notes": "No visit-note content was available for extraction.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_workbook_status",
+            "label": "Visit notes review completed in workbook",
+            "status": "MISSING",
+            "notes": "Workbook status: NOT_STARTED",
+            "evidence": [
+              "NOT_STARTED"
+            ]
+          },
+          {
+            "key": "visit_notes_skilled_need",
+            "label": "Skilled need is clearly documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_intervention_detail",
+            "label": "Interventions performed are specific and detailed",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_patient_response",
+            "label": "Patient response to interventions is documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_progress",
+            "label": "Progress toward goals is noted",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_vitals",
+            "label": "Vitals and focused assessment are documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_medication_review",
+            "label": "Medication review is documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_condition_changes",
+            "label": "Changes in condition are clearly reported and addressed",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_billed_services_support",
+            "label": "Documentation supports billed services",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_consistency",
+            "label": "Documentation remains consistent with OASIS and diagnoses",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "technical_review",
+        "label": "Technical Review",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "portal_patient_match",
+            "label": "Portal patient match resolved",
+            "status": "MISSING",
+            "notes": "Global patient search completed, but no matching patient result was available to open.",
+            "evidence": [
+              "childs, donna mae"
+            ]
+          },
+          {
+            "key": "sn_visit_count",
+            "label": "SN visits were identified from visit-note content",
+            "status": "MISSING",
+            "notes": "Visit-note content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "discipline_detection",
+            "label": "Applicable disciplines were detected",
+            "status": "MISSING",
+            "notes": "Visit-note content is not available for discipline detection.",
+            "evidence": []
+          },
+          {
+            "key": "physician_orders",
+            "label": "Physician orders were checked",
+            "status": "NOT_APPLICABLE",
+            "notes": "No additional physician orders were discovered for this patient.",
+            "evidence": []
+          },
+          {
+            "key": "supporting_notes",
+            "label": "Supporting note categories were reviewed",
+            "status": "NOT_APPLICABLE",
+            "notes": "No additional supporting note categories were discovered for this patient.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "final_check",
+        "label": "Final Check",
+        "status": "FAIL",
+        "items": [
+          {
+            "key": "critical_sections_clear",
+            "label": "Critical QA sections are complete before billing prep",
+            "status": "FAIL",
+            "notes": "Blocking sections: OASIS content is available to support coding review, OASIS document content extracted, Medical necessity is stated, Homebound reason is stated, Health assessment is documented, Skilled interventions during the OASIS visit are documented, Plan of care content extracted, POC QA completed in workbook, Diagnoses or codes are present in the plan of care, Interventions, goals, and frequency are present in the plan of care, Conditions or exacerbations are reflected in the plan of care, Visit note content extracted, Visit notes review completed in workbook, Skilled need is clearly documented, Interventions performed are specific and detailed, Patient response to interventions is documented, Progress toward goals is noted, Vitals and focused assessment are documented, Medication review is documented, Changes in condition are clearly reported and addressed, Documentation supports billed services, Documentation remains consistent with OASIS and diagnoses, Portal patient match resolved, SN visits were identified from visit-note content, Applicable disciplines were detected",
+            "evidence": [
+              "Timing / OASIS Due: PASS",
+              "Coding Review: MISSING",
+              "OASIS QA: MISSING",
+              "Plan Of Care QA: MISSING",
+              "Visit Notes Review: MISSING",
+              "Technical Review: MISSING"
+            ]
+          },
+          {
+            "key": "billing_prep_status",
+            "label": "Billing prep status in workbook",
+            "status": "MISSING",
+            "notes": "Workbook status: NOT_STARTED",
+            "evidence": [
+              "NOT_STARTED"
+            ]
+          }
+        ]
+      }
+    ],
+    "blockers": [
+      "OASIS content is available to support coding review",
+      "OASIS document content extracted",
+      "Medical necessity is stated",
+      "Homebound reason is stated",
+      "Health assessment is documented",
+      "Skilled interventions during the OASIS visit are documented",
+      "Plan of care content extracted",
+      "POC QA completed in workbook",
+      "Diagnoses or codes are present in the plan of care",
+      "Interventions, goals, and frequency are present in the plan of care",
+      "Conditions or exacerbations are reflected in the plan of care",
+      "Visit note content extracted",
+      "Visit notes review completed in workbook",
+      "Skilled need is clearly documented",
+      "Interventions performed are specific and detailed",
+      "Patient response to interventions is documented",
+      "Progress toward goals is noted",
+      "Vitals and focused assessment are documented",
+      "Medication review is documented",
+      "Changes in condition are clearly reported and addressed",
+      "Documentation supports billed services",
+      "Documentation remains consistent with OASIS and diagnoses",
+      "Portal patient match resolved",
+      "SN visits were identified from visit-note content",
+      "Applicable disciplines were detected"
+    ]
+  },
+  "documentInventory": [],
+  "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\outputs\\patient-results\\DONNA_MAE_CHILDS__3d86a3715a0ef753.json",
+  "bundleAvailable": true,
+  "logPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\outputs\\logs\\DONNA_MAE_CHILDS__3d86a3715a0ef753.json",
+  "logAvailable": true,
+  "retryEligible": true,
+  "errorSummary": "Global patient search completed, but no matching patient result was available to open.",
+  "auditArtifacts": {
+    "tracePath": null,
+    "screenshotPaths": [],
+    "downloadPaths": []
+  },
+  "workflowRuns": [
+    {
+      "workflowRunId": "batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4-DONNA_MAE_CHILDS__3d86a3715a0ef753:coding",
+      "workflowDomain": "coding",
+      "status": "NOT_STARTED",
+      "stepName": "NOT_STARTED",
+      "message": null,
+      "chartUrl": null,
+      "startedAt": null,
+      "completedAt": null,
+      "lastUpdatedAt": "2026-04-15T06:57:03.643Z",
+      "workflowResultPath": null,
+      "workflowLogPath": null
+    },
+    {
+      "workflowRunId": "batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4-DONNA_MAE_CHILDS__3d86a3715a0ef753:qa",
+      "workflowDomain": "qa",
+      "status": "NOT_STARTED",
+      "stepName": "NOT_STARTED",
+      "message": null,
+      "chartUrl": null,
+      "startedAt": null,
+      "completedAt": null,
+      "lastUpdatedAt": "2026-04-15T06:57:03.643Z",
+      "workflowResultPath": null,
+      "workflowLogPath": null
+    }
+  ],
+  "workItemSnapshot": {
+    "id": "DONNA_MAE_CHILDS__3d86a3715a0ef753",
+    "subsidiaryId": "aplus-home-health",
+    "patientIdentity": {
+      "displayName": "Donna Mae Childs",
+      "normalizedName": "DONNA MAE CHILDS",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-03-06",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Kuehl, Wade PT",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "09-DC"
+    },
+    "workflowTypes": [
+      "SOC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 28,
+      "daysInPeriod": null,
+      "daysLeft": 28,
+      "daysLeftBeforeOasisDueDate": 28,
+      "rawTrackingValues": [
+        "28"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "DONE",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "Locked"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "04/13/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 18
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 18,
+        "values": {
+          "patientName": "CHILDS, DONNA MAE",
+          "episodeDate": "03/06/2026",
+          "assignedStaff": "Kuehl, Wade PT",
+          "payer": "Medicare",
+          "rfa": "09-DC",
+          "trackingDays": "28",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "Locked",
+          "oasisQaRemarks": "04/13/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  "automationStepLogs": [
+    {
+      "timestamp": "2026-04-15T06:59:17.190Z",
+      "step": "login",
+      "message": "Reused the authenticated portal session established for this batch.",
+      "patientName": "Donna Mae Childs",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T06:57:03.679Z",
+      "step": "run_started",
+      "message": "Patient run started from the shared Playwright portal runner.",
+      "patientName": "Donna Mae Childs",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69bf115ec4e2490c5b422cf9/intake/69bf11e7bd0daf8609af0524/documents/note/oasis/69bf120a936ce7860645a959",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69bf115ec4e2490c5b422cf9/intake/69bf11e7bd0daf8609af0524/documents/note/oasis/69bf120a936ce7860645a959",
+      "selectorUsed": null,
+      "found": [
+        "currentUrl=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69bf115ec4e2490c5b422cf9/intake/69bf11e7bd0daf8609af0524/documents/note/oasis/69bf120a936ce7860645a959"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "subsidiaryId=aplus-home-health",
+        "portalBaseUrl=https://app.finalehealth.com",
+        "configuredDashboardUrl=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+        "resolvedDashboardUrl=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+        "currentContextRequiresReset=true"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T06:57:11.734Z",
+      "step": "dashboard_reset",
+      "message": "Reset the portal session to the provider dashboard before patient matching.",
+      "patientName": "Donna Mae Childs",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69bf115ec4e2490c5b422cf9/intake/69bf11e7bd0daf8609af0524/documents/note/oasis/69bf120a936ce7860645a959",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "selectorUsed": null,
+      "found": [
+        "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Reset triggered: true",
+        "Current URL before patient: https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69bf115ec4e2490c5b422cf9/intake/69bf11e7bd0daf8609af0524/documents/note/oasis/69bf120a936ce7860645a959",
+        "Current URL after reset: https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+        "Dashboard reset target URL: https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+        "Dashboard markers found: true",
+        "goto_base_url: dashboardDetected=true currentUrl=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T06:57:11.734Z",
+      "step": "dashboard_ready",
+      "message": "Provider dashboard ready confirmed using 'button:has-text(\"Search Patient\")'.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "selectorUsed": null,
+      "found": [
+        "button:has-text(\"Search Patient\")"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "attempt=1 signal=button:has-text(\"Search Patient\") stableDom=false url=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard title=Finale Health buttons=164 inputs=7 text=A Plus Home Health Systems LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifica"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T06:57:26.886Z",
+      "step": "patient_lookup_entry",
+      "message": "Global patient search is available from the current authenticated page context.",
+      "patientName": "Donna Mae Childs",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "selectorUsed": "getByText(/Search Patient/i) -> nearest clickable parent (present)",
+      "found": [
+        "getByText(/Search Patient/i) -> nearest clickable parent (present)"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Current URL before patient lookup: https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+        "Global search available in current context: true",
+        "Global search availability selector used: getByText(/Search Patient/i) -> nearest clickable parent (present)",
+        "Resolved global search trigger with present manual selector 'getByText(/Search Patient/i) -> nearest clickable parent (present)' even though Playwright visibility did not confirm it in the probe path.",
+        "[not_found] Global patient search button by accessible name count=0 visible=0 elapsedMs=82",
+        "[not_visible] Global patient search button containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=43 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=37 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search button containing Search Patient text count=1 visible=0 elapsedMs=36 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search visible control containing Search Patient text count=1 visible=0 elapsedMs=36 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search fin-button wrapper containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=36 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control inside fin-button wrapper count=1 visible=0 elapsedMs=34 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by shortcut hint count=0 visible=0 elapsedMs=27",
+        "[not_visible] Global patient search button containing search icon and patient-search text count=1 visible=0 elapsedMs=29 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by accessible name count=0 visible=0 elapsedMs=24",
+        "[not_visible] Global patient search button containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=37 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=35 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search button containing Search Patient text count=1 visible=0 elapsedMs=31 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search visible control containing Search Patient text count=1 visible=0 elapsedMs=242 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search fin-button wrapper containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=32 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control inside fin-button wrapper count=1 visible=0 elapsedMs=36 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by shortcut hint count=0 visible=0 elapsedMs=23",
+        "[not_visible] Global patient search button containing search icon and patient-search text count=1 visible=0 elapsedMs=30 samples=Search Patient...Ctrl K"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T06:57:26.886Z",
+      "step": "patient_lookup_entry",
+      "message": "Patient lookup will start after shared dashboard bootstrap confirmed provider dashboard readiness and global search availability.",
+      "patientName": "Donna Mae Childs",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69bf115ec4e2490c5b422cf9/intake/69bf11e7bd0daf8609af0524/documents/note/oasis/69bf120a936ce7860645a959",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "selectorUsed": null,
+      "found": [
+        "patientLookupEntryContext=dashboard_reset_then_global_search",
+        "dashboard_context_established",
+        "globalSearchAvailable=true"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "currentUrlAfterLogin=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69bf115ec4e2490c5b422cf9/intake/69bf11e7bd0daf8609af0524/documents/note/oasis/69bf120a936ce7860645a959",
+        "currentUrlBeforeSearch=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+        "resolvedDashboardUrl=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+        "globalSearchSelectorUsed=getByText(/Search Patient/i) -> nearest clickable parent (present)"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T06:57:26.886Z",
+      "step": "patient_search_start",
+      "message": "Starting patient search with 4 query variant(s).",
+      "patientName": "Donna Mae Childs",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "selectorUsed": null,
+      "found": [
+        "childs, donna mae",
+        "CHILDS, DONNA MAE",
+        "Donna Mae Childs",
+        "DONNA MAE CHILDS",
+        "DONNA CHILDS",
+        "CHILDS, DONNA MAE"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Original workbook patient name: Donna Mae Childs",
+        "Normalized global search query: childs, donna mae",
+        "Normalized expected display name: CHILDS, DONNA MAE",
+        "Workbook name variants: Donna Mae Childs | DONNA MAE CHILDS | DONNA CHILDS | CHILDS, DONNA MAE"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T06:57:57.572Z",
+      "step": "global_patient_search_open",
+      "message": "Clicked the global Search Patient trigger and found the visible search input.",
+      "patientName": "Donna Mae Childs",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "selectorUsed": "getByText(/Search Patient/i) -> nearest clickable parent (present)",
+      "found": [
+        "Search Patient trigger",
+        "search input"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Original workbook patient name: Donna Mae Childs",
+        "Normalized global search query: childs, donna mae",
+        "Search trigger clicked: true",
+        "Trigger click method: dom_click",
+        "Search modal visible: true",
+        "Global search control selector used: getByText(/Search Patient/i) -> nearest clickable parent (present)",
+        "Global search surface selector used: Global patient search overlay/dialog containing an input",
+        "Global search modal selector used: div.search-header.open",
+        "Resolved global search trigger with present manual selector 'getByText(/Search Patient/i) -> nearest clickable parent (present)' even though Playwright visibility did not confirm it in the probe path.",
+        "[not_found] Global patient search button by accessible name count=0 visible=0 elapsedMs=43",
+        "[not_visible] Global patient search button containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=32 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=33 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search button containing Search Patient text count=1 visible=0 elapsedMs=30 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search visible control containing Search Patient text count=1 visible=0 elapsedMs=37 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search fin-button wrapper containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=34 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control inside fin-button wrapper count=1 visible=0 elapsedMs=33 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by shortcut hint count=0 visible=0 elapsedMs=26",
+        "[not_visible] Global patient search button containing search icon and patient-search text count=1 visible=0 elapsedMs=30 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by accessible name count=0 visible=0 elapsedMs=26",
+        "[not_visible] Global patient search button containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=40 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=38 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search button containing Search Patient text count=1 visible=0 elapsedMs=35 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search visible control containing Search Patient text count=1 visible=0 elapsedMs=36 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search fin-button wrapper containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=32 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control inside fin-button wrapper count=1 visible=0 elapsedMs=35 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by shortcut hint count=0 visible=0 elapsedMs=23",
+        "[not_visible] Global patient search button containing search icon and patient-search text count=1 visible=0 elapsedMs=35 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search dialog by accessible name count=0 visible=0 elapsedMs=19",
+        "[matched] Global patient search overlay/dialog containing an input count=1 visible=1 elapsedMs=38 samples=EscPatients Sort By 3Sort By×Full Name×asc×SOC Date×desc×Status×ascAdd another sort itemNo recent searchesSearch by:Status:ActivePendingOn-HoldLeadNon-AdmitDischarged",
+        "Search input found by confirmed Search patients placeholder selector.",
+        "[matched] Global patient search input by confirmed Search patients placeholder count=1 visible=1 elapsedMs=37"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T06:59:14.992Z",
+      "step": "patient_search_input",
+      "message": "Typed the normalized query into the global patient search, but the results UI did not settle clearly.",
+      "patientName": "Donna Mae Childs",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "selectorUsed": "input[type=\"text\"][placeholder*=\"Search patients\"]",
+      "found": [],
+      "missing": [
+        "settled global patient search results"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Search trigger clicked: true",
+        "Search input found: true",
+        "Typing into focused field succeeded: false",
+        "Used direct input fallback: true",
+        "Search query typed: childs, donna mae",
+        "Result count: 0",
+        "Candidate search result texts: none",
+        "attempt=1 rowCount=0 noResults=false text=A Plus Home Health Systems LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifica",
+        "attempt=2 rowCount=0 noResults=false text=A Plus Home Health Systems LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifica",
+        "attempt=3 rowCount=0 noResults=false text=A Plus Home Health Systems LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifica",
+        "attempt=4 rowCount=0 noResults=false text=A Plus Home Health Systems LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifica",
+        "attempt=5 rowCount=0 noResults=false text=A Plus Home Health Systems LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifica",
+        "attempt=6 rowCount=0 noResults=false text=A Plus Home Health Systems LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifica",
+        "attempt=7 rowCount=0 noResults=false text=A Plus Home Health Systems LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifica",
+        "attempt=8 rowCount=0 noResults=false text=A Plus Home Health Systems LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifica"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T06:59:16.481Z",
+      "step": "patient_search",
+      "message": "Global patient search completed with 0 candidate(s).",
+      "patientName": "Donna Mae Childs",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "selectorUsed": "getByText(/Search Patient/i) -> nearest clickable parent (present) -> input[type=\"text\"][placeholder*=\"Search patients\"]",
+      "found": [],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Original workbook patient name: Donna Mae Childs",
+        "Normalized global search query: childs, donna mae",
+        "Normalized expected display name: CHILDS, DONNA MAE",
+        "Global search control selector used: getByText(/Search Patient/i) -> nearest clickable parent (present)",
+        "Global search surface selector used: Global patient search overlay/dialog containing an input",
+        "Global search input selector used: input[type=\"text\"][placeholder*=\"Search patients\"]",
+        "Result selector used: unknown",
+        "Search results ready: true",
+        "Visible result row count: 0",
+        "No results marker visible: false",
+        "Candidate search result texts: none",
+        "Result text sample: A Plus Home Health Systems LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifica",
+        "attempt=1 rowCount=0 noResults=false text=A Plus Home Health Systems LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifica",
+        "attempt=2 rowCount=0 noResults=false text=A Plus Home Health Systems LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifica",
+        "attempt=3 rowCount=0 noResults=false text=A Plus Home Health Systems LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifica",
+        "attempt=4 rowCount=0 noResults=false text=A Plus Home Health Systems LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifica",
+        "attempt=5 rowCount=0 noResults=false text=A Plus Home Health Systems LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifica",
+        "attempt=6 rowCount=0 noResults=false text=A Plus Home Health Systems LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifica",
+        "attempt=7 rowCount=0 noResults=false text=A Plus Home Health Systems LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifica",
+        "attempt=8 rowCount=0 noResults=false text=A Plus Home Health Systems LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifica",
+        "rowCount=0",
+        "noResultsVisible=false",
+        "Normalized query typed=childs, donna mae",
+        "Normalized expected display name=CHILDS, DONNA MAE"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T06:59:17.189Z",
+      "step": "patient_search_match_resolution",
+      "message": "Global patient search completed, but no matching patient result was available to open.",
+      "patientName": "Donna Mae Childs",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "selectorUsed": null,
+      "found": [],
+      "missing": [
+        "matching patient result"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Original workbook patient name: Donna Mae Childs",
+        "Normalized global search query: childs, donna mae",
+        "Normalized expected display name: CHILDS, DONNA MAE",
+        "Candidate search result texts: none",
+        "Visible result row count: 0",
+        "No results marker visible: false",
+        "Debug summary: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\outputs\\evidence\\DONNA_MAE_CHILDS__3d86a3715a0ef753\\debug\\patient-search-no-results.json",
+        "Text matches for 'childs, donna mae': none",
+        "Text matches for 'Donna Mae Childs': none",
+        "Text matches for 'DONNA MAE CHILDS': none"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T06:59:17.189Z",
+      "step": "chart_open",
+      "message": "Patient chart open was skipped because the patient is not currently available in global portal search results. Global patient search completed, but no matching patient result was available to open.",
+      "patientName": "Donna Mae Childs",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "selectorUsed": null,
+      "found": [],
+      "missing": [
+        "matching patient result"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Original workbook patient name: Donna Mae Childs",
+        "Normalized global search query: childs, donna mae",
+        "Normalized expected display name: CHILDS, DONNA MAE",
+        "Candidate search result texts: none",
+        "Visible result row count: 0",
+        "No results marker visible: false",
+        "Debug summary: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\outputs\\evidence\\DONNA_MAE_CHILDS__3d86a3715a0ef753\\debug\\patient-search-no-results.json"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T06:59:17.190Z",
+      "step": "shared_portal_access",
+      "message": "Shared portal access completed without a patient chart context because match status was NOT_FOUND.",
+      "patientName": "Donna Mae Childs",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "selectorUsed": null,
+      "found": [],
+      "missing": [
+        "patient chart context"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "matchStatus=NOT_FOUND",
+        "portalPatientId=none",
+        "dashboardUrl=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+        "chartUrl=none"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T06:59:17.190Z",
+      "step": "chart_discovery_skipped",
+      "message": "Chart discovery skipped because patient match status was NOT_FOUND.",
+      "patientName": "Donna Mae Childs",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Global patient search completed, but no matching patient result was available to open."
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-15T06:59:17.250Z",
+      "step": "coding_input_export",
+      "message": "Wrote fallback coding-input.json for downstream read-only diagnosis consumers.",
+      "patientName": "Donna Mae Childs",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "codingInputPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\outputs\\patients\\DONNA_MAE_CHILDS__3d86a3715a0ef753\\coding-input.json",
+        "diagnosisCount:0",
+        "primaryDiagnosisSelected:none",
+        "otherDiagnosisCount:0",
+        "codeConfidenceSummary:high:0 medium:0 low:0"
+      ],
+      "missing": [
+        "primary diagnosis"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "suggestedOnsetType:onset",
+        "matchStatus:NOT_FOUND"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    }
+  ],
+  "notes": [
+    "Global patient search completed, but no matching patient result was available to open.",
+    "Fallback coding input exported: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\outputs\\patients\\DONNA_MAE_CHILDS__3d86a3715a0ef753\\coding-input.json"
+  ]
+}

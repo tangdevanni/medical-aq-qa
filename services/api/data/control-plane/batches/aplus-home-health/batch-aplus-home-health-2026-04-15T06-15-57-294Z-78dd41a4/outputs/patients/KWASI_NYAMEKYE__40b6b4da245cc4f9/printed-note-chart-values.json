@@ -1,0 +1,90 @@
+{
+  "generatedAt": "2026-04-15T08:19:53.435Z",
+  "source": "printed_note_ocr",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\outputs\\evidence\\KWASI_NYAMEKYE__40b6b4da245cc4f9\\oasis-printed-note\\extracted-text.txt",
+  "extractedFieldCount": 7,
+  "invocationModelId": "us.amazon.nova-lite-v1:0",
+  "currentChartValues": {
+    "patient_name": "NYAMEKYE, KWASI",
+    "dob": "1944-06-10",
+    "soc_date": "2026-04-07",
+    "primary_reason_for_home_health_medical_necessity": "Essential (primary) hypertension",
+    "recent_hospitalization_discharge_date": "2026-04-07",
+    "recent_hospitalization_facility": "Not Applicable",
+    "diagnosis_candidates": "110. - Essential (primary) hypertension"
+  },
+  "extractedFieldValues": [
+    {
+      "field_key": "patient_name",
+      "current_value": "NYAMEKYE, KWASI",
+      "confidence": 0.95,
+      "source_spans": [
+        "Name: NYAMEKYE, KWASI",
+        "Patient Name: First Name: Middle Name: Last Name: Suffix: KWASI NYAMEKYE"
+      ]
+    },
+    {
+      "field_key": "dob",
+      "current_value": "1944-06-10",
+      "confidence": 0.95,
+      "source_spans": [
+        "DOB: 1944-06-10",
+        "Birth Date: 06/10/1944"
+      ]
+    },
+    {
+      "field_key": "soc_date",
+      "current_value": "2026-04-07",
+      "confidence": 0.95,
+      "source_spans": [
+        "Start of Care Date: 04/07/2026",
+        "Start of Care Date: 04/07/2026"
+      ]
+    },
+    {
+      "field_key": "primary_reason_for_home_health_medical_necessity",
+      "current_value": "Homebound Reason",
+      "confidence": 0.9,
+      "source_spans": [
+        "Primary Reason for Home Health/Medical Necessity (POC Element): Homebound Reason"
+      ]
+    },
+    {
+      "field_key": "recent_hospitalization_discharge_date",
+      "current_value": "2026-04-07",
+      "confidence": 0.95,
+      "source_spans": [
+        "Start of Care Date: 04/07/2026"
+      ]
+    },
+    {
+      "field_key": "recent_hospitalization_facility",
+      "current_value": "Not Applicable",
+      "confidence": 0.95,
+      "source_spans": [
+        "NA - Patient was not discharged from an inpatient facility"
+      ]
+    },
+    {
+      "field_key": "primary_reason_for_home_health_medical_necessity",
+      "current_value": "Essential (primary) hypertension",
+      "confidence": 0.95,
+      "source_spans": [
+        "PRIMARY DIAGNOSIS",
+        "Essential (primary) hypertension"
+      ]
+    },
+    {
+      "field_key": "diagnosis_candidates",
+      "current_value": "110. - Essential (primary) hypertension",
+      "confidence": 0.95,
+      "source_spans": [
+        "PRIMARY DIAGNOSIS",
+        "110. - Essential (primary) hypertension"
+      ]
+    }
+  ],
+  "warnings": [
+    "Printed-note chart-value extraction used inference profile us.amazon.nova-lite-v1:0."
+  ]
+}

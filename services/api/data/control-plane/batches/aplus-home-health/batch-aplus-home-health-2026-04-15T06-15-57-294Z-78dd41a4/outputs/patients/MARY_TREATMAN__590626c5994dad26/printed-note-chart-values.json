@@ -1,0 +1,90 @@
+{
+  "generatedAt": "2026-04-15T09:04:36.156Z",
+  "source": "printed_note_ocr",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\outputs\\evidence\\MARY_TREATMAN__590626c5994dad26\\oasis-printed-note\\extracted-text.txt",
+  "extractedFieldCount": 6,
+  "invocationModelId": "us.amazon.nova-lite-v1:0",
+  "currentChartValues": {
+    "patient_name": "Mary Treatman",
+    "dob": "1947-11-15",
+    "primary_reason_for_home_health_medical_necessity": "Mary Treatman, a 78-year-old female, is being admitted to home health care following her recent hospitalization for a left intertrochanteric femur fracture sustained from a fall. Her primary diagnosis is a displaced left intertrochanteric femur fracture, which required surgical intervention in the form of internal fixation using a cephalomedullary nail. Secondary conditions include a history of vertigo, chronic balance issues, and frequent falls, with over a dozen episodes in the past several months, significantly",
+    "homebound_narrative": "Patient is homebound due to her surgery, and she exhibited significant functional limitations, including non-weight-bearing restrictions on her left leg, considerable pain with movement, and reliance on mobility aids such as a cane and walker. Given her advanced age and chronic health issues, including moderate bilateral hip osteoarthritis, she is at heightened risk for complications and requires ongoing skilled care for recovery.",
+    "functional_limitations": "Ambulation",
+    "pain_assessment_narrative": "Pain Location and Description: Location Start Date Activity What makes pain worse? Left hip 04/02/2026 With Activityx Movementx Intensity Duration What makes pain better? Does pain affect quality of life? 2x hours Med/Restx yes Unable to Assess Unable to Assess Description Frequency Type of Intervention Dull Achex Occasionalx Non Opiod Analgesicx How well it is working Status Fairly Wellx COCx"
+  },
+  "extractedFieldValues": [
+    {
+      "field_key": "patient_name",
+      "current_value": "Mary Treatman",
+      "confidence": 0.95,
+      "source_spans": [
+        "Name: TREATMAN, MARY",
+        "Patient Name: First Name: Middle Name: Last Name: Suffix: MARY TREATMAN"
+      ]
+    },
+    {
+      "field_key": "dob",
+      "current_value": "1947-11-15",
+      "confidence": 0.95,
+      "source_spans": [
+        "DOB: 1947-11-15"
+      ]
+    },
+    {
+      "field_key": "primary_reason_for_home_health_medical_necessity",
+      "current_value": "Mary Treatman, a 78-year-old female, is being admitted to home health care following her recent hospitalization for a left intertrochanteric femur fracture sustained from a fall. Her primary diagnosis is a displaced left intertrochanteric femur fracture, which required surgical intervention in the form of internal fixation using a cephalomedullary nail. Secondary conditions include a history of vertigo, chronic balance issues, and frequent falls, with over a dozen episodes in the past several months, significantly impacting her mobility and increasing her risk for further falls.",
+      "confidence": 0.95,
+      "source_spans": [
+        "Primary Reason for Home Health/Medical Necessity (POC Element):",
+        "Mary Treatman, a 78-year-old female, is being admitted to home health care following her recent hospitalization for a left intertrochanteric femur fracture sustained from a fall."
+      ]
+    },
+    {
+      "field_key": "homebound_narrative",
+      "current_value": "Patient is homebound due to her surgery, and she exhibited significant functional limitations, including non-weight-bearing restrictions on her left leg, considerable pain with movement, and reliance on mobility aids such as a cane and walker. Given her advanced age and chronic health issues, including moderate bilateral hip osteoarthritis, she is at heightened risk for complications and requires ongoing skilled care for recovery.",
+      "confidence": 0.95,
+      "source_spans": [
+        "Homebound Reason : s/p left hip cephalomedullary nail surgery and assistance needed for safe mobility and transfer",
+        "High risk for fall and injury"
+      ]
+    },
+    {
+      "field_key": "functional_limitations",
+      "current_value": "Ambulation",
+      "confidence": 0.95,
+      "source_spans": [
+        "Functional Limitations (POC Element ($484.60 (2.vi))): 7 Ambulation"
+      ]
+    },
+    {
+      "field_key": "pain_assessment_narrative",
+      "current_value": "Pain Location and Description: Location Start Date Activity What makes pain worse? Left hip 04/02/2026 With Activityx Movementx Intensity Duration What makes pain better? Does pain affect quality of life? 2x hours Med/Restx yes Unable to Assess Unable to Assess Description Frequency Type of Intervention Dull Achex Occasionalx Non Opiod Analgesicx How well it is working Status Fairly Wellx COCx",
+      "confidence": 0.95,
+      "source_spans": [
+        "Pain Location and Description:",
+        "Left hip 04/02/2026 With Activityx Movementx"
+      ]
+    },
+    {
+      "field_key": "medication_list",
+      "current_value": "Aspirin (Chewable) 81 mg 1 Tab Twice a day, Suzetrigine (Journavx) 50mg 1 tab PRN every 12 hours as needed for pain, TYLENOL Arthritis ER 650 mg 8 HR Tab prn BID as need for pain",
+      "confidence": 0.95,
+      "source_spans": [
+        "Aspirin (Chewable) 81 mg 1 Tab Twice a day",
+        "Suzetrigine (Journavx) 50mg 1 tab PRN every 12 hours as needed for pain",
+        "TYLENOL Arthritis ER 650 mg 8 HR Tab prn BID as need for pain"
+      ]
+    },
+    {
+      "field_key": "allergies",
+      "current_value": "Cefazolin rash and hives",
+      "confidence": 0.95,
+      "source_spans": [
+        "Cefazolin rash and hives"
+      ]
+    }
+  ],
+  "warnings": [
+    "Printed-note chart-value extraction used inference profile us.amazon.nova-lite-v1:0."
+  ]
+}

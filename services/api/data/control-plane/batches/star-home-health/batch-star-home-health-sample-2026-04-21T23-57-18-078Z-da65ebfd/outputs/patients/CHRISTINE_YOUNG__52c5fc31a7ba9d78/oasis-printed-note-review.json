@@ -1,0 +1,460 @@
+{
+  "assessmentType": "SOC",
+  "matchedAssessmentLabel": "OASIS-OASIS E1 - PT SOC",
+  "reviewSource": "printed_note_ocr",
+  "overallStatus": "PARTIAL",
+  "capture": {
+    "assessmentType": "SOC",
+    "printProfileKey": "soc_full_document_v1",
+    "printProfileLabel": "Full OASIS document",
+    "printButtonDetected": true,
+    "printButtonVisible": true,
+    "printButtonSelectorUsed": "fin-button[title='Print Preview'] > button",
+    "printClickSucceeded": false,
+    "printModalDetected": true,
+    "printModalSelectorUsed": "ngb-modal-window[role='dialog']",
+    "printModalConfirmSelectorUsed": "button:has-text('Print')",
+    "printModalConfirmSucceeded": true,
+    "selectedSectionLabels": [
+      "Administrative Information",
+      "Active Diagnoses",
+      "Vital Signs & Pain Assessment",
+      "Medication & Allergies (Injectables Medications)",
+      "Neurological (Head, Mood, Eyes, Ears)",
+      "Cardiopulmonary (Chest & Thorax)",
+      "Gastrointestinal & Genitourinary Assessment",
+      "Integumentary (Skin & Wound)",
+      "Safety & Risk Assessment",
+      "Functional Assessment (Self Care)",
+      "Functional Assessment (Mobility & Musculoskeletal)",
+      "Endocrine (Diabetic Management)",
+      "Plan of Care and Physical Therapy Evaluation",
+      "Patient Summary & Clinical Narrative",
+      "Care Plan (Problems / Goals / Interventions)",
+      "Footer (Not visible in Print Preview)"
+    ],
+    "currentUrl": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699c7e719ea7db7f170ab536/intake/699c7efee396a2d53a90c49c/documents/note/oasis/699c7f2404cd05d537d0204a",
+    "printedPdfPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-sample-2026-04-21T23-57-18-078Z-da65ebfd\\outputs\\evidence\\CHRISTINE_YOUNG__52c5fc31a7ba9d78\\oasis-printed-note\\printed-source.pdf",
+    "sourcePdfPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-sample-2026-04-21T23-57-18-078Z-da65ebfd\\outputs\\evidence\\CHRISTINE_YOUNG__52c5fc31a7ba9d78\\oasis-printed-note\\printed-source.pdf",
+    "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-sample-2026-04-21T23-57-18-078Z-da65ebfd\\outputs\\evidence\\CHRISTINE_YOUNG__52c5fc31a7ba9d78\\oasis-printed-note\\extracted-text.txt",
+    "extractionResultPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-sample-2026-04-21T23-57-18-078Z-da65ebfd\\outputs\\evidence\\CHRISTINE_YOUNG__52c5fc31a7ba9d78\\oasis-printed-note\\extraction-result.json",
+    "ocrResultPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-sample-2026-04-21T23-57-18-078Z-da65ebfd\\outputs\\evidence\\CHRISTINE_YOUNG__52c5fc31a7ba9d78\\oasis-printed-note\\ocr-result.json",
+    "textLength": 112354,
+    "extractionMethod": "printed_pdf_ocr",
+    "warnings": []
+  },
+  "sections": [
+    {
+      "key": "administrative_information",
+      "label": "Administrative Information",
+      "status": "PARTIAL",
+      "filledFieldCount": 7,
+      "missingFieldCount": 8,
+      "evidence": [
+        "OUNG, CHRISTINE DOB: 1944-05-30 ADMINISTRATIVE INFORMATION (M0010) Agency Medicare Provider Number (M0014) Branch State 037834 Branch State: Arizona (M0016) Branch ID Number (M0018) Attending Physician (NPI) (M0020) Patient ID number 172000",
+        "RATIVE INFORMATION (M0010) Agency Medicare Provider Number (M0014) Branch State 037834 Branch State: Arizona (M0016) Branch ID Number (M0018) Attending Physician (NPI) (M0020) Patient ID number 1720004393 84 Physician: (M0030) Start of Care",
+        "tion of Care Date Not Applicable mm/dd/yyyy Not Applicable (M0040) Patient Name First Name: Middle Name: Last Name: Suffix: CHRISTINE YOUNG (M0050) Patient State of Residence (M0060) Patient Zip Code State of Residence: Arizona 85268 (M0063",
+        "irst Name: Middle Name: Last Name: Suffix: CHRISTINE YOUNG (M0050) Patient State of Residence (M0060) Patient Zip Code State of Residence: Arizona 85268 (M0063) Medicare Number (M0064) Social Security Number 8A75NM2VE79 Not Applicable Not A",
+        "(M0060) Patient Zip Code State of Residence: Arizona 85268 (M0063) Medicare Number (M0064) Social Security Number 8A75NM2VE79 Not Applicable Not Applicable (M0065) Medicaid Number Not Applicable (M0066) Birth Date * (M0069) Gender 05/30/194",
+        "M0065) Medicaid Number Not Applicable (M0066) Birth Date * (M0069) Gender 05/30/1944 Gender: Female (M0080) Discipline Completing Assessment (M0090) Date Assessment Completed: 1. RN 2. PT 3. SLP/ST 4. oT 02/27/2026 Assigned Staff: Chua, Sea",
+        "T 3. SLP/ST 4. oT 02/27/2026 Assigned Staff: Chua, Sean PT (M0100) Assessment Reason 1. Start of Care (A1005) Ethnicity Are you of Hispanic, Latino/a, or Spanish origin? Check all that apply A. No, not of Hispanic, Latino/a, or Spanish orig"
+      ],
+      "missingFields": [
+        "M0016 Branch ID #",
+        "M0018 Attending Physician (NPI)",
+        "M0020 Patient ID #",
+        "M0030 Start of Care Date",
+        "M0060 Zip Code",
+        "M0066 Birth Date",
+        "M0080 Discipline",
+        "M0090 Date Completed"
+      ],
+      "suggestions": [
+        "Branch ID was not found in the shared referral evidence; verify against the agency record.",
+        "Recommend M0018 = 1720004393 from referral/order source evidence.",
+        "Shared evidence references patient/resident id 41707; confirm if that maps to M0020.",
+        "Recommend M0060 = 85268-8307 from source address evidence.",
+        "Recommend M0066 = 05/30/1944 from shared referral/intake evidence."
+      ],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-sample-2026-04-21T23-57-18-078Z-da65ebfd\\outputs\\patients\\CHRISTINE_YOUNG__52c5fc31a7ba9d78\\documents\\christine-young-referral-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "primary_reason_medical_necessity",
+      "label": "Primary Reason / Medical Necessity",
+      "status": "COMPLETED",
+      "filledFieldCount": 4,
+      "missingFieldCount": 1,
+      "evidence": [
+        "): 02/20/2026 UK - Unknown Primary Reason for Home Health / Medical Necessity Christine E. Young, an 81-year-old female, is being admitted to home health care following her discharge from Fountain Hills Post Acute after a prolonged hospital",
+        "er admission to home health care under Medicare guidelines. Homebound Reason Document as Clinical Narrative Patient is not Homebound Criteria One (One must be met): Describe what assistive devices the patient is dependent on (if any) and sp"
+      ],
+      "missingFields": [
+        "reason for admission"
+      ],
+      "suggestions": [],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-sample-2026-04-21T23-57-18-078Z-da65ebfd\\outputs\\patients\\CHRISTINE_YOUNG__52c5fc31a7ba9d78\\documents\\christine-young-referral-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "vital_signs",
+      "label": "Vital Signs",
+      "status": "COMPLETED",
+      "filledFieldCount": 3,
+      "missingFieldCount": 2,
+      "evidence": [
+        "Radial = 82 Respiratory (per minute): 17 Weight: 185 actual Blood Pressure mm/Hg (R): / Blood Pressure mm/Hg (L): 134 / 72 sitting Blood Sugar (mg/dl): Non-Fasting O2 Sat: 95 O2 Sat in: Room Air Comments: Pain Assessment Wong-Baker FACES® P",
+        "N: 02/27/2026 5 of 26 185 BMI: 31.75 Comments: Vital Signs Temperature: 98.3 Temporal Pulse (per minute): Apical = Radial = 82 Respiratory (per minute): 17 Weight: 185 actual Blood Pressure mm/Hg (R): / Blood Pressure mm/Hg (L): 134 / 72 s"
+      ],
+      "missingFields": [
+        "heart rate",
+        "respiratory rate"
+      ],
+      "suggestions": [],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-sample-2026-04-21T23-57-18-078Z-da65ebfd\\outputs\\patients\\CHRISTINE_YOUNG__52c5fc31a7ba9d78\\documents\\christine-young-referral-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "neurological",
+      "label": "Neurological",
+      "status": "COMPLETED",
+      "filledFieldCount": 4,
+      "missingFieldCount": 0,
+      "evidence": [
+        "able to respond 3. Often (C0100) Should Brief Interview for Mental Status (C0200-C0500) be Conducted? Attempt to conduct interview with all patients. No (patient is rarely/never understood) Yes Not assessed/no information Brief Interview fo",
+        "lete the 15 interview Mental Status 1 Oriented 2 Comatose 3 Forgetful 4 - Depressed 5 Disoriented 6 - Lethargic 7- Agitated 8 Alert 9 - Confused 10 Dementia 11 Assaultive 12 Delirious 13 Wanders 14 Other Depressed at times. Describe the pat",
+        "ent was unable to complete the 15 interview Mental Status 1 Oriented 2 Comatose 3 Forgetful 4 - Depressed 5 Disoriented 6 - Lethargic 7- Agitated 8 Alert 9 - Confused 10 Dementia 11 Assaultive 12 Delirious 13 Wanders 14 Other Depressed at t"
+      ],
+      "missingFields": [],
+      "suggestions": [],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-sample-2026-04-21T23-57-18-078Z-da65ebfd\\outputs\\patients\\CHRISTINE_YOUNG__52c5fc31a7ba9d78\\documents\\christine-young-referral-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "eyes_ears",
+      "label": "Eyes & Ears",
+      "status": "COMPLETED",
+      "filledFieldCount": 6,
+      "missingFieldCount": 0,
+      "evidence": [
+        "Ears (B1000) Vision Ability to see in adequate light (with glasses or other visual appliances) 0. Adequate - sees fine detail, such as regular print in newspapers/books 1. Impaired - sees large print, but not regular print in newspapers/bo",
+        "s(Specify): Comments: (B0200) Hearing Ability to hear (with hearing aid or hearing appliances if normally used) 0. Adequate - no difficulty in normal conversation, social interaction, listening to TV 1. Minimal difficulty - difficulty in so",
+        "onresponsive 5. Patient nonresponsive Eyes and Ears (B1000) Vision Ability to see in adequate light (with glasses or other visual appliances) 0. Adequate - sees fine detail, such as regular print in newspapers/books 1. Impaired - sees large",
+        "r 4-Good 5-Excellent Functional Limitations 1- Amputation 4 Hearing 7 Ambulation A Dyspnea with minimal exertion 2- Bowel/Bladder (Incontinence) 5 - Paralysis 8 - Speech 3 - Contracture 6 - Endurance 9 - Legally blind B- Other (Specify) Eme"
+      ],
+      "missingFields": [],
+      "suggestions": [],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-sample-2026-04-21T23-57-18-078Z-da65ebfd\\outputs\\patients\\CHRISTINE_YOUNG__52c5fc31a7ba9d78\\documents\\christine-young-referral-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "cardiovascular",
+      "label": "Cardiovascular",
+      "status": "COMPLETED",
+      "filledFieldCount": 4,
+      "missingFieldCount": 0,
+      "evidence": [
+        "lops Clicks Friction Rule Comments (If Abnormal (Explain)): Edema Upper: Lower: Others: Right Extremities Left Extremities Right Extremities Left Extremities Comments: Capillary Refill: PT/INR: Cramps Claudication Fatigue > 3 secs < secs /",
+        "R: Cramps Claudication Fatigue > 3 secs < secs / Peripheral Pulses Radial: Strong/Bounding Weak Thready Absent Pedal: Strong/Bounding Weak Thready Absent Comments: Chest/Thorax Chest Pain Denies Anginal Postural Localized Substernal Sharp D",
+        "History (Mark all that apply) CHF Cardiomyopathy Arrhythmia Chest Pain MI CAD HTN PVD Murmur Cancer: (Specify Type): In remission? Yes YOUNG, CHRISTINE I 84 I DOB: 05/30/1944 I N: 02/27/2026 3 of 26 No Osteoathritis/DJD: (Specify site affec",
+        "rment (Specify): Comments: CARDIOPULMONARY (CHEST & THORAX) Heart Sounds Normal Regular Irregular Murmur Gallops Clicks Friction Rule Comments (If Abnormal (Explain)): Edema Upper: Lower: Others: Right Extremities Left Extremities Right Ext"
+      ],
+      "missingFields": [],
+      "suggestions": [],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-sample-2026-04-21T23-57-18-078Z-da65ebfd\\outputs\\patients\\CHRISTINE_YOUNG__52c5fc31a7ba9d78\\documents\\christine-young-referral-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "respiratory",
+      "label": "Respiratory",
+      "status": "COMPLETED",
+      "filledFieldCount": 5,
+      "missingFieldCount": 0,
+      "evidence": [
+        "iating Viselike Stabbing Others (Specify): Associated with: Shortness of Breath Activity Rest Frequency/Duration: Comments: (M1400) When is the patient dyspneic or noticeably Short of Breath? 0. Patient is not short of breath 3. With minima",
+        "Left: Clear Lower Right: Clear Lower Left: Clear Comments: Cough None Dry Acute Chronic Non-Productive Productive: Not Assessed/No Information Yes No Suction: Not Assessed/No Information Yes No Hemoptysis Frequency: Amount: Comments: GASTR",
+        "tilator: Intubated Tracheostomy Others (Specify): Comments: Lung Sounds Anterior: Right: Clear Left: Clear Posterior: Upper Right: Clear Upper Left: Clear Lower Right: Clear Lower Left: Clear Comments: Cough None Dry Acute Chronic Non-Produ",
+        "uring an evacuation Medical Needs/Equipment (i.e. bedbound, oxygen, vent, IV cardiac meds other DME) Comments: Advance Directives Patient has Advance Directives? Yes No If you have checked \"yes\", fill the following fields: Healthcare Repres"
+      ],
+      "missingFields": [],
+      "suggestions": [],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-sample-2026-04-21T23-57-18-078Z-da65ebfd\\outputs\\patients\\CHRISTINE_YOUNG__52c5fc31a7ba9d78\\documents\\christine-young-referral-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "gastrointestinal",
+      "label": "Gastrointestinal",
+      "status": "COMPLETED",
+      "filledFieldCount": 5,
+      "missingFieldCount": 0,
+      "evidence": [
+        "n 4 Hearing 7 Ambulation A Dyspnea with minimal exertion 2- Bowel/Bladder (Incontinence) 5 - Paralysis 8 - Speech 3 - Contracture 6 - Endurance 9 - Legally blind B- Other (Specify) Emergency Preparedness: Discussed the HHA's plans for suppo",
+        "from another person; OR (c) a liquid, pureed or ground meat diet. 2. Unable to feed self and must be assisted or supervised throughout the meal/snack. 3. Able to take in nutrients orally and receives supplemental nutrients though a nasogast",
+        "Long-term Status: Unmet Ensure safe swallowing and adequate nutrition. Interventions: Assigned Staff: ST, SN Instruct the patient on safe swallowing techniques. Progress Toward Goals: No Progress Yet Assess the patient's swallowing ability",
+        "al Quadrants: Right Lower Right Upper Left Lower Left Upper Last Bowel Movement: 02/27/2026 Normoactive Normoactive Normoactive Normoactive Comments: Constipation Chronic Acute Occasional Internal Hemorrhoids External Hemorrhoids Laxative/E"
+      ],
+      "missingFields": [],
+      "suggestions": [],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-sample-2026-04-21T23-57-18-078Z-da65ebfd\\outputs\\patients\\CHRISTINE_YOUNG__52c5fc31a7ba9d78\\documents\\christine-young-referral-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "genitourinary",
+      "label": "Genitourinary",
+      "status": "COMPLETED",
+      "filledFieldCount": 4,
+      "missingFieldCount": 0,
+      "evidence": [
+        "a Chronic Obstructive Bronchitis Chronic Obstructive Asthma Urinary Incontinence Urinary Retention BPH Recent/Frequent UTI Tuberculosis Hepatitis: (Specify): Infectious Disease: (Specify): Tobacco Dependence Type: Amount: Length of Time Use",
+        "1. Yes UK- Unknown (M1610) Urinary Incontinence or Urinary Catheter Presence: Patient is incontinent No incontinence or catheter (includes anuria or ostomy for urinary drainage) Day time Night time Day and Night Timed-voiding defers incont",
+        "inary Incontinence or Urinary Catheter Presence: Patient is incontinent No incontinence or catheter (includes anuria or ostomy for urinary drainage) Day time Night time Day and Night Timed-voiding defers incontinence Occasional stress incon"
+      ],
+      "missingFields": [],
+      "suggestions": [],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-sample-2026-04-21T23-57-18-078Z-da65ebfd\\outputs\\patients\\CHRISTINE_YOUNG__52c5fc31a7ba9d78\\documents\\christine-young-referral-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "musculoskeletal_functional_status",
+      "label": "Musculoskeletal and Functional Status",
+      "status": "COMPLETED",
+      "filledFieldCount": 5,
+      "missingFieldCount": 0,
+      "evidence": [
+        "sical and occupational therapy are necessary to address her mobility challenges, enhance her strength and endurance, and facilitate her recovery from acute illness. She has demonstrated the need for assistance with activities such as transf",
+        "e patients who need help with IADLS or ADLS or have gait or transfer problems, arthritis, pain, fear of falling, foot problems, impaired sensation, impaired coordination or improper use of assistive devices. Environmental hazards May includ",
+        "944 N: 02/27/2026 17 of 26 Comments: FUNCTIONAL ASSESSMENT (SELF CARE) (GG0100) Prior Functioning: Everyday Activities: Indicate the patient's usual ability with everyday activities prior to the current illness, exacerbation, or injury. 3.",
+        "aired with potential for falls; uses walls and furniture to ambulate Cognitively impaired, unable to safely leave home without assist Leaving home is exhausting, extended rest periods to recover Infectious disease process causing weakness a"
+      ],
+      "missingFields": [],
+      "suggestions": [],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-sample-2026-04-21T23-57-18-078Z-da65ebfd\\outputs\\patients\\CHRISTINE_YOUNG__52c5fc31a7ba9d78\\documents\\christine-young-referral-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "integumentary",
+      "label": "Integumentary",
+      "status": "COMPLETED",
+      "filledFieldCount": 5,
+      "missingFieldCount": 0,
+      "evidence": [
+        "Specify): Pressure Ulcer Stasis Ulcer Diabetic Ulcer Trauma Wound Other (Specify): Chronic Kidney Disease Renal Failure Dialysis Anemia Abnormal Coagulation Blood Clots Diabetes Thyroid Problems COPD Asthma Emphysema Chronic Obstructive Bro",
+        "atheter Change: Fr: CC: mm/dd/yyyy Comments: INTEGUMENTARY (SKIN & WOUND) (M1306) Does this patient have at least one Unhealed Pressure Ulcer/Injury at Stage 2 or Higher or designated as Unstageable? (Excludes Stage 1 pressure injuries and",
+        "e Abuse: (Specify): Alzheimer's Mental Disorder: (Specify): Pressure Ulcer Stasis Ulcer Diabetic Ulcer Trauma Wound Other (Specify): Chronic Kidney Disease Renal Failure Dialysis Anemia Abnormal Coagulation Blood Clots Diabetes Thyroid Prob",
+        "Skin Color Within Normal Limits Pale Jaundice Cyanotic Skin Turgor: Good Fair Poor Skin Abnormalities: Dry Warm Cool Rash Ulcer Ostomy Incision Diaphoretic Others (Specify): Additional Skin Comments: Norton Scale for Pressure Ulcer Risk Ass"
+      ],
+      "missingFields": [],
+      "suggestions": [],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-sample-2026-04-21T23-57-18-078Z-da65ebfd\\outputs\\patients\\CHRISTINE_YOUNG__52c5fc31a7ba9d78\\documents\\christine-young-referral-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "pain_assessment",
+      "label": "Pain Assessment",
+      "status": "COMPLETED",
+      "filledFieldCount": 3,
+      "missingFieldCount": 1,
+      "evidence": [
+        "erate standing or walking for extended periods Weakness and pain from recent surgery Experiencing pain impairs/restricts mobility Visually impaired-requires constant attendance/assist Balance impaired with potential for falls; uses walls an",
+        "mission. 8 Collected Using: Face Scale Numeric Rating Scale Pain Location and Description: Location Start Date Activity What makes pain worse? low back mm/dd/yyyy - With Activityx Activityx Intensity Duration What makes pain better? Does pa"
+      ],
+      "missingFields": [
+        "pain scale"
+      ],
+      "suggestions": [],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-sample-2026-04-21T23-57-18-078Z-da65ebfd\\outputs\\patients\\CHRISTINE_YOUNG__52c5fc31a7ba9d78\\documents\\christine-young-referral-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "emotional",
+      "label": "Emotional",
+      "status": "COMPLETED",
+      "filledFieldCount": 5,
+      "missingFieldCount": 0,
+      "evidence": [
+        "a Fecal Incontinence Liver/Gallbladder Problems: (Specify): Depression Anxiety Dementia Substance Abuse: (Specify): Alzheimer's Mental Disorder: (Specify): Pressure Ulcer Stasis Ulcer Diabetic Ulcer Trauma Wound Other (Specify): Chronic Kid",
+        "Not assessed/no information (D0150) Patient Mood Interview (PHQ-2 to 9) Say to patient: \"Over the last 2 weeks, have you been bothered by any of the following problems?\" If symptom is present, enter 1 (yes) in column 1, Symptom Presence If",
+        "ion Start Date Add Allergies None known NEUROLOGICAL (HEAD, MOOD, EYES, EARS) Neuro/Emotional/Behavioral Assessment Conditions of Participation Neuromascular Impairment: No Problems identified Speech Hearing Visual Tremors Numbness Tingling"
+      ],
+      "missingFields": [],
+      "suggestions": [],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-sample-2026-04-21T23-57-18-078Z-da65ebfd\\outputs\\patients\\CHRISTINE_YOUNG__52c5fc31a7ba9d78\\documents\\christine-young-referral-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "diagnosis",
+      "label": "Diagnosis",
+      "status": "COMPLETED",
+      "filledFieldCount": 5,
+      "missingFieldCount": 0,
+      "evidence": [
+        "e patient is receiving home care in Column 1, and enter its ICD-10-CM code at the level of highest specificity in Column 2 (diagnosis codes only - no surgical or procedure codes allowed). Diagnoses are listed in the order that best reflects",
+        "GNOSES (M1021/1023) Diagnoses and Symptom Control List each diagnosis for which the patient is receiving home care in Column 1, and enter its ICD-10-CM code at the level of highest specificity in Column 2 (diagnosis codes only - no surgical",
+        "nformation: Prior Hospitalization Number of times: Yes No 1 FALL RISK ASSESSMENT TOOL MAHC 10* FALL RISK ASSESSMENT TOOL Yes No Age 65+ Diagnosis (3 or more co-existing) Includes only documented medical diagnosis Prior history of falls with"
+      ],
+      "missingFields": [],
+      "suggestions": [],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-sample-2026-04-21T23-57-18-078Z-da65ebfd\\outputs\\patients\\CHRISTINE_YOUNG__52c5fc31a7ba9d78\\documents\\christine-young-referral-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "medications_allergies",
+      "label": "Medications and Allergies",
+      "status": "COMPLETED",
+      "filledFieldCount": 5,
+      "missingFieldCount": 0,
+      "evidence": [
+        "health team. Skilled nursing services will be essential for medication management, including anticoagulation therapy with Apixaban and treatment of her chronic conditions. Additionally, skilled physical and occupational therapy are necessar",
+        "nally 4. Almost Constantly 8. Unable to answer MEDICATION & ALLERGIES (INJECTABLES MEDICATIONS) (N0415) High-Risk Drug Classes: Use and Indication: 1. Is Taking 2. Indication Noted 1. Is taking Check if the patient is taking any medications",
+        "7 of 26 A10. Other B1. Radiation Respiratory Therapies C1. Oxygen Therapy C2. Continuous C3. Intermittent C4. High-Concentration D1. Suctioning D2. Scheduled D3. As needed E1. Tracheostomy Care F1. Invasive Mechanical Ventilator G1. Non-in",
+        "Wound Other (Specify): Chronic Kidney Disease Renal Failure Dialysis Anemia Abnormal Coagulation Blood Clots Diabetes Thyroid Problems COPD Asthma Emphysema Chronic Obstructive Bronchitis Chronic Obstructive Asthma Urinary Incontinence Urin"
+      ],
+      "missingFields": [],
+      "suggestions": [],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-sample-2026-04-21T23-57-18-078Z-da65ebfd\\outputs\\patients\\CHRISTINE_YOUNG__52c5fc31a7ba9d78\\documents\\christine-young-referral-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "patient_coordination_care_plan",
+      "label": "Patient Coordination and Care Plan",
+      "status": "COMPLETED",
+      "filledFieldCount": 4,
+      "missingFieldCount": 0,
+      "evidence": [
+        "oring Front-loading Visits Individualized Patient Emergency Care Plan Telemonitoring Care Coordination (physicians, hospitals, nursing homes ...) Fall Prevention Program Wound Care Immunizations (M1040, M1045, M1050, M1055) F_CTL_699c7f2404",
+        "(Specify): Comments: remain at home with caregiver and dtr PATIENT SUMMARY & CLINICAL NARRATIVE Summary Christine Young is an 81-year-old female referred for home health services on February 23, 2026, with a start of care date of February",
+        "are under Medicare guidelines. Homebound Reason Document as Clinical Narrative Patient is not Homebound Criteria One (One must be met): Describe what assistive devices the patient is dependent on (if any) and specifically why the patient co",
+        "nager Others(Specify): Physician Notified Re: Plan of Care, Goals, Frequency, Duration, and Direction Other Discipline Recommendations: oT ST MSW HHA Others (Specify): Reason: Discharge Plans Written notice of discharge provided to patient"
+      ],
+      "missingFields": [],
+      "suggestions": [],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-sample-2026-04-21T23-57-18-078Z-da65ebfd\\outputs\\patients\\CHRISTINE_YOUNG__52c5fc31a7ba9d78\\documents\\christine-young-referral-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "other_supplementals",
+      "label": "Other Supplementals",
+      "status": "COMPLETED",
+      "filledFieldCount": 3,
+      "missingFieldCount": 0,
+      "evidence": [
+        "preference: Patient's primary source of emotional support: Past Medical History (Mark all that apply) CHF Cardiomyopathy Arrhythmia Chest Pain MI CAD HTN PVD Murmur Cancer: (Specify Type): In remission? Yes YOUNG, CHRISTINE I 84 I DOB: 05/",
+        "B Yes No Unknown Date: mm/dd/yyyy Additional Immunizations Immunization Name: Yes No Unknown Date: mm/dd/yyyy Immunization Name: Yes No Unknown Date: mm/dd/yyyy Comments: F_CTL_699c7f2404cd05d537d0204a_0 YOUNG, CHRISTINE I 84 I DOB: 05/30/",
+        "UNG, CHRISTINE I 84 I DOB: 05/30/1944 N: 02/27/2026 8 of 26 Vaccination Record 1st Dose COVID-19 Product Name/Manufacturer (Lot No.): Date: Healthcare Professional or Clinic Site: mm/dd/yyyy 2nd Dose COVID-19 Product Name/Manufacturer (Lot"
+      ],
+      "missingFields": [],
+      "suggestions": [],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-sample-2026-04-21T23-57-18-078Z-da65ebfd\\outputs\\patients\\CHRISTINE_YOUNG__52c5fc31a7ba9d78\\documents\\christine-young-referral-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "care_plan",
+      "label": "Care Plan",
+      "status": "COMPLETED",
+      "filledFieldCount": 4,
+      "missingFieldCount": 0,
+      "evidence": [
+        "nt level of functional impairment that necessitates skilled intervention. Furthermore, Christine's recent hospitalization and her complex medical history make home health services medically necessary to ensure safe recovery and prevent read",
+        "transfer and fall prevention techniques training. Patient's goal: \"I want to get stronger, better, be free from pain and able to do the activities in daily living.\" Muscle Strengthening ROM Evaluation Neck ACTION ROM STRENGTH RIGHT LEFT RIG",
+        "ore prescribed or OTC medications a day 5 Has a tooth/mouth problem that makes it hard to eat 10 Is not always physically able to cook and/or feed self and has no 5 caregiver to assist Has 3 or more drinks of beer, liquor or wine almost eve"
+      ],
+      "missingFields": [],
+      "suggestions": [],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-sample-2026-04-21T23-57-18-078Z-da65ebfd\\outputs\\patients\\CHRISTINE_YOUNG__52c5fc31a7ba9d78\\documents\\christine-young-referral-pdf\\source.pdf"
+      ]
+    }
+  ],
+  "warningCount": 0,
+  "topWarning": null,
+  "warnings": []
+}

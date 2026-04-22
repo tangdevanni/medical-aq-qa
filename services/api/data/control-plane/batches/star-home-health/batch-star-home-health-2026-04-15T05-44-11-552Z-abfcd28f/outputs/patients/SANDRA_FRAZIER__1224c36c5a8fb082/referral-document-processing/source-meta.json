@@ -1,0 +1,27 @@
+{
+  "patientId": "SANDRA_FRAZIER__1224c36c5a8fb082",
+  "selectedDocumentId": "SANDRA_FRAZIER__1224c36c5a8fb082-referral-1",
+  "sourceDocuments": [
+    {
+      "documentId": "SANDRA_FRAZIER__1224c36c5a8fb082-referral-1",
+      "sourceIndex": 0,
+      "sourceLabel": "Admission 04-03-2026",
+      "normalizedSourceLabel": "admission-04-03-2026",
+      "sourceType": "ADMISSION_ORDER",
+      "acquisitionMethod": "local_file",
+      "selectionStatus": "selected",
+      "portalLabel": "Admission 04-03-2026",
+      "localFilePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-15T05-44-11-552Z-abfcd28f\\outputs\\patients\\SANDRA_FRAZIER__1224c36c5a8fb082\\documents\\admission-04-03-2026\\source.pdf",
+      "effectiveTextSource": "viewer_text_fallback",
+      "fileType": "pdf",
+      "fileSizeBytes": null,
+      "extractedTextLength": 1635,
+      "selectedReason": "highest-ranked referral/admission-order source with local file preference",
+      "rejectedReasons": []
+    }
+  ],
+  "warnings": [
+    "Local file extraction failed for C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-15T05-44-11-552Z-abfcd28f\\outputs\\patients\\SANDRA_FRAZIER__1224c36c5a8fb082\\documents\\admission-04-03-2026\\source.pdf: ENOENT: no such file or directory, open 'C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-15T05-44-11-552Z-abfcd28f\\outputs\\patients\\SANDRA_FRAZIER__1224c36c5a8fb082\\documents\\admission-04-03-2026\\source.pdf'"
+  ],
+  "generatedAt": "2026-04-15T08:29:48.775Z"
+}

@@ -1,0 +1,496 @@
+{
+  "assessmentType": "RECERT",
+  "matchedAssessmentLabel": null,
+  "reviewSource": "printed_note_ocr",
+  "overallStatus": "PARTIAL",
+  "capture": {
+    "assessmentType": "RECERT",
+    "printProfileKey": "soc_full_document_v1",
+    "printProfileLabel": "Full OASIS document",
+    "printButtonDetected": true,
+    "printButtonVisible": true,
+    "printButtonSelectorUsed": "button:has-text('Print')",
+    "printClickSucceeded": false,
+    "printModalDetected": false,
+    "printModalSelectorUsed": null,
+    "printModalConfirmSelectorUsed": null,
+    "printModalConfirmSucceeded": false,
+    "selectedSectionLabels": [],
+    "currentUrl": "https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/client/66342d9f7c20df4a233b598a/intake/6939a724936c33e5ecc209d8/documents?type=oasis",
+    "printedPdfPath": null,
+    "sourcePdfPath": null,
+    "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-15T06-15-18-195Z-f5311eb3\\outputs\\evidence\\CAMTHUONG_CONG__db10a005da7640dc\\oasis-printed-note\\extracted-text.txt",
+    "extractionResultPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-15T06-15-18-195Z-f5311eb3\\outputs\\evidence\\CAMTHUONG_CONG__db10a005da7640dc\\oasis-printed-note\\extraction-result.json",
+    "ocrResultPath": null,
+    "textLength": 2209,
+    "extractionMethod": "visible_text_fallback",
+    "warnings": [
+      "OASIS print button click did not open a print modal.",
+      "Fell back to visible page text because printed-note OCR text was unavailable."
+    ]
+  },
+  "sections": [
+    {
+      "key": "administrative_information",
+      "label": "Administrative Information",
+      "status": "MISSING",
+      "filledFieldCount": 0,
+      "missingFieldCount": 15,
+      "evidence": [],
+      "missingFields": [
+        "M0010 Agency Medicare Provider #",
+        "M0014 Branch State",
+        "M0016 Branch ID #",
+        "M0018 Attending Physician (NPI)",
+        "M0020 Patient ID #",
+        "M0030 Start of Care Date",
+        "M0040 Patient Name",
+        "M0050 State of Residence"
+      ],
+      "suggestions": [
+        "Confirm branch state from agency profile if it is blank in the printed section.",
+        "Branch ID was not found in the shared referral evidence; verify against the agency record.",
+        "Shared evidence references patient/resident id CONG; confirm if that maps to M0020.",
+        "Recommend M0040 = Camthuong Cong from workbook/patient identity.",
+        "Recommend M0060 = 10550 from source address evidence.",
+        "Recommend M0063 = 4XY3JY9DF82 from shared referral/intake evidence.",
+        "Recommend M0069 = Female from source demographic evidence."
+      ],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-15T06-15-18-195Z-f5311eb3\\outputs\\patients\\CAMTHUONG_CONG__db10a005da7640dc\\documents\\c-cong-referral-notes-05-02-24-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "primary_reason_medical_necessity",
+      "label": "Primary Reason / Medical Necessity",
+      "status": "MISSING",
+      "filledFieldCount": 0,
+      "missingFieldCount": 3,
+      "evidence": [],
+      "missingFields": [
+        "medical necessity",
+        "homebound",
+        "reason for admission"
+      ],
+      "suggestions": [
+        "Compare homebound and medical-necessity narrative against referral and hospital evidence.",
+        "Use shared referral/hospital evidence before escalating any diagnosis changes to coding."
+      ],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-15T06-15-18-195Z-f5311eb3\\outputs\\patients\\CAMTHUONG_CONG__db10a005da7640dc\\documents\\c-cong-referral-notes-05-02-24-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "vital_signs",
+      "label": "Vital Signs",
+      "status": "MISSING",
+      "filledFieldCount": 0,
+      "missingFieldCount": 4,
+      "evidence": [],
+      "missingFields": [
+        "blood pressure",
+        "heart rate",
+        "temperature",
+        "respiratory rate"
+      ],
+      "suggestions": [
+        "Check whether visit notes contain vitals that can support missing fields.",
+        "Use shared referral/hospital evidence before escalating any diagnosis changes to coding."
+      ],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-15T06-15-18-195Z-f5311eb3\\outputs\\patients\\CAMTHUONG_CONG__db10a005da7640dc\\documents\\c-cong-referral-notes-05-02-24-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "neurological",
+      "label": "Neurological",
+      "status": "MISSING",
+      "filledFieldCount": 0,
+      "missingFieldCount": 3,
+      "evidence": [],
+      "missingFields": [
+        "mental status",
+        "forgetful",
+        "oriented"
+      ],
+      "suggestions": [
+        "Review clinician note cues for cognition and mental-status consistency.",
+        "Use shared referral/hospital evidence before escalating any diagnosis changes to coding."
+      ],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-15T06-15-18-195Z-f5311eb3\\outputs\\patients\\CAMTHUONG_CONG__db10a005da7640dc\\documents\\c-cong-referral-notes-05-02-24-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "eyes_ears",
+      "label": "Eyes & Ears",
+      "status": "MISSING",
+      "filledFieldCount": 0,
+      "missingFieldCount": 4,
+      "evidence": [],
+      "missingFields": [
+        "glasses",
+        "hearing aid",
+        "vision",
+        "hearing"
+      ],
+      "suggestions": [
+        "Check source notes for vision or hearing aids and related impairments.",
+        "Use shared referral/hospital evidence before escalating any diagnosis changes to coding."
+      ],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-15T06-15-18-195Z-f5311eb3\\outputs\\patients\\CAMTHUONG_CONG__db10a005da7640dc\\documents\\c-cong-referral-notes-05-02-24-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "cardiovascular",
+      "label": "Cardiovascular",
+      "status": "MISSING",
+      "filledFieldCount": 0,
+      "missingFieldCount": 4,
+      "evidence": [],
+      "missingFields": [
+        "edema",
+        "pulses",
+        "chest pain",
+        "heart sounds"
+      ],
+      "suggestions": [
+        "Review assessment evidence for edema, pulses, chest pain, and heart sounds.",
+        "Use shared referral/hospital evidence before escalating any diagnosis changes to coding."
+      ],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-15T06-15-18-195Z-f5311eb3\\outputs\\patients\\CAMTHUONG_CONG__db10a005da7640dc\\documents\\c-cong-referral-notes-05-02-24-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "respiratory",
+      "label": "Respiratory",
+      "status": "MISSING",
+      "filledFieldCount": 0,
+      "missingFieldCount": 4,
+      "evidence": [],
+      "missingFields": [
+        "shortness of breath",
+        "cough",
+        "lung sounds",
+        "oxygen"
+      ],
+      "suggestions": [
+        "Compare respiratory answers against referral diagnoses and visit-note respiratory findings.",
+        "Use shared referral/hospital evidence before escalating any diagnosis changes to coding."
+      ],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-15T06-15-18-195Z-f5311eb3\\outputs\\patients\\CAMTHUONG_CONG__db10a005da7640dc\\documents\\c-cong-referral-notes-05-02-24-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "gastrointestinal",
+      "label": "Gastrointestinal",
+      "status": "MISSING",
+      "filledFieldCount": 0,
+      "missingFieldCount": 4,
+      "evidence": [],
+      "missingFields": [
+        "bowel",
+        "diet",
+        "nutrition",
+        "last bowel movement"
+      ],
+      "suggestions": [
+        "Check documents for diet, bowel, and nutrition references.",
+        "Use shared referral/hospital evidence before escalating any diagnosis changes to coding."
+      ],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-15T06-15-18-195Z-f5311eb3\\outputs\\patients\\CAMTHUONG_CONG__db10a005da7640dc\\documents\\c-cong-referral-notes-05-02-24-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "genitourinary",
+      "label": "Genitourinary",
+      "status": "MISSING",
+      "filledFieldCount": 0,
+      "missingFieldCount": 3,
+      "evidence": [],
+      "missingFields": [
+        "urinary",
+        "catheter",
+        "incontinent"
+      ],
+      "suggestions": [
+        "Review source notes for urinary symptoms or catheter references.",
+        "Use shared referral/hospital evidence before escalating any diagnosis changes to coding."
+      ],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-15T06-15-18-195Z-f5311eb3\\outputs\\patients\\CAMTHUONG_CONG__db10a005da7640dc\\documents\\c-cong-referral-notes-05-02-24-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "musculoskeletal_functional_status",
+      "label": "Musculoskeletal and Functional Status",
+      "status": "MISSING",
+      "filledFieldCount": 0,
+      "missingFieldCount": 4,
+      "evidence": [],
+      "missingFields": [
+        "mobility",
+        "transfer",
+        "self care",
+        "ambulate"
+      ],
+      "suggestions": [
+        "Cross-check PT/OT evidence for functional and mobility items.",
+        "Use shared referral/hospital evidence before escalating any diagnosis changes to coding."
+      ],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-15T06-15-18-195Z-f5311eb3\\outputs\\patients\\CAMTHUONG_CONG__db10a005da7640dc\\documents\\c-cong-referral-notes-05-02-24-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "integumentary",
+      "label": "Integumentary",
+      "status": "PARTIAL",
+      "filledFieldCount": 1,
+      "missingFieldCount": 3,
+      "evidence": [
+        "Hospitalization Billing QA Checklist Supplies Vital Graphs Wound History Care Coordination Intake File Uploads Alerts File Uploads Notifications RCD Tracking CONG, CAMTHUONG110996SOC: 12/14/2025 Status: Active Payer: Medicare3rd Episode of"
+      ],
+      "missingFields": [
+        "skin",
+        "pressure ulcer",
+        "turgor"
+      ],
+      "suggestions": [
+        "Compare wound and skin answers against wound-care and visit-note evidence.",
+        "Use shared referral/hospital evidence before escalating any diagnosis changes to coding."
+      ],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-15T06-15-18-195Z-f5311eb3\\outputs\\patients\\CAMTHUONG_CONG__db10a005da7640dc\\documents\\c-cong-referral-notes-05-02-24-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "pain_assessment",
+      "label": "Pain Assessment",
+      "status": "MISSING",
+      "filledFieldCount": 0,
+      "missingFieldCount": 3,
+      "evidence": [],
+      "missingFields": [
+        "pain",
+        "pain scale",
+        "pain location"
+      ],
+      "suggestions": [
+        "Review clinician notes for pain frequency, scale, and location details.",
+        "Use shared referral/hospital evidence before escalating any diagnosis changes to coding."
+      ],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-15T06-15-18-195Z-f5311eb3\\outputs\\patients\\CAMTHUONG_CONG__db10a005da7640dc\\documents\\c-cong-referral-notes-05-02-24-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "emotional",
+      "label": "Emotional",
+      "status": "MISSING",
+      "filledFieldCount": 0,
+      "missingFieldCount": 3,
+      "evidence": [],
+      "missingFields": [
+        "depression",
+        "phq",
+        "mood"
+      ],
+      "suggestions": [
+        "Check source evidence for depression or mood indicators that support D0150 answers.",
+        "Use shared referral/hospital evidence before escalating any diagnosis changes to coding."
+      ],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-15T06-15-18-195Z-f5311eb3\\outputs\\patients\\CAMTHUONG_CONG__db10a005da7640dc\\documents\\c-cong-referral-notes-05-02-24-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "diagnosis",
+      "label": "Diagnosis",
+      "status": "PARTIAL",
+      "filledFieldCount": 2,
+      "missingFieldCount": 2,
+      "evidence": [
+        "5 Admission Info Admission Packets Calendar Insurance/Payer Diagnosis Physicians Care Team Documentations AllPhysician OrdersVisit NotesOASISCommunication NotesOther Notes Care Plan Summary Plan of Care Medication AllSnapshotsInteractions H"
+      ],
+      "missingFields": [
+        "ICD",
+        "fall risk"
+      ],
+      "suggestions": [
+        "Use coding-team output and diagnosis source evidence for diagnosis review only.",
+        "Use shared referral/hospital evidence before escalating any diagnosis changes to coding."
+      ],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-15T06-15-18-195Z-f5311eb3\\outputs\\patients\\CAMTHUONG_CONG__db10a005da7640dc\\documents\\c-cong-referral-notes-05-02-24-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "medications_allergies",
+      "label": "Medications and Allergies",
+      "status": "PARTIAL",
+      "filledFieldCount": 1,
+      "missingFieldCount": 3,
+      "evidence": [
+        "mmunication NotesOther Notes Care Plan Summary Plan of Care Medication AllSnapshotsInteractions Hospitalization Billing QA Checklist Supplies Vital Graphs Wound History Care Coordination Intake File Uploads Alerts File Uploads Notifications"
+      ],
+      "missingFields": [
+        "allerg",
+        "oxygen therapy",
+        "dialysis"
+      ],
+      "suggestions": [
+        "Check referral and hospital documents for medication, allergy, and special-treatment references.",
+        "Use shared referral/hospital evidence before escalating any diagnosis changes to coding."
+      ],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-15T06-15-18-195Z-f5311eb3\\outputs\\patients\\CAMTHUONG_CONG__db10a005da7640dc\\documents\\c-cong-referral-notes-05-02-24-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "patient_coordination_care_plan",
+      "label": "Patient Coordination and Care Plan",
+      "status": "PARTIAL",
+      "filledFieldCount": 1,
+      "missingFieldCount": 3,
+      "evidence": [
+        "sician OrdersVisit NotesOASISCommunication NotesOther Notes Care Plan Summary Plan of Care Medication AllSnapshotsInteractions Hospitalization Billing QA Checklist Supplies Vital Graphs Wound History Care Coordination Intake File Uploads Al"
+      ],
+      "missingFields": [
+        "patient summary",
+        "clinical narrative",
+        "goals"
+      ],
+      "suggestions": [
+        "Review plan-of-care and source narratives for coordination and care-plan support.",
+        "Use shared referral/hospital evidence before escalating any diagnosis changes to coding."
+      ],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-15T06-15-18-195Z-f5311eb3\\outputs\\patients\\CAMTHUONG_CONG__db10a005da7640dc\\documents\\c-cong-referral-notes-05-02-24-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "other_supplementals",
+      "label": "Other Supplementals",
+      "status": "MISSING",
+      "filledFieldCount": 0,
+      "missingFieldCount": 3,
+      "evidence": [],
+      "missingFields": [
+        "past medical history",
+        "immunization",
+        "vaccination"
+      ],
+      "suggestions": [
+        "Use H&P and referral records to confirm supplemental history and immunization details.",
+        "Use shared referral/hospital evidence before escalating any diagnosis changes to coding."
+      ],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-15T06-15-18-195Z-f5311eb3\\outputs\\patients\\CAMTHUONG_CONG__db10a005da7640dc\\documents\\c-cong-referral-notes-05-02-24-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "care_plan",
+      "label": "Care Plan",
+      "status": "PARTIAL",
+      "filledFieldCount": 1,
+      "missingFieldCount": 3,
+      "evidence": [],
+      "missingFields": [
+        "intervention",
+        "goal",
+        "problem"
+      ],
+      "suggestions": [
+        "Use existing diagnosis and plan-of-care evidence to seed care-plan review suggestions.",
+        "Use shared referral/hospital evidence before escalating any diagnosis changes to coding."
+      ],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-15T06-15-18-195Z-f5311eb3\\outputs\\patients\\CAMTHUONG_CONG__db10a005da7640dc\\documents\\c-cong-referral-notes-05-02-24-pdf\\source.pdf"
+      ]
+    }
+  ],
+  "warningCount": 3,
+  "topWarning": "Assessment type RECERT is not explicitly automated yet; attempting the current SOC-oriented note open path.",
+  "warnings": [
+    "Assessment type RECERT is not explicitly automated yet; attempting the current SOC-oriented note open path.",
+    "OASIS print button click did not open a print modal.",
+    "Fell back to visible page text because printed-note OCR text was unavailable."
+  ]
+}

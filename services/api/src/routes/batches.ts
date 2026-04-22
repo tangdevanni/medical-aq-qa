@@ -21,6 +21,10 @@ const batchPatientParamsSchema = z.object({
   patientId: z.string().min(1),
 });
 
+const latestPatientQuerySchema = z.object({
+  subsidiaryId: z.string().min(1),
+});
+
 const sampleBatchBodySchema = z.object({
   limit: z.number().int().positive().max(50).optional(),
   patientIds: z.array(z.string().min(1)).max(50).optional(),
@@ -122,6 +126,25 @@ async function buildDashboardRunDetail(
   });
 }
 
+async function buildDashboardRunListEntry(
+  service: BatchControlPlaneService,
+  batchId: string,
+) {
+  const batch = await service.getBatch(batchId);
+  if (!batch) {
+    return null;
+  }
+
+  const patientRuns = await service.getPatientRuns(batchId);
+  return toDashboardRunListItem(
+    batch,
+    patientRuns.map((patientRun) => ({
+      status: patientRun.processingStatus,
+      errorSummary: patientRun.errorSummary,
+    })),
+  );
+}
+
 export async function registerBatchRoutes(
   app: FastifyInstance<any, any, any, any>,
   service: BatchControlPlaneService,
@@ -162,11 +185,17 @@ export async function registerBatchRoutes(
   });
 
   app.get("/api/batches", async () => {
-    return (await service.listBatches()).map(toDashboardRunListItem);
+    const batches = await Promise.all(
+      (await service.listBatches()).map((batch) => buildDashboardRunListEntry(service, batch.id)),
+    );
+    return batches.filter((batch): batch is NonNullable<typeof batch> => batch !== null);
   });
 
   app.get("/batches", async () => {
-    return (await service.listBatches()).map(toDashboardRunListItem);
+    const batches = await Promise.all(
+      (await service.listBatches()).map((batch) => buildDashboardRunListEntry(service, batch.id)),
+    );
+    return batches.filter((batch): batch is NonNullable<typeof batch> => batch !== null);
   });
 
   app.get("/api/batches/:id", async (request, reply) => {
@@ -348,11 +377,17 @@ export async function registerBatchRoutes(
   });
 
   app.get("/api/runs", async () => {
-    return (await service.listBatches()).map(toDashboardRunListItem);
+    const runs = await Promise.all(
+      (await service.listBatches()).map((batch) => buildDashboardRunListEntry(service, batch.id)),
+    );
+    return runs.filter((run): run is NonNullable<typeof run> => run !== null);
   });
 
   app.get("/runs", async () => {
-    return (await service.listBatches()).map(toDashboardRunListItem);
+    const runs = await Promise.all(
+      (await service.listBatches()).map((batch) => buildDashboardRunListEntry(service, batch.id)),
+    );
+    return runs.filter((run): run is NonNullable<typeof run> => run !== null);
   });
 
   app.get("/api/runs/:id", async (request, reply) => {
@@ -426,5 +461,34 @@ export async function registerBatchRoutes(
     }
 
     return toDashboardPatientStatus(patient);
+  });
+
+  app.get("/api/patients/:patientId/latest", async (request, reply) => {
+    const params = z.object({ patientId: z.string().min(1) }).parse(request.params);
+    const query = latestPatientQuerySchema.parse(request.query);
+    const latestPatient = await service.getLatestPatientForSubsidiary({
+      subsidiaryId: query.subsidiaryId,
+      patientId: params.patientId,
+    });
+    if (!latestPatient) {
+      reply.code(404);
+      return {
+        message: `Patient not found: ${params.patientId}`,
+      };
+    }
+
+    const patient = await buildDashboardPatientView(
+      service,
+      latestPatient.batch.id,
+      latestPatient.summary.workItemId,
+    );
+    if (!patient) {
+      reply.code(404);
+      return {
+        message: `Patient not found: ${params.patientId}`,
+      };
+    }
+
+    return toDashboardPatientDetail(patient);
   });
 }

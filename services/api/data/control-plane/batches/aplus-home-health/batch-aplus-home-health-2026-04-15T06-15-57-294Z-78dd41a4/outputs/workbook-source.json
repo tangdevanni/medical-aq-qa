@@ -1,0 +1,37 @@
+{
+  "agencyId": "aplus-home-health",
+  "batchId": "batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4",
+  "kind": "finale_download",
+  "path": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\source\\aplus-home-health-oasis-30-days.xlsx",
+  "originalFileName": "OASIS Tracking (30 Days Tracking).xlsx",
+  "sourceLabel": "OASIS Tracking (30 Days Tracking).xlsx",
+  "acquiredAt": "2026-04-15T06:16:22.871Z",
+  "ingestedAt": "2026-04-15T06:16:22.871Z",
+  "acquisition": {
+    "providerId": "FINALE",
+    "acquisitionReference": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\source\\finale-workbook-export.json",
+    "metadataPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\source\\finale-workbook-export.json",
+    "selectedAgencyName": "A Plus Home Health Systems LLC",
+    "selectedAgencyUrl": "https://app.finalehealth.com/users/user-agencies",
+    "dashboardUrl": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+    "notes": [
+      "Workbook acquired from Finale dashboard OASIS 30 Day's export.",
+      "Selected agency: A Plus Home Health Systems LLC",
+      "Dashboard URL: https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "Workbook verification detected sheets: trackingReport"
+    ]
+  },
+  "verification": {
+    "usable": true,
+    "verifiedAt": "2026-04-15T06:16:22.871Z",
+    "fileSizeBytes": 233279,
+    "fileExtension": ".xlsx",
+    "sheetNames": [
+      "OASIS Tracking Report"
+    ],
+    "detectedSourceTypes": [
+      "trackingReport"
+    ],
+    "warningCount": 0
+  }
+}

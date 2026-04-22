@@ -99,6 +99,36 @@ function countPatientsByStatus(batch: BatchRecord) {
   };
 }
 
+function countPatientSummariesByStatus(
+  batch: BatchRecord,
+  patients: Array<{ status: string }>,
+) {
+  const totalWorkItems = batch.parse.workItemCount || patients.length;
+  const totalCompleted = patients.filter((patient) => patient.status === "COMPLETE").length;
+  const totalBlocked = patients.filter((patient) => patient.status === "BLOCKED").length;
+  const totalFailed = patients.filter((patient) => patient.status === "FAILED").length;
+  const totalNeedsHumanReview = patients.filter(
+    (patient) => patient.status === "NEEDS_HUMAN_REVIEW",
+  ).length;
+  const currentlyRunningCount = patients.filter((patient) =>
+    ["MATCHING_PATIENT", "DISCOVERING_CHART", "COLLECTING_EVIDENCE", "RUNNING_QA"].includes(
+      patient.status,
+    ),
+  ).length;
+  const processedCount = totalCompleted + totalBlocked + totalFailed + totalNeedsHumanReview;
+
+  return {
+    totalWorkItems,
+    totalCompleted,
+    totalBlocked,
+    totalFailed,
+    totalNeedsHumanReview,
+    currentlyRunningCount,
+    percentComplete:
+      totalWorkItems === 0 ? 0 : Math.round((processedCount / totalWorkItems) * 100),
+  };
+}
+
 function toSubsidiarySummary(batch: BatchRecord) {
   return {
     subsidiaryId: batch.subsidiary.id,
@@ -138,10 +168,14 @@ function deriveCurrentExecutionStep(batch: BatchRecord): string {
   return "CREATED";
 }
 
-function deriveBatchErrorSummary(batch: BatchRecord): string | null {
+function deriveBatchErrorSummary(
+  batch: BatchRecord,
+  patientSummaries?: Array<{ errorSummary: string | null }>,
+): string | null {
   return (
     batch.run.lastError ??
     batch.parse.lastError ??
+    patientSummaries?.find((patient) => patient.errorSummary)?.errorSummary ??
     batch.patientRuns.find((patientRun) => patientRun.errorSummary)?.errorSummary ??
     null
   );
@@ -847,6 +881,8 @@ function deriveRecommendationConfidenceLabel(sourceEvidence: Array<{ confidence?
 function deriveFieldSnapshotLookup(input: PatientViewInput) {
   const fieldMapSnapshot = asRecord(input.artifactContents.fieldMapSnapshot);
   const snapshotFields = asArray(fieldMapSnapshot?.fields);
+  const printedNoteChartValuesRecord = asRecord(input.artifactContents.printedNoteChartValues);
+  const printedNoteChartValues = asRecord(printedNoteChartValuesRecord?.currentChartValues) ?? {};
   const snapshotByFieldKey = new Map<
     string,
     {
@@ -868,6 +904,23 @@ function deriveFieldSnapshotLookup(input: PatientViewInput) {
       currentChartValueSource: asString(snapshotField?.currentChartValueSource) ?? "unavailable",
       populatedInChart:
         typeof snapshotField?.populatedInChart === "boolean" ? snapshotField.populatedInChart : false,
+    });
+  }
+
+  for (const [fieldKey, recoveredChartValue] of Object.entries(printedNoteChartValues)) {
+    if (!hasMeaningfulValue(recoveredChartValue)) {
+      continue;
+    }
+
+    const existingSnapshot = snapshotByFieldKey.get(fieldKey);
+    if (existingSnapshot?.currentChartValueSource === "chart_read") {
+      continue;
+    }
+
+    snapshotByFieldKey.set(fieldKey, {
+      currentChartValue: recoveredChartValue,
+      currentChartValueSource: "printed_note_ocr",
+      populatedInChart: true,
     });
   }
 
@@ -2135,8 +2188,13 @@ function sortPatientSummaries(patients: ReturnType<typeof toDashboardPatientSumm
   });
 }
 
-export function toDashboardRunListItem(batch: BatchRecord) {
-  const counts = countPatientsByStatus(batch);
+export function toDashboardRunListItem(
+  batch: BatchRecord,
+  resolvedPatients?: Array<{ status: string; errorSummary: string | null }>,
+) {
+  const counts = resolvedPatients
+    ? countPatientSummariesByStatus(batch, resolvedPatients)
+    : countPatientsByStatus(batch);
 
   return {
     ...toSubsidiarySummary(batch),
@@ -2153,7 +2211,7 @@ export function toDashboardRunListItem(batch: BatchRecord) {
     totalNeedsHumanReview: counts.totalNeedsHumanReview,
     createdAt: batch.createdAt,
     lastUpdatedAt: batch.updatedAt,
-    errorSummary: deriveBatchErrorSummary(batch),
+    errorSummary: deriveBatchErrorSummary(batch, resolvedPatients),
     runMode: batch.runMode,
     rerunEnabled: batch.schedule.rerunEnabled && batch.schedule.active,
     lastRunAt: batch.schedule.lastRunAt,
@@ -2212,14 +2270,14 @@ export function toDashboardRunDetail(input: {
   batch: BatchRecord;
   patients: ReturnType<typeof toDashboardPatientSummary>[];
 }) {
-  const counts = countPatientsByStatus(input.batch);
   const patients = sortPatientSummaries(input.patients);
+  const counts = countPatientSummariesByStatus(input.batch, patients);
 
   return {
-    ...toDashboardRunListItem(input.batch),
+    ...toDashboardRunListItem(input.batch, patients),
     sourceWorkbookName: input.batch.sourceWorkbook.originalFileName,
     uploadedAt: input.batch.sourceWorkbook.uploadedAt,
-    canRetryBlockedPatients: input.batch.patientRuns.some((patientRun) => patientRun.retryEligible),
+    canRetryBlockedPatients: patients.some((patient) => patient.retryEligible),
     canDeactivate: input.batch.schedule.active,
     patientStatusSummary: {
       ready: counts.totalCompleted,

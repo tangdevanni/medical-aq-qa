@@ -1,0 +1,26 @@
+{
+  "assessmentType": "SOC",
+  "matchedAssessmentLabel": null,
+  "printProfileKey": "soc_full_document_v1",
+  "printProfileLabel": "Full OASIS document",
+  "currentUrl": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69d56dd9fcb3d10c3b2b9070/file-uploads",
+  "printButtonDetected": true,
+  "printButtonVisible": false,
+  "printButtonSelectorUsed": "fin-button[title='Print Preview'] > button, fin-button[title*='Print'] > button, fin-button[icon='ft-printer'] > button, button:has(.ft-printer), button:has-text('Print'), role=button[name=/^print$/i]",
+  "printClickSucceeded": false,
+  "printModalDetected": false,
+  "printModalSelectorUsed": null,
+  "printModalConfirmSelectorUsed": null,
+  "printModalConfirmSucceeded": false,
+  "selectedSectionLabels": [],
+  "printedPdfPath": null,
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\evidence\\GENEVA_EGELHOFF__0f0c294619085ab6\\oasis-printed-note\\extracted-text.txt",
+  "ocrResultPath": null,
+  "textLength": 1816,
+  "extractionMethod": "visible_text_fallback",
+  "warnings": [
+    "Print button could not be located on the OASIS assessment page.",
+    "Fell back to visible page text because printed-note OCR text was unavailable."
+  ],
+  "generatedAt": "2026-04-15T07:11:41.377Z"
+}

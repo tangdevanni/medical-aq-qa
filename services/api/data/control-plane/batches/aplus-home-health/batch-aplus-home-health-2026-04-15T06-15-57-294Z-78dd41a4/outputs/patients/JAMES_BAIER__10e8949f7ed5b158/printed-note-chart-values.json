@@ -1,0 +1,70 @@
+{
+  "generatedAt": "2026-04-15T07:47:52.075Z",
+  "source": "printed_note_ocr",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\outputs\\evidence\\JAMES_BAIER__10e8949f7ed5b158\\oasis-printed-note\\extracted-text.txt",
+  "extractedFieldCount": 6,
+  "invocationModelId": "us.amazon.nova-lite-v1:0",
+  "currentChartValues": {
+    "patient_name": "BAIER, JAMES L.",
+    "dob": "1940-11-23",
+    "primary_reason_for_home_health_medical_necessity": "Homebound Reason",
+    "homebound_narrative": "Patient is not Homebound",
+    "functional_limitations": "Dyspnea with minimal exertion",
+    "pain_assessment_narrative": "Pain Assessment Wong-Baker FACES® Pain Rating Scale Numeric Rating Scale"
+  },
+  "extractedFieldValues": [
+    {
+      "field_key": "patient_name",
+      "current_value": "BAIER, JAMES L.",
+      "confidence": 0.95,
+      "source_spans": [
+        "Name: BAIER, JAMES L.",
+        "Patient Name: JAMES L BAIER"
+      ]
+    },
+    {
+      "field_key": "dob",
+      "current_value": "1940-11-23",
+      "confidence": 0.95,
+      "source_spans": [
+        "DOB: 11/23/1940",
+        "Birth Date: 11/23/1940"
+      ]
+    },
+    {
+      "field_key": "primary_reason_for_home_health_medical_necessity",
+      "current_value": "Homebound Reason",
+      "confidence": 0.9,
+      "source_spans": [
+        "Primary Reason for Home Health/Medical Necessity (POC Element): Homebound Reason"
+      ]
+    },
+    {
+      "field_key": "homebound_narrative",
+      "current_value": "Patient is not Homebound",
+      "confidence": 0.9,
+      "source_spans": [
+        "Patient is not Homebound"
+      ]
+    },
+    {
+      "field_key": "functional_limitations",
+      "current_value": "Dyspnea with minimal exertion",
+      "confidence": 0.9,
+      "source_spans": [
+        "Dyspnea with minimal exertion"
+      ]
+    },
+    {
+      "field_key": "pain_assessment_narrative",
+      "current_value": "Pain Assessment Wong-Baker FACES® Pain Rating Scale Numeric Rating Scale",
+      "confidence": 0.9,
+      "source_spans": [
+        "Pain Assessment Wong-Baker FACES® Pain Rating Scale Numeric Rating Scale"
+      ]
+    }
+  ],
+  "warnings": [
+    "Printed-note chart-value extraction used inference profile us.amazon.nova-lite-v1:0."
+  ]
+}

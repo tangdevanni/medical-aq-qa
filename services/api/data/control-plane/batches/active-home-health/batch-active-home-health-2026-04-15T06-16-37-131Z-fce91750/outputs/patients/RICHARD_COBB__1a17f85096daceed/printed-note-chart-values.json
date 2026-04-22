@@ -1,0 +1,108 @@
+{
+  "generatedAt": "2026-04-15T07:52:51.832Z",
+  "source": "printed_note_ocr",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\evidence\\RICHARD_COBB__1a17f85096daceed\\oasis-printed-note\\extracted-text.txt",
+  "extractedFieldCount": 9,
+  "invocationModelId": "us.amazon.nova-lite-v1:0",
+  "currentChartValues": {
+    "patient_name": "Richard Cobb",
+    "dob": "1959-07-28",
+    "primary_reason_for_home_health_medical_necessity": "Richard A. Cobb, a 66-year-old male, is being considered for home health admission due to his complex medical status following a recent discharge from Encompass Health Rehabilitation Hospital on April 9, 2026. His primary diagnosis involves multiple wounds, including a significant number of ulcers located on his right hip, right medial leg, right lateral knee, right foot, left knee, left heel, and bilateral heels. These wounds require consistent and skilled wound care management, which includes cleansing, applicati",
+    "recent_hospitalization_discharge_date": "2026-04-09",
+    "recent_hospitalization_facility": "Encompass Health Rehabilitation Hospital",
+    "living_situation": "Home",
+    "functional_limitations": "Reduced mobility, requires assistance for activities of daily living",
+    "therapy_need": "Skilled nursing for wound management and potentially physical therapy",
+    "pain_assessment_narrative": "Pain in left hip, rated 4 on Wong-Baker FACES® Pain Rating Scale, described as sharp, frequent, and affects quality of life. Pain makes it hard to sleep and limits day-to-day activities."
+  },
+  "extractedFieldValues": [
+    {
+      "field_key": "patient_name",
+      "current_value": "Richard Cobb",
+      "confidence": 0.95,
+      "source_spans": [
+        "Name: COBB, RICHARD",
+        "Name: RICHARD COBB",
+        "Patient: Richard Cobb"
+      ]
+    },
+    {
+      "field_key": "dob",
+      "current_value": "1959-07-28",
+      "confidence": 0.95,
+      "source_spans": [
+        "DOB: 1959-07-28",
+        "Birth Date: 07/28/1959"
+      ]
+    },
+    {
+      "field_key": "primary_reason_for_home_health_medical_necessity",
+      "current_value": "Richard A. Cobb, a 66-year-old male, is being considered for home health admission due to his complex medical status following a recent discharge from Encompass Health Rehabilitation Hospital on April 9, 2026. His primary diagnosis involves multiple wounds, including a significant number of ulcers located on his right hip, right medial leg, right lateral knee, right foot, left knee, left heel, and bilateral heels. These wounds require consistent and skilled wound care management, which includes cleansing, application of specialized dressings, and monitoring for signs of infection or complications. Mr. Cobb's functional limitations are notable; he experiences reduced mobility and requires assistance for activities of daily living due to pain and the need for ongoing wound care. The skilled care required for his condition includes skilled nursing for wound management and ongoing assessment of his healing progress, as well as potentially physical therapy to aid in mobility and rehabilitation.",
+      "confidence": 0.9,
+      "source_spans": [
+        "Primary Reason for Home Health/Medical Necessity (POC Element):",
+        "Richard A. Cobb, a 66-year-old male, is being considered for home health admission due to his complex medical status following a recent discharge from Encompass Health Rehabilitation Hospital on April 9, 2026."
+      ]
+    },
+    {
+      "field_key": "recent_hospitalization_discharge_date",
+      "current_value": "2026-04-09",
+      "confidence": 0.95,
+      "source_spans": [
+        "Recent hospitalization discharge date: 04/09/2026"
+      ]
+    },
+    {
+      "field_key": "recent_hospitalization_facility",
+      "current_value": "Encompass Health Rehabilitation Hospital",
+      "confidence": 0.9,
+      "source_spans": [
+        "Recent hospitalization facility: Encompass Health Rehabilitation Hospital"
+      ]
+    },
+    {
+      "field_key": "living_situation",
+      "current_value": "Home",
+      "confidence": 0.85,
+      "source_spans": [
+        "Homebound Reason (POC Element): Document as Clinical Narrative Patient is not Homebound"
+      ]
+    },
+    {
+      "field_key": "functional_limitations",
+      "current_value": "Reduced mobility, requires assistance for activities of daily living",
+      "confidence": 0.9,
+      "source_spans": [
+        "Functional Limitations: Reduced mobility and requires assistance for activities of daily living"
+      ]
+    },
+    {
+      "field_key": "therapy_need",
+      "current_value": "Skilled nursing for wound management and potentially physical therapy",
+      "confidence": 0.9,
+      "source_spans": [
+        "Skilled care required: Skilled nursing for wound management and potentially physical therapy"
+      ]
+    },
+    {
+      "field_key": "pain_assessment_narrative",
+      "current_value": "Pain in left hip, rated 4 on Wong-Baker FACES® Pain Rating Scale, described as sharp, frequent, and affects quality of life. Pain makes it hard to sleep and limits day-to-day activities.",
+      "confidence": 0.9,
+      "source_spans": [
+        "Pain Assessment Wong-Baker FACES® Pain Rating Scale Numeric Rating Scale",
+        "Pain Location and Description: Location Start Date Activity What makes pain worse? left hip 04/09/2026 - With Activityx Movementx Intensity Duration What makes pain better? Does pain affect quality of life? 4x chronic Med/Restx yes"
+      ]
+    },
+    {
+      "field_key": "medication_list",
+      "current_value": "AUGMENTIN, OXYCODONE, FLOMAX, MIRALAX, Zinc sulfate, Vitamin C, Thiamine, Gabapentin, Doxycycline, ELIQUIS, Multivitamin, Melatonin, Folic acid, Famotidine, PLAVIX, Baclofen, Atorvastatin, ASPIR-LOW",
+      "confidence": 0.95,
+      "source_spans": [
+        "Medication (POC Element ($484.60 (2.x))): Start Date Medication Strength / Dosage / Frequency Route Classification/Indication Status"
+      ]
+    }
+  ],
+  "warnings": [
+    "Printed-note chart-value extraction used inference profile us.amazon.nova-lite-v1:0."
+  ]
+}

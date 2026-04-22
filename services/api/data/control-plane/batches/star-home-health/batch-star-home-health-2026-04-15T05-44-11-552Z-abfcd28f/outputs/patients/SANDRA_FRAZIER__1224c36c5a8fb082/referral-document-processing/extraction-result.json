@@ -1,0 +1,35 @@
+{
+  "documentId": "SANDRA_FRAZIER__1224c36c5a8fb082-referral-1",
+  "localFilePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-15T05-44-11-552Z-abfcd28f\\outputs\\patients\\SANDRA_FRAZIER__1224c36c5a8fb082\\documents\\admission-04-03-2026\\source.pdf",
+  "fileType": "pdf",
+  "extractionMethod": "in_memory_fallback",
+  "extractionSuccess": true,
+  "effectiveTextSource": null,
+  "rawExtractedTextSource": null,
+  "textSelectionReason": "selected_in_memory_fallback_text",
+  "domExtractionRejectedReasons": [],
+  "pdfType": null,
+  "ocrUsed": false,
+  "ocrProvider": null,
+  "ocrResultPath": null,
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-15T05-44-11-552Z-abfcd28f\\outputs\\patients\\SANDRA_FRAZIER__1224c36c5a8fb082\\referral-document-processing\\extracted-text.txt",
+  "extractionQuality": {
+    "characterCount": 1635,
+    "lineCount": 1,
+    "normalizedTokenCount": 202,
+    "containsClinicalVocabulary": true,
+    "containsDiagnosisLikePatterns": true,
+    "containsDatePatterns": false,
+    "containsSectionLikeHeadings": true,
+    "likelyUsableForLlm": true,
+    "likelyRequiresOcrRetry": false,
+    "likelyCorruptedEncoding": false,
+    "rejectedReasons": [
+      "no_date_patterns"
+    ],
+    "usabilityStatus": "usable"
+  },
+  "failureReasons": [],
+  "warnings": [],
+  "generatedAt": "2026-04-15T08:29:48.776Z"
+}

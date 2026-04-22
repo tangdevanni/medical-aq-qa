@@ -123,6 +123,7 @@ describe("BatchControlPlaneService scheduler metadata", () => {
       assert.equal(batch.schedule.intervalHours, 24);
       assert.ok(batch.schedule.scheduledRunId);
       assert.ok(batch.schedule.nextScheduledRunAt);
+      assert.equal(batch.storage.batchRoot.includes(path.join("batches", "default", batch.id)), true);
       assert.equal(
         Date.parse(batch.schedule.nextScheduledRunAt!) > Date.parse(batch.createdAt),
         true,
@@ -240,6 +241,10 @@ describe("BatchControlPlaneService scheduler metadata", () => {
         .map((batch) => batch.id);
 
       assert.deepEqual(remainingBatchIds, [refreshedBatch.id]);
+      assert.equal(
+        refreshedBatch.storage.batchRoot.includes(path.join("batches", "default", refreshedBatch.id)),
+        true,
+      );
 
       for (const staleBatchId of staleBatchIds) {
         assert.equal(await fixture.repository.getBatch(staleBatchId), null);
@@ -615,6 +620,799 @@ describe("BatchControlPlaneService scheduler metadata", () => {
         knownArtifacts.artifactContents.printedNoteReview,
         dashboardState.artifactContents.printedNoteReview,
       );
+    } finally {
+      fixture.cleanup();
+    }
+  });
+
+  it("prefers the newest verification rerun dashboard state for a patient", async () => {
+    const fixture = createServiceFixture();
+
+    try {
+      await fixture.service.initialize();
+
+      const batchId = "batch-dashboard-overlay";
+      const storage = fixture.repository.createBatchPaths(batchId, "reference-workbook.xlsx");
+      const workItemsPath = path.join(storage.outputRoot, "work-items.json");
+      const patientQueuePath = path.join(storage.outputRoot, "patient-queue.json");
+      const patientArtifactsDirectory = path.join(storage.outputRoot, "patients", "patient-1");
+      const canonicalDashboardStatePath = path.join(
+        patientArtifactsDirectory,
+        "patient-dashboard-state.json",
+      );
+      const verificationRoot = path.join(
+        storage.batchRoot,
+        "verification-rerun-patient-1-2026-04-21T20-25-00Z",
+      );
+      const verificationArtifactsDirectory = path.join(
+        verificationRoot,
+        "patients",
+        "patient-1",
+      );
+      const verificationDashboardStatePath = path.join(
+        verificationArtifactsDirectory,
+        "patient-dashboard-state.json",
+      );
+      const verificationBundlePath = path.join(
+        verificationRoot,
+        "patient-results",
+        "patient-1.json",
+      );
+      const verificationLogPath = path.join(verificationRoot, "logs", "patient-1.json");
+      const workItem: PatientEpisodeWorkItem = {
+        id: "patient-1",
+        subsidiaryId: "default",
+        patientIdentity: {
+          displayName: "Test Patient",
+          normalizedName: "TEST PATIENT",
+          medicareNumber: null,
+        },
+        episodeContext: {
+          episodeDate: "2026-04-21",
+          socDate: "2026-04-01",
+          episodePeriod: "2026-04",
+          billingPeriod: "2026-04",
+          payer: null,
+          assignedStaff: null,
+          clinician: null,
+          qaSpecialist: null,
+          rfa: null,
+        },
+        workflowTypes: ["SOC"],
+        sourceSheets: ["OASIS Tracking Report"],
+        timingMetadata: {
+          trackingDays: 30,
+          daysInPeriod: 30,
+          daysLeft: 10,
+          daysLeftBeforeOasisDueDate: 7,
+          rawTrackingValues: ["30"],
+          rawDaysInPeriodValues: ["30"],
+          rawDaysLeftValues: ["10"],
+        },
+        codingReviewStatus: "NOT_STARTED",
+        oasisQaStatus: "NOT_STARTED",
+        pocQaStatus: "NOT_STARTED",
+        visitNotesQaStatus: "NOT_STARTED",
+        billingPrepStatus: "NOT_STARTED",
+        sourceRemarks: [],
+        sourceRowReferences: [],
+        sourceValues: [],
+        importWarnings: [],
+      };
+      const patientQueue: PatientQueueArtifact = {
+        generatedAt: "2026-04-21T16:21:00.000Z",
+        agencyId: "default",
+        batchId,
+        reviewWindowId: "window-1",
+        entries: [
+          {
+            id: "window-1:patient-1",
+            agencyId: "default",
+            batchId,
+            reviewWindowId: "window-1",
+            workItemId: "patient-1",
+            patientName: "Test Patient",
+            status: "eligible",
+            eligibility: {
+              eligible: true,
+              reason: null,
+              rationale: "Eligible for autonomous QA evaluation.",
+              matchedSignals: [],
+            },
+            episodeDate: "2026-04-21",
+            socDate: null,
+            billingPeriod: "2026-04",
+            workflowTypes: ["SOC"],
+            sourceSheets: ["OASIS Tracking Report"],
+            sourceRowNumbers: [2],
+            notes: [],
+            createdAt: "2026-04-21T16:21:00.000Z",
+          },
+        ],
+        summary: {
+          total: 1,
+          eligible: 1,
+          skippedNonAdmit: 0,
+          skippedPending: 0,
+          excludedOther: 0,
+        },
+      };
+      const canonicalDashboardState: PatientDashboardState = {
+        schemaVersion: 1,
+        generatedAt: "2026-04-21T16:28:00.000Z",
+        batchId,
+        patientId: "patient-1",
+        runId: `${batchId}-patient-1`,
+        subsidiaryId: "default",
+        patientName: "Test Patient",
+        processingStatus: "BLOCKED",
+        executionStep: "BLOCKED",
+        progressPercent: 100,
+        startedAt: "2026-04-21T16:21:00.000Z",
+        completedAt: "2026-04-21T16:28:00.000Z",
+        lastUpdatedAt: "2026-04-21T16:28:00.000Z",
+        matchResult: {
+          status: "EXACT",
+          searchQuery: "Test Patient",
+          portalPatientId: "PT-1",
+          portalDisplayName: "Test Patient",
+          candidateNames: ["Test Patient"],
+          note: null,
+        },
+        qaOutcome: "MISSING_DOCUMENTS",
+        oasisQaSummary: {
+          overallStatus: "BLOCKED",
+          urgency: "ON_TRACK",
+          daysInPeriod: 30,
+          daysLeft: 10,
+          sections: [],
+          blockers: [],
+        },
+        artifactCount: 1,
+        hasFindings: true,
+        bundleAvailable: false,
+        resultBundlePath: path.join(storage.patientResultsDirectory, "patient-1.json"),
+        logPath: null,
+        errorSummary: "OASIS fallback text still attached.",
+        workItem,
+        workflowRuns: [],
+        artifactPaths: {
+          codingInput: path.join(patientArtifactsDirectory, "coding-input.json"),
+          documentText: path.join(patientArtifactsDirectory, "document-text.json"),
+          qaPrefetch: path.join(patientArtifactsDirectory, "qa-prefetch-result.json"),
+          patientQaReference: path.join(
+            patientArtifactsDirectory,
+            "referral-document-processing",
+            "patient-qa-reference.json",
+          ),
+          qaDocumentSummary: path.join(
+            patientArtifactsDirectory,
+            "referral-document-processing",
+            "qa-document-summary.json",
+          ),
+          fieldMapSnapshot: path.join(
+            patientArtifactsDirectory,
+            "referral-document-processing",
+            "field-map-snapshot.json",
+          ),
+          printedNoteChartValues: path.join(
+            patientArtifactsDirectory,
+            "printed-note-chart-values.json",
+          ),
+          printedNoteReview: path.join(
+            patientArtifactsDirectory,
+            "oasis-printed-note-review.json",
+          ),
+        },
+        artifactContents: {
+          codingInput: null,
+          documentText: {
+            documents: [
+              {
+                portalLabel: "OASIS documents page",
+                source: "artifact_fallback",
+              },
+            ],
+          },
+          qaPrefetch: null,
+          patientQaReference: null,
+          qaDocumentSummary: null,
+          fieldMapSnapshot: null,
+          printedNoteChartValues: {
+            currentChartValues: {
+              therapy_need: "Stale chart snapshot value",
+            },
+          },
+          printedNoteReview: {
+            reviewSource: "printed_note_ocr",
+          },
+        },
+      };
+      const verificationDashboardState: PatientDashboardState = {
+        ...canonicalDashboardState,
+        generatedAt: "2026-04-21T20:32:44.000Z",
+        batchId: `${batchId}-rerun`,
+        runId: `${batchId}-rerun-patient-1`,
+        processingStatus: "COMPLETE",
+        executionStep: "COMPLETE",
+        completedAt: "2026-04-21T20:32:44.000Z",
+        lastUpdatedAt: "2026-04-21T20:32:44.000Z",
+        qaOutcome: "READY_FOR_BILLING_PREP",
+        hasFindings: false,
+        resultBundlePath: verificationBundlePath,
+        logPath: verificationLogPath,
+        errorSummary: null,
+        artifactPaths: {
+          codingInput: path.join(verificationArtifactsDirectory, "coding-input.json"),
+          documentText: path.join(verificationArtifactsDirectory, "document-text.json"),
+          qaPrefetch: path.join(verificationArtifactsDirectory, "qa-prefetch-result.json"),
+          patientQaReference: path.join(
+            verificationArtifactsDirectory,
+            "referral-document-processing",
+            "patient-qa-reference.json",
+          ),
+          qaDocumentSummary: path.join(
+            verificationArtifactsDirectory,
+            "referral-document-processing",
+            "qa-document-summary.json",
+          ),
+          fieldMapSnapshot: path.join(
+            verificationArtifactsDirectory,
+            "referral-document-processing",
+            "field-map-snapshot.json",
+          ),
+          printedNoteChartValues: path.join(
+            verificationArtifactsDirectory,
+            "printed-note-chart-values.json",
+          ),
+          printedNoteReview: path.join(
+            verificationArtifactsDirectory,
+            "oasis-printed-note-review.json",
+          ),
+        },
+        artifactContents: {
+          codingInput: null,
+          documentText: {
+            documents: [
+              {
+                portalLabel: "OASIS-OASIS E1 - PT SOC",
+                source: "download",
+              },
+            ],
+          },
+          qaPrefetch: {
+            status: "COMPLETED",
+          },
+          patientQaReference: null,
+          qaDocumentSummary: null,
+          fieldMapSnapshot: null,
+          printedNoteChartValues: {
+            currentChartValues: {
+              therapy_need: "Correct chart snapshot value",
+            },
+          },
+          printedNoteReview: {
+            reviewSource: "printed_note_ocr",
+          },
+        },
+      };
+      const batch = {
+        id: batchId,
+        subsidiary: {
+          id: "default",
+          slug: "default",
+          name: "Default Subsidiary",
+        },
+        createdAt: "2026-04-21T16:21:00.000Z",
+        updatedAt: "2026-04-21T16:28:00.000Z",
+        runMode: "read_only" as const,
+        billingPeriod: "2026-04",
+        status: "COMPLETED" as const,
+        schedule: {
+          scheduledRunId: null,
+          active: true,
+          rerunEnabled: true,
+          intervalHours: 24,
+          timezone: "Asia/Manila",
+          localTimes: ["15:00", "23:30"],
+          lastRunAt: null,
+          nextScheduledRunAt: null,
+        },
+        sourceWorkbook: {
+          subsidiaryId: "default",
+          acquisitionProvider: "MANUAL_UPLOAD" as const,
+          acquisitionStatus: "ACQUIRED" as const,
+          acquisitionReference: null,
+          acquisitionNotes: [],
+          acquisitionMetadata: null,
+          originalFileName: "reference-workbook.xlsx",
+          storedPath: storage.sourceWorkbookPath,
+          uploadedAt: "2026-04-21T16:21:00.000Z",
+          verification: null,
+        },
+        storage: {
+          batchRoot: storage.batchRoot,
+          outputRoot: storage.outputRoot,
+          manifestPath: null,
+          workItemsPath,
+          parserExceptionsPath: null,
+          batchSummaryPath: null,
+          patientResultsDirectory: storage.patientResultsDirectory,
+          evidenceDirectory: storage.evidenceDirectory,
+        },
+        parse: {
+          requestedAt: null,
+          completedAt: null,
+          workItemCount: 1,
+          eligibleWorkItemCount: 1,
+          parserExceptionCount: 0,
+          sourceDetections: [],
+          sheetSummaries: [],
+          lastError: null,
+        },
+        run: {
+          requestedAt: null,
+          completedAt: null,
+          patientRunCount: 1,
+          lastError: null,
+        },
+        patientRuns: [
+          {
+            runId: canonicalDashboardState.runId,
+            subsidiaryId: "default",
+            workItemId: "patient-1",
+            patientName: "Test Patient",
+            processingStatus: "BLOCKED" as const,
+            executionStep: "BLOCKED",
+            progressPercent: 100,
+            startedAt: canonicalDashboardState.startedAt,
+            completedAt: canonicalDashboardState.completedAt,
+            lastUpdatedAt: canonicalDashboardState.lastUpdatedAt,
+            matchResult: canonicalDashboardState.matchResult,
+            qaOutcome: canonicalDashboardState.qaOutcome,
+            oasisQaSummary: canonicalDashboardState.oasisQaSummary,
+            artifactCount: 1,
+            hasFindings: true,
+            bundleAvailable: false,
+            logPath: null,
+            logAvailable: false,
+            retryEligible: false,
+            errorSummary: canonicalDashboardState.errorSummary,
+            resultBundlePath: canonicalDashboardState.resultBundlePath!,
+            evidenceDirectory: path.join(storage.evidenceDirectory, "patient-1"),
+            tracePath: null,
+            screenshotPaths: [],
+            downloadPaths: [],
+            workflowRuns: [],
+            lastAttemptAt: canonicalDashboardState.completedAt,
+            attemptCount: 1,
+          },
+        ],
+      };
+
+      await mkdir(patientArtifactsDirectory, { recursive: true });
+      await mkdir(path.dirname(verificationBundlePath), { recursive: true });
+      await mkdir(path.dirname(verificationLogPath), { recursive: true });
+      await mkdir(verificationArtifactsDirectory, { recursive: true });
+      await writeFile(workItemsPath, JSON.stringify([workItem], null, 2));
+      await writeFile(patientQueuePath, JSON.stringify(patientQueue, null, 2));
+      await writeFile(
+        canonicalDashboardStatePath,
+        JSON.stringify(canonicalDashboardState, null, 2),
+      );
+      await writeFile(
+        verificationDashboardStatePath,
+        JSON.stringify(verificationDashboardState, null, 2),
+      );
+      await writeFile(
+        verificationBundlePath,
+        JSON.stringify(
+          {
+            runId: verificationDashboardState.runId,
+            batchId: verificationDashboardState.batchId,
+            subsidiaryId: "default",
+            workItemId: "patient-1",
+            patientName: "Test Patient",
+            processingStatus: "COMPLETE",
+            executionStep: "COMPLETE",
+            progressPercent: 100,
+            startedAt: verificationDashboardState.startedAt,
+            completedAt: verificationDashboardState.completedAt,
+            lastUpdatedAt: verificationDashboardState.lastUpdatedAt,
+            matchResult: verificationDashboardState.matchResult,
+            artifacts: [],
+            artifactCount: 1,
+            findings: [],
+            hasFindings: false,
+            qaOutcome: verificationDashboardState.qaOutcome,
+            oasisQaSummary: verificationDashboardState.oasisQaSummary,
+            bundleAvailable: true,
+            resultBundlePath: verificationBundlePath,
+            logPath: verificationLogPath,
+            logAvailable: true,
+            errorSummary: null,
+            workflowRuns: [],
+            auditArtifacts: {
+              tracePath: null,
+              screenshotPaths: [],
+              downloadPaths: [],
+            },
+          },
+          null,
+          2,
+        ),
+      );
+      await writeFile(verificationLogPath, JSON.stringify({ runId: verificationDashboardState.runId }, null, 2));
+      await fixture.repository.saveBatch(batch);
+
+      const knownArtifacts = await fixture.service.getKnownPatientArtifacts(batchId, "patient-1");
+      const patientRuns = await fixture.service.getPatientRuns(batchId);
+      const snapshot = await fixture.service.getAgencyDashboardSnapshot("default");
+
+      assert.ok(knownArtifacts);
+      assert.equal(knownArtifacts.patientArtifactsDirectory, verificationArtifactsDirectory);
+      assert.equal(knownArtifacts.summary.runId, verificationDashboardState.runId);
+      assert.equal(knownArtifacts.summary.logPath, verificationLogPath);
+      assert.equal(
+        knownArtifacts.artifactPaths.documentText,
+        verificationDashboardState.artifactPaths.documentText,
+      );
+      assert.deepEqual(
+        knownArtifacts.artifactContents.documentText,
+        verificationDashboardState.artifactContents.documentText,
+      );
+      assert.deepEqual(
+        knownArtifacts.artifactContents.printedNoteChartValues,
+        verificationDashboardState.artifactContents.printedNoteChartValues,
+      );
+      assert.equal(patientRuns[0]?.runId, verificationDashboardState.runId);
+      assert.equal(patientRuns[0]?.processingStatus, "COMPLETE");
+      assert.equal(snapshot.patientRecords[0]?.processingStatus, "COMPLETE");
+      assert.equal(snapshot.patientRecords[0]?.errorSummary, null);
+    } finally {
+      fixture.cleanup();
+    }
+  });
+
+  it("prefers the newest usable patient result across batches for the same agency", async () => {
+    const fixture = createServiceFixture();
+
+    try {
+      await fixture.service.initialize();
+
+      const workItem: PatientEpisodeWorkItem = {
+        id: "patient-1",
+        subsidiaryId: "default",
+        patientIdentity: {
+          displayName: "Test Patient",
+          normalizedName: "TEST PATIENT",
+          medicareNumber: null,
+        },
+        episodeContext: {
+          episodeDate: "2026-04-21",
+          socDate: "2026-04-01",
+          episodePeriod: "2026-04",
+          billingPeriod: "2026-04",
+          payer: null,
+          assignedStaff: null,
+          clinician: null,
+          qaSpecialist: null,
+          rfa: null,
+        },
+        workflowTypes: ["SOC"],
+        sourceSheets: ["OASIS Tracking Report"],
+        timingMetadata: {
+          trackingDays: 30,
+          daysInPeriod: 30,
+          daysLeft: 10,
+          daysLeftBeforeOasisDueDate: 7,
+          rawTrackingValues: ["30"],
+          rawDaysInPeriodValues: ["30"],
+          rawDaysLeftValues: ["10"],
+        },
+        codingReviewStatus: "NOT_STARTED",
+        oasisQaStatus: "NOT_STARTED",
+        pocQaStatus: "NOT_STARTED",
+        visitNotesQaStatus: "NOT_STARTED",
+        billingPrepStatus: "NOT_STARTED",
+        sourceRemarks: [],
+        sourceRowReferences: [],
+        sourceValues: [],
+        importWarnings: [],
+      };
+
+      const olderStorage = fixture.repository.createBatchPaths("batch-older", "older.xlsx");
+      const newerStorage = fixture.repository.createBatchPaths("batch-newer", "newer.xlsx");
+      const olderResultBundlePath = path.join(olderStorage.patientResultsDirectory, "patient-1.json");
+
+      await mkdir(path.dirname(olderResultBundlePath), { recursive: true });
+      await writeFile(
+        path.join(olderStorage.outputRoot, "work-items.json"),
+        JSON.stringify([workItem], null, 2),
+      );
+      await writeFile(
+        path.join(newerStorage.outputRoot, "work-items.json"),
+        JSON.stringify([workItem], null, 2),
+      );
+      await writeFile(
+        olderResultBundlePath,
+        JSON.stringify(
+          {
+            runId: "batch-older-patient-1",
+            batchId: "batch-older",
+            subsidiaryId: "default",
+            workItemId: "patient-1",
+            patientName: "Test Patient",
+            processingStatus: "COMPLETE",
+            executionStep: "COMPLETE",
+            progressPercent: 100,
+            startedAt: "2026-04-21T20:25:22.000Z",
+            completedAt: "2026-04-21T20:32:44.000Z",
+            lastUpdatedAt: "2026-04-21T20:32:44.000Z",
+            matchResult: {
+              status: "EXACT",
+              searchQuery: "Test Patient",
+              portalPatientId: "PT-1",
+              portalDisplayName: "Test Patient",
+              candidateNames: ["Test Patient"],
+              note: null,
+            },
+            artifacts: [],
+            artifactCount: 0,
+            findings: [],
+            hasFindings: false,
+            qaOutcome: "READY_FOR_BILLING_PREP",
+            oasisQaSummary: {
+              overallStatus: "READY_FOR_BILLING",
+              urgency: "ON_TRACK",
+              daysInPeriod: 30,
+              daysLeft: 10,
+              sections: [],
+              blockers: [],
+            },
+            bundleAvailable: true,
+            resultBundlePath: olderResultBundlePath,
+            logPath: null,
+            logAvailable: false,
+            errorSummary: null,
+            workflowRuns: [],
+            auditArtifacts: {
+              tracePath: null,
+              screenshotPaths: [],
+              downloadPaths: [],
+            },
+          },
+          null,
+          2,
+        ),
+      );
+
+      await fixture.repository.saveBatch({
+        id: "batch-older",
+        subsidiary: {
+          id: "default",
+          slug: "default",
+          name: "Default Subsidiary",
+        },
+        createdAt: "2026-04-21T16:21:00.000Z",
+        updatedAt: "2026-04-21T20:32:44.000Z",
+        runMode: "read_only" as const,
+        billingPeriod: "2026-04",
+        status: "COMPLETED" as const,
+        schedule: {
+          scheduledRunId: null,
+          active: true,
+          rerunEnabled: true,
+          intervalHours: 24,
+          timezone: "Asia/Manila",
+          localTimes: ["15:00", "23:30"],
+          lastRunAt: null,
+          nextScheduledRunAt: null,
+        },
+        sourceWorkbook: {
+          subsidiaryId: "default",
+          acquisitionProvider: "MANUAL_UPLOAD" as const,
+          acquisitionStatus: "ACQUIRED" as const,
+          acquisitionReference: null,
+          acquisitionNotes: [],
+          acquisitionMetadata: null,
+          originalFileName: "older.xlsx",
+          storedPath: olderStorage.sourceWorkbookPath,
+          uploadedAt: "2026-04-21T16:21:00.000Z",
+          verification: null,
+        },
+        storage: {
+          batchRoot: olderStorage.batchRoot,
+          outputRoot: olderStorage.outputRoot,
+          manifestPath: null,
+          workItemsPath: path.join(olderStorage.outputRoot, "work-items.json"),
+          parserExceptionsPath: null,
+          batchSummaryPath: null,
+          patientResultsDirectory: olderStorage.patientResultsDirectory,
+          evidenceDirectory: olderStorage.evidenceDirectory,
+        },
+        parse: {
+          requestedAt: null,
+          completedAt: null,
+          workItemCount: 1,
+          eligibleWorkItemCount: 1,
+          parserExceptionCount: 0,
+          sourceDetections: [],
+          sheetSummaries: [],
+          lastError: null,
+        },
+        run: {
+          requestedAt: null,
+          completedAt: "2026-04-21T20:32:44.000Z",
+          patientRunCount: 1,
+          lastError: null,
+        },
+        patientRuns: [
+          {
+            runId: "batch-older-patient-1",
+            subsidiaryId: "default",
+            workItemId: "patient-1",
+            patientName: "Test Patient",
+            processingStatus: "COMPLETE" as const,
+            executionStep: "COMPLETE",
+            progressPercent: 100,
+            startedAt: "2026-04-21T20:25:22.000Z",
+            completedAt: "2026-04-21T20:32:44.000Z",
+            lastUpdatedAt: "2026-04-21T20:32:44.000Z",
+            matchResult: {
+              status: "EXACT",
+              searchQuery: "Test Patient",
+              portalPatientId: "PT-1",
+              portalDisplayName: "Test Patient",
+              candidateNames: ["Test Patient"],
+              note: null,
+            },
+            qaOutcome: "READY_FOR_BILLING_PREP" as const,
+            oasisQaSummary: {
+              overallStatus: "READY_FOR_BILLING",
+              urgency: "ON_TRACK",
+              daysInPeriod: 30,
+              daysLeft: 10,
+              sections: [],
+              blockers: [],
+            },
+            artifactCount: 0,
+            hasFindings: false,
+            bundleAvailable: true,
+            logPath: null,
+            logAvailable: false,
+            retryEligible: false,
+            errorSummary: null,
+            resultBundlePath: olderResultBundlePath,
+            evidenceDirectory: path.join(olderStorage.evidenceDirectory, "patient-1"),
+            tracePath: null,
+            screenshotPaths: [],
+            downloadPaths: [],
+            workflowRuns: [],
+            lastAttemptAt: "2026-04-21T20:32:44.000Z",
+            attemptCount: 1,
+          },
+        ],
+      });
+
+      await fixture.repository.saveBatch({
+        id: "batch-newer",
+        subsidiary: {
+          id: "default",
+          slug: "default",
+          name: "Default Subsidiary",
+        },
+        createdAt: "2026-04-21T23:57:18.000Z",
+        updatedAt: "2026-04-21T23:57:28.000Z",
+        runMode: "read_only" as const,
+        billingPeriod: "2026-04",
+        status: "RUNNING" as const,
+        schedule: {
+          scheduledRunId: null,
+          active: true,
+          rerunEnabled: true,
+          intervalHours: 24,
+          timezone: "Asia/Manila",
+          localTimes: ["15:00", "23:30"],
+          lastRunAt: null,
+          nextScheduledRunAt: null,
+        },
+        sourceWorkbook: {
+          subsidiaryId: "default",
+          acquisitionProvider: "MANUAL_UPLOAD" as const,
+          acquisitionStatus: "ACQUIRED" as const,
+          acquisitionReference: null,
+          acquisitionNotes: [],
+          acquisitionMetadata: null,
+          originalFileName: "newer.xlsx",
+          storedPath: newerStorage.sourceWorkbookPath,
+          uploadedAt: "2026-04-21T23:57:18.000Z",
+          verification: null,
+        },
+        storage: {
+          batchRoot: newerStorage.batchRoot,
+          outputRoot: newerStorage.outputRoot,
+          manifestPath: null,
+          workItemsPath: path.join(newerStorage.outputRoot, "work-items.json"),
+          parserExceptionsPath: null,
+          batchSummaryPath: null,
+          patientResultsDirectory: newerStorage.patientResultsDirectory,
+          evidenceDirectory: newerStorage.evidenceDirectory,
+        },
+        parse: {
+          requestedAt: null,
+          completedAt: null,
+          workItemCount: 1,
+          eligibleWorkItemCount: 1,
+          parserExceptionCount: 0,
+          sourceDetections: [],
+          sheetSummaries: [],
+          lastError: null,
+        },
+        run: {
+          requestedAt: "2026-04-21T23:57:18.000Z",
+          completedAt: null,
+          patientRunCount: 0,
+          lastError: null,
+        },
+        patientRuns: [
+          {
+            runId: "batch-newer-patient-1",
+            subsidiaryId: "default",
+            workItemId: "patient-1",
+            patientName: "Test Patient",
+            processingStatus: "MATCHING_PATIENT" as const,
+            executionStep: "MATCHING_PATIENT",
+            progressPercent: 10,
+            startedAt: "2026-04-21T23:57:28.000Z",
+            completedAt: null,
+            lastUpdatedAt: "2026-04-21T23:57:28.000Z",
+            matchResult: {
+              status: "NOT_FOUND",
+              searchQuery: "Test Patient",
+              portalPatientId: null,
+              portalDisplayName: null,
+              candidateNames: [],
+              note: "Patient was not searched yet.",
+            },
+            qaOutcome: "INCOMPLETE" as const,
+            oasisQaSummary: {
+              overallStatus: "IN_PROGRESS",
+              urgency: "ON_TRACK",
+              daysInPeriod: 30,
+              daysLeft: 10,
+              sections: [],
+              blockers: [],
+            },
+            artifactCount: 0,
+            hasFindings: false,
+            bundleAvailable: false,
+            logPath: null,
+            logAvailable: false,
+            retryEligible: false,
+            errorSummary: null,
+            resultBundlePath: path.join(newerStorage.patientResultsDirectory, "patient-1.json"),
+            evidenceDirectory: path.join(newerStorage.evidenceDirectory, "patient-1"),
+            tracePath: null,
+            screenshotPaths: [],
+            downloadPaths: [],
+            workflowRuns: [],
+            lastAttemptAt: null,
+            attemptCount: 1,
+          },
+        ],
+      });
+
+      const latestPatient = await fixture.service.getLatestPatientForSubsidiary({
+        subsidiaryId: "default",
+        patientId: "patient-1",
+      });
+
+      assert.ok(latestPatient);
+      assert.equal(latestPatient.batch.id, "batch-older");
+      assert.equal(latestPatient.summary.runId, "batch-older-patient-1");
+      assert.ok(latestPatient.detail);
+      assert.equal(latestPatient.detail.processingStatus, "COMPLETE");
     } finally {
       fixture.cleanup();
     }

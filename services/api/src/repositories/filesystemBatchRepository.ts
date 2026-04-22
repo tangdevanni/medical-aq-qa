@@ -27,7 +27,7 @@ export class FilesystemBatchRepository {
     await mkdir(this.batchesRoot, { recursive: true });
   }
 
-  createBatchPaths(batchId: string, originalFileName: string): {
+  createBatchPaths(batchId: string, originalFileName: string, agencySlug?: string): {
     batchRoot: string;
     sourceWorkbookPath: string;
     outputRoot: string;
@@ -35,7 +35,9 @@ export class FilesystemBatchRepository {
     patientResultsDirectory: string;
     evidenceDirectory: string;
   } {
-    const batchRoot = path.join(this.storageRoot, "batches", batchId);
+    const batchRoot = agencySlug?.trim()
+      ? path.join(this.storageRoot, "batches", sanitizeFileName(agencySlug), batchId)
+      : path.join(this.storageRoot, "batches", batchId);
     return {
       batchRoot,
       sourceWorkbookPath: path.join(batchRoot, "source", sanitizeFileName(originalFileName)),
@@ -53,7 +55,12 @@ export class FilesystemBatchRepository {
   }
 
   async getBatch(batchId: string): Promise<BatchRecord | null> {
-    const metadataPath = path.join(this.storageRoot, "batches", batchId, "batch.json");
+    const batchDirectory = await this.findBatchDirectory(batchId);
+    if (!batchDirectory) {
+      return null;
+    }
+
+    const metadataPath = path.join(batchDirectory, "batch.json");
 
     try {
       const batch = await readJsonFile<BatchRecord>(metadataPath);
@@ -65,11 +72,17 @@ export class FilesystemBatchRepository {
 
   async listBatches(): Promise<BatchRecord[]> {
     await mkdir(this.batchesRoot, { recursive: true });
-    const entries = await readdir(this.batchesRoot, { withFileTypes: true });
+    const batchDirectories = await this.listBatchDirectories();
     const batches = await Promise.all(
-      entries
-        .filter((entry) => entry.isDirectory())
-        .map((entry) => this.getBatch(entry.name)),
+      batchDirectories.map(async (batchDirectory) => {
+        try {
+          return batchRecordSchema.parse(
+            await readJsonFile<BatchRecord>(path.join(batchDirectory, "batch.json")),
+          );
+        } catch {
+          return null;
+        }
+      }),
     );
 
     return batches
@@ -233,7 +246,12 @@ export class FilesystemBatchRepository {
   }
 
   async deleteBatch(batchId: string): Promise<void> {
-    const batchRoot = path.resolve(this.batchesRoot, batchId);
+    const batchDirectory = await this.findBatchDirectory(batchId);
+    if (!batchDirectory) {
+      return;
+    }
+
+    const batchRoot = path.resolve(batchDirectory);
     const expectedRoot = path.resolve(this.batchesRoot);
 
     if (!batchRoot.startsWith(`${expectedRoot}${path.sep}`)) {
@@ -241,5 +259,61 @@ export class FilesystemBatchRepository {
     }
 
     await rm(batchRoot, { recursive: true, force: true });
+  }
+
+  private async findBatchDirectory(batchId: string): Promise<string | null> {
+    const legacyDirectory = path.join(this.batchesRoot, batchId);
+    if (await this.isBatchDirectory(legacyDirectory)) {
+      return legacyDirectory;
+    }
+
+    const agencyDirectories = await readdir(this.batchesRoot, { withFileTypes: true });
+    for (const entry of agencyDirectories) {
+      if (!entry.isDirectory()) {
+        continue;
+      }
+
+      const nestedDirectory = path.join(this.batchesRoot, entry.name, batchId);
+      if (await this.isBatchDirectory(nestedDirectory)) {
+        return nestedDirectory;
+      }
+    }
+
+    return null;
+  }
+
+  private async listBatchDirectories(): Promise<string[]> {
+    const entries = await readdir(this.batchesRoot, { withFileTypes: true });
+    const batchDirectories: string[] = [];
+
+    for (const entry of entries) {
+      if (!entry.isDirectory()) {
+        continue;
+      }
+
+      const entryPath = path.join(this.batchesRoot, entry.name);
+      if (await this.isBatchDirectory(entryPath)) {
+        batchDirectories.push(entryPath);
+        continue;
+      }
+
+      const nestedEntries = await readdir(entryPath, { withFileTypes: true }).catch(() => []);
+      for (const nestedEntry of nestedEntries) {
+        if (!nestedEntry.isDirectory()) {
+          continue;
+        }
+
+        const nestedPath = path.join(entryPath, nestedEntry.name);
+        if (await this.isBatchDirectory(nestedPath)) {
+          batchDirectories.push(nestedPath);
+        }
+      }
+    }
+
+    return batchDirectories;
+  }
+
+  private async isBatchDirectory(directoryPath: string): Promise<boolean> {
+    return this.fileExists(path.join(directoryPath, "batch.json"));
   }
 }

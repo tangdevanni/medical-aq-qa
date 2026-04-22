@@ -1,0 +1,25 @@
+{
+  "patientId": "EDWARD_CARRIERE__caa92c80cda8171f",
+  "selectedDocumentId": "EDWARD_CARRIERE__caa92c80cda8171f-referral-1",
+  "sourceDocuments": [
+    {
+      "documentId": "EDWARD_CARRIERE__caa92c80cda8171f-referral-1",
+      "sourceIndex": 0,
+      "sourceLabel": "📄 CARRIER,E OV.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedSourceLabel": "carrier-e-ov-pdf",
+      "sourceType": "REFERRAL_ORDER",
+      "acquisitionMethod": "printed_pdf",
+      "selectionStatus": "selected",
+      "portalLabel": "📄 CARRIER,E OV.pdf 📝 ✏️ 🗑️ 🔗",
+      "localFilePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\EDWARD_CARRIERE__caa92c80cda8171f\\documents\\carrier-e-ov-pdf\\source.pdf",
+      "effectiveTextSource": "ocr_text",
+      "fileType": "pdf",
+      "fileSizeBytes": 170050,
+      "extractedTextLength": 7001,
+      "selectedReason": "highest-ranked referral/admission-order source with local file preference",
+      "rejectedReasons": []
+    }
+  ],
+  "warnings": [],
+  "generatedAt": "2026-04-15T07:03:43.208Z"
+}

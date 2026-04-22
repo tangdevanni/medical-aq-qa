@@ -1,0 +1,44 @@
+{
+  "primaryDiagnosis": {
+    "code": "J18.9",
+    "description": "Pneumonia, unspecified organism",
+    "confidence": "high"
+  },
+  "otherDiagnoses": [
+    {
+      "code": "J96.01",
+      "description": "Acute respiratory failure with hypoxia",
+      "confidence": "high"
+    },
+    {
+      "code": "R13.12",
+      "description": "Dysphagia, unspecified",
+      "confidence": "high"
+    },
+    {
+      "code": "G93.41",
+      "description": "Encephalopathy, unspecified",
+      "confidence": "high"
+    },
+    {
+      "code": "M62.81",
+      "description": "Muscle weakness (generalized)",
+      "confidence": "high"
+    },
+    {
+      "code": "E03.9",
+      "description": "HYPOTHYROIDISM, UNSPECIFIED",
+      "confidence": "high"
+    }
+  ],
+  "suggestedOnsetType": "onset",
+  "suggestedSeverity": 3,
+  "comorbidityFlags": {
+    "pvd_pad": false,
+    "diabetes": false,
+    "none": true
+  },
+  "notes": [
+    "Ordered services: Physical Therapy, Occupational Therapy, Speech Therapy"
+  ]
+}

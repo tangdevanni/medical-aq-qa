@@ -487,7 +487,7 @@ describe("dashboardRunViews", () => {
     assert.equal(summary.dashboardReview.highPriorityOpenCount, 1);
     assert.equal(summary.dashboardReview.resolvedCount, 0);
     assert.equal(summary.referralQa.sections.length, 1);
-    assert.equal(summary.referralQa.preAuditFindings.length > 0, true);
+    assert.equal(summary.referralQa.preAuditFindings.length, 0);
     assert.equal(summary.referralQa.sourceHighlights.length > 0, true);
     assert.equal(summary.referralQa.draftNarratives.length > 0, true);
     assert.equal(summary.referralQa.consistencyChecks[0]?.id, "respiratory-vs-m1400");
@@ -518,7 +518,7 @@ describe("dashboardRunViews", () => {
     assert.equal(detail.referralSections.length, 1);
     assert.equal(detail.referralSections[0]?.fields[0]?.comparisonStatus, "supported_by_referral");
     assert.equal(detail.referralSections[0]?.fields[0]?.currentChartValueSource, "printed_note_ocr");
-    assert.equal(detail.referralSections[0]?.fields[0]?.populatedInChart, false);
+    assert.equal(detail.referralSections[0]?.fields[0]?.populatedInChart, true);
     assert.equal(detail.dashboardState.rows.length, 1);
     assert.equal(detail.dashboardState.rows[0]?.comparisonResult, "uncertain");
     assert.equal(detail.dashboardState.rows[0]?.backendComparisonStatus, "supported_by_referral");
@@ -741,6 +741,74 @@ describe("dashboardRunViews", () => {
       summary.referralQa.consistencyChecks[0]?.detail,
       "Referral records indicate mental or cognitive concerns. Mental-status chart selections are blank or incomplete.",
     );
+  });
+
+  it("prefers refreshed printed-note values over stale printed-note snapshot values", () => {
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        fieldMapSnapshot: {
+          ...patientViewInput.artifactContents.fieldMapSnapshot,
+          fields: [
+            {
+              ...patientViewInput.artifactContents.fieldMapSnapshot.fields[0]!,
+              currentChartValue: "Stale chart snapshot value",
+              currentChartValueSource: "printed_note_ocr",
+              populatedInChart: true,
+            },
+          ],
+        },
+        printedNoteChartValues: {
+          currentChartValues: {
+            primary_reason_for_home_health_medical_necessity:
+              "Refreshed printed-note value from the latest OCR artifact.",
+          },
+        },
+      },
+    });
+
+    assert.equal(
+      detail.referralSections[0]?.fields[0]?.currentChartValue,
+      "Refreshed printed-note value from the latest OCR artifact.",
+    );
+    assert.equal(detail.referralSections[0]?.fields[0]?.currentChartValueSource, "printed_note_ocr");
+    assert.equal(
+      detail.dashboardState.rows[0]?.currentChartValue,
+      "Refreshed printed-note value from the latest OCR artifact.",
+    );
+    assert.equal(detail.dashboardState.rows[0]?.currentChartValueSource, "printed_note_ocr");
+  });
+
+  it("does not override a real chart read with printed-note recovery values", () => {
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        fieldMapSnapshot: {
+          ...patientViewInput.artifactContents.fieldMapSnapshot,
+          fields: [
+            {
+              ...patientViewInput.artifactContents.fieldMapSnapshot.fields[0]!,
+              currentChartValue: "Live chart value",
+              currentChartValueSource: "chart_read",
+              populatedInChart: true,
+            },
+          ],
+        },
+        printedNoteChartValues: {
+          currentChartValues: {
+            primary_reason_for_home_health_medical_necessity:
+              "Refreshed printed-note value from the latest OCR artifact.",
+          },
+        },
+      },
+    });
+
+    assert.equal(detail.referralSections[0]?.fields[0]?.currentChartValue, "Live chart value");
+    assert.equal(detail.referralSections[0]?.fields[0]?.currentChartValueSource, "chart_read");
+    assert.equal(detail.dashboardState.rows[0]?.currentChartValue, "Live chart value");
+    assert.equal(detail.dashboardState.rows[0]?.currentChartValueSource, "chart_read");
   });
 
   it("tracks meaningful rows that are hidden because the backend marked them resolved", () => {

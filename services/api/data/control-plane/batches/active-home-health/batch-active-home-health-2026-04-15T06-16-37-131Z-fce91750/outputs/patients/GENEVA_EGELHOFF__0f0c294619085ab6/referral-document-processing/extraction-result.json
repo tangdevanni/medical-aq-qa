@@ -1,0 +1,35 @@
+{
+  "documentId": "GENEVA_EGELHOFF__0f0c294619085ab6-referral-1",
+  "localFilePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\GENEVA_EGELHOFF__0f0c294619085ab6\\documents\\admission-04-13-2026\\source.pdf",
+  "fileType": "pdf",
+  "extractionMethod": "in_memory_fallback",
+  "extractionSuccess": true,
+  "effectiveTextSource": null,
+  "rawExtractedTextSource": null,
+  "textSelectionReason": "selected_in_memory_fallback_text",
+  "domExtractionRejectedReasons": [],
+  "pdfType": null,
+  "ocrUsed": false,
+  "ocrProvider": null,
+  "ocrResultPath": null,
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-15T06-16-37-131Z-fce91750\\outputs\\patients\\GENEVA_EGELHOFF__0f0c294619085ab6\\referral-document-processing\\extracted-text.txt",
+  "extractionQuality": {
+    "characterCount": 1816,
+    "lineCount": 1,
+    "normalizedTokenCount": 228,
+    "containsClinicalVocabulary": true,
+    "containsDiagnosisLikePatterns": true,
+    "containsDatePatterns": false,
+    "containsSectionLikeHeadings": true,
+    "likelyUsableForLlm": true,
+    "likelyRequiresOcrRetry": false,
+    "likelyCorruptedEncoding": false,
+    "rejectedReasons": [
+      "no_date_patterns"
+    ],
+    "usabilityStatus": "usable"
+  },
+  "failureReasons": [],
+  "warnings": [],
+  "generatedAt": "2026-04-15T07:11:42.778Z"
+}

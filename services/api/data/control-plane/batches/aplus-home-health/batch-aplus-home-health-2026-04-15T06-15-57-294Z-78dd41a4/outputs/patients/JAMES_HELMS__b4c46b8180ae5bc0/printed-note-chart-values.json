@@ -1,0 +1,58 @@
+{
+  "generatedAt": "2026-04-15T07:54:26.521Z",
+  "source": "printed_note_ocr",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\outputs\\evidence\\JAMES_HELMS__b4c46b8180ae5bc0\\oasis-printed-note\\extracted-text.txt",
+  "extractedFieldCount": 4,
+  "invocationModelId": "us.amazon.nova-lite-v1:0",
+  "currentChartValues": {
+    "patient_name": "James Helms",
+    "dob": "1935-08-30",
+    "primary_reason_for_home_health_medical_necessity": "James Helms, a 90-year-old male, is being referred for home health care following an encounter for change or removal of a non-surgical wound dressing, with a chronic ulcer on another part of the left foot with the fat layer exposed; he recently underwent a revascularization procedure due to significant Peripheral Artery Disease and has a left second toe ulceration at risk for infection requiring skilled wound care, with additional conditions including cellulitis of the left foot and a blister on the left foot, and",
+    "pain_assessment_narrative": "Pain Location and Description: Location Start Date Activity What makes pain worse? left dorsal foot 04/11/2026 - At Restx Movementx Intensity Duration What makes pain better? Does pain affect quality of life? 5x months Restx yes Unable to Assess Unable to Assess Description Frequency Type of Intervention Sharpx Frequentx Non Phamacologicx How well it is working Status Fairly Wellx COCx Comments: Pain Effect on Sleep: Ask patient: \"Over the past 5 days, how much of the time has pain made it hard for you to sleep at"
+  },
+  "extractedFieldValues": [
+    {
+      "field_key": "patient_name",
+      "current_value": "James Helms",
+      "confidence": 1,
+      "source_spans": [
+        "Name: Helms, James",
+        "Patient Name: James Helms",
+        "James Helms"
+      ]
+    },
+    {
+      "field_key": "dob",
+      "current_value": "1935-08-30",
+      "confidence": 1,
+      "source_spans": [
+        "DOB: 1935-08-30",
+        "Birth Date: 08/30/1935"
+      ]
+    },
+    {
+      "field_key": "primary_reason_for_home_health_medical_necessity",
+      "current_value": "James Helms, a 90-year-old male, is being referred for home health care following an encounter for change or removal of a non-surgical wound dressing, with a chronic ulcer on another part of the left foot with the fat layer exposed; he recently underwent a revascularization procedure due to significant Peripheral Artery Disease and has a left second toe ulceration at risk for infection requiring skilled wound care, with additional conditions including cellulitis of the left foot and a blister on the left foot, and following vascular surgery he continues to experience pain and significant swelling in his lower extremities, indicating compromised circulation and the need for ongoing monitoring and skilled nursing care.",
+      "confidence": 1,
+      "source_spans": [
+        "Primary Reason for Home Health/Medical Necessity (POC Element):",
+        "James Helms, a 90-year-old male, is being referred for home health care following an encounter for change or removal of a non-surgical wound dressing, with a chronic ulcer on another part of the left foot with the fat layer exposed; he recently underwent a revascularization procedure due to significant Peripheral Artery Disease and has a left second toe ulceration at risk for infection requiring skilled wound care, with additional conditions including cellulitis of the left foot and a blister on the left foot, and following vascular surgery he continues to experience pain and significant swelling in his lower extremities, indicating compromised circulation and the need for ongoing monitoring and skilled nursing care."
+      ]
+    },
+    {
+      "field_key": "pain_assessment_narrative",
+      "current_value": "Pain Location and Description: Location Start Date Activity What makes pain worse? left dorsal foot 04/11/2026 - At Restx Movementx Intensity Duration What makes pain better? Does pain affect quality of life? 5x months Restx yes Unable to Assess Unable to Assess Description Frequency Type of Intervention Sharpx Frequentx Non Phamacologicx How well it is working Status Fairly Wellx COCx Comments: Pain Effect on Sleep: Ask patient: \"Over the past 5 days, how much of the time has pain made it hard for you to sleep at night\" 0. Does not apply - I have not had any pain or hurting in the past 5 days 3. Frequently 1. Rarely or not at all 4. Almost constantly 2. Occasionally 8. Unable to answer Pain Interference with Therapy Activities: Ask patient: \"Over the past 5 days, how often have you limited your participation in rehabilitation therapy sessions due to pain?\" 0. Does not apply - I have not received rehabilitation therapy in the past 5 days 3. Frequently 1. Rarely or not at all 4. Almost constantly 2. Occasionally 8. Unable to answer Pain Interference with Day-to-Day Activities: Ask patient: \"Over the past 5 days, how often you have limited your day to day activities (excluding rehabilitation therapy session) because of pain?\" 1. Rarely or not at all 2. Occasionally 3. Frequently 4. Almost Constantly 8. Unable to answer",
+      "confidence": 1,
+      "source_spans": [
+        "Pain Assessment Wong-Baker FACES® Pain Rating Scale Numeric Rating Scale",
+        "Pain Location and Description:",
+        "Pain Effect on Sleep:",
+        "Pain Interference with Therapy Activities:",
+        "Pain Interference with Day-to-Day Activities:"
+      ]
+    }
+  ],
+  "warnings": [
+    "Printed-note chart-value extraction used inference profile us.amazon.nova-lite-v1:0."
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "assessmentType": "SOC",
+  "matchedAssessmentLabel": null,
+  "printProfileKey": "soc_full_document_v1",
+  "printProfileLabel": "Full OASIS document",
+  "currentUrl": "https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/client/672aa4a4cf7b41644b0d3a36/file-uploads",
+  "printButtonDetected": true,
+  "printButtonVisible": false,
+  "printButtonSelectorUsed": "fin-button[title='Print Preview'] > button, fin-button[title*='Print'] > button, fin-button[icon='ft-printer'] > button, button:has(.ft-printer), button:has-text('Print'), role=button[name=/^print$/i]",
+  "printClickSucceeded": false,
+  "printModalDetected": false,
+  "printModalSelectorUsed": null,
+  "printModalConfirmSelectorUsed": null,
+  "printModalConfirmSucceeded": false,
+  "selectedSectionLabels": [],
+  "printedPdfPath": null,
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-15T06-15-18-195Z-f5311eb3\\outputs\\evidence\\ETHEL_ROBINSON__2c0899029307ccdb\\oasis-printed-note\\extracted-text.txt",
+  "ocrResultPath": null,
+  "textLength": 2022,
+  "extractionMethod": "visible_text_fallback",
+  "warnings": [
+    "Print button could not be located on the OASIS assessment page.",
+    "Fell back to visible page text because printed-note OCR text was unavailable."
+  ],
+  "generatedAt": "2026-04-15T07:33:02.517Z"
+}

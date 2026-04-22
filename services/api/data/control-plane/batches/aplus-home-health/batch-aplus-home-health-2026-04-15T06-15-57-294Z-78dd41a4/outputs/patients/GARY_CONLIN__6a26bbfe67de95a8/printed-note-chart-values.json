@@ -1,0 +1,25 @@
+{
+  "generatedAt": "2026-04-15T07:16:05.226Z",
+  "source": "printed_note_ocr",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\outputs\\evidence\\GARY_CONLIN__6a26bbfe67de95a8\\oasis-printed-note\\extracted-text.txt",
+  "extractedFieldCount": 1,
+  "invocationModelId": "us.amazon.nova-lite-v1:0",
+  "currentChartValues": {
+    "patient_name": "Gary Conlin"
+  },
+  "extractedFieldValues": [
+    {
+      "field_key": "patient_name",
+      "current_value": "Gary Conlin",
+      "confidence": 0.95,
+      "source_spans": [
+        "CONLIN, GARY",
+        "Gary Conlin",
+        "Gary Conlin"
+      ]
+    }
+  ],
+  "warnings": [
+    "Printed-note chart-value extraction used inference profile us.amazon.nova-lite-v1:0."
+  ]
+}

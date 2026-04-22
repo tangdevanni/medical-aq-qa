@@ -1,0 +1,459 @@
+{
+  "assessmentType": "SOC",
+  "matchedAssessmentLabel": "OASIS-OASIS E2 - SOC",
+  "reviewSource": "printed_note_ocr",
+  "overallStatus": "PARTIAL",
+  "capture": {
+    "assessmentType": "SOC",
+    "printProfileKey": "soc_full_document_v1",
+    "printProfileLabel": "Full OASIS document",
+    "printButtonDetected": true,
+    "printButtonVisible": true,
+    "printButtonSelectorUsed": "fin-button[title='Print Preview'] > button",
+    "printClickSucceeded": false,
+    "printModalDetected": true,
+    "printModalSelectorUsed": "ngb-modal-window[role='dialog']",
+    "printModalConfirmSelectorUsed": "button:has-text('Print')",
+    "printModalConfirmSucceeded": true,
+    "selectedSectionLabels": [
+      "Administrative Information",
+      "Active Diagnoses",
+      "Vital Signs & Pain Assessment",
+      "Medication & Allergies (Injectable Medications)",
+      "Neurological (Head, Mood, Eyes, Ears)",
+      "Cardiopulmonary (Chest & Thorax)",
+      "Gastrointestinal & Genitourinary",
+      "Integumentary (Skin & Wound)",
+      "Safety & Risk Assessment",
+      "Functional Assessment (Self Care)",
+      "Functional Assessment (Mobility & Musculoskeletal)",
+      "Endocrine (Diabetic Management)",
+      "Plan of Care Orders and Discharge Plan",
+      "Patient Summary & Clinical Narrative",
+      "Care Plan (Problems / Goals / Interventions)",
+      "Footer (Not visible in Print Preview)"
+    ],
+    "currentUrl": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69d6f9f14027000c4205905f/intake/69d6fa95004e0a3a06ee0985/documents/note/oasis/69d6fab75a0e9c3a0a263152",
+    "printedPdfPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\outputs\\evidence\\JAMES_HELMS__b4c46b8180ae5bc0\\oasis-printed-note\\printed-source.pdf",
+    "sourcePdfPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\outputs\\evidence\\JAMES_HELMS__b4c46b8180ae5bc0\\oasis-printed-note\\printed-source.pdf",
+    "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\outputs\\evidence\\JAMES_HELMS__b4c46b8180ae5bc0\\oasis-printed-note\\extracted-text.txt",
+    "extractionResultPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\outputs\\evidence\\JAMES_HELMS__b4c46b8180ae5bc0\\oasis-printed-note\\extraction-result.json",
+    "ocrResultPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\outputs\\evidence\\JAMES_HELMS__b4c46b8180ae5bc0\\oasis-printed-note\\ocr-result.json",
+    "textLength": 103828,
+    "extractionMethod": "printed_pdf_ocr",
+    "warnings": []
+  },
+  "sections": [
+    {
+      "key": "administrative_information",
+      "label": "Administrative Information",
+      "status": "PARTIAL",
+      "filledFieldCount": 3,
+      "missingFieldCount": 12,
+      "evidence": [
+        "10) Agency Medicare Provider Number: (M0014) Branch State: (M0016) Branch ID Number: 297256 Branch State: Nevada (M0018) Attending Physician (NPI): Physician: Physician Address: 1477909786 ROSSIDIS, MICHAEL 7455 W WASHINGTON AVE STE 160 LAS",
+        "of Care Date: 178853 04/11/2026 mm/dd/yyyy Not Applicable (M0040) Patient Name: First Name: Middle Name: Last Name: Suffix: James Helms (M0066) Birth Date: (A0810) Sex: (M0050) Patient State of Residence: (M0060) Patient Zip Code: 08/30/19",
+        "Completing Assessment: (M0090) Date Assessment Completed: (M0100) Assessment Reason: 1. RN 2. PT 3. SLP/ST 4. oT 04/11/2026 1. Start of Care Assigned Staff: Miller, Julie RN (A1005) Ethnicity Are you of Hispanic, Latino/a, or Spanish origi"
+      ],
+      "missingFields": [
+        "M0010 Agency Medicare Provider #",
+        "M0014 Branch State",
+        "M0018 Attending Physician (NPI)",
+        "M0020 Patient ID #",
+        "M0030 Start of Care Date",
+        "M0050 State of Residence",
+        "M0060 Zip Code",
+        "M0063 Medicare Number"
+      ],
+      "suggestions": [
+        "Confirm branch state from agency profile if it is blank in the printed section.",
+        "Recommend M0060 = 89103 from source address evidence.",
+        "Recommend M0066 = 08/30/1935 from shared referral/intake evidence."
+      ],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\outputs\\patients\\JAMES_HELMS__b4c46b8180ae5bc0\\documents\\helms-james-r-referal-04082026-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "primary_reason_medical_necessity",
+      "label": "Primary Reason / Medical Necessity",
+      "status": "COMPLETED",
+      "filledFieldCount": 4,
+      "missingFieldCount": 1,
+      "evidence": [
+        "cent): mm/dd/yyyy UK Unknown Primary Reason for Home Health/Medical Necessity (POC Element): James Helms, a 90-year-old male, is being referred for home health care following an encounter for change or removal of a non-surgical wound dressi",
+        "conditions justify the need for home health care services. Homebound Reason (POC Element): Document as Clinical Narrative Patient is not Homebound Criteria One (One must be met): Describe what assistive devices the patient is dependent on"
+      ],
+      "missingFields": [
+        "reason for admission"
+      ],
+      "suggestions": [],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\outputs\\patients\\JAMES_HELMS__b4c46b8180ae5bc0\\documents\\helms-james-r-referal-04082026-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "vital_signs",
+      "label": "Vital Signs",
+      "status": "COMPLETED",
+      "filledFieldCount": 3,
+      "missingFieldCount": 2,
+      "evidence": [
+        "Radial = 83 Respiratory (per minute): 18 Weight: 145 actual Blood Pressure mm/Hg (R): 120 / 62 sitting Blood Pressure mm/Hg (L): / Blood Sugar (mg/dl): Non-Fasting O2 Sat: 94 O2 Sat in: Room Air Comments: Pain Assessment Wong-Baker FACES® P",
+        "with shoes off, etc.: 145 BMI: 22.04 Comments: Vital Signs Temperature: 97.6 Temporal Pulse (per minute): Apical = Radial = 83 Respiratory (per minute): 18 Weight: 145 actual Blood Pressure mm/Hg (R): 120 / 62 sitting Blood Pressure mm/Hg"
+      ],
+      "missingFields": [
+        "heart rate",
+        "respiratory rate"
+      ],
+      "suggestions": [],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\outputs\\patients\\JAMES_HELMS__b4c46b8180ae5bc0\\documents\\helms-james-r-referal-04082026-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "neurological",
+      "label": "Neurological",
+      "status": "COMPLETED",
+      "filledFieldCount": 4,
+      "missingFieldCount": 0,
+      "evidence": [
+        "k post-discharge? Yes No (C0100) Should Brief Interview for Mental Status (C0200-C0500) be Conducted? Attempt to conduct interview with all patients. No (patient is rarely/never understood) Yes Not assessed/no information Brief Interview fo",
+        "tus (POC Element ($484.60 (2.ii)): 1- Oriented 2 Comatose 3 Forgetful F_CTL_69d6fab75a0e9c3a0a263152_0 HELMS, JAMES I 178853 I DOB: 08/30/1935 I N: 04/11/2026 9 of 25 4 - Depressed 5 - Disoriented 6 - Lethargic 7- Agitated 8 - Alert 9 - Con",
+        "g care. James's medical status reveals that he is alert and oriented but faces functional limitations due to pain and swelling, which hinders his mobility and daily activities. He requires skilled nursing care for the management of his comp"
+      ],
+      "missingFields": [],
+      "suggestions": [],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\outputs\\patients\\JAMES_HELMS__b4c46b8180ae5bc0\\documents\\helms-james-r-referal-04082026-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "eyes_ears",
+      "label": "Eyes & Ears",
+      "status": "COMPLETED",
+      "filledFieldCount": 6,
+      "missingFieldCount": 0,
+      "evidence": [
+        "Ears (B1000) Vision: Ability to see in adequate light (with glasses or other visual appliances) 0. Adequate - sees fine detail, such as regular print in newspapers/books 1. Impaired - sees large print, but not regular print in newspapers/bo",
+        "(Specify): Comments: (B0200) Hearing: Ability to hear (with hearing aid or hearing appliances if normally used) 0. Adequate - no difficulty in normal conversation, social interaction, listening to TV 1. Minimal difficulty - difficulty in so",
+        "primary source of emotional support: Eyes and Ears (B1000) Vision: Ability to see in adequate light (with glasses or other visual appliances) 0. Adequate - sees fine detail, such as regular print in newspapers/books 1. Impaired - sees larg",
+        "itations (POC Element ($484.60 (2.vi))): 1 - Amputation 4 - Hearing 7 Ambulation A - Dyspnea with minimal exertion 2 Bowel/Bladder (Incontinence) 5 - Paralysis 8 - Speech 3 - Contracture 6 - Endurance 9 - Legally blind B- Other (Specify) Em"
+      ],
+      "missingFields": [],
+      "suggestions": [],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\outputs\\patients\\JAMES_HELMS__b4c46b8180ae5bc0\\documents\\helms-james-r-referal-04082026-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "cardiovascular",
+      "label": "Cardiovascular",
+      "status": "COMPLETED",
+      "filledFieldCount": 5,
+      "missingFieldCount": 0,
+      "evidence": [
+        "Hx New Finding FrictionRub: Known Hx New Finding Comments: Edema: Rigth Upper Extremities: Left Upper Extremities: Rigth Lower Extremities: Left Lower Extremities: Pitting, +2 Pitting, +2 Others: Others: Comments: Peripheral Pulses: Radial",
+        "itting, +2 Pitting, +2 Others: Others: Comments: Peripheral Pulses: Radial: Strong Bounding Weak Thready Absent Pedal: Strong Bounding Weak Thready Absent Fluid Imbalance and Systemic Distress: Capillary Refill: Cramps Claudication Fatigue",
+        "on Fatigue Face Neck Abdomen < secs > 3 secs > Chest/Thorax Chest Pain: Denies Anginal Postural Localized Substernal Sharp Dull Aching Radiating Viselike Stabbing Nausea F_CTL_69d6fab75a0e9c3a0a263152_0 HELMS, JAMES I 178853 | DOB: 08/30/19",
+        "Aids: Right Left Comments: CARDIOPULMONARY (CHEST & THORAX) Heart Sounds: No Problems Identified Irregular: Known Hx New Finding Gallops: Known Hx New Finding Clicks: Known Hx New Finding Murmur: Known Hx New Finding FrictionRub: Known Hx N"
+      ],
+      "missingFields": [],
+      "suggestions": [],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\outputs\\patients\\JAMES_HELMS__b4c46b8180ae5bc0\\documents\\helms-james-r-referal-04082026-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "respiratory",
+      "label": "Respiratory",
+      "status": "COMPLETED",
+      "filledFieldCount": 5,
+      "missingFieldCount": 0,
+      "evidence": [
+        "I N: 04/11/2026 10 of 25 Other (Specify): Associated with: Shortness of Breath Activity Rest Diaphoresis Frequency/Duration: (M1400) When is the patient dyspneic or noticeably Short of Breath? 0. Patient is not short of breath 1. When walk",
+        "ight: Diminished Posterior Lower Left: Diminished Comments: Cough: Cough Characteristics: None Dry Acute Chronic Productivity of Cough: Non-Productive Productive: Sputum Characteristics (if Productive): Brown Clear Cloudy Bloody Yellow Whit",
+        ": Nasal Cannula Trach Cuff Mask (Specify): Other (Specify): Lung Sounds: Anterior Right: Anterior Left: Anterior Right: Clear Anterior Left: Clear Posterior Upper Right: Posterior Upper Left: Posterior Lower Right: Posterior Lower Left: Pos",
+        "uring an evacuation Medical Needs/Equipment (i.e. bedbound, oxygen, vent, IV cardiac meds other DME) Comments: Advance Directives (POC Element ($484.60 (2.xv))): Patient has Advance Directives? Yes No If you have checked \"yes\", fill the fol"
+      ],
+      "missingFields": [],
+      "suggestions": [],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\outputs\\patients\\JAMES_HELMS__b4c46b8180ae5bc0\\documents\\helms-james-r-referal-04082026-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "gastrointestinal",
+      "label": "Gastrointestinal",
+      "status": "COMPLETED",
+      "filledFieldCount": 5,
+      "missingFieldCount": 0,
+      "evidence": [
+        "- Hearing 7 Ambulation A - Dyspnea with minimal exertion 2 Bowel/Bladder (Incontinence) 5 - Paralysis 8 - Speech 3 - Contracture 6 - Endurance 9 - Legally blind B- Other (Specify) Emergency Preparedness (POC Element): Discussed the HHA's p",
+        "from another person; OR (c) a liquid, pureed or ground meat diet. 2. Unable to feed self and must be assisted or supervised throughout the meal/snack. 3. Able to take in nutrients orally and receives supplemental nutrients though a nasogast",
+        "utic diet, including adequate fluid intake to ensure proper nutrition and hydration. Weight: No Change Weight Gain Weight Loss Comments: (M1620) Bowel Incontinence Frequency: 0. Very rarely or never has bowel incontinence 4. On a daily basi",
+        "adrants): Right Lower: Right Upper: Left Lower: Left Upper: Last Bowel Movement: Right Lower: Normoactive Right Upper: Normoactive Left Lower: Normoactive Left Upper: Normoactive 04/11/2026 GI Symptoms: Nausea Vomiting Reflux/Indigestion Bo"
+      ],
+      "missingFields": [],
+      "suggestions": [],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\outputs\\patients\\JAMES_HELMS__b4c46b8180ae5bc0\\documents\\helms-james-r-referal-04082026-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "genitourinary",
+      "label": "Genitourinary",
+      "status": "COMPLETED",
+      "filledFieldCount": 4,
+      "missingFieldCount": 0,
+      "evidence": [
+        "flamed Other (Specify): Comments: Genitourinary (Genitals & Urinary) (M1600) Has this patient been treated for a Urinary Tract Infection in the past 14 days? 0. No 1. Yes NA Patient on prophylactic treatment UK Unknown (M1610) Urinary Incon",
+        "reatment UK Unknown (M1610) Urinary Incontinence or Urinary Catheter Presence: Patient is incontinent No incontinence or catheter (includes anuria or ostomy for urinary drainage) Day time Night time Day and Night Timed-voiding defers incont",
+        "inary Incontinence or Urinary Catheter Presence: Patient is incontinent No incontinence or catheter (includes anuria or ostomy for urinary drainage) Day time Night time Day and Night Timed-voiding defers incontinence Occasional stress incon"
+      ],
+      "missingFields": [],
+      "suggestions": [],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\outputs\\patients\\JAMES_HELMS__b4c46b8180ae5bc0\\documents\\helms-james-r-referal-04082026-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "musculoskeletal_functional_status",
+      "label": "Musculoskeletal and Functional Status",
+      "status": "COMPLETED",
+      "filledFieldCount": 6,
+      "missingFieldCount": 0,
+      "evidence": [
+        "nal limitations due to pain and swelling, which hinders his mobility and daily activities. He requires skilled nursing care for the management of his complex wound care regimen, including dressing changes that need to occur every other day,",
+        "e patients who need help with IADLS or ADLS or have gait or transfer problems, arthritis, pain, fear of falling, foot problems, impaired sensation, imp aired coordination or improper use of assistive devices. Environmental hazards: Yes No M",
+        "h Oxygen Patient is not using oxygen FUNCTIONAL ASSESSMENT (SELF CARE) (GG0100) Prior Functioning: Everyday Activities: Indicate the patient's usual ability with everyday activities prior to the current illness, exacerbation, or injury. 3.",
+        "aired with potential for falls; uses walls and furniture to ambulate Cognitively impaired, unable to safely leave home without assist Leaving home is exhausting, extended rest periods to recover Infectious disease process causing weakness a"
+      ],
+      "missingFields": [],
+      "suggestions": [],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\outputs\\patients\\JAMES_HELMS__b4c46b8180ae5bc0\\documents\\helms-james-r-referal-04082026-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "integumentary",
+      "label": "Integumentary",
+      "status": "COMPLETED",
+      "filledFieldCount": 5,
+      "missingFieldCount": 0,
+      "evidence": [
+        "lowing an encounter for change or removal of a non-surgical wound dressing, with a chronic ulcer on another part of the left foot with the fat layer exposed; he recently underwent a revascularization procedure due to significant Peripheral",
+        ": Moist Dry Pinkished-Red Purple Gray Black Odor Peristomal Skin Characteristics: Clean Healthy Red Weeping Peeling Inflamed Other (Specify): Comments: Genitourinary (Genitals & Urinary) (M1600) Has this patient been treated for a Urinary T",
+        "WOUND) (M1306) Does this patient have at least one Unhealed Pressure Ulcer/Injury at Stage 2 or Higher or designated as Unstageable? (Excludes Stage 1 pressure injuries and all healed pressure ulcers/injuries) 0. No Skip to M1322, Current N",
+        ". Early/partial granulation 3. Not healing Skin Color: Skin Turgor: Normal Pale Jaundice Cyanotic Good Fair Poor Skin Abnormalities: Dry Warm Cool Rash Ulcer Ostomy Incision Diaphoretic Other (Specify): Comments: Norton Scale for Pressure U"
+      ],
+      "missingFields": [],
+      "suggestions": [],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\outputs\\patients\\JAMES_HELMS__b4c46b8180ae5bc0\\documents\\helms-james-r-referal-04082026-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "pain_assessment",
+      "label": "Pain Assessment",
+      "status": "COMPLETED",
+      "filledFieldCount": 3,
+      "missingFieldCount": 1,
+      "evidence": [
+        ", and following vascular surgery he continues to experience pain and significant swelling in his lower extremities, indicating compromised circulation and the need for ongoing monitoring and skilled nursing care. James's medical status reve",
+        "mission. 5 Collected Using: Face Scale Numeric Rating Scale Pain Location and Description: Location Start Date Activity What makes pain worse? left dorsal foot 04/11/2026 - At Restx Movementx Intensity Duration What makes pain better? Does"
+      ],
+      "missingFields": [
+        "pain scale"
+      ],
+      "suggestions": [],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\outputs\\patients\\JAMES_HELMS__b4c46b8180ae5bc0\\documents\\helms-james-r-referal-04082026-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "emotional",
+      "label": "Emotional",
+      "status": "COMPLETED",
+      "filledFieldCount": 5,
+      "missingFieldCount": 0,
+      "evidence": [
+        "dual's desire or ability to move or pain can be a factor in depression or compliance with safety recommendations. Cognitive impairment: Yes No Could include patients with dementia, Alzheimer's or stroke patients or patients who are confused",
+        "Not assessed/no information (D0150) Patient Mood Interview (PHQ-2 to 9): Say to patient: \"Over the last 2 weeks, have you been bothered by any of the following problems?\" If symptom is present, enter 1 (yes) in column 1, Symptom Presence If",
+        "nd benefits of up-to-date immunization. NEUROLOGICAL (HEAD, MOOD, EYES, EARS) Neuro/Emotional/Behavioral Assessment Neuromuscular: No Problems Identified Level of Consciousness: Awake Alert Lethargic Minimally Responsive Unresponsive Coma I"
+      ],
+      "missingFields": [],
+      "suggestions": [],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\outputs\\patients\\JAMES_HELMS__b4c46b8180ae5bc0\\documents\\helms-james-r-referal-04082026-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "diagnosis",
+      "label": "Diagnosis",
+      "status": "COMPLETED",
+      "filledFieldCount": 5,
+      "missingFieldCount": 0,
+      "evidence": [
+        "e patient is receiving home care in Column 1, and enter its ICD-10-CM code at the level of highest specificity in Column 2 (diagnosis codes only - no surgical or procedure codes allowed). Diagnoses are listed in the order that best reflects",
+        "nd Symptom Control (POC Element ($484.60 (2.i))): List each diagnosis for which the patient is receiving home care in Column 1, and enter its ICD-10-CM code at the level of highest specificity in Column 2 (diagnosis codes only - no surgical",
+        "Venous Stasis Ulcer wounds, Cellulitis on left lower limb. Fall Risk Test N/A MAHC 10* Fall Risk Assessment Tool TUG Assessment Tool MAHC 10* FALL RISK ASSESSMENT TOOL Age 65+: Yes No Diagnosis (3 or more co-existing): Yes No Includes only"
+      ],
+      "missingFields": [],
+      "suggestions": [],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\outputs\\patients\\JAMES_HELMS__b4c46b8180ae5bc0\\documents\\helms-james-r-referal-04082026-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "medications_allergies",
+      "label": "Medications and Allergies",
+      "status": "COMPLETED",
+      "filledFieldCount": 5,
+      "missingFieldCount": 0,
+      "evidence": [
+        "ally 3. Frequently 4. Almost Constantly 8. Unable to answer MEDICATION & ALLERGIES (INJECTABLE MEDICATIONS) Medication (POC Element ($484.60 (2.x))): F_CTL_69d6fab75a0e9c3a0a263152_0 HELMS, JAMES I 178853 I DOB: 08/30/1935 I N: 04/11/2026 5",
+        "ently 4. Almost Constantly 8. Unable to answer MEDICATION & ALLERGIES (INJECTABLE MEDICATIONS) Medication (POC Element ($484.60 (2.x))): F_CTL_69d6fab75a0e9c3a0a263152_0 HELMS, JAMES I 178853 I DOB: 08/30/1935 I N: 04/11/2026 5 of 25 Start",
+        "A3. Oral A10. Other B1. Radiation Respiratory Therapies C1. Oxygen Therapy C2. Continuous C3. Intermittent C4. High-Concentration D1. Suctioning D2. Scheduled D3. As needed E1. Tracheostomy Care F1. Invasive Mechanical Ventilator G1. Non-in",
+        "biotics H4. Anticoagulation H10. Other I1. Transfusions J1. Dialysis J2. Hemodialysis J3. Peritoneal dialysis 01. IV Access O2. Peripheral O3. Mid-line O4. Central (e.g., PICC, tunneled, port) Z1. None of the Above Most Recent Immunizations"
+      ],
+      "missingFields": [],
+      "suggestions": [],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\outputs\\patients\\JAMES_HELMS__b4c46b8180ae5bc0\\documents\\helms-james-r-referal-04082026-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "patient_coordination_care_plan",
+      "label": "Patient Coordination and Care Plan",
+      "status": "COMPLETED",
+      "filledFieldCount": 4,
+      "missingFieldCount": 0,
+      "evidence": [
+        "ed in a timely manner to promote healing. The comprehensive care plan will focus on wound management, infection prevention, and enhancing his overall health status through skilled interventions, ensuring that he receives the appropriate car",
+        "atient therapy with MD approval Others (Specify): Comments: PATIENT SUMMARY & CLINICAL NARRATIVE Summary (POC Element): James Helms, a 90-year-old male, seen for wound care of a chronic toe ulcer and a new, recurrent blister on the dorsal l",
+        "care services. Homebound Reason (POC Element): Document as Clinical Narrative Patient is not Homebound Criteria One (One must be met): Describe what assistive devices the patient is dependent on (if any) and specifically why the patient co",
+        "orm wound dressing change during non-SN visit days. Patient goals: The Patient aims to improve overall health, functional ability, independence, and understanding of self-care management. Patient also wishes wound to heal without any infect"
+      ],
+      "missingFields": [],
+      "suggestions": [],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\outputs\\patients\\JAMES_HELMS__b4c46b8180ae5bc0\\documents\\helms-james-r-referal-04082026-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "other_supplementals",
+      "label": "Other Supplementals",
+      "status": "PARTIAL",
+      "filledFieldCount": 1,
+      "missingFieldCount": 2,
+      "evidence": [
+        "y mm/dd/yyyy TB Exposure: Hepatitis B: COVID-19: Additional Immunization: Yes No Unknown Yes No Unknown Yes No Unknown Yes No Unknown mm/dd/yyyy mm/dd/yyyy mm/dd/yyyy mm/dd/yyyy Comments: SN taught patient/PCG on the risks and benefits of u"
+      ],
+      "missingFields": [
+        "past medical history",
+        "vaccination"
+      ],
+      "suggestions": [
+        "Use H&P and referral records to confirm supplemental history and immunization details.",
+        "Use shared referral/hospital evidence before escalating any diagnosis changes to coding."
+      ],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\outputs\\patients\\JAMES_HELMS__b4c46b8180ae5bc0\\documents\\helms-james-r-referal-04082026-pdf\\source.pdf"
+      ]
+    },
+    {
+      "key": "care_plan",
+      "label": "Care Plan",
+      "status": "COMPLETED",
+      "filledFieldCount": 3,
+      "missingFieldCount": 1,
+      "evidence": [
+        "le to Assess Unable to Assess Description Frequency Type of Intervention Sharpx Frequentx Non Phamacologicx How well it is working Status Fairly Wellx COCx Comments: (J0510) Pain Effect on Sleep: Ask patient: \"Over the past 5 days, how much",
+        "able to cook and/or feed self and has no Has a tooth/mouth problem that makes it hard to eat 10 5 caregiver to assist Has 3 or more drinks of beer, liquor or wine almost every day 10 Frequently has a diarrhea or constipation 5 Total 25 Goo"
+      ],
+      "missingFields": [
+        "goal"
+      ],
+      "suggestions": [],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-15T06-15-57-294Z-78dd41a4\\outputs\\patients\\JAMES_HELMS__b4c46b8180ae5bc0\\documents\\helms-james-r-referal-04082026-pdf\\source.pdf"
+      ]
+    }
+  ],
+  "warningCount": 0,
+  "topWarning": null,
+  "warnings": []
+}

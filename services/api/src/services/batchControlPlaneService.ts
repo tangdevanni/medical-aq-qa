@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { copyFile, mkdir } from "node:fs/promises";
+import { copyFile, mkdir, readdir, stat } from "node:fs/promises";
 import path from "node:path";
 import type {
   AgencyDashboardSnapshot,
@@ -330,6 +330,16 @@ function selectSampleWorkItems(input: {
   return input.workItems.slice(0, limit);
 }
 
+type PatientArtifactOverlay = {
+  rootDirectory: string;
+  patientArtifactsDirectory: string;
+  patientDashboardStatePath: string;
+  resultBundlePath: string | null;
+  logPath: string | null;
+  evidenceDirectory: string;
+  modifiedAt: string;
+};
+
 export class BatchControlPlaneService {
   private readonly activeBatchJobs = new Map<string, Promise<void>>();
   private rerunTimer: ReturnType<typeof setInterval> | null = null;
@@ -382,7 +392,7 @@ export class BatchControlPlaneService {
       : await this.subsidiaryConfigService.getDefaultActiveSubsidiary();
     const batchId = createBatchId(subsidiary.slug);
     const fileName = params.originalFileName?.trim() || "finale-workbook.xlsx";
-    const paths = this.repository.createBatchPaths(batchId, fileName);
+    const paths = this.repository.createBatchPaths(batchId, fileName, subsidiary.slug);
     const now = new Date().toISOString();
 
     const batch: BatchRecord = {
@@ -559,7 +569,11 @@ export class BatchControlPlaneService {
     }
 
     const batchId = createBatchId(`${sourceBatch.subsidiary.slug}-sample`);
-    const paths = this.repository.createBatchPaths(batchId, sourceBatch.sourceWorkbook.originalFileName);
+    const paths = this.repository.createBatchPaths(
+      batchId,
+      sourceBatch.sourceWorkbook.originalFileName,
+      sourceBatch.subsidiary.slug,
+    );
     const now = new Date().toISOString();
     const manifestPath = path.join(paths.outputRoot, "batch-manifest.json");
     const workItemsPath = path.join(paths.outputRoot, "work-items.json");
@@ -925,7 +939,12 @@ export class BatchControlPlaneService {
 
   async getPatientRuns(batchId: string): Promise<BatchRecord["patientRuns"]> {
     const batch = await this.mustGetBatch(batchId);
-    return [...batch.patientRuns].sort((left, right) => left.patientName.localeCompare(right.patientName));
+    const patientRuns = await Promise.all(
+      batch.patientRuns.map((patientRun) =>
+        this.resolvePreferredPatientRunSummary(batch, patientRun),
+      ),
+    );
+    return patientRuns.sort((left, right) => left.patientName.localeCompare(right.patientName));
   }
 
   async getPatientRun(runId: string): Promise<{
@@ -965,6 +984,92 @@ export class BatchControlPlaneService {
     };
   }
 
+  private async findPreferredPatientArtifactOverlay(
+    batch: BatchRecord,
+    patientId: string,
+  ): Promise<PatientArtifactOverlay | null> {
+    const candidateRoots = [batch.storage.outputRoot];
+    const batchRootEntries = await readdir(batch.storage.batchRoot, { withFileTypes: true }).catch(() => []);
+
+    for (const entry of batchRootEntries) {
+      if (!entry.isDirectory() || !entry.name.startsWith("verification-rerun-")) {
+        continue;
+      }
+
+      candidateRoots.push(path.join(batch.storage.batchRoot, entry.name));
+    }
+
+    const candidates: PatientArtifactOverlay[] = [];
+    for (const rootDirectory of candidateRoots) {
+      const patientArtifactsDirectory = path.join(rootDirectory, "patients", patientId);
+      const patientDashboardStatePath = path.join(
+        patientArtifactsDirectory,
+        "patient-dashboard-state.json",
+      );
+      if (!(await this.repository.fileExists(patientDashboardStatePath))) {
+        continue;
+      }
+
+      const dashboardStateStat = await stat(patientDashboardStatePath);
+      const resultBundlePathCandidate = path.join(rootDirectory, "patient-results", `${patientId}.json`);
+      const logPathCandidate = path.join(rootDirectory, "logs", `${patientId}.json`);
+      candidates.push({
+        rootDirectory,
+        patientArtifactsDirectory,
+        patientDashboardStatePath,
+        resultBundlePath: (await this.repository.fileExists(resultBundlePathCandidate))
+          ? resultBundlePathCandidate
+          : null,
+        logPath: (await this.repository.fileExists(logPathCandidate)) ? logPathCandidate : null,
+        evidenceDirectory: path.join(rootDirectory, "evidence", patientId),
+        modifiedAt: dashboardStateStat.mtime.toISOString(),
+      });
+    }
+
+    return candidates.sort((left, right) => right.modifiedAt.localeCompare(left.modifiedAt))[0] ?? null;
+  }
+
+  private async resolvePreferredPatientRunSummary(
+    batch: BatchRecord,
+    summary: BatchRecord["patientRuns"][number],
+  ): Promise<BatchRecord["patientRuns"][number]> {
+    const overlay = await this.findPreferredPatientArtifactOverlay(batch, summary.workItemId);
+    if (!overlay?.resultBundlePath) {
+      return summary;
+    }
+
+    const overlaidDetail = await this.repository.readPatientRun(overlay.resultBundlePath);
+    const overlaidLogAvailable = overlay.logPath
+      ? await this.repository.fileExists(overlay.logPath)
+      : false;
+
+    return {
+      ...summary,
+      runId: overlaidDetail.runId,
+      processingStatus: overlaidDetail.processingStatus,
+      executionStep: overlaidDetail.executionStep,
+      progressPercent: overlaidDetail.progressPercent,
+      startedAt: overlaidDetail.startedAt,
+      completedAt: overlaidDetail.completedAt,
+      lastUpdatedAt: overlaidDetail.lastUpdatedAt,
+      matchResult: overlaidDetail.matchResult,
+      qaOutcome: overlaidDetail.qaOutcome,
+      oasisQaSummary: overlaidDetail.oasisQaSummary,
+      artifactCount: overlaidDetail.artifactCount,
+      hasFindings: overlaidDetail.hasFindings,
+      bundleAvailable: true,
+      logPath: overlay.logPath ?? summary.logPath,
+      logAvailable: overlaidLogAvailable,
+      errorSummary: overlaidDetail.errorSummary,
+      resultBundlePath: overlay.resultBundlePath,
+      evidenceDirectory: overlay.evidenceDirectory,
+      tracePath: overlaidDetail.auditArtifacts.tracePath,
+      screenshotPaths: overlaidDetail.auditArtifacts.screenshotPaths,
+      downloadPaths: overlaidDetail.auditArtifacts.downloadPaths,
+      workflowRuns: overlaidDetail.workflowRuns,
+    };
+  }
+
   async getBatchPatient(batchId: string, patientId: string): Promise<{
     batch: BatchRecord;
     summary: BatchRecord["patientRuns"][number];
@@ -976,16 +1081,59 @@ export class BatchControlPlaneService {
       return null;
     }
 
-    const detail =
+    let detail =
       summary.bundleAvailable && (await this.repository.fileExists(summary.resultBundlePath))
         ? await this.repository.readPatientRun(summary.resultBundlePath)
         : null;
+    const resolvedSummary = await this.resolvePreferredPatientRunSummary(batch, summary);
+    if (resolvedSummary.resultBundlePath !== summary.resultBundlePath) {
+      detail = await this.repository.readPatientRun(resolvedSummary.resultBundlePath);
+    }
 
     return {
       batch,
-      summary,
+      summary: resolvedSummary,
       detail,
     };
+  }
+
+  async getLatestPatientForSubsidiary(input: {
+    subsidiaryId: string;
+    patientId: string;
+  }): Promise<{
+    batch: BatchRecord;
+    summary: BatchRecord["patientRuns"][number];
+    detail: PatientRun | null;
+  } | null> {
+    const candidateBatches = (await this.repository.listBatches())
+      .filter((batch) => batch.subsidiary.id === input.subsidiaryId)
+      .sort((left, right) => right.updatedAt.localeCompare(left.updatedAt));
+
+    const candidates = await Promise.all(
+      candidateBatches.map(async (batch) => this.getBatchPatient(batch.id, input.patientId)),
+    );
+
+    return candidates
+      .filter((candidate): candidate is NonNullable<typeof candidate> => candidate !== null)
+      .sort((left, right) => {
+        const leftScore = left.detail ? 1 : 0;
+        const rightScore = right.detail ? 1 : 0;
+        if (leftScore !== rightScore) {
+          return rightScore - leftScore;
+        }
+
+        const leftCompletedAt = left.summary.completedAt ?? "";
+        const rightCompletedAt = right.summary.completedAt ?? "";
+        if (leftCompletedAt !== rightCompletedAt) {
+          return rightCompletedAt.localeCompare(leftCompletedAt);
+        }
+
+        if (left.summary.lastUpdatedAt !== right.summary.lastUpdatedAt) {
+          return right.summary.lastUpdatedAt.localeCompare(left.summary.lastUpdatedAt);
+        }
+
+        return right.batch.updatedAt.localeCompare(left.batch.updatedAt);
+      })[0] ?? null;
   }
 
   async getBatchPatientLog(batchId: string, patientId: string): Promise<{
@@ -1162,11 +1310,13 @@ export class BatchControlPlaneService {
     }
 
     const workItem = await this.getBatchWorkItem(batchId, patientId);
-    const patientArtifactsDirectory = path.join(patient.batch.storage.outputRoot, "patients", patientId);
-    const patientDashboardStatePath = path.join(
-      patientArtifactsDirectory,
-      "patient-dashboard-state.json",
-    );
+    const overlay = await this.findPreferredPatientArtifactOverlay(patient.batch, patientId);
+    const patientArtifactsDirectory =
+      overlay?.patientArtifactsDirectory ??
+      path.join(patient.batch.storage.outputRoot, "patients", patientId);
+    const patientDashboardStatePath =
+      overlay?.patientDashboardStatePath ??
+      path.join(patientArtifactsDirectory, "patient-dashboard-state.json");
     const patientDashboardState = await this.repository.readJsonIfExists<PatientDashboardState>(
       patientDashboardStatePath,
     );
@@ -1325,8 +1475,13 @@ export class BatchControlPlaneService {
       path.join(outputRoot, "patient-queue.json"),
     );
     const queueEntries = patientQueue?.entries ?? [];
+    const resolvedPatientRuns = await Promise.all(
+      batch.patientRuns.map((patientRun) =>
+        this.resolvePreferredPatientRunSummary(batch, patientRun),
+      ),
+    );
     const patientRecords: DashboardPatientRecord[] = queueEntries.map((queueEntry) => {
-      const patientRun = batch.patientRuns.find((candidate) => candidate.workItemId === queueEntry.workItemId);
+      const patientRun = resolvedPatientRuns.find((candidate) => candidate.workItemId === queueEntry.workItemId);
       return {
         queueEntry,
         runId: patientRun ? batch.id : null,
