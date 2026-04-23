@@ -1,0 +1,41 @@
+[
+  {
+    "sectionName": "patient_identity",
+    "extractedTextSpans": [
+      "DOB: 07/06/1957, 68 year old Male",
+      "DOB: 7/6/1957, 68 year old Male"
+    ],
+    "normalizedSummary": "DOB: 07/06/1957, 68 year old Male DOB: 7/6/1957, 68 year old Male",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 7,
+        "lineEnd": 7,
+        "charStart": 79,
+        "charEnd": 112
+      },
+      {
+        "lineStart": 23,
+        "lineEnd": 23,
+        "charStart": 386,
+        "charEnd": 417
+      }
+    ]
+  },
+  {
+    "sectionName": "diagnoses",
+    "extractedTextSpans": [
+      "diagnosis and/or medical services that are being provided by the patient's selected caregivers."
+    ],
+    "normalizedSummary": "diagnosis and/or medical services that are being provided by the patient's selected caregivers.",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 62,
+        "lineEnd": 62,
+        "charStart": 1142,
+        "charEnd": 1237
+      }
+    ]
+  }
+]

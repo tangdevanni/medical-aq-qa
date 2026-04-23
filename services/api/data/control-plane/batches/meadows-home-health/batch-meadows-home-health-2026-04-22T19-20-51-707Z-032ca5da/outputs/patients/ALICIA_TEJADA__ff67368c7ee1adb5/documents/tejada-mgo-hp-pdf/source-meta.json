@@ -1,0 +1,79 @@
+{
+  "selectedSourceFile": "TEJADA MGO HP.pdf",
+  "selectedSourceFileNormalized": "tejada mgo hp.pdf",
+  "admissionOrderTitle": "📄 TEJADA MGO HP.pdf 📝 ✏️ 🗑️ 🔗",
+  "admissionOrderSelectorUsed": "File Uploads source document row by .file-item/.file-label or table row",
+  "sourceUrlBeforeClick": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69e2b7f158a9dfc7193e29af/intake/69e2b84dcc46ea0c54d66535/calendar",
+  "sourceUrlAfterClick": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69e2b7f158a9dfc7193e29af/file-uploads",
+  "matchedReferralFileLabel": "TEJADA MGO HP.pdf",
+  "normalizedFileLabels": [
+    "tejada mgo hp.pdf",
+    "tejada alicia alignment auth.pdf"
+  ],
+  "matchedSourceDocuments": [
+    {
+      "label": "📄 TEJADA MGO HP.pdf",
+      "normalizedLabel": "tejada mgo hp.pdf",
+      "score": 20
+    },
+    {
+      "label": "📄 TEJADA MGO HP.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedLabel": "tejada mgo hp.pdf",
+      "score": 20
+    },
+    {
+      "label": "📄 TEJADA, ALICIA Alignment Auth.pdf",
+      "normalizedLabel": "tejada alicia alignment auth.pdf",
+      "score": 20
+    },
+    {
+      "label": "📄 TEJADA, ALICIA Alignment Auth.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedLabel": "tejada alicia alignment auth.pdf",
+      "score": 20
+    }
+  ],
+  "viewerDetected": true,
+  "viewerMarkerSamples": [
+    "of ⁨26⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools",
+    "Tools",
+    "Print"
+  ],
+  "printButtonDetected": true,
+  "printButtonVisible": true,
+  "printButtonSelectorUsed": "pdf-print #printButton, #printButton, pdf-shy-button[primarytoolbarid='printButton'] button",
+  "printClickSucceeded": false,
+  "pdfResponseDetected": true,
+  "pdfResponseUrl": "https://api.finalehealth.com/api/v1/files/69e2bc3b1f57730c3f8a1123?index=patient",
+  "pdfContentType": "application/pdf",
+  "pdfSavedPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-22T19-20-51-707Z-032ca5da\\outputs\\patients\\ALICIA_TEJADA__ff67368c7ee1adb5\\documents\\tejada-mgo-hp-pdf\\source.pdf",
+  "pdfByteSize": 5262134,
+  "printAcquisitionMethodUsed": "network_pdf_response",
+  "printedPdfSaved": false,
+  "printedPdfPath": null,
+  "sourcePdfPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-22T19-20-51-707Z-032ca5da\\outputs\\patients\\ALICIA_TEJADA__ff67368c7ee1adb5\\documents\\tejada-mgo-hp-pdf\\source.pdf",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-22T19-20-51-707Z-032ca5da\\outputs\\patients\\ALICIA_TEJADA__ff67368c7ee1adb5\\documents\\tejada-mgo-hp-pdf\\extracted-text.txt",
+  "extractionResultPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-22T19-20-51-707Z-032ca5da\\outputs\\patients\\ALICIA_TEJADA__ff67368c7ee1adb5\\documents\\tejada-mgo-hp-pdf\\extraction-result.json",
+  "extractedTextLength": 104,
+  "rawExtractedTextSource": "dom",
+  "domExtractionRejectedReasons": [
+    "viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS"
+  ],
+  "extractionSuccess": false,
+  "queuedForLlm": true,
+  "extractionPolicyDecision": {
+    "mode": "ocr_required",
+    "confidence": "high",
+    "reasons": [
+      "PDF appears image-based/scanned; OCR likely required",
+      "No printed PDF available",
+      "OCR is the cheapest acceptable option that preserves clinically meaningful content"
+    ],
+    "recommendedSourcePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-22T19-20-51-707Z-032ca5da\\outputs\\patients\\ALICIA_TEJADA__ff67368c7ee1adb5\\documents\\tejada-mgo-hp-pdf\\source.pdf",
+    "fallbackSourcePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-22T19-20-51-707Z-032ca5da\\outputs\\patients\\ALICIA_TEJADA__ff67368c7ee1adb5\\documents\\tejada-mgo-hp-pdf\\source.pdf",
+    "hasUsablePdfTextLayer": false,
+    "hasPdfSource": true,
+    "hasPrintedPdfSource": false,
+    "hasHtmlSource": false
+  },
+  "generatedAt": "2026-04-22T19:24:16.948Z"
+}

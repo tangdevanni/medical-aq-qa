@@ -1,0 +1,25 @@
+{
+  "patientId": "DENNIS_CONTI__044267d618e0d2c3",
+  "selectedDocumentId": "DENNIS_CONTI__044267d618e0d2c3-referral-1",
+  "sourceDocuments": [
+    {
+      "documentId": "DENNIS_CONTI__044267d618e0d2c3-referral-1",
+      "sourceIndex": 0,
+      "sourceLabel": "📄 CONTI, D. VISIT NOTE JAN-APR 2026.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedSourceLabel": "conti-d-visit-note-jan-apr-2026-pdf",
+      "sourceType": "REFERRAL_ORDER",
+      "acquisitionMethod": "printed_pdf",
+      "selectionStatus": "selected",
+      "portalLabel": "📄 CONTI, D. VISIT NOTE JAN-APR 2026.pdf 📝 ✏️ 🗑️ 🔗",
+      "localFilePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-22T19-21-35-668Z-a3d2e012\\outputs\\patients\\DENNIS_CONTI__044267d618e0d2c3\\documents\\conti-d-visit-note-jan-apr-2026-pdf\\source.pdf",
+      "effectiveTextSource": "digital_pdf_text",
+      "fileType": "pdf",
+      "fileSizeBytes": 805585,
+      "extractedTextLength": 10631,
+      "selectedReason": "highest-ranked referral/admission-order source with local file preference",
+      "rejectedReasons": []
+    }
+  ],
+  "warnings": [],
+  "generatedAt": "2026-04-22T20:00:10.652Z"
+}

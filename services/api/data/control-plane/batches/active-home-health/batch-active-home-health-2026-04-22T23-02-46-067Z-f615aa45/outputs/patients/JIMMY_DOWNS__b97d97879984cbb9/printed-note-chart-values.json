@@ -1,0 +1,77 @@
+{
+  "generatedAt": "2026-04-23T00:14:45.067Z",
+  "source": "printed_note_ocr",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\evidence\\JIMMY_DOWNS__b97d97879984cbb9\\oasis-printed-note\\extracted-text.txt",
+  "llmInputSource": "fact_pack_primary",
+  "extractedFieldCount": 4,
+  "invocationModelId": "us.amazon.nova-lite-v1:0",
+  "currentChartValues": {
+    "primary_diagnosis": "N39.0 - Urinary tract infection, site not",
+    "secondary_diagnoses": [
+      "I13.0 - Hyp hrt",
+      "I50.20 - Unspecified systolic (congestive)",
+      "N18.30 - Chronic kidney disease, stage 3",
+      "I48.91 - Unspecified atrial fibrillation",
+      "I48.92 - Unspecified atrial flutter"
+    ],
+    "code_status": "full_code",
+    "allergy_list": [
+      "No Known Allergies"
+    ]
+  },
+  "extractedFieldValues": [
+    {
+      "field_key": "primary_diagnosis",
+      "current_value": "N39.0 - Urinary tract infection, site not",
+      "confidence": 0.99,
+      "source_spans": [
+        "PRIMARY DIAGNOSIS Onset Date Severity 04/20/2026 N39.0 - Urinary tract infection, site not"
+      ]
+    },
+    {
+      "field_key": "secondary_diagnoses",
+      "current_value": [
+        "I13.0 - Hyp hrt",
+        "I50.20 - Unspecified systolic (congestive)",
+        "N18.30 - Chronic kidney disease, stage 3",
+        "I48.91 - Unspecified atrial fibrillation",
+        "I48.92 - Unspecified atrial flutter"
+      ],
+      "confidence": 0.98,
+      "source_spans": [
+        "I13.0 - Hyp hrt",
+        "I50.20 - Unspecified systolic (congestive)",
+        "N18.30 - Chronic kidney disease, stage 3"
+      ]
+    },
+    {
+      "field_key": "code_status",
+      "current_value": "full_code",
+      "confidence": 0.98,
+      "source_spans": [
+        "Full Code"
+      ]
+    },
+    {
+      "field_key": "allergy_list",
+      "current_value": [
+        "No Known Allergies"
+      ],
+      "confidence": 0.92,
+      "source_spans": [
+        "None known"
+      ]
+    }
+  ],
+  "warnings": [
+    "LLM input source: fact_pack_primary.",
+    "Fact pack coverage: diagnoses, assessmentValues, homeboundEvidence, skilledNeedEvidence, hospitalizationReasons, medications, allergies, supportingSnippets.",
+    "Fact pack coverage score: 1.",
+    "Prompt character estimate: 2691.",
+    "Fallback reason: none.",
+    "Deterministic printed-note chart values: primary_diagnosis, secondary_diagnoses, code_status, allergy_list.",
+    "Selected option labels detected: 19.",
+    "Printed-note chart-value extraction used inference profile us.amazon.nova-lite-v1:0.",
+    "diagnosis_candidates: rejected as low-confidence or suspicious for the field"
+  ]
+}

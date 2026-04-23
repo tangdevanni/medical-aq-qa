@@ -1,0 +1,492 @@
+{
+  "assessmentType": "SOC",
+  "matchedAssessmentLabel": null,
+  "reviewSource": "printed_note_ocr",
+  "overallStatus": "PARTIAL",
+  "capture": {
+    "assessmentType": "SOC",
+    "printProfileKey": "soc_full_document_v1",
+    "printProfileLabel": "Full OASIS document",
+    "printButtonDetected": true,
+    "printButtonVisible": false,
+    "printButtonSelectorUsed": "fin-button[title='Print Preview'] > button, fin-button[title*='Print'] > button, fin-button[icon='ft-printer'] > button, button:has(.ft-printer), button:has-text('Print'), role=button[name=/^print$/i]",
+    "printClickSucceeded": false,
+    "printModalDetected": false,
+    "printModalSelectorUsed": null,
+    "printModalConfirmSelectorUsed": null,
+    "printModalConfirmSucceeded": false,
+    "selectedSectionLabels": [],
+    "currentUrl": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69c578fab3640246f6ba0847/file-uploads",
+    "printedPdfPath": null,
+    "sourcePdfPath": null,
+    "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\evidence\\JUDITH_MOORE__8cdf2a7826b753ae\\oasis-printed-note\\extracted-text.txt",
+    "extractionResultPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\evidence\\JUDITH_MOORE__8cdf2a7826b753ae\\oasis-printed-note\\extraction-result.json",
+    "ocrResultPath": null,
+    "textLength": 1782,
+    "extractionMethod": "visible_text_fallback",
+    "warnings": [
+      "Print button could not be located on the OASIS assessment page.",
+      "Fell back to visible page text because printed-note OCR text was unavailable."
+    ]
+  },
+  "sections": [
+    {
+      "key": "administrative_information",
+      "label": "Administrative Information",
+      "status": "MISSING",
+      "filledFieldCount": 0,
+      "missingFieldCount": 15,
+      "evidence": [],
+      "missingFields": [
+        "M0010 Agency Medicare Provider #",
+        "M0014 Branch State",
+        "M0016 Branch ID #",
+        "M0018 Attending Physician (NPI)",
+        "M0020 Patient ID #",
+        "M0030 Start of Care Date",
+        "M0040 Patient Name",
+        "M0050 State of Residence"
+      ],
+      "suggestions": [
+        "Confirm branch state from agency profile if it is blank in the printed section.",
+        "Branch ID was not found in the shared referral evidence; verify against the agency record.",
+        "Recommend M0040 = Judith Moore from workbook/patient identity.",
+        "Recommend M0100 = Start of Care from the current workflow type."
+      ],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\patients\\JUDITH_MOORE__8cdf2a7826b753ae\\documents\\admission-03-27-2026\\source.pdf"
+      ]
+    },
+    {
+      "key": "primary_reason_medical_necessity",
+      "label": "Primary Reason / Medical Necessity",
+      "status": "MISSING",
+      "filledFieldCount": 0,
+      "missingFieldCount": 3,
+      "evidence": [],
+      "missingFields": [
+        "medical necessity",
+        "homebound",
+        "reason for admission"
+      ],
+      "suggestions": [
+        "Compare homebound and medical-necessity narrative against referral and hospital evidence.",
+        "Use shared referral/hospital evidence before escalating any diagnosis changes to coding."
+      ],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\patients\\JUDITH_MOORE__8cdf2a7826b753ae\\documents\\admission-03-27-2026\\source.pdf"
+      ]
+    },
+    {
+      "key": "vital_signs",
+      "label": "Vital Signs",
+      "status": "MISSING",
+      "filledFieldCount": 0,
+      "missingFieldCount": 4,
+      "evidence": [],
+      "missingFields": [
+        "blood pressure",
+        "heart rate",
+        "temperature",
+        "respiratory rate"
+      ],
+      "suggestions": [
+        "Check whether visit notes contain vitals that can support missing fields.",
+        "Use shared referral/hospital evidence before escalating any diagnosis changes to coding."
+      ],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\patients\\JUDITH_MOORE__8cdf2a7826b753ae\\documents\\admission-03-27-2026\\source.pdf"
+      ]
+    },
+    {
+      "key": "neurological",
+      "label": "Neurological",
+      "status": "MISSING",
+      "filledFieldCount": 0,
+      "missingFieldCount": 3,
+      "evidence": [],
+      "missingFields": [
+        "mental status",
+        "forgetful",
+        "oriented"
+      ],
+      "suggestions": [
+        "Review clinician note cues for cognition and mental-status consistency.",
+        "Use shared referral/hospital evidence before escalating any diagnosis changes to coding."
+      ],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\patients\\JUDITH_MOORE__8cdf2a7826b753ae\\documents\\admission-03-27-2026\\source.pdf"
+      ]
+    },
+    {
+      "key": "eyes_ears",
+      "label": "Eyes & Ears",
+      "status": "MISSING",
+      "filledFieldCount": 0,
+      "missingFieldCount": 4,
+      "evidence": [],
+      "missingFields": [
+        "glasses",
+        "hearing aid",
+        "vision",
+        "hearing"
+      ],
+      "suggestions": [
+        "Check source notes for vision or hearing aids and related impairments.",
+        "Use shared referral/hospital evidence before escalating any diagnosis changes to coding."
+      ],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\patients\\JUDITH_MOORE__8cdf2a7826b753ae\\documents\\admission-03-27-2026\\source.pdf"
+      ]
+    },
+    {
+      "key": "cardiovascular",
+      "label": "Cardiovascular",
+      "status": "MISSING",
+      "filledFieldCount": 0,
+      "missingFieldCount": 4,
+      "evidence": [],
+      "missingFields": [
+        "edema",
+        "pulses",
+        "chest pain",
+        "heart sounds"
+      ],
+      "suggestions": [
+        "Review assessment evidence for edema, pulses, chest pain, and heart sounds.",
+        "Use shared referral/hospital evidence before escalating any diagnosis changes to coding."
+      ],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\patients\\JUDITH_MOORE__8cdf2a7826b753ae\\documents\\admission-03-27-2026\\source.pdf"
+      ]
+    },
+    {
+      "key": "respiratory",
+      "label": "Respiratory",
+      "status": "MISSING",
+      "filledFieldCount": 0,
+      "missingFieldCount": 4,
+      "evidence": [],
+      "missingFields": [
+        "shortness of breath",
+        "cough",
+        "lung sounds",
+        "oxygen"
+      ],
+      "suggestions": [
+        "Compare respiratory answers against referral diagnoses and visit-note respiratory findings.",
+        "Use shared referral/hospital evidence before escalating any diagnosis changes to coding."
+      ],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\patients\\JUDITH_MOORE__8cdf2a7826b753ae\\documents\\admission-03-27-2026\\source.pdf"
+      ]
+    },
+    {
+      "key": "gastrointestinal",
+      "label": "Gastrointestinal",
+      "status": "MISSING",
+      "filledFieldCount": 0,
+      "missingFieldCount": 4,
+      "evidence": [],
+      "missingFields": [
+        "bowel",
+        "diet",
+        "nutrition",
+        "last bowel movement"
+      ],
+      "suggestions": [
+        "Check documents for diet, bowel, and nutrition references.",
+        "Use shared referral/hospital evidence before escalating any diagnosis changes to coding."
+      ],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\patients\\JUDITH_MOORE__8cdf2a7826b753ae\\documents\\admission-03-27-2026\\source.pdf"
+      ]
+    },
+    {
+      "key": "genitourinary",
+      "label": "Genitourinary",
+      "status": "MISSING",
+      "filledFieldCount": 0,
+      "missingFieldCount": 3,
+      "evidence": [],
+      "missingFields": [
+        "urinary",
+        "catheter",
+        "incontinent"
+      ],
+      "suggestions": [
+        "Review source notes for urinary symptoms or catheter references.",
+        "Use shared referral/hospital evidence before escalating any diagnosis changes to coding."
+      ],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\patients\\JUDITH_MOORE__8cdf2a7826b753ae\\documents\\admission-03-27-2026\\source.pdf"
+      ]
+    },
+    {
+      "key": "musculoskeletal_functional_status",
+      "label": "Musculoskeletal and Functional Status",
+      "status": "MISSING",
+      "filledFieldCount": 0,
+      "missingFieldCount": 4,
+      "evidence": [],
+      "missingFields": [
+        "mobility",
+        "transfer",
+        "self care",
+        "ambulate"
+      ],
+      "suggestions": [
+        "Cross-check PT/OT evidence for functional and mobility items.",
+        "Use shared referral/hospital evidence before escalating any diagnosis changes to coding."
+      ],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\patients\\JUDITH_MOORE__8cdf2a7826b753ae\\documents\\admission-03-27-2026\\source.pdf"
+      ]
+    },
+    {
+      "key": "integumentary",
+      "label": "Integumentary",
+      "status": "PARTIAL",
+      "filledFieldCount": 1,
+      "missingFieldCount": 3,
+      "evidence": [
+        "sInteractions Hospitalization Billing Supplies Vital Graphs Wound History Care Coordination Intake File Uploads Alerts File Uploads Notifications RCD Tracking MOORE, JUDITH151 Patient File Uploads View All Uploaded Files View Logs Reorder A"
+      ],
+      "missingFields": [
+        "skin",
+        "pressure ulcer",
+        "turgor"
+      ],
+      "suggestions": [
+        "Compare wound and skin answers against wound-care and visit-note evidence.",
+        "Use shared referral/hospital evidence before escalating any diagnosis changes to coding."
+      ],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\patients\\JUDITH_MOORE__8cdf2a7826b753ae\\documents\\admission-03-27-2026\\source.pdf"
+      ]
+    },
+    {
+      "key": "pain_assessment",
+      "label": "Pain Assessment",
+      "status": "MISSING",
+      "filledFieldCount": 0,
+      "missingFieldCount": 3,
+      "evidence": [],
+      "missingFields": [
+        "pain",
+        "pain scale",
+        "pain location"
+      ],
+      "suggestions": [
+        "Review clinician notes for pain frequency, scale, and location details.",
+        "Use shared referral/hospital evidence before escalating any diagnosis changes to coding."
+      ],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\patients\\JUDITH_MOORE__8cdf2a7826b753ae\\documents\\admission-03-27-2026\\source.pdf"
+      ]
+    },
+    {
+      "key": "emotional",
+      "label": "Emotional",
+      "status": "MISSING",
+      "filledFieldCount": 0,
+      "missingFieldCount": 3,
+      "evidence": [],
+      "missingFields": [
+        "depression",
+        "phq",
+        "mood"
+      ],
+      "suggestions": [
+        "Check source evidence for depression or mood indicators that support D0150 answers.",
+        "Use shared referral/hospital evidence before escalating any diagnosis changes to coding."
+      ],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\patients\\JUDITH_MOORE__8cdf2a7826b753ae\\documents\\admission-03-27-2026\\source.pdf"
+      ]
+    },
+    {
+      "key": "diagnosis",
+      "label": "Diagnosis",
+      "status": "PARTIAL",
+      "filledFieldCount": 2,
+      "missingFieldCount": 2,
+      "evidence": [
+        "6 Admission Info Admission Packets Calendar Insurance/Payer Diagnosis Physicians Care Team Documentations AllPhysician OrdersVisit NotesOASISCommunication NotesOther Notes Care Plan Summary Plan of Care Medication AllSnapshotsInteractions H"
+      ],
+      "missingFields": [
+        "ICD",
+        "fall risk"
+      ],
+      "suggestions": [
+        "Use coding-team output and diagnosis source evidence for diagnosis review only.",
+        "Use shared referral/hospital evidence before escalating any diagnosis changes to coding."
+      ],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\patients\\JUDITH_MOORE__8cdf2a7826b753ae\\documents\\admission-03-27-2026\\source.pdf"
+      ]
+    },
+    {
+      "key": "medications_allergies",
+      "label": "Medications and Allergies",
+      "status": "PARTIAL",
+      "filledFieldCount": 1,
+      "missingFieldCount": 3,
+      "evidence": [
+        "mmunication NotesOther Notes Care Plan Summary Plan of Care Medication AllSnapshotsInteractions Hospitalization Billing Supplies Vital Graphs Wound History Care Coordination Intake File Uploads Alerts File Uploads Notifications RCD Tracking"
+      ],
+      "missingFields": [
+        "allerg",
+        "oxygen therapy",
+        "dialysis"
+      ],
+      "suggestions": [
+        "Check referral and hospital documents for medication, allergy, and special-treatment references.",
+        "Use shared referral/hospital evidence before escalating any diagnosis changes to coding."
+      ],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\patients\\JUDITH_MOORE__8cdf2a7826b753ae\\documents\\admission-03-27-2026\\source.pdf"
+      ]
+    },
+    {
+      "key": "patient_coordination_care_plan",
+      "label": "Patient Coordination and Care Plan",
+      "status": "PARTIAL",
+      "filledFieldCount": 1,
+      "missingFieldCount": 3,
+      "evidence": [
+        "sician OrdersVisit NotesOASISCommunication NotesOther Notes Care Plan Summary Plan of Care Medication AllSnapshotsInteractions Hospitalization Billing Supplies Vital Graphs Wound History Care Coordination Intake File Uploads Alerts File Upl"
+      ],
+      "missingFields": [
+        "patient summary",
+        "clinical narrative",
+        "goals"
+      ],
+      "suggestions": [
+        "Review plan-of-care and source narratives for coordination and care-plan support.",
+        "Use shared referral/hospital evidence before escalating any diagnosis changes to coding."
+      ],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\patients\\JUDITH_MOORE__8cdf2a7826b753ae\\documents\\admission-03-27-2026\\source.pdf"
+      ]
+    },
+    {
+      "key": "other_supplementals",
+      "label": "Other Supplementals",
+      "status": "MISSING",
+      "filledFieldCount": 0,
+      "missingFieldCount": 3,
+      "evidence": [],
+      "missingFields": [
+        "past medical history",
+        "immunization",
+        "vaccination"
+      ],
+      "suggestions": [
+        "Use H&P and referral records to confirm supplemental history and immunization details.",
+        "Use shared referral/hospital evidence before escalating any diagnosis changes to coding."
+      ],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\patients\\JUDITH_MOORE__8cdf2a7826b753ae\\documents\\admission-03-27-2026\\source.pdf"
+      ]
+    },
+    {
+      "key": "care_plan",
+      "label": "Care Plan",
+      "status": "PARTIAL",
+      "filledFieldCount": 1,
+      "missingFieldCount": 3,
+      "evidence": [],
+      "missingFields": [
+        "intervention",
+        "goal",
+        "problem"
+      ],
+      "suggestions": [
+        "Use existing diagnosis and plan-of-care evidence to seed care-plan review suggestions.",
+        "Use shared referral/hospital evidence before escalating any diagnosis changes to coding."
+      ],
+      "sourceReferences": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "OASIS:OASIS documents page",
+        "ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\patients\\JUDITH_MOORE__8cdf2a7826b753ae\\documents\\admission-03-27-2026\\source.pdf"
+      ]
+    }
+  ],
+  "warningCount": 2,
+  "topWarning": "Print button could not be located on the OASIS assessment page.",
+  "warnings": [
+    "Print button could not be located on the OASIS assessment page.",
+    "Fell back to visible page text because printed-note OCR text was unavailable."
+  ]
+}

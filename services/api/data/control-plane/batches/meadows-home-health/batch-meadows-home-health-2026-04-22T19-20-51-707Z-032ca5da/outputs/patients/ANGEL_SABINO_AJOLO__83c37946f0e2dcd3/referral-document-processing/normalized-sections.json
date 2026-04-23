@@ -1,0 +1,631 @@
+[
+  {
+    "sectionName": "patient_identity",
+    "extractedTextSpans": [
+      "PATIENT NAME",
+      "DOB: 06/05/1967 58Y SX: M MED"
+    ],
+    "normalizedSummary": "PATIENT NAME DOB: 06/05/1967 58Y SX: M MED",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 60,
+        "lineEnd": 60,
+        "charStart": 1686,
+        "charEnd": 1698
+      },
+      {
+        "lineStart": 321,
+        "lineEnd": 321,
+        "charStart": 4223,
+        "charEnd": 4252
+      }
+    ]
+  },
+  {
+    "sectionName": "referring_provider",
+    "extractedTextSpans": [
+      "ATTENDING PHYSICIAN",
+      "Attending Physician: Kim DO, Edward"
+    ],
+    "normalizedSummary": "ATTENDING PHYSICIAN Attending Physician: Kim DO, Edward",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 264,
+        "lineEnd": 264,
+        "charStart": 3464,
+        "charEnd": 3483
+      },
+      {
+        "lineStart": 903,
+        "lineEnd": 903,
+        "charStart": 14691,
+        "charEnd": 14726
+      }
+    ]
+  },
+  {
+    "sectionName": "hospitalization_history",
+    "extractedTextSpans": [
+      "DISCHARGE DATE",
+      "DISCHARGE DISP",
+      "Valley Hospital Medical Center",
+      "Valley Hospital Medical Center",
+      "VHM1101376356, VHM Center, Inpatient, 4/14/2026 -",
+      "Inpatient Medications",
+      "who presents to Valley Hospital as a transfer from Henderson",
+      "Hospital for right Index finger infection.",
+      "pain and swelling in the area presented into the hospital.",
+      "where he was transferred to Valley Hospital after talking with",
+      "--Status post I&D bedside on 4/11 at Henderson Hospital",
+      "Discharge Planning:",
+      ">> Discharge Planning:",
+      ">> Discharge To, Anticipated: Home independently",
+      "Discharge Summary",
+      "Discharge Summary",
+      "Discharge Note",
+      "VHM1101376356, VHM Center, Inpatient, 4/14/2026 -",
+      "Discharge Location: VHM ERHD",
+      "Inpatient Admit Date/Time: 04/14/2026 09:44",
+      "Discharge Diagnosis",
+      "Discharge Medications",
+      "Inpatient Medications",
+      "Discharge Summary",
+      "Follow-Up/Discharge Instructions",
+      "Post Discharge Care",
+      "Discharge Request",
+      "Discharge Labs",
+      "Discharge Summary",
+      "Discharge Summary",
+      "Hospital Course",
+      "This is a 58-year-old male with no significant past medical history who presents to Valley Hospital as a transfer from Henderson",
+      "Hospital for right index finger infection.",
+      "He then continued more pain and swelling In the area presented into the hospital.",
+      "transferred to Valley Hospital after talking with hand surgery.",
+      "Purulent discharge was noted coming from the eponychial",
+      "discharge by orthopedic surgery recommended outpatient follow-up.",
+      "Cleared for discharge by ID who recommended Augmentin",
+      "Information provided in discharge paperwork.",
+      "Discharge Summary",
+      "On discharge, patient has stable vitals, stable labs, and acceptable physical exam.",
+      "Patient is safe for discharge at this",
+      "Patient requesting discharge and to forgo further evaluation.",
+      "discharge.",
+      "VHM1101376356, VHM Center, Inpatient, 4/14/2026 -",
+      "Purulent discharge noted to be coming from eponychial fold."
+    ],
+    "normalizedSummary": "DISCHARGE DATE DISCHARGE DISP Valley Hospital Medical Center",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 289,
+        "lineEnd": 289,
+        "charStart": 3738,
+        "charEnd": 3752
+      },
+      {
+        "lineStart": 291,
+        "lineEnd": 291,
+        "charStart": 3758,
+        "charEnd": 3772
+      },
+      {
+        "lineStart": 314,
+        "lineEnd": 314,
+        "charStart": 4101,
+        "charEnd": 4131
+      },
+      {
+        "lineStart": 324,
+        "lineEnd": 324,
+        "charStart": 4289,
+        "charEnd": 4319
+      },
+      {
+        "lineStart": 347,
+        "lineEnd": 347,
+        "charStart": 4727,
+        "charEnd": 4776
+      },
+      {
+        "lineStart": 352,
+        "lineEnd": 352,
+        "charStart": 4908,
+        "charEnd": 4929
+      },
+      {
+        "lineStart": 365,
+        "lineEnd": 365,
+        "charStart": 5304,
+        "charEnd": 5364
+      },
+      {
+        "lineStart": 367,
+        "lineEnd": 367,
+        "charStart": 5379,
+        "charEnd": 5421
+      },
+      {
+        "lineStart": 376,
+        "lineEnd": 376,
+        "charStart": 5682,
+        "charEnd": 5740
+      },
+      {
+        "lineStart": 389,
+        "lineEnd": 389,
+        "charStart": 6137,
+        "charEnd": 6199
+      },
+      {
+        "lineStart": 736,
+        "lineEnd": 736,
+        "charStart": 11183,
+        "charEnd": 11238
+      },
+      {
+        "lineStart": 785,
+        "lineEnd": 785,
+        "charStart": 12117,
+        "charEnd": 12136
+      },
+      {
+        "lineStart": 842,
+        "lineEnd": 842,
+        "charStart": 13313,
+        "charEnd": 13335
+      },
+      {
+        "lineStart": 843,
+        "lineEnd": 843,
+        "charStart": 13336,
+        "charEnd": 13384
+      },
+      {
+        "lineStart": 883,
+        "lineEnd": 883,
+        "charStart": 14259,
+        "charEnd": 14276
+      },
+      {
+        "lineStart": 887,
+        "lineEnd": 887,
+        "charStart": 14340,
+        "charEnd": 14357
+      },
+      {
+        "lineStart": 893,
+        "lineEnd": 893,
+        "charStart": 14434,
+        "charEnd": 14448
+      },
+      {
+        "lineStart": 899,
+        "lineEnd": 899,
+        "charStart": 14578,
+        "charEnd": 14627
+      },
+      {
+        "lineStart": 905,
+        "lineEnd": 905,
+        "charStart": 14781,
+        "charEnd": 14809
+      },
+      {
+        "lineStart": 907,
+        "lineEnd": 907,
+        "charStart": 14860,
+        "charEnd": 14903
+      },
+      {
+        "lineStart": 908,
+        "lineEnd": 908,
+        "charStart": 14904,
+        "charEnd": 14923
+      },
+      {
+        "lineStart": 917,
+        "lineEnd": 917,
+        "charStart": 15196,
+        "charEnd": 15217
+      },
+      {
+        "lineStart": 922,
+        "lineEnd": 922,
+        "charStart": 15588,
+        "charEnd": 15609
+      },
+      {
+        "lineStart": 942,
+        "lineEnd": 942,
+        "charStart": 16595,
+        "charEnd": 16612
+      },
+      {
+        "lineStart": 950,
+        "lineEnd": 950,
+        "charStart": 16978,
+        "charEnd": 17010
+      },
+      {
+        "lineStart": 965,
+        "lineEnd": 965,
+        "charStart": 17438,
+        "charEnd": 17457
+      },
+      {
+        "lineStart": 966,
+        "lineEnd": 966,
+        "charStart": 17458,
+        "charEnd": 17475
+      },
+      {
+        "lineStart": 975,
+        "lineEnd": 975,
+        "charStart": 17717,
+        "charEnd": 17731
+      },
+      {
+        "lineStart": 1066,
+        "lineEnd": 1066,
+        "charStart": 18998,
+        "charEnd": 19015
+      },
+      {
+        "lineStart": 1206,
+        "lineEnd": 1206,
+        "charStart": 20952,
+        "charEnd": 20969
+      },
+      {
+        "lineStart": 1323,
+        "lineEnd": 1323,
+        "charStart": 22148,
+        "charEnd": 22163
+      },
+      {
+        "lineStart": 1324,
+        "lineEnd": 1324,
+        "charStart": 22164,
+        "charEnd": 22292
+      },
+      {
+        "lineStart": 1325,
+        "lineEnd": 1325,
+        "charStart": 22293,
+        "charEnd": 22335
+      },
+      {
+        "lineStart": 1329,
+        "lineEnd": 1329,
+        "charStart": 22458,
+        "charEnd": 22539
+      },
+      {
+        "lineStart": 1335,
+        "lineEnd": 1335,
+        "charStart": 22800,
+        "charEnd": 22863
+      },
+      {
+        "lineStart": 1342,
+        "lineEnd": 1342,
+        "charStart": 23128,
+        "charEnd": 23183
+      },
+      {
+        "lineStart": 1348,
+        "lineEnd": 1348,
+        "charStart": 23311,
+        "charEnd": 23376
+      },
+      {
+        "lineStart": 1349,
+        "lineEnd": 1349,
+        "charStart": 23377,
+        "charEnd": 23430
+      },
+      {
+        "lineStart": 1353,
+        "lineEnd": 1353,
+        "charStart": 23499,
+        "charEnd": 23543
+      },
+      {
+        "lineStart": 1365,
+        "lineEnd": 1365,
+        "charStart": 23961,
+        "charEnd": 23978
+      },
+      {
+        "lineStart": 1368,
+        "lineEnd": 1368,
+        "charStart": 24029,
+        "charEnd": 24112
+      },
+      {
+        "lineStart": 1371,
+        "lineEnd": 1371,
+        "charStart": 24247,
+        "charEnd": 24284
+      },
+      {
+        "lineStart": 1373,
+        "lineEnd": 1373,
+        "charStart": 24291,
+        "charEnd": 24352
+      },
+      {
+        "lineStart": 1375,
+        "lineEnd": 1375,
+        "charStart": 24478,
+        "charEnd": 24488
+      },
+      {
+        "lineStart": 1414,
+        "lineEnd": 1414,
+        "charStart": 25502,
+        "charEnd": 25551
+      },
+      {
+        "lineStart": 1446,
+        "lineEnd": 1446,
+        "charStart": 26851,
+        "charEnd": 26910
+      }
+    ]
+  },
+  {
+    "sectionName": "medical_necessity",
+    "extractedTextSpans": [
+      "medical necessity."
+    ],
+    "normalizedSummary": "medical necessity.",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 43,
+        "lineEnd": 43,
+        "charStart": 1413,
+        "charEnd": 1431
+      }
+    ]
+  },
+  {
+    "sectionName": "diagnoses",
+    "extractedTextSpans": [
+      "ADM DIAGNOSIS",
+      "Diagnoses",
+      "Admitting Diagnosis: Cellulitis of right Index finger",
+      "Discharge Diagnosis"
+    ],
+    "normalizedSummary": "ADM DIAGNOSIS Diagnoses Admitting Diagnosis: Cellulitis of right Index finger",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 273,
+        "lineEnd": 273,
+        "charStart": 3570,
+        "charEnd": 3583
+      },
+      {
+        "lineStart": 626,
+        "lineEnd": 626,
+        "charStart": 9353,
+        "charEnd": 9362
+      },
+      {
+        "lineStart": 904,
+        "lineEnd": 904,
+        "charStart": 14727,
+        "charEnd": 14780
+      },
+      {
+        "lineStart": 908,
+        "lineEnd": 908,
+        "charStart": 14904,
+        "charEnd": 14923
+      }
+    ]
+  },
+  {
+    "sectionName": "medications",
+    "extractedTextSpans": [
+      "pharmacy.",
+      "Patient educated on importance of medication adherence and reason for medication administration.",
+      "More than 30 minutes was spent with the patient on counseling, review of medication, evaluation, and examination during this",
+      "Pharmacy"
+    ],
+    "normalizedSummary": "pharmacy. Patient educated on importance of medication adherence and reason for medication administration. More than 30 minutes was spent with the patient on counseling, review of medication, evaluation, and examination during this",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 1352,
+        "lineEnd": 1352,
+        "charStart": 23489,
+        "charEnd": 23498
+      },
+      {
+        "lineStart": 1356,
+        "lineEnd": 1356,
+        "charStart": 23637,
+        "charEnd": 23733
+      },
+      {
+        "lineStart": 1374,
+        "lineEnd": 1374,
+        "charStart": 24353,
+        "charEnd": 24477
+      },
+      {
+        "lineStart": 1471,
+        "lineEnd": 1471,
+        "charStart": 27918,
+        "charEnd": 27926
+      }
+    ]
+  },
+  {
+    "sectionName": "therapy_need",
+    "extractedTextSpans": [
+      "PT/OT"
+    ],
+    "normalizedSummary": "PT/OT",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 773,
+        "lineEnd": 773,
+        "charStart": 11965,
+        "charEnd": 11970
+      }
+    ]
+  },
+  {
+    "sectionName": "risk_factors",
+    "extractedTextSpans": [
+      "Fall precautions, delirium precautions",
+      "The risk,",
+      "Risk include but not limited"
+    ],
+    "normalizedSummary": "Fall precautions, delirium precautions The risk, Risk include but not limited",
+    "confidence": 0.95,
+    "lineReferences": [
+      {
+        "lineStart": 742,
+        "lineEnd": 742,
+        "charStart": 11309,
+        "charEnd": 11347
+      },
+      {
+        "lineStart": 1421,
+        "lineEnd": 1421,
+        "charStart": 25756,
+        "charEnd": 25765
+      },
+      {
+        "lineStart": 1423,
+        "lineEnd": 1423,
+        "charStart": 25867,
+        "charEnd": 25895
+      }
+    ]
+  },
+  {
+    "sectionName": "code_status",
+    "extractedTextSpans": [
+      "ORGAN DNR",
+      "CODE STATUS: Full code"
+    ],
+    "normalizedSummary": "ORGAN DNR CODE STATUS: Full code",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 254,
+        "lineEnd": 254,
+        "charStart": 3414,
+        "charEnd": 3423
+      },
+      {
+        "lineStart": 817,
+        "lineEnd": 817,
+        "charStart": 12815,
+        "charEnd": 12837
+      }
+    ]
+  },
+  {
+    "sectionName": "other_clinical_notes",
+    "extractedTextSpans": [
+      "call Customer Service for the patient's Health Plan regarding benefits, eligibility,",
+      "PLAN",
+      "PLAN",
+      "PLAN",
+      "Initial Evaluation Note",
+      "Assessment/Plan",
+      "Discussed care plan with patient, labs noted and reviewed",
+      "ACP face-to-face time spent on care plan discussion:",
+      "Discharge Note",
+      "Disclaimer: This note was dictated by speech recognition.",
+      "Procedure Note",
+      "Procedure Note"
+    ],
+    "normalizedSummary": "call Customer Service for the patient's Health Plan regarding benefits, eligibility, PLAN PLAN",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 46,
+        "lineEnd": 46,
+        "charStart": 1493,
+        "charEnd": 1577
+      },
+      {
+        "lineStart": 159,
+        "lineEnd": 159,
+        "charStart": 2564,
+        "charEnd": 2568
+      },
+      {
+        "lineStart": 200,
+        "lineEnd": 200,
+        "charStart": 2920,
+        "charEnd": 2924
+      },
+      {
+        "lineStart": 224,
+        "lineEnd": 224,
+        "charStart": 3143,
+        "charEnd": 3147
+      },
+      {
+        "lineStart": 341,
+        "lineEnd": 341,
+        "charStart": 4574,
+        "charEnd": 4597
+      },
+      {
+        "lineStart": 622,
+        "lineEnd": 622,
+        "charStart": 9298,
+        "charEnd": 9313
+      },
+      {
+        "lineStart": 763,
+        "lineEnd": 763,
+        "charStart": 11731,
+        "charEnd": 11788
+      },
+      {
+        "lineStart": 822,
+        "lineEnd": 822,
+        "charStart": 12888,
+        "charEnd": 12940
+      },
+      {
+        "lineStart": 893,
+        "lineEnd": 893,
+        "charStart": 14434,
+        "charEnd": 14448
+      },
+      {
+        "lineStart": 1378,
+        "lineEnd": 1378,
+        "charStart": 24526,
+        "charEnd": 24583
+      },
+      {
+        "lineStart": 1400,
+        "lineEnd": 1400,
+        "charStart": 25242,
+        "charEnd": 25256
+      },
+      {
+        "lineStart": 1404,
+        "lineEnd": 1404,
+        "charStart": 25326,
+        "charEnd": 25340
+      }
+    ]
+  }
+]

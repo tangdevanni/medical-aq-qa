@@ -1,0 +1,25 @@
+{
+  "patientId": "TONI_MILLER__d8a0f5b819ced72d",
+  "selectedDocumentId": "TONI_MILLER__d8a0f5b819ced72d-referral-1",
+  "sourceDocuments": [
+    {
+      "documentId": "TONI_MILLER__d8a0f5b819ced72d-referral-1",
+      "sourceIndex": 0,
+      "sourceLabel": "📄 toni miller referral.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedSourceLabel": "toni-miller-referral-pdf",
+      "sourceType": "REFERRAL_ORDER",
+      "acquisitionMethod": "printed_pdf",
+      "selectionStatus": "selected",
+      "portalLabel": "📄 toni miller referral.pdf 📝 ✏️ 🗑️ 🔗",
+      "localFilePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\TONI_MILLER__d8a0f5b819ced72d\\documents\\toni-miller-referral-pdf\\source.pdf",
+      "effectiveTextSource": "ocr_text",
+      "fileType": "pdf",
+      "fileSizeBytes": 277293,
+      "extractedTextLength": 8872,
+      "selectedReason": "highest-ranked referral/admission-order source with local file preference",
+      "rejectedReasons": []
+    }
+  ],
+  "warnings": [],
+  "generatedAt": "2026-04-23T01:11:50.140Z"
+}

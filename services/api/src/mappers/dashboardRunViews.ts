@@ -232,12 +232,15 @@ function deriveQaPrefetchSummary(input: PatientViewInput) {
   const oasisRoute = asRecord(qaPrefetch.oasisRoute);
   const diagnosisRoute = asRecord(qaPrefetch.diagnosisRoute);
   const lockStatus = asRecord(qaPrefetch.lockStatus);
+  const oasisAssessmentStatus = asRecord(qaPrefetch.oasisAssessmentStatus);
   const billingCalendarSummary = asRecord(qaPrefetch.billingCalendarSummary);
   const selectedEpisode = asRecord(billingCalendarSummary?.selectedEpisode);
   const periods = asRecord(billingCalendarSummary?.periods);
   const first30Days = asRecord(periods?.first30Days);
   const second30Days = asRecord(periods?.second30Days);
   const outsideRange = asRecord(periods?.outsideRange);
+  const first30WorkbookColumns = asRecord(first30Days?.workbookColumns);
+  const second30WorkbookColumns = asRecord(second30Days?.workbookColumns);
   const printedNoteReview = asRecord(qaPrefetch.printedNoteReview);
   const printedNoteCapture = asRecord(printedNoteReview?.capture);
   const printedNoteSections = asArray(printedNoteReview?.sections)
@@ -272,6 +275,16 @@ function deriveQaPrefetchSummary(input: PatientViewInput) {
     status: asString(qaPrefetch.status) ?? "UNKNOWN",
     selectedRouteSummary: asString(qaPrefetch.selectedRouteSummary),
     lockStatus: asString(lockStatus?.status),
+    oasisAssessmentPrimaryStatus: asString(oasisAssessmentStatus?.primaryStatus),
+    oasisAssessmentStatuses: asArray(oasisAssessmentStatus?.detectedStatuses)
+      .map((value) => asString(value))
+      .filter((value): value is string => value !== null),
+    oasisAssessmentDecision: asString(oasisAssessmentStatus?.decision),
+    oasisAssessmentProcessingEligible:
+      typeof oasisAssessmentStatus?.processingEligible === "boolean"
+        ? oasisAssessmentStatus.processingEligible
+        : null,
+    oasisAssessmentReason: asString(oasisAssessmentStatus?.reason),
     oasisFound: Boolean(oasisRoute?.found),
     diagnosisFound: Boolean(diagnosisRoute?.found),
     visibleDiagnosisCount: asArray(diagnosisRoute?.visibleDiagnoses).length,
@@ -289,6 +302,16 @@ function deriveQaPrefetchSummary(input: PatientViewInput) {
     outsideRangeTotalCards: typeof outsideRange?.totalCards === "number" ? outsideRange.totalCards : 0,
     first30CountsByType: asRecord(first30Days?.countsByType) ?? {},
     second30CountsByType: asRecord(second30Days?.countsByType) ?? {},
+    first30WorkbookColumns: {
+      sn: asString(first30WorkbookColumns?.sn) ?? "NA",
+      ptOtSt: asString(first30WorkbookColumns?.ptOtSt) ?? "NA",
+      hhaMsw: asString(first30WorkbookColumns?.hhaMsw) ?? "NA",
+    },
+    second30WorkbookColumns: {
+      sn: asString(second30WorkbookColumns?.sn) ?? "NA",
+      ptOtSt: asString(second30WorkbookColumns?.ptOtSt) ?? "NA",
+      hhaMsw: asString(second30WorkbookColumns?.hhaMsw) ?? "NA",
+    },
     printedNoteStatus: asString(printedNoteReview?.overallStatus),
     printedNoteAssessmentType: asString(printedNoteReview?.assessmentType),
     printedNoteReviewSource: asString(printedNoteReview?.reviewSource),
@@ -1664,12 +1687,22 @@ function normalizeDashboardComparisonText(value: string): string {
   return value.replace(/\s+/g, " ").trim().toLowerCase().replace(/[^\p{L}\p{N}\s]/gu, "");
 }
 
+function normalizeDashboardSnippetText(value: string): string {
+  return value.replace(/\s+/g, " ").trim();
+}
+
 function getDashboardPortalValueSourceLabel(source: string): string {
   if (source === "chart_read") {
     return "Portal read";
   }
   if (source === "printed_note_ocr") {
     return "Printed note OCR";
+  }
+  if (source === "printed_note_review") {
+    return "Printed note review";
+  }
+  if (source === "oasis_capture_skipped") {
+    return "OASIS capture skipped";
   }
   if (source === "workbook_context") {
     return "Workbook context";
@@ -1825,6 +1858,32 @@ function getPrintedNoteSectionCandidates(fieldKey: string, sectionKey: string): 
   }
 }
 
+function hasPrintedNoteSectionEvidence(input: {
+  status: string;
+  filledFieldCount: number;
+  evidence: string[];
+}): boolean {
+  return (
+    input.status === "COMPLETED" ||
+    input.filledFieldCount > 0 ||
+    input.evidence.some((entry) => normalizeDashboardSnippetText(entry).length > 0)
+  );
+}
+
+function buildPrintedNoteSectionPortalValue(input: {
+  label: string;
+  status: string;
+  filledFieldCount: number;
+  missingFieldCount: number;
+}): string {
+  const coverageSummary =
+    input.filledFieldCount > 0 || input.missingFieldCount > 0
+      ? `${input.filledFieldCount} captured, ${input.missingFieldCount} missing`
+      : "section evidence captured";
+
+  return `Printed OASIS review found ${input.label} (${input.status.toLowerCase()}; ${coverageSummary}).`;
+}
+
 function derivePatientDashboardState(input: {
   referralQa: ReturnType<typeof deriveReferralQaSummary>;
   qaPrefetch: ReturnType<typeof deriveQaPrefetchSummary>;
@@ -1852,6 +1911,9 @@ function derivePatientDashboardState(input: {
             status,
             filledFieldCount: typeof section?.filledFieldCount === "number" ? section.filledFieldCount : 0,
             missingFieldCount: typeof section?.missingFieldCount === "number" ? section.missingFieldCount : 0,
+            evidence: asArray(section?.evidence)
+              .map((value) => asString(value))
+              .filter((value): value is string => value !== null),
           },
         ] as const;
       })
@@ -1861,12 +1923,17 @@ function derivePatientDashboardState(input: {
         status: string;
         filledFieldCount: number;
         missingFieldCount: number;
+        evidence: string[];
       }] => entry !== null),
   );
   const printedNoteChartValuesRecord = asRecord(input.artifactContents.printedNoteChartValues);
   const printedNoteChartValues = asRecord(printedNoteChartValuesRecord?.currentChartValues) ?? {};
   const printedNoteReviewSource =
     asString(printedNoteReview?.reviewSource) ?? input.qaPrefetch?.printedNoteReviewSource ?? null;
+  const oasisCaptureSkippedReason =
+    input.qaPrefetch?.oasisAssessmentDecision === "SKIP"
+      ? input.qaPrefetch.oasisAssessmentReason ?? "Downstream OASIS capture was skipped because of the assessment page status."
+      : null;
 
   const rows = input.referralQa.sections.flatMap((section) =>
     section.fields.map((field) => {
@@ -1902,6 +1969,25 @@ function derivePatientDashboardState(input: {
         matchedPrintedNoteSections.find((sectionValue) => sectionValue.status === "COMPLETED") ??
         matchedPrintedNoteSections[0] ??
         null;
+      const printedNoteSectionEvidenceAvailable =
+        bestPrintedNoteSection !== null && hasPrintedNoteSectionEvidence(bestPrintedNoteSection);
+      const printedNoteSectionSnippet =
+        bestPrintedNoteSection?.evidence.find((entry) => normalizeDashboardSnippetText(entry).length > 0) ??
+        null;
+      const printedNoteSectionPortalValue =
+        !chartValueText && printedNoteSectionEvidenceAvailable && bestPrintedNoteSection
+          ? buildPrintedNoteSectionPortalValue(bestPrintedNoteSection)
+          : null;
+      const hasPortalEvidence = hasChartValue || printedNoteSectionEvidenceAvailable;
+      const assessmentCaptureSkipped = Boolean(oasisCaptureSkippedReason) && !hasPortalEvidence;
+      const effectiveChartValueSource =
+        hasChartValue
+          ? currentChartValueSource
+          : printedNoteSectionEvidenceAvailable
+            ? "printed_note_review"
+            : assessmentCaptureSkipped
+              ? "oasis_capture_skipped"
+            : currentChartValueSource;
       const sourceArtifacts = [
         "patient-qa-reference.json",
         ...(hasMeaningfulValue(field.currentChartValue) ? ["field-map-snapshot.json"] : []),
@@ -1909,6 +1995,7 @@ function derivePatientDashboardState(input: {
           ? ["printed-note-chart-values.json"]
           : []),
         ...(bestPrintedNoteSection ? ["oasis-printed-note-review.json"] : []),
+        ...(assessmentCaptureSkipped ? ["qa-prefetch-result.json"] : []),
       ];
       const confidence = getDashboardConfidence({
         sourceEvidence: field.sourceEvidence,
@@ -1939,16 +2026,18 @@ function derivePatientDashboardState(input: {
         field.recommendation.owner.toLowerCase().includes("coding")
       ) {
         displayStatus = "coding_review";
+      } else if (assessmentCaptureSkipped) {
+        displayStatus = "uncertain";
       } else if (comparisonSignals.has("possible_conflict")) {
         displayStatus = "mismatch";
-      } else if (!hasDocumentValue && hasChartValue) {
+      } else if (!hasDocumentValue && hasPortalEvidence) {
         displayStatus = "missing_in_referral";
       } else if (
         comparisonSignals.has("missing_in_chart") ||
-        (comparisonSignals.has("supported_by_referral") && !hasChartValue)
+        (comparisonSignals.has("supported_by_referral") && !hasPortalEvidence)
       ) {
         displayStatus = "missing_in_portal";
-      } else if (hasDocumentValue && !hasChartValue) {
+      } else if (hasDocumentValue && !hasPortalEvidence) {
         displayStatus = "missing_in_portal";
       } else if (comparisonSignals.has("needs_qa_readback") || comparisonSignals.has("supported_by_referral")) {
         displayStatus = "uncertain";
@@ -1972,7 +2061,7 @@ function derivePatientDashboardState(input: {
       } else if (displayStatus === "match") {
         visibilityDecision = "hidden_match";
         visibilityReason = "Backend comparison is resolved and hidden by default.";
-      } else if (!hasChartValue && !hasDocumentValue) {
+      } else if (!hasPortalEvidence && !hasDocumentValue) {
         visibilityDecision = "hidden_filtered_by_default";
         visibilityReason = "Neither the chart snapshot nor the referral produced a comparable value.";
       }
@@ -1991,6 +2080,7 @@ function derivePatientDashboardState(input: {
         ...(comparisonSignals.has("supported_by_referral") && !hasChartValue
           ? ["referral_support_without_chart_snapshot"]
           : []),
+        ...(assessmentCaptureSkipped ? ["oasis_capture_skipped_by_assessment_status"] : []),
       ];
 
       return {
@@ -2009,12 +2099,18 @@ function derivePatientDashboardState(input: {
         currentChartValue,
         normalizedDocumentValue,
         normalizedChartValue,
-        currentChartValueSource,
-        currentChartValueSourceLabel: getDashboardPortalValueSourceLabel(currentChartValueSource),
+        currentChartValueSource: assessmentCaptureSkipped
+          ? "oasis_capture_skipped"
+          : currentChartValueSource,
+        currentChartValueSourceLabel: getDashboardPortalValueSourceLabel(effectiveChartValueSource),
         displayReferralValue: documentValueText ?? "No reliable referral value extracted",
         displayPortalValue:
           chartValueText ??
-          (currentChartValueSource === "printed_note_ocr"
+          printedNoteSectionPortalValue ??
+          (assessmentCaptureSkipped
+            ? oasisCaptureSkippedReason
+            : null) ??
+          (effectiveChartValueSource === "printed_note_ocr"
             ? "Printed note OCR did not capture a value"
             : field.populatedInChart
               ? "Chart value is blank"
@@ -2022,7 +2118,9 @@ function derivePatientDashboardState(input: {
         comparisonResult: displayStatus,
         shortReason:
           visibilityDecision === "show"
-            ? comparisonSignals.has("possible_conflict")
+            ? assessmentCaptureSkipped
+              ? oasisCaptureSkippedReason ?? "OASIS capture was skipped because of the assessment page status."
+              : comparisonSignals.has("possible_conflict")
               ? "Backend marked this field as a possible conflict."
               : comparisonSignals.has("missing_in_chart")
                 ? "Backend marked this field as missing in the chart snapshot."
@@ -2048,7 +2146,7 @@ function derivePatientDashboardState(input: {
         sourceSupportStrength,
         mappingStrength,
         referralSnippet: asString(field.sourceEvidence[0]?.textSpan) ?? documentValueText,
-        portalSnippet: chartValueText,
+        portalSnippet: chartValueText ?? printedNoteSectionSnippet ?? oasisCaptureSkippedReason,
         evidence: field.sourceEvidence.map((entry, index) => ({
           id: `${field.fieldKey}:${index}`,
           sourceType: entry.sourceType,

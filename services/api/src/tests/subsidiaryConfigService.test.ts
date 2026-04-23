@@ -160,4 +160,57 @@ describe("SubsidiaryConfigService", () => {
       fixture.cleanup();
     }
   });
+
+  it("does not let known agencies inherit the default dashboard url", async () => {
+    const fixture = createFixture({
+      DEFAULT_SUBSIDIARY_NAME: "Star Home Health",
+      DEFAULT_SUBSIDIARY_PORTAL_BASE_URL: "https://app.finalehealth.com/provider/demo",
+      DEFAULT_SUBSIDIARY_PORTAL_DASHBOARD_URL: "https://app.finalehealth.com/provider/default/dashboard",
+      STAR_HOME_HEALTH_PORTAL_DASHBOARD_URL: "https://app.finalehealth.com/provider/star/dashboard",
+      AUTONOMOUS_AGENCY_IDS: "default,aplus-home-health",
+      PORTAL_USERNAME: "local-user",
+      PORTAL_PASSWORD: "local-pass",
+    });
+
+    try {
+      await fixture.service.initialize();
+      const subsidiaries = await fixture.service.listSubsidiaries();
+      const defaultSubsidiary = subsidiaries.find((subsidiary) => subsidiary.isDefault);
+      const aplusSubsidiary = subsidiaries.find((subsidiary) => subsidiary.id === "aplus-home-health");
+
+      assert.equal(
+        defaultSubsidiary?.portalDashboardUrl,
+        "https://app.finalehealth.com/provider/star/dashboard",
+      );
+      assert.equal(aplusSubsidiary?.portalDashboardUrl, null);
+    } finally {
+      fixture.cleanup();
+    }
+  });
+
+  it("resolves legacy Star agency aliases to the canonical subsidiary id", async () => {
+    const fixture = createFixture({
+      DEFAULT_SUBSIDIARY_PORTAL_BASE_URL: "https://app.finalehealth.com/provider/demo",
+      STAR_HOME_HEALTH_PORTAL_DASHBOARD_URL: "https://app.finalehealth.com/provider/star/dashboard",
+      PORTAL_USERNAME: "local-user",
+      PORTAL_PASSWORD: "local-pass",
+    });
+
+    try {
+      await fixture.service.initialize();
+      const canonical = await fixture.service.getSubsidiaryConfig("star-home-health");
+      const legacyDefault = await fixture.service.getSubsidiaryConfig("default");
+      const legacyCareInc = await fixture.service.getSubsidiaryConfig("star-home-health-care-inc");
+
+      assert.equal(canonical.id, "star-home-health");
+      assert.equal(legacyDefault.id, "star-home-health");
+      assert.equal(legacyCareInc.id, "star-home-health");
+      assert.deepEqual(
+        canonical.lookupAliases.slice().sort(),
+        ["default", "star-home-health-care-inc"],
+      );
+    } finally {
+      fixture.cleanup();
+    }
+  });
 });

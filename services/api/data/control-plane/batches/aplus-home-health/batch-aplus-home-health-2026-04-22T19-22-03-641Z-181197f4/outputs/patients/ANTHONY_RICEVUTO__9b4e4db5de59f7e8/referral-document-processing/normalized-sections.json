@@ -1,0 +1,458 @@
+[
+  {
+    "sectionName": "patient_identity",
+    "extractedTextSpans": [
+      "Patient Name: Anthony Ricevuto Phone: (909)968-1495",
+      "DOB:",
+      "DOB",
+      "SUB.DOB",
+      "DOB:",
+      "DOB:"
+    ],
+    "normalizedSummary": "Patient Name: Anthony Ricevuto Phone: (909)968-1495 DOB: DOB",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 16,
+        "lineEnd": 16,
+        "charStart": 286,
+        "charEnd": 337
+      },
+      {
+        "lineStart": 60,
+        "lineEnd": 60,
+        "charStart": 1167,
+        "charEnd": 1171
+      },
+      {
+        "lineStart": 117,
+        "lineEnd": 117,
+        "charStart": 1820,
+        "charEnd": 1823
+      },
+      {
+        "lineStart": 140,
+        "lineEnd": 140,
+        "charStart": 2105,
+        "charEnd": 2112
+      },
+      {
+        "lineStart": 218,
+        "lineEnd": 218,
+        "charStart": 3689,
+        "charEnd": 3693
+      },
+      {
+        "lineStart": 363,
+        "lineEnd": 363,
+        "charStart": 6673,
+        "charEnd": 6677
+      }
+    ]
+  },
+  {
+    "sectionName": "referral_metadata",
+    "extractedTextSpans": [
+      "Referral",
+      "Referral Source Information:",
+      "THANK YOU FOR YOUR REFERRAL!!!"
+    ],
+    "normalizedSummary": "Referral Referral Source Information: THANK YOU FOR YOUR REFERRAL!!!",
+    "confidence": 0.95,
+    "lineReferences": [
+      {
+        "lineStart": 3,
+        "lineEnd": 3,
+        "charStart": 34,
+        "charEnd": 42
+      },
+      {
+        "lineStart": 10,
+        "lineEnd": 10,
+        "charStart": 175,
+        "charEnd": 203
+      },
+      {
+        "lineStart": 47,
+        "lineEnd": 47,
+        "charStart": 1010,
+        "charEnd": 1040
+      }
+    ]
+  },
+  {
+    "sectionName": "referring_provider",
+    "extractedTextSpans": [
+      "NPI: 1205034832",
+      "NPI: 1205034832"
+    ],
+    "normalizedSummary": "NPI: 1205034832 NPI: 1205034832",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 176,
+        "lineEnd": 176,
+        "charStart": 2599,
+        "charEnd": 2614
+      },
+      {
+        "lineStart": 206,
+        "lineEnd": 206,
+        "charStart": 3537,
+        "charEnd": 3552
+      }
+    ]
+  },
+  {
+    "sectionName": "hospitalization_history",
+    "extractedTextSpans": [
+      "Perform at: Southern Hills Hospital & Medical Center",
+      "Hospital.",
+      "left reverse total shoulder on April 7th at Southern Hills Hospital."
+    ],
+    "normalizedSummary": "Perform at: Southern Hills Hospital & Medical Center Hospital. left reverse total shoulder on April 7th at Southern Hills Hospital.",
+    "confidence": 0.95,
+    "lineReferences": [
+      {
+        "lineStart": 180,
+        "lineEnd": 180,
+        "charStart": 2712,
+        "charEnd": 2764
+      },
+      {
+        "lineStart": 244,
+        "lineEnd": 244,
+        "charStart": 4318,
+        "charEnd": 4327
+      },
+      {
+        "lineStart": 330,
+        "lineEnd": 330,
+        "charStart": 5806,
+        "charEnd": 5874
+      }
+    ]
+  },
+  {
+    "sectionName": "medical_necessity",
+    "extractedTextSpans": [
+      "Skilled Nursing"
+    ],
+    "normalizedSummary": "Skilled Nursing",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 20,
+        "lineEnd": 20,
+        "charStart": 437,
+        "charEnd": 452
+      }
+    ]
+  },
+  {
+    "sectionName": "diagnoses",
+    "extractedTextSpans": [
+      "Primary Diagnosis (ICD 10):",
+      "DIAGNOSES",
+      "Diagnosis",
+      "Diagnosis: Shoulder Arthritis, Left - M19.012, M75.22, M24.012",
+      "diagnoses: Bicipital Tendinitis and Loose Body, Shoulder"
+    ],
+    "normalizedSummary": "Primary Diagnosis (ICD 10): DIAGNOSES Diagnosis",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 18,
+        "lineEnd": 18,
+        "charStart": 355,
+        "charEnd": 382
+      },
+      {
+        "lineStart": 160,
+        "lineEnd": 160,
+        "charStart": 2361,
+        "charEnd": 2370
+      },
+      {
+        "lineStart": 161,
+        "lineEnd": 161,
+        "charStart": 2371,
+        "charEnd": 2380
+      },
+      {
+        "lineStart": 189,
+        "lineEnd": 189,
+        "charStart": 2979,
+        "charEnd": 3041
+      },
+      {
+        "lineStart": 322,
+        "lineEnd": 322,
+        "charStart": 5561,
+        "charEnd": 5617
+      }
+    ]
+  },
+  {
+    "sectionName": "medications",
+    "extractedTextSpans": [
+      "Medication Management",
+      "Medication List",
+      "Allergies",
+      "No known drug allergies",
+      "He was provided with post operative pain medication and a sling.",
+      "Plan: Prescription Medication Management.",
+      "Initiate Treatment: Initiate treatment with prescription medication.",
+      "Plan: Additional Notes, Counseling - Preoperative Instructions, Prescription Medication Management, Opioid Risk Tool,"
+    ],
+    "normalizedSummary": "Medication Management Medication List Allergies",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 22,
+        "lineEnd": 22,
+        "charStart": 455,
+        "charEnd": 476
+      },
+      {
+        "lineStart": 46,
+        "lineEnd": 46,
+        "charStart": 994,
+        "charEnd": 1009
+      },
+      {
+        "lineStart": 222,
+        "lineEnd": 222,
+        "charStart": 3753,
+        "charEnd": 3762
+      },
+      {
+        "lineStart": 225,
+        "lineEnd": 225,
+        "charStart": 3806,
+        "charEnd": 3829
+      },
+      {
+        "lineStart": 334,
+        "lineEnd": 334,
+        "charStart": 5945,
+        "charEnd": 6009
+      },
+      {
+        "lineStart": 343,
+        "lineEnd": 343,
+        "charStart": 6251,
+        "charEnd": 6292
+      },
+      {
+        "lineStart": 344,
+        "lineEnd": 344,
+        "charStart": 6293,
+        "charEnd": 6361
+      },
+      {
+        "lineStart": 397,
+        "lineEnd": 397,
+        "charStart": 7714,
+        "charEnd": 7831
+      }
+    ]
+  },
+  {
+    "sectionName": "caregiver_support",
+    "extractedTextSpans": [
+      "RELATIONSHIP TO PATIENT",
+      "RELATIONSHIP",
+      "RELATIONSHIP"
+    ],
+    "normalizedSummary": "RELATIONSHIP TO PATIENT RELATIONSHIP RELATIONSHIP",
+    "confidence": 0.95,
+    "lineReferences": [
+      {
+        "lineStart": 80,
+        "lineEnd": 80,
+        "charStart": 1384,
+        "charEnd": 1407
+      },
+      {
+        "lineStart": 115,
+        "lineEnd": 115,
+        "charStart": 1802,
+        "charEnd": 1814
+      },
+      {
+        "lineStart": 139,
+        "lineEnd": 139,
+        "charStart": 2092,
+        "charEnd": 2104
+      }
+    ]
+  },
+  {
+    "sectionName": "therapy_need",
+    "extractedTextSpans": [
+      "Physical Therapy",
+      "Occupational Therapy",
+      "Physical Therapy"
+    ],
+    "normalizedSummary": "Physical Therapy Occupational Therapy Physical Therapy",
+    "confidence": 0.95,
+    "lineReferences": [
+      {
+        "lineStart": 29,
+        "lineEnd": 29,
+        "charStart": 548,
+        "charEnd": 564
+      },
+      {
+        "lineStart": 30,
+        "lineEnd": 30,
+        "charStart": 565,
+        "charEnd": 585
+      },
+      {
+        "lineStart": 411,
+        "lineEnd": 411,
+        "charStart": 8177,
+        "charEnd": 8193
+      }
+    ]
+  },
+  {
+    "sectionName": "risk_factors",
+    "extractedTextSpans": [
+      "Plan: Opioid Risk Tool.",
+      "Opioid Risk Tool (ORT) Score:",
+      "Based on Risk Selected: Low Risk (0-3 points)",
+      "Plan: Additional Notes, Counseling - Preoperative Instructions, Prescription Medication Management, Opioid Risk Tool,"
+    ],
+    "normalizedSummary": "Plan: Opioid Risk Tool. Opioid Risk Tool (ORT) Score: Based on Risk Selected: Low Risk (0-3 points)",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 370,
+        "lineEnd": 370,
+        "charStart": 6777,
+        "charEnd": 6800
+      },
+      {
+        "lineStart": 372,
+        "lineEnd": 372,
+        "charStart": 6823,
+        "charEnd": 6852
+      },
+      {
+        "lineStart": 373,
+        "lineEnd": 373,
+        "charStart": 6853,
+        "charEnd": 6898
+      },
+      {
+        "lineStart": 397,
+        "lineEnd": 397,
+        "charStart": 7714,
+        "charEnd": 7831
+      }
+    ]
+  },
+  {
+    "sectionName": "other_clinical_notes",
+    "extractedTextSpans": [
+      "Recent H&P or recent progress notes",
+      "Visit Note - March 26, 2026",
+      "Impression/Plan:",
+      "Plan: Additional Notes.",
+      "Patient Specific Notes: Anthony presents today for preoperative visit.",
+      "Plan: Counseling - Preoperative Instructions.",
+      "Plan: Prescription Medication Management.",
+      "Visit Note - March 26, 2026",
+      "Plan: Opioid Risk Tool.",
+      "Plan: Prescription.",
+      "Approve the plan of care.",
+      "plan.",
+      "Plan: Additional Notes, Counseling - Preoperative Instructions, Prescription Medication Management, Opioid Risk Tool,"
+    ],
+    "normalizedSummary": "Recent H&P or recent progress notes Visit Note - March 26, 2026 Impression/Plan:",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 44,
+        "lineEnd": 44,
+        "charStart": 956,
+        "charEnd": 991
+      },
+      {
+        "lineStart": 215,
+        "lineEnd": 215,
+        "charStart": 3648,
+        "charEnd": 3675
+      },
+      {
+        "lineStart": 314,
+        "lineEnd": 314,
+        "charStart": 5405,
+        "charEnd": 5421
+      },
+      {
+        "lineStart": 324,
+        "lineEnd": 324,
+        "charStart": 5633,
+        "charEnd": 5656
+      },
+      {
+        "lineStart": 326,
+        "lineEnd": 326,
+        "charStart": 5687,
+        "charEnd": 5757
+      },
+      {
+        "lineStart": 340,
+        "lineEnd": 340,
+        "charStart": 6122,
+        "charEnd": 6167
+      },
+      {
+        "lineStart": 343,
+        "lineEnd": 343,
+        "charStart": 6251,
+        "charEnd": 6292
+      },
+      {
+        "lineStart": 361,
+        "lineEnd": 361,
+        "charStart": 6632,
+        "charEnd": 6659
+      },
+      {
+        "lineStart": 370,
+        "lineEnd": 370,
+        "charStart": 6777,
+        "charEnd": 6800
+      },
+      {
+        "lineStart": 376,
+        "lineEnd": 376,
+        "charStart": 6934,
+        "charEnd": 6953
+      },
+      {
+        "lineStart": 390,
+        "lineEnd": 390,
+        "charStart": 7397,
+        "charEnd": 7422
+      },
+      {
+        "lineStart": 393,
+        "lineEnd": 393,
+        "charStart": 7605,
+        "charEnd": 7610
+      },
+      {
+        "lineStart": 397,
+        "lineEnd": 397,
+        "charStart": 7714,
+        "charEnd": 7831
+      }
+    ]
+  }
+]

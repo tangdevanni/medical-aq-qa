@@ -1,0 +1,41 @@
+{
+  "primaryDiagnosis": {
+    "code": "",
+    "description": "Diagnoses: - Diagnosis Information: - A00 A00 - D74 D74 - ADM",
+    "confidence": "medium"
+  },
+  "otherDiagnoses": [
+    {
+      "code": "",
+      "description": "Diagnosis Type: Reason For Visit",
+      "confidence": "medium"
+    },
+    {
+      "code": "",
+      "description": "Diagnosis Type: Discharge",
+      "confidence": "medium"
+    },
+    {
+      "code": "",
+      "description": "Constitutional: No weight loss, fever, chills, weakness or fatigue.",
+      "confidence": "medium"
+    },
+    {
+      "code": "",
+      "description": "C to Home W Home Health, IV: Yes, O2: No - PDT, Stretcher, Yes, No - Pain Symptoms : No Supporting Snippets: - Weight: - Precautions, 03",
+      "confidence": "medium"
+    }
+  ],
+  "suggestedOnsetType": "onset",
+  "suggestedSeverity": 2,
+  "comorbidityFlags": {
+    "pvd_pad": false,
+    "diabetes": false,
+    "none": true
+  },
+  "notes": [
+    "Reason for admission: Diagnoses: - Diagnosis Information: - A00 A00 - D74 D74 - ADM DIAGNOSIS - Order Comment: Status: Admit as Inpatient.",
+    "Ordered services: Physical Therapy",
+    "Primary diagnosis code left blank because no explicit or strongly inferable ICD-10 mapping was retained."
+  ]
+}

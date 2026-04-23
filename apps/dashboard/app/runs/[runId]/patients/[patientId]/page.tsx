@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { type MutableRefObject, type ReactNode, type RefObject, useEffect, useRef, useState } from "react";
 import { getPatient } from "../../../../../lib/api";
 import {
@@ -18,15 +18,37 @@ import {
   type FieldComparison,
 } from "../../../../../lib/patientComparison";
 import { formatTimestamp } from "../../../../../lib/qa";
-import type { PatientDetail, QaPrefetchSummary, WorkflowTrackSummary } from "../../../../../lib/types";
+import type {
+  DiagnosisEntry,
+  PatientDetail,
+  QaPrefetchSummary,
+} from "../../../../../lib/types";
 
 type WorkspaceTab =
+  | "oasis_snapshot"
   | "compare_all"
   | "clinical_sections"
   | "coding_sensitive"
   | "uncertain"
-  | "source_documents"
-  | "debug";
+  | "source_documents";
+
+function hasReferralCoverage(patient: PatientDetail): boolean {
+  return patient.referralQa.referralDataAvailable;
+}
+
+function hasUsableReferralCoverage(patient: PatientDetail): boolean {
+  return patient.referralQa.referralDataAvailable && patient.referralQa.extractionUsabilityStatus === "usable";
+}
+
+function hasOasisCoverage(patient: PatientDetail): boolean {
+  return Boolean(
+    patient.qaPrefetch?.oasisFound ||
+      patient.qaPrefetch?.oasisAssessmentPrimaryStatus ||
+      patient.qaPrefetch?.printedNoteStatus ||
+      patient.qaPrefetch?.printedNoteSections.length ||
+      patient.dashboardState?.sourceCoverage.printedNoteChartValueCount,
+  );
+}
 
 function formatStatusLabel(value: string | null | undefined): string {
   if (!value) {
@@ -42,6 +64,400 @@ function normalizeLabelForComparison(value: string): string {
   return value.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 }
 
+const PORTAL_VALUE_PLACEHOLDERS = new Set([
+  "no chart data captured",
+  "chart value is blank",
+  "printed note ocr did not capture a value",
+  "no reliable chart value extracted",
+]);
+
+function formatDiagnosisEntry(entry: DiagnosisEntry | null): string {
+  if (!entry) {
+    return "Not available";
+  }
+
+  const description = entry.description?.trim() ?? "";
+  const code = entry.code?.trim() ?? "";
+  if (description && code) {
+    return `${description} (${code})`;
+  }
+
+  return description || code || "Not available";
+}
+
+function DiagnosisSummaryPanel({ patient }: { patient: PatientDetail }) {
+  const diagnosisEntries: Array<{ label: string; value: string }> = [
+    {
+      label: "Primary Diagnosis",
+      value: formatDiagnosisEntry(patient.primaryDiagnosis),
+    },
+    {
+      label: "Secondary Diagnoses",
+      value:
+        patient.otherDiagnoses.length > 0
+          ? patient.otherDiagnoses.map((entry) => formatDiagnosisEntry(entry)).join("; ")
+          : "Not available",
+    },
+  ];
+  const diagnosisCount =
+    (patient.primaryDiagnosis ? 1 : 0) + patient.otherDiagnoses.length;
+
+  return (
+    <section className="panel stack">
+      <div className="panel-header-inline">
+        <div>
+          <h2>Diagnosis Summary</h2>
+          <p className="page-subtitle">
+            This mirrors the coding input used by the dashboard so the patient page shows the same diagnosis codes visible in the queue.
+          </p>
+        </div>
+        <span className={`badge${diagnosisCount > 0 ? " success" : " warning"}`}>
+          {diagnosisCount > 0 ? `${diagnosisCount} diagnosis${diagnosisCount === 1 ? "" : "es"}` : "No diagnoses"}
+        </span>
+      </div>
+
+      <div className="workspace-summary-grid">
+        {diagnosisEntries.map((entry) => (
+          <div className="workspace-summary-item" key={entry.label}>
+            <span className="workspace-summary-label">{entry.label}</span>
+            <strong>{entry.value}</strong>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function BillingPeriodCardsPanel({ prefetch }: { prefetch: QaPrefetchSummary | null }) {
+  if (!prefetch || !prefetch.selectedEpisodeRange) {
+    return null;
+  }
+
+  const periodRows = [
+    {
+      label: "First 30 Days",
+      rangeLabel: `${prefetch.first30TotalCards} total card(s)`,
+      workbookColumns: prefetch.first30WorkbookColumns,
+    },
+    {
+      label: "Second 30 Days",
+      rangeLabel: `${prefetch.second30TotalCards} total card(s)`,
+      workbookColumns: prefetch.second30WorkbookColumns,
+    },
+  ];
+
+  return (
+    <section className="panel stack">
+      <div className="panel-header-inline">
+        <div>
+          <h2>Billing Period Cards</h2>
+          <p className="page-subtitle">
+            Portal cards captured from the selected billing-period window and grouped for dashboard review.
+          </p>
+        </div>
+        <span className="badge">{prefetch.selectedEpisodeRange}</span>
+      </div>
+
+      <div className="billing-period-card-grid">
+        {periodRows.map((period) => (
+          <article className="priority-summary-card comparison-group-card" key={period.label}>
+            <div className="comparison-group-header">
+              <div>
+                <h3>{period.label}</h3>
+                <div className="muted">{period.rangeLabel}</div>
+              </div>
+            </div>
+            <div className="comparison-value-grid billing-period-value-grid">
+              <div>
+                <div className="metric-label">SN</div>
+                <div className="billing-period-summary-value">{period.workbookColumns.sn}</div>
+              </div>
+              <div>
+                <div className="metric-label">PT/OT/ST</div>
+                <div className="billing-period-summary-value">{period.workbookColumns.ptOtSt}</div>
+              </div>
+              <div>
+                <div className="metric-label">HHA/MSW</div>
+                <div className="billing-period-summary-value">{period.workbookColumns.hhaMsw}</div>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function DocumentationCoveragePanel({
+  patient,
+  workspace,
+}: {
+  patient: PatientDetail;
+  workspace: ComparisonWorkspaceModel;
+}) {
+  const oasisStructuredValueCount = patient.dashboardState?.sourceCoverage.printedNoteChartValueCount ?? 0;
+  const oasisCompletedSections =
+    patient.qaPrefetch?.printedNoteCompletedSectionCount ??
+    patient.dashboardState?.sourceCoverage.printedNoteCompletedSectionCount ??
+    0;
+  const oasisIncompleteSections = patient.qaPrefetch?.printedNoteIncompleteSectionCount ?? 0;
+  const oasisSourceLabel =
+    patient.qaPrefetch?.printedNoteReviewSource ??
+    patient.dashboardState?.sourceCoverage.printedNoteReviewSource ??
+    "Not captured";
+  const needsReferralFollowUp =
+    workspace.summary.missingInReferralCount > 0 || !hasUsableReferralCoverage(patient);
+  const referralWarnings = patient.referralQa.warnings.slice(0, 3);
+
+  return (
+    <section className="grid three">
+      <div className="panel stack workspace-info-card">
+        <div className="panel-header-inline">
+          <h2>OASIS Source</h2>
+          <span className={hasOasisCoverage(patient) ? "badge success" : "badge warning"}>
+            {hasOasisCoverage(patient) ? "Available" : "Not captured"}
+          </span>
+        </div>
+        <div className="workspace-summary-grid">
+          <div className="workspace-summary-item">
+            <span className="workspace-summary-label">Review Source</span>
+            <strong>{formatStatusLabel(oasisSourceLabel)}</strong>
+          </div>
+          <div className="workspace-summary-item">
+            <span className="workspace-summary-label">Structured Values</span>
+            <strong>{oasisStructuredValueCount}</strong>
+          </div>
+          <div className="workspace-summary-item">
+            <span className="workspace-summary-label">Completed Sections</span>
+            <strong>{oasisCompletedSections}</strong>
+          </div>
+          <div className="workspace-summary-item">
+            <span className="workspace-summary-label">Incomplete Sections</span>
+            <strong>{oasisIncompleteSections}</strong>
+          </div>
+        </div>
+        <p className="workspace-card-copy">
+          The dashboard should still surface OASIS-derived data even when referral support is missing. This is the current extracted OASIS coverage available for QA.
+        </p>
+      </div>
+
+      <div className="panel stack workspace-info-card">
+        <div className="panel-header-inline">
+          <h2>Referral Source</h2>
+          <span
+            className={
+              hasUsableReferralCoverage(patient)
+                ? "badge success"
+                : hasReferralCoverage(patient)
+                  ? "badge warning"
+                  : "badge danger"
+            }
+          >
+            {hasUsableReferralCoverage(patient)
+              ? "Usable"
+              : hasReferralCoverage(patient)
+                ? "Limited"
+                : "Missing"}
+          </span>
+        </div>
+        <div className="workspace-summary-grid">
+          <div className="workspace-summary-item">
+            <span className="workspace-summary-label">Availability</span>
+            <strong>{hasReferralCoverage(patient) ? "Document captured" : "Not available"}</strong>
+          </div>
+          <div className="workspace-summary-item">
+            <span className="workspace-summary-label">Usability</span>
+            <strong>{formatStatusLabel(patient.referralQa.extractionUsabilityStatus)}</strong>
+          </div>
+          <div className="workspace-summary-item">
+            <span className="workspace-summary-label">Warnings</span>
+            <strong>{patient.referralQa.warningCount}</strong>
+          </div>
+          <div className="workspace-summary-item">
+            <span className="workspace-summary-label">Comparison Sections</span>
+            <strong>{patient.referralQa.availableSectionCount} / {patient.referralQa.totalSectionCount}</strong>
+          </div>
+        </div>
+        {referralWarnings.length > 0 ? (
+          <div className="checklist compact-checklist">
+            {referralWarnings.map((warning) => (
+              <div key={warning}>{warning}</div>
+            ))}
+          </div>
+        ) : (
+          <p className="workspace-card-copy">No referral warnings were recorded for this patient.</p>
+        )}
+      </div>
+
+      <div className="panel stack workspace-info-card">
+        <div className="panel-header-inline">
+          <h2>QA Follow-Up</h2>
+          <span className={needsReferralFollowUp ? "badge danger" : "badge success"}>
+            {needsReferralFollowUp ? "Needs follow-up" : "In sync"}
+          </span>
+        </div>
+        <div className="workspace-summary-grid">
+          <div className="workspace-summary-item">
+            <span className="workspace-summary-label">Missing Referral Fields</span>
+            <strong>{workspace.summary.missingInReferralCount}</strong>
+          </div>
+          <div className="workspace-summary-item">
+            <span className="workspace-summary-label">Missing in OASIS / Chart</span>
+            <strong>{workspace.summary.missingInPortalCount}</strong>
+          </div>
+          <div className="workspace-summary-item">
+            <span className="workspace-summary-label">Mismatches</span>
+            <strong>{workspace.summary.mismatchCount}</strong>
+          </div>
+          <div className="workspace-summary-item">
+            <span className="workspace-summary-label">Coding Review</span>
+            <strong>{workspace.summary.codingReviewCount}</strong>
+          </div>
+        </div>
+        <p className="workspace-card-copy">
+          Use the OASIS source to review the patient immediately. Referral follow-up is still required anywhere the dashboard shows OASIS-backed values without supporting referral evidence.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+function hasVisiblePortalValue(value: string | null | undefined): boolean {
+  return typeof value === "string" && value.trim().length > 0;
+}
+
+function hasUsableOasisValue(comparison: FieldComparison): boolean {
+  if (comparison.portalValueSource === "oasis_capture_skipped") {
+    return false;
+  }
+
+  const normalizedDisplayValue = normalizeLabelForComparison(comparison.displayPortalValue);
+  if (PORTAL_VALUE_PLACEHOLDERS.has(normalizedDisplayValue)) {
+    return false;
+  }
+
+  return Boolean(
+    comparison.valuePresence?.hasChartValue ||
+      comparison.valuePresence?.hasPrintedNoteChartValue ||
+      hasVisiblePortalValue(comparison.portalValue) ||
+      hasVisiblePortalValue(comparison.displayPortalValue),
+  );
+}
+
+function OasisSnapshotPanel({
+  patient,
+  workspace,
+  onInspect,
+}: {
+  patient: PatientDetail;
+  workspace: ComparisonWorkspaceModel;
+  onInspect: (fieldKey: string) => void;
+}) {
+  const sectionEntries = workspace.sections
+    .map((section) => ({
+      ...section,
+      rows: section.rows.filter((row) => hasUsableOasisValue(row)),
+    }))
+    .filter((section) => section.rows.length > 0);
+  const totalCapturedFields = sectionEntries.reduce((sum, section) => sum + section.rows.length, 0);
+  const referralMissing = !hasReferralCoverage(patient);
+  const oasisCaptureSkipReason =
+    patient.qaPrefetch?.oasisAssessmentDecision === "SKIP"
+      ? patient.qaPrefetch.oasisAssessmentReason
+      : null;
+
+  return (
+    <section className="panel stack">
+      <div className="panel-header-inline">
+        <div>
+          <h2>OASIS Snapshot</h2>
+          <p className="page-subtitle">
+            This is the readable OASIS view for QA. It shows what the chart currently says first, then the referral comparison can be used to confirm or flag discrepancies.
+          </p>
+        </div>
+        <div className="badge-row">
+          <span className="badge success">{totalCapturedFields} captured field{totalCapturedFields === 1 ? "" : "s"}</span>
+          <span className={referralMissing ? "badge warning" : "badge"}>
+            {referralMissing ? "OASIS-only view" : "Referral overlay available"}
+          </span>
+        </div>
+      </div>
+
+      {referralMissing ? (
+        <section className="panel global-trust-banner">
+          <span className="badge warning">Referral Missing</span>
+          <div>
+            Referral documentation is not available for this patient yet. QA can still review the extracted OASIS content here; discrepancy review becomes complete once referral documents are captured.
+          </div>
+        </section>
+      ) : null}
+
+      {sectionEntries.length > 0 ? (
+        <div className="workspace-section-stack">
+          {sectionEntries.map((section) => (
+            <section className="section-queue-card" key={section.sectionKey}>
+              <div className="comparison-section-summary">
+                <div>
+                  <h3>{section.sectionLabel}</h3>
+                  <div className="muted">{section.rows.length} OASIS-backed field{section.rows.length === 1 ? "" : "s"}</div>
+                </div>
+                <div className="comparison-section-counts">
+                  <span className="badge success">{section.rows.length} captured</span>
+                  {section.missingInReferralCount > 0 ? (
+                    <span className="badge warning">{section.missingInReferralCount} missing referral</span>
+                  ) : null}
+                  {section.mismatchCount > 0 ? (
+                    <span className="badge danger">{section.mismatchCount} mismatch</span>
+                  ) : null}
+                </div>
+              </div>
+              <div className="section-queue-body">
+                <div className="section-field-list">
+                  {section.rows.map((row) => (
+                    <article className="flagged-field-row" key={row.fieldKey}>
+                      <div className="flagged-field-header">
+                        <div>
+                          <strong>{row.fieldLabel}</strong>
+                          <div className="flagged-field-rationale">
+                            {row.portalValueSourceLabel} | {row.reviewStatus}
+                          </div>
+                        </div>
+                        <button
+                          className="button secondary compact"
+                          onClick={() => onInspect(row.fieldKey)}
+                          type="button"
+                        >
+                          Inspect
+                        </button>
+                      </div>
+                      <div className="field-debug-meta">
+                        <div className="comparison-value-label">OASIS says</div>
+                        <div className="comparison-value-text">{row.displayPortalValue}</div>
+                      </div>
+                      {hasReferralCoverage(patient) ? (
+                        <div className="field-debug-meta">
+                          <div className="comparison-value-label">Referral check</div>
+                          <div className="comparison-value-text">{row.displayReferralValue}</div>
+                        </div>
+                      ) : null}
+                    </article>
+                  ))}
+                </div>
+              </div>
+            </section>
+          ))}
+        </div>
+      ) : (
+        <div className="muted">
+          {oasisCaptureSkipReason
+            ? `No structured OASIS values have been promoted into the dashboard yet. ${oasisCaptureSkipReason}`
+            : "No structured OASIS values have been promoted into the dashboard yet. This usually means the printed-note extraction did not produce usable chart values for this patient."}
+        </div>
+      )}
+    </section>
+  );
+}
+
 function shouldShowReviewStatus(comparison: FieldComparison): boolean {
   return normalizeLabelForComparison(comparison.reviewStatus)
     !== normalizeLabelForComparison(getResultLabel(comparison.comparisonResult));
@@ -51,7 +467,7 @@ function PatientCompareHeader({ workspace }: { workspace: ComparisonWorkspaceMod
   return (
     <section className="workspace-header panel compare-header">
       <div>
-        <div className="workspace-eyebrow">Referral vs Portal Reconciliation Workspace</div>
+        <div className="workspace-eyebrow">OASIS and Referral QA Workspace</div>
         <h1 className="page-title">{workspace.header.patientName}</h1>
         <div className="workspace-context-row">
           <span>Subsidiary: {workspace.header.subsidiaryName}</span>
@@ -90,111 +506,6 @@ function ComparisonSummaryBar({ workspace }: { workspace: ComparisonWorkspaceMod
           <div className="priority-summary-value">{card.value}</div>
         </article>
       ))}
-    </section>
-  );
-}
-
-function deriveProposalPipelineWarnings(warnings: string[]): string[] {
-  return warnings.filter((warning) => /llm|bedrock|fallback|proposal/i.test(warning));
-}
-
-function InvestigationSignalsPanel({
-  proposalWarnings,
-  hiddenMeaningfulRows,
-  onInspectHiddenRow,
-  onOpenDebug,
-  onReviewHiddenRows,
-}: {
-  proposalWarnings: string[];
-  hiddenMeaningfulRows: FieldComparison[];
-  onInspectHiddenRow: (fieldKey: string) => void;
-  onOpenDebug: () => void;
-  onReviewHiddenRows: () => void;
-}) {
-  if (proposalWarnings.length === 0 && hiddenMeaningfulRows.length === 0) {
-    return null;
-  }
-
-  const hiddenMatchCount = hiddenMeaningfulRows.filter(
-    (row) => row.visibilityDecision === "hidden_match",
-  ).length;
-  const hiddenResolvedCount = hiddenMeaningfulRows.filter(
-    (row) => row.visibilityDecision === "hidden_resolved",
-  ).length;
-
-  return (
-    <section className="panel stack">
-      <div className="panel-header-inline">
-        <div>
-          <h2>Investigation Signals</h2>
-          <p className="page-subtitle">
-            These signals separate referral-proposal failures from dashboard visibility rules.
-          </p>
-        </div>
-        <div className="comparison-status-block comparison-status-block-inline">
-          {proposalWarnings.length > 0 ? (
-            <span className="badge danger">{proposalWarnings.length} proposal warning(s)</span>
-          ) : null}
-          {hiddenMeaningfulRows.length > 0 ? (
-            <span className="badge warning">{hiddenMeaningfulRows.length} hidden meaningful row(s)</span>
-          ) : null}
-        </div>
-      </div>
-
-      {proposalWarnings.length > 0 ? (
-        <div className="checklist-item">
-          <div className="checklist-item-header">
-            <strong>Referral proposal pipeline</strong>
-            <button className="button secondary compact" onClick={onOpenDebug} type="button">
-              Open Debug
-            </button>
-          </div>
-          <div className="muted">
-            The referral processing warnings indicate the proposal stage may be falling back or returning unusable model output.
-          </div>
-          <div className="checklist compact-checklist">
-            {proposalWarnings.map((warning) => (
-              <div key={warning}>{warning}</div>
-            ))}
-          </div>
-        </div>
-      ) : null}
-
-      {hiddenMeaningfulRows.length > 0 ? (
-        <div className="checklist-item">
-          <div className="checklist-item-header">
-            <strong>Meaningful rows hidden by default</strong>
-            <button className="button secondary compact" onClick={onReviewHiddenRows} type="button">
-              Review Hidden Rows
-            </button>
-          </div>
-          <div className="muted">
-            {hiddenMeaningfulRows.length} row(s) still have referral or chart values, but the dashboard hides them by default.
-          </div>
-          <div className="comparison-status-block comparison-status-block-inline">
-            {hiddenMatchCount > 0 ? <span className="badge">{hiddenMatchCount} resolved match(es)</span> : null}
-            {hiddenResolvedCount > 0 ? <span className="badge">{hiddenResolvedCount} non-actionable row(s)</span> : null}
-          </div>
-          <div className="checklist compact-checklist">
-            {hiddenMeaningfulRows.slice(0, 6).map((row) => (
-              <div className="checklist-item" key={row.fieldKey}>
-                <div className="checklist-item-header">
-                  <strong>{row.fieldLabel}</strong>
-                  <button
-                    className="button secondary compact"
-                    onClick={() => onInspectHiddenRow(row.fieldKey)}
-                    type="button"
-                  >
-                    Inspect
-                  </button>
-                </div>
-                <div className="muted">{formatStatusLabel(row.visibilityDecision ?? "hidden")} | {row.sectionLabel}</div>
-                <div>{row.visibilityReason ?? row.shortReason}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      ) : null}
     </section>
   );
 }
@@ -343,16 +654,14 @@ function ComparisonRow({
         </div>
 
         <div className="comparison-value-block">
-          <div className="comparison-value-label">Referral Says</div>
+          <div className="comparison-value-label">Referral Extract</div>
           <div className="comparison-value-text">{comparison.displayReferralValue}</div>
         </div>
 
         <div className="comparison-value-block">
-          <div className="comparison-value-label">Chart Snapshot</div>
+          <div className="comparison-value-label">OASIS / Chart Snapshot</div>
           <div className="comparison-value-text">{comparison.displayPortalValue}</div>
-          {comparison.portalValueSource !== "chart_read" ? (
-            <div className="muted">Source: {comparison.portalValueSourceLabel}</div>
-          ) : null}
+          <div className="muted">Source: {comparison.portalValueSourceLabel}</div>
         </div>
 
         <div className="comparison-status-block">
@@ -628,7 +937,11 @@ function SourceDocumentsWorkspace({
   selectedFieldKey: string | null;
   onSelectField: (fieldKey: string) => void;
 }) {
-  const selectedComparison = rows.find((comparison) => comparison.fieldKey === selectedFieldKey) ?? rows[0] ?? null;
+  const selectedComparison =
+    rows.find((comparison) => comparison.fieldKey === selectedFieldKey) ??
+    rows.find((comparison) => hasVisiblePortalValue(comparison.portalValue)) ??
+    rows[0] ??
+    null;
   const itemRefs = useRef<Record<string, HTMLButtonElement | null>>({});
   const referralHighlightRef = useRef<HTMLDivElement | null>(null);
   const portalHighlightRef = useRef<HTMLDivElement | null>(null);
@@ -649,7 +962,7 @@ function SourceDocumentsWorkspace({
           <div>
             <h2>Source Documents</h2>
             <p className="page-subtitle">
-              Inspect the selected field with the referral on the left and the current portal output on the right.
+              Inspect the selected field with the referral on the left and the current portal output on the right. This tab includes resolved and hidden rows so captured chart snapshot values remain inspectable.
             </p>
           </div>
           {selectedComparison ? (
@@ -759,171 +1072,15 @@ function SourceDocumentsWorkspace({
   );
 }
 
-function DebugDrawer({ title, count, children }: { title: string; count?: number | string; children: ReactNode }) {
-  return (
-    <details className="artifact-drawer">
-      <summary>
-        <span>{title}</span>
-        {typeof count !== "undefined" ? <span className="badge">{count}</span> : null}
-      </summary>
-      <div>{children}</div>
-    </details>
-  );
-}
-
-function WorkflowSummary({ label, workflow }: { label: string; workflow: WorkflowTrackSummary | null }) {
-  return (
-    <div className="checklist-item">
-      <div className="checklist-item-header">
-        <strong>{label}</strong>
-        <span className="badge">{workflow?.status ?? "Not started"}</span>
-      </div>
-      <div className="muted">{workflow?.stepName ?? "No step recorded."}</div>
-      <div>{workflow?.message ?? "No workflow note recorded."}</div>
-      {workflow ? <div className="muted">Updated {formatTimestamp(workflow.lastUpdatedAt)}</div> : null}
-    </div>
-  );
-}
-
-function renderQaPrefetchRows(prefetch: QaPrefetchSummary | null): Array<{ label: string; value: string }> {
-  if (!prefetch) {
-    return [{ label: "Status", value: "QA prefetch not available." }];
-  }
-
-  return [
-    { label: "Status", value: prefetch.status },
-    { label: "Selected route", value: prefetch.selectedRouteSummary ?? "Not resolved" },
-    { label: "OASIS found", value: prefetch.oasisFound ? "Yes" : "No" },
-    { label: "Diagnosis found", value: prefetch.diagnosisFound ? "Yes" : "No" },
-    { label: "Printed note", value: prefetch.printedNoteStatus ?? "Not captured" },
-    { label: "Printed note source", value: prefetch.printedNoteReviewSource ?? "Not captured" },
-    { label: "Warnings", value: String(prefetch.warningCount + prefetch.printedNoteWarningCount) },
-  ];
-}
-
-function DebugTab({ patient, workspace }: { patient: PatientDetail; workspace: ComparisonWorkspaceModel }) {
-  return (
-    <section className="panel stack debug-secondary-panel">
-      <div>
-        <h2>Debug</h2>
-        <p className="page-subtitle">
-          Secondary system context only. This stays collapsed so the main workflow remains focused on reconciliation.
-        </p>
-      </div>
-
-      <DebugDrawer count={workspace.debug.referralWarnings.length} title="Referral Processing Status">
-        <div className="artifact-stack compact-artifact-stack">
-          <div className="checklist-item">
-            <div className="metric-label">Referral trust level</div>
-            <div>{formatStatusLabel(workspace.debug.referralUsability)}</div>
-          </div>
-          <div className="checklist-item">
-            <div className="metric-label">Review pipeline status</div>
-            <div>{formatStatusLabel(workspace.debug.qaStatus)}</div>
-          </div>
-          {workspace.debug.referralWarnings.length > 0 ? (
-            <div className="checklist-item">
-              <div className="metric-label">Warnings</div>
-              <div className="checklist compact-checklist">
-                {workspace.debug.referralWarnings.map((warning) => (
-                  <div key={warning}>{warning}</div>
-                ))}
-              </div>
-            </div>
-          ) : null}
-        </div>
-      </DebugDrawer>
-
-      <DebugDrawer title="Workflow Status">
-        <div className="artifact-stack compact-artifact-stack">
-          <WorkflowSummary label="Coding track" workflow={patient.codingWorkflow} />
-          <WorkflowSummary label="QA track" workflow={patient.qaWorkflow} />
-        </div>
-      </DebugDrawer>
-
-      <DebugDrawer title="Portal Read Context">
-        <table className="table">
-          <tbody>
-            {renderQaPrefetchRows(patient.qaPrefetch).map((row) => (
-              <tr key={row.label}>
-                <th>{row.label}</th>
-                <td>{row.value}</td>
-              </tr>
-            ))}
-            <tr>
-              <th>Billing period</th>
-              <td>{patient.workbookContext.billingPeriod ?? "Not provided"}</td>
-            </tr>
-            <tr>
-              <th>Workflow types</th>
-              <td>{patient.workbookContext.workflowTypes.join(", ") || "Not available"}</td>
-            </tr>
-            <tr>
-              <th>Raw days-left values</th>
-              <td>{patient.workbookContext.rawDaysLeftValues.join(", ") || "Not captured"}</td>
-            </tr>
-          </tbody>
-        </table>
-      </DebugDrawer>
-
-      {workspace.debug.visibilitySummary ? (
-        <DebugDrawer title="Visibility Decisions" count={workspace.debug.visibilitySummary.hiddenRows}>
-          <div className="artifact-stack compact-artifact-stack">
-            <div className="checklist-item">
-              <div className="metric-label">Total rows</div>
-              <div>{workspace.debug.visibilitySummary.totalRows}</div>
-            </div>
-            <div className="checklist-item">
-              <div className="metric-label">Shown by default</div>
-              <div>{workspace.debug.visibilitySummary.shownRows}</div>
-            </div>
-            <div className="checklist-item">
-              <div className="metric-label">Hidden by default</div>
-              <div>{workspace.debug.visibilitySummary.hiddenRows}</div>
-            </div>
-            {Object.entries(workspace.debug.visibilitySummary.hiddenByReason).length > 0 ? (
-              <div className="checklist-item">
-                <div className="metric-label">Hidden by reason</div>
-                <div className="checklist compact-checklist">
-                  {Object.entries(workspace.debug.visibilitySummary.hiddenByReason).map(([reason, count]) => (
-                    <div key={reason}>{formatStatusLabel(reason)}: {count}</div>
-                  ))}
-                </div>
-              </div>
-            ) : null}
-            {workspace.debug.visibilitySummary.potentiallyTooStrictRows.length > 0 ? (
-              <div className="checklist-item">
-                <div className="metric-label">Potentially too strict</div>
-                <div>{workspace.debug.visibilitySummary.potentiallyTooStrictRows.join(", ")}</div>
-              </div>
-            ) : null}
-            {workspace.debug.hiddenRows.slice(0, 8).length > 0 ? (
-              <div className="checklist-item">
-                <div className="metric-label">Hidden row examples</div>
-                <div className="checklist compact-checklist">
-                  {workspace.debug.hiddenRows.slice(0, 8).map((row) => (
-                    <div key={row.fieldKey}>
-                      <strong>{row.fieldLabel}</strong>: {row.visibilityReason ?? row.shortReason}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ) : null}
-          </div>
-        </DebugDrawer>
-      ) : null}
-    </section>
-  );
-}
-
 export default function PatientDetailPage() {
   const params = useParams<{ runId: string; patientId: string }>();
+  const router = useRouter();
   const runId = params.runId;
   const patientId = params.patientId;
 
   const [patient, setPatient] = useState<PatientDetail | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<WorkspaceTab>("compare_all");
+  const [activeTab, setActiveTab] = useState<WorkspaceTab>("oasis_snapshot");
   const [searchTerm, setSearchTerm] = useState("");
   const [sectionFilter, setSectionFilter] = useState("");
   const [resultFilter, setResultFilter] = useState<CompareFilterValue>("open");
@@ -933,18 +1090,6 @@ export default function PatientDetailPage() {
   function handleInspect(fieldKey: string): void {
     setSelectedFieldKey(fieldKey);
     setActiveTab("source_documents");
-  }
-
-  function handleInspectHiddenRow(fieldKey: string): void {
-    setShowMatches(true);
-    setSelectedFieldKey(fieldKey);
-    setActiveTab("source_documents");
-  }
-
-  function handleReviewHiddenRows(): void {
-    setShowMatches(true);
-    setResultFilter("all");
-    setActiveTab("compare_all");
   }
 
   useEffect(() => {
@@ -977,6 +1122,26 @@ export default function PatientDetailPage() {
     };
   }, [patientId, runId]);
 
+  useEffect(() => {
+    if (!patient || patient.batchId === runId) {
+      return;
+    }
+
+    router.replace(`/runs/${encodeURIComponent(patient.batchId)}/patients/${encodeURIComponent(patientId)}`);
+  }, [patient, patientId, router, runId]);
+
+  useEffect(() => {
+    if (!patient) {
+      return;
+    }
+
+    if (!hasReferralCoverage(patient)) {
+      setActiveTab((currentTab) =>
+        currentTab === "compare_all" ? "oasis_snapshot" : currentTab,
+      );
+    }
+  }, [patient]);
+
   const workspace = patient ? buildComparisonWorkspaceModel(patient) : null;
   const compareAllRows = workspace
     ? filterComparisonRows(workspace.comparisons, {
@@ -1003,8 +1168,8 @@ export default function PatientDetailPage() {
     ? filterComparisonRows(workspace.comparisons, {
         searchTerm,
         sectionFilter,
-        resultFilter: showMatches ? "all" : "open",
-        showMatches,
+        resultFilter: "all",
+        showMatches: true,
       })
     : [];
   const sectionRows = workspace
@@ -1016,22 +1181,18 @@ export default function PatientDetailPage() {
         }))
         .filter((entry) => entry.rows.length > 0)
     : [];
-  const proposalWarnings = workspace
-    ? deriveProposalPipelineWarnings(workspace.debug.referralWarnings)
-    : [];
-  const hiddenMeaningfulRows = workspace
-    ? workspace.debug.hiddenRows.filter((row) =>
-        row.strictnessFlags?.includes("hidden_with_meaningful_value"),
-      )
-    : [];
   const tabs: Array<{ key: WorkspaceTab; label: string; count?: number }> = workspace
     ? [
+        {
+          key: "oasis_snapshot",
+          label: "OASIS Snapshot",
+          count: workspace.comparisons.filter((row) => hasUsableOasisValue(row)).length,
+        },
         { key: "compare_all", label: "Compare All", count: compareAllRows.length },
         { key: "clinical_sections", label: "Clinical Sections", count: sectionRows.length },
         { key: "coding_sensitive", label: "Coding-Sensitive", count: codingRows.length },
         { key: "uncertain", label: "Uncertain / Needs Review", count: uncertainRows.length },
         { key: "source_documents", label: "Source Documents", count: sourceRows.length },
-        { key: "debug", label: "Debug" },
       ]
     : [];
 
@@ -1040,9 +1201,9 @@ export default function PatientDetailPage() {
       <div className="page-header">
         <div>
           <Link className="link" href="/agency">Back to agency overview</Link>
-          <p className="eyebrow">Referral vs Portal Reconciliation Workspace</p>
+          <p className="eyebrow">OASIS and Referral QA Workspace</p>
           <p className="page-subtitle">
-            Open the patient, compare what the referral says against the captured chart snapshot, and work the discrepancies from the top down.
+            Open the patient, review the extracted OASIS details, compare them against referral support when available, and work mismatches from the top down.
           </p>
         </div>
         <div className="actions">
@@ -1070,13 +1231,9 @@ export default function PatientDetailPage() {
             </section>
           ) : null}
           <ComparisonSummaryBar workspace={workspace} />
-          <InvestigationSignalsPanel
-            hiddenMeaningfulRows={hiddenMeaningfulRows}
-            onInspectHiddenRow={handleInspectHiddenRow}
-            onOpenDebug={() => setActiveTab("debug")}
-            onReviewHiddenRows={handleReviewHiddenRows}
-            proposalWarnings={proposalWarnings}
-          />
+          <DiagnosisSummaryPanel patient={patient} />
+          <DocumentationCoveragePanel patient={patient} workspace={workspace} />
+          <BillingPeriodCardsPanel prefetch={patient.qaPrefetch} />
 
           <div aria-label="Patient review tabs" className="workspace-tab-bar" role="tablist">
             {tabs.map((tab) => (
@@ -1094,7 +1251,7 @@ export default function PatientDetailPage() {
             ))}
           </div>
 
-          {activeTab !== "coding_sensitive" && activeTab !== "uncertain" && activeTab !== "debug" ? (
+          {activeTab !== "oasis_snapshot" && activeTab !== "coding_sensitive" && activeTab !== "uncertain" ? (
             <CompareFilterBar
               onResultFilterChange={setResultFilter}
               onSearchTermChange={setSearchTerm}
@@ -1109,12 +1266,20 @@ export default function PatientDetailPage() {
             />
           ) : null}
 
+          {activeTab === "oasis_snapshot" ? (
+            <OasisSnapshotPanel onInspect={handleInspect} patient={patient} workspace={workspace} />
+          ) : null}
+
           {activeTab === "compare_all" ? (
             <section className="panel stack">
               <div className="panel-header-inline">
                 <div>
                   <h2>Compare All</h2>
-                  <p className="page-subtitle">This is the default work queue. Resolved rows and backend-hidden rows stay hidden unless you turn them on.</p>
+                  <p className="page-subtitle">
+                    {hasReferralCoverage(patient)
+                      ? "This work queue compares referral support against the captured OASIS values and keeps OASIS-backed rows visible while follow-up is still needed."
+                      : "Referral documentation is missing, so this queue mainly shows where OASIS-backed values exist without referral support. Use OASIS Snapshot as the primary chart view."}
+                  </p>
                 </div>
                 <span className="badge">{compareAllRows.length}</span>
               </div>
@@ -1145,7 +1310,6 @@ export default function PatientDetailPage() {
               selectedFieldKey={selectedFieldKey}
             />
           ) : null}
-          {activeTab === "debug" ? <DebugTab patient={patient} workspace={workspace} /> : null}
         </>
       ) : null}
     </main>

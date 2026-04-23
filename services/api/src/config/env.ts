@@ -1,8 +1,49 @@
 import path from "node:path";
+import { existsSync } from "node:fs";
 import { config as loadDotenv } from "dotenv";
 import { z } from "zod";
 
-loadDotenv();
+function findWorkspaceRoot(startDir: string): string | null {
+  let currentDir = path.resolve(startDir);
+
+  while (true) {
+    if (existsSync(path.join(currentDir, "pnpm-workspace.yaml"))) {
+      return currentDir;
+    }
+
+    const parentDir = path.dirname(currentDir);
+    if (parentDir === currentDir) {
+      return null;
+    }
+    currentDir = parentDir;
+  }
+}
+
+function loadApiEnvFiles(): void {
+  const apiPackageRoot = path.resolve(__dirname, "../..");
+  const workspaceRoot = findWorkspaceRoot(apiPackageRoot) ?? findWorkspaceRoot(process.cwd());
+  const candidatePaths = [
+    workspaceRoot ? path.join(workspaceRoot, ".env") : null,
+    workspaceRoot ? path.join(workspaceRoot, ".env.local") : null,
+    path.join(apiPackageRoot, ".env"),
+    path.join(apiPackageRoot, ".env.local"),
+    path.join(process.cwd(), ".env"),
+    path.join(process.cwd(), ".env.local"),
+  ].filter((value, index, values): value is string => Boolean(value) && values.indexOf(value) === index);
+
+  for (const envPath of candidatePaths) {
+    if (!existsSync(envPath)) {
+      continue;
+    }
+
+    loadDotenv({
+      path: envPath,
+      override: false,
+    });
+  }
+}
+
+loadApiEnvFiles();
 
 const envSchema = z.object({
   API_PORT: z.coerce.number().int().positive().default(3000),
@@ -15,8 +56,8 @@ const envSchema = z.object({
   SUBSIDIARY_CONFIG_MODE: z
     .enum(["local_env", "aws_secrets_manager"])
     .default("local_env"),
-  DEFAULT_SUBSIDIARY_ID: z.string().min(1).default("default"),
-  DEFAULT_SUBSIDIARY_SLUG: z.string().min(1).default("star-home-health-care-inc"),
+  DEFAULT_SUBSIDIARY_ID: z.string().min(1).default("star-home-health"),
+  DEFAULT_SUBSIDIARY_SLUG: z.string().min(1).default("star-home-health"),
   DEFAULT_SUBSIDIARY_NAME: z.string().min(1).default("Star Home Health"),
   DEFAULT_SUBSIDIARY_TIMEZONE: z.string().min(1).default("Asia/Manila"),
   DEFAULT_SUBSIDIARY_PORTAL_BASE_URL: z.string().url().optional(),
@@ -31,7 +72,7 @@ const envSchema = z.object({
     .string()
     .min(1)
     .default("DEFAULT_SUBSIDIARY_PORTAL_CREDENTIALS_JSON"),
-  AUTONOMOUS_AGENCY_IDS: z.string().default("default"),
+  AUTONOMOUS_AGENCY_IDS: z.string().default("star-home-health"),
   DEFAULT_SUBSIDIARY_RERUN_ENABLED: z
     .enum(["true", "false"])
     .default("true")
@@ -47,8 +88,11 @@ export type ApiEnv = z.infer<typeof envSchema>;
 
 export function loadEnv(source: NodeJS.ProcessEnv = process.env): ApiEnv {
   const env = envSchema.parse(source);
+  const apiPackageRoot = path.resolve(__dirname, "../..");
   return {
     ...env,
-    API_STORAGE_ROOT: path.resolve(env.API_STORAGE_ROOT),
+    API_STORAGE_ROOT: path.isAbsolute(env.API_STORAGE_ROOT)
+      ? env.API_STORAGE_ROOT
+      : path.resolve(apiPackageRoot, env.API_STORAGE_ROOT),
   };
 }

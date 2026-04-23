@@ -3,6 +3,8 @@ import Link from "next/link";
 import { getBackendAgencyDashboard } from "../../lib/server/backendApi";
 import { requireSelectedAgencySession } from "../../lib/auth/session";
 import { formatTimestamp } from "../../lib/qa";
+import AgencyLiveRefresh from "./AgencyLiveRefresh";
+import { getQaReadiness, getSourceCoverage, queueStatusBadgeClass } from "./patientBoardState";
 
 function formatStatusLabel(value: string): string {
   return value
@@ -10,17 +12,31 @@ function formatStatusLabel(value: string): string {
     .replace(/\b\w/g, (character) => character.toUpperCase());
 }
 
-function queueStatusBadgeClass(status: QueueEntryStatus): string {
-  if (status === "eligible") {
-    return "badge success";
+function formatScheduleLabel(times: string[], timezone: string): string {
+  if (times.length === 0) {
+    return timezone;
   }
-  if (status === "skipped_pending") {
-    return "badge warning";
+
+  if (times.length === 1) {
+    return `${times[0]} ${timezone}`;
   }
-  if (status === "excluded_other") {
-    return "badge danger";
+
+  return `${times.join(" and ")} ${timezone}`;
+}
+
+function hasLiveBackendWork(input: {
+  refreshCycleStatus: "pending" | "running" | "completed" | "failed" | null;
+  patientRecords: DashboardPatientRecord[];
+}): boolean {
+  if (input.refreshCycleStatus === "pending" || input.refreshCycleStatus === "running") {
+    return true;
   }
-  return "badge";
+
+  return input.patientRecords.some((record) =>
+    record.processingStatus !== null &&
+    ["PENDING", "MATCHING_PATIENT", "DISCOVERING_CHART", "COLLECTING_EVIDENCE", "RUNNING_QA"].includes(
+      record.processingStatus,
+    ));
 }
 
 function getRefreshHealth(input: {
@@ -32,7 +48,7 @@ function getRefreshHealth(input: {
     return {
       label: "Refresh failed",
       className: "badge danger",
-      detail: "The last autonomous refresh failed and needs backend attention.",
+      detail: "The latest data refresh failed. Review the run before using this queue for QA.",
     };
   }
 
@@ -40,7 +56,7 @@ function getRefreshHealth(input: {
     return {
       label: "Refresh running",
       className: "badge warning",
-      detail: "The backend is actively rebuilding workbook and patient comparison data.",
+      detail: "New workbook and patient review data is being collected. The dashboard will update as results become available.",
     };
   }
 
@@ -48,7 +64,7 @@ function getRefreshHealth(input: {
     return {
       label: "Awaiting first refresh",
       className: "badge warning",
-      detail: "Workbook intake is configured, but the first completed refresh has not been recorded yet.",
+      detail: "No completed data refresh has been recorded for this agency yet.",
     };
   }
 
@@ -56,14 +72,14 @@ function getRefreshHealth(input: {
     return {
       label: "Refresh overdue",
       className: "badge danger",
-      detail: "The next scheduled refresh time has passed without a completed cycle.",
+      detail: "The next scheduled refresh time has passed without a completed update.",
     };
   }
 
   return {
-    label: "Autonomous refresh healthy",
+    label: "Data current",
     className: "badge success",
-    detail: "The dashboard is reading the latest processed agency data from the scheduled backend cycle.",
+    detail: "The dashboard is showing the latest processed agency data.",
   };
 }
 
@@ -203,15 +219,27 @@ export default async function AgencyDashboardPage({ searchParams }: AgencyDashbo
         refreshStatus: refreshCycle.status,
       })
     : null;
+  const liveRefreshEnabled = hasLiveBackendWork({
+    refreshCycleStatus: refreshCycle?.status ?? null,
+    patientRecords,
+  });
+  const patientNeedsDocumentationFollowUp = (record: DashboardPatientRecord): boolean =>
+    record.missingReferralDocumentation;
+  const patientsMissingReferralDocumentation = patientRecords.filter(patientNeedsDocumentationFollowUp);
+  const missingReferralDocumentationCount = patientsMissingReferralDocumentation.length;
+  const readyForQaCount = patientRecords.filter((record) => getQaReadiness(record).label === "Ready for QA").length;
+  const blockedQaCount = patientRecords.filter((record) => getQaReadiness(record).label === "Blocked").length;
+  const oasOnlyCount = patientRecords.filter((record) => getSourceCoverage(record).label === "OASIS only").length;
 
   return (
     <main className="page-shell stack">
+      <AgencyLiveRefresh enabled={liveRefreshEnabled} />
       <div className="page-header">
         <div>
           <p className="eyebrow">Agency QA Workspace</p>
           <h1 className="page-title">{snapshot.agency.name}</h1>
           <p className="page-subtitle">
-            Dashboard access is authenticated separately from portal automation. QA users select an agency, and the dashboard reads that agency&apos;s workbook-driven 15-day review window plus the already-running autonomous refresh data.
+            Review patients ready for QA, identify missing referral documentation, and open patient-level OASIS and referral comparisons.
           </p>
           <div className="workspace-context-row">
             <span>Selected agency: {snapshot.agency.slug}</span>
@@ -268,84 +296,175 @@ export default async function AgencyDashboardPage({ searchParams }: AgencyDashbo
           </section>
 
           <section className="grid three">
-            <div className="panel stack">
+            <div className="panel">
+              <div className="metric-label">Ready for QA</div>
+              <div className="metric-value">{readyForQaCount}</div>
+              <div className="muted">Patients whose current QA outcome is ready for review.</div>
+            </div>
+            <div className="panel">
+              <div className="metric-label">OASIS Only</div>
+              <div className="metric-value">{oasOnlyCount}</div>
+              <div className="muted">Patients with OASIS-backed detail available but missing referral support.</div>
+            </div>
+            <div className="panel">
+              <div className="metric-label">Blocked</div>
+              <div className="metric-value">{blockedQaCount}</div>
+              <div className="muted">Patients blocked by portal matching or another hard stop.</div>
+            </div>
+          </section>
+
+          <section className="grid three">
+            <div className="panel stack workspace-info-card">
               <div className="panel-header-inline">
-                <h2>Autonomous Refresh</h2>
+                <h2>Data Refresh</h2>
                 <span className={refreshHealth?.className ?? "badge"}>{refreshHealth?.label ?? "Unknown"}</span>
               </div>
-              <div className="muted">{refreshHealth?.detail}</div>
-              <div className="workspace-context-row">
-                <span>Last start: {formatTimestamp(refreshCycle.lastRefreshStartedAt)}</span>
-                <span>Last complete: {formatTimestamp(refreshCycle.lastRefreshCompletedAt)}</span>
-                <span>Next refresh: {formatTimestamp(refreshCycle.nextRefreshAt)}</span>
+              <p className="workspace-card-copy">{refreshHealth?.detail}</p>
+              <div className="workspace-summary-grid">
+                <div className="workspace-summary-item">
+                  <span className="workspace-summary-label">Last Start</span>
+                  <strong>{formatTimestamp(refreshCycle.lastRefreshStartedAt)}</strong>
+                </div>
+                <div className="workspace-summary-item">
+                  <span className="workspace-summary-label">Last Complete</span>
+                  <strong>{formatTimestamp(refreshCycle.lastRefreshCompletedAt)}</strong>
+                </div>
+                <div className="workspace-summary-item">
+                  <span className="workspace-summary-label">Next Refresh</span>
+                  <strong>{formatTimestamp(refreshCycle.nextRefreshAt)}</strong>
+                </div>
+                <div className="workspace-summary-item">
+                  <span className="workspace-summary-label">Schedule</span>
+                  <strong>{formatScheduleLabel(refreshCycle.scheduleLocalTimes, refreshCycle.scheduleTimezone)}</strong>
+                </div>
               </div>
-              <div className="workspace-context-row">
-                <span>Schedule: {refreshCycle.scheduleLocalTimes.join(" and ")} {refreshCycle.scheduleTimezone}</span>
-                <span>Cycle id: {refreshCycle.id}</span>
-                <span>Batch: {refreshCycle.batchId}</span>
-              </div>
+              <details className="workspace-technical-details">
+                <summary>Run Details</summary>
+                <div className="workspace-detail-list">
+                  <div>
+                    <span className="workspace-summary-label">Cycle Id</span>
+                    <strong>{refreshCycle.id}</strong>
+                  </div>
+                  <div>
+                    <span className="workspace-summary-label">Batch Id</span>
+                    <strong>{refreshCycle.batchId}</strong>
+                  </div>
+                </div>
+              </details>
             </div>
 
-            <div className="panel stack">
+            <div className="panel stack workspace-info-card">
               <div className="panel-header-inline">
-                <h2>Workbook Source</h2>
+                <h2>Workbook</h2>
                 <div className="badge-row">
                   <span className="badge">{formatStatusLabel(refreshCycle.workbookSource.kind)}</span>
                   <span className={workbookHealth?.className ?? "badge"}>{workbookHealth?.label ?? "Unknown"}</span>
                 </div>
               </div>
-              <div>
+              <div className="workspace-source-title">
                 <strong>{refreshCycle.workbookSource.originalFileName}</strong>
+                <span className="muted">{refreshCycle.workbookSource.sourceLabel}</span>
               </div>
-              <div className="muted">{refreshCycle.workbookSource.sourceLabel}</div>
-              <div className="workspace-context-row">
-                <span>Acquired: {formatTimestamp(refreshCycle.workbookSource.acquiredAt)}</span>
-                <span>Ingested: {formatTimestamp(refreshCycle.workbookSource.ingestedAt)}</span>
-              </div>
-              {workbookAcquisition?.selectedAgencyName ? (
-                <div className="workspace-context-row">
-                  <span>Finale agency: {workbookAcquisition.selectedAgencyName}</span>
-                  <span>Provider: {workbookAcquisition.providerId ?? "Unknown"}</span>
+              <div className="workspace-summary-grid">
+                <div className="workspace-summary-item">
+                  <span className="workspace-summary-label">Acquired</span>
+                  <strong>{formatTimestamp(refreshCycle.workbookSource.acquiredAt)}</strong>
                 </div>
-              ) : null}
+                <div className="workspace-summary-item">
+                  <span className="workspace-summary-label">Ingested</span>
+                  <strong>{formatTimestamp(refreshCycle.workbookSource.ingestedAt)}</strong>
+                </div>
+                <div className="workspace-summary-item">
+                  <span className="workspace-summary-label">Provider</span>
+                  <strong>{workbookAcquisition?.providerId ?? "Unknown"}</strong>
+                </div>
+                <div className="workspace-summary-item">
+                  <span className="workspace-summary-label">Finale Agency</span>
+                  <strong>{workbookAcquisition?.selectedAgencyName ?? "Not recorded"}</strong>
+                </div>
+              </div>
               {workbookVerification ? (
-                <>
-                  <div className="workspace-context-row">
-                    <span>Verified: {formatTimestamp(workbookVerification.verifiedAt)}</span>
-                    <span>Size: {workbookVerification.fileSizeBytes.toLocaleString()} bytes</span>
-                    <span>Format: {workbookVerification.fileExtension}</span>
+                <div className="workspace-summary-grid">
+                  <div className="workspace-summary-item">
+                    <span className="workspace-summary-label">Verified</span>
+                    <strong>{formatTimestamp(workbookVerification.verifiedAt)}</strong>
                   </div>
-                  <div className="muted">
-                    Sheets: {workbookVerification.sheetNames.join(", ") || "None detected"}
+                  <div className="workspace-summary-item">
+                    <span className="workspace-summary-label">Workbook Size</span>
+                    <strong>{workbookVerification.fileSizeBytes.toLocaleString()} bytes</strong>
                   </div>
-                  <div className="muted">
-                    Recognized QA sheets: {workbookVerification.detectedSourceTypes.join(", ") || "None detected"}
+                  <div className="workspace-summary-item">
+                    <span className="workspace-summary-label">Format</span>
+                    <strong>{workbookVerification.fileExtension}</strong>
                   </div>
-                </>
-              ) : null}
-              {workbookAcquisition && workbookAcquisition.notes.length > 0 ? (
-                <div className="checklist compact-checklist">
-                  {workbookAcquisition.notes.map((note) => (
-                    <div key={note}>{note}</div>
-                  ))}
+                  <div className="workspace-summary-item">
+                    <span className="workspace-summary-label">Recognized Sheet Types</span>
+                    <strong>{workbookVerification.detectedSourceTypes.join(", ") || "None detected"}</strong>
+                  </div>
                 </div>
               ) : null}
-              <div className="muted">Source path: {refreshCycle.workbookSource.path}</div>
+              <details className="workspace-technical-details">
+                <summary>Source Details</summary>
+                <div className="workspace-detail-list">
+                  {workbookVerification ? (
+                    <>
+                      <div>
+                        <span className="workspace-summary-label">Sheets</span>
+                        <strong>{workbookVerification.sheetNames.join(", ") || "None detected"}</strong>
+                      </div>
+                    </>
+                  ) : null}
+                  {workbookAcquisition && workbookAcquisition.notes.length > 0 ? (
+                    <div className="workspace-note-list">
+                      {workbookAcquisition.notes.map((note) => (
+                        <div key={note}>{note}</div>
+                      ))}
+                    </div>
+                  ) : null}
+                  <div>
+                    <span className="workspace-summary-label">Source Path</span>
+                    <strong className="workspace-breakable">{refreshCycle.workbookSource.path}</strong>
+                  </div>
+                  {workbookAcquisition?.dashboardUrl ? (
+                    <div>
+                      <span className="workspace-summary-label">Dashboard URL</span>
+                      <strong className="workspace-breakable">{workbookAcquisition.dashboardUrl}</strong>
+                    </div>
+                  ) : null}
+                </div>
+              </details>
             </div>
 
-            <div className="panel stack">
+            <div className="panel stack workspace-info-card">
               <div className="panel-header-inline">
-                <h2>Queue Policy</h2>
-                <span className="badge">15-day window</span>
+                <h2>Queue Rules</h2>
+                <span className="badge">{refreshCycle.reviewWindow.durationDays}-day window</span>
               </div>
-              <div className="muted">
-                The workbook defines the active patient review scope. Eligibility is explicit and testable before any portal comparison run is created.
+              <p className="workspace-card-copy">
+                The workbook defines which patients are in scope for the current QA review queue.
+              </p>
+              <div className="workspace-summary-grid">
+                <div className="workspace-summary-item">
+                  <span className="workspace-summary-label">Review Window</span>
+                  <strong>{refreshCycle.reviewWindow.label}</strong>
+                </div>
+                <div className="workspace-summary-item">
+                  <span className="workspace-summary-label">Eligible</span>
+                  <strong>{refreshCycle.queueSummary.eligible}</strong>
+                </div>
+                <div className="workspace-summary-item">
+                  <span className="workspace-summary-label">Skipped Pending</span>
+                  <strong>{refreshCycle.queueSummary.skippedPending}</strong>
+                </div>
+                <div className="workspace-summary-item">
+                  <span className="workspace-summary-label">Skipped Non-Admit</span>
+                  <strong>{refreshCycle.queueSummary.skippedNonAdmit}</strong>
+                </div>
               </div>
-              <div className="checklist compact-checklist">
-                <div>Evaluate: workbook patients inside the active review window.</div>
-                <div>Skip: status indicates non-admit.</div>
-                <div>Skip: status indicates pending.</div>
-                <div>Retain: workbook source, timestamps, agency, and queue reason.</div>
+              <div className="workspace-rule-list">
+                <div className="workspace-rule-item"><strong>Evaluate</strong><span>Patients inside the active review window.</span></div>
+                <div className="workspace-rule-item"><strong>Skip</strong><span>Rows marked pending or non-admit.</span></div>
+                <div className="workspace-rule-item"><strong>Retain</strong><span>Workbook source, agency context, timestamps, and queue reason.</span></div>
               </div>
             </div>
           </section>
@@ -355,7 +474,7 @@ export default async function AgencyDashboardPage({ searchParams }: AgencyDashbo
               <div>
                 <h2>Patient Queue</h2>
                 <p className="page-subtitle">
-                  This queue is normalized from the active workbook. Eligible patients link into the existing run and patient drill-down pages. Skipped entries remain visible with explicit reasons.
+                  This queue is the QA readiness board. Use it to see who is ready for QA, who only has OASIS available, and who is still blocked before opening the patient detail workspace.
                 </p>
               </div>
               <div className="badge-row">
@@ -365,21 +484,54 @@ export default async function AgencyDashboardPage({ searchParams }: AgencyDashbo
               </div>
             </div>
 
+            {missingReferralDocumentationCount > 0 ? (
+              <div className="documentation-alert">
+                <div className="documentation-alert-header">
+                  <div>
+                    <strong>Missing Referral Documentation</strong>
+                    <div className="muted">
+                      {missingReferralDocumentationCount} patient{missingReferralDocumentationCount === 1 ? "" : "s"} already have OASIS-backed review data, but their referral documentation is still missing or incomplete.
+                    </div>
+                  </div>
+                  <span className="badge danger">
+                    {missingReferralDocumentationCount} requiring referral follow-up
+                  </span>
+                </div>
+                <div className="documentation-alert-list">
+                  {patientsMissingReferralDocumentation.slice(0, 6).map((record) => (
+                    <span key={record.queueEntry.id} className="documentation-alert-chip">
+                      {record.queueEntry.patientName}
+                      {record.missingReferralFieldCount > 0
+                        ? ` (${record.missingReferralFieldCount} field${record.missingReferralFieldCount === 1 ? "" : "s"})`
+                        : ""}
+                    </span>
+                  ))}
+                  {missingReferralDocumentationCount > 6 ? (
+                    <span className="documentation-alert-chip documentation-alert-chip-muted">
+                      +{missingReferralDocumentationCount - 6} more
+                    </span>
+                  ) : null}
+                </div>
+              </div>
+            ) : null}
+
             {patientRecords.length > 0 ? (
               <table className="table">
                 <thead>
                   <tr>
                     <th>Patient</th>
-                    <th>Queue Status</th>
-                    <th>Eligibility Reason</th>
-                    <th>Workbook Context</th>
-                    <th>Backend Status</th>
+                    <th>QA Status</th>
+                    <th>Documents</th>
+                    <th>Dates</th>
+                    <th>Processing</th>
                     <th>Open</th>
                   </tr>
                 </thead>
                 <tbody>
                   {patientRecords.map((record) => {
                     const action = buildPatientAction(record);
+                    const readiness = getQaReadiness(record);
+                    const sourceCoverage = getSourceCoverage(record);
                     return (
                       <tr key={record.queueEntry.id}>
                         <td>
@@ -389,17 +541,12 @@ export default async function AgencyDashboardPage({ searchParams }: AgencyDashbo
                           </div>
                         </td>
                         <td>
-                          <span className={queueStatusBadgeClass(record.queueEntry.status)}>
-                            {formatStatusLabel(record.queueEntry.status)}
-                          </span>
+                          <span className={readiness.className}>{readiness.label}</span>
+                          {readiness.label === "Ready for QA" ? null : <div className="muted">{readiness.detail}</div>}
                         </td>
                         <td>
-                          <div>{record.queueEntry.eligibility.rationale}</div>
-                          {record.queueEntry.eligibility.matchedSignals.length > 0 ? (
-                            <div className="muted">
-                              Signals: {record.queueEntry.eligibility.matchedSignals.join(", ")}
-                            </div>
-                          ) : null}
+                          <span className={sourceCoverage.className}>{sourceCoverage.label}</span>
+                          <div className="muted">{sourceCoverage.detail}</div>
                         </td>
                         <td>
                           <div>Episode: {record.queueEntry.episodeDate ?? "Not provided"}</div>
@@ -410,8 +557,16 @@ export default async function AgencyDashboardPage({ searchParams }: AgencyDashbo
                         </td>
                         <td>
                           <div>
-                            {record.processingStatus ? formatStatusLabel(record.processingStatus) : "Not started"}
+                            <span className={queueStatusBadgeClass(record.queueEntry.status)}>
+                              {formatStatusLabel(record.queueEntry.status)}
+                            </span>
                           </div>
+                          <div className="muted">
+                            Processing: {record.processingStatus ? formatStatusLabel(record.processingStatus) : "Not started"}
+                          </div>
+                          {record.queueEntry.status === "eligible" ? null : (
+                            <div className="muted">{record.queueEntry.eligibility.rationale}</div>
+                          )}
                           <div className="muted">Updated: {formatTimestamp(record.lastUpdatedAt)}</div>
                           {record.errorSummary ? <div className="muted">{record.errorSummary}</div> : null}
                         </td>

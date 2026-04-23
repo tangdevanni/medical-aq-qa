@@ -9,6 +9,8 @@ export type DocumentTextAnalysis = {
   lowSignal: boolean;
   clinicalSignalCount: number;
   possibleIcd10CodeCount: number;
+  pdfStructureTokenCount: number;
+  rawPdfStructureDetected: boolean;
   rejectionReasons: string[];
   accepted: boolean;
 };
@@ -48,6 +50,10 @@ const CLINICAL_SIGNAL_PATTERNS = [
   /\bORDER\b/i,
   /\bREASON FOR ADMISSION\b/i,
 ];
+
+const PDF_STRUCTURE_TOKEN_PATTERN =
+  /\b(?:obj|endobj|stream|endstream|xref|trailer|startxref|catalog|pages|mediaBox|cropBox|bleedBox|trimBox|flateDecode|xobject|iccBased|metadata|producer|creationdate)\b/gi;
+const RAW_PDF_HEADER_PATTERN = /^(?:%?PDF-\d\.\d\b)/i;
 
 function normalizeWhitespace(value: string | null | undefined): string {
   return value?.replace(/\s+/g, " ").trim() ?? "";
@@ -119,6 +125,7 @@ export function analyzeDocumentText(text: string): DocumentTextAnalysis {
   const viewerChromePhrases = VIEWER_CHROME_PHRASES.filter((phrase) => buildPhrasePattern(phrase).test(normalizedText));
   const clinicalSignalCount = CLINICAL_SIGNAL_PATTERNS.filter((pattern) => pattern.test(normalizedText)).length;
   const possibleIcd10CodeCount = extractPossibleIcd10Codes(normalizedText).length;
+  const pdfStructureTokenCount = normalizedText.match(PDF_STRUCTURE_TOKEN_PATTERN)?.length ?? 0;
   const viewerChromeDetected =
     viewerChromePhrases.length >= 2 ||
     (viewerChromePhrases.length >= 1 && clinicalSignalCount === 0 && possibleIcd10CodeCount === 0);
@@ -127,12 +134,23 @@ export function analyzeDocumentText(text: string): DocumentTextAnalysis {
     normalizedText.length < 160 &&
     clinicalSignalCount === 0 &&
     possibleIcd10CodeCount === 0;
+  const rawPdfStructureDetected =
+    normalizedText.length > 0 &&
+    (
+      RAW_PDF_HEADER_PATTERN.test(normalizedText) ||
+      pdfStructureTokenCount >= 8
+    ) &&
+    clinicalSignalCount < 4 &&
+    possibleIcd10CodeCount < 2;
 
   const rejectionReasons: string[] = [];
   if (viewerChromeDetected) {
     rejectionReasons.push(
       `viewer_chrome_text:${viewerChromePhrases.join("|") || "viewer_controls_detected"}`,
     );
+  }
+  if (rawPdfStructureDetected) {
+    rejectionReasons.push("pdf_structure_text");
   }
   if (lowSignal) {
     rejectionReasons.push("low_signal_text");
@@ -145,6 +163,8 @@ export function analyzeDocumentText(text: string): DocumentTextAnalysis {
     lowSignal,
     clinicalSignalCount,
     possibleIcd10CodeCount,
+    pdfStructureTokenCount,
+    rawPdfStructureDetected,
     rejectionReasons,
     accepted: rejectionReasons.length === 0,
   };

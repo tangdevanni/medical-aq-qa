@@ -1,0 +1,170 @@
+{
+  "capturedAt": "2026-04-22T19:21:57.195Z",
+  "agencyId": "avery-home-health",
+  "agencySlug": "avery-home-health",
+  "agencyName": "Avery Home Health",
+  "selectedAgencyName": "Avery Home Health LLC",
+  "selectedAgencyUrl": "https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/dashboard",
+  "dashboardUrl": "https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/dashboard",
+  "destinationPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-22T19-21-35-668Z-a3d2e012\\source\\avery-home-health-oasis-30-days.xlsx",
+  "originalFileName": "OASIS Tracking (30 Days Tracking).xlsx",
+  "portalBaseUrl": "https://app.finalehealth.com",
+  "portalDashboardUrl": "https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/dashboard",
+  "verification": {
+    "usable": true,
+    "verifiedAt": "2026-04-22T19:21:57.195Z",
+    "fileSizeBytes": 182301,
+    "fileExtension": ".xlsx",
+    "sheetNames": [
+      "OASIS Tracking Report"
+    ],
+    "detectedSourceTypes": [
+      "trackingReport"
+    ],
+    "warningCount": 0
+  },
+  "stepLogs": [
+    {
+      "timestamp": "2026-04-22T19:21:41.121Z",
+      "step": "login",
+      "message": "Completed portal login flow in AUTH_ONLY mode.",
+      "patientName": null,
+      "urlBefore": "about:blank",
+      "urlAfter": "https://app.finalehealth.com/",
+      "selectorUsed": "login submit button by accessible role",
+      "found": [
+        "https://app.finalehealth.com/"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "[not_found] login username field by label count=0 visible=0 elapsedMs=37",
+        "[matched] login username field by placeholder count=1 visible=1 elapsedMs=14",
+        "[not_found] login password field by label count=0 visible=0 elapsedMs=5",
+        "[matched] login password field by placeholder count=1 visible=1 elapsedMs=7",
+        "[matched] login submit button by accessible role count=1 visible=1 elapsedMs=15 samples=Login"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:21:43.539Z",
+      "step": "agency_list_discovered",
+      "message": "Opened the Finale user-agencies page to resolve the real agency context.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/",
+      "urlAfter": "https://app.finalehealth.com/users/user-agencies",
+      "selectorUsed": "user-agencies provider links or self-reference links",
+      "found": [
+        "https://app.finalehealth.com/users/user-agencies"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "[not_found] user-agencies heading by accessible role count=0 visible=0 elapsedMs=24",
+        "[not_found] user-agencies marker by visible text count=0 visible=0 elapsedMs=6",
+        "[matched] user-agencies provider links or self-reference links count=1 visible=1 elapsedMs=11"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:21:46.350Z",
+      "step": "agency_selected",
+      "message": "Selected 'Avery Home Health LLC' from the Finale agency list.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/users/user-agencies",
+      "urlAfter": "https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/dashboard",
+      "selectorUsed": "userAgencies.agencyOptions",
+      "found": [
+        "Search Agency",
+        "A Plus Home Health Systems LLC",
+        "Active Home Healthcare LLC",
+        "Aspire Home Health",
+        "Avery Home Health LLC",
+        "Meadows Home Health",
+        "Star Home Health Care Inc"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "[not_found] agency links by provider href count=0 visible=0 elapsedMs=4",
+        "[not_found] agency options by generic clickable controls inside main content count=0 visible=0 elapsedMs=8",
+        "[matched] agency options by agency-related visible text count=7 visible=5 elapsedMs=27 samples=Search Agency | A Plus Home Health Systems LLC | Active Home Healthcare LLC",
+        "selectedAgency=Avery Home Health LLC",
+        "selectedAgencyHref=none",
+        "matched-option:scrollIntoViewIfNeeded()+click():url=https://app.finalehealth.com/users/user-agencies"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:21:49.756Z",
+      "step": "dashboard_home",
+      "message": "Confirmed the selected agency dashboard home is loaded.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/dashboard",
+      "selectorUsed": "dashboard marker by visible text",
+      "found": [
+        "https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/dashboard"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "[not_found] dashboard heading by accessible role count=0 visible=0 elapsedMs=198",
+        "[matched] dashboard marker by visible text count=3 visible=1 elapsedMs=210 samples=Search Patient... | Dashboard | Staff Task Compliance Dashboard"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:21:51.489Z",
+      "step": "oasis_thirty_days_tab",
+      "message": "Opened the 'OASIS 30 Day's 31' dashboard panel.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/dashboard",
+      "selectorUsed": "finaleDashboard.oasisThirtyDaysTabs",
+      "found": [
+        "OASIS 30 Day's 31"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "[matched] OASIS 30 Day tab by accessible role count=1 visible=1 elapsedMs=90 samples=OASIS 30 Day's 31",
+        "[matched] dashboard export dropdown toggle button count=1 visible=1 elapsedMs=18 samples=Export to Excel",
+        "selectedTab=OASIS 30 Day's 31"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:21:57.195Z",
+      "step": "workbook_export",
+      "message": "Exported and persisted the OASIS 30 Day's workbook.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/dashboard",
+      "selectorUsed": "finaleDashboard.exportControls",
+      "found": [
+        "exportControl=Export to Excel",
+        "exportMenu=Export All",
+        "downloadedFile=OASIS Tracking (30 Days Tracking).xlsx"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "storedPath=C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-22T19-21-35-668Z-a3d2e012\\source\\avery-home-health-oasis-30-days.xlsx"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    }
+  ]
+}

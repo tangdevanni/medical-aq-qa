@@ -1,0 +1,95 @@
+{
+  "generatedAt": "2026-04-22T19:28:15.585Z",
+  "source": "printed_note_ocr",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-22T19-20-51-707Z-032ca5da\\outputs\\evidence\\ALICIA_TEJADA__ff67368c7ee1adb5\\oasis-printed-note\\extracted-text.txt",
+  "llmInputSource": "fact_pack_primary",
+  "extractedFieldCount": 6,
+  "invocationModelId": "us.amazon.nova-lite-v1:0",
+  "currentChartValues": {
+    "primary_diagnosis": "I21.4 - Non-ST elevation (NSTEMI)",
+    "functional_limitations": [
+      "Endurance"
+    ],
+    "therapy_need": "Skilled nursing for cardiopulmonary assessment",
+    "medication_list": [
+      "nitroglycerin",
+      "insulin",
+      "aspirin"
+    ],
+    "allergy_list": [
+      "No Known Allergies"
+    ],
+    "code_status": "full_code"
+  },
+  "extractedFieldValues": [
+    {
+      "field_key": "primary_diagnosis",
+      "current_value": "I21.4 - Non-ST elevation (NSTEMI)",
+      "confidence": 0.99,
+      "source_spans": [
+        "PRIMARY DIAGNOSIS Severity 04/15/2026 121.4- Non-ST elevation (NSTEMI)"
+      ]
+    },
+    {
+      "field_key": "functional_limitations",
+      "current_value": [
+        "Endurance"
+      ],
+      "confidence": 0.96,
+      "source_spans": [
+        "6 - Endurance"
+      ]
+    },
+    {
+      "field_key": "therapy_need",
+      "current_value": "Skilled nursing for cardiopulmonary assessment",
+      "confidence": 0.9,
+      "source_spans": [
+        "requires intermittent skilled nursing for cardiopulmonary assessment"
+      ]
+    },
+    {
+      "field_key": "medication_list",
+      "current_value": [
+        "nitroglycerin",
+        "insulin",
+        "aspirin"
+      ],
+      "confidence": 0.9,
+      "source_spans": [
+        "nitroglycerin use instruction",
+        "Z79.4 Long term () use of insulin",
+        "Z79.82 Long term () use of aspirin"
+      ]
+    },
+    {
+      "field_key": "allergy_list",
+      "current_value": [
+        "No Known Allergies"
+      ],
+      "confidence": 0.92,
+      "source_spans": [
+        "None known"
+      ]
+    },
+    {
+      "field_key": "code_status",
+      "current_value": "full_code",
+      "confidence": 0.98,
+      "source_spans": [
+        "Full Code"
+      ]
+    }
+  ],
+  "warnings": [
+    "LLM input source: fact_pack_primary.",
+    "Fact pack coverage: diagnoses, assessmentValues, homeboundEvidence, skilledNeedEvidence, hospitalizationReasons, medications, allergies, supportingSnippets.",
+    "Fact pack coverage score: 1.",
+    "Prompt character estimate: 2865.",
+    "Fallback reason: none.",
+    "Deterministic printed-note chart values: primary_diagnosis, code_status, functional_limitations, allergy_list.",
+    "Selected option labels detected: 115.",
+    "Printed-note chart-value extraction used inference profile us.amazon.nova-lite-v1:0.",
+    "secondary_diagnoses: rejected as low-confidence or suspicious for the field"
+  ]
+}

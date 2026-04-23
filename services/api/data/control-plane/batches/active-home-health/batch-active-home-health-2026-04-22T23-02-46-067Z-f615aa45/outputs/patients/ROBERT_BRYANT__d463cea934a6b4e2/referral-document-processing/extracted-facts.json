@@ -1,0 +1,242 @@
+{
+  "patient_context": {
+    "patient_name": null,
+    "dob": null,
+    "soc_date": null,
+    "referral_date": null
+  },
+  "facts": [
+    {
+      "fact_key": "medical_necessity_summary",
+      "category": "medical_necessity",
+      "value": ": This visit with a FTF encounter with the patient in the home is not a visit of convenience. This home visit is necessary to prevent exacerbations of patient's ongoing medical condition. Patient is homebound, ambulates with hemicane, with poor endurance and balance, unsteady gait, generalized muscle weakness, fatigues easily, dyspnea with moderate exertion and consequently leaving home would require a considerable and taxing effort. It is safer for patient to be seen in their own environment in lieu of an office setting. Subjective Patient, Robert Bryant is an 71 year-old African American male, alert and oriented x4. He lives with roommates, in a 2 story home.",
+      "confidence": 0.78,
+      "evidence_spans": [
+        ": This visit with a FTF encounter with the patient in the home is not a visit of convenience. This home visit is necessary to prevent exacerbations of patient's ongoing medical condition."
+      ],
+      "rationale": "Medical necessity was summarized from referral narrative and skilled-need evidence.",
+      "source_sections": [
+        "primary_reason_for_home_health",
+        "medical_necessity"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "homebound_narrative",
+      "category": "homebound",
+      "value": "Patient is homebound, ambulates with hemicane, easily, dyspnea with moderate exertion and consequently leaving home would require a Patient is homebound due to poor endurance and balance, unsteady gait, weakness, Ambulation: Needs assistive devices (side-hemi walker and motorized wheelchair) homebound status. homebound status and the transitional care period ends.",
+      "confidence": 0.8,
+      "evidence_spans": [
+        "Patient is homebound, ambulates with hemicane, easily, dyspnea with moderate exertion and consequently leaving home would require a Patient is homebound due to poor endurance and balance, unsteady gait, weakness, Ambulation: Needs assistive devices (side-hemi"
+      ],
+      "rationale": "Homebound evidence was summarized from referral text.",
+      "source_sections": [
+        "homebound_evidence"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "homebound_supporting_factors",
+      "category": "homebound",
+      "value": [
+        "uses_walker",
+        "unsteady_gait"
+      ],
+      "confidence": 0.73,
+      "evidence_spans": [
+        "Patient is homebound, ambulates with hemicane, easily, dyspnea with moderate exertion and consequently leaving home would require a Patient is homebound due to poor endurance and balance, unsteady gait, weakness, Ambulation: Needs assistive devices (side-hemi"
+      ],
+      "rationale": "Homebound supporting factors were extracted from referral text.",
+      "source_sections": [
+        "homebound_evidence"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "living_situation",
+      "category": "living_situation",
+      "value": "roommates, in a 2 story home. Patient is being seen today with complaint",
+      "confidence": 0.72,
+      "evidence_spans": [
+        "roommates, in a 2 story home. Patient is being seen today with complaint"
+      ],
+      "rationale": "Living situation was summarized from referral text.",
+      "source_sections": [
+        "living_situation"
+      ],
+      "requires_human_review": false
+    },
+    {
+      "fact_key": "functional_limitations",
+      "category": "functional",
+      "value": [
+        "weakness",
+        "ambulation_limitations",
+        "reduced_endurance"
+      ],
+      "confidence": 0.76,
+      "evidence_spans": [
+        "with poor endurance and balance, unsteady gait, generalized muscle weakness, fatigues Patient is homebound due to poor endurance and balance, unsteady gait, weakness, weakness right sided CVA."
+      ],
+      "rationale": "Functional limitations were extracted from referral text.",
+      "source_sections": [
+        "functional_limitations"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "therapy_need",
+      "category": "therapy",
+      "value": "occupational therapy to continue working on upper body PT/OT to evaluate and treat appropriately to increase functionality, decreases debility and",
+      "confidence": 0.77,
+      "evidence_spans": [
+        "occupational therapy to continue working on upper body PT/OT to evaluate and treat appropriately to increase functionality, decreases debility and"
+      ],
+      "rationale": "Therapy need was summarized from referral text.",
+      "source_sections": [
+        "therapy_need"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "fall_risk_narrative",
+      "category": "risk",
+      "value": "with poor endurance and balance, unsteady gait, generalized muscle weakness, fatigues needed for monitoring vital signs, teachings on disease processes, home safety, education Patient is homebound due to poor endurance and balance, unsteady gait, weakness, with poor endurance and balance, unsteady gait, generalized muscle weakness, fatigues Patient is homebound due to poor endurance and balance, unsteady gait, weakne",
+      "confidence": 0.7,
+      "evidence_spans": [
+        "with poor endurance and balance, unsteady gait, generalized muscle weakness, fatigues needed for monitoring vital signs, teachings on disease processes, home safety, education Patient is homebound due to poor endurance a"
+      ],
+      "rationale": "Risk and safety narrative was summarized from referral text.",
+      "source_sections": [
+        "risk_factors",
+        "functional_limitations"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "skilled_interventions",
+      "category": "therapy",
+      "value": "occupational therapy to continue working on upper body PT/OT to evaluate and treat appropriately to increase functionality, decreases debility and",
+      "confidence": 0.8,
+      "evidence_spans": [
+        "occupational therapy to continue working on upper body PT/OT to evaluate and treat appropriately to increase functionality, decreases debility and"
+      ],
+      "rationale": "Skilled interventions were summarized from the therapy plan.",
+      "source_sections": [
+        "therapy_need"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "plan_for_next_visit",
+      "category": "therapy",
+      "value": "occupational therapy to continue working on upper body PT/OT to evaluate and treat appropriately to increase functionality, decreases debility and",
+      "confidence": 0.78,
+      "evidence_spans": [
+        "occupational therapy to continue working on upper body PT/OT to evaluate and treat appropriately to increase functionality, decreases debility and"
+      ],
+      "rationale": "Next-visit plan was summarized from the therapy plan.",
+      "source_sections": [
+        "therapy_need"
+      ],
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [
+    {
+      "description": "Palpitations modified 10 Apr, 2026",
+      "icd10_code": "R00.2",
+      "confidence": 0.74,
+      "source_spans": [
+        "R00.2) Palpitations modified 10 Apr, 2026"
+      ],
+      "is_primary_candidate": true,
+      "requires_human_review": true
+    },
+    {
+      "description": "Other visual disturbances modified 26 Jan, 2026",
+      "icd10_code": "H53.8",
+      "confidence": 0.74,
+      "source_spans": [
+        "H53.8) Other visual disturbances modified 26 Jan, 2026"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Pain in right shoulder modified 27 Sep, 2025",
+      "icd10_code": "M25.511",
+      "confidence": 0.74,
+      "source_spans": [
+        "M25.511) Pain in right shoulder modified 27 Sep, 2025"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Polyneuropathy, unspecified modified 29 Jul, 2025",
+      "icd10_code": "G62.9",
+      "confidence": 0.74,
+      "source_spans": [
+        "G62.9) Polyneuropathy, unspecified modified 29 Jul, 2025"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Unspecified urinary incontinence modified 6 Mar, 2025",
+      "icd10_code": "R32",
+      "confidence": 0.74,
+      "source_spans": [
+        "R32) Unspecified urinary incontinence modified 6 Mar, 2025"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Other specified",
+      "icd10_code": "V65.49",
+      "confidence": 0.74,
+      "source_spans": [
+        "V65.49) Other specified"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Urinary incontinence",
+      "icd10_code": "R32",
+      "confidence": 0.74,
+      "source_spans": [
+        "Urinary incontinence (R32)"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    }
+  ],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "preferred_language",
+    "interpreter_needed",
+    "recent_hospitalization_discharge_date",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "patient_summary_narrative",
+    "discipline_frequencies",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status",
+    "code_status"
+  ],
+  "warnings": [
+    "Deterministic referral facts extraction was used."
+  ]
+}

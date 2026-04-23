@@ -1,0 +1,24 @@
+{
+  "primaryDiagnosis": {
+    "code": "I48",
+    "description": "Atrial fibrillation",
+    "confidence": "high"
+  },
+  "otherDiagnoses": [
+    {
+      "code": "I36",
+      "description": "Diagnosis code candidate from extracted document metadata",
+      "confidence": "high"
+    }
+  ],
+  "suggestedOnsetType": "onset",
+  "suggestedSeverity": 2,
+  "comorbidityFlags": {
+    "pvd_pad": false,
+    "diabetes": false,
+    "none": true
+  },
+  "notes": [
+    "Ordered services: Speech Therapy"
+  ]
+}

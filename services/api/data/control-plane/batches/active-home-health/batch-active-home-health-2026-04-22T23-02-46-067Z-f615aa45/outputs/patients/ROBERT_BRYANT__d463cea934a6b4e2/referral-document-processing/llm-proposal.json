@@ -1,0 +1,188 @@
+{
+  "patient_context": {
+    "patient_name": null,
+    "dob": null,
+    "soc_date": null,
+    "referral_date": null
+  },
+  "proposed_field_values": [
+    {
+      "field_key": "homebound_narrative",
+      "proposed_value": "Patient is homebound, ambulates with hemicane, easily, dyspnea with moderate exertion and consequently leaving home would require a Patient is homebound due to poor endurance and balance, unsteady gait, weakness, Ambulation: Needs assistive devices (side-hemi",
+      "confidence": 0.8,
+      "source_spans": [
+        "Patient is homebound, ambulates with hemicane, easily, dyspnea with moderate exertion and consequently leaving home would require a Patient is homebound due to poor endurance and balance, unsteady gait, weakness, Ambulation: Needs assistive devices (side-hemi"
+      ],
+      "rationale": "The narrative directly describes the patient's homebound status and the factors contributing to it.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "homebound_supporting_factors",
+      "proposed_value": [
+        "uses_walker",
+        "unsteady_gait"
+      ],
+      "confidence": 0.73,
+      "source_spans": [
+        "Patient is homebound, ambulates with hemicane, easily, dyspnea with moderate exertion and consequently leaving home would require a Patient is homebound due to poor endurance and balance, unsteady gait, weakness, Ambulation: Needs assistive devices (side-hemi"
+      ],
+      "rationale": "The evidence supports the use of a walker and unsteady gait as factors contributing to the patient's homebound status.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "functional_limitations",
+      "proposed_value": [
+        "weakness",
+        "ambulation_limitations",
+        "reduced_endurance"
+      ],
+      "confidence": 0.76,
+      "source_spans": [
+        "with poor endurance and balance, unsteady gait, generalized muscle weakness, fatigues Patient is homebound due to poor endurance and balance, unsteady gait, weakness, weakness right sided CVA."
+      ],
+      "rationale": "The evidence lists specific functional limitations that align with the patient's condition.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "therapy_need",
+      "proposed_value": "occupational therapy to continue working on upper body PT/OT to evaluate and treat appropriately to increase functionality, decreases debility and",
+      "confidence": 0.77,
+      "source_spans": [
+        "occupational therapy to continue working on upper body PT/OT to evaluate and treat appropriately to increase functionality, decreases debility and"
+      ],
+      "rationale": "The evidence directly states the need for occupational therapy to improve functionality and decrease debility.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "fall_risk_narrative",
+      "proposed_value": "with poor endurance and balance, unsteady gait, generalized muscle weakness, fatigues needed for monitoring vital signs, teachings on disease processes, home safety, education Patient is homebound due to poor endurance a",
+      "confidence": 0.7,
+      "source_spans": [
+        "with poor endurance and balance, unsteady gait, generalized muscle weakness, fatigues needed for monitoring vital signs, teachings on disease processes, home safety, education Patient is homebound due to poor endurance a"
+      ],
+      "rationale": "The evidence describes the patient's fall risk and the need for interventions to address it.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "skilled_interventions",
+      "proposed_value": "occupational therapy to continue working on upper body PT/OT to evaluate and treat appropriately to increase functionality, decreases debility and",
+      "confidence": 0.8,
+      "source_spans": [
+        "occupational therapy to continue working on upper body PT/OT to evaluate and treat appropriately to increase functionality, decreases debility and"
+      ],
+      "rationale": "The evidence directly states the need for occupational therapy as a skilled intervention.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "plan_for_next_visit",
+      "proposed_value": "occupational therapy to continue working on upper body PT/OT to evaluate and treat appropriately to increase functionality, decreases debility and",
+      "confidence": 0.78,
+      "source_spans": [
+        "occupational therapy to continue working on upper body PT/OT to evaluate and treat appropriately to increase functionality, decreases debility and"
+      ],
+      "rationale": "The evidence directly states the plan for the next visit, which includes occupational therapy.",
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [
+    {
+      "description": "Palpitations modified 10 Apr, 2026",
+      "icd10_code": "R00.2",
+      "confidence": 0.74,
+      "source_spans": [
+        "R00.2) Palpitations modified 10 Apr, 2026"
+      ],
+      "is_primary_candidate": true,
+      "requires_human_review": true
+    },
+    {
+      "description": "Other visual disturbances modified 26 Jan, 2026",
+      "icd10_code": "H53.8",
+      "confidence": 0.74,
+      "source_spans": [
+        "H53.8) Other visual disturbances modified 26 Jan, 2026"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Pain in right shoulder modified 27 Sep, 2025",
+      "icd10_code": "M25.511",
+      "confidence": 0.74,
+      "source_spans": [
+        "M25.511) Pain in right shoulder modified 27 Sep, 2025"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Polyneuropathy, unspecified modified 29 Jul, 2025",
+      "icd10_code": "G62.9",
+      "confidence": 0.74,
+      "source_spans": [
+        "G62.9) Polyneuropathy, unspecified modified 29 Jul, 2025"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Unspecified urinary incontinence modified 6 Mar, 2025",
+      "icd10_code": "R32",
+      "confidence": 0.74,
+      "source_spans": [
+        "R32) Unspecified urinary incontinence modified 6 Mar, 2025"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Other specified",
+      "icd10_code": "V65.49",
+      "confidence": 0.74,
+      "source_spans": [
+        "V65.49) Other specified"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Urinary incontinence",
+      "icd10_code": "R32",
+      "confidence": 0.74,
+      "source_spans": [
+        "Urinary incontinence (R32)"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    }
+  ],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "preferred_language",
+    "interpreter_needed",
+    "recent_hospitalization_discharge_date",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "patient_summary_narrative",
+    "discipline_frequencies",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status",
+    "code_status"
+  ],
+  "warnings": [
+    "LLM input source: fact_pack_primary.",
+    "Fact pack coverage: diagnoses, medications, homeboundEvidence, skilledNeedEvidence, assessmentValues, supportingSnippets.",
+    "Fact pack coverage score: 1.",
+    "Prompt character estimate: 2781.",
+    "Fallback reason: none."
+  ]
+}

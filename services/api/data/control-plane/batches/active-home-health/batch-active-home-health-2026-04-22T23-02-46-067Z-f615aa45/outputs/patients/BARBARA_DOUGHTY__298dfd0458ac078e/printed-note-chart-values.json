@@ -1,0 +1,78 @@
+{
+  "generatedAt": "2026-04-22T23:15:19.354Z",
+  "source": "printed_note_ocr",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\evidence\\BARBARA_DOUGHTY__298dfd0458ac078e\\oasis-printed-note\\extracted-text.txt",
+  "llmInputSource": "fact_pack_primary",
+  "extractedFieldCount": 4,
+  "invocationModelId": "us.amazon.nova-lite-v1:0",
+  "currentChartValues": {
+    "pain_assessment_narrative": "Experiencing pain impairs/restricts mobility. Severe pain on ambulation. Activities restricted due to pain limitations.",
+    "code_status": "full_code",
+    "functional_limitations": [
+      "Ambulation",
+      "Dyspnea with minimal exertion",
+      "Endurance",
+      "Hearing"
+    ],
+    "allergy_list": [
+      "No Known Allergies"
+    ]
+  },
+  "extractedFieldValues": [
+    {
+      "field_key": "pain_assessment_narrative",
+      "current_value": "Experiencing pain impairs/restricts mobility. Severe pain on ambulation. Activities restricted due to pain limitations.",
+      "confidence": 0.9,
+      "source_spans": [
+        "Experiencing pain impairs/restricts mobility",
+        "Severe pain on ambulation",
+        "Activities restricted due to pain limitations"
+      ]
+    },
+    {
+      "field_key": "code_status",
+      "current_value": "full_code",
+      "confidence": 0.98,
+      "source_spans": [
+        "Full Code"
+      ]
+    },
+    {
+      "field_key": "functional_limitations",
+      "current_value": [
+        "Ambulation",
+        "Dyspnea with minimal exertion",
+        "Endurance",
+        "Hearing"
+      ],
+      "confidence": 0.96,
+      "source_spans": [
+        "6 - Endurance",
+        "7 Ambulation",
+        "4 - Hearing"
+      ]
+    },
+    {
+      "field_key": "allergy_list",
+      "current_value": [
+        "No Known Allergies"
+      ],
+      "confidence": 0.92,
+      "source_spans": [
+        "None known"
+      ]
+    }
+  ],
+  "warnings": [
+    "LLM input source: fact_pack_primary.",
+    "Fact pack coverage: diagnoses, assessmentValues, homeboundEvidence, skilledNeedEvidence, hospitalizationReasons, medications, allergies, supportingSnippets.",
+    "Fact pack coverage score: 1.",
+    "Prompt character estimate: 3517.",
+    "Fallback reason: none.",
+    "Deterministic printed-note chart values: code_status, functional_limitations, allergy_list.",
+    "Selected option labels detected: 148.",
+    "Printed-note chart-value extraction used inference profile us.amazon.nova-lite-v1:0.",
+    "primary_diagnosis: rejected as low-confidence or suspicious for the field",
+    "secondary_diagnoses: rejected as low-confidence or suspicious for the field"
+  ]
+}

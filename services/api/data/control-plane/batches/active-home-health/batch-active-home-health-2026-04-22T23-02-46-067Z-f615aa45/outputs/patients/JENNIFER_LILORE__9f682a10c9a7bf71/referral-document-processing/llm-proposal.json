@@ -1,0 +1,188 @@
+{
+  "patient_context": {
+    "patient_name": null,
+    "dob": "08/17/1977",
+    "soc_date": null,
+    "referral_date": null
+  },
+  "proposed_field_values": [
+    {
+      "field_key": "primary_reason_for_home_health_medical_necessity",
+      "proposed_value": "Emergency department from skilled nursing facility on 03/30/2026 after she was last seen well requiring Narcan administration both at the skilled nursing facility and again by EMS en route to",
+      "confidence": 0.78,
+      "source_spans": [
+        "energency department from skilled nursing facility on 03/30/2026 after she was last seen well requiring Narcan administration both at the skilled nursing facility and again by EMS en route to"
+      ],
+      "rationale": "This evidence directly supports the medical necessity for home health services.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "homebound_narrative",
+      "proposed_value": "Patient uses a walker for mobility. decline and use of a walker suggest limited ability to travel independently. Requires assistance with ADLs",
+      "confidence": 0.8,
+      "source_spans": [
+        "Patient uses a walker for mobility. decline and use of a walker suggest limited ability to travel independently."
+      ],
+      "rationale": "This evidence supports the patient's homebound status and need for assistance.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "homebound_supporting_factors",
+      "proposed_value": [
+        "uses_walker",
+        "needs_assistance"
+      ],
+      "confidence": 0.73,
+      "source_spans": [
+        "Patient uses a walker for mobility. decline and use of a walker suggest limited ability to travel independently."
+      ],
+      "rationale": "This evidence supports the factors contributing to the patient's homebound status.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "functional_limitations",
+      "proposed_value": [
+        "ambulation_limitations",
+        "reduced_endurance"
+      ],
+      "confidence": 0.76,
+      "source_spans": [
+        "ndependent with ambulation, activities of daily living, and cognition. ambulation, and ADLs, reflecting a significant decline in functional status."
+      ],
+      "rationale": "This evidence supports the patient's functional limitations.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "therapy_need",
+      "proposed_value": "Initiate PT/OT/SLP within 24 hrs as delineated below. Physical Therapy for: gait/balance Therapeutic ex. / activity Other: physical therapy and/or speech therapy or continues to need",
+      "confidence": 0.77,
+      "source_spans": [
+        "- Initiate PT/OT/SLP within 24 hrs as delineated bel OW. Physical Therapy f or : X] gait/bal ance X] herapeutic ex. / activity [] Other: physical therapy and/or speech therapy or continues to need"
+      ],
+      "rationale": "This evidence directly supports the need for therapy services.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "fall_risk_narrative",
+      "proposed_value": "She required bilateral wrist restraints and lower extremity splints for safety. Impaired mobility due to a recent fall and right lower extremity injury, associated with acute toxic-metabolic encephalopathy.",
+      "confidence": 0.7,
+      "source_spans": [
+        "Sherequired bilateral wist restraints and lower extremity splints for safety."
+      ],
+      "rationale": "This evidence supports the patient's fall risk.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "skilled_interventions",
+      "proposed_value": "Initiate PT/OT/SLP within 24 hrs as delineated below. Physical Therapy for: gait/balance Therapeutic ex. / activity Other: physical therapy and/or speech therapy or continues to need",
+      "confidence": 0.8,
+      "source_spans": [
+        "- Initiate PT/OT/SLP within 24 hrs as delineated bel OW. Physical Therapy f or : X] gait/bal ance X] herapeutic ex. / activity [] Other: physical therapy and/or speech therapy or continues to need"
+      ],
+      "rationale": "This evidence directly supports the need for skilled interventions.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "plan_for_next_visit",
+      "proposed_value": "Initiate PT/OT/SLP within 24 hrs as delineated below. Physical Therapy for: gait/balance Therapeutic ex. / activity Other: physical therapy and/or speech therapy or continues to need",
+      "confidence": 0.78,
+      "source_spans": [
+        "- Initiate PT/OT/SLP within 24 hrs as delineated bel OW. Physical Therapy f or : X] gait/bal ance X] herapeutic ex. / activity [] Other: physical therapy and/or speech therapy or continues to need"
+      ],
+      "rationale": "This evidence directly supports the plan for the next visit.",
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [
+    {
+      "description": "Diagnosis code candidate from extracted document metadata",
+      "icd10_code": "I38",
+      "confidence": 0.7,
+      "source_spans": [
+        "I38 Diagnosis code candidate from extracted document metadata"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Diagnosis code candidate from extracted document metadata",
+      "icd10_code": "I45",
+      "confidence": 0.7,
+      "source_spans": [
+        "I45 Diagnosis code candidate from extracted document metadata"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Diagnosis code candidate from extracted document metadata",
+      "icd10_code": "I00",
+      "confidence": 0.7,
+      "source_spans": [
+        "I00 Diagnosis code candidate from extracted document metadata"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Diagnosis code candidate from extracted document metadata",
+      "icd10_code": "I29",
+      "confidence": 0.7,
+      "source_spans": [
+        "I29 Diagnosis code candidate from extracted document metadata"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Diagnosis code candidate from extracted document metadata",
+      "icd10_code": "I50",
+      "confidence": 0.7,
+      "source_spans": [
+        "I50 Diagnosis code candidate from extracted document metadata"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Diagnosis code candidate from extracted document metadata",
+      "icd10_code": "I25",
+      "confidence": 0.7,
+      "source_spans": [
+        "I25 Diagnosis code candidate from extracted document metadata"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    }
+  ],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "preferred_language",
+    "interpreter_needed",
+    "recent_hospitalization_discharge_date",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "living_situation",
+    "patient_summary_narrative",
+    "discipline_frequencies",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status",
+    "code_status"
+  ],
+  "warnings": [
+    "LLM input source: fact_pack_primary.",
+    "Fact pack coverage: diagnoses, medications, allergies, homeboundEvidence, skilledNeedEvidence, hospitalizationReasons, assessmentValues, supportingSnippets.",
+    "Fact pack coverage score: 1.",
+    "Prompt character estimate: 2924.",
+    "Fallback reason: none."
+  ]
+}

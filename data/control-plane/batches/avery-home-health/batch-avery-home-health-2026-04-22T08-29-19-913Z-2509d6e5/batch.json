@@ -1,0 +1,67 @@
+{
+  "id": "batch-avery-home-health-2026-04-22T08-29-19-913Z-2509d6e5",
+  "subsidiary": {
+    "id": "avery-home-health",
+    "slug": "avery-home-health",
+    "name": "Avery Home Health"
+  },
+  "createdAt": "2026-04-22T08:29:19.913Z",
+  "updatedAt": "2026-04-22T08:29:33.772Z",
+  "runMode": "read_only",
+  "billingPeriod": null,
+  "status": "FAILED",
+  "schedule": {
+    "scheduledRunId": null,
+    "active": false,
+    "rerunEnabled": false,
+    "intervalHours": 24,
+    "timezone": "Asia/Manila",
+    "localTimes": [
+      "15:00",
+      "23:30"
+    ],
+    "lastRunAt": null,
+    "nextScheduledRunAt": null
+  },
+  "sourceWorkbook": {
+    "subsidiaryId": "avery-home-health",
+    "acquisitionProvider": "FINALE",
+    "acquisitionStatus": "FAILED",
+    "acquisitionReference": null,
+    "acquisitionNotes": [
+      "The 'OASIS 30 Day's' tab was not found on the Finale dashboard. Debug summary: C:\\dev\\medical-aq-qa\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-22T08-29-19-913Z-2509d6e5\\outputs\\debug\\workbook-export\\oasis-thirty-days-tab-not-found.json."
+    ],
+    "acquisitionMetadata": null,
+    "originalFileName": "avery-home-health-oasis-30-days.xlsx",
+    "storedPath": "C:\\dev\\medical-aq-qa\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-22T08-29-19-913Z-2509d6e5\\source\\avery-home-health-oasis-30-days.xlsx",
+    "uploadedAt": "2026-04-22T08:29:19.913Z",
+    "verification": null
+  },
+  "storage": {
+    "batchRoot": "C:\\dev\\medical-aq-qa\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-22T08-29-19-913Z-2509d6e5",
+    "outputRoot": "C:\\dev\\medical-aq-qa\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-22T08-29-19-913Z-2509d6e5\\outputs",
+    "manifestPath": null,
+    "workItemsPath": null,
+    "parserExceptionsPath": null,
+    "batchSummaryPath": null,
+    "patientResultsDirectory": "C:\\dev\\medical-aq-qa\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-22T08-29-19-913Z-2509d6e5\\outputs\\patient-results",
+    "evidenceDirectory": "C:\\dev\\medical-aq-qa\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-22T08-29-19-913Z-2509d6e5\\outputs\\evidence"
+  },
+  "parse": {
+    "requestedAt": null,
+    "completedAt": null,
+    "workItemCount": 0,
+    "eligibleWorkItemCount": 0,
+    "parserExceptionCount": 0,
+    "sourceDetections": [],
+    "sheetSummaries": [],
+    "lastError": "The 'OASIS 30 Day's' tab was not found on the Finale dashboard. Debug summary: C:\\dev\\medical-aq-qa\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-22T08-29-19-913Z-2509d6e5\\outputs\\debug\\workbook-export\\oasis-thirty-days-tab-not-found.json."
+  },
+  "run": {
+    "requestedAt": null,
+    "completedAt": null,
+    "patientRunCount": 0,
+    "lastError": null
+  },
+  "patientRuns": []
+}

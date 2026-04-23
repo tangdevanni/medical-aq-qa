@@ -420,6 +420,7 @@ class SmokePortalClient implements BatchPortalAutomationClient {
           totalCards: 3,
           countsByType: { oasis: 1, sn_visit: 1, physician_order: 1 },
           cards: [],
+          workbookColumns: { sn: "SN - 1", ptOtSt: "NA", hhaMsw: "NA" },
         },
         second30Days: {
           startDate: "2026-03-31",
@@ -427,6 +428,7 @@ class SmokePortalClient implements BatchPortalAutomationClient {
           totalCards: 2,
           countsByType: { pt_visit: 1, communication_note: 1 },
           cards: [],
+          workbookColumns: { sn: "NA", ptOtSt: "PT - 1", hhaMsw: "NA" },
         },
         outsideRange: {
           startDate: null,
@@ -434,6 +436,7 @@ class SmokePortalClient implements BatchPortalAutomationClient {
           totalCards: 1,
           countsByType: { other: 1 },
           cards: [],
+          workbookColumns: { sn: "NA", ptOtSt: "NA", hhaMsw: "NA" },
         },
       },
       visibleDays: [],

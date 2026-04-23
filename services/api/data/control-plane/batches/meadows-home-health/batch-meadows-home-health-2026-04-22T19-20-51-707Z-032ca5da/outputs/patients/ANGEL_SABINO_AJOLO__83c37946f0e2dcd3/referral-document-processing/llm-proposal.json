@@ -1,0 +1,155 @@
+{
+  "patient_context": {
+    "patient_name": null,
+    "dob": "06/05/1967",
+    "soc_date": null,
+    "referral_date": null
+  },
+  "proposed_field_values": [
+    {
+      "field_key": "code_status",
+      "proposed_value": "full_code",
+      "confidence": 0.75,
+      "source_spans": [
+        "Code status: full_code"
+      ],
+      "rationale": "The code status is explicitly mentioned in the document.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "primary_reason_for_home_health_medical_necessity",
+      "proposed_value": "Home Health: Meadows 2RN - wound care - SOC 04/18",
+      "confidence": 0.78,
+      "source_spans": [
+        "Home Health: Meadows 2RN - wound care - SOC 04/18"
+      ],
+      "rationale": "The primary reason for home health is mentioned in the document.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "admit_reason_to_home_health",
+      "proposed_value": "Hospital for right Index finger infection. Patient states symptoms",
+      "confidence": 0.78,
+      "source_spans": [
+        "Hospital for right Index finger infection. Patient states symptoms"
+      ],
+      "rationale": "The admit reason to home health is mentioned in the document.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "therapy_need",
+      "proposed_value": "PT/OT",
+      "confidence": 0.77,
+      "source_spans": [
+        "PT/OT"
+      ],
+      "rationale": "The therapy need is mentioned in the document.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "skilled_interventions",
+      "proposed_value": "PT/OT",
+      "confidence": 0.8,
+      "source_spans": [
+        "PT/OT"
+      ],
+      "rationale": "The skilled interventions are mentioned in the document.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "plan_for_next_visit",
+      "proposed_value": "PT/OT",
+      "confidence": 0.78,
+      "source_spans": [
+        "PT/OT"
+      ],
+      "rationale": "The plan for the next visit is mentioned in the document.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "fall_risk_narrative",
+      "proposed_value": "Fall precautions, delirium precautions The risk, Risk include but not limited",
+      "confidence": 0.7,
+      "source_spans": [
+        "Fall precautions, delirium precautions The risk, Risk include but not limited"
+      ],
+      "rationale": "The fall risk narrative is mentioned in the document.",
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [
+    {
+      "description": "Paronychia of right index finger (L03",
+      "icd10_code": "L03.019",
+      "confidence": 0.74,
+      "source_spans": [
+        "L03.019) Paronychia of right index finger (L03"
+      ],
+      "is_primary_candidate": true,
+      "requires_human_review": true
+    },
+    {
+      "description": "Felon of finger (L03",
+      "icd10_code": "L03.011",
+      "confidence": 0.74,
+      "source_spans": [
+        "L03.011) Felon of finger (L03"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Cellulitis of right index finger (L03",
+      "icd10_code": "L03.011",
+      "confidence": 0.74,
+      "source_spans": [
+        "L03.011) Cellulitis of right index finger (L03"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Prediabetes (R73",
+      "icd10_code": "L02.519",
+      "confidence": 0.74,
+      "source_spans": [
+        "L02.519) Prediabetes (R73"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    }
+  ],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "preferred_language",
+    "interpreter_needed",
+    "homebound_narrative",
+    "homebound_supporting_factors",
+    "recent_hospitalization_discharge_date",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "living_situation",
+    "prior_functioning",
+    "functional_limitations",
+    "patient_summary_narrative",
+    "discipline_frequencies",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status"
+  ],
+  "warnings": [
+    "LLM input source: fact_pack_primary.",
+    "Fact pack coverage: diagnoses, medications, skilledNeedEvidence, hospitalizationReasons, assessmentValues, supportingSnippets.",
+    "Fact pack coverage score: 1.",
+    "Prompt character estimate: 1423.",
+    "Fallback reason: none."
+  ]
+}

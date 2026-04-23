@@ -168,6 +168,11 @@ export interface QaPrefetchSummary {
   status: string;
   selectedRouteSummary: string | null;
   lockStatus: string | null;
+  oasisAssessmentPrimaryStatus: string | null;
+  oasisAssessmentStatuses: string[];
+  oasisAssessmentDecision: string | null;
+  oasisAssessmentProcessingEligible: boolean | null;
+  oasisAssessmentReason: string | null;
   oasisFound: boolean;
   diagnosisFound: boolean;
   visibleDiagnosisCount: number;
@@ -179,6 +184,16 @@ export interface QaPrefetchSummary {
   outsideRangeTotalCards: number;
   first30CountsByType: Record<string, unknown>;
   second30CountsByType: Record<string, unknown>;
+  first30WorkbookColumns: {
+    sn: string;
+    ptOtSt: string;
+    hhaMsw: string;
+  };
+  second30WorkbookColumns: {
+    sn: string;
+    ptOtSt: string;
+    hhaMsw: string;
+  };
   printedNoteStatus: string | null;
   printedNoteAssessmentType: string | null;
   printedNoteReviewSource: string | null;

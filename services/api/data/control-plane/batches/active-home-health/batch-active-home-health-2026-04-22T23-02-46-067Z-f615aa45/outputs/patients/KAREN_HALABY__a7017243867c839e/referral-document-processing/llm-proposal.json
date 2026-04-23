@@ -1,0 +1,146 @@
+{
+  "patient_context": {
+    "patient_name": null,
+    "dob": null,
+    "soc_date": null,
+    "referral_date": null
+  },
+  "proposed_field_values": [
+    {
+      "field_key": "primary_reason_for_home_health_medical_necessity",
+      "proposed_value": "Skilled Nursing",
+      "confidence": 0.78,
+      "source_spans": [
+        "Skilled Nursing"
+      ],
+      "rationale": "The text explicitly mentions 'Skilled Nursing' as a reason for home health.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "homebound_narrative",
+      "proposed_value": "Homebound due to (i.e inability to leave home, leaving medically contraindicated or requires assistance/ DME):",
+      "confidence": 0.8,
+      "source_spans": [
+        "Homebound due to (i.e inability to leave home, leaving medically contraindicated or requires assistance/ DME):"
+      ],
+      "rationale": "The text directly states the patient is homebound due to medical reasons.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "homebound_supporting_factors",
+      "proposed_value": [
+        "needs_assistance"
+      ],
+      "confidence": 0.73,
+      "source_spans": [
+        "Homebound due to (i.e inability to leave home, leaving medically contraindicated or requires assistance/ DME):"
+      ],
+      "rationale": "The text indicates the patient needs assistance to leave home.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "functional_limitations",
+      "proposed_value": [
+        "reduced_endurance"
+      ],
+      "confidence": 0.76,
+      "source_spans": [
+        "endurance"
+      ],
+      "rationale": "The text mentions reduced endurance as a functional limitation.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "therapy_need",
+      "proposed_value": "Physical therapy, and use of Physical Therapy Occupational Therapy",
+      "confidence": 0.77,
+      "source_spans": [
+        "physical therapy, and use of Physical Therapy Occupational Therapy"
+      ],
+      "rationale": "The text specifies the need for physical therapy and occupational therapy.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "fall_risk_narrative",
+      "proposed_value": "We will have her evaluated medically and she will undergo risk stratification and lab work prior to surgery. Home safety /tall precaution endurance",
+      "confidence": 0.7,
+      "source_spans": [
+        "We will have her evaluated medically and she will undergo risk stratification and lab work prior to surgery. Home safety /tall precaution endurance"
+      ],
+      "rationale": "The text describes the fall risk assessment process.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "skilled_interventions",
+      "proposed_value": "Physical therapy, and use of Physical Therapy Occupational Therapy",
+      "confidence": 0.8,
+      "source_spans": [
+        "physical therapy, and use of Physical Therapy Occupational Therapy"
+      ],
+      "rationale": "The text details the skilled interventions required.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "plan_for_next_visit",
+      "proposed_value": "Physical therapy, and use of Physical Therapy Occupational Therapy",
+      "confidence": 0.78,
+      "source_spans": [
+        "physical therapy, and use of Physical Therapy Occupational Therapy"
+      ],
+      "rationale": "The text outlines the plan for the next visit.",
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [
+    {
+      "description": "located on the right knee",
+      "icd10_code": "M17.11",
+      "confidence": 0.74,
+      "source_spans": [
+        "M17.11) located on the right knee"
+      ],
+      "is_primary_candidate": true,
+      "requires_human_review": true
+    },
+    {
+      "description": "Unitateral primary osteoarthritis, right knee",
+      "icd10_code": "M17.11",
+      "confidence": 0.74,
+      "source_spans": [
+        "Unitateral primary osteoarthritis, right knee (M17.11)"
+      ],
+      "is_primary_candidate": true,
+      "requires_human_review": true
+    }
+  ],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "preferred_language",
+    "interpreter_needed",
+    "recent_hospitalization_discharge_date",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "living_situation",
+    "patient_summary_narrative",
+    "discipline_frequencies",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status",
+    "code_status"
+  ],
+  "warnings": [
+    "LLM input source: fact_pack_primary.",
+    "Fact pack coverage: diagnoses, medications, allergies, homeboundEvidence, skilledNeedEvidence, assessmentValues, supportingSnippets.",
+    "Fact pack coverage score: 1.",
+    "Prompt character estimate: 2141.",
+    "Fallback reason: none."
+  ]
+}

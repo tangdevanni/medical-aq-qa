@@ -1,0 +1,27 @@
+{
+  "patientId": "BARBRA_NEWTON__c549fe0583d92a92",
+  "selectedDocumentId": "BARBRA_NEWTON__c549fe0583d92a92-referral-1",
+  "sourceDocuments": [
+    {
+      "documentId": "BARBRA_NEWTON__c549fe0583d92a92-referral-1",
+      "sourceIndex": 0,
+      "sourceLabel": "Admission 01-30-2026",
+      "normalizedSourceLabel": "admission-01-30-2026",
+      "sourceType": "ADMISSION_ORDER",
+      "acquisitionMethod": "local_file",
+      "selectionStatus": "selected",
+      "portalLabel": "Admission 01-30-2026",
+      "localFilePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBRA_NEWTON__c549fe0583d92a92\\documents\\admission-01-30-2026\\source.pdf",
+      "effectiveTextSource": "viewer_text_fallback",
+      "fileType": "pdf",
+      "fileSizeBytes": null,
+      "extractedTextLength": 2085,
+      "selectedReason": "highest-ranked referral/admission-order source with local file preference",
+      "rejectedReasons": []
+    }
+  ],
+  "warnings": [
+    "Local file extraction failed for C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBRA_NEWTON__c549fe0583d92a92\\documents\\admission-01-30-2026\\source.pdf: ENOENT: no such file or directory, open 'C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBRA_NEWTON__c549fe0583d92a92\\documents\\admission-01-30-2026\\source.pdf'"
+  ],
+  "generatedAt": "2026-04-22T19:50:50.476Z"
+}

@@ -1,0 +1,35 @@
+"use strict";
+/*
+ * ATTENTION: An "eval-source-map" devtool has been used.
+ * This devtool is neither made for production nor for readable output files.
+ * It uses "eval()" calls to create a separate source file with attached SourceMaps in the browser devtools.
+ * If you are trying to read the output file, select a different devtool (https://webpack.js.org/configuration/devtool/)
+ * or disable the default devtool with "devtool: false".
+ * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
+ */
+exports.id = "vendor-chunks/@smithy+uuid@1.1.2";
+exports.ids = ["vendor-chunks/@smithy+uuid@1.1.2"];
+exports.modules = {
+
+/***/ "(rsc)/../../node_modules/.pnpm/@smithy+uuid@1.1.2/node_modules/@smithy/uuid/dist-es/randomUUID.js":
+/*!***************************************************************************************************!*\
+  !*** ../../node_modules/.pnpm/@smithy+uuid@1.1.2/node_modules/@smithy/uuid/dist-es/randomUUID.js ***!
+  \***************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   randomUUID: () => (/* binding */ randomUUID)\n/* harmony export */ });\n/* harmony import */ var crypto__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! crypto */ \"crypto\");\n/* harmony import */ var crypto__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(crypto__WEBPACK_IMPORTED_MODULE_0__);\n\nconst randomUUID = crypto__WEBPACK_IMPORTED_MODULE_0___default().randomUUID.bind((crypto__WEBPACK_IMPORTED_MODULE_0___default()));\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiKHJzYykvLi4vLi4vbm9kZV9tb2R1bGVzLy5wbnBtL0BzbWl0aHkrdXVpZEAxLjEuMi9ub2RlX21vZHVsZXMvQHNtaXRoeS91dWlkL2Rpc3QtZXMvcmFuZG9tVVVJRC5qcyIsIm1hcHBpbmdzIjoiOzs7Ozs7QUFBNEI7QUFDckIsbUJBQW1CLHdEQUFpQixNQUFNLCtDQUFNIiwic291cmNlcyI6WyJDOlxcZGV2XFxtZWRpY2FsLWFxLXFhXFxub2RlX21vZHVsZXNcXC5wbnBtXFxAc21pdGh5K3V1aWRAMS4xLjJcXG5vZGVfbW9kdWxlc1xcQHNtaXRoeVxcdXVpZFxcZGlzdC1lc1xccmFuZG9tVVVJRC5qcyJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgY3J5cHRvIGZyb20gXCJjcnlwdG9cIjtcbmV4cG9ydCBjb25zdCByYW5kb21VVUlEID0gY3J5cHRvLnJhbmRvbVVVSUQuYmluZChjcnlwdG8pO1xuIl0sIm5hbWVzIjpbXSwiaWdub3JlTGlzdCI6WzBdLCJzb3VyY2VSb290IjoiIn0=\n//# sourceURL=webpack-internal:///(rsc)/../../node_modules/.pnpm/@smithy+uuid@1.1.2/node_modules/@smithy/uuid/dist-es/randomUUID.js\n");
+
+/***/ }),
+
+/***/ "(rsc)/../../node_modules/.pnpm/@smithy+uuid@1.1.2/node_modules/@smithy/uuid/dist-es/v4.js":
+/*!*******************************************************************************************!*\
+  !*** ../../node_modules/.pnpm/@smithy+uuid@1.1.2/node_modules/@smithy/uuid/dist-es/v4.js ***!
+  \*******************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   v4: () => (/* binding */ v4)\n/* harmony export */ });\n/* harmony import */ var _randomUUID__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./randomUUID */ \"(rsc)/../../node_modules/.pnpm/@smithy+uuid@1.1.2/node_modules/@smithy/uuid/dist-es/randomUUID.js\");\n\nconst decimalToHex = Array.from({ length: 256 }, (_, i) => i.toString(16).padStart(2, \"0\"));\nconst v4 = () => {\n    if (_randomUUID__WEBPACK_IMPORTED_MODULE_0__.randomUUID) {\n        return (0,_randomUUID__WEBPACK_IMPORTED_MODULE_0__.randomUUID)();\n    }\n    const rnds = new Uint8Array(16);\n    crypto.getRandomValues(rnds);\n    rnds[6] = (rnds[6] & 0x0f) | 0x40;\n    rnds[8] = (rnds[8] & 0x3f) | 0x80;\n    return (decimalToHex[rnds[0]] +\n        decimalToHex[rnds[1]] +\n        decimalToHex[rnds[2]] +\n        decimalToHex[rnds[3]] +\n        \"-\" +\n        decimalToHex[rnds[4]] +\n        decimalToHex[rnds[5]] +\n        \"-\" +\n        decimalToHex[rnds[6]] +\n        decimalToHex[rnds[7]] +\n        \"-\" +\n        decimalToHex[rnds[8]] +\n        decimalToHex[rnds[9]] +\n        \"-\" +\n        decimalToHex[rnds[10]] +\n        decimalToHex[rnds[11]] +\n        decimalToHex[rnds[12]] +\n        decimalToHex[rnds[13]] +\n        decimalToHex[rnds[14]] +\n        decimalToHex[rnds[15]]);\n};\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiKHJzYykvLi4vLi4vbm9kZV9tb2R1bGVzLy5wbnBtL0BzbWl0aHkrdXVpZEAxLjEuMi9ub2RlX21vZHVsZXMvQHNtaXRoeS91dWlkL2Rpc3QtZXMvdjQuanMiLCJtYXBwaW5ncyI6Ijs7Ozs7QUFBMEM7QUFDMUMsa0NBQWtDLGFBQWE7QUFDeEM7QUFDUCxRQUFRLG1EQUFVO0FBQ2xCLGVBQWUsdURBQVU7QUFDekI7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQSIsInNvdXJjZXMiOlsiQzpcXGRldlxcbWVkaWNhbC1hcS1xYVxcbm9kZV9tb2R1bGVzXFwucG5wbVxcQHNtaXRoeSt1dWlkQDEuMS4yXFxub2RlX21vZHVsZXNcXEBzbWl0aHlcXHV1aWRcXGRpc3QtZXNcXHY0LmpzIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IHJhbmRvbVVVSUQgfSBmcm9tIFwiLi9yYW5kb21VVUlEXCI7XG5jb25zdCBkZWNpbWFsVG9IZXggPSBBcnJheS5mcm9tKHsgbGVuZ3RoOiAyNTYgfSwgKF8sIGkpID0+IGkudG9TdHJpbmcoMTYpLnBhZFN0YXJ0KDIsIFwiMFwiKSk7XG5leHBvcnQgY29uc3QgdjQgPSAoKSA9PiB7XG4gICAgaWYgKHJhbmRvbVVVSUQpIHtcbiAgICAgICAgcmV0dXJuIHJhbmRvbVVVSUQoKTtcbiAgICB9XG4gICAgY29uc3Qgcm5kcyA9IG5ldyBVaW50OEFycmF5KDE2KTtcbiAgICBjcnlwdG8uZ2V0UmFuZG9tVmFsdWVzKHJuZHMpO1xuICAgIHJuZHNbNl0gPSAocm5kc1s2XSAmIDB4MGYpIHwgMHg0MDtcbiAgICBybmRzWzhdID0gKHJuZHNbOF0gJiAweDNmKSB8IDB4ODA7XG4gICAgcmV0dXJuIChkZWNpbWFsVG9IZXhbcm5kc1swXV0gK1xuICAgICAgICBkZWNpbWFsVG9IZXhbcm5kc1sxXV0gK1xuICAgICAgICBkZWNpbWFsVG9IZXhbcm5kc1syXV0gK1xuICAgICAgICBkZWNpbWFsVG9IZXhbcm5kc1szXV0gK1xuICAgICAgICBcIi1cIiArXG4gICAgICAgIGRlY2ltYWxUb0hleFtybmRzWzRdXSArXG4gICAgICAgIGRlY2ltYWxUb0hleFtybmRzWzVdXSArXG4gICAgICAgIFwiLVwiICtcbiAgICAgICAgZGVjaW1hbFRvSGV4W3JuZHNbNl1dICtcbiAgICAgICAgZGVjaW1hbFRvSGV4W3JuZHNbN11dICtcbiAgICAgICAgXCItXCIgK1xuICAgICAgICBkZWNpbWFsVG9IZXhbcm5kc1s4XV0gK1xuICAgICAgICBkZWNpbWFsVG9IZXhbcm5kc1s5XV0gK1xuICAgICAgICBcIi1cIiArXG4gICAgICAgIGRlY2ltYWxUb0hleFtybmRzWzEwXV0gK1xuICAgICAgICBkZWNpbWFsVG9IZXhbcm5kc1sxMV1dICtcbiAgICAgICAgZGVjaW1hbFRvSGV4W3JuZHNbMTJdXSArXG4gICAgICAgIGRlY2ltYWxUb0hleFtybmRzWzEzXV0gK1xuICAgICAgICBkZWNpbWFsVG9IZXhbcm5kc1sxNF1dICtcbiAgICAgICAgZGVjaW1hbFRvSGV4W3JuZHNbMTVdXSk7XG59O1xuIl0sIm5hbWVzIjpbXSwiaWdub3JlTGlzdCI6WzBdLCJzb3VyY2VSb290IjoiIn0=\n//# sourceURL=webpack-internal:///(rsc)/../../node_modules/.pnpm/@smithy+uuid@1.1.2/node_modules/@smithy/uuid/dist-es/v4.js\n");
+
+/***/ })
+
+};
+;

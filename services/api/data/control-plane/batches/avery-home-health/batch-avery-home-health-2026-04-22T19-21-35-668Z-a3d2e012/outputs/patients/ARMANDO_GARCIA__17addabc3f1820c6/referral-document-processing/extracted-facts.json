@@ -1,0 +1,204 @@
+{
+  "patient_context": {
+    "patient_name": null,
+    "dob": "06/02/1972",
+    "soc_date": "12/22/2025",
+    "referral_date": null
+  },
+  "facts": [
+    {
+      "fact_key": "code_status",
+      "category": "directive",
+      "value": "dnr",
+      "confidence": 0.75,
+      "evidence_spans": [
+        "Code status: dnr"
+      ],
+      "rationale": "Code status was explicitly stated in referral text.",
+      "source_sections": [
+        "code_status",
+        "advance_directives"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "living_situation",
+      "category": "living_situation",
+      "value": "Home independently",
+      "confidence": 0.72,
+      "evidence_spans": [
+        "Home independently"
+      ],
+      "rationale": "Living situation was summarized from referral text.",
+      "source_sections": [
+        "living_situation"
+      ],
+      "requires_human_review": false
+    },
+    {
+      "fact_key": "functional_limitations",
+      "category": "functional",
+      "value": [
+        "weakness",
+        "ambulation_limitations",
+        "reduced_endurance"
+      ],
+      "confidence": 0.76,
+      "evidence_spans": [
+        "Mobility & Ambulation Level Ambulation : Verbalizes understanding, Demonstrates, Needs further teaching, Needs PT Impairments or Limitations : Ambulation deficits, Balance deficits, Bed mobility deficits, Endurance weakn"
+      ],
+      "rationale": "Functional limitations were extracted from referral text.",
+      "source_sections": [
+        "functional_limitations"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "therapy_need",
+      "category": "therapy",
+      "value": "reconciliation, PT/OT for balance and strengthening Physical Therapy Forms Physical Therapy Orders : Miscellaneous",
+      "confidence": 0.77,
+      "evidence_spans": [
+        "reconciliation, PT/OT for balance and strengthening Physical Therapy Forms Physical Therapy Orders : Miscellaneous"
+      ],
+      "rationale": "Therapy need was summarized from referral text.",
+      "source_sections": [
+        "therapy_need"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "fall_risk_narrative",
+      "category": "risk",
+      "value": "Readmit Risk: 63 - HIGH 08/30/24 09:45 Risk Assessment: Denies Alcohol Use; Risk Assessment: Denies Substance Abuse; Mobility & Ambulation Level Ambulation : Verbalizes understanding, Demonstrates, Needs further teaching, Needs PT Impairments or Limitations : Ambulation deficits, Balance deficits, Bed mobility deficits, Endurance",
+      "confidence": 0.7,
+      "evidence_spans": [
+        "Readmit Risk: 63 - HIGH 08/30/24 09:45 Risk Assessment: Denies Alcohol Use; Risk Assessment: Denies Substance Abuse; Mobility & Ambulation Level Ambulation : Verbalizes understanding, Demonstrates, Needs further teaching"
+      ],
+      "rationale": "Risk and safety narrative was summarized from referral text.",
+      "source_sections": [
+        "risk_factors",
+        "functional_limitations"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "skilled_interventions",
+      "category": "therapy",
+      "value": "reconciliation, PT/OT for balance and strengthening Physical Therapy Forms Physical Therapy Orders : Miscellaneous",
+      "confidence": 0.8,
+      "evidence_spans": [
+        "reconciliation, PT/OT for balance and strengthening Physical Therapy Forms Physical Therapy Orders : Miscellaneous"
+      ],
+      "rationale": "Skilled interventions were summarized from the therapy plan.",
+      "source_sections": [
+        "therapy_need"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "plan_for_next_visit",
+      "category": "therapy",
+      "value": "reconciliation, PT/OT for balance and strengthening Physical Therapy Forms Physical Therapy Orders : Miscellaneous",
+      "confidence": 0.78,
+      "evidence_spans": [
+        "reconciliation, PT/OT for balance and strengthening Physical Therapy Forms Physical Therapy Orders : Miscellaneous"
+      ],
+      "rationale": "Next-visit plan was summarized from the therapy plan.",
+      "source_sections": [
+        "therapy_need"
+      ],
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [
+    {
+      "description": "Bilateral lower extremity edema ( R60",
+      "icd10_code": "N17.9",
+      "confidence": 0.74,
+      "source_spans": [
+        "N17.9) Bilateral lower extremity edema ( R60"
+      ],
+      "is_primary_candidate": true,
+      "requires_human_review": true
+    },
+    {
+      "description": "History of pneumonia (Z87",
+      "icd10_code": "R50.9",
+      "confidence": 0.74,
+      "source_spans": [
+        "R50.9) History of pneumonia (Z87"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Hypertensive emergency (116",
+      "icd10_code": "E11.65",
+      "confidence": 0.74,
+      "source_spans": [
+        "E11.65) Hypertensive emergency (116"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Print Date/Time 9/1/2024 14",
+      "icd10_code": "E87.1",
+      "confidence": 0.74,
+      "source_spans": [
+        "E87.1) Print Date/Time 9/1/2024 14"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Acute respiratory failure",
+      "icd10_code": "N17.9",
+      "confidence": 0.74,
+      "source_spans": [
+        "N17.9) Acute respiratory failure"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Hyperglycemia due to diabetes mellitus (E11",
+      "icd10_code": "R73.9",
+      "confidence": 0.74,
+      "source_spans": [
+        "R73.9) Hyperglycemia due to diabetes mellitus (E11"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    }
+  ],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "preferred_language",
+    "interpreter_needed",
+    "primary_reason_for_home_health_medical_necessity",
+    "admit_reason_to_home_health",
+    "homebound_narrative",
+    "homebound_supporting_factors",
+    "recent_hospitalization_discharge_date",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "patient_summary_narrative",
+    "discipline_frequencies",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status"
+  ],
+  "warnings": [
+    "Deterministic referral facts extraction was used."
+  ]
+}

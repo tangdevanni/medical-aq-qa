@@ -1,0 +1,79 @@
+{
+  "selectedSourceFile": "6371c52c-cd57-4392-bcc5-ba2a926e5ccb.pdf",
+  "selectedSourceFileNormalized": "6371c52c cd57 4392 bcc5 ba2a926e5ccb.pdf",
+  "admissionOrderTitle": "📄 6371c52c-cd57-4392-bcc5-ba2a926e5ccb.pdf 📝 ✏️ 🗑️ 🔗",
+  "admissionOrderSelectorUsed": "File Uploads source document row by .file-item/.file-label or table row",
+  "sourceUrlBeforeClick": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69dd1fd1602ccfda46fc4400/intake/69dd25427fe92d0c52c11da5/calendar",
+  "sourceUrlAfterClick": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69dd1fd1602ccfda46fc4400/file-uploads",
+  "matchedReferralFileLabel": "6371c52c-cd57-4392-bcc5-ba2a926e5ccb.pdf",
+  "normalizedFileLabels": [
+    "6371c52c cd57 4392 bcc5 ba2a926e5ccb.pdf",
+    "gary planchon active hho.pdf"
+  ],
+  "matchedSourceDocuments": [
+    {
+      "label": "📄 6371c52c-cd57-4392-bcc5-ba2a926e5ccb.pdf",
+      "normalizedLabel": "6371c52c cd57 4392 bcc5 ba2a926e5ccb.pdf",
+      "score": 20
+    },
+    {
+      "label": "📄 6371c52c-cd57-4392-bcc5-ba2a926e5ccb.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedLabel": "6371c52c cd57 4392 bcc5 ba2a926e5ccb.pdf",
+      "score": 20
+    },
+    {
+      "label": "📄 GARY PLANCHON ACTIVE HHO.pdf",
+      "normalizedLabel": "gary planchon active hho.pdf",
+      "score": 20
+    },
+    {
+      "label": "📄 GARY PLANCHON ACTIVE HHO.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedLabel": "gary planchon active hho.pdf",
+      "score": 20
+    }
+  ],
+  "viewerDetected": true,
+  "viewerMarkerSamples": [
+    "of ⁨8⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools",
+    "Tools",
+    "Print"
+  ],
+  "printButtonDetected": true,
+  "printButtonVisible": true,
+  "printButtonSelectorUsed": "pdf-print #printButton, #printButton, pdf-shy-button[primarytoolbarid='printButton'] button",
+  "printClickSucceeded": false,
+  "pdfResponseDetected": true,
+  "pdfResponseUrl": "https://api.finalehealth.com/api/v1/files/69dd3ad5958cf8193c3067ed?index=patient",
+  "pdfContentType": "application/pdf",
+  "pdfSavedPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\GARY_PLANCHON__f0aa0b19c0761d1a\\documents\\6371c52c-cd57-4392-bcc5-ba2a926e5ccb-pdf\\source.pdf",
+  "pdfByteSize": 477920,
+  "printAcquisitionMethodUsed": "network_pdf_response",
+  "printedPdfSaved": false,
+  "printedPdfPath": null,
+  "sourcePdfPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\GARY_PLANCHON__f0aa0b19c0761d1a\\documents\\6371c52c-cd57-4392-bcc5-ba2a926e5ccb-pdf\\source.pdf",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\GARY_PLANCHON__f0aa0b19c0761d1a\\documents\\6371c52c-cd57-4392-bcc5-ba2a926e5ccb-pdf\\extracted-text.txt",
+  "extractionResultPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\GARY_PLANCHON__f0aa0b19c0761d1a\\documents\\6371c52c-cd57-4392-bcc5-ba2a926e5ccb-pdf\\extraction-result.json",
+  "extractedTextLength": 104,
+  "rawExtractedTextSource": "dom",
+  "domExtractionRejectedReasons": [
+    "viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS"
+  ],
+  "extractionSuccess": false,
+  "queuedForLlm": true,
+  "extractionPolicyDecision": {
+    "mode": "ocr_required",
+    "confidence": "high",
+    "reasons": [
+      "PDF appears image-based/scanned; OCR likely required",
+      "No printed PDF available",
+      "OCR is the cheapest acceptable option that preserves clinically meaningful content"
+    ],
+    "recommendedSourcePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\GARY_PLANCHON__f0aa0b19c0761d1a\\documents\\6371c52c-cd57-4392-bcc5-ba2a926e5ccb-pdf\\source.pdf",
+    "fallbackSourcePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\GARY_PLANCHON__f0aa0b19c0761d1a\\documents\\6371c52c-cd57-4392-bcc5-ba2a926e5ccb-pdf\\source.pdf",
+    "hasUsablePdfTextLayer": false,
+    "hasPdfSource": true,
+    "hasPrintedPdfSource": false,
+    "hasHtmlSource": false
+  },
+  "generatedAt": "2026-04-22T23:51:02.222Z"
+}

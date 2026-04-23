@@ -168,6 +168,8 @@ describe("extractDocumentsFromArtifacts", () => {
           ocrMode: "async_s3",
           ocrSuccess: true,
           ocrTextLength: repairedOcrText.length,
+          selectedOptionCount: 0,
+          selectedOptions: [],
           blocks: repairedOcrText.split("\n").map((text, index) => ({
             blockType: "LINE",
             text,
@@ -197,6 +199,77 @@ describe("extractDocumentsFromArtifacts", () => {
       expect(orderDocument?.metadata.rawExtractedTextSource).toBe("ocr");
       expect(orderDocument?.metadata.textSelectionReason).toBe("preferred_ocr_for_scanned_image_pdf");
       await expect(readFile(extractedTextPath, "utf8")).resolves.toContain("Primary diagnosis I50.9");
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
+  });
+
+  it("appends persisted selected checkbox options into repaired OCR text", async () => {
+    const tempDir = await mkdtemp(path.join(os.tmpdir(), "ocr-doc-selected-options-"));
+
+    try {
+      const pdfPath = path.join(tempDir, "source.pdf");
+      const ocrResultPath = path.join(tempDir, "ocr-result.json");
+      const extractedTextPath = path.join(tempDir, "extracted-text.txt");
+      const staleViewerText = "Automatic Zoom Actual Size Page Fit Page Width Tools";
+
+      await writeFile(
+        pdfPath,
+        `%PDF-1.4 /Subtype /Image BT (${staleViewerText}) Tj ET`,
+        "latin1",
+      );
+      await writeFile(
+        ocrResultPath,
+        JSON.stringify({
+          schemaVersion: "1",
+          pdfType: "scanned_image_pdf",
+          ocrProvider: "textract",
+          ocrMode: "async_s3",
+          ocrSuccess: true,
+          ocrTextLength: 128,
+          selectedOptions: [
+            {
+              page: 1,
+              label: "A. White",
+              source: "key_value_set",
+            },
+            {
+              page: 1,
+              label: "0. No",
+              source: "key_value_set",
+            },
+          ],
+          blocks: [
+            {
+              blockType: "LINE",
+              text: "Administrative Information",
+              page: 1,
+            },
+            {
+              blockType: "LINE",
+              text: "A1010 Race What is your race?",
+              page: 1,
+            },
+          ],
+        }),
+        "utf8",
+      );
+      await writeFile(extractedTextPath, staleViewerText, "utf8");
+
+      const documents = await extractDocumentsFromArtifacts([
+        buildArtifact({
+          artifactType: "OASIS",
+          portalLabel: "OASIS",
+          downloadPath: pdfPath,
+        }),
+      ]);
+
+      const oasisDocument = documents.find((document) => document.type === "OASIS");
+      expect(oasisDocument).toBeDefined();
+      expect(oasisDocument?.text).toContain("SELECTED CHECKBOX / RADIO OPTIONS:");
+      expect(oasisDocument?.text).toContain("[SELECTED][page 1] A. White");
+      expect(oasisDocument?.text).toContain("[SELECTED][page 1] 0. No");
+      await expect(readFile(extractedTextPath, "utf8")).resolves.toContain("[SELECTED][page 1] A. White");
     } finally {
       await rm(tempDir, { recursive: true, force: true });
     }
@@ -311,6 +384,8 @@ describe("extractDocumentsFromArtifacts", () => {
           ocrMode: "async_s3",
           ocrSuccess: true,
           ocrTextLength: ocrText.length,
+          selectedOptionCount: 0,
+          selectedOptions: [],
           blocks: ocrText.split("\n").map((text, index) => ({
             blockType: "LINE",
             text,

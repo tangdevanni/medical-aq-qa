@@ -82,6 +82,7 @@ import type {
   OasisPrintedNoteCaptureOpenResult,
   OasisMenuOpenResult,
 } from "../../oasis/types/oasisQaResult";
+import { deriveOasisAssessmentProcessingSummary } from "../../oasis/status/oasisAssessmentProcessingStatus";
 
 const MIN_OASIS_PRINT_CAPTURE_TIMEOUT_MS = 30_000;
 import {
@@ -656,6 +657,73 @@ async function readLocatorLabel(locator: Locator): Promise<string | null> {
   );
 
   return label.length > 1 ? label.slice(0, 240) : null;
+}
+
+async function readOasisAssessmentProcessingSummary(input: {
+  page: Page;
+  logger?: Logger;
+  debugConfig?: PortalDebugConfig;
+}): Promise<{
+  summary: ReturnType<typeof deriveOasisAssessmentProcessingSummary>;
+  stepLogs: AutomationStepLog[];
+}> {
+  const actionBarResolution = await resolveVisibleLocatorList({
+    page: input.page,
+    candidates: [
+      {
+        strategy: "css",
+        selector: "app-oasis .btn-toolbar, app-oasis [class*='action-bar'], app-oasis [class*='top-bar'], app-document-note .btn-toolbar, fin-slideover .btn-toolbar, fin-modal .btn-toolbar",
+        description: "OASIS assessment action/status bar",
+      },
+    ],
+    step: "oasis_assessment_status_bar",
+    logger: input.logger,
+    debugConfig: input.debugConfig,
+    maxItems: 4,
+  });
+
+  const actionBarTexts = (
+    await Promise.all(
+      actionBarResolution.items.map(async (item) =>
+        normalizeWhitespace(await item.locator.textContent().catch(() => null)),
+      ),
+    )
+  ).filter(Boolean);
+  const buttonLabels = await summarizeButtons(input.page);
+  const topVisibleText = (await dumpTopVisibleText(input.page, 1800))
+    .split(/\r?\n+/)
+    .map((value) => normalizeWhitespace(value))
+    .filter(Boolean);
+  const summary = deriveOasisAssessmentProcessingSummary([
+    ...actionBarTexts,
+    ...buttonLabels,
+    ...topVisibleText,
+  ]);
+
+  return {
+    summary,
+    stepLogs: [
+      createAutomationStepLog({
+        step: "oasis_assessment_status_detected",
+        message:
+          summary.detectedStatuses.length > 0
+            ? `Detected OASIS assessment statuses ${summary.detectedStatuses.join(", ")} with decision ${summary.decision}.`
+            : `No explicit OASIS assessment status was detected; defaulting decision to ${summary.decision}.`,
+        urlBefore: input.page.url(),
+        urlAfter: input.page.url(),
+        selectorUsed: actionBarResolution.items[0]?.candidate.description ?? null,
+        found: summary.detectedStatuses,
+        missing: summary.detectedStatuses.length > 0 ? [] : ["oasis assessment status"],
+        evidence: [
+          ...summary.matchedSignals,
+          `primaryStatus=${summary.primaryStatus}`,
+          `decision=${summary.decision}`,
+          `processingEligible=${summary.processingEligible}`,
+        ],
+        safeReadConfirmed: true,
+      }),
+    ],
+  };
 }
 
 async function readOuterHtmlSnippet(locator: Locator): Promise<string | null> {
@@ -1994,6 +2062,16 @@ export class PatientChartPage {
           lockState: initialOasisLockState.lockState ?? null,
           stepLogs: [] as AutomationStepLog[],
         };
+    const assessmentProcessingStatus = socDocumentResult.opened
+      ? await readOasisAssessmentProcessingSummary({
+          page: this.page,
+          logger: this.options.logger,
+          debugConfig: this.options.debugConfig,
+        })
+      : {
+          summary: deriveOasisAssessmentProcessingSummary([]),
+          stepLogs: [] as AutomationStepLog[],
+        };
 
     const visibleDiagnoses = (diagnosisNavigationResult.diagnosisPageSnapshot?.rows ?? [])
       .map((row) => {
@@ -2011,25 +2089,34 @@ export class PatientChartPage {
       .filter((value): value is NonNullable<typeof value> => Boolean(value))
       .slice(0, 12);
 
-      return {
-        result: {
-          assessmentOpened: socDocumentResult.opened,
-          matchedAssessmentLabel: socDocumentResult.matchedSocAnchorText,
-          matchedRequestedAssessment: normalizedAssessmentType === "SOC"
-            ? Boolean(socDocumentResult.opened)
-            : false,
-          currentUrl: this.page.url(),
-          diagnosisSectionOpened: diagnosisNavigationResult.diagnosisSectionOpened,
-          diagnosisListFound: diagnosisNavigationResult.diagnosisListFound,
+    return {
+      result: {
+        assessmentOpened: socDocumentResult.opened,
+        matchedAssessmentLabel: socDocumentResult.matchedSocAnchorText,
+        matchedRequestedAssessment: normalizedAssessmentType === "SOC"
+          ? Boolean(socDocumentResult.opened)
+          : false,
+        currentUrl: this.page.url(),
+        diagnosisSectionOpened: diagnosisNavigationResult.diagnosisSectionOpened,
+        diagnosisListFound: diagnosisNavigationResult.diagnosisListFound,
         diagnosisListSamples: diagnosisNavigationResult.diagnosisListSamples,
         visibleDiagnoses,
         lockStatus: diagnosisNavigationResult.lockState?.oasisLockState ?? "unknown",
+        oasisAssessmentStatus: {
+          detectedStatuses: assessmentProcessingStatus.summary.detectedStatuses,
+          primaryStatus: assessmentProcessingStatus.summary.primaryStatus,
+          decision: assessmentProcessingStatus.summary.decision,
+          processingEligible: assessmentProcessingStatus.summary.processingEligible,
+          reason: assessmentProcessingStatus.summary.reason,
+          matchedSignals: assessmentProcessingStatus.summary.matchedSignals,
+        },
         warnings,
       },
       stepLogs: [
         ...socDocumentResult.stepLogs,
         ...initialOasisLockState.stepLogs,
         ...diagnosisNavigationResult.stepLogs,
+        ...assessmentProcessingStatus.stepLogs,
       ],
     };
   }

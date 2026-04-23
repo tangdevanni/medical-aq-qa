@@ -62,6 +62,8 @@ export async function openAssessmentNote(
       diagnosisSectionOpened: normalizedResult.diagnosisSectionOpened,
       diagnosisListFound: normalizedResult.diagnosisListFound,
       lockStatus: normalizedResult.lockStatus,
+      oasisAssessmentPrimaryStatus: normalizedResult.oasisAssessmentStatus?.primaryStatus ?? "UNKNOWN",
+      oasisAssessmentDecision: normalizedResult.oasisAssessmentStatus?.decision ?? "PROCESS",
       warnings: normalizedResult.warnings,
     },
     "opened OASIS assessment note for read-only review",

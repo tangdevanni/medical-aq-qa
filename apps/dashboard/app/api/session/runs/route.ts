@@ -1,13 +1,13 @@
 import { NextResponse } from "next/server";
 import { listBackendRuns } from "../../../../lib/server/backendApi";
-import { requireSelectedAgencySession } from "../../../../lib/auth/session";
+import { agencyIdsMatch, requireSelectedAgencySession } from "../../../../lib/auth/session";
 
 export async function GET() {
   try {
     const session = await requireSelectedAgencySession();
     const runs = await listBackendRuns();
     return NextResponse.json(
-      runs.filter((run) => run.subsidiaryId === session.selectedAgencyId),
+      runs.filter((run) => agencyIdsMatch(run.subsidiaryId, session.selectedAgencyId)),
     );
   } catch (error) {
     return NextResponse.json(

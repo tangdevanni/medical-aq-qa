@@ -1,0 +1,25 @@
+{
+  "primaryDiagnosis": {
+    "code": "I50",
+    "description": "Heart failure",
+    "confidence": "high"
+  },
+  "otherDiagnoses": [
+    {
+      "code": "I38",
+      "description": "Diagnosis code candidate from extracted document metadata",
+      "confidence": "high"
+    }
+  ],
+  "suggestedOnsetType": "onset",
+  "suggestedSeverity": 3,
+  "comorbidityFlags": {
+    "pvd_pad": false,
+    "diabetes": false,
+    "none": true
+  },
+  "notes": [
+    "Reason for admission: Prior to admission, patient was - Pain: negative Supporting Snippets: - she al so has mpaired mobility due to a recent fall and right lower extremity injury, which is - associated",
+    "Ordered services: Skilled Nursing"
+  ]
+}

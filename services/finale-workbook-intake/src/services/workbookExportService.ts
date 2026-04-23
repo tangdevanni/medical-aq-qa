@@ -137,7 +137,7 @@ export async function exportAgencyWorkbookFromFinale(
       debugDir,
     });
     const dashboardHome = await dashboardPage.ensureDashboardHome({
-      dashboardUrl: params.runtimeConfig.portalDashboardUrl,
+      dashboardUrl: params.runtimeConfig.portalDashboardUrl ?? agencySelection.selectedAgencyUrl,
     });
     stepLogs.push(...dashboardHome.stepLogs);
 

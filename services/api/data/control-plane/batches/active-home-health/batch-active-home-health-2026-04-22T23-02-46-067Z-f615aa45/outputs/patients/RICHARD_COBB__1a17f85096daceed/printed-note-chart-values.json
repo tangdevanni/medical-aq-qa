@@ -1,0 +1,83 @@
+{
+  "generatedAt": "2026-04-23T00:48:22.677Z",
+  "source": "printed_note_ocr",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\evidence\\RICHARD_COBB__1a17f85096daceed\\oasis-printed-note\\extracted-text.txt",
+  "llmInputSource": "fact_pack_primary",
+  "extractedFieldCount": 4,
+  "invocationModelId": "us.amazon.nova-lite-v1:0",
+  "currentChartValues": {
+    "medication_list": [
+      "875- 1 Tab Twice a day for 3 125 mg",
+      "1Tab 10 mg every 6 hours",
+      "1 Cap Once a day 0.4 mg",
+      "Pwdr Once a day 17 g"
+    ],
+    "allergy_list": [
+      "Add"
+    ],
+    "functional_limitations": [
+      "Ambulation",
+      "Endurance"
+    ],
+    "code_status": "full_code"
+  },
+  "extractedFieldValues": [
+    {
+      "field_key": "medication_list",
+      "current_value": [
+        "875- 1 Tab Twice a day for 3 125 mg",
+        "1Tab 10 mg every 6 hours",
+        "1 Cap Once a day 0.4 mg",
+        "Pwdr Once a day 17 g"
+      ],
+      "confidence": 0.9,
+      "source_spans": [
+        "875- 1 Tab Twice a day for 3 125 mg",
+        "1Tab 10 mg every 6 hours",
+        "1 Cap Once a day 0.4 mg",
+        "Pwdr Once a day 17 g"
+      ]
+    },
+    {
+      "field_key": "allergy_list",
+      "current_value": [
+        "Add"
+      ],
+      "confidence": 0.9,
+      "source_spans": [
+        "Add"
+      ]
+    },
+    {
+      "field_key": "functional_limitations",
+      "current_value": [
+        "Ambulation",
+        "Endurance"
+      ],
+      "confidence": 0.96,
+      "source_spans": [
+        "6 - Endurance",
+        "Ambulation"
+      ]
+    },
+    {
+      "field_key": "code_status",
+      "current_value": "full_code",
+      "confidence": 0.98,
+      "source_spans": [
+        "Full Code"
+      ]
+    }
+  ],
+  "warnings": [
+    "LLM input source: fact_pack_primary.",
+    "Fact pack coverage: diagnoses, assessmentValues, homeboundEvidence, skilledNeedEvidence, hospitalizationReasons, medications, allergies, supportingSnippets.",
+    "Fact pack coverage score: 1.",
+    "Prompt character estimate: 2928.",
+    "Fallback reason: none.",
+    "Deterministic printed-note chart values: code_status, functional_limitations.",
+    "Selected option labels detected: 149.",
+    "Printed-note chart-value extraction used inference profile us.amazon.nova-lite-v1:0.",
+    "primary_diagnosis: rejected as low-confidence or suspicious for the field"
+  ]
+}

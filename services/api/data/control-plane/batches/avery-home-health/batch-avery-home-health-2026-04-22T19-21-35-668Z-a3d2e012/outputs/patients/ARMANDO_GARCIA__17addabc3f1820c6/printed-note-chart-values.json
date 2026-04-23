@@ -1,0 +1,38 @@
+{
+  "generatedAt": "2026-04-22T19:36:00.055Z",
+  "source": "printed_note_ocr",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-22T19-21-35-668Z-a3d2e012\\outputs\\evidence\\ARMANDO_GARCIA__17addabc3f1820c6\\oasis-printed-note\\extracted-text.txt",
+  "llmInputSource": "raw_text_fallback",
+  "extractedFieldCount": 2,
+  "invocationModelId": "us.amazon.nova-lite-v1:0",
+  "currentChartValues": {
+    "patient_name": "ARMANDO GARCIA",
+    "soc_date": "12/22/2025"
+  },
+  "extractedFieldValues": [
+    {
+      "field_key": "patient_name",
+      "current_value": "ARMANDO GARCIA",
+      "confidence": 0.95,
+      "source_spans": [
+        "GARCIA, ARMANDO",
+        "ARMANDO GARCIA"
+      ]
+    },
+    {
+      "field_key": "soc_date",
+      "current_value": "12/22/2025",
+      "confidence": 0.95,
+      "source_spans": [
+        "SOC: 12/22/2025"
+      ]
+    }
+  ],
+  "warnings": [
+    "LLM input source: raw_text_fallback.",
+    "Fact pack unavailable or empty; using bounded raw text fallback.",
+    "Deterministic printed-note chart values: none.",
+    "Selected option labels detected: 0.",
+    "Printed-note chart-value extraction used inference profile us.amazon.nova-lite-v1:0."
+  ]
+}

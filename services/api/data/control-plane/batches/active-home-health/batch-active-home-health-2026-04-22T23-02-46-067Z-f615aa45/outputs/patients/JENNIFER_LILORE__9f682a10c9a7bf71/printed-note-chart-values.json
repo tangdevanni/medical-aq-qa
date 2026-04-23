@@ -1,0 +1,90 @@
+{
+  "generatedAt": "2026-04-23T00:07:11.076Z",
+  "source": "printed_note_ocr",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\evidence\\JENNIFER_LILORE__9f682a10c9a7bf71\\oasis-printed-note\\extracted-text.txt",
+  "llmInputSource": "fact_pack_primary",
+  "extractedFieldCount": 5,
+  "invocationModelId": "us.amazon.nova-lite-v1:0",
+  "currentChartValues": {
+    "patient_name": "Jennifer Lilore",
+    "medication_list": [
+      "gabapentin",
+      "baclofen",
+      "PRN analgesics"
+    ],
+    "allergy_list": [
+      "No Known Allergies"
+    ],
+    "code_status": "full_code",
+    "functional_limitations": [
+      "Ambulation",
+      "Endurance"
+    ]
+  },
+  "extractedFieldValues": [
+    {
+      "field_key": "patient_name",
+      "current_value": "Jennifer Lilore",
+      "confidence": 0.95,
+      "source_spans": [
+        "Jennifer Lilore"
+      ]
+    },
+    {
+      "field_key": "medication_list",
+      "current_value": [
+        "gabapentin",
+        "baclofen",
+        "PRN analgesics"
+      ],
+      "confidence": 0.85,
+      "source_spans": [
+        "gabapentin",
+        "baclofen",
+        "PRN analgesics"
+      ]
+    },
+    {
+      "field_key": "allergy_list",
+      "current_value": [
+        "No Known Allergies"
+      ],
+      "confidence": 0.92,
+      "source_spans": [
+        "None known"
+      ]
+    },
+    {
+      "field_key": "code_status",
+      "current_value": "full_code",
+      "confidence": 0.98,
+      "source_spans": [
+        "Full Code"
+      ]
+    },
+    {
+      "field_key": "functional_limitations",
+      "current_value": [
+        "Ambulation",
+        "Endurance"
+      ],
+      "confidence": 0.96,
+      "source_spans": [
+        "Ambulation",
+        "6 - Endurance"
+      ]
+    }
+  ],
+  "warnings": [
+    "LLM input source: fact_pack_primary.",
+    "Fact pack coverage: diagnoses, assessmentValues, homeboundEvidence, skilledNeedEvidence, hospitalizationReasons, medications, allergies, supportingSnippets.",
+    "Fact pack coverage score: 1.",
+    "Prompt character estimate: 3535.",
+    "Fallback reason: none.",
+    "Deterministic printed-note chart values: code_status, functional_limitations, allergy_list.",
+    "Selected option labels detected: 38.",
+    "Printed-note chart-value extraction used inference profile us.amazon.nova-lite-v1:0.",
+    "primary_diagnosis: rejected as low-confidence or suspicious for the field",
+    "secondary_diagnoses: rejected as low-confidence or suspicious for the field"
+  ]
+}

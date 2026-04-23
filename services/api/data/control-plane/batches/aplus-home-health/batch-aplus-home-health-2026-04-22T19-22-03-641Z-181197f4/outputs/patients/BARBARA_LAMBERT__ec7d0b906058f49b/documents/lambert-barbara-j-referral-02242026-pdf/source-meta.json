@@ -1,0 +1,90 @@
+{
+  "selectedSourceFile": "LAMBERT BARBARA J REFERRAL 02242026.pdf",
+  "selectedSourceFileNormalized": "lambert barbara j referral 02242026.pdf",
+  "admissionOrderTitle": "📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf 📝 ✏️ 🗑️ 🔗",
+  "admissionOrderSelectorUsed": "File Uploads source document row by .file-item/.file-label or table row",
+  "sourceUrlBeforeClick": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/calendar",
+  "sourceUrlAfterClick": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads",
+  "matchedReferralFileLabel": "LAMBERT BARBARA J REFERRAL 02242026.pdf",
+  "normalizedFileLabels": [
+    "lambert barbara j referral 02242026.pdf",
+    "lambert barbara j referral 02252026.pdf",
+    "lambert barbara j.order 03302026.pdf"
+  ],
+  "matchedSourceDocuments": [
+    {
+      "label": "📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf",
+      "normalizedLabel": "lambert barbara j referral 02242026.pdf",
+      "score": 150
+    },
+    {
+      "label": "📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedLabel": "lambert barbara j referral 02242026.pdf",
+      "score": 150
+    },
+    {
+      "label": "📄 LAMBERT, BARBARA J REFERRAL 02252026.pdf",
+      "normalizedLabel": "lambert barbara j referral 02252026.pdf",
+      "score": 150
+    },
+    {
+      "label": "📄 LAMBERT, BARBARA J REFERRAL 02252026.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedLabel": "lambert barbara j referral 02252026.pdf",
+      "score": 150
+    },
+    {
+      "label": "📄 LAMBERT, BARBARA J. ORDER 03302026.pdf",
+      "normalizedLabel": "lambert barbara j.order 03302026.pdf",
+      "score": 120
+    },
+    {
+      "label": "📄 LAMBERT, BARBARA J. ORDER 03302026.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedLabel": "lambert barbara j.order 03302026.pdf",
+      "score": 120
+    }
+  ],
+  "viewerDetected": true,
+  "viewerMarkerSamples": [
+    "of ⁨33⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools",
+    "Tools",
+    "Print"
+  ],
+  "printButtonDetected": true,
+  "printButtonVisible": true,
+  "printButtonSelectorUsed": "pdf-print #printButton, #printButton, pdf-shy-button[primarytoolbarid='printButton'] button",
+  "printClickSucceeded": false,
+  "pdfResponseDetected": true,
+  "pdfResponseUrl": "https://api.finalehealth.com/api/v1/files/699f40e654c58e0c82c39562?index=documents",
+  "pdfContentType": "application/pdf",
+  "pdfSavedPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\documents\\lambert-barbara-j-referral-02242026-pdf\\source.pdf",
+  "pdfByteSize": 1567526,
+  "printAcquisitionMethodUsed": "network_pdf_response",
+  "printedPdfSaved": false,
+  "printedPdfPath": null,
+  "sourcePdfPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\documents\\lambert-barbara-j-referral-02242026-pdf\\source.pdf",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\documents\\lambert-barbara-j-referral-02242026-pdf\\extracted-text.txt",
+  "extractionResultPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\documents\\lambert-barbara-j-referral-02242026-pdf\\extraction-result.json",
+  "extractedTextLength": 104,
+  "rawExtractedTextSource": "dom",
+  "domExtractionRejectedReasons": [
+    "viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS"
+  ],
+  "extractionSuccess": false,
+  "queuedForLlm": true,
+  "extractionPolicyDecision": {
+    "mode": "ocr_required",
+    "confidence": "high",
+    "reasons": [
+      "PDF appears image-based/scanned; OCR likely required",
+      "No printed PDF available",
+      "OCR is the cheapest acceptable option that preserves clinically meaningful content"
+    ],
+    "recommendedSourcePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\documents\\lambert-barbara-j-referral-02242026-pdf\\source.pdf",
+    "fallbackSourcePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\documents\\lambert-barbara-j-referral-02242026-pdf\\source.pdf",
+    "hasUsablePdfTextLayer": false,
+    "hasPdfSource": true,
+    "hasPrintedPdfSource": false,
+    "hasHtmlSource": false
+  },
+  "generatedAt": "2026-04-22T19:44:12.373Z"
+}

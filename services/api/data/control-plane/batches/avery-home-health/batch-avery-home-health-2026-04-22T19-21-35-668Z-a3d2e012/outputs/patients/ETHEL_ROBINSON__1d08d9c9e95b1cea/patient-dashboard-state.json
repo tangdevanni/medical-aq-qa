@@ -1,0 +1,531 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-04-22T20:05:12.502Z",
+  "batchId": "batch-avery-home-health-2026-04-22T19-21-35-668Z-a3d2e012",
+  "patientId": "ETHEL_ROBINSON__1d08d9c9e95b1cea",
+  "runId": "batch-avery-home-health-2026-04-22T19-21-35-668Z-a3d2e012-ETHEL_ROBINSON__1d08d9c9e95b1cea",
+  "subsidiaryId": "avery-home-health",
+  "patientName": "Ethel Robinson",
+  "processingStatus": "BLOCKED",
+  "executionStep": "BLOCKED",
+  "progressPercent": 100,
+  "startedAt": "2026-04-22T20:02:52.412Z",
+  "completedAt": "2026-04-22T20:05:12.481Z",
+  "lastUpdatedAt": "2026-04-22T20:05:12.492Z",
+  "matchResult": {
+    "status": "NOT_FOUND",
+    "searchQuery": "robinson, ethel",
+    "portalPatientId": null,
+    "portalDisplayName": null,
+    "candidateNames": [],
+    "note": "Global patient search completed, but no matching patient result was available to open."
+  },
+  "qaOutcome": "PORTAL_NOT_FOUND",
+  "oasisQaSummary": {
+    "overallStatus": "BLOCKED",
+    "urgency": "ON_TRACK",
+    "daysInPeriod": 30,
+    "daysLeft": 24,
+    "sections": [
+      {
+        "key": "timing",
+        "label": "Timing / OASIS Due",
+        "status": "PASS",
+        "items": [
+          {
+            "key": "days_in_period",
+            "label": "Days in the 30-day period captured",
+            "status": "PASS",
+            "notes": "Workbook shows 30 days in period.",
+            "evidence": [
+              "Workbook days in period: 30"
+            ]
+          },
+          {
+            "key": "days_left",
+            "label": "Days left before OASIS due date verified",
+            "status": "PASS",
+            "notes": "24 day(s) remain before OASIS is due.",
+            "evidence": [
+              "Workbook days left: 24"
+            ]
+          },
+          {
+            "key": "urgency_bucket",
+            "label": "Urgency bucket",
+            "status": "PASS",
+            "notes": "ON TRACK",
+            "evidence": [
+              "Derived urgency from 24 day(s) left."
+            ]
+          }
+        ]
+      },
+      {
+        "key": "coding",
+        "label": "Coding Review",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "coding_review_complete",
+            "label": "Coding review completed in workbook",
+            "status": "NEEDS_REVIEW",
+            "notes": "Workbook status: IN_PROGRESS",
+            "evidence": [
+              "IN_PROGRESS"
+            ]
+          },
+          {
+            "key": "coding_supported_by_oasis",
+            "label": "OASIS content is available to support coding review",
+            "status": "MISSING",
+            "notes": "No OASIS content was extracted for coding validation.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "oasis",
+        "label": "OASIS QA",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "oasis_document",
+            "label": "OASIS document content extracted",
+            "status": "MISSING",
+            "notes": "No OASIS document content was available for extraction.",
+            "evidence": []
+          },
+          {
+            "key": "oasis_workbook_status",
+            "label": "OASIS QA completed in workbook",
+            "status": "NEEDS_REVIEW",
+            "notes": "Workbook status: IN_PROGRESS",
+            "evidence": [
+              "IN_PROGRESS"
+            ]
+          },
+          {
+            "key": "medical_necessity",
+            "label": "Medical necessity is stated",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "homebound_reason",
+            "label": "Homebound reason is stated",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "health_assessment",
+            "label": "Health assessment is documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "skilled_interventions",
+            "label": "Skilled interventions during the OASIS visit are documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "poc",
+        "label": "Plan Of Care QA",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "poc_document",
+            "label": "Plan of care content extracted",
+            "status": "MISSING",
+            "notes": "No plan-of-care content was available for extraction.",
+            "evidence": []
+          },
+          {
+            "key": "poc_workbook_status",
+            "label": "POC QA completed in workbook",
+            "status": "MISSING",
+            "notes": "Workbook status: NOT_STARTED",
+            "evidence": [
+              "NOT_STARTED"
+            ]
+          },
+          {
+            "key": "poc_diagnoses_codes",
+            "label": "Diagnoses or codes are present in the plan of care",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "poc_interventions_goals_frequency",
+            "label": "Interventions, goals, and frequency are present in the plan of care",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "poc_conditions_exacerbations",
+            "label": "Conditions or exacerbations are reflected in the plan of care",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "visit_notes",
+        "label": "Visit Notes Review",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "visit_notes_document",
+            "label": "Visit note content extracted",
+            "status": "MISSING",
+            "notes": "No visit-note content was available for extraction.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_workbook_status",
+            "label": "Visit notes review completed in workbook",
+            "status": "MISSING",
+            "notes": "Workbook status: NOT_STARTED",
+            "evidence": [
+              "NOT_STARTED"
+            ]
+          },
+          {
+            "key": "visit_notes_skilled_need",
+            "label": "Skilled need is clearly documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_intervention_detail",
+            "label": "Interventions performed are specific and detailed",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_patient_response",
+            "label": "Patient response to interventions is documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_progress",
+            "label": "Progress toward goals is noted",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_vitals",
+            "label": "Vitals and focused assessment are documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_medication_review",
+            "label": "Medication review is documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_condition_changes",
+            "label": "Changes in condition are clearly reported and addressed",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_billed_services_support",
+            "label": "Documentation supports billed services",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_consistency",
+            "label": "Documentation remains consistent with OASIS and diagnoses",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "technical_review",
+        "label": "Technical Review",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "portal_patient_match",
+            "label": "Portal patient match resolved",
+            "status": "MISSING",
+            "notes": "Global patient search completed, but no matching patient result was available to open.",
+            "evidence": [
+              "robinson, ethel"
+            ]
+          },
+          {
+            "key": "sn_visit_count",
+            "label": "SN visits were identified from visit-note content",
+            "status": "MISSING",
+            "notes": "Visit-note content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "discipline_detection",
+            "label": "Applicable disciplines were detected",
+            "status": "MISSING",
+            "notes": "Visit-note content is not available for discipline detection.",
+            "evidence": []
+          },
+          {
+            "key": "physician_orders",
+            "label": "Physician orders were checked",
+            "status": "NOT_APPLICABLE",
+            "notes": "No additional physician orders were discovered for this patient.",
+            "evidence": []
+          },
+          {
+            "key": "supporting_notes",
+            "label": "Supporting note categories were reviewed",
+            "status": "NOT_APPLICABLE",
+            "notes": "No additional supporting note categories were discovered for this patient.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "final_check",
+        "label": "Final Check",
+        "status": "FAIL",
+        "items": [
+          {
+            "key": "critical_sections_clear",
+            "label": "Critical QA sections are complete before billing prep",
+            "status": "FAIL",
+            "notes": "Blocking sections: OASIS content is available to support coding review, OASIS document content extracted, Medical necessity is stated, Homebound reason is stated, Health assessment is documented, Skilled interventions during the OASIS visit are documented, Plan of care content extracted, POC QA completed in workbook, Diagnoses or codes are present in the plan of care, Interventions, goals, and frequency are present in the plan of care, Conditions or exacerbations are reflected in the plan of care, Visit note content extracted, Visit notes review completed in workbook, Skilled need is clearly documented, Interventions performed are specific and detailed, Patient response to interventions is documented, Progress toward goals is noted, Vitals and focused assessment are documented, Medication review is documented, Changes in condition are clearly reported and addressed, Documentation supports billed services, Documentation remains consistent with OASIS and diagnoses, Portal patient match resolved, SN visits were identified from visit-note content, Applicable disciplines were detected",
+            "evidence": [
+              "Timing / OASIS Due: PASS",
+              "Coding Review: MISSING",
+              "OASIS QA: MISSING",
+              "Plan Of Care QA: MISSING",
+              "Visit Notes Review: MISSING",
+              "Technical Review: MISSING"
+            ]
+          },
+          {
+            "key": "billing_prep_status",
+            "label": "Billing prep status in workbook",
+            "status": "MISSING",
+            "notes": "Workbook status: NOT_STARTED",
+            "evidence": [
+              "NOT_STARTED"
+            ]
+          }
+        ]
+      }
+    ],
+    "blockers": [
+      "OASIS content is available to support coding review",
+      "OASIS document content extracted",
+      "Medical necessity is stated",
+      "Homebound reason is stated",
+      "Health assessment is documented",
+      "Skilled interventions during the OASIS visit are documented",
+      "Plan of care content extracted",
+      "POC QA completed in workbook",
+      "Diagnoses or codes are present in the plan of care",
+      "Interventions, goals, and frequency are present in the plan of care",
+      "Conditions or exacerbations are reflected in the plan of care",
+      "Visit note content extracted",
+      "Visit notes review completed in workbook",
+      "Skilled need is clearly documented",
+      "Interventions performed are specific and detailed",
+      "Patient response to interventions is documented",
+      "Progress toward goals is noted",
+      "Vitals and focused assessment are documented",
+      "Medication review is documented",
+      "Changes in condition are clearly reported and addressed",
+      "Documentation supports billed services",
+      "Documentation remains consistent with OASIS and diagnoses",
+      "Portal patient match resolved",
+      "SN visits were identified from visit-note content",
+      "Applicable disciplines were detected"
+    ]
+  },
+  "artifactCount": 0,
+  "hasFindings": true,
+  "bundleAvailable": true,
+  "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-22T19-21-35-668Z-a3d2e012\\outputs\\patient-results\\ETHEL_ROBINSON__1d08d9c9e95b1cea.json",
+  "logPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-22T19-21-35-668Z-a3d2e012\\outputs\\logs\\ETHEL_ROBINSON__1d08d9c9e95b1cea.json",
+  "errorSummary": "Global patient search completed, but no matching patient result was available to open.",
+  "workItem": {
+    "id": "ETHEL_ROBINSON__1d08d9c9e95b1cea",
+    "subsidiaryId": "avery-home-health",
+    "patientIdentity": {
+      "displayName": "Ethel Robinson",
+      "normalizedName": "ETHEL ROBINSON",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-03-30",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Garcia Alfonso, Kelvyn RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "09-DC"
+    },
+    "workflowTypes": [
+      "SOC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 24,
+      "daysInPeriod": null,
+      "daysLeft": 24,
+      "daysLeftBeforeOasisDueDate": 24,
+      "rawTrackingValues": [
+        "24"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "IN_PROGRESS",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "In Progress"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "04/16/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 21
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 21,
+        "values": {
+          "patientName": "ROBINSON, ETHEL",
+          "episodeDate": "03/30/2026",
+          "assignedStaff": "Garcia Alfonso, Kelvyn RN",
+          "payer": "Medicare",
+          "rfa": "09-DC",
+          "trackingDays": "24",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "In Progress",
+          "oasisQaRemarks": "04/16/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  "workflowRuns": [
+    {
+      "workflowRunId": "batch-avery-home-health-2026-04-22T19-21-35-668Z-a3d2e012-ETHEL_ROBINSON__1d08d9c9e95b1cea:coding",
+      "workflowDomain": "coding",
+      "status": "NOT_STARTED",
+      "stepName": "NOT_STARTED",
+      "message": null,
+      "chartUrl": null,
+      "startedAt": null,
+      "completedAt": null,
+      "lastUpdatedAt": "2026-04-22T20:02:52.412Z",
+      "workflowResultPath": null,
+      "workflowLogPath": null
+    },
+    {
+      "workflowRunId": "batch-avery-home-health-2026-04-22T19-21-35-668Z-a3d2e012-ETHEL_ROBINSON__1d08d9c9e95b1cea:qa",
+      "workflowDomain": "qa",
+      "status": "NOT_STARTED",
+      "stepName": "NOT_STARTED",
+      "message": null,
+      "chartUrl": null,
+      "startedAt": null,
+      "completedAt": null,
+      "lastUpdatedAt": "2026-04-22T20:02:52.412Z",
+      "workflowResultPath": null,
+      "workflowLogPath": null
+    }
+  ],
+  "artifactPaths": {
+    "codingInput": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-22T19-21-35-668Z-a3d2e012\\outputs\\patients\\ETHEL_ROBINSON__1d08d9c9e95b1cea\\coding-input.json",
+    "documentText": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-22T19-21-35-668Z-a3d2e012\\outputs\\patients\\ETHEL_ROBINSON__1d08d9c9e95b1cea\\document-text.json",
+    "qaPrefetch": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-22T19-21-35-668Z-a3d2e012\\outputs\\patients\\ETHEL_ROBINSON__1d08d9c9e95b1cea\\qa-prefetch-result.json",
+    "patientQaReference": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-22T19-21-35-668Z-a3d2e012\\outputs\\patients\\ETHEL_ROBINSON__1d08d9c9e95b1cea\\referral-document-processing\\patient-qa-reference.json",
+    "qaDocumentSummary": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-22T19-21-35-668Z-a3d2e012\\outputs\\patients\\ETHEL_ROBINSON__1d08d9c9e95b1cea\\referral-document-processing\\qa-document-summary.json",
+    "fieldMapSnapshot": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-22T19-21-35-668Z-a3d2e012\\outputs\\patients\\ETHEL_ROBINSON__1d08d9c9e95b1cea\\referral-document-processing\\field-map-snapshot.json",
+    "printedNoteChartValues": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-22T19-21-35-668Z-a3d2e012\\outputs\\patients\\ETHEL_ROBINSON__1d08d9c9e95b1cea\\printed-note-chart-values.json",
+    "printedNoteReview": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-22T19-21-35-668Z-a3d2e012\\outputs\\patients\\ETHEL_ROBINSON__1d08d9c9e95b1cea\\oasis-printed-note-review.json"
+  },
+  "artifactContents": {
+    "codingInput": {
+      "primaryDiagnosis": {
+        "code": "",
+        "description": "",
+        "confidence": "low"
+      },
+      "otherDiagnoses": [],
+      "suggestedOnsetType": "onset",
+      "suggestedSeverity": 0,
+      "comorbidityFlags": {
+        "pvd_pad": false,
+        "diabetes": false,
+        "none": true
+      },
+      "notes": [
+        "Primary diagnosis code left blank because no explicit or strongly inferable ICD-10 mapping was retained."
+      ]
+    },
+    "documentText": null,
+    "qaPrefetch": null,
+    "patientQaReference": null,
+    "qaDocumentSummary": null,
+    "fieldMapSnapshot": null,
+    "printedNoteChartValues": null,
+    "printedNoteReview": null
+  }
+}

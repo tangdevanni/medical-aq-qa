@@ -10,6 +10,7 @@ describe("FinaleWorkbookProvider", () => {
       subsidiaryId: "default",
       subsidiarySlug: "star-home-health-care-inc",
       subsidiaryName: "Star Home Health Care Inc",
+      lookupAliases: [],
       portalAgencyName: "Star Home Health",
       portalAgencyAliases: ["Star Home Health Care Inc"],
       portalBaseUrl: "https://app.finalehealth.com",

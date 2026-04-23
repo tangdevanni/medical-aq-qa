@@ -1,0 +1,170 @@
+{
+  "capturedAt": "2026-04-22T19:21:15.560Z",
+  "agencyId": "meadows-home-health",
+  "agencySlug": "meadows-home-health",
+  "agencyName": "Meadows Home Health",
+  "selectedAgencyName": "Meadows Home Health",
+  "selectedAgencyUrl": "https://app.finalehealth.com/provider/691de9e967052347d890e991/dashboard",
+  "dashboardUrl": "https://app.finalehealth.com/provider/691de9e967052347d890e991/dashboard",
+  "destinationPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-22T19-20-51-707Z-032ca5da\\source\\meadows-home-health-oasis-30-days.xlsx",
+  "originalFileName": "OASIS Tracking (30 Days Tracking).xlsx",
+  "portalBaseUrl": "https://app.finalehealth.com",
+  "portalDashboardUrl": "https://app.finalehealth.com/provider/691de9e967052347d890e991/dashboard",
+  "verification": {
+    "usable": true,
+    "verifiedAt": "2026-04-22T19:21:15.560Z",
+    "fileSizeBytes": 168926,
+    "fileExtension": ".xlsx",
+    "sheetNames": [
+      "OASIS Tracking Report"
+    ],
+    "detectedSourceTypes": [
+      "trackingReport"
+    ],
+    "warningCount": 0
+  },
+  "stepLogs": [
+    {
+      "timestamp": "2026-04-22T19:20:56.885Z",
+      "step": "login",
+      "message": "Completed portal login flow in AUTH_ONLY mode.",
+      "patientName": null,
+      "urlBefore": "about:blank",
+      "urlAfter": "https://app.finalehealth.com/users/user-agencies",
+      "selectorUsed": "login submit button by accessible role",
+      "found": [
+        "https://app.finalehealth.com/users/user-agencies"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "[not_found] login username field by label count=0 visible=0 elapsedMs=33",
+        "[matched] login username field by placeholder count=1 visible=1 elapsedMs=8",
+        "[not_found] login password field by label count=0 visible=0 elapsedMs=2",
+        "[matched] login password field by placeholder count=1 visible=1 elapsedMs=6",
+        "[matched] login submit button by accessible role count=1 visible=1 elapsedMs=9 samples=Login"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:20:59.092Z",
+      "step": "agency_list_discovered",
+      "message": "Opened the Finale user-agencies page to resolve the real agency context.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/users/user-agencies",
+      "urlAfter": "https://app.finalehealth.com/users/user-agencies",
+      "selectorUsed": "user-agencies provider links or self-reference links",
+      "found": [
+        "https://app.finalehealth.com/users/user-agencies"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "[not_found] user-agencies heading by accessible role count=0 visible=0 elapsedMs=24",
+        "[not_found] user-agencies marker by visible text count=0 visible=0 elapsedMs=5",
+        "[matched] user-agencies provider links or self-reference links count=1 visible=1 elapsedMs=11"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:21:01.718Z",
+      "step": "agency_selected",
+      "message": "Selected 'Meadows Home Health' from the Finale agency list.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/users/user-agencies",
+      "urlAfter": "https://app.finalehealth.com/provider/691de9e967052347d890e991/dashboard",
+      "selectorUsed": "userAgencies.agencyOptions",
+      "found": [
+        "Search Agency",
+        "A Plus Home Health Systems LLC",
+        "Active Home Healthcare LLC",
+        "Aspire Home Health",
+        "Avery Home Health LLC",
+        "Meadows Home Health",
+        "Star Home Health Care Inc"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "[not_found] agency links by provider href count=0 visible=0 elapsedMs=4",
+        "[not_found] agency options by generic clickable controls inside main content count=0 visible=0 elapsedMs=6",
+        "[matched] agency options by agency-related visible text count=7 visible=5 elapsedMs=26 samples=Search Agency | A Plus Home Health Systems LLC | Active Home Healthcare LLC",
+        "selectedAgency=Meadows Home Health",
+        "selectedAgencyHref=none",
+        "matched-option:scrollIntoViewIfNeeded()+click():url=https://app.finalehealth.com/users/user-agencies"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:21:02.135Z",
+      "step": "dashboard_home",
+      "message": "Confirmed the selected agency dashboard home is loaded.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/691de9e967052347d890e991/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/691de9e967052347d890e991/dashboard",
+      "selectorUsed": "dashboard marker by visible text",
+      "found": [
+        "https://app.finalehealth.com/provider/691de9e967052347d890e991/dashboard"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "[not_found] dashboard heading by accessible role count=0 visible=0 elapsedMs=196",
+        "[matched] dashboard marker by visible text count=3 visible=1 elapsedMs=139 samples=Search Patient... | Dashboard | Staff Task Compliance Dashboard"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:21:06.093Z",
+      "step": "oasis_thirty_days_tab",
+      "message": "Opened the 'OASIS 30 Day's 22' dashboard panel.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/691de9e967052347d890e991/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/691de9e967052347d890e991/dashboard",
+      "selectorUsed": "finaleDashboard.oasisThirtyDaysTabs",
+      "found": [
+        "OASIS 30 Day's 22"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "[matched] OASIS 30 Day tab by accessible role count=1 visible=1 elapsedMs=532 samples=OASIS 30 Day's 22",
+        "[matched] dashboard export dropdown toggle button count=1 visible=1 elapsedMs=39 samples=Export to Excel",
+        "selectedTab=OASIS 30 Day's 22"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:21:15.559Z",
+      "step": "workbook_export",
+      "message": "Exported and persisted the OASIS 30 Day's workbook.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/691de9e967052347d890e991/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/691de9e967052347d890e991/dashboard",
+      "selectorUsed": "finaleDashboard.exportControls",
+      "found": [
+        "exportControl=Export to Excel",
+        "exportMenu=Export All",
+        "downloadedFile=OASIS Tracking (30 Days Tracking).xlsx"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "storedPath=C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-22T19-20-51-707Z-032ca5da\\source\\meadows-home-health-oasis-30-days.xlsx"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    }
+  ]
+}

@@ -376,6 +376,12 @@ function getPortalValueSourceLabel(source: string): string {
   if (source === "printed_note_ocr") {
     return "Printed note OCR";
   }
+  if (source === "printed_note_review") {
+    return "Printed note review";
+  }
+  if (source === "oasis_capture_skipped") {
+    return "OASIS capture skipped";
+  }
   if (source === "workbook_context") {
     return "Workbook context";
   }
@@ -697,6 +703,9 @@ function getDisplayPortalValue(input: {
   if (input.portalValueSource === "printed_note_ocr") {
     return "Printed note OCR did not capture a value";
   }
+  if (input.portalValueSource === "oasis_capture_skipped") {
+    return "OASIS capture was skipped because of the assessment page status";
+  }
   if (input.portalValueSource === "unavailable") {
     return "No chart snapshot value captured";
   }
@@ -719,6 +728,9 @@ function getPortalCaptureWarning(input: {
   }
   if (input.portalValueSource === "printed_note_ocr") {
     return "Printed-note OCR did not capture a value for this field.";
+  }
+  if (input.portalValueSource === "oasis_capture_skipped") {
+    return "OASIS capture was skipped because of the assessment page status.";
   }
   if (input.portalValueSource === "unavailable") {
     return "No portal or printed-note snapshot captured this value.";
@@ -1332,6 +1344,8 @@ function mapBackendFieldRowToComparison(row: PatientDashboardFieldRow): FieldCom
     portalCaptureWarning:
       !row.valuePresence.hasChartValue && row.currentChartValueSource === "printed_note_ocr"
         ? "Printed note OCR did not capture a value."
+        : !row.valuePresence.hasChartValue && row.currentChartValueSource === "oasis_capture_skipped"
+          ? row.displayPortalValue
         : !row.valuePresence.hasChartValue
           ? "No chart data captured."
           : null,
@@ -1378,9 +1392,9 @@ export function buildComparisonWorkspaceModel(patient: PatientDetail): Compariso
       summary.codingReviewCount;
     const globalTrustWarning =
       !patient.referralQa.referralDataAvailable
-        ? "Referral evidence is missing, so portal discrepancies cannot be trusted yet."
+        ? "Referral evidence is missing. Use the OASIS summary as the current source of truth and treat referral comparison results as incomplete until referral documents are uploaded."
         : patient.referralQa.extractionUsabilityStatus !== "usable"
-          ? "Referral extraction quality is limited. Treat surfaced differences as tentative until the source document is confirmed."
+          ? "Referral extraction quality is limited. The OASIS view is still usable, but referral comparisons should be treated as tentative until the source document is confirmed."
           : null;
 
     return {
@@ -1431,9 +1445,9 @@ export function buildComparisonWorkspaceModel(patient: PatientDetail): Compariso
     summary.codingReviewCount;
   const globalTrustWarning =
     !patient.referralQa.referralDataAvailable
-      ? "Referral evidence is missing, so portal discrepancies cannot be trusted yet."
+      ? "Referral evidence is missing. Use the OASIS summary as the current source of truth and treat referral comparison results as incomplete until referral documents are uploaded."
       : patient.referralQa.extractionUsabilityStatus !== "usable"
-        ? "Referral extraction quality is limited. Treat surfaced differences as tentative until the source document is confirmed."
+        ? "Referral extraction quality is limited. The OASIS view is still usable, but referral comparisons should be treated as tentative until the source document is confirmed."
         : null;
 
   return {

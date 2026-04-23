@@ -1,0 +1,223 @@
+{
+  "patient_context": {
+    "patient_name": null,
+    "dob": "02/16/1958",
+    "soc_date": "02/26/2026",
+    "referral_date": null
+  },
+  "proposed_field_values": [
+    {
+      "field_key": "recent_hospitalization_discharge_date",
+      "proposed_value": "02/25/2026",
+      "confidence": 0.9,
+      "source_spans": [
+        "02/25/26"
+      ],
+      "rationale": "The discharge date is directly stated in the document.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "code_status",
+      "proposed_value": "full_code",
+      "confidence": 0.75,
+      "source_spans": [
+        "Code status: full_code"
+      ],
+      "rationale": "The code status is explicitly mentioned in the document.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "primary_reason_for_home_health_medical_necessity",
+      "proposed_value": "for inpatient rehab rather than at subacute level of care, continue the medical management and continue transfer",
+      "confidence": 0.78,
+      "source_spans": [
+        "for inpatient rehab rather than at subacute level of care, continue the medical management and continue transfer"
+      ],
+      "rationale": "The medical necessity summary is directly stated in the document.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "homebound_narrative",
+      "proposed_value": "Walker rolling Walker - rolling",
+      "confidence": 0.8,
+      "source_spans": [
+        "Walker rolling Walker - rolling"
+      ],
+      "rationale": "The homebound narrative is directly stated in the document.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "homebound_supporting_factors",
+      "proposed_value": [
+        "uses_walker"
+      ],
+      "confidence": 0.73,
+      "source_spans": [
+        "Walker rolling Walker - rolling"
+      ],
+      "rationale": "The homebound supporting factors are directly stated in the document.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "functional_limitations",
+      "proposed_value": [
+        "ambulation_limitations"
+      ],
+      "confidence": 0.76,
+      "source_spans": [
+        "Ambulation : Education Ongoing"
+      ],
+      "rationale": "The functional limitations are directly stated in the document.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "therapy_need",
+      "proposed_value": "Occupational Therapy Occupational Therapy Occupational Therapy",
+      "confidence": 0.77,
+      "source_spans": [
+        "Occupational Therapy Occupational Therapy Occupational Therapy"
+      ],
+      "rationale": "The therapy need is directly stated in the document.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "fall_risk_narrative",
+      "proposed_value": "GG0170 Walk 150 Feet: Not attempted due to medical condition or safety concerns - 88 (02/17/26 Safety Awareness/Insight - OT: Independent (02/20/26 14:00:00) Safety Awareness/Insight - OT: Independent (02/19/26 09:00:00)",
+      "confidence": 0.7,
+      "source_spans": [
+        "GG0170 Walk 150 Feet: Not attempted due to medical condition or safety concerns - 88 (02/17/26 Safety Awareness/Insight - OT: Independent (02/20/26 14:00:00) Safety Awareness/Insight - OT: Independent (02/19/26 09:00:00)"
+      ],
+      "rationale": "The fall risk narrative is directly stated in the document.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "skilled_interventions",
+      "proposed_value": "Occupational Therapy Occupational Therapy Occupational Therapy",
+      "confidence": 0.8,
+      "source_spans": [
+        "Occupational Therapy Occupational Therapy Occupational Therapy"
+      ],
+      "rationale": "The skilled interventions are directly stated in the document.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "plan_for_next_visit",
+      "proposed_value": "Occupational Therapy Occupational Therapy Occupational Therapy",
+      "confidence": 0.78,
+      "source_spans": [
+        "Occupational Therapy Occupational Therapy Occupational Therapy"
+      ],
+      "rationale": "The plan for next visit is directly stated in the document.",
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [
+    {
+      "description": "REHAB DIAGNOSIS",
+      "icd10_code": null,
+      "confidence": 0.9,
+      "source_spans": [
+        "REHAB DIAGNOSIS"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "I24 Diagnosis code candidate from extracted document metadata",
+      "icd10_code": "I24",
+      "confidence": 0.9,
+      "source_spans": [
+        "I24 Diagnosis code candidate from extracted document metadata"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "I18 Diagnosis code candidate from extracted document metadata",
+      "icd10_code": "I18",
+      "confidence": 0.9,
+      "source_spans": [
+        "I18 Diagnosis code candidate from extracted document metadata"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "I33 Diagnosis code candidate from extracted document metadata",
+      "icd10_code": "I33",
+      "confidence": 0.9,
+      "source_spans": [
+        "I33 Diagnosis code candidate from extracted document metadata"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "I35 Diagnosis code candidate from extracted document metadata",
+      "icd10_code": "I35",
+      "confidence": 0.9,
+      "source_spans": [
+        "I35 Diagnosis code candidate from extracted document metadata"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "I38 Diagnosis code candidate from extracted document metadata",
+      "icd10_code": "I38",
+      "confidence": 0.9,
+      "source_spans": [
+        "I38 Diagnosis code candidate from extracted document metadata"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "I40 Diagnosis code candidate from extracted document metadata",
+      "icd10_code": "I40",
+      "confidence": 0.9,
+      "source_spans": [
+        "I40 Diagnosis code candidate from extracted document metadata"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "I14 Diagnosis code candidate from extracted document metadata",
+      "icd10_code": "I14",
+      "confidence": 0.9,
+      "source_spans": [
+        "I14 Diagnosis code candidate from extracted document metadata"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    }
+  ],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "preferred_language",
+    "interpreter_needed",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "patient_summary_narrative",
+    "discipline_frequencies",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status"
+  ],
+  "warnings": [
+    "LLM input source: fact_pack_primary.",
+    "Fact pack coverage: diagnoses, medications, allergies, homeboundEvidence, skilledNeedEvidence, hospitalizationReasons, assessmentValues, supportingSnippets.",
+    "Fact pack coverage score: 1.",
+    "Prompt character estimate: 2337.",
+    "Fallback reason: none."
+  ]
+}

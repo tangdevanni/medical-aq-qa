@@ -71,6 +71,85 @@ async function readJsonIfExists(filePath: string | null): Promise<unknown | null
   }
 }
 
+function asRecord(value: unknown): Record<string, unknown> | null {
+  return typeof value === "object" && value !== null && !Array.isArray(value)
+    ? (value as Record<string, unknown>)
+    : null;
+}
+
+function asString(value: unknown): string | null {
+  return typeof value === "string" ? value : null;
+}
+
+function hasMeaningfulValue(value: unknown): boolean {
+  if (value === null || value === undefined) {
+    return false;
+  }
+
+  if (typeof value === "string") {
+    return value.trim().length > 0;
+  }
+
+  if (Array.isArray(value)) {
+    return value.some((entry) => hasMeaningfulValue(entry));
+  }
+
+  return true;
+}
+
+function mergeFieldMapSnapshotWithPrintedNoteValues(input: {
+  fieldMapSnapshot: unknown | null;
+  printedNoteChartValues: unknown | null;
+}): unknown | null {
+  const fieldMapSnapshot = asRecord(input.fieldMapSnapshot);
+  const fields = Array.isArray(fieldMapSnapshot?.fields) ? fieldMapSnapshot.fields : null;
+  const printedNoteChartValuesRecord = asRecord(input.printedNoteChartValues);
+  const printedNoteChartValues = asRecord(printedNoteChartValuesRecord?.currentChartValues);
+
+  if (!fieldMapSnapshot || !fields || !printedNoteChartValues) {
+    return input.fieldMapSnapshot;
+  }
+
+  const mergedFields = fields.map((fieldValue) => {
+    const field = asRecord(fieldValue);
+    const fieldKey = asString(field?.key);
+    if (!field || !fieldKey) {
+      return fieldValue;
+    }
+
+    const recoveredChartValue = printedNoteChartValues[fieldKey];
+    if (!hasMeaningfulValue(recoveredChartValue)) {
+      return fieldValue;
+    }
+
+    if (asString(field.currentChartValueSource) === "chart_read") {
+      return fieldValue;
+    }
+
+    return {
+      ...field,
+      currentChartValue: recoveredChartValue,
+      currentChartValueSource: "printed_note_ocr",
+      populatedInChart: true,
+    };
+  });
+
+  return {
+    ...fieldMapSnapshot,
+    fields: mergedFields,
+    already_populated_from_chart: mergedFields
+      .filter((fieldValue) => {
+        const field = asRecord(fieldValue);
+        return typeof field?.populatedInChart === "boolean" ? field.populatedInChart : false;
+      })
+      .map((fieldValue) => {
+        const field = asRecord(fieldValue);
+        return asString(field?.key);
+      })
+      .filter((fieldKey): fieldKey is string => fieldKey !== null),
+  };
+}
+
 export async function writePatientDashboardState(params: {
   outputDirectory: string;
   run: PatientRun;
@@ -81,6 +160,18 @@ export async function writePatientDashboardState(params: {
     outputDirectory: params.outputDirectory,
     patientId: params.run.workItemId,
     workflowRuns: params.run.workflowRuns,
+  });
+  const codingInput = await readJsonIfExists(artifactPaths.codingInput);
+  const documentText = await readJsonIfExists(artifactPaths.documentText);
+  const qaPrefetch = await readJsonIfExists(artifactPaths.qaPrefetch);
+  const patientQaReference = await readJsonIfExists(artifactPaths.patientQaReference);
+  const qaDocumentSummary = await readJsonIfExists(artifactPaths.qaDocumentSummary);
+  const rawFieldMapSnapshot = await readJsonIfExists(artifactPaths.fieldMapSnapshot);
+  const printedNoteChartValues = await readJsonIfExists(artifactPaths.printedNoteChartValues);
+  const printedNoteReview = await readJsonIfExists(artifactPaths.printedNoteReview);
+  const fieldMapSnapshot = mergeFieldMapSnapshotWithPrintedNoteValues({
+    fieldMapSnapshot: rawFieldMapSnapshot,
+    printedNoteChartValues,
   });
 
   const state: PatientDashboardState = {
@@ -110,14 +201,14 @@ export async function writePatientDashboardState(params: {
     workflowRuns: params.run.workflowRuns,
     artifactPaths,
     artifactContents: {
-      codingInput: await readJsonIfExists(artifactPaths.codingInput),
-      documentText: await readJsonIfExists(artifactPaths.documentText),
-      qaPrefetch: await readJsonIfExists(artifactPaths.qaPrefetch),
-      patientQaReference: await readJsonIfExists(artifactPaths.patientQaReference),
-      qaDocumentSummary: await readJsonIfExists(artifactPaths.qaDocumentSummary),
-      fieldMapSnapshot: await readJsonIfExists(artifactPaths.fieldMapSnapshot),
-      printedNoteChartValues: await readJsonIfExists(artifactPaths.printedNoteChartValues),
-      printedNoteReview: await readJsonIfExists(artifactPaths.printedNoteReview),
+      codingInput,
+      documentText,
+      qaPrefetch,
+      patientQaReference,
+      qaDocumentSummary,
+      fieldMapSnapshot,
+      printedNoteChartValues,
+      printedNoteReview,
     },
   };
 

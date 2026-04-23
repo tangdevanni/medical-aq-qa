@@ -1,0 +1,31 @@
+{
+  "generatedAt": "2026-04-22T19:50:50.469Z",
+  "source": "printed_note_ocr",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\evidence\\BARBRA_NEWTON__c549fe0583d92a92\\oasis-printed-note\\extracted-text.txt",
+  "llmInputSource": "fact_pack_primary",
+  "extractedFieldCount": 1,
+  "invocationModelId": "us.amazon.nova-lite-v1:0",
+  "currentChartValues": {
+    "patient_name": "Barbra Newton"
+  },
+  "extractedFieldValues": [
+    {
+      "field_key": "patient_name",
+      "current_value": "Barbra Newton",
+      "confidence": 0.95,
+      "source_spans": [
+        "Patient: Barbra Newton"
+      ]
+    }
+  ],
+  "warnings": [
+    "LLM input source: fact_pack_primary.",
+    "Fact pack coverage: diagnoses, hospitalizationReasons, medications.",
+    "Fact pack coverage score: 0.55.",
+    "Prompt character estimate: 730.",
+    "Fallback reason: none.",
+    "Deterministic printed-note chart values: none.",
+    "Selected option labels detected: 0.",
+    "Printed-note chart-value extraction used inference profile us.amazon.nova-lite-v1:0."
+  ]
+}

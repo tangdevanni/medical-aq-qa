@@ -1,0 +1,110 @@
+{
+  "generatedAt": "2026-04-22T20:00:10.630Z",
+  "source": "printed_note_ocr",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-22T19-21-35-668Z-a3d2e012\\outputs\\evidence\\DENNIS_CONTI__044267d618e0d2c3\\oasis-printed-note\\extracted-text.txt",
+  "llmInputSource": "fact_pack_primary",
+  "extractedFieldCount": 7,
+  "invocationModelId": "us.amazon.nova-lite-v1:0",
+  "currentChartValues": {
+    "primary_diagnosis": "G60.9 - Hereditary and idiopathic",
+    "secondary_diagnoses": [
+      "M06.9 - Rheumatoid arthritis, unspecified",
+      "D64.9 - Anemia, unspecified"
+    ],
+    "medication_list": [
+      "gabapentin",
+      "hydrocodone-acetaminophen"
+    ],
+    "therapy_need": "Physical therapy is essential to help him regain strength and functionality in his affected lower extremities",
+    "pain_assessment_narrative": "Experiencing pain impairs/restricts mobility. Severe pain on ambulation. Activities restricted due to pain limitations",
+    "code_status": "full_code",
+    "functional_limitations": [
+      "Ambulation",
+      "Dyspnea with minimal exertion",
+      "Endurance"
+    ]
+  },
+  "extractedFieldValues": [
+    {
+      "field_key": "primary_diagnosis",
+      "current_value": "G60.9 - Hereditary and idiopathic",
+      "confidence": 0.99,
+      "source_spans": [
+        "PRIMARY DIAGNOSIS Severity 04/17/2026 G60.9 - Hereditary and idiopathic"
+      ]
+    },
+    {
+      "field_key": "secondary_diagnoses",
+      "current_value": [
+        "M06.9 - Rheumatoid arthritis, unspecified",
+        "D64.9 - Anemia, unspecified"
+      ],
+      "confidence": 0.98,
+      "source_spans": [
+        "M06.9 - Rheumatoid arthritis, unspecified",
+        "D64.9 - Anemia, unspecified"
+      ]
+    },
+    {
+      "field_key": "medication_list",
+      "current_value": [
+        "gabapentin",
+        "hydrocodone-acetaminophen"
+      ],
+      "confidence": 0.9,
+      "source_spans": [
+        "gabapentin and hydrocodone-acetaminophen"
+      ]
+    },
+    {
+      "field_key": "therapy_need",
+      "current_value": "Physical therapy is essential to help him regain strength and functionality in his affected lower extremities",
+      "confidence": 0.85,
+      "source_spans": [
+        "physical therapy is essential to help him regain strength and functionality in his affected lower extremities"
+      ]
+    },
+    {
+      "field_key": "pain_assessment_narrative",
+      "current_value": "Experiencing pain impairs/restricts mobility. Severe pain on ambulation. Activities restricted due to pain limitations",
+      "confidence": 0.9,
+      "source_spans": [
+        "Experiencing pain impairs/restricts mobility",
+        "Severe pain on ambulation",
+        "Activities restricted due to pain limitations"
+      ]
+    },
+    {
+      "field_key": "code_status",
+      "current_value": "full_code",
+      "confidence": 0.98,
+      "source_spans": [
+        "Full Code"
+      ]
+    },
+    {
+      "field_key": "functional_limitations",
+      "current_value": [
+        "Ambulation",
+        "Dyspnea with minimal exertion",
+        "Endurance"
+      ],
+      "confidence": 0.96,
+      "source_spans": [
+        "6 - Endurance",
+        "Ambulation",
+        "Severe pain on ambulation"
+      ]
+    }
+  ],
+  "warnings": [
+    "LLM input source: fact_pack_primary.",
+    "Fact pack coverage: diagnoses, assessmentValues, homeboundEvidence, skilledNeedEvidence, hospitalizationReasons, medications, allergies, supportingSnippets.",
+    "Fact pack coverage score: 1.",
+    "Prompt character estimate: 3002.",
+    "Fallback reason: none.",
+    "Deterministic printed-note chart values: primary_diagnosis, secondary_diagnoses, code_status, functional_limitations.",
+    "Selected option labels detected: 154.",
+    "Printed-note chart-value extraction used inference profile us.amazon.nova-lite-v1:0."
+  ]
+}

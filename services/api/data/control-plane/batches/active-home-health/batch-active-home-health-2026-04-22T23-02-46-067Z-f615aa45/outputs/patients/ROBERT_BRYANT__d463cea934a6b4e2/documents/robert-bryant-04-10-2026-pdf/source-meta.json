@@ -1,0 +1,90 @@
+{
+  "selectedSourceFile": "ROBERT BRYANT 04.10.2026.pdf",
+  "selectedSourceFileNormalized": "robert bryant 04.10.2026.pdf",
+  "admissionOrderTitle": "📄 ROBERT BRYANT 04.10.2026.pdf 📝 ✏️ 🗑️ 🔗",
+  "admissionOrderSelectorUsed": "File Uploads source document row by .file-item/.file-label or table row",
+  "sourceUrlBeforeClick": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69dd7978f9d65d0c4608718c/intake/69dd79b004b8470c4700346d/calendar",
+  "sourceUrlAfterClick": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69dd7978f9d65d0c4608718c/file-uploads",
+  "matchedReferralFileLabel": "ROBERT BRYANT 04.10.2026.pdf",
+  "normalizedFileLabels": [
+    "robert bryant demo.pdf",
+    "robert bryant active hho.pdf",
+    "robert bryant 04.10.2026.pdf"
+  ],
+  "matchedSourceDocuments": [
+    {
+      "label": "📄 ROBERT BRYANT 04.10.2026.pdf",
+      "normalizedLabel": "robert bryant 04.10.2026.pdf",
+      "score": 20
+    },
+    {
+      "label": "📄 ROBERT BRYANT 04.10.2026.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedLabel": "robert bryant 04.10.2026.pdf",
+      "score": 20
+    },
+    {
+      "label": "📄 ROBERT BRYANT ACTIVE HHO.pdf",
+      "normalizedLabel": "robert bryant active hho.pdf",
+      "score": 20
+    },
+    {
+      "label": "📄 ROBERT BRYANT ACTIVE HHO.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedLabel": "robert bryant active hho.pdf",
+      "score": 20
+    },
+    {
+      "label": "📄 ROBERT BRYANT DEMO.pdf",
+      "normalizedLabel": "robert bryant demo.pdf",
+      "score": 20
+    },
+    {
+      "label": "📄 ROBERT BRYANT DEMO.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedLabel": "robert bryant demo.pdf",
+      "score": 20
+    }
+  ],
+  "viewerDetected": true,
+  "viewerMarkerSamples": [
+    "of ⁨5⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools",
+    "Tools",
+    "Print"
+  ],
+  "printButtonDetected": true,
+  "printButtonVisible": true,
+  "printButtonSelectorUsed": "pdf-print #printButton, #printButton, pdf-shy-button[primarytoolbarid='printButton'] button",
+  "printClickSucceeded": false,
+  "pdfResponseDetected": true,
+  "pdfResponseUrl": "https://api.finalehealth.com/api/v1/files/69dd7e756d00820c58e00f38?index=patient",
+  "pdfContentType": "application/pdf",
+  "pdfSavedPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\ROBERT_BRYANT__d463cea934a6b4e2\\documents\\robert-bryant-04-10-2026-pdf\\source.pdf",
+  "pdfByteSize": 17174,
+  "printAcquisitionMethodUsed": "network_pdf_response",
+  "printedPdfSaved": false,
+  "printedPdfPath": null,
+  "sourcePdfPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\ROBERT_BRYANT__d463cea934a6b4e2\\documents\\robert-bryant-04-10-2026-pdf\\source.pdf",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\ROBERT_BRYANT__d463cea934a6b4e2\\documents\\robert-bryant-04-10-2026-pdf\\extracted-text.txt",
+  "extractionResultPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\ROBERT_BRYANT__d463cea934a6b4e2\\documents\\robert-bryant-04-10-2026-pdf\\extraction-result.json",
+  "extractedTextLength": 104,
+  "rawExtractedTextSource": "dom",
+  "domExtractionRejectedReasons": [
+    "viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS"
+  ],
+  "extractionSuccess": false,
+  "queuedForLlm": true,
+  "extractionPolicyDecision": {
+    "mode": "hybrid_candidate",
+    "confidence": "medium",
+    "reasons": [
+      "Source PDF shows partial text-layer signals; native extraction may be incomplete",
+      "Printed PDF is not clearly usable for native extraction",
+      "Mixed signals suggest trying native extraction first with OCR fallback"
+    ],
+    "recommendedSourcePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\ROBERT_BRYANT__d463cea934a6b4e2\\documents\\robert-bryant-04-10-2026-pdf\\source.pdf",
+    "fallbackSourcePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\ROBERT_BRYANT__d463cea934a6b4e2\\documents\\robert-bryant-04-10-2026-pdf\\source.pdf",
+    "hasUsablePdfTextLayer": false,
+    "hasPdfSource": true,
+    "hasPrintedPdfSource": false,
+    "hasHtmlSource": false
+  },
+  "generatedAt": "2026-04-23T00:51:42.178Z"
+}

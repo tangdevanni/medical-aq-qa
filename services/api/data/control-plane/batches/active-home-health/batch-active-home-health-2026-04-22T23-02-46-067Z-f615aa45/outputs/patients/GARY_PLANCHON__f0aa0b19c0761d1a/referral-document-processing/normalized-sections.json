@@ -1,0 +1,417 @@
+[
+  {
+    "sectionName": "patient_identity",
+    "extractedTextSpans": [
+      "DOB:"
+    ],
+    "normalizedSummary": "DOB:",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 9,
+        "lineEnd": 9,
+        "charStart": 131,
+        "charEnd": 135
+      }
+    ]
+  },
+  {
+    "sectionName": "hospitalization_history",
+    "extractedTextSpans": [
+      "inpatient hospitalizations.",
+      "SN needed d/t high potential for disease progression and inpatient hospitalizations.",
+      "Pt will need skilled nursing due to high potential for hospital admission."
+    ],
+    "normalizedSummary": "inpatient hospitalizations. SN needed d/t high potential for disease progression and inpatient hospitalizations. Pt will need skilled nursing due to high potential for hospital admission.",
+    "confidence": 0.95,
+    "lineReferences": [
+      {
+        "lineStart": 386,
+        "lineEnd": 386,
+        "charStart": 12914,
+        "charEnd": 12941
+      },
+      {
+        "lineStart": 393,
+        "lineEnd": 393,
+        "charStart": 13317,
+        "charEnd": 13401
+      },
+      {
+        "lineStart": 399,
+        "lineEnd": 399,
+        "charStart": 13716,
+        "charEnd": 13790
+      }
+    ]
+  },
+  {
+    "sectionName": "medical_necessity",
+    "extractedTextSpans": [
+      "MEDICAL NECESSITY: This visit with a FTF encounter with the patient in the home is not",
+      "medical necessity for",
+      "Pt will need skilled nursing due to high potential for hospital admission.",
+      "Pt will need skilled nursing for teachings of disease process, diet and new medication"
+    ],
+    "normalizedSummary": "MEDICAL NECESSITY: This visit with a FTF encounter with the patient in the home is not medical necessity for Pt will need skilled nursing due to high potential for hospital admission.",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 149,
+        "lineEnd": 149,
+        "charStart": 2295,
+        "charEnd": 2381
+      },
+      {
+        "lineStart": 152,
+        "lineEnd": 152,
+        "charStart": 2453,
+        "charEnd": 2474
+      },
+      {
+        "lineStart": 399,
+        "lineEnd": 399,
+        "charStart": 13716,
+        "charEnd": 13790
+      },
+      {
+        "lineStart": 400,
+        "lineEnd": 400,
+        "charStart": 13791,
+        "charEnd": 13877
+      }
+    ]
+  },
+  {
+    "sectionName": "medications",
+    "extractedTextSpans": [
+      "Pharmacy 3350: 5198 Boulder Highway, LAS VEGAS (BOULDER) 89122 (702) 434 - 1915 (o)",
+      "medication, and he is no longer coughing much.",
+      "Additionally, he experienced diarrhea while on his medication, but this has since resolved",
+      "Allergies",
+      "Symptoms likely related to recent antibiotic course and should improve as medication",
+      "medications, medication regimen, comorbidities, and care plan and educate appropriately.",
+      "Pt needs assistance with medication management, observation and assessment for",
+      "Pt will need skilled nursing for teachings of disease process, diet and new medication",
+      "- Start taking appetite stimulant medication as prescribed to help improve appetite",
+      "- Contact office if appetite does not improve for possible additional medication"
+    ],
+    "normalizedSummary": "Pharmacy 3350: 5198 Boulder Highway, LAS VEGAS (BOULDER) 89122 (702) 434 - 1915 (o) medication, and he is no longer coughing much. Additionally, he experienced diarrhea while on his medication, but this has since resolved",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 46,
+        "lineEnd": 46,
+        "charStart": 600,
+        "charEnd": 683
+      },
+      {
+        "lineStart": 164,
+        "lineEnd": 164,
+        "charStart": 2971,
+        "charEnd": 3017
+      },
+      {
+        "lineStart": 179,
+        "lineEnd": 179,
+        "charStart": 3735,
+        "charEnd": 3825
+      },
+      {
+        "lineStart": 225,
+        "lineEnd": 225,
+        "charStart": 5900,
+        "charEnd": 5909
+      },
+      {
+        "lineStart": 338,
+        "lineEnd": 338,
+        "charStart": 10615,
+        "charEnd": 10699
+      },
+      {
+        "lineStart": 389,
+        "lineEnd": 389,
+        "charStart": 13077,
+        "charEnd": 13165
+      },
+      {
+        "lineStart": 397,
+        "lineEnd": 397,
+        "charStart": 13615,
+        "charEnd": 13693
+      },
+      {
+        "lineStart": 400,
+        "lineEnd": 400,
+        "charStart": 13791,
+        "charEnd": 13877
+      },
+      {
+        "lineStart": 409,
+        "lineEnd": 409,
+        "charStart": 14170,
+        "charEnd": 14253
+      },
+      {
+        "lineStart": 416,
+        "lineEnd": 416,
+        "charStart": 14547,
+        "charEnd": 14627
+      }
+    ]
+  },
+  {
+    "sectionName": "caregiver_support",
+    "extractedTextSpans": [
+      "Relationship to Patient:",
+      "Relationship to Patient:",
+      "Relationship to Patient:"
+    ],
+    "normalizedSummary": "Relationship to Patient: Relationship to Patient: Relationship to Patient:",
+    "confidence": 0.95,
+    "lineReferences": [
+      {
+        "lineStart": 56,
+        "lineEnd": 56,
+        "charStart": 821,
+        "charEnd": 845
+      },
+      {
+        "lineStart": 58,
+        "lineEnd": 58,
+        "charStart": 851,
+        "charEnd": 875
+      },
+      {
+        "lineStart": 105,
+        "lineEnd": 105,
+        "charStart": 1497,
+        "charEnd": 1521
+      }
+    ]
+  },
+  {
+    "sectionName": "therapy_need",
+    "extractedTextSpans": [
+      "PT/OT to evaluate and treat appropriately to increase functionality, decreases debility and"
+    ],
+    "normalizedSummary": "PT/OT to evaluate and treat appropriately to increase functionality, decreases debility and",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 402,
+        "lineEnd": 402,
+        "charStart": 13887,
+        "charEnd": 13978
+      }
+    ]
+  },
+  {
+    "sectionName": "advance_directives",
+    "extractedTextSpans": [
+      "Advance directive discussed with patient (Z71.89) Other specified counseling modified",
+      "advance directive, but completion of these is optional."
+    ],
+    "normalizedSummary": "Advance directive discussed with patient (Z71.89) Other specified counseling modified advance directive, but completion of these is optional.",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 281,
+        "lineEnd": 281,
+        "charStart": 7876,
+        "charEnd": 7961
+      },
+      {
+        "lineStart": 379,
+        "lineEnd": 379,
+        "charStart": 12518,
+        "charEnd": 12573
+      }
+    ]
+  },
+  {
+    "sectionName": "other_clinical_notes",
+    "extractedTextSpans": [
+      "Disclosure Notes:",
+      "Notes:",
+      "Notes:",
+      "Notes:",
+      "Plan Name:",
+      "Plan Type:",
+      "SOAP Note",
+      "Note created using Tebra",
+      "SOAP Note",
+      "Note created using Tebra",
+      "SOAP Note",
+      "Note created using Tebra",
+      "SOAP Note",
+      "Plan",
+      "Plan:",
+      "Plan:",
+      "Plan:",
+      "Note created using Tebra",
+      "SOAP Note",
+      "CCM- Comprehensive personalized chronic care plan created, revised, and updated, as",
+      "Provided a comprehensive care plan to set and track progress towards health",
+      "medications, medication regimen, comorbidities, and care plan and educate appropriately.",
+      "Note created using Tebra",
+      "SOAP Note",
+      "Note created using Tebra"
+    ],
+    "normalizedSummary": "Disclosure Notes: Notes: Notes:",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 32,
+        "lineEnd": 32,
+        "charStart": 399,
+        "charEnd": 416
+      },
+      {
+        "lineStart": 50,
+        "lineEnd": 50,
+        "charStart": 744,
+        "charEnd": 750
+      },
+      {
+        "lineStart": 86,
+        "lineEnd": 86,
+        "charStart": 1241,
+        "charEnd": 1247
+      },
+      {
+        "lineStart": 87,
+        "lineEnd": 87,
+        "charStart": 1248,
+        "charEnd": 1254
+      },
+      {
+        "lineStart": 99,
+        "lineEnd": 99,
+        "charStart": 1422,
+        "charEnd": 1432
+      },
+      {
+        "lineStart": 122,
+        "lineEnd": 122,
+        "charStart": 1722,
+        "charEnd": 1732
+      },
+      {
+        "lineStart": 135,
+        "lineEnd": 135,
+        "charStart": 1903,
+        "charEnd": 1912
+      },
+      {
+        "lineStart": 193,
+        "lineEnd": 193,
+        "charStart": 4309,
+        "charEnd": 4333
+      },
+      {
+        "lineStart": 195,
+        "lineEnd": 195,
+        "charStart": 4356,
+        "charEnd": 4365
+      },
+      {
+        "lineStart": 264,
+        "lineEnd": 264,
+        "charStart": 7162,
+        "charEnd": 7186
+      },
+      {
+        "lineStart": 266,
+        "lineEnd": 266,
+        "charStart": 7209,
+        "charEnd": 7218
+      },
+      {
+        "lineStart": 307,
+        "lineEnd": 307,
+        "charStart": 9360,
+        "charEnd": 9384
+      },
+      {
+        "lineStart": 309,
+        "lineEnd": 309,
+        "charStart": 9407,
+        "charEnd": 9416
+      },
+      {
+        "lineStart": 318,
+        "lineEnd": 318,
+        "charStart": 9732,
+        "charEnd": 9736
+      },
+      {
+        "lineStart": 329,
+        "lineEnd": 329,
+        "charStart": 10161,
+        "charEnd": 10166
+      },
+      {
+        "lineStart": 340,
+        "lineEnd": 340,
+        "charStart": 10720,
+        "charEnd": 10725
+      },
+      {
+        "lineStart": 350,
+        "lineEnd": 350,
+        "charStart": 11209,
+        "charEnd": 11214
+      },
+      {
+        "lineStart": 362,
+        "lineEnd": 362,
+        "charStart": 11828,
+        "charEnd": 11852
+      },
+      {
+        "lineStart": 364,
+        "lineEnd": 364,
+        "charStart": 11875,
+        "charEnd": 11884
+      },
+      {
+        "lineStart": 380,
+        "lineEnd": 380,
+        "charStart": 12574,
+        "charEnd": 12657
+      },
+      {
+        "lineStart": 382,
+        "lineEnd": 382,
+        "charStart": 12666,
+        "charEnd": 12741
+      },
+      {
+        "lineStart": 389,
+        "lineEnd": 389,
+        "charStart": 13077,
+        "charEnd": 13165
+      },
+      {
+        "lineStart": 419,
+        "lineEnd": 419,
+        "charStart": 14670,
+        "charEnd": 14694
+      },
+      {
+        "lineStart": 426,
+        "lineEnd": 426,
+        "charStart": 14813,
+        "charEnd": 14822
+      },
+      {
+        "lineStart": 441,
+        "lineEnd": 441,
+        "charStart": 15268,
+        "charEnd": 15292
+      }
+    ]
+  }
+]

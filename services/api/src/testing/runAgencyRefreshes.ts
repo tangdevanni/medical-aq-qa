@@ -5,7 +5,7 @@ const DEFAULT_AGENCY_IDS = [
   "active-home-health",
   "avery-home-health",
   "meadows-home-health",
-  "default",
+  "star-home-health",
 ] as const;
 
 const DEFAULT_POLL_INTERVAL_MS = 5_000;

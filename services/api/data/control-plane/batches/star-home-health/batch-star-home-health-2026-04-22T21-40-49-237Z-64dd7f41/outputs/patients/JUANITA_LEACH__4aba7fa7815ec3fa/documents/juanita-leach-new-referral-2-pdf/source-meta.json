@@ -1,0 +1,90 @@
+{
+  "selectedSourceFile": "juanita leach new referral 2.pdf",
+  "selectedSourceFileNormalized": "juanita leach new referral 2.pdf",
+  "admissionOrderTitle": "📄 juanita leach new referral 2.pdf 📝 ✏️ 🗑️ 🔗",
+  "admissionOrderSelectorUsed": "File Uploads source document row by .file-item/.file-label or table row",
+  "sourceUrlBeforeClick": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699f40b6b4a1940c4c93ab7e/intake/699f4130b4a1940c4c93ac10/calendar",
+  "sourceUrlAfterClick": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/699f40b6b4a1940c4c93ab7e/file-uploads",
+  "matchedReferralFileLabel": "juanita leach new referral 2.pdf",
+  "normalizedFileLabels": [
+    "juanita leach.pdf",
+    "juanita leach new referral 2.pdf",
+    "juanita leach new referral.pdf"
+  ],
+  "matchedSourceDocuments": [
+    {
+      "label": "📄 juanita leach new referral 2.pdf",
+      "normalizedLabel": "juanita leach new referral 2.pdf",
+      "score": 150
+    },
+    {
+      "label": "📄 juanita leach new referral 2.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedLabel": "juanita leach new referral 2.pdf",
+      "score": 150
+    },
+    {
+      "label": "📄 juanita leach new referral.pdf",
+      "normalizedLabel": "juanita leach new referral.pdf",
+      "score": 150
+    },
+    {
+      "label": "📄 juanita leach new referral.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedLabel": "juanita leach new referral.pdf",
+      "score": 150
+    },
+    {
+      "label": "📄 juanita leach.pdf",
+      "normalizedLabel": "juanita leach.pdf",
+      "score": 20
+    },
+    {
+      "label": "📄 juanita leach.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedLabel": "juanita leach.pdf",
+      "score": 20
+    }
+  ],
+  "viewerDetected": true,
+  "viewerMarkerSamples": [
+    "of ⁨3⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools",
+    "Tools",
+    "Print"
+  ],
+  "printButtonDetected": true,
+  "printButtonVisible": true,
+  "printButtonSelectorUsed": "pdf-print #printButton, #printButton, pdf-shy-button[primarytoolbarid='printButton'] button",
+  "printClickSucceeded": false,
+  "pdfResponseDetected": true,
+  "pdfResponseUrl": "https://api.finalehealth.com/api/v1/files/69a5ee4b1e8e210c833872a0?index=patient",
+  "pdfContentType": "application/pdf",
+  "pdfSavedPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\patients\\JUANITA_LEACH__4aba7fa7815ec3fa\\documents\\juanita-leach-new-referral-2-pdf\\source.pdf",
+  "pdfByteSize": 655638,
+  "printAcquisitionMethodUsed": "network_pdf_response",
+  "printedPdfSaved": false,
+  "printedPdfPath": null,
+  "sourcePdfPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\patients\\JUANITA_LEACH__4aba7fa7815ec3fa\\documents\\juanita-leach-new-referral-2-pdf\\source.pdf",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\patients\\JUANITA_LEACH__4aba7fa7815ec3fa\\documents\\juanita-leach-new-referral-2-pdf\\extracted-text.txt",
+  "extractionResultPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\patients\\JUANITA_LEACH__4aba7fa7815ec3fa\\documents\\juanita-leach-new-referral-2-pdf\\extraction-result.json",
+  "extractedTextLength": 104,
+  "rawExtractedTextSource": "dom",
+  "domExtractionRejectedReasons": [
+    "viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS"
+  ],
+  "extractionSuccess": false,
+  "queuedForLlm": true,
+  "extractionPolicyDecision": {
+    "mode": "ocr_required",
+    "confidence": "high",
+    "reasons": [
+      "PDF appears image-based/scanned; OCR likely required",
+      "No printed PDF available",
+      "OCR is the cheapest acceptable option that preserves clinically meaningful content"
+    ],
+    "recommendedSourcePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\patients\\JUANITA_LEACH__4aba7fa7815ec3fa\\documents\\juanita-leach-new-referral-2-pdf\\source.pdf",
+    "fallbackSourcePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\patients\\JUANITA_LEACH__4aba7fa7815ec3fa\\documents\\juanita-leach-new-referral-2-pdf\\source.pdf",
+    "hasUsablePdfTextLayer": false,
+    "hasPdfSource": true,
+    "hasPrintedPdfSource": false,
+    "hasHtmlSource": false
+  },
+  "generatedAt": "2026-04-22T21:58:39.149Z"
+}

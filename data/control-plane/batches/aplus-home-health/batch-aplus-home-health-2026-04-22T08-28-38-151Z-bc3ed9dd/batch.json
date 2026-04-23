@@ -1,0 +1,67 @@
+{
+  "id": "batch-aplus-home-health-2026-04-22T08-28-38-151Z-bc3ed9dd",
+  "subsidiary": {
+    "id": "aplus-home-health",
+    "slug": "aplus-home-health",
+    "name": "APlus Home Health"
+  },
+  "createdAt": "2026-04-22T08:28:38.151Z",
+  "updatedAt": "2026-04-22T08:28:58.826Z",
+  "runMode": "read_only",
+  "billingPeriod": null,
+  "status": "FAILED",
+  "schedule": {
+    "scheduledRunId": null,
+    "active": false,
+    "rerunEnabled": false,
+    "intervalHours": 24,
+    "timezone": "Asia/Manila",
+    "localTimes": [
+      "15:00",
+      "23:30"
+    ],
+    "lastRunAt": null,
+    "nextScheduledRunAt": null
+  },
+  "sourceWorkbook": {
+    "subsidiaryId": "aplus-home-health",
+    "acquisitionProvider": "FINALE",
+    "acquisitionStatus": "FAILED",
+    "acquisitionReference": null,
+    "acquisitionNotes": [
+      "locator.click: Timeout 6000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByText(/oasis\\s*30\\s*day/i).first()\u001b[22m\n\u001b[2m    - locator resolved to <div class=\"position-relative\" _ngcontent-ng-c62705561=\"\">…</div>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <ngb-modal-window tabindex=\"-1\" role=\"dialog\" aria-modal=\"true\" class=\"d-block modal fade show\">…</ngb-modal-window> intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not stable\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is not stable\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - element is outside of the viewport\u001b[22m\n\u001b[2m  4 × retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n\u001b[2m      - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <ngb-modal-window tabindex=\"-1\" role=\"dialog\" aria-modal=\"true\" class=\"d-block modal fade show\">…</ngb-modal-window> intercepts pointer events\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - element is outside of the viewport\u001b[22m\n\u001b[2m  3 × retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n\u001b[2m      - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <ngb-modal-window tabindex=\"-1\" role=\"dialog\" aria-modal=\"true\" class=\"d-block modal fade show\">…</ngb-modal-window> intercepts pointer events\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - element is outside of the viewport\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n"
+    ],
+    "acquisitionMetadata": null,
+    "originalFileName": "aplus-home-health-oasis-30-days.xlsx",
+    "storedPath": "C:\\dev\\medical-aq-qa\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T08-28-38-151Z-bc3ed9dd\\source\\aplus-home-health-oasis-30-days.xlsx",
+    "uploadedAt": "2026-04-22T08:28:38.151Z",
+    "verification": null
+  },
+  "storage": {
+    "batchRoot": "C:\\dev\\medical-aq-qa\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T08-28-38-151Z-bc3ed9dd",
+    "outputRoot": "C:\\dev\\medical-aq-qa\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T08-28-38-151Z-bc3ed9dd\\outputs",
+    "manifestPath": null,
+    "workItemsPath": null,
+    "parserExceptionsPath": null,
+    "batchSummaryPath": null,
+    "patientResultsDirectory": "C:\\dev\\medical-aq-qa\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T08-28-38-151Z-bc3ed9dd\\outputs\\patient-results",
+    "evidenceDirectory": "C:\\dev\\medical-aq-qa\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T08-28-38-151Z-bc3ed9dd\\outputs\\evidence"
+  },
+  "parse": {
+    "requestedAt": null,
+    "completedAt": null,
+    "workItemCount": 0,
+    "eligibleWorkItemCount": 0,
+    "parserExceptionCount": 0,
+    "sourceDetections": [],
+    "sheetSummaries": [],
+    "lastError": "locator.click: Timeout 6000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByText(/oasis\\s*30\\s*day/i).first()\u001b[22m\n\u001b[2m    - locator resolved to <div class=\"position-relative\" _ngcontent-ng-c62705561=\"\">…</div>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <ngb-modal-window tabindex=\"-1\" role=\"dialog\" aria-modal=\"true\" class=\"d-block modal fade show\">…</ngb-modal-window> intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not stable\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is not stable\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - element is outside of the viewport\u001b[22m\n\u001b[2m  4 × retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n\u001b[2m      - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <ngb-modal-window tabindex=\"-1\" role=\"dialog\" aria-modal=\"true\" class=\"d-block modal fade show\">…</ngb-modal-window> intercepts pointer events\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - element is outside of the viewport\u001b[22m\n\u001b[2m  3 × retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n\u001b[2m      - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <ngb-modal-window tabindex=\"-1\" role=\"dialog\" aria-modal=\"true\" class=\"d-block modal fade show\">…</ngb-modal-window> intercepts pointer events\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - element is outside of the viewport\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n"
+  },
+  "run": {
+    "requestedAt": null,
+    "completedAt": null,
+    "patientRunCount": 0,
+    "lastError": null
+  },
+  "patientRuns": []
+}

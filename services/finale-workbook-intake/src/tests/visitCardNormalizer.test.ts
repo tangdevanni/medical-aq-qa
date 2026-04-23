@@ -6,6 +6,8 @@ describe("visitCardNormalizer", () => {
     expect(classifyCalendarEventType("OASIS")).toBe("oasis");
     expect(classifyCalendarEventType("PT Visit")).toBe("pt_visit");
     expect(classifyCalendarEventType("SN Visit")).toBe("sn_visit");
+    expect(classifyCalendarEventType("HHA Visit")).toBe("hha_visit");
+    expect(classifyCalendarEventType("MSW Visit")).toBe("msw_visit");
     expect(classifyCalendarEventType("Phys. Order")).toBe("physician_order");
     expect(classifyCalendarEventType("CN")).toBe("communication_note");
     expect(classifyCalendarEventType("Transfer")).toBe("transfer");

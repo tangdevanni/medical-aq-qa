@@ -1,0 +1,51 @@
+{
+  "documentType": "ORDER",
+  "sourceLabel": "PRINCE CYNTHIA G REFERRAL 04152026.pdf",
+  "normalizedSourceLabel": "prince cynthia g referral 04152026.pdf",
+  "viewerDetected": true,
+  "printButtonDetected": true,
+  "printButtonSelectorUsed": "pdf-print #printButton, #printButton, pdf-shy-button[primarytoolbarid='printButton'] button",
+  "printClickSucceeded": false,
+  "pdfResponseDetected": true,
+  "pdfResponseUrl": "https://api.finalehealth.com/api/v1/files/69dfff3c29a83a1907c0bb5b?index=documents",
+  "pdfContentType": "application/pdf",
+  "pdfSavedPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\CYNTHIA_PRINCE__84b3f6660cd017dc\\documents\\prince-cynthia-g-referral-04152026-pdf\\source.pdf",
+  "pdfByteSize": 1121018,
+  "printAcquisitionMethodUsed": "network_pdf_response",
+  "printedPdfSaved": false,
+  "printedPdfPath": null,
+  "sourcePdfPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\CYNTHIA_PRINCE__84b3f6660cd017dc\\documents\\prince-cynthia-g-referral-04152026-pdf\\source.pdf",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\CYNTHIA_PRINCE__84b3f6660cd017dc\\documents\\prince-cynthia-g-referral-04152026-pdf\\extracted-text.txt",
+  "extractedTextLength": 104,
+  "extractionMethodUsed": "click",
+  "rawExtractedTextSource": "dom",
+  "domExtractionRejectedReasons": [
+    "viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS"
+  ],
+  "extractionSuccess": false,
+  "queuedForLlm": true,
+  "extractionPolicyDecision": {
+    "mode": "ocr_required",
+    "confidence": "high",
+    "reasons": [
+      "PDF appears image-based/scanned; OCR likely required",
+      "No printed PDF available",
+      "OCR is the cheapest acceptable option that preserves clinically meaningful content"
+    ],
+    "recommendedSourcePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\CYNTHIA_PRINCE__84b3f6660cd017dc\\documents\\prince-cynthia-g-referral-04152026-pdf\\source.pdf",
+    "fallbackSourcePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\CYNTHIA_PRINCE__84b3f6660cd017dc\\documents\\prince-cynthia-g-referral-04152026-pdf\\source.pdf",
+    "hasUsablePdfTextLayer": false,
+    "hasPdfSource": true,
+    "hasPrintedPdfSource": false,
+    "hasHtmlSource": false
+  },
+  "admissionReasonPrimary": null,
+  "admissionReasonSnippets": [],
+  "possibleIcd10Codes": [
+    "I00",
+    "I25",
+    "I50"
+  ],
+  "textPreview": "Automatic Zoom Actual Size Page Fit Page Width ⁨50⁩% ⁨100⁩% ⁨125⁩% ⁨150⁩% ⁨200⁩% ⁨300⁩% ⁨400⁩% 90% Tools",
+  "generatedAt": "2026-04-22T20:07:40.400Z"
+}

@@ -1,0 +1,219 @@
+{
+  "workflowDomain": "qa",
+  "workflowRunId": "batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45-GARY_PLANCHON__f0aa0b19c0761d1a:qa",
+  "patientRunId": "batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45-GARY_PLANCHON__f0aa0b19c0761d1a",
+  "patientName": "Gary Planchon",
+  "patientId": null,
+  "chartUrl": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69dd1fd1602ccfda46fc4400/intake/69dd25427fe92d0c52c11da5/calendar",
+  "dashboardUrl": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/dashboard",
+  "resolvedAt": "2026-04-22T23:48:11.118Z",
+  "status": "COMPLETED_WITH_WARNINGS",
+  "routeDiscovery": {
+    "currentUrl": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69dd1fd1602ccfda46fc4400/intake/69dd25427fe92d0c52c11da5/documents?type=oasis",
+    "sidebarLabels": [
+      "OASIS"
+    ],
+    "topVisibleText": [],
+    "routeCandidates": [
+      {
+        "label": "OASIS",
+        "classification": "patient_chart",
+        "source": "sidebar_label",
+        "confidence": "high",
+        "matchedValue": "OASIS"
+      }
+    ],
+    "selectedRoute": {
+      "label": "OASIS",
+      "classification": "patient_chart",
+      "source": "sidebar_label",
+      "confidence": "high",
+      "matchedValue": "OASIS"
+    },
+    "warnings": []
+  },
+  "oasisRoute": {
+    "found": true,
+    "signals": [
+      {
+        "source": "sidebar_label",
+        "value": "OASIS"
+      }
+    ],
+    "warnings": []
+  },
+  "diagnosisRoute": {
+    "found": true,
+    "signals": [
+      {
+        "source": "page_text",
+        "value": "Active Diagnoses"
+      }
+    ],
+    "visibleDiagnoses": [],
+    "warnings": []
+  },
+  "lockStatus": {
+    "status": "locked",
+    "signals": [
+      {
+        "source": "page_text",
+        "value": "locked"
+      }
+    ]
+  },
+  "oasisAssessmentStatus": {
+    "detectedStatuses": [
+      "LOCKED"
+    ],
+    "primaryStatus": "LOCKED",
+    "decision": "SKIP",
+    "processingEligible": false,
+    "reason": "Skip downstream OASIS capture because the assessment page shows locked.",
+    "signals": [
+      {
+        "source": "page_text",
+        "value": "Active Home Healthcare LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifications1Messages1 NewWelcomeMichael YuviencoHello! Welcome! All of us at Finale Health would like to welcome View all messages Active Home Healthcare LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesSearch Patient...Ctrl KNotificationsNo notifications.View all notifications1Messages1 NewWelcomeMichael YuviencoHello! Welcome! All of us at Finale Health would like to welcome View all messagesDVT Edit Profile My Inbox Task Release Note Training Resources LogoutDashboardInsightsField Staff PortalEVVBenchmarkIncident InsightsPrior AuthorizationStaff Task Compliance DashboardAdminPayrollReportsBillingCalendarVisit MapApplicantsDocumentsHelp DeskSticky NotesQAPI Board Active PLANCHON, GARY 116329 Quick View Basic Info Admission 04-16-2026 Admission Info Admission Packets Calendar Insurance/Payer Diagnosis Physicians Care Team Documentations AllPhysician OrdersVisit NotesOASISCommunication NotesOther Notes Care Plan Summary Plan of Care Medication AllSnapshotsInteractions Hospitalization Billing Supplies Vital Graphs Wound History Care Coordination Intake File Uploads Alerts File Uploads Notifications RCD Tracking PLANCHON, GARY116329OASIS E2 - SOC 04/16/2026 | PLANCHON, GARY Visit Time In/Out: 04/16/2026 15:30 - 16:30 Doc Uploads View logs OASIS Compare QA Remarks LOCKED 04/21/2026 Print Sign Unlock - Oasis Non M-ItemsOasis×Active Diagnoses× PDGM Download XML Copy POC Fax Submit to IQIES Print Sign Unlock - Oasis Non M-ItemsOasis×Ac"
+      }
+    ]
+  },
+  "selectedRouteSummary": "oasis review entry via li.notes-sub-menu #documents span:has-text(\"OASIS\")",
+  "warningCount": 9,
+  "topWarning": "LLM input source: fact_pack_primary.",
+  "warnings": [
+    "LLM input source: fact_pack_primary.",
+    "Fact pack coverage: diagnoses, medications, skilledNeedEvidence, hospitalizationReasons, assessmentValues, supportingSnippets.",
+    "Fact pack coverage score: 0.8.",
+    "Prompt character estimate: 2335.",
+    "Fallback reason: none.",
+    "Episode of dropdown with a valid date range could not be located on the patient dashboard.",
+    "Episode of selection could not be resolved because no matching option was found.",
+    "No visible calendar day cells were parsed from the current dashboard window.",
+    "Skip downstream OASIS capture because the assessment page shows locked."
+  ],
+  "createdAt": "2026-04-22T23:53:27.159Z",
+  "entryStage": "OASIS_ENTRY",
+  "sharedEvidenceSummary": {
+    "discoveredDocumentCount": 1,
+    "extractedArtifactPaths": [
+      "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\GARY_PLANCHON__f0aa0b19c0761d1a\\documents\\6371c52c-cd57-4392-bcc5-ba2a926e5ccb-pdf\\source.pdf"
+    ],
+    "diagnosisCodeCount": 9,
+    "warnings": [
+      "LLM input source: fact_pack_primary.",
+      "Fact pack coverage: diagnoses, medications, skilledNeedEvidence, hospitalizationReasons, assessmentValues, supportingSnippets.",
+      "Fact pack coverage score: 0.8.",
+      "Prompt character estimate: 2335.",
+      "Fallback reason: none."
+    ]
+  },
+  "episodeSelection": {
+    "status": "UNRESOLVED",
+    "targetEpisodeLabel": "2026-04-16",
+    "billingPeriod": null,
+    "episodePeriod": null,
+    "rfa": "01-SOC",
+    "selectedRange": null,
+    "availableRanges": [],
+    "changedSelection": false,
+    "selectionMethod": "unresolved",
+    "warnings": [
+      "Episode of dropdown with a valid date range could not be located on the patient dashboard.",
+      "Episode of selection could not be resolved because no matching option was found."
+    ]
+  },
+  "billingCalendarSummary": {
+    "selectedEpisode": {
+      "rawLabel": "unknown",
+      "startDate": null,
+      "endDate": null
+    },
+    "periods": {
+      "first30Days": {
+        "startDate": null,
+        "endDate": null,
+        "totalCards": 0,
+        "countsByType": {},
+        "cards": [],
+        "workbookColumns": {
+          "sn": "NA",
+          "ptOtSt": "NA",
+          "hhaMsw": "NA"
+        }
+      },
+      "second30Days": {
+        "startDate": null,
+        "endDate": null,
+        "totalCards": 0,
+        "countsByType": {},
+        "cards": [],
+        "workbookColumns": {
+          "sn": "NA",
+          "ptOtSt": "NA",
+          "hhaMsw": "NA"
+        }
+      },
+      "outsideRange": {
+        "startDate": null,
+        "endDate": null,
+        "totalCards": 0,
+        "countsByType": {},
+        "cards": [],
+        "workbookColumns": {
+          "sn": "NA",
+          "ptOtSt": "NA",
+          "hhaMsw": "NA"
+        }
+      }
+    },
+    "visibleDays": [],
+    "warnings": [
+      "No visible calendar day cells were parsed from the current dashboard window."
+    ]
+  },
+  "billingCalendarSummaryPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\evidence\\GARY_PLANCHON__f0aa0b19c0761d1a\\billing-period-calendar-summary.json",
+  "oasisMenu": {
+    "opened": true,
+    "currentUrl": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69dd1fd1602ccfda46fc4400/intake/69dd25427fe92d0c52c11da5/documents?type=oasis",
+    "selectorUsed": "li.notes-sub-menu #documents span:has-text(\"OASIS\")",
+    "availableAssessmentTypes": [
+      "SOC"
+    ],
+    "warnings": []
+  },
+  "assessmentSelection": {
+    "requestedAssessmentType": "SOC",
+    "selectedAssessmentType": "SOC",
+    "selectionReason": "requested_exact",
+    "availableAssessmentTypes": [
+      "SOC"
+    ],
+    "warnings": []
+  },
+  "assessmentNote": {
+    "assessmentOpened": true,
+    "matchedAssessmentLabel": "OASIS-OASIS E2 - SOC",
+    "matchedRequestedAssessment": true,
+    "currentUrl": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69dd1fd1602ccfda46fc4400/intake/69dd25427fe92d0c52c11da5/documents/note/oasis/69dd5b58441d450c4e0daa11",
+    "diagnosisSectionOpened": true,
+    "diagnosisListFound": false,
+    "diagnosisListSamples": [],
+    "visibleDiagnoses": [],
+    "lockStatus": "locked",
+    "oasisAssessmentStatus": {
+      "detectedStatuses": [
+        "LOCKED"
+      ],
+      "primaryStatus": "LOCKED",
+      "decision": "SKIP",
+      "processingEligible": false,
+      "reason": "Skip downstream OASIS capture because the assessment page shows locked.",
+      "matchedSignals": [
+        "Active Home Healthcare LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifications1Messages1 NewWelcomeMichael YuviencoHello! Welcome! All of us at Finale Health would like to welcome View all messages Active Home Healthcare LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesSearch Patient...Ctrl KNotificationsNo notifications.View all notifications1Messages1 NewWelcomeMichael YuviencoHello! Welcome! All of us at Finale Health would like to welcome View all messagesDVT Edit Profile My Inbox Task Release Note Training Resources LogoutDashboardInsightsField Staff PortalEVVBenchmarkIncident InsightsPrior AuthorizationStaff Task Compliance DashboardAdminPayrollReportsBillingCalendarVisit MapApplicantsDocumentsHelp DeskSticky NotesQAPI Board Active PLANCHON, GARY 116329 Quick View Basic Info Admission 04-16-2026 Admission Info Admission Packets Calendar Insurance/Payer Diagnosis Physicians Care Team Documentations AllPhysician OrdersVisit NotesOASISCommunication NotesOther Notes Care Plan Summary Plan of Care Medication AllSnapshotsInteractions Hospitalization Billing Supplies Vital Graphs Wound History Care Coordination Intake File Uploads Alerts File Uploads Notifications RCD Tracking PLANCHON, GARY116329OASIS E2 - SOC 04/16/2026 | PLANCHON, GARY Visit Time In/Out: 04/16/2026 15:30 - 16:30 Doc Uploads View logs OASIS Compare QA Remarks LOCKED 04/21/2026 Print Sign Unlock - Oasis Non M-ItemsOasis×Active Diagnoses× PDGM Download XML Copy POC Fax Submit to IQIES Print Sign Unlock - Oasis Non M-ItemsOasis×Ac"
+      ]
+    },
+    "warnings": []
+  },
+  "printedNoteReview": null,
+  "printedNoteReviewPath": null
+}

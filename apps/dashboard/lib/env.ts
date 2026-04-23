@@ -14,13 +14,14 @@ export function hashQaUserPassword(password: string): string {
 }
 
 const DEFAULT_DASHBOARD_SESSION_SECRET = "local-dashboard-session-secret-change-me-now";
+const DEFAULT_STAR_AGENCY_IDS = ["star-home-health", "default", "star-home-health-care-inc"];
 const DEFAULT_DASHBOARD_QA_USERS_JSON = JSON.stringify([
   {
     email: "qa@starhhc.local",
     passwordHash: hashQaUserPassword("star1234"),
     name: "Star QA",
     allowedAgencyIds: [
-      "default",
+      ...DEFAULT_STAR_AGENCY_IDS,
       "aplus-home-health",
       "active-home-health",
       "avery-home-health",
@@ -124,7 +125,9 @@ function parseQaUser(candidate: unknown, index: number): DashboardQaUser {
     throw new Error(`qaUsers[${index}] must define either password or passwordHash.`);
   }
 
-  const allowedAgencyIdsRaw = Array.isArray(record.allowedAgencyIds) ? record.allowedAgencyIds : ["default"];
+  const allowedAgencyIdsRaw = Array.isArray(record.allowedAgencyIds)
+    ? record.allowedAgencyIds
+    : DEFAULT_STAR_AGENCY_IDS;
   const allowedAgencyIds = allowedAgencyIdsRaw.map((agencyId, agencyIndex) =>
     assertNonEmptyString(agencyId, `qaUsers[${index}].allowedAgencyIds[${agencyIndex}]`),
   );

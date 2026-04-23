@@ -1,0 +1,191 @@
+[
+  {
+    "sectionName": "patient_identity",
+    "extractedTextSpans": [
+      "DOB: 07/09/1987 SS#: XXX-XX-7010",
+      "DOB: 07/09/1987",
+      "DOB:",
+      "DOB:",
+      "DOB: 07/09/1987 (38 yo M) Acc No. 60489 DOS: 03/10/2026",
+      "DOB. 07/09/108-",
+      "DOB: 07/09/1987 (38 yo M) Acc No. 60489 DOS: 03/03/2026",
+      "DOB: 07/09/198-"
+    ],
+    "normalizedSummary": "DOB: 07/09/1987 SS#: XXX-XX-7010 DOB: 07/09/1987 DOB:",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 19,
+        "lineEnd": 19,
+        "charStart": 439,
+        "charEnd": 471
+      },
+      {
+        "lineStart": 89,
+        "lineEnd": 89,
+        "charStart": 1579,
+        "charEnd": 1594
+      },
+      {
+        "lineStart": 91,
+        "lineEnd": 91,
+        "charStart": 1602,
+        "charEnd": 1606
+      },
+      {
+        "lineStart": 93,
+        "lineEnd": 93,
+        "charStart": 1614,
+        "charEnd": 1618
+      },
+      {
+        "lineStart": 149,
+        "lineEnd": 149,
+        "charStart": 3000,
+        "charEnd": 3055
+      },
+      {
+        "lineStart": 153,
+        "lineEnd": 153,
+        "charStart": 3101,
+        "charEnd": 3116
+      },
+      {
+        "lineStart": 230,
+        "lineEnd": 230,
+        "charStart": 5121,
+        "charEnd": 5176
+      },
+      {
+        "lineStart": 234,
+        "lineEnd": 234,
+        "charStart": 5221,
+        "charEnd": 5236
+      }
+    ]
+  },
+  {
+    "sectionName": "hospitalization_history",
+    "extractedTextSpans": [
+      "Sunrise Hospital and Medical Center"
+    ],
+    "normalizedSummary": "Sunrise Hospital and Medical Center",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 1,
+        "lineEnd": 1,
+        "charStart": 0,
+        "charEnd": 35
+      }
+    ]
+  },
+  {
+    "sectionName": "diagnoses",
+    "extractedTextSpans": [
+      "PRINCIPAL DIAGNOSIS:"
+    ],
+    "normalizedSummary": "PRINCIPAL DIAGNOSIS:",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 110,
+        "lineEnd": 110,
+        "charStart": 1900,
+        "charEnd": 1920
+      }
+    ]
+  },
+  {
+    "sectionName": "medications",
+    "extractedTextSpans": [
+      "Allergies",
+      "Allergies"
+    ],
+    "normalizedSummary": "Allergies Allergies",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 201,
+        "lineEnd": 201,
+        "charStart": 4233,
+        "charEnd": 4242
+      },
+      {
+        "lineStart": 294,
+        "lineEnd": 294,
+        "charStart": 6666,
+        "charEnd": 6675
+      }
+    ]
+  },
+  {
+    "sectionName": "risk_factors",
+    "extractedTextSpans": [
+      "38-year-old male visited Sunrise Emergency room after a fall from an"
+    ],
+    "normalizedSummary": "38-year-old male visited Sunrise Emergency room after a fall from an",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 257,
+        "lineEnd": 257,
+        "charStart": 5671,
+        "charEnd": 5739
+      }
+    ]
+  },
+  {
+    "sectionName": "advance_directives",
+    "extractedTextSpans": [
+      "ADVANCE DIRECTIVE:"
+    ],
+    "normalizedSummary": "ADVANCE DIRECTIVE:",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 120,
+        "lineEnd": 120,
+        "charStart": 2058,
+        "charEnd": 2076
+      }
+    ]
+  },
+  {
+    "sectionName": "other_clinical_notes",
+    "extractedTextSpans": [
+      "Notes: 38-year-old male with a intra-articular displaced radial head",
+      "Progress Note: David A SILVERBERG.",
+      "Notes: 38-year-old male status post a high-energy injury to his right",
+      "Progress Note: David A SILVERBERG."
+    ],
+    "normalizedSummary": "Notes: 38-year-old male with a intra-articular displaced radial head Progress Note: David A SILVERBERG. Notes: 38-year-old male status post a high-energy injury to his right",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 222,
+        "lineEnd": 222,
+        "charStart": 4770,
+        "charEnd": 4838
+      },
+      {
+        "lineStart": 226,
+        "lineEnd": 226,
+        "charStart": 4975,
+        "charEnd": 5009
+      },
+      {
+        "lineStart": 312,
+        "lineEnd": 312,
+        "charStart": 7151,
+        "charEnd": 7220
+      },
+      {
+        "lineStart": 315,
+        "lineEnd": 315,
+        "charStart": 7284,
+        "charEnd": 7318
+      }
+    ]
+  }
+]

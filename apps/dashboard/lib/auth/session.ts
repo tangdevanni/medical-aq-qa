@@ -4,6 +4,10 @@ import { redirect } from "next/navigation";
 import { loadDashboardEnv, type DashboardQaUser } from "../env";
 
 const SESSION_COOKIE_NAME = "medical_ai_qa_session";
+const LEGACY_AGENCY_ID_MAP: Record<string, string> = {
+  default: "star-home-health",
+  "star-home-health-care-inc": "star-home-health",
+};
 
 export type DashboardSession = {
   sessionId: string;
@@ -14,6 +18,33 @@ export type DashboardSession = {
   issuedAt: string;
   expiresAt: string;
 };
+
+export function canonicalizeAgencyId(agencyId: string | null | undefined): string | null {
+  if (!agencyId) {
+    return null;
+  }
+
+  const trimmed = agencyId.trim();
+  if (trimmed.length === 0) {
+    return null;
+  }
+
+  return LEGACY_AGENCY_ID_MAP[trimmed] ?? trimmed;
+}
+
+function normalizeAllowedAgencyIds(agencyIds: string[]): string[] {
+  const normalized = agencyIds
+    .map((agencyId) => canonicalizeAgencyId(agencyId))
+    .filter((agencyId): agencyId is string => Boolean(agencyId));
+
+  return [...new Set(normalized)];
+}
+
+export function agencyIdsMatch(left: string | null | undefined, right: string | null | undefined): boolean {
+  const normalizedLeft = canonicalizeAgencyId(left);
+  const normalizedRight = canonicalizeAgencyId(right);
+  return normalizedLeft !== null && normalizedLeft === normalizedRight;
+}
 
 function encodeBase64Url(value: string): string {
   return Buffer.from(value, "utf8").toString("base64url");
@@ -57,16 +88,16 @@ function parseDashboardSession(value: unknown): DashboardSession | null {
   const name = typeof record.name === "string" ? record.name.trim() : "";
   const selectedAgencyId =
     typeof record.selectedAgencyId === "string" && record.selectedAgencyId.trim().length > 0
-      ? record.selectedAgencyId.trim()
+      ? canonicalizeAgencyId(record.selectedAgencyId.trim())
       : record.selectedAgencyId === null
         ? null
         : "";
   const issuedAt = typeof record.issuedAt === "string" ? record.issuedAt : "";
   const expiresAt = typeof record.expiresAt === "string" ? record.expiresAt : "";
   const allowedAgencyIds = Array.isArray(record.allowedAgencyIds)
-    ? record.allowedAgencyIds.filter((agencyId): agencyId is string =>
+    ? normalizeAllowedAgencyIds(record.allowedAgencyIds.filter((agencyId): agencyId is string =>
         typeof agencyId === "string" && agencyId.trim().length > 0,
-      )
+      ))
     : [];
 
   if (
@@ -145,10 +176,11 @@ function buildDashboardSession(input: {
     sessionId: randomUUID(),
     email: input.user.email,
     name: input.user.name,
-    allowedAgencyIds: input.user.allowedAgencyIds,
+    allowedAgencyIds: normalizeAllowedAgencyIds(input.user.allowedAgencyIds),
     selectedAgencyId:
-      input.selectedAgencyId && input.user.allowedAgencyIds.includes(input.selectedAgencyId)
-        ? input.selectedAgencyId
+      canonicalizeAgencyId(input.selectedAgencyId) &&
+      normalizeAllowedAgencyIds(input.user.allowedAgencyIds).includes(canonicalizeAgencyId(input.selectedAgencyId)!)
+        ? canonicalizeAgencyId(input.selectedAgencyId)
         : null,
     issuedAt: issuedAt.toISOString(),
     expiresAt: expiresAt.toISOString(),
@@ -167,9 +199,10 @@ function reconcileSessionWithUsers(
   return {
     ...session,
     name: user.name,
-    allowedAgencyIds: user.allowedAgencyIds,
+    allowedAgencyIds: normalizeAllowedAgencyIds(user.allowedAgencyIds),
     selectedAgencyId:
-      session.selectedAgencyId && user.allowedAgencyIds.includes(session.selectedAgencyId)
+      session.selectedAgencyId &&
+      normalizeAllowedAgencyIds(user.allowedAgencyIds).includes(session.selectedAgencyId)
         ? session.selectedAgencyId
         : null,
   };
@@ -186,13 +219,11 @@ export async function getDashboardSession(): Promise<DashboardSession | null> {
   }
 
   if (!parsed) {
-    await clearDashboardSession();
     return null;
   }
 
   const reconciled = reconcileSessionWithUsers(parsed, env.qaUsers);
   if (!reconciled) {
-    await clearDashboardSession();
     return null;
   }
 
@@ -240,7 +271,8 @@ export async function updateSelectedAgencyInSession(agencyId: string): Promise<D
   const env = loadDashboardEnv();
   const cookieStore = await cookies();
   const current = await requireDashboardSession();
-  if (!current.allowedAgencyIds.includes(agencyId)) {
+  const normalizedAgencyId = canonicalizeAgencyId(agencyId);
+  if (!normalizedAgencyId || !current.allowedAgencyIds.includes(normalizedAgencyId)) {
     throw new Error(`Agency not allowed for user session: ${agencyId}`);
   }
 
@@ -253,7 +285,7 @@ export async function updateSelectedAgencyInSession(agencyId: string): Promise<D
 
   const nextSession = buildDashboardSession({
     user,
-    selectedAgencyId: agencyId,
+    selectedAgencyId: normalizedAgencyId,
     sessionTtlSeconds: env.sessionTtlSeconds,
   });
 

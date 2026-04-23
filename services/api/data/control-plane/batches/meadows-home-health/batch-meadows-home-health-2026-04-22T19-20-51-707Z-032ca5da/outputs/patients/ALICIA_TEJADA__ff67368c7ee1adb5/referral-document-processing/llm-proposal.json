@@ -1,0 +1,108 @@
+{
+  "patient_context": {
+    "patient_name": "Alicia Tejada",
+    "dob": "04/15/1953",
+    "soc_date": null,
+    "referral_date": null
+  },
+  "proposed_field_values": [
+    {
+      "field_key": "code_status",
+      "proposed_value": "full_code",
+      "confidence": 0.75,
+      "source_spans": [
+        "Code status: full_code"
+      ],
+      "rationale": "The code status is explicitly mentioned in the document.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "primary_reason_for_home_health_medical_necessity",
+      "proposed_value": "Outpatient Cardiac Rehabilitation for NSTEMI and chest pain.",
+      "confidence": 0.78,
+      "source_spans": [
+        "for Outpatient Cardiac Rehabilitation Patient: Alicia Tejada ID: 0000997163 Date: 4/17/2026 Time: 11:52 AM Referring Provider: Eric Huynh, MD Diagnosis: Chest pain, unspecified type Nstemi (non-st elevated myocardial infarction) (cms/hcc) (primary encounter diagnosis)"
+      ],
+      "rationale": "The primary reason for home health is mentioned in the medical necessity summary.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "functional_limitations",
+      "proposed_value": [
+        "ambulation_limitations"
+      ],
+      "confidence": 0.76,
+      "source_spans": [
+        "ambulation."
+      ],
+      "rationale": "The functional limitation is mentioned in the extracted facts.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "fall_risk_narrative",
+      "proposed_value": "HbA1c (39-46 mmol/mol) may be at a risk of (High-risk surgery) Risk factor assessment and counseling ambulation.",
+      "confidence": 0.7,
+      "source_spans": [
+        "HbA1c (39-46 mmol/mol) may be at a risk of (High-risk surgery) Risk factor assessment and counseling ambulation."
+      ],
+      "rationale": "The fall risk narrative is mentioned in the extracted facts.",
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [
+    {
+      "description": "NSTEMI (non-ST elevated myocardial infarction)",
+      "icd10_code": null,
+      "confidence": 0.75,
+      "source_spans": [
+        "NSTEMI (non-ST elevated myocardial infarction)"
+      ],
+      "is_primary_candidate": true,
+      "requires_human_review": true
+    },
+    {
+      "description": "Chest pain, unspecified type",
+      "icd10_code": null,
+      "confidence": 0.75,
+      "source_spans": [
+        "Chest pain, unspecified type"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    }
+  ],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "preferred_language",
+    "interpreter_needed",
+    "homebound_narrative",
+    "homebound_supporting_factors",
+    "recent_hospitalization_discharge_date",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "living_situation",
+    "therapy_need",
+    "patient_summary_narrative",
+    "skilled_interventions",
+    "discipline_frequencies",
+    "plan_for_next_visit",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status"
+  ],
+  "warnings": [
+    "LLM input source: fact_pack_primary.",
+    "Fact pack coverage: diagnoses, medications, allergies, skilledNeedEvidence, hospitalizationReasons, assessmentValues, supportingSnippets.",
+    "Fact pack coverage score: 1.",
+    "Prompt character estimate: 1727.",
+    "Fallback reason: none."
+  ]
+}

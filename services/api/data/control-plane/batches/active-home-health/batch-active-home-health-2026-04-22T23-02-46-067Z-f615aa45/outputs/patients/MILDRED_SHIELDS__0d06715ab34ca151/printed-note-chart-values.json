@@ -1,0 +1,125 @@
+{
+  "generatedAt": "2026-04-23T00:31:57.255Z",
+  "source": "printed_note_ocr",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\evidence\\MILDRED_SHIELDS__0d06715ab34ca151\\oasis-printed-note\\extracted-text.txt",
+  "llmInputSource": "fact_pack_primary",
+  "extractedFieldCount": 7,
+  "invocationModelId": "us.amazon.nova-lite-v1:0",
+  "currentChartValues": {
+    "patient_name": "Mildred Shields",
+    "primary_diagnosis": "E11.9 - Type 2 diabetes mellitus without",
+    "secondary_diagnoses": [
+      "S51.802D - Unspecified open wound of left",
+      "E03.9 - Hypothyroidism, unspecified",
+      "E55.9 - Vitamin D deficiency, unspecified",
+      "K58.1 - Irritable bowel syndrome with"
+    ],
+    "homebound_supporting_factors": [
+      "Slow and unsteady gait",
+      "Muscle weakness in lower extremities",
+      "Complaints of lightheadedness upon sudden movement",
+      "Cognitive deficits"
+    ],
+    "functional_limitations": [
+      "Ambulation",
+      "Dyspnea with minimal exertion",
+      "Endurance"
+    ],
+    "code_status": "full_code",
+    "allergy_list": [
+      "No Known Allergies"
+    ]
+  },
+  "extractedFieldValues": [
+    {
+      "field_key": "patient_name",
+      "current_value": "Mildred Shields",
+      "confidence": 1,
+      "source_spans": [
+        "Mildred Shields",
+        "Mildred Shields"
+      ]
+    },
+    {
+      "field_key": "primary_diagnosis",
+      "current_value": "E11.9 - Type 2 diabetes mellitus without",
+      "confidence": 0.99,
+      "source_spans": [
+        "PRIMARY DIAGNOSIS Severity 04/16/2026 0 E11.9- Type 2 diabetes mellitus without"
+      ]
+    },
+    {
+      "field_key": "secondary_diagnoses",
+      "current_value": [
+        "S51.802D - Unspecified open wound of left",
+        "E03.9 - Hypothyroidism, unspecified",
+        "E55.9 - Vitamin D deficiency, unspecified",
+        "K58.1 - Irritable bowel syndrome with"
+      ],
+      "confidence": 0.98,
+      "source_spans": [
+        "S51.802D - Unspecified open wound of left",
+        "E03.9 - Hypothyroidism, unspecified",
+        "E55.9 - Vitamin D deficiency, unspecified"
+      ]
+    },
+    {
+      "field_key": "homebound_supporting_factors",
+      "current_value": [
+        "Slow and unsteady gait",
+        "Muscle weakness in lower extremities",
+        "Complaints of lightheadedness upon sudden movement",
+        "Cognitive deficits"
+      ],
+      "confidence": 1,
+      "source_spans": [
+        "Slow and unsteady gait",
+        "Muscle weakness in lower extremities",
+        "Complaints of lightheadedness upon sudden movement",
+        "Cognitive deficits"
+      ]
+    },
+    {
+      "field_key": "functional_limitations",
+      "current_value": [
+        "Ambulation",
+        "Dyspnea with minimal exertion",
+        "Endurance"
+      ],
+      "confidence": 0.96,
+      "source_spans": [
+        "6 - Endurance",
+        "Ambulation",
+        "Severe pain on ambulation"
+      ]
+    },
+    {
+      "field_key": "code_status",
+      "current_value": "full_code",
+      "confidence": 0.98,
+      "source_spans": [
+        "Full Code"
+      ]
+    },
+    {
+      "field_key": "allergy_list",
+      "current_value": [
+        "No Known Allergies"
+      ],
+      "confidence": 0.92,
+      "source_spans": [
+        "None known"
+      ]
+    }
+  ],
+  "warnings": [
+    "LLM input source: fact_pack_primary.",
+    "Fact pack coverage: diagnoses, assessmentValues, homeboundEvidence, skilledNeedEvidence, hospitalizationReasons, medications, allergies, supportingSnippets.",
+    "Fact pack coverage score: 1.",
+    "Prompt character estimate: 3562.",
+    "Fallback reason: none.",
+    "Deterministic printed-note chart values: primary_diagnosis, secondary_diagnoses, code_status, functional_limitations, allergy_list.",
+    "Selected option labels detected: 166.",
+    "Printed-note chart-value extraction used inference profile us.amazon.nova-lite-v1:0."
+  ]
+}

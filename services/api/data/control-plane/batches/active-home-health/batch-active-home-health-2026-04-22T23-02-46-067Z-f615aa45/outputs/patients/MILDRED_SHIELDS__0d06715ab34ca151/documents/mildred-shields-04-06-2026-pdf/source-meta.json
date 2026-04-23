@@ -1,0 +1,90 @@
+{
+  "selectedSourceFile": "MILDRED SHIELDS 04.06.2026.pdf",
+  "selectedSourceFileNormalized": "mildred shields 04.06.2026.pdf",
+  "admissionOrderTitle": "📄 MILDRED SHIELDS 04.06.2026.pdf 📝 ✏️ 🗑️ 🔗",
+  "admissionOrderSelectorUsed": "File Uploads source document row by .file-item/.file-label or table row",
+  "sourceUrlBeforeClick": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69e126420db5f70c5615d5a3/intake/69e1266c2acef519050f083a/calendar",
+  "sourceUrlAfterClick": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69e126420db5f70c5615d5a3/file-uploads",
+  "matchedReferralFileLabel": "MILDRED SHIELDS 04.06.2026.pdf",
+  "normalizedFileLabels": [
+    "mildred shields demo.pdf",
+    "mildred shields active hho.pdf",
+    "mildred shields 04.06.2026.pdf"
+  ],
+  "matchedSourceDocuments": [
+    {
+      "label": "📄 MILDRED SHIELDS 04.06.2026.pdf",
+      "normalizedLabel": "mildred shields 04.06.2026.pdf",
+      "score": 20
+    },
+    {
+      "label": "📄 MILDRED SHIELDS 04.06.2026.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedLabel": "mildred shields 04.06.2026.pdf",
+      "score": 20
+    },
+    {
+      "label": "📄 MILDRED SHIELDS ACTIVE HHO.pdf",
+      "normalizedLabel": "mildred shields active hho.pdf",
+      "score": 20
+    },
+    {
+      "label": "📄 MILDRED SHIELDS ACTIVE HHO.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedLabel": "mildred shields active hho.pdf",
+      "score": 20
+    },
+    {
+      "label": "📄 MILDRED SHIELDS DEMO.pdf",
+      "normalizedLabel": "mildred shields demo.pdf",
+      "score": 20
+    },
+    {
+      "label": "📄 MILDRED SHIELDS DEMO.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedLabel": "mildred shields demo.pdf",
+      "score": 20
+    }
+  ],
+  "viewerDetected": true,
+  "viewerMarkerSamples": [
+    "of ⁨5⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools",
+    "Tools",
+    "Print"
+  ],
+  "printButtonDetected": true,
+  "printButtonVisible": true,
+  "printButtonSelectorUsed": "pdf-print #printButton, #printButton, pdf-shy-button[primarytoolbarid='printButton'] button",
+  "printClickSucceeded": false,
+  "pdfResponseDetected": true,
+  "pdfResponseUrl": "https://api.finalehealth.com/api/v1/files/69e129c8d96fc635270aec5b?index=patient",
+  "pdfContentType": "application/pdf",
+  "pdfSavedPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\MILDRED_SHIELDS__0d06715ab34ca151\\documents\\mildred-shields-04-06-2026-pdf\\source.pdf",
+  "pdfByteSize": 17221,
+  "printAcquisitionMethodUsed": "network_pdf_response",
+  "printedPdfSaved": false,
+  "printedPdfPath": null,
+  "sourcePdfPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\MILDRED_SHIELDS__0d06715ab34ca151\\documents\\mildred-shields-04-06-2026-pdf\\source.pdf",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\MILDRED_SHIELDS__0d06715ab34ca151\\documents\\mildred-shields-04-06-2026-pdf\\extracted-text.txt",
+  "extractionResultPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\MILDRED_SHIELDS__0d06715ab34ca151\\documents\\mildred-shields-04-06-2026-pdf\\extraction-result.json",
+  "extractedTextLength": 104,
+  "rawExtractedTextSource": "dom",
+  "domExtractionRejectedReasons": [
+    "viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS"
+  ],
+  "extractionSuccess": false,
+  "queuedForLlm": true,
+  "extractionPolicyDecision": {
+    "mode": "hybrid_candidate",
+    "confidence": "medium",
+    "reasons": [
+      "Source PDF shows partial text-layer signals; native extraction may be incomplete",
+      "Printed PDF is not clearly usable for native extraction",
+      "Mixed signals suggest trying native extraction first with OCR fallback"
+    ],
+    "recommendedSourcePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\MILDRED_SHIELDS__0d06715ab34ca151\\documents\\mildred-shields-04-06-2026-pdf\\source.pdf",
+    "fallbackSourcePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\MILDRED_SHIELDS__0d06715ab34ca151\\documents\\mildred-shields-04-06-2026-pdf\\source.pdf",
+    "hasUsablePdfTextLayer": false,
+    "hasPdfSource": true,
+    "hasPrintedPdfSource": false,
+    "hasHtmlSource": false
+  },
+  "generatedAt": "2026-04-23T00:27:10.122Z"
+}

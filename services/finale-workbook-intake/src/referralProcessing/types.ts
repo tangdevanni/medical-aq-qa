@@ -45,6 +45,7 @@ export interface SourceDocumentArtifact {
 
 export type ExtractionQualityRejectedReason =
   | "viewer_chrome_only"
+  | "pdf_structure_text"
   | "too_short"
   | "no_clinical_vocabulary"
   | "no_date_patterns"

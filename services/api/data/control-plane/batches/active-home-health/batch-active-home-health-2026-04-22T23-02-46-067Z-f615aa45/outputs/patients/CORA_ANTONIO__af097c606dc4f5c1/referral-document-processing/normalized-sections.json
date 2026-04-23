@@ -1,0 +1,367 @@
+[
+  {
+    "sectionName": "hospitalization_history",
+    "extractedTextSpans": [
+      "and inpatient",
+      "SN needed d/t high potential for disease progression and inpatient hospitalizations.",
+      "Pt will need skilled nursing due to high potential for hospital admission."
+    ],
+    "normalizedSummary": "and inpatient SN needed d/t high potential for disease progression and inpatient hospitalizations. Pt will need skilled nursing due to high potential for hospital admission.",
+    "confidence": 0.95,
+    "lineReferences": [
+      {
+        "lineStart": 184,
+        "lineEnd": 184,
+        "charStart": 6743,
+        "charEnd": 6756
+      },
+      {
+        "lineStart": 194,
+        "lineEnd": 194,
+        "charStart": 7150,
+        "charEnd": 7234
+      },
+      {
+        "lineStart": 202,
+        "lineEnd": 202,
+        "charStart": 7549,
+        "charEnd": 7623
+      }
+    ]
+  },
+  {
+    "sectionName": "medical_necessity",
+    "extractedTextSpans": [
+      "MEDICAL NECESSITY: This visit with a FTF encounter with the patient in the home is not",
+      "medical necessity for this visit to be",
+      "Pt will need skilled nursing due to high potential for hospital admission.",
+      "Pt will need skilled nursing for teachings of disease process, diet and new medication"
+    ],
+    "normalizedSummary": "MEDICAL NECESSITY: This visit with a FTF encounter with the patient in the home is not medical necessity for this visit to be Pt will need skilled nursing due to high potential for hospital admission.",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 18,
+        "lineEnd": 18,
+        "charStart": 500,
+        "charEnd": 586
+      },
+      {
+        "lineStart": 21,
+        "lineEnd": 21,
+        "charStart": 658,
+        "charEnd": 696
+      },
+      {
+        "lineStart": 202,
+        "lineEnd": 202,
+        "charStart": 7549,
+        "charEnd": 7623
+      },
+      {
+        "lineStart": 203,
+        "lineEnd": 203,
+        "charStart": 7624,
+        "charEnd": 7710
+      }
+    ]
+  },
+  {
+    "sectionName": "homebound_evidence",
+    "extractedTextSpans": [
+      "She ambulates with a cane or walker for assistance.",
+      "homebound status.",
+      "PCP in the office, returns to baseline, and/or no longer fits the criteria, the homebound"
+    ],
+    "normalizedSummary": "She ambulates with a cane or walker for assistance. homebound status. PCP in the office, returns to baseline, and/or no longer fits the criteria, the homebound",
+    "confidence": 0.95,
+    "lineReferences": [
+      {
+        "lineStart": 45,
+        "lineEnd": 45,
+        "charStart": 1801,
+        "charEnd": 1852
+      },
+      {
+        "lineStart": 171,
+        "lineEnd": 171,
+        "charStart": 6166,
+        "charEnd": 6183
+      },
+      {
+        "lineStart": 174,
+        "lineEnd": 174,
+        "charStart": 6219,
+        "charEnd": 6308
+      }
+    ]
+  },
+  {
+    "sectionName": "medications",
+    "extractedTextSpans": [
+      "Allergies",
+      "No known allergies",
+      "medication regimen, comorbidities, and care plan and educate appropriately.",
+      "Pt needs assistance with medication management, observation and assessment for",
+      "Pt will need skilled nursing for teachings of disease process, diet and new medication",
+      "Patient's social, medical, family, surgical history, and medication was reviewed."
+    ],
+    "normalizedSummary": "Allergies No known allergies medication regimen, comorbidities, and care plan and educate appropriately.",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 70,
+        "lineEnd": 70,
+        "charStart": 2701,
+        "charEnd": 2710
+      },
+      {
+        "lineStart": 71,
+        "lineEnd": 71,
+        "charStart": 2711,
+        "charEnd": 2729
+      },
+      {
+        "lineStart": 189,
+        "lineEnd": 189,
+        "charStart": 6923,
+        "charEnd": 6998
+      },
+      {
+        "lineStart": 199,
+        "lineEnd": 199,
+        "charStart": 7448,
+        "charEnd": 7526
+      },
+      {
+        "lineStart": 203,
+        "lineEnd": 203,
+        "charStart": 7624,
+        "charEnd": 7710
+      },
+      {
+        "lineStart": 225,
+        "lineEnd": 225,
+        "charStart": 8339,
+        "charEnd": 8420
+      }
+    ]
+  },
+  {
+    "sectionName": "caregiver_support",
+    "extractedTextSpans": [
+      "Initiation of Visit: This visit was initiated by patient's son.",
+      "son are with patient to provide additonal information.",
+      "Son states her mood has been stable, no",
+      "Lives with husband and son in a 2 storey house, patient stays on the first floor."
+    ],
+    "normalizedSummary": "Initiation of Visit: This visit was initiated by patient's son. son are with patient to provide additonal information. Son states her mood has been stable, no",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 14,
+        "lineEnd": 14,
+        "charStart": 322,
+        "charEnd": 385
+      },
+      {
+        "lineStart": 33,
+        "lineEnd": 33,
+        "charStart": 1258,
+        "charEnd": 1312
+      },
+      {
+        "lineStart": 41,
+        "lineEnd": 41,
+        "charStart": 1647,
+        "charEnd": 1686
+      },
+      {
+        "lineStart": 56,
+        "lineEnd": 56,
+        "charStart": 2232,
+        "charEnd": 2313
+      }
+    ]
+  },
+  {
+    "sectionName": "living_situation",
+    "extractedTextSpans": [
+      "Lives with husband and son in a 2 storey house, patient stays on the first floor."
+    ],
+    "normalizedSummary": "Lives with husband and son in a 2 storey house, patient stays on the first floor.",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 56,
+        "lineEnd": 56,
+        "charStart": 2232,
+        "charEnd": 2313
+      }
+    ]
+  },
+  {
+    "sectionName": "functional_limitations",
+    "extractedTextSpans": [
+      "Muscle weakness (M62.81) Muscle weakness (generalized) modified 16 Apr, 2026"
+    ],
+    "normalizedSummary": "Muscle weakness (M62.81) Muscle weakness (generalized) modified 16 Apr, 2026",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 134,
+        "lineEnd": 134,
+        "charStart": 4561,
+        "charEnd": 4637
+      }
+    ]
+  },
+  {
+    "sectionName": "therapy_need",
+    "extractedTextSpans": [
+      "PT/OT to evaluate and treat appropriately to increase functionality, decreases debility and"
+    ],
+    "normalizedSummary": "PT/OT to evaluate and treat appropriately to increase functionality, decreases debility and",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 205,
+        "lineEnd": 205,
+        "charStart": 7720,
+        "charEnd": 7811
+      }
+    ]
+  },
+  {
+    "sectionName": "risk_factors",
+    "extractedTextSpans": [
+      "a recent fall and was found to have significant hyponatremia and corrected with Sodium",
+      "Fall (W19.XXXA) Unspecified fall, initial encounter modified 16 Apr, 2026"
+    ],
+    "normalizedSummary": "a recent fall and was found to have significant hyponatremia and corrected with Sodium Fall (W19.XXXA) Unspecified fall, initial encounter modified 16 Apr, 2026",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 37,
+        "lineEnd": 37,
+        "charStart": 1433,
+        "charEnd": 1519
+      },
+      {
+        "lineStart": 136,
+        "lineEnd": 136,
+        "charStart": 4711,
+        "charEnd": 4784
+      }
+    ]
+  },
+  {
+    "sectionName": "advance_directives",
+    "extractedTextSpans": [
+      "Advance directive discussed with patient (Z71.89) Other specified counseling modified"
+    ],
+    "normalizedSummary": "Advance directive discussed with patient (Z71.89) Other specified counseling modified",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 131,
+        "lineEnd": 131,
+        "charStart": 4400,
+        "charEnd": 4485
+      }
+    ]
+  },
+  {
+    "sectionName": "other_clinical_notes",
+    "extractedTextSpans": [
+      "SOAP Note",
+      "Note created using Tebra",
+      "SOAP Note",
+      "Note created using Tebra",
+      "SOAP Note",
+      "Plan",
+      "- It has been explained to Patient that the Nurse Practitioner and the care plan is being",
+      "medication regimen, comorbidities, and care plan and educate appropriately.",
+      "Note created using Tebra",
+      "SOAP Note",
+      "Patient?s plan",
+      "Note created using Tebra"
+    ],
+    "normalizedSummary": "SOAP Note Note created using Tebra SOAP Note",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 2,
+        "lineEnd": 2,
+        "charStart": 22,
+        "charEnd": 31
+      },
+      {
+        "lineStart": 77,
+        "lineEnd": 77,
+        "charStart": 2922,
+        "charEnd": 2946
+      },
+      {
+        "lineStart": 79,
+        "lineEnd": 79,
+        "charStart": 2969,
+        "charEnd": 2978
+      },
+      {
+        "lineStart": 149,
+        "lineEnd": 149,
+        "charStart": 5350,
+        "charEnd": 5374
+      },
+      {
+        "lineStart": 151,
+        "lineEnd": 151,
+        "charStart": 5397,
+        "charEnd": 5406
+      },
+      {
+        "lineStart": 163,
+        "lineEnd": 163,
+        "charStart": 5754,
+        "charEnd": 5758
+      },
+      {
+        "lineStart": 164,
+        "lineEnd": 164,
+        "charStart": 5759,
+        "charEnd": 5848
+      },
+      {
+        "lineStart": 189,
+        "lineEnd": 189,
+        "charStart": 6923,
+        "charEnd": 6998
+      },
+      {
+        "lineStart": 212,
+        "lineEnd": 212,
+        "charStart": 7968,
+        "charEnd": 7992
+      },
+      {
+        "lineStart": 214,
+        "lineEnd": 214,
+        "charStart": 8015,
+        "charEnd": 8024
+      },
+      {
+        "lineStart": 228,
+        "lineEnd": 228,
+        "charStart": 8503,
+        "charEnd": 8517
+      },
+      {
+        "lineStart": 235,
+        "lineEnd": 235,
+        "charStart": 8745,
+        "charEnd": 8769
+      }
+    ]
+  }
+]

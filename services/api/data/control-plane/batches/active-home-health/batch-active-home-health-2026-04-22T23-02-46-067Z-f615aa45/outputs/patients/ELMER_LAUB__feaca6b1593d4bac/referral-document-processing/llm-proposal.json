@@ -1,0 +1,73 @@
+{
+  "patient_context": {
+    "patient_name": null,
+    "dob": "07/14/1949",
+    "soc_date": null,
+    "referral_date": null
+  },
+  "proposed_field_values": [
+    {
+      "field_key": "primary_reason_for_home_health_medical_necessity",
+      "proposed_value": "Skilled Nursing / Pt eval $ treat",
+      "confidence": 0.78,
+      "source_spans": [
+        "Skilled Nursing / Pt eval $ treat"
+      ],
+      "rationale": "Medical necessity was summarized from referral narrative and skilled-need evidence.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "admit_reason_to_home_health",
+      "proposed_value": "Skilled Nursing / Pt eval $ treat",
+      "confidence": 0.78,
+      "source_spans": [
+        "Skilled Nursing / Pt eval $ treat"
+      ],
+      "rationale": "Medical necessity was summarized from referral narrative and skilled-need evidence.",
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "preferred_language",
+    "interpreter_needed",
+    "homebound_narrative",
+    "homebound_supporting_factors",
+    "recent_hospitalization_discharge_date",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "living_situation",
+    "prior_functioning",
+    "functional_limitations",
+    "therapy_need",
+    "patient_summary_narrative",
+    "skilled_interventions",
+    "discipline_frequencies",
+    "plan_for_next_visit",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "fall_risk_narrative",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status",
+    "code_status"
+  ],
+  "warnings": [
+    "Deterministic referral facts extraction was used.",
+    "LLM disabled or unavailable; deterministic referral proposal fallback was used.",
+    "LLM input source: fact_pack_plus_raw_fallback.",
+    "Fact pack coverage: diagnoses, skilledNeedEvidence.",
+    "Fact pack coverage score: 0.5.",
+    "Prompt character estimate: 502.",
+    "Fallback reason: homeboundEvidence, supportingEvidence.",
+    "Raw fallback appended for missing coverage: homeboundEvidence, supportingEvidence.",
+    "Bedrock returned invalid or non-JSON referral proposal output; deterministic fallback was used."
+  ]
+}

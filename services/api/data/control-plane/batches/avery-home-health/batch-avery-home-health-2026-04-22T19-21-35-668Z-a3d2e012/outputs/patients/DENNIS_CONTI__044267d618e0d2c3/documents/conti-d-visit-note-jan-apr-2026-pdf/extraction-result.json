@@ -1,0 +1,48 @@
+{
+  "documentType": "ORDER",
+  "sourceLabel": "CONTI D. VISIT NOTE JAN-APR 2026.pdf",
+  "normalizedSourceLabel": "conti d.visit note jan apr 2026.pdf",
+  "viewerDetected": true,
+  "printButtonDetected": true,
+  "printButtonSelectorUsed": "pdf-print #printButton, #printButton, pdf-shy-button[primarytoolbarid='printButton'] button",
+  "printClickSucceeded": false,
+  "pdfResponseDetected": true,
+  "pdfResponseUrl": "https://api.finalehealth.com/api/v1/files/69e1550dda48663525394fbb?index=documents",
+  "pdfContentType": "application/pdf",
+  "pdfSavedPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-22T19-21-35-668Z-a3d2e012\\outputs\\patients\\DENNIS_CONTI__044267d618e0d2c3\\documents\\conti-d-visit-note-jan-apr-2026-pdf\\source.pdf",
+  "pdfByteSize": 805585,
+  "printAcquisitionMethodUsed": "network_pdf_response",
+  "printedPdfSaved": false,
+  "printedPdfPath": null,
+  "sourcePdfPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-22T19-21-35-668Z-a3d2e012\\outputs\\patients\\DENNIS_CONTI__044267d618e0d2c3\\documents\\conti-d-visit-note-jan-apr-2026-pdf\\source.pdf",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-22T19-21-35-668Z-a3d2e012\\outputs\\patients\\DENNIS_CONTI__044267d618e0d2c3\\documents\\conti-d-visit-note-jan-apr-2026-pdf\\extracted-text.txt",
+  "extractedTextLength": 104,
+  "extractionMethodUsed": "click",
+  "rawExtractedTextSource": "dom",
+  "domExtractionRejectedReasons": [
+    "viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS"
+  ],
+  "extractionSuccess": false,
+  "queuedForLlm": true,
+  "extractionPolicyDecision": {
+    "mode": "native_text",
+    "confidence": "high",
+    "reasons": [
+      "PDF contains usable text layer; OCR unnecessary"
+    ],
+    "recommendedSourcePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-22T19-21-35-668Z-a3d2e012\\outputs\\patients\\DENNIS_CONTI__044267d618e0d2c3\\documents\\conti-d-visit-note-jan-apr-2026-pdf\\source.pdf",
+    "hasUsablePdfTextLayer": true,
+    "hasPdfSource": true,
+    "hasPrintedPdfSource": false,
+    "hasHtmlSource": false
+  },
+  "admissionReasonPrimary": null,
+  "admissionReasonSnippets": [],
+  "possibleIcd10Codes": [
+    "I00",
+    "I25",
+    "I50"
+  ],
+  "textPreview": "Automatic Zoom Actual Size Page Fit Page Width ⁨50⁩% ⁨100⁩% ⁨125⁩% ⁨150⁩% ⁨200⁩% ⁨300⁩% ⁨400⁩% 90% Tools",
+  "generatedAt": "2026-04-22T19:56:40.209Z"
+}

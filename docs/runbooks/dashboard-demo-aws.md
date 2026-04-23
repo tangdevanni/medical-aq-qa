@@ -1,28 +1,61 @@
-# Dashboard Demo AWS Deployment
+# Dashboard AWS Deployment
+
+This runbook deploys the dashboard as a direct QA login application. QA users do not use Playwright to access the dashboard. Playwright remains a backend-only portal collection dependency for workbook, OASIS, referral, and billing-period evidence.
 
 ## Target Architecture
 
-- `apps/dashboard`
-  Next.js UI exposed behind the public Application Load Balancer.
-- `services/api`
-  Fastify control-plane API that handles workbook upload, parsing, run orchestration, and patient artifact queries.
-- `Amazon ECS on Fargate`
-  Separate services for `dashboard` and `api`.
-- `Application Load Balancer`
-  Default rule routes `/` to the dashboard target group.
-  Path rule routes `/api/*` to the API target group.
-- `Amazon ECR`
-  Stores the dashboard and API container images.
-- `AWS Secrets Manager`
-  Stores portal credentials, OpenAI credentials, and any runtime secrets required by the underlying automation services.
-- `Amazon EFS`
-  Mounted into the API service at `/data/control-plane` so uploaded workbooks, run metadata, patient statuses, and generated artifacts survive task restarts.
+- `apps/dashboard`: Next.js UI exposed through a public Application Load Balancer.
+- `services/api`: Fastify control-plane API for agency queues, batch orchestration, and patient artifacts.
+- `Amazon ECS on Fargate`: separate `dashboard` and `api` services.
+- `Application Load Balancer`: default rule routes `/` to dashboard; `/api/*` routes to API.
+- `Amazon ECR`: stores dashboard and API images.
+- `AWS Secrets Manager`: stores dashboard auth config, portal credentials, LLM credentials, and OCR credentials.
+- `Amazon EFS`: mounted into the API service at `/data/control-plane` so agency runs and patient artifacts survive task restarts.
+- `Amazon CloudWatch Logs`: container logs plus optional dashboard auth audit events.
 
-## Environment Strategy
+## Dashboard Login Setup
+
+Generate QA users from the repo root:
+
+```powershell
+cmd /c pnpm dashboard:qa-user -- --email qa.user@example.com --name "QA User" --agencies active-home-health,star-home-health
+```
+
+Combine generated user objects into one JSON array and store it as `DASHBOARD_QA_USERS_JSON`. See `docs/runbooks/dashboard-login-accounts.md`.
+
+Create dashboard secrets:
+
+```bash
+aws secretsmanager create-secret \
+  --name medical-ai-qa/dashboard-session-secret \
+  --secret-string "replace-with-at-least-32-random-characters" \
+  --region "$AWS_REGION"
+
+aws secretsmanager create-secret \
+  --name medical-ai-qa/dashboard-qa-users-json \
+  --secret-string file://dashboard-qa-users.json \
+  --region "$AWS_REGION"
+```
+
+Production dashboard auth requires:
+
+- `DASHBOARD_SESSION_SECRET` from Secrets Manager.
+- `DASHBOARD_QA_USERS_JSON` from Secrets Manager.
+- `DASHBOARD_ALLOW_PLAINTEXT_PASSWORDS=false`.
+- User entries with `passwordHash`, not plaintext `password`.
+
+## Runtime Environment
 
 Dashboard container:
 
 - `NEXT_PUBLIC_API_BASE_URL=https://YOUR_ALB_DNS/api`
+- `DASHBOARD_SESSION_TTL_HOURS=12`
+- `DASHBOARD_ALLOW_PLAINTEXT_PASSWORDS=false`
+- `DASHBOARD_SESSION_SECRET` from Secrets Manager
+- `DASHBOARD_QA_USERS_JSON` from Secrets Manager
+- Optional audit logging:
+  - `DASHBOARD_AUTH_AUDIT_LOG_GROUP=/medical-ai-qa/dashboard-auth`
+  - `DASHBOARD_AUTH_AUDIT_AWS_REGION=<REGION>`
 
 API container:
 
@@ -31,34 +64,73 @@ API container:
 - `API_STORAGE_ROOT=/data/control-plane`
 - `API_LOG_LEVEL=info`
 - `API_CORS_ORIGIN=https://YOUR_ALB_DNS`
-- `OASIS_WRITE_ENABLED=false`
+- `OASIS_WRITE_ENABLED=false` for read-only QA deployment
+- `AUTONOMOUS_AGENCY_IDS=aplus-home-health,active-home-health,avery-home-health,meadows-home-health,star-home-health`
+- `DEFAULT_SUBSIDIARY_RERUN_ENABLED=true`
+- `DEFAULT_SUBSIDIARY_RERUN_INTERVAL_HOURS=24`
+- `PORTAL_HEADLESS=true`
+- `CODE_LLM_ENABLED=true`
+- `LLM_PROVIDER=bedrock`
+- `BEDROCK_REGION=<BEDROCK_REGION>`
+- `BEDROCK_MODEL_ID=<BEDROCK_MODEL_ID>`
+- `TEXTRACT_S3_REGION=<TEXTRACT_S3_REGION>`
+- `TEXTRACT_S3_BUCKET=<TEXTRACT_S3_BUCKET>`
+- `TEXTRACT_S3_PREFIX=finale-workbook-intake/textract`
 
-Secrets Manager values should be injected into the API task definition for the existing automation dependencies, including portal credentials and any LLM/API keys already used by `services/finale-workbook-intake`.
+Store portal, Bedrock, Textract, and any other backend automation secrets in Secrets Manager and inject them into the API task definition. Dashboard users do not need those portal credentials.
 
-## Local Docker Launch
+## Autonomous Agency Loading
 
-Build and run:
+The API owns autonomous loading. The dashboard only displays the latest persisted API data.
+
+On API startup, `BatchControlPlaneService.initialize()` does three launch-critical things:
+
+1. Reconciles interrupted batches from previous task restarts.
+2. Creates a Finale workbook batch for each active agency in `AUTONOMOUS_AGENCY_IDS` if one does not already exist.
+3. Starts a scheduler that checks due agency reruns every 60 seconds.
+
+For launch, set:
 
 ```bash
-docker compose -f docker-compose.demo.yml up --build
+AUTONOMOUS_AGENCY_IDS=aplus-home-health,active-home-health,avery-home-health,meadows-home-health,star-home-health
+DEFAULT_SUBSIDIARY_RERUN_ENABLED=true
+DEFAULT_SUBSIDIARY_RERUN_INTERVAL_HOURS=24
 ```
 
-Open:
+Then keep the API ECS service running continuously. If the task stops, scheduled reruns stop until ECS starts a replacement task. Persisting `API_STORAGE_ROOT` on EFS is what lets the replacement task resume from the latest agency state instead of losing patient artifacts.
 
-- Dashboard: `http://localhost:3001`
-- API: `http://localhost:3000`
+Manual first-run or catch-up options:
 
-Stop:
+- From the dashboard: sign in, select an agency, click `Run Agency Refresh`.
+- From a local/admin shell against the repo: `cmd /c pnpm exec tsx services/api/src/testing/runAgencyRefreshes.ts --all --timeout-ms 7200000`.
+- From HTTP/API tooling: `POST /api/agencies/{agencyId}/refresh`.
 
-```bash
-docker compose -f docker-compose.demo.yml down
-```
+The dashboard auto-refreshes while backend work is running, so QA users should see patient rows populate as the API finishes workbook acquisition, patient matching, OASIS capture, referral capture, OCR/Textract, LLM processing, and dashboard-state writing.
+
+## Deploying Code Updates
+
+Each code push should deploy new container images, but deployment alone does not mean every patient is immediately re-scraped. The re-scrape happens when one of these occurs:
+
+- The API starts and an active agency has no current Finale-backed batch.
+- A scheduled rerun becomes due based on `DEFAULT_SUBSIDIARY_RERUN_INTERVAL_HOURS`.
+- A QA/admin user starts `Run Agency Refresh`.
+- An admin runs `runAgencyRefreshes.ts --all`.
+
+Recommended launch workflow for each push:
+
+1. Push code to GitHub.
+2. CI builds and pushes new `medical-ai-qa-api:prod` and `medical-ai-qa-dashboard:prod` images to ECR.
+3. CI registers updated ECS task definitions.
+4. CI forces new deployments for API and dashboard services.
+5. After the API service is healthy, run an all-agency refresh if the release needs freshly scraped data immediately.
+
+For hands-off production, keep scheduled reruns enabled and use manual all-agency refresh only for launch day, demos, or urgent data refreshes.
 
 ## Build Images
 
 ```bash
-docker build -f services/api/Dockerfile -t medical-ai-qa-api:demo .
-docker build -f apps/dashboard/Dockerfile -t medical-ai-qa-dashboard:demo .
+docker build -f services/api/Dockerfile -t medical-ai-qa-api:prod .
+docker build -f apps/dashboard/Dockerfile -t medical-ai-qa-dashboard:prod .
 ```
 
 ## Push Images To ECR
@@ -88,29 +160,41 @@ aws ecr get-login-password --region "$AWS_REGION" | docker login --username AWS 
 Build, tag, and push:
 
 ```bash
-docker build -f services/api/Dockerfile -t "$API_REPO:demo" .
-docker build -f apps/dashboard/Dockerfile -t "$DASHBOARD_REPO:demo" .
+docker build -f services/api/Dockerfile -t "$API_REPO:prod" .
+docker build -f apps/dashboard/Dockerfile -t "$DASHBOARD_REPO:prod" .
 
-docker tag "$API_REPO:demo" "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$API_REPO:demo"
-docker tag "$DASHBOARD_REPO:demo" "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$DASHBOARD_REPO:demo"
+docker tag "$API_REPO:prod" "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$API_REPO:prod"
+docker tag "$DASHBOARD_REPO:prod" "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$DASHBOARD_REPO:prod"
 
-docker push "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$API_REPO:demo"
-docker push "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$DASHBOARD_REPO:demo"
+docker push "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$API_REPO:prod"
+docker push "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$DASHBOARD_REPO:prod"
 ```
 
 ## ECS/Fargate Rollout
 
-1. Create an EFS file system and mount target for the private subnets used by ECS.
-2. Create or update the ECS task execution role and task role.
-3. Store runtime secrets in Secrets Manager.
-4. Register the task definitions from `deploy/aws/ecs/api-task-definition.json` and `deploy/aws/ecs/dashboard-task-definition.json` after replacing the placeholder values.
-5. Create two ECS services:
-   - `medical-ai-qa-api-demo`
-   - `medical-ai-qa-dashboard-demo`
-6. Attach both services to the same ALB:
-   - default listener rule -> dashboard target group
-   - `/api/*` rule -> API target group
-7. Set the dashboard service environment variable `NEXT_PUBLIC_API_BASE_URL` to `https://YOUR_ALB_DNS/api`.
+1. Create or select a VPC with public subnets for the ALB and private subnets for ECS tasks.
+2. Create an EFS file system and mount targets for the private subnets used by the API service.
+3. Create ECR repositories and push the images.
+4. Create Secrets Manager secrets for dashboard auth and backend automation credentials.
+5. Create CloudWatch log groups:
+   - `/ecs/medical-ai-qa-api`
+   - `/ecs/medical-ai-qa-dashboard`
+   - `/medical-ai-qa/dashboard-auth` if auth audit logging is enabled
+6. Create or update IAM roles:
+   - ECS task execution role: pull ECR images, write container logs, and read injected Secrets Manager values.
+   - API task role: S3/Textract/Bedrock/portal automation permissions required by the backend.
+   - Dashboard task role: CloudWatch Logs permissions for auth audit logging if enabled.
+7. Create two ALB target groups with target type `ip`:
+   - Dashboard target group on container port `3001`.
+   - API target group on container port `3000`.
+8. Configure ALB listener rules:
+   - default `/` traffic -> dashboard target group
+   - `/api/*` -> API target group
+9. Replace placeholders in:
+   - `deploy/aws/ecs/api-task-definition.json`
+   - `deploy/aws/ecs/dashboard-task-definition.json`
+10. Register both ECS task definitions.
+11. Create or update ECS services for the API and dashboard.
 
 Register task definitions:
 
@@ -119,19 +203,35 @@ aws ecs register-task-definition --cli-input-json file://deploy/aws/ecs/api-task
 aws ecs register-task-definition --cli-input-json file://deploy/aws/ecs/dashboard-task-definition.json --region "$AWS_REGION"
 ```
 
-Force a new deployment after the task definition revision changes:
+Force a new deployment after task definition or secret changes:
 
 ```bash
-aws ecs update-service --cluster medical-ai-qa-demo --service medical-ai-qa-api-demo --force-new-deployment --region "$AWS_REGION"
-aws ecs update-service --cluster medical-ai-qa-demo --service medical-ai-qa-dashboard-demo --force-new-deployment --region "$AWS_REGION"
+aws ecs update-service --cluster medical-ai-qa --service medical-ai-qa-api --force-new-deployment --region "$AWS_REGION"
+aws ecs update-service --cluster medical-ai-qa --service medical-ai-qa-dashboard --force-new-deployment --region "$AWS_REGION"
 ```
 
-## Demo Flow
+## Smoke Test
 
-1. Open the dashboard at the ALB URL.
-2. Go to `New Run`.
-3. Upload any Finale `.xlsx` export, regardless of filename.
-4. Confirm the detected worksheet signatures and preview rows.
-5. Click `Run QA`.
-6. Open the run detail page and watch live patient-by-patient status updates.
-7. Open a patient detail page to review workbook context, OCR/coding output, lock state, verification result, planned OASIS actions, and execution result.
+1. Open `https://YOUR_ALB_DNS/login`.
+2. Sign in with a dashboard QA account.
+3. Select an assigned agency.
+4. Confirm `/agency` loads the latest queue.
+5. Open a patient and confirm OASIS Snapshot, Compare All, Source Documents, and missing referral indicators render as expected.
+6. Confirm a user cannot select an agency outside their `allowedAgencyIds`.
+7. If audit logging is enabled, confirm CloudWatch receives `login_succeeded`, `login_failed`, `agency_selected`, and `logout_succeeded` events.
+8. Confirm each agency has either an active refresh cycle or a clear error message on the agency page.
+9. Confirm CloudWatch API logs show scheduled initialization for all agencies in `AUTONOMOUS_AGENCY_IDS`.
+
+## Operational Notes
+
+- Changing `DASHBOARD_QA_USERS_JSON` does not update already-running containers. Force a new dashboard deployment after changing users or passwords.
+- Do not store portal usernames/passwords in dashboard secrets. Those belong to the API/intake task only.
+- Keep `OASIS_WRITE_ENABLED=false` until the deployment is intentionally approved for portal writeback.
+- Use the agency dashboard to start or observe backend refreshes; do not expose workbook upload as the production QA path.
+
+## AWS References
+
+- Amazon ECR image push flow: https://docs.aws.amazon.com/AmazonECR/latest/userguide/docker-push-ecr-image.html
+- ECS task definition secrets from Secrets Manager: https://docs.aws.amazon.com/AmazonECS/latest/userguide/secrets-envvar-secrets-manager.html
+- ECS with Application Load Balancers and `ip` target groups for `awsvpc` tasks: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/alb.html
+- ALB target groups and listener routing: https://docs.aws.amazon.com/elasticloadbalancing/latest/application/create-target-group.html

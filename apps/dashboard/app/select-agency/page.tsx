@@ -6,6 +6,12 @@ type SelectAgencyPageProps = {
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
 };
 
+function formatStatusLabel(value: string): string {
+  return value
+    .replace(/_/g, " ")
+    .replace(/\b\w/g, (character) => character.toUpperCase());
+}
+
 function getErrorMessage(errorValue: string | string[] | undefined): string | null {
   if (errorValue === "agency_required") {
     return "Select an agency to continue.";
@@ -33,10 +39,10 @@ export default async function SelectAgencyPage({ searchParams }: SelectAgencyPag
     <main className="page-shell stack">
       <div className="page-header">
         <div>
-          <p className="eyebrow">Agency Context</p>
-          <h1 className="page-title">Select an agency</h1>
+          <p className="eyebrow">Agency Queue</p>
+          <h1 className="page-title">Choose an agency</h1>
           <p className="page-subtitle">
-            Agency selection controls which autonomous refresh cycle, workbook review window, and patient reconciliation queue are loaded into the dashboard session.
+            Select the agency queue you want to review. You will only see agencies assigned to your QA account.
           </p>
         </div>
         <div className="actions">
@@ -54,8 +60,8 @@ export default async function SelectAgencyPage({ searchParams }: SelectAgencyPag
             <input name="agencyId" type="hidden" value={agency.id} />
             <div className="metric-label">Agency</div>
             <div className="metric-value compact">{agency.name}</div>
-            <div className="muted">{agency.slug} · {agency.timezone}</div>
-            <div className="muted">Status: {agency.status}</div>
+            <div className="muted">Timezone: {agency.timezone}</div>
+            <div className="muted">Queue status: {formatStatusLabel(agency.status)}</div>
             {session.selectedAgencyId === agency.id ? (
               <div className="badge">Current Selection</div>
             ) : null}

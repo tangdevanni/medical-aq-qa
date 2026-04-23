@@ -1,0 +1,66 @@
+{
+  "generatedAt": "2026-04-22T23:27:31.344Z",
+  "source": "printed_note_ocr",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\evidence\\CORA_ANTONIO__af097c606dc4f5c1\\oasis-printed-note\\extracted-text.txt",
+  "llmInputSource": "fact_pack_primary",
+  "extractedFieldCount": 4,
+  "invocationModelId": "us.amazon.nova-lite-v1:0",
+  "currentChartValues": {
+    "primary_diagnosis": "I12.9 - Hypertensive chronic kidney disease",
+    "secondary_diagnoses": [
+      "N18.9 - Chronic kidney disease, unspecified"
+    ],
+    "code_status": "full_code",
+    "allergy_list": [
+      "No Known Allergies"
+    ]
+  },
+  "extractedFieldValues": [
+    {
+      "field_key": "primary_diagnosis",
+      "current_value": "I12.9 - Hypertensive chronic kidney disease",
+      "confidence": 0.99,
+      "source_spans": [
+        "PRIMARY DIAGNOSIS Onset Date Severity 04/20/2026 I12.9- Hypertensive chronic kidney disease"
+      ]
+    },
+    {
+      "field_key": "secondary_diagnoses",
+      "current_value": [
+        "N18.9 - Chronic kidney disease, unspecified"
+      ],
+      "confidence": 0.98,
+      "source_spans": [
+        "N18.9 - Chronic kidney disease, unspecified"
+      ]
+    },
+    {
+      "field_key": "code_status",
+      "current_value": "full_code",
+      "confidence": 0.98,
+      "source_spans": [
+        "Full Code"
+      ]
+    },
+    {
+      "field_key": "allergy_list",
+      "current_value": [
+        "No Known Allergies"
+      ],
+      "confidence": 0.92,
+      "source_spans": [
+        "None known"
+      ]
+    }
+  ],
+  "warnings": [
+    "LLM input source: fact_pack_primary.",
+    "Fact pack coverage: diagnoses, assessmentValues, homeboundEvidence, skilledNeedEvidence, hospitalizationReasons, medications, allergies, supportingSnippets.",
+    "Fact pack coverage score: 1.",
+    "Prompt character estimate: 2614.",
+    "Fallback reason: none.",
+    "Deterministic printed-note chart values: primary_diagnosis, secondary_diagnoses, code_status, allergy_list.",
+    "Selected option labels detected: 21.",
+    "Printed-note chart-value extraction used inference profile us.amazon.nova-lite-v1:0."
+  ]
+}

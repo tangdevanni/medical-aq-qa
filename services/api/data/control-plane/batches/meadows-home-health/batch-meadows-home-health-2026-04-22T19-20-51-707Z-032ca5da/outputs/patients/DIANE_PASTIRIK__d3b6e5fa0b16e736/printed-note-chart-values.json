@@ -1,0 +1,109 @@
+{
+  "generatedAt": "2026-04-22T19:53:56.144Z",
+  "source": "printed_note_ocr",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-22T19-20-51-707Z-032ca5da\\outputs\\evidence\\DIANE_PASTIRIK__d3b6e5fa0b16e736\\oasis-printed-note\\extracted-text.txt",
+  "llmInputSource": "fact_pack_primary",
+  "extractedFieldCount": 6,
+  "invocationModelId": "us.amazon.nova-lite-v1:0",
+  "currentChartValues": {
+    "primary_diagnosis": "J44.1 Chronic obstructive pulmonary",
+    "medication_list": [
+      "Z79.82 Long term () use of aspirin",
+      "Furosemide"
+    ],
+    "allergy_list": [
+      "No Known Allergies"
+    ],
+    "secondary_diagnoses": [
+      "I11.0 - Hypertensive heart disease with heart",
+      "I50.33 - Acute on chronic diastolic",
+      "I21.4 - Non-ST elevation (NSTEMI)",
+      "I25.10 - Athscl heart disease of native"
+    ],
+    "code_status": "full_code",
+    "functional_limitations": [
+      "Ambulation",
+      "Dyspnea with minimal exertion",
+      "Endurance"
+    ]
+  },
+  "extractedFieldValues": [
+    {
+      "field_key": "primary_diagnosis",
+      "current_value": "J44.1 Chronic obstructive pulmonary",
+      "confidence": 0.95,
+      "source_spans": [
+        "J44.1 Chronic obstructive pulmonary"
+      ]
+    },
+    {
+      "field_key": "medication_list",
+      "current_value": [
+        "Z79.82 Long term () use of aspirin",
+        "Furosemide"
+      ],
+      "confidence": 0.95,
+      "source_spans": [
+        "Z79.82 Long term () use of aspirin",
+        "Furosemide"
+      ]
+    },
+    {
+      "field_key": "allergy_list",
+      "current_value": [
+        "No Known Allergies"
+      ],
+      "confidence": 0.92,
+      "source_spans": [
+        "None known"
+      ]
+    },
+    {
+      "field_key": "secondary_diagnoses",
+      "current_value": [
+        "I11.0 - Hypertensive heart disease with heart",
+        "I50.33 - Acute on chronic diastolic",
+        "I21.4 - Non-ST elevation (NSTEMI)",
+        "I25.10 - Athscl heart disease of native"
+      ],
+      "confidence": 0.98,
+      "source_spans": [
+        "I11.0 - Hypertensive heart disease with heart",
+        "I50.33 - Acute on chronic diastolic",
+        "I21.4 - Non-ST elevation (NSTEMI)"
+      ]
+    },
+    {
+      "field_key": "code_status",
+      "current_value": "full_code",
+      "confidence": 0.98,
+      "source_spans": [
+        "Full Code"
+      ]
+    },
+    {
+      "field_key": "functional_limitations",
+      "current_value": [
+        "Ambulation",
+        "Dyspnea with minimal exertion",
+        "Endurance"
+      ],
+      "confidence": 0.96,
+      "source_spans": [
+        "Dyspnea on minimal exertion",
+        "6 - Endurance",
+        "Ambulation"
+      ]
+    }
+  ],
+  "warnings": [
+    "LLM input source: fact_pack_primary.",
+    "Fact pack coverage: diagnoses, assessmentValues, homeboundEvidence, skilledNeedEvidence, hospitalizationReasons, medications, allergies, supportingSnippets.",
+    "Fact pack coverage score: 1.",
+    "Prompt character estimate: 3015.",
+    "Fallback reason: none.",
+    "Deterministic printed-note chart values: secondary_diagnoses, code_status, functional_limitations, allergy_list.",
+    "Selected option labels detected: 163.",
+    "Printed-note chart-value extraction used inference profile us.amazon.nova-lite-v1:0."
+  ]
+}

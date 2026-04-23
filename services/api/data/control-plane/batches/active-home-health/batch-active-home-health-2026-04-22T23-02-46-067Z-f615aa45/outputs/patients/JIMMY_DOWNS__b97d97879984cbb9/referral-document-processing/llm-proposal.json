@@ -1,0 +1,135 @@
+{
+  "patient_context": {
+    "patient_name": null,
+    "dob": "01/30/1951",
+    "soc_date": null,
+    "referral_date": null
+  },
+  "proposed_field_values": [
+    {
+      "field_key": "code_status",
+      "proposed_value": "full_code",
+      "confidence": 0.75,
+      "source_spans": [
+        "Code status: full_code"
+      ],
+      "rationale": "The code status is explicitly mentioned in the document.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "homebound_narrative",
+      "proposed_value": "requiring a walker admitted for failure to thrive, AKI, hyperkalemia, and hyperglycemia. obesity. recurrent falls, and chronic weakness with baseline limited mobility requiring \" walker DME: front wheeled walker, Four wheeled walker Ambulation: modified Independent With front wheeled walker Assistive Device:front wheeled walker wheeled walker and with assist.",
+      "confidence": 0.8,
+      "source_spans": [
+        "requiring a walker admitted for failure to thrive, AKI, hyperkalemia, and hyperglycemia. obesity."
+      ],
+      "rationale": "The narrative describes the patient's homebound status and the need for a walker.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "homebound_supporting_factors",
+      "proposed_value": [
+        "uses_walker"
+      ],
+      "confidence": 0.73,
+      "source_spans": [
+        "requiring a walker admitted for failure to thrive, AKI, hyperkalemia, and hyperglycemia. obesity."
+      ],
+      "rationale": "The document mentions the use of a walker as a supporting factor for homebound status.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "living_situation",
+      "proposed_value": "spouse and daughter",
+      "confidence": 0.72,
+      "source_spans": [
+        "spouse and daughter"
+      ],
+      "rationale": "The living situation is explicitly mentioned in the document.",
+      "requires_human_review": false
+    },
+    {
+      "field_key": "functional_limitations",
+      "proposed_value": [
+        "weakness"
+      ],
+      "confidence": 0.76,
+      "source_spans": [
+        "PE, morbid obesity, recurrent falls, and chronic weakness with baseline limited mobility #Weakness Pt with extensive comorbidities and chronic weakness. with hx of chronic LE weakness worse on the left side."
+      ],
+      "rationale": "The document describes the patient's functional limitations, including weakness.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "therapy_need",
+      "proposed_value": "Will continue to monitor and treat any underlying metabolic/Infectious cause, pend PT/OT Dispo: MSU, pending clinical Improvement, PT/OT, AKI Improvement Physical Therapy Progress Note",
+      "confidence": 0.77,
+      "source_spans": [
+        "Will continue to monitor and treat any underlying metabolic/Infectious cause, pend PT/OT Dispo: MSU, pending clinical Improvement, PT/OT, AKI Improvement Physical Therapy Progress Note"
+      ],
+      "rationale": "The document details the need for physical therapy and occupational therapy.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "fall_risk_narrative",
+      "proposed_value": "falls, and chronic weakness with baseline limited mobility Atrial flutter requiring a walker admitted for failure to thrive, AKI, hyperkalemia, and hyperglycemia",
+      "confidence": 0.7,
+      "source_spans": [
+        "falls, and chronic weakness with baseline limited mobility Atrial flutter requiring a walker admitted for failure to thrive, AKI, hyperkalemia, and hyperglycemia"
+      ],
+      "rationale": "The document describes the patient's fall risk and related factors.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "skilled_interventions",
+      "proposed_value": "Will continue to monitor and treat any underlying metabolic/Infectious cause, pend PT/OT Dispo: MSU, pending clinical Improvement, PT/OT, AKI Improvement Physical Therapy Progress Note",
+      "confidence": 0.8,
+      "source_spans": [
+        "Will continue to monitor and treat any underlying metabolic/Infectious cause, pend PT/OT Dispo: MSU, pending clinical Improvement, PT/OT, AKI Improvement Physical Therapy Progress Note"
+      ],
+      "rationale": "The document details the skilled interventions needed for the patient.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "plan_for_next_visit",
+      "proposed_value": "Will continue to monitor and treat any underlying metabolic/Infectious cause, pend PT/OT Dispo: MSU, pending clinical Improvement, PT/OT, AKI Improvement Physical Therapy Progress Note",
+      "confidence": 0.78,
+      "source_spans": [
+        "Will continue to monitor and treat any underlying metabolic/Infectious cause, pend PT/OT Dispo: MSU, pending clinical Improvement, PT/OT, AKI Improvement Physical Therapy Progress Note"
+      ],
+      "rationale": "The document outlines the plan for the next visit.",
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "preferred_language",
+    "interpreter_needed",
+    "primary_reason_for_home_health_medical_necessity",
+    "admit_reason_to_home_health",
+    "recent_hospitalization_discharge_date",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "patient_summary_narrative",
+    "discipline_frequencies",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status"
+  ],
+  "warnings": [
+    "LLM input source: fact_pack_primary.",
+    "Fact pack coverage: diagnoses, medications, homeboundEvidence, skilledNeedEvidence, hospitalizationReasons, assessmentValues, supportingSnippets.",
+    "Fact pack coverage score: 1.",
+    "Prompt character estimate: 2589.",
+    "Fallback reason: none."
+  ]
+}

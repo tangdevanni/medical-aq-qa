@@ -1,0 +1,50 @@
+[
+  {
+    "sectionName": "patient_identity",
+    "extractedTextSpans": [
+      "DOB: 7/14/1949"
+    ],
+    "normalizedSummary": "DOB: 7/14/1949",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 7,
+        "lineEnd": 7,
+        "charStart": 121,
+        "charEnd": 135
+      }
+    ]
+  },
+  {
+    "sectionName": "referring_provider",
+    "extractedTextSpans": [
+      "NPI#1518301977"
+    ],
+    "normalizedSummary": "NPI#1518301977",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 5,
+        "lineEnd": 5,
+        "charStart": 85,
+        "charEnd": 99
+      }
+    ]
+  },
+  {
+    "sectionName": "medical_necessity",
+    "extractedTextSpans": [
+      "Skilled Nursing / Pt eval $ treat"
+    ],
+    "normalizedSummary": "Skilled Nursing / Pt eval $ treat",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 10,
+        "lineEnd": 10,
+        "charStart": 169,
+        "charEnd": 202
+      }
+    ]
+  }
+]

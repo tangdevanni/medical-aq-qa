@@ -1,0 +1,835 @@
+{
+  "schemaVersion": "1",
+  "generatedAt": "2026-04-22T20:02:52.384Z",
+  "runId": "batch-avery-home-health-2026-04-22T19-21-35-668Z-a3d2e012-ESTER_WHEELER__74eb54ec94810c0a",
+  "batchId": "batch-avery-home-health-2026-04-22T19-21-35-668Z-a3d2e012",
+  "subsidiaryId": "avery-home-health",
+  "workItemId": "ESTER_WHEELER__74eb54ec94810c0a",
+  "patientName": "Ester Wheeler",
+  "processingStatus": "BLOCKED",
+  "executionStep": "BLOCKED",
+  "qaOutcome": "PORTAL_NOT_FOUND",
+  "progressPercent": 100,
+  "startedAt": "2026-04-22T20:00:23.543Z",
+  "completedAt": "2026-04-22T20:02:52.376Z",
+  "lastUpdatedAt": "2026-04-22T20:02:52.381Z",
+  "artifactCount": 0,
+  "findingsCount": 7,
+  "bundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-22T19-21-35-668Z-a3d2e012\\outputs\\patient-results\\ESTER_WHEELER__74eb54ec94810c0a.json",
+  "oasisQaSummary": {
+    "overallStatus": "BLOCKED",
+    "urgency": "ON_TRACK",
+    "daysInPeriod": 30,
+    "daysLeft": 10,
+    "sections": [
+      {
+        "key": "timing",
+        "label": "Timing / OASIS Due",
+        "status": "PASS",
+        "items": [
+          {
+            "key": "days_in_period",
+            "label": "Days in the 30-day period captured",
+            "status": "PASS",
+            "notes": "Workbook shows 30 days in period.",
+            "evidence": [
+              "Workbook days in period: 30"
+            ]
+          },
+          {
+            "key": "days_left",
+            "label": "Days left before OASIS due date verified",
+            "status": "PASS",
+            "notes": "10 day(s) remain before OASIS is due.",
+            "evidence": [
+              "Workbook days left: 10"
+            ]
+          },
+          {
+            "key": "urgency_bucket",
+            "label": "Urgency bucket",
+            "status": "PASS",
+            "notes": "ON TRACK",
+            "evidence": [
+              "Derived urgency from 10 day(s) left."
+            ]
+          }
+        ]
+      },
+      {
+        "key": "coding",
+        "label": "Coding Review",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "coding_review_complete",
+            "label": "Coding review completed in workbook",
+            "status": "NEEDS_REVIEW",
+            "notes": "Workbook status: IN_PROGRESS",
+            "evidence": [
+              "IN_PROGRESS"
+            ]
+          },
+          {
+            "key": "coding_supported_by_oasis",
+            "label": "OASIS content is available to support coding review",
+            "status": "MISSING",
+            "notes": "No OASIS content was extracted for coding validation.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "oasis",
+        "label": "OASIS QA",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "oasis_document",
+            "label": "OASIS document content extracted",
+            "status": "MISSING",
+            "notes": "No OASIS document content was available for extraction.",
+            "evidence": []
+          },
+          {
+            "key": "oasis_workbook_status",
+            "label": "OASIS QA completed in workbook",
+            "status": "NEEDS_REVIEW",
+            "notes": "Workbook status: IN_PROGRESS",
+            "evidence": [
+              "IN_PROGRESS"
+            ]
+          },
+          {
+            "key": "medical_necessity",
+            "label": "Medical necessity is stated",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "homebound_reason",
+            "label": "Homebound reason is stated",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "health_assessment",
+            "label": "Health assessment is documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "skilled_interventions",
+            "label": "Skilled interventions during the OASIS visit are documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "poc",
+        "label": "Plan Of Care QA",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "poc_document",
+            "label": "Plan of care content extracted",
+            "status": "MISSING",
+            "notes": "No plan-of-care content was available for extraction.",
+            "evidence": []
+          },
+          {
+            "key": "poc_workbook_status",
+            "label": "POC QA completed in workbook",
+            "status": "MISSING",
+            "notes": "Workbook status: NOT_STARTED",
+            "evidence": [
+              "NOT_STARTED"
+            ]
+          },
+          {
+            "key": "poc_diagnoses_codes",
+            "label": "Diagnoses or codes are present in the plan of care",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "poc_interventions_goals_frequency",
+            "label": "Interventions, goals, and frequency are present in the plan of care",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "poc_conditions_exacerbations",
+            "label": "Conditions or exacerbations are reflected in the plan of care",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "visit_notes",
+        "label": "Visit Notes Review",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "visit_notes_document",
+            "label": "Visit note content extracted",
+            "status": "MISSING",
+            "notes": "No visit-note content was available for extraction.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_workbook_status",
+            "label": "Visit notes review completed in workbook",
+            "status": "MISSING",
+            "notes": "Workbook status: NOT_STARTED",
+            "evidence": [
+              "NOT_STARTED"
+            ]
+          },
+          {
+            "key": "visit_notes_skilled_need",
+            "label": "Skilled need is clearly documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_intervention_detail",
+            "label": "Interventions performed are specific and detailed",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_patient_response",
+            "label": "Patient response to interventions is documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_progress",
+            "label": "Progress toward goals is noted",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_vitals",
+            "label": "Vitals and focused assessment are documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_medication_review",
+            "label": "Medication review is documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_condition_changes",
+            "label": "Changes in condition are clearly reported and addressed",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_billed_services_support",
+            "label": "Documentation supports billed services",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_consistency",
+            "label": "Documentation remains consistent with OASIS and diagnoses",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "technical_review",
+        "label": "Technical Review",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "portal_patient_match",
+            "label": "Portal patient match resolved",
+            "status": "MISSING",
+            "notes": "Global patient search completed, but no matching patient result was available to open.",
+            "evidence": [
+              "wheeler, ester"
+            ]
+          },
+          {
+            "key": "sn_visit_count",
+            "label": "SN visits were identified from visit-note content",
+            "status": "MISSING",
+            "notes": "Visit-note content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "discipline_detection",
+            "label": "Applicable disciplines were detected",
+            "status": "MISSING",
+            "notes": "Visit-note content is not available for discipline detection.",
+            "evidence": []
+          },
+          {
+            "key": "physician_orders",
+            "label": "Physician orders were checked",
+            "status": "NOT_APPLICABLE",
+            "notes": "No additional physician orders were discovered for this patient.",
+            "evidence": []
+          },
+          {
+            "key": "supporting_notes",
+            "label": "Supporting note categories were reviewed",
+            "status": "NOT_APPLICABLE",
+            "notes": "No additional supporting note categories were discovered for this patient.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "final_check",
+        "label": "Final Check",
+        "status": "FAIL",
+        "items": [
+          {
+            "key": "critical_sections_clear",
+            "label": "Critical QA sections are complete before billing prep",
+            "status": "FAIL",
+            "notes": "Blocking sections: OASIS content is available to support coding review, OASIS document content extracted, Medical necessity is stated, Homebound reason is stated, Health assessment is documented, Skilled interventions during the OASIS visit are documented, Plan of care content extracted, POC QA completed in workbook, Diagnoses or codes are present in the plan of care, Interventions, goals, and frequency are present in the plan of care, Conditions or exacerbations are reflected in the plan of care, Visit note content extracted, Visit notes review completed in workbook, Skilled need is clearly documented, Interventions performed are specific and detailed, Patient response to interventions is documented, Progress toward goals is noted, Vitals and focused assessment are documented, Medication review is documented, Changes in condition are clearly reported and addressed, Documentation supports billed services, Documentation remains consistent with OASIS and diagnoses, Portal patient match resolved, SN visits were identified from visit-note content, Applicable disciplines were detected",
+            "evidence": [
+              "Timing / OASIS Due: PASS",
+              "Coding Review: MISSING",
+              "OASIS QA: MISSING",
+              "Plan Of Care QA: MISSING",
+              "Visit Notes Review: MISSING",
+              "Technical Review: MISSING"
+            ]
+          },
+          {
+            "key": "billing_prep_status",
+            "label": "Billing prep status in workbook",
+            "status": "MISSING",
+            "notes": "Workbook status: NOT_STARTED",
+            "evidence": [
+              "NOT_STARTED"
+            ]
+          }
+        ]
+      }
+    ],
+    "blockers": [
+      "OASIS content is available to support coding review",
+      "OASIS document content extracted",
+      "Medical necessity is stated",
+      "Homebound reason is stated",
+      "Health assessment is documented",
+      "Skilled interventions during the OASIS visit are documented",
+      "Plan of care content extracted",
+      "POC QA completed in workbook",
+      "Diagnoses or codes are present in the plan of care",
+      "Interventions, goals, and frequency are present in the plan of care",
+      "Conditions or exacerbations are reflected in the plan of care",
+      "Visit note content extracted",
+      "Visit notes review completed in workbook",
+      "Skilled need is clearly documented",
+      "Interventions performed are specific and detailed",
+      "Patient response to interventions is documented",
+      "Progress toward goals is noted",
+      "Vitals and focused assessment are documented",
+      "Medication review is documented",
+      "Changes in condition are clearly reported and addressed",
+      "Documentation supports billed services",
+      "Documentation remains consistent with OASIS and diagnoses",
+      "Portal patient match resolved",
+      "SN visits were identified from visit-note content",
+      "Applicable disciplines were detected"
+    ]
+  },
+  "documentInventory": [],
+  "errorSummary": "Global patient search completed, but no matching patient result was available to open.",
+  "automationStepLogs": [
+    {
+      "timestamp": "2026-04-22T20:02:52.339Z",
+      "step": "login",
+      "message": "Reused the authenticated portal session established for this batch.",
+      "patientName": "Ester Wheeler",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T20:00:23.575Z",
+      "step": "run_started",
+      "message": "Patient run started from the shared Playwright portal runner.",
+      "patientName": "Ester Wheeler",
+      "urlBefore": "https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/client/69e155d6d7bb39352a82f6b6/intake/69e156162acef519050f7519/documents/note/oasis/69e16778f976b00c403ad692",
+      "urlAfter": "https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/client/69e155d6d7bb39352a82f6b6/intake/69e156162acef519050f7519/documents/note/oasis/69e16778f976b00c403ad692",
+      "selectorUsed": null,
+      "found": [
+        "currentUrl=https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/client/69e155d6d7bb39352a82f6b6/intake/69e156162acef519050f7519/documents/note/oasis/69e16778f976b00c403ad692"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "subsidiaryId=avery-home-health",
+        "portalBaseUrl=https://app.finalehealth.com",
+        "configuredDashboardUrl=https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/dashboard",
+        "resolvedDashboardUrl=https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/dashboard",
+        "currentContextRequiresReset=true"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T20:00:32.083Z",
+      "step": "dashboard_reset",
+      "message": "Reset the portal session to the provider dashboard before patient matching.",
+      "patientName": "Ester Wheeler",
+      "urlBefore": "https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/client/69e155d6d7bb39352a82f6b6/intake/69e156162acef519050f7519/documents/note/oasis/69e16778f976b00c403ad692",
+      "urlAfter": "https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/dashboard",
+      "selectorUsed": null,
+      "found": [
+        "https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/dashboard"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Reset triggered: true",
+        "Current URL before patient: https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/client/69e155d6d7bb39352a82f6b6/intake/69e156162acef519050f7519/documents/note/oasis/69e16778f976b00c403ad692",
+        "Current URL after reset: https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/dashboard",
+        "Dashboard reset target URL: https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/dashboard",
+        "Dashboard markers found: true",
+        "goto_base_url: dashboardDetected=true currentUrl=https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/dashboard"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T20:00:32.083Z",
+      "step": "dashboard_ready",
+      "message": "Provider dashboard ready confirmed using 'button:has-text(\"Search Patient\")'.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/dashboard",
+      "selectorUsed": null,
+      "found": [
+        "button:has-text(\"Search Patient\")"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "attempt=1 signal=button:has-text(\"Search Patient\") stableDom=false url=https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/dashboard title=Finale Health buttons=130 inputs=7 text=AVERY HOME HEALTH LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifications1Mes"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T20:00:47.732Z",
+      "step": "patient_lookup_entry",
+      "message": "Global patient search is available from the current authenticated page context.",
+      "patientName": "Ester Wheeler",
+      "urlBefore": "https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/dashboard",
+      "selectorUsed": "getByText(/Search Patient/i) -> nearest clickable parent (present)",
+      "found": [
+        "getByText(/Search Patient/i) -> nearest clickable parent (present)"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Current URL before patient lookup: https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/dashboard",
+        "Global search available in current context: true",
+        "Global search availability selector used: getByText(/Search Patient/i) -> nearest clickable parent (present)",
+        "Resolved global search trigger with present manual selector 'getByText(/Search Patient/i) -> nearest clickable parent (present)' even though Playwright visibility did not confirm it in the probe path.",
+        "[not_found] Global patient search button by accessible name count=0 visible=0 elapsedMs=47",
+        "[not_visible] Global patient search button containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=47 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=49 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search button containing Search Patient text count=1 visible=0 elapsedMs=53 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search visible control containing Search Patient text count=1 visible=0 elapsedMs=55 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search fin-button wrapper containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=100 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control inside fin-button wrapper count=1 visible=0 elapsedMs=49 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by shortcut hint count=0 visible=0 elapsedMs=26",
+        "[not_visible] Global patient search button containing search icon and patient-search text count=1 visible=0 elapsedMs=41 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by accessible name count=0 visible=0 elapsedMs=42",
+        "[not_visible] Global patient search button containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=64 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=78 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search button containing Search Patient text count=1 visible=0 elapsedMs=51 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search visible control containing Search Patient text count=1 visible=0 elapsedMs=47 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search fin-button wrapper containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=49 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control inside fin-button wrapper count=1 visible=0 elapsedMs=57 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by shortcut hint count=0 visible=0 elapsedMs=42",
+        "[not_visible] Global patient search button containing search icon and patient-search text count=1 visible=0 elapsedMs=62 samples=Search Patient...Ctrl K"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T20:00:47.732Z",
+      "step": "patient_lookup_entry",
+      "message": "Patient lookup will start after shared dashboard bootstrap confirmed provider dashboard readiness and global search availability.",
+      "patientName": "Ester Wheeler",
+      "urlBefore": "https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/client/69e155d6d7bb39352a82f6b6/intake/69e156162acef519050f7519/documents/note/oasis/69e16778f976b00c403ad692",
+      "urlAfter": "https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/dashboard",
+      "selectorUsed": null,
+      "found": [
+        "patientLookupEntryContext=dashboard_reset_then_global_search",
+        "dashboard_context_established",
+        "globalSearchAvailable=true"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "currentUrlAfterLogin=https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/client/69e155d6d7bb39352a82f6b6/intake/69e156162acef519050f7519/documents/note/oasis/69e16778f976b00c403ad692",
+        "currentUrlBeforeSearch=https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/dashboard",
+        "resolvedDashboardUrl=https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/dashboard",
+        "globalSearchSelectorUsed=getByText(/Search Patient/i) -> nearest clickable parent (present)"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T20:00:47.732Z",
+      "step": "patient_search_start",
+      "message": "Starting patient search with 3 query variant(s).",
+      "patientName": "Ester Wheeler",
+      "urlBefore": "https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/dashboard",
+      "selectorUsed": null,
+      "found": [
+        "wheeler, ester",
+        "WHEELER, ESTER",
+        "Ester Wheeler",
+        "ESTER WHEELER",
+        "WHEELER, ESTER"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Original workbook patient name: Ester Wheeler",
+        "Normalized global search query: wheeler, ester",
+        "Normalized expected display name: WHEELER, ESTER",
+        "Workbook name variants: Ester Wheeler | ESTER WHEELER | WHEELER, ESTER"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T20:01:19.354Z",
+      "step": "global_patient_search_open",
+      "message": "Clicked the global Search Patient trigger and found the visible search input.",
+      "patientName": "Ester Wheeler",
+      "urlBefore": "https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/dashboard",
+      "selectorUsed": "getByText(/Search Patient/i) -> nearest clickable parent (present)",
+      "found": [
+        "Search Patient trigger",
+        "search input"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Original workbook patient name: Ester Wheeler",
+        "Normalized global search query: wheeler, ester",
+        "Search trigger clicked: true",
+        "Trigger click method: dom_click",
+        "Search modal visible: true",
+        "Global search control selector used: getByText(/Search Patient/i) -> nearest clickable parent (present)",
+        "Global search surface selector used: Global patient search overlay/dialog containing an input",
+        "Global search modal selector used: div.search-header.open",
+        "Resolved global search trigger with present manual selector 'getByText(/Search Patient/i) -> nearest clickable parent (present)' even though Playwright visibility did not confirm it in the probe path.",
+        "[not_found] Global patient search button by accessible name count=0 visible=0 elapsedMs=33",
+        "[not_visible] Global patient search button containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=54 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=54 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search button containing Search Patient text count=1 visible=0 elapsedMs=51 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search visible control containing Search Patient text count=1 visible=0 elapsedMs=59 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search fin-button wrapper containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=49 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control inside fin-button wrapper count=1 visible=0 elapsedMs=45 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by shortcut hint count=0 visible=0 elapsedMs=29",
+        "[not_visible] Global patient search button containing search icon and patient-search text count=1 visible=0 elapsedMs=47 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by accessible name count=0 visible=0 elapsedMs=46",
+        "[not_visible] Global patient search button containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=47 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=51 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search button containing Search Patient text count=1 visible=0 elapsedMs=48 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search visible control containing Search Patient text count=1 visible=0 elapsedMs=55 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search fin-button wrapper containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=53 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control inside fin-button wrapper count=1 visible=0 elapsedMs=53 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by shortcut hint count=0 visible=0 elapsedMs=39",
+        "[not_visible] Global patient search button containing search icon and patient-search text count=1 visible=0 elapsedMs=48 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search dialog by accessible name count=0 visible=0 elapsedMs=32",
+        "[matched] Global patient search overlay/dialog containing an input count=1 visible=1 elapsedMs=48 samples=EscPatients Sort By 3Sort By×Full Name×asc×SOC Date×desc×Status×ascAdd another sort itemNo recent searchesSearch by:Status:ActivePendingOn-HoldLeadNon-AdmitDischarged",
+        "Search input found by confirmed Search patients placeholder selector.",
+        "[matched] Global patient search input by confirmed Search patients placeholder count=1 visible=1 elapsedMs=51"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T20:02:48.677Z",
+      "step": "patient_search_input",
+      "message": "Typed the normalized query into the global patient search, but the results UI did not settle clearly.",
+      "patientName": "Ester Wheeler",
+      "urlBefore": "https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/dashboard",
+      "selectorUsed": "input[type=\"text\"][placeholder*=\"Search patients\"]",
+      "found": [],
+      "missing": [
+        "settled global patient search results"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Search trigger clicked: true",
+        "Search input found: true",
+        "Typing into focused field succeeded: false",
+        "Used direct input fallback: true",
+        "Search query typed: wheeler, ester",
+        "Result count: 0",
+        "Candidate search result texts: none",
+        "attempt=1 rowCount=0 noResults=false text=AVERY HOME HEALTH LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifications1Mes",
+        "attempt=2 rowCount=0 noResults=false text=AVERY HOME HEALTH LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifications1Mes",
+        "attempt=3 rowCount=0 noResults=false text=AVERY HOME HEALTH LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifications1Mes",
+        "attempt=4 rowCount=0 noResults=false text=AVERY HOME HEALTH LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifications1Mes",
+        "attempt=5 rowCount=0 noResults=false text=AVERY HOME HEALTH LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifications1Mes",
+        "attempt=6 rowCount=0 noResults=false text=AVERY HOME HEALTH LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifications1Mes",
+        "attempt=7 rowCount=0 noResults=false text=AVERY HOME HEALTH LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifications1Mes",
+        "attempt=8 rowCount=0 noResults=false text=AVERY HOME HEALTH LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifications1Mes"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T20:02:51.034Z",
+      "step": "patient_search",
+      "message": "Global patient search completed with 0 candidate(s).",
+      "patientName": "Ester Wheeler",
+      "urlBefore": "https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/dashboard",
+      "selectorUsed": "getByText(/Search Patient/i) -> nearest clickable parent (present) -> input[type=\"text\"][placeholder*=\"Search patients\"]",
+      "found": [],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Original workbook patient name: Ester Wheeler",
+        "Normalized global search query: wheeler, ester",
+        "Normalized expected display name: WHEELER, ESTER",
+        "Global search control selector used: getByText(/Search Patient/i) -> nearest clickable parent (present)",
+        "Global search surface selector used: Global patient search overlay/dialog containing an input",
+        "Global search input selector used: input[type=\"text\"][placeholder*=\"Search patients\"]",
+        "Result selector used: unknown",
+        "Search results ready: true",
+        "Visible result row count: 0",
+        "No results marker visible: false",
+        "Candidate search result texts: none",
+        "Result text sample: AVERY HOME HEALTH LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifications1Mes",
+        "attempt=1 rowCount=0 noResults=false text=AVERY HOME HEALTH LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifications1Mes",
+        "attempt=2 rowCount=0 noResults=false text=AVERY HOME HEALTH LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifications1Mes",
+        "attempt=3 rowCount=0 noResults=false text=AVERY HOME HEALTH LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifications1Mes",
+        "attempt=4 rowCount=0 noResults=false text=AVERY HOME HEALTH LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifications1Mes",
+        "attempt=5 rowCount=0 noResults=false text=AVERY HOME HEALTH LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifications1Mes",
+        "attempt=6 rowCount=0 noResults=false text=AVERY HOME HEALTH LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifications1Mes",
+        "attempt=7 rowCount=0 noResults=false text=AVERY HOME HEALTH LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifications1Mes",
+        "attempt=8 rowCount=0 noResults=false text=AVERY HOME HEALTH LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifications1Mes",
+        "rowCount=0",
+        "noResultsVisible=false",
+        "Normalized query typed=wheeler, ester",
+        "Normalized expected display name=WHEELER, ESTER"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T20:02:52.339Z",
+      "step": "patient_search_match_resolution",
+      "message": "Global patient search completed, but no matching patient result was available to open.",
+      "patientName": "Ester Wheeler",
+      "urlBefore": "https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/dashboard",
+      "selectorUsed": null,
+      "found": [],
+      "missing": [
+        "matching patient result"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Original workbook patient name: Ester Wheeler",
+        "Normalized global search query: wheeler, ester",
+        "Normalized expected display name: WHEELER, ESTER",
+        "Candidate search result texts: none",
+        "Visible result row count: 0",
+        "No results marker visible: false",
+        "Debug summary: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-22T19-21-35-668Z-a3d2e012\\outputs\\evidence\\ESTER_WHEELER__74eb54ec94810c0a\\debug\\patient-search-no-results.json",
+        "Text matches for 'wheeler, ester': none",
+        "Text matches for 'Ester Wheeler': none",
+        "Text matches for 'ESTER WHEELER': none"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T20:02:52.339Z",
+      "step": "chart_open",
+      "message": "Patient chart open was skipped because the patient is not currently available in global portal search results. Global patient search completed, but no matching patient result was available to open.",
+      "patientName": "Ester Wheeler",
+      "urlBefore": "https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/dashboard",
+      "selectorUsed": null,
+      "found": [],
+      "missing": [
+        "matching patient result"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Original workbook patient name: Ester Wheeler",
+        "Normalized global search query: wheeler, ester",
+        "Normalized expected display name: WHEELER, ESTER",
+        "Candidate search result texts: none",
+        "Visible result row count: 0",
+        "No results marker visible: false",
+        "Debug summary: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-22T19-21-35-668Z-a3d2e012\\outputs\\evidence\\ESTER_WHEELER__74eb54ec94810c0a\\debug\\patient-search-no-results.json"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T20:02:52.339Z",
+      "step": "shared_portal_access",
+      "message": "Shared portal access completed without a patient chart context because match status was NOT_FOUND.",
+      "patientName": "Ester Wheeler",
+      "urlBefore": "https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/dashboard",
+      "selectorUsed": null,
+      "found": [],
+      "missing": [
+        "patient chart context"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "matchStatus=NOT_FOUND",
+        "portalPatientId=none",
+        "portalAdmissionStatus=none",
+        "dashboardUrl=https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/dashboard",
+        "chartUrl=none"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T20:02:52.339Z",
+      "step": "chart_discovery_skipped",
+      "message": "Chart discovery skipped because patient match status was NOT_FOUND.",
+      "patientName": "Ester Wheeler",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Global patient search completed, but no matching patient result was available to open."
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T20:02:52.376Z",
+      "step": "coding_input_export",
+      "message": "Wrote fallback coding-input.json for downstream read-only diagnosis consumers.",
+      "patientName": "Ester Wheeler",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "codingInputPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-22T19-21-35-668Z-a3d2e012\\outputs\\patients\\ESTER_WHEELER__74eb54ec94810c0a\\coding-input.json",
+        "diagnosisCount:0",
+        "primaryDiagnosisSelected:none",
+        "otherDiagnosisCount:0",
+        "codeConfidenceSummary:high:0 medium:0 low:0"
+      ],
+      "missing": [
+        "primary diagnosis"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "suggestedOnsetType:onset",
+        "matchStatus:NOT_FOUND"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    }
+  ],
+  "notes": [
+    "Global patient search completed, but no matching patient result was available to open.",
+    "Fallback coding input exported: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-22T19-21-35-668Z-a3d2e012\\outputs\\patients\\ESTER_WHEELER__74eb54ec94810c0a\\coding-input.json"
+  ],
+  "auditArtifacts": {
+    "tracePath": null,
+    "screenshotPaths": [],
+    "downloadPaths": []
+  },
+  "workflowRuns": [
+    {
+      "workflowRunId": "batch-avery-home-health-2026-04-22T19-21-35-668Z-a3d2e012-ESTER_WHEELER__74eb54ec94810c0a:coding",
+      "workflowDomain": "coding",
+      "status": "NOT_STARTED",
+      "stepName": "NOT_STARTED",
+      "message": null,
+      "chartUrl": null,
+      "startedAt": null,
+      "completedAt": null,
+      "lastUpdatedAt": "2026-04-22T20:00:23.543Z",
+      "workflowResultPath": null,
+      "workflowLogPath": null
+    },
+    {
+      "workflowRunId": "batch-avery-home-health-2026-04-22T19-21-35-668Z-a3d2e012-ESTER_WHEELER__74eb54ec94810c0a:qa",
+      "workflowDomain": "qa",
+      "status": "NOT_STARTED",
+      "stepName": "NOT_STARTED",
+      "message": null,
+      "chartUrl": null,
+      "startedAt": null,
+      "completedAt": null,
+      "lastUpdatedAt": "2026-04-22T20:00:23.543Z",
+      "workflowResultPath": null,
+      "workflowLogPath": null
+    }
+  ]
+}

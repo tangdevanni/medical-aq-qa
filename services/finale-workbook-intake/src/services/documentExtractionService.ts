@@ -4,13 +4,13 @@ import path from "node:path";
 import { setTimeout as delay } from "node:timers/promises";
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import {
-  DetectDocumentTextCommand,
-  GetDocumentTextDetectionCommand,
-  StartDocumentTextDetectionCommand,
+  AnalyzeDocumentCommand,
+  GetDocumentAnalysisCommand,
+  StartDocumentAnalysisCommand,
   TextractClient,
   type Block,
-  type DetectDocumentTextCommandOutput,
-  type GetDocumentTextDetectionCommandOutput,
+  type AnalyzeDocumentCommandOutput,
+  type GetDocumentAnalysisCommandOutput,
 } from "@aws-sdk/client-textract";
 import type { ArtifactRecord, DocumentInventoryItem } from "@medical-ai-qa/shared-types";
 import { loadEnv } from "../config/env";
@@ -365,12 +365,373 @@ function resolveTextractJobTimeoutMs(): number {
   return loadEnv().TEXTRACT_JOB_TIMEOUT_MS;
 }
 
+type TextractSelectionSummary = {
+  page: number | null;
+  label: string;
+  source: "key_value_set" | "cell" | "line_proximity";
+};
+
+type PersistedTextractBlock = {
+  blockType: string | null;
+  text: string | null;
+  confidence: number | null;
+  page: number | null;
+  id?: string | null;
+  selectionStatus?: string | null;
+  rowIndex?: number | null;
+  columnIndex?: number | null;
+  entityTypes?: string[] | null;
+  relationships?: Array<{
+    type: string | null;
+    ids: string[];
+  }> | null;
+  geometry?: {
+    boundingBox?: {
+      left: number | null;
+      top: number | null;
+      width: number | null;
+      height: number | null;
+    } | null;
+  } | null;
+};
+
+type MinimalTextractBlock = {
+  BlockType?: string;
+  Text?: string;
+  Confidence?: number;
+  Page?: number;
+  Id?: string;
+  SelectionStatus?: string;
+  Relationships?: Array<{
+    Type?: string;
+    Ids?: string[];
+  }>;
+  Geometry?: {
+    BoundingBox?: {
+      Left?: number;
+      Top?: number;
+      Width?: number;
+      Height?: number;
+    };
+  };
+  RowIndex?: number;
+  ColumnIndex?: number;
+  EntityTypes?: string[];
+};
+
+function normalizeTextractBlockGeometry(
+  block: Pick<MinimalTextractBlock, "Geometry">,
+): PersistedTextractBlock["geometry"] {
+  const box = block.Geometry?.BoundingBox;
+  if (!box) {
+    return null;
+  }
+  return {
+    boundingBox: {
+      left: typeof box.Left === "number" ? box.Left : null,
+      top: typeof box.Top === "number" ? box.Top : null,
+      width: typeof box.Width === "number" ? box.Width : null,
+      height: typeof box.Height === "number" ? box.Height : null,
+    },
+  };
+}
+
+function persistTextractBlock(block: MinimalTextractBlock): PersistedTextractBlock {
+  return {
+    blockType: block.BlockType ?? null,
+    text: block.Text ?? null,
+    confidence: typeof block.Confidence === "number" ? block.Confidence : null,
+    page: typeof block.Page === "number" ? block.Page : null,
+    id: block.Id ?? null,
+    selectionStatus: block.SelectionStatus ?? null,
+    rowIndex: typeof block.RowIndex === "number" ? block.RowIndex : null,
+    columnIndex: typeof block.ColumnIndex === "number" ? block.ColumnIndex : null,
+    entityTypes: Array.isArray(block.EntityTypes) ? block.EntityTypes : null,
+    relationships: Array.isArray(block.Relationships)
+      ? block.Relationships.map((relationship) => ({
+          type: relationship.Type ?? null,
+          ids: Array.isArray(relationship.Ids)
+            ? relationship.Ids.filter((id): id is string => typeof id === "string" && id.length > 0)
+            : [],
+        }))
+      : null,
+    geometry: normalizeTextractBlockGeometry(block),
+  };
+}
+
+function getRelationshipIds(block: MinimalTextractBlock, relationshipType?: string): string[] {
+  if (!Array.isArray(block.Relationships)) {
+    return [];
+  }
+
+  return block.Relationships
+    .filter((relationship) =>
+      relationshipType
+        ? relationship.Type === relationshipType
+        : Array.isArray(relationship.Ids) && relationship.Ids.length > 0,
+    )
+    .flatMap((relationship) => relationship.Ids ?? [])
+    .filter((id): id is string => typeof id === "string" && id.length > 0);
+}
+
+function buildTextractBlockIndex(blocks: MinimalTextractBlock[]): Map<string, MinimalTextractBlock> {
+  return new Map(
+    blocks
+      .filter((block): block is MinimalTextractBlock & { Id: string } => typeof block.Id === "string" && block.Id.length > 0)
+      .map((block) => [block.Id, block] as const),
+  );
+}
+
+function getBlockBoundingBox(block: MinimalTextractBlock): {
+  left: number;
+  top: number;
+  width: number;
+  height: number;
+  right: number;
+  bottom: number;
+  centerX: number;
+  centerY: number;
+} | null {
+  const box = block.Geometry?.BoundingBox;
+  if (
+    typeof box?.Left !== "number" ||
+    typeof box?.Top !== "number" ||
+    typeof box?.Width !== "number" ||
+    typeof box?.Height !== "number"
+  ) {
+    return null;
+  }
+
+  return {
+    left: box.Left,
+    top: box.Top,
+    width: box.Width,
+    height: box.Height,
+    right: box.Left + box.Width,
+    bottom: box.Top + box.Height,
+    centerX: box.Left + (box.Width / 2),
+    centerY: box.Top + (box.Height / 2),
+  };
+}
+
+function extractChildTextFromTextractBlock(input: {
+  block: MinimalTextractBlock | null | undefined;
+  blockIndex: Map<string, MinimalTextractBlock>;
+}): string {
+  const words = getRelationshipIds(input.block ?? {}, "CHILD")
+    .map((id) => input.blockIndex.get(id))
+    .filter((block): block is MinimalTextractBlock => Boolean(block))
+    .filter((block) => block.BlockType === "WORD" && typeof block.Text === "string")
+    .map((block) => normalizeWhitespace(block.Text ?? ""))
+    .filter(Boolean);
+  return normalizeWhitespace(words.join(" "));
+}
+
+function resolveSelectionLabelFromKeyValueSet(input: {
+  selectionBlock: MinimalTextractBlock;
+  blocks: MinimalTextractBlock[];
+  blockIndex: Map<string, MinimalTextractBlock>;
+}): string | null {
+  const selectionId = input.selectionBlock.Id;
+  if (!selectionId) {
+    return null;
+  }
+
+  const valueBlock = input.blocks.find((block) =>
+    block.BlockType === "KEY_VALUE_SET" &&
+    block.EntityTypes?.includes("VALUE") &&
+    getRelationshipIds(block, "CHILD").includes(selectionId),
+  );
+  if (!valueBlock?.Id) {
+    return null;
+  }
+
+  const keyBlock = input.blocks.find((block) =>
+    block.BlockType === "KEY_VALUE_SET" &&
+    block.EntityTypes?.includes("KEY") &&
+    getRelationshipIds(block, "VALUE").includes(valueBlock.Id!),
+  );
+  if (!keyBlock) {
+    return null;
+  }
+
+  return extractChildTextFromTextractBlock({
+    block: keyBlock,
+    blockIndex: input.blockIndex,
+  }) || null;
+}
+
+function resolveSelectionLabelFromCell(input: {
+  selectionBlock: MinimalTextractBlock;
+  blocks: MinimalTextractBlock[];
+  blockIndex: Map<string, MinimalTextractBlock>;
+}): string | null {
+  const selectionId = input.selectionBlock.Id;
+  if (!selectionId) {
+    return null;
+  }
+
+  const cellBlock = input.blocks.find((block) =>
+    block.BlockType === "CELL" &&
+    getRelationshipIds(block, "CHILD").includes(selectionId),
+  );
+  if (!cellBlock) {
+    return null;
+  }
+
+  const directLabel = extractChildTextFromTextractBlock({
+    block: cellBlock,
+    blockIndex: input.blockIndex,
+  });
+  if (directLabel) {
+    return directLabel;
+  }
+
+  const siblingCell = input.blocks.find((block) =>
+    block.BlockType === "CELL" &&
+    block.Page === cellBlock.Page &&
+    block.RowIndex === cellBlock.RowIndex &&
+    block.ColumnIndex !== cellBlock.ColumnIndex &&
+    extractChildTextFromTextractBlock({
+      block,
+      blockIndex: input.blockIndex,
+    }).length > 0,
+  );
+  if (!siblingCell) {
+    return null;
+  }
+
+  return extractChildTextFromTextractBlock({
+    block: siblingCell,
+    blockIndex: input.blockIndex,
+  }) || null;
+}
+
+function resolveSelectionLabelByLineProximity(input: {
+  selectionBlock: MinimalTextractBlock;
+  lineBlocks: MinimalTextractBlock[];
+}): string | null {
+  const selectionPage = input.selectionBlock.Page ?? null;
+  const selectionBox = getBlockBoundingBox(input.selectionBlock);
+  if (selectionPage == null || !selectionBox) {
+    return null;
+  }
+
+  const bestLine = input.lineBlocks
+    .filter((block) => block.Page === selectionPage && typeof block.Text === "string")
+    .map((block) => {
+      const box = getBlockBoundingBox(block);
+      if (!box) {
+        return null;
+      }
+      const verticalDistance = Math.abs(box.centerY - selectionBox.centerY);
+      const horizontalDistance = box.left >= selectionBox.left
+        ? Math.max(0, box.left - selectionBox.right)
+        : Math.max(0, selectionBox.left - box.right);
+      const penalty = box.width > 0.7 ? 0.2 : 0;
+      return {
+        block,
+        score: (verticalDistance * 4) + horizontalDistance + penalty,
+      };
+    })
+    .filter((entry): entry is { block: MinimalTextractBlock; score: number } => entry !== null)
+    .sort((left, right) => left.score - right.score)[0];
+
+  return bestLine?.block.Text ? normalizeWhitespace(bestLine.block.Text) : null;
+}
+
+function cleanTextractSelectionLabel(value: string | null | undefined): string | null {
+  const normalized = normalizeWhitespace(value ?? "");
+  if (!normalized) {
+    return null;
+  }
+  return normalized.length > 220 ? normalized.slice(0, 220).trimEnd() : normalized;
+}
+
+function extractTextractSelectionSummaries(blocks: MinimalTextractBlock[] | undefined): TextractSelectionSummary[] {
+  if (!Array.isArray(blocks) || blocks.length === 0) {
+    return [];
+  }
+
+  const blockIndex = buildTextractBlockIndex(blocks);
+  const lineBlocks = blocks.filter((block) => block.BlockType === "LINE");
+  const selections: TextractSelectionSummary[] = [];
+  const seen = new Set<string>();
+
+  for (const selectionBlock of blocks) {
+    if (
+      selectionBlock.BlockType !== "SELECTION_ELEMENT" ||
+      selectionBlock.SelectionStatus !== "SELECTED"
+    ) {
+      continue;
+    }
+
+    const keyValueLabel = cleanTextractSelectionLabel(resolveSelectionLabelFromKeyValueSet({
+      selectionBlock,
+      blocks,
+      blockIndex,
+    }));
+    const cellLabel = cleanTextractSelectionLabel(resolveSelectionLabelFromCell({
+      selectionBlock,
+      blocks,
+      blockIndex,
+    }));
+    const proximityLabel = cleanTextractSelectionLabel(resolveSelectionLabelByLineProximity({
+      selectionBlock,
+      lineBlocks,
+    }));
+
+    const label = keyValueLabel ?? cellLabel ?? proximityLabel;
+    if (!label) {
+      continue;
+    }
+
+    const source = keyValueLabel
+      ? "key_value_set"
+      : cellLabel
+        ? "cell"
+        : "line_proximity";
+    const page = typeof selectionBlock.Page === "number" ? selectionBlock.Page : null;
+    const dedupeKey = `${page ?? "unknown"}:${label.toLowerCase()}`;
+    if (seen.has(dedupeKey)) {
+      continue;
+    }
+    seen.add(dedupeKey);
+    selections.push({ page, label, source });
+  }
+
+  return selections;
+}
+
+function buildTextractSelectionSummaryText(selections: TextractSelectionSummary[]): string {
+  if (selections.length === 0) {
+    return "";
+  }
+
+  return [
+    "SELECTED CHECKBOX / RADIO OPTIONS:",
+    ...selections.map((selection) =>
+      selection.page != null
+        ? `[SELECTED][page ${selection.page}] ${selection.label}`
+        : `[SELECTED] ${selection.label}`,
+    ),
+  ].join("\n");
+}
+
 function extractTextractTextFromBlocks(blocks: Block[] | undefined): string {
   const lines = (blocks ?? [])
     .filter((block): block is Block => Boolean(block) && block.BlockType === "LINE")
     .map((block: Block) => normalizeWhitespace(block.Text ?? ""))
     .filter(Boolean);
-  return normalizeMultilineText(lines.join("\n"));
+  const selectionText = buildTextractSelectionSummaryText(
+    extractTextractSelectionSummaries(blocks as MinimalTextractBlock[] | undefined),
+  );
+  return normalizeMultilineText(
+    [
+      lines.join("\n"),
+      selectionText,
+    ].filter(Boolean).join("\n\n"),
+  );
 }
 
 function extractTextractTextFromPersistedBlocks(blocks: unknown): string {
@@ -406,11 +767,105 @@ function extractTextractTextFromPersistedBlocks(blocks: unknown): string {
       return normalizeWhitespace(text);
     })
     .filter(Boolean);
-  return normalizeMultilineText(lines.join("\n"));
+  const selectionText = buildTextractSelectionSummaryText(
+    extractTextractSelectionSummaries(blocks as MinimalTextractBlock[]),
+  );
+  return normalizeMultilineText(
+    [
+      lines.join("\n"),
+      selectionText,
+    ].filter(Boolean).join("\n\n"),
+  );
 }
 
-function extractTextractText(response: DetectDocumentTextCommandOutput): string {
+function extractPersistedSelectionSummaryText(selections: unknown): string {
+  if (!Array.isArray(selections)) {
+    return "";
+  }
+
+  const normalizedSelections = selections
+    .map((selection) => {
+      if (!selection || typeof selection !== "object") {
+        return null;
+      }
+      const candidate = selection as {
+        page?: unknown;
+        label?: unknown;
+        source?: unknown;
+      };
+      const label = cleanTextractSelectionLabel(
+        typeof candidate.label === "string" ? candidate.label : "",
+      );
+      if (!label) {
+        return null;
+      }
+      return {
+        page: typeof candidate.page === "number" ? candidate.page : null,
+        label,
+        source:
+          candidate.source === "key_value_set" ||
+          candidate.source === "cell" ||
+          candidate.source === "line_proximity"
+            ? candidate.source
+            : "line_proximity",
+      } satisfies TextractSelectionSummary;
+    })
+    .filter((selection): selection is TextractSelectionSummary => selection !== null);
+
+  return buildTextractSelectionSummaryText(normalizedSelections);
+}
+
+function extractTextractText(response: AnalyzeDocumentCommandOutput): string {
   return extractTextractTextFromBlocks(response.Blocks);
+}
+
+function isLegacySelectionBlindTextractPayload(payload: Record<string, unknown>): boolean {
+  const blocks = Array.isArray(payload.blocks) ? payload.blocks : [];
+  if (!Boolean(payload.ocrSuccess) || blocks.length === 0) {
+    return false;
+  }
+
+  const hasSelectionMetadata =
+    typeof payload.selectedOptionCount === "number" ||
+    Array.isArray(payload.selectedOptions) ||
+    blocks.some((block) => {
+      if (!block || typeof block !== "object") {
+        return false;
+      }
+      const candidate = block as {
+        blockType?: unknown;
+        BlockType?: unknown;
+        selectionStatus?: unknown;
+        SelectionStatus?: unknown;
+      };
+      return (
+        candidate.blockType === "SELECTION_ELEMENT" ||
+        candidate.BlockType === "SELECTION_ELEMENT" ||
+        typeof candidate.selectionStatus === "string" ||
+        typeof candidate.SelectionStatus === "string"
+      );
+    });
+  if (hasSelectionMetadata) {
+    return false;
+  }
+
+  return blocks.every((block) => {
+    if (!block || typeof block !== "object") {
+      return false;
+    }
+    const candidate = block as {
+      blockType?: unknown;
+      BlockType?: unknown;
+    };
+    const blockType = normalizeWhitespace(
+      typeof candidate.blockType === "string"
+        ? candidate.blockType
+        : typeof candidate.BlockType === "string"
+          ? candidate.BlockType
+          : "",
+    );
+    return blockType === "LINE" || blockType === "PAGE" || blockType === "WORD";
+  });
 }
 
 function shouldFallbackToAsyncTextract(ocrError: string): boolean {
@@ -464,20 +919,32 @@ async function readExistingOcrArtifacts(input: {
       readFile(extractedTextPath, "utf8"),
     ]);
     const ocrPayload = JSON.parse(ocrPayloadRaw) as Record<string, unknown>;
+    if (isLegacySelectionBlindTextractPayload(ocrPayload)) {
+      return null;
+    }
     const extractedText = normalizeMultilineText(extractedTextRaw);
     const blockText = extractTextractTextFromPersistedBlocks(ocrPayload.blocks);
+    const persistedSelectionText = extractPersistedSelectionSummaryText(ocrPayload.selectedOptions);
+    const combinedBlockText = normalizeMultilineText(
+      [
+        blockText,
+        persistedSelectionText && !blockText.includes("SELECTED CHECKBOX / RADIO OPTIONS:")
+          ? persistedSelectionText
+          : "",
+      ].filter(Boolean).join("\n\n"),
+    );
     const extractedTextAnalysis = analyzeDocumentText(extractedText);
     const extractedLineCount = extractedText ? extractedText.split(/\n+/).filter(Boolean).length : 0;
-    const blockLineCount = blockText ? blockText.split(/\n+/).filter(Boolean).length : 0;
+    const blockLineCount = combinedBlockText ? combinedBlockText.split(/\n+/).filter(Boolean).length : 0;
     const repairedText =
-      blockText.length > 0 &&
+      combinedBlockText.length > 0 &&
       (
         extractedText.length === 0 ||
-        extractedText.length < blockText.length ||
+        extractedText.length < combinedBlockText.length ||
         !extractedTextAnalysis.accepted ||
         (extractedLineCount <= 1 && blockLineCount > 1)
       )
-        ? blockText
+        ? combinedBlockText
         : extractedText;
     const ocrSuccess = Boolean(ocrPayload.ocrSuccess) && repairedText.length > 0;
     if (repairedText && repairedText !== extractedText) {
@@ -589,8 +1056,8 @@ async function pollTextractDocumentTextDetection(input: {
 
   while (Date.now() <= deadline) {
     pollAttemptCount += 1;
-    const response: GetDocumentTextDetectionCommandOutput = await input.client.send(
-      new GetDocumentTextDetectionCommand({
+    const response: GetDocumentAnalysisCommandOutput = await input.client.send(
+      new GetDocumentAnalysisCommand({
         JobId: input.jobId,
         NextToken: nextToken,
       }),
@@ -725,13 +1192,14 @@ async function runTextractAsyncS3Ocr(input: {
     s3UploadSucceeded = true;
 
     const startResponse = await textractClient.send(
-      new StartDocumentTextDetectionCommand({
+      new StartDocumentAnalysisCommand({
         DocumentLocation: {
           S3Object: {
             Bucket: bucket,
             Name: key,
           },
         },
+        FeatureTypes: ["FORMS", "TABLES"],
       }),
     );
     textractStartSucceeded = true;
@@ -748,6 +1216,7 @@ async function runTextractAsyncS3Ocr(input: {
     });
     const text = extractTextractTextFromBlocks(pollResult.blocks);
     const ocrSuccess = text.length > 0;
+    const selectedOptions = extractTextractSelectionSummaries(pollResult.blocks);
     await writeTextractArtifacts({
       filePath: input.filePath,
       ocrResultPath: input.ocrResultPath,
@@ -779,13 +1248,10 @@ async function runTextractAsyncS3Ocr(input: {
         textractJobStatus: pollResult.jobStatus,
         textractStatusMessage: pollResult.statusMessage,
         textractPollAttemptCount: pollResult.pollAttemptCount,
+        selectedOptionCount: selectedOptions.length,
+        selectedOptions,
         blockCount: pollResult.blocks.length,
-        blocks: pollResult.blocks.map((block: Block) => ({
-          blockType: block.BlockType ?? null,
-          text: block.Text ?? null,
-          confidence: block.Confidence ?? null,
-          page: block.Page ?? null,
-        })),
+        blocks: pollResult.blocks.map((block: Block) => persistTextractBlock(block)),
       },
       text: text || input.fallbackText,
     });
@@ -912,14 +1378,16 @@ async function runTextractOcr(input: {
 
   try {
     const response = await client.send(
-      new DetectDocumentTextCommand({
+      new AnalyzeDocumentCommand({
         Document: {
           Bytes: input.buffer,
         },
+        FeatureTypes: ["FORMS", "TABLES"],
       }),
     );
     const text = extractTextractText(response);
     const ocrSuccess = text.length > 0;
+    const selectedOptions = extractTextractSelectionSummaries(response.Blocks as MinimalTextractBlock[] | undefined);
     await writeFile(
       ocrResultPath,
       JSON.stringify(
@@ -943,13 +1411,10 @@ async function runTextractOcr(input: {
           textractStartSucceeded: null,
           textractStartError: null,
           ocrErrorCategory: null,
+          selectedOptionCount: selectedOptions.length,
+          selectedOptions,
           blockCount: response.Blocks?.length ?? 0,
-          blocks: (response.Blocks ?? []).map((block: Block) => ({
-            blockType: block.BlockType ?? null,
-            text: block.Text ?? null,
-            confidence: block.Confidence ?? null,
-            page: block.Page ?? null,
-          })),
+          blocks: (response.Blocks ?? []).map((block: Block) => persistTextractBlock(block)),
         },
         null,
         2,
@@ -1359,11 +1824,26 @@ export async function extractDocumentsFromArtifacts(
     let source: "download" | "artifact_fallback" = "artifact_fallback";
     let effectiveTextSource: EffectiveTextSource = "viewer_text_fallback";
     let baseReadResult: LocalFileTextExtractionResult | null = null;
+    const persistedExtractedTextPath = readStringField(
+      artifact.extractedFields?.extractedTextPath,
+    );
 
     if (artifact.downloadPath) {
       try {
         await access(artifact.downloadPath);
         baseReadResult = await extractTextFromLocalFile(artifact.downloadPath);
+        text = baseReadResult.text;
+        source = "download";
+        effectiveTextSource = baseReadResult.effectiveTextSource;
+      } catch {
+        text = "";
+      }
+    }
+
+    if (!text && persistedExtractedTextPath) {
+      try {
+        await access(persistedExtractedTextPath);
+        baseReadResult = await extractTextFromLocalFile(persistedExtractedTextPath);
         text = baseReadResult.text;
         source = "download";
         effectiveTextSource = baseReadResult.effectiveTextSource;
@@ -1387,7 +1867,7 @@ export async function extractDocumentsFromArtifacts(
       metadata: {
         artifactType: artifact.artifactType,
         source,
-        sourcePath: artifact.downloadPath,
+        sourcePath: artifact.downloadPath ?? persistedExtractedTextPath,
         effectiveTextSource,
         extractionPolicyMode: baseReadResult?.extractionPolicyMode ?? null,
         rawExtractedTextSource: baseReadResult?.rawExtractedTextSource ?? "dom",

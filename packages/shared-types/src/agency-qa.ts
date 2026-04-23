@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { workflowTypeSchema } from "./patient-episode-work-item";
 import { subsidiaryStatusSchema } from "./subsidiary";
+import { qaOutcomeSchema } from "./batch-pipeline";
 
 export const agencySchema = z.object({
   id: z.string().min(1),
@@ -168,6 +169,9 @@ export const dashboardPatientRecordSchema = z.object({
   processingStatus: z.string().min(1).nullable(),
   lastUpdatedAt: z.string().min(1).nullable(),
   errorSummary: z.string().min(1).nullable(),
+  qaOutcome: qaOutcomeSchema.nullable().default(null),
+  missingReferralDocumentation: z.boolean().default(false),
+  missingReferralFieldCount: z.number().int().nonnegative().default(0),
 });
 
 export type DashboardPatientRecord = z.infer<typeof dashboardPatientRecordSchema>;

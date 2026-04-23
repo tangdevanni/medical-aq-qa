@@ -1,0 +1,34 @@
+{
+  "primaryDiagnosis": {
+    "code": "N18.30",
+    "description": "Chronic kidney disease stage 3",
+    "confidence": "high"
+  },
+  "otherDiagnoses": [
+    {
+      "code": "I10",
+      "description": "Essential hypertension",
+      "confidence": "high"
+    },
+    {
+      "code": "I10",
+      "description": "HTN - Hypertension",
+      "confidence": "high"
+    },
+    {
+      "code": "N18.30",
+      "description": "Chronic kidney disease stage 3 ( ), Essential hypertension , HTN - Hypertension",
+      "confidence": "high"
+    }
+  ],
+  "suggestedOnsetType": "onset",
+  "suggestedSeverity": 2,
+  "comorbidityFlags": {
+    "pvd_pad": false,
+    "diabetes": false,
+    "none": true
+  },
+  "notes": [
+    "Ordered services: Physical Therapy"
+  ]
+}

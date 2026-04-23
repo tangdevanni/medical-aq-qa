@@ -1,0 +1,1029 @@
+{
+  "runId": "batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4-CHARELS_WARREN__f5f777ccb79e12d9",
+  "batchId": "batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4",
+  "subsidiaryId": "aplus-home-health",
+  "workItemId": "CHARELS_WARREN__f5f777ccb79e12d9",
+  "patientName": "Charels Warren",
+  "processingStatus": "BLOCKED",
+  "executionStep": "BLOCKED",
+  "progressPercent": 100,
+  "startedAt": "2026-04-22T20:02:48.306Z",
+  "completedAt": "2026-04-22T20:04:52.778Z",
+  "lastUpdatedAt": "2026-04-22T20:04:52.704Z",
+  "matchResult": {
+    "status": "AMBIGUOUS",
+    "searchQuery": "warren, charels",
+    "portalPatientId": null,
+    "portalDisplayName": null,
+    "candidateNames": [
+      "WARREN, CHARELS MR# 178809 Active#VA PATIENT SOC: 4/16/2026 / DOB: 6/1/1953 LOS: 7 days WPS TRIWEST 1925 Malambro Court North Las Vegas NV 89032 (702)272-3848 Last Visit Confirmed by SN : 04/22/2026 (0 days ago)",
+      "WARREN, CHARELS MR# 178809 Non-Admit#VA PATIENT SOC: 4/9/2026 / DOB: 6/1/1953 LOS: 14 days WPS TRIWEST 1925 Malambro Court North Las Vegas NV 89032 (702)272-3848"
+    ],
+    "note": "Multiple exact patient matches were returned by the global search."
+  },
+  "artifacts": [],
+  "artifactCount": 0,
+  "findings": [
+    {
+      "ruleId": "patient.match.ambiguous",
+      "stage": "TECHNICAL_REVIEW",
+      "outcome": "AMBIGUOUS_PATIENT",
+      "message": "Portal patient search returned ambiguous matches.",
+      "evidence": [
+        "WARREN, CHARELS MR# 178809 Active#VA PATIENT SOC: 4/16/2026 / DOB: 6/1/1953 LOS: 7 days WPS TRIWEST 1925 Malambro Court North Las Vegas NV 89032 (702)272-3848 Last Visit Confirmed by SN : 04/22/2026 (0 days ago)",
+        "WARREN, CHARELS MR# 178809 Non-Admit#VA PATIENT SOC: 4/9/2026 / DOB: 6/1/1953 LOS: 14 days WPS TRIWEST 1925 Malambro Court North Las Vegas NV 89032 (702)272-3848"
+      ]
+    },
+    {
+      "ruleId": "oasis-qa.coding.missing",
+      "stage": "CODING_REVIEW",
+      "outcome": "AMBIGUOUS_PATIENT",
+      "message": "Coding Review is missing.",
+      "evidence": [
+        "OASIS content is available to support coding review"
+      ]
+    },
+    {
+      "ruleId": "oasis-qa.oasis.missing",
+      "stage": "OASIS_QA",
+      "outcome": "AMBIGUOUS_PATIENT",
+      "message": "OASIS QA is missing.",
+      "evidence": [
+        "OASIS document content extracted",
+        "Medical necessity is stated",
+        "Homebound reason is stated",
+        "Health assessment is documented",
+        "Skilled interventions during the OASIS visit are documented"
+      ]
+    },
+    {
+      "ruleId": "oasis-qa.poc.missing",
+      "stage": "POC_QA",
+      "outcome": "AMBIGUOUS_PATIENT",
+      "message": "Plan Of Care QA is missing.",
+      "evidence": [
+        "Plan of care content extracted",
+        "POC QA completed in workbook",
+        "Diagnoses or codes are present in the plan of care",
+        "Interventions, goals, and frequency are present in the plan of care",
+        "Conditions or exacerbations are reflected in the plan of care"
+      ]
+    },
+    {
+      "ruleId": "oasis-qa.visit_notes.missing",
+      "stage": "VISIT_NOTES_REVIEW",
+      "outcome": "AMBIGUOUS_PATIENT",
+      "message": "Visit Notes Review is missing.",
+      "evidence": [
+        "Visit note content extracted",
+        "Visit notes review completed in workbook",
+        "Skilled need is clearly documented",
+        "Interventions performed are specific and detailed",
+        "Patient response to interventions is documented",
+        "Progress toward goals is noted",
+        "Vitals and focused assessment are documented",
+        "Medication review is documented",
+        "Changes in condition are clearly reported and addressed",
+        "Documentation supports billed services",
+        "Documentation remains consistent with OASIS and diagnoses"
+      ]
+    },
+    {
+      "ruleId": "oasis-qa.technical_review.fail",
+      "stage": "TECHNICAL_REVIEW",
+      "outcome": "AMBIGUOUS_PATIENT",
+      "message": "Technical Review is fail.",
+      "evidence": [
+        "Portal patient match resolved",
+        "SN visits were identified from visit-note content",
+        "Applicable disciplines were detected"
+      ]
+    },
+    {
+      "ruleId": "oasis-qa.final_check.fail",
+      "stage": "FINAL_BILLING_PREP_READINESS",
+      "outcome": "AMBIGUOUS_PATIENT",
+      "message": "Final Check is fail.",
+      "evidence": [
+        "Critical QA sections are complete before billing prep",
+        "Billing prep status in workbook"
+      ]
+    }
+  ],
+  "hasFindings": true,
+  "qaOutcome": "AMBIGUOUS_PATIENT",
+  "oasisQaSummary": {
+    "overallStatus": "BLOCKED",
+    "urgency": "ON_TRACK",
+    "daysInPeriod": 30,
+    "daysLeft": 24,
+    "sections": [
+      {
+        "key": "timing",
+        "label": "Timing / OASIS Due",
+        "status": "PASS",
+        "items": [
+          {
+            "key": "days_in_period",
+            "label": "Days in the 30-day period captured",
+            "status": "PASS",
+            "notes": "Workbook shows 30 days in period.",
+            "evidence": [
+              "Workbook days in period: 30"
+            ]
+          },
+          {
+            "key": "days_left",
+            "label": "Days left before OASIS due date verified",
+            "status": "PASS",
+            "notes": "24 day(s) remain before OASIS is due.",
+            "evidence": [
+              "Workbook days left: 24"
+            ]
+          },
+          {
+            "key": "urgency_bucket",
+            "label": "Urgency bucket",
+            "status": "PASS",
+            "notes": "ON TRACK",
+            "evidence": [
+              "Derived urgency from 24 day(s) left."
+            ]
+          }
+        ]
+      },
+      {
+        "key": "coding",
+        "label": "Coding Review",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "coding_review_complete",
+            "label": "Coding review completed in workbook",
+            "status": "NEEDS_REVIEW",
+            "notes": "Workbook status: IN_PROGRESS",
+            "evidence": [
+              "IN_PROGRESS"
+            ]
+          },
+          {
+            "key": "coding_supported_by_oasis",
+            "label": "OASIS content is available to support coding review",
+            "status": "MISSING",
+            "notes": "No OASIS content was extracted for coding validation.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "oasis",
+        "label": "OASIS QA",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "oasis_document",
+            "label": "OASIS document content extracted",
+            "status": "MISSING",
+            "notes": "No OASIS document content was available for extraction.",
+            "evidence": []
+          },
+          {
+            "key": "oasis_workbook_status",
+            "label": "OASIS QA completed in workbook",
+            "status": "NEEDS_REVIEW",
+            "notes": "Workbook status: IN_PROGRESS",
+            "evidence": [
+              "IN_PROGRESS"
+            ]
+          },
+          {
+            "key": "medical_necessity",
+            "label": "Medical necessity is stated",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "homebound_reason",
+            "label": "Homebound reason is stated",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "health_assessment",
+            "label": "Health assessment is documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "skilled_interventions",
+            "label": "Skilled interventions during the OASIS visit are documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "poc",
+        "label": "Plan Of Care QA",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "poc_document",
+            "label": "Plan of care content extracted",
+            "status": "MISSING",
+            "notes": "No plan-of-care content was available for extraction.",
+            "evidence": []
+          },
+          {
+            "key": "poc_workbook_status",
+            "label": "POC QA completed in workbook",
+            "status": "MISSING",
+            "notes": "Workbook status: NOT_STARTED",
+            "evidence": [
+              "NOT_STARTED"
+            ]
+          },
+          {
+            "key": "poc_diagnoses_codes",
+            "label": "Diagnoses or codes are present in the plan of care",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "poc_interventions_goals_frequency",
+            "label": "Interventions, goals, and frequency are present in the plan of care",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "poc_conditions_exacerbations",
+            "label": "Conditions or exacerbations are reflected in the plan of care",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "visit_notes",
+        "label": "Visit Notes Review",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "visit_notes_document",
+            "label": "Visit note content extracted",
+            "status": "MISSING",
+            "notes": "No visit-note content was available for extraction.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_workbook_status",
+            "label": "Visit notes review completed in workbook",
+            "status": "MISSING",
+            "notes": "Workbook status: NOT_STARTED",
+            "evidence": [
+              "NOT_STARTED"
+            ]
+          },
+          {
+            "key": "visit_notes_skilled_need",
+            "label": "Skilled need is clearly documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_intervention_detail",
+            "label": "Interventions performed are specific and detailed",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_patient_response",
+            "label": "Patient response to interventions is documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_progress",
+            "label": "Progress toward goals is noted",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_vitals",
+            "label": "Vitals and focused assessment are documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_medication_review",
+            "label": "Medication review is documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_condition_changes",
+            "label": "Changes in condition are clearly reported and addressed",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_billed_services_support",
+            "label": "Documentation supports billed services",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_consistency",
+            "label": "Documentation remains consistent with OASIS and diagnoses",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "technical_review",
+        "label": "Technical Review",
+        "status": "FAIL",
+        "items": [
+          {
+            "key": "portal_patient_match",
+            "label": "Portal patient match resolved",
+            "status": "FAIL",
+            "notes": "Multiple exact patient matches were returned by the global search.",
+            "evidence": [
+              "warren, charels",
+              "WARREN, CHARELS MR# 178809 Active#VA PATIENT SOC: 4/16/2026 / DOB: 6/1/1953 LOS: 7 days WPS TRIWEST 1925 Malambro Court North Las Vegas NV 89032 (702)272-3848 Last Visit Confirmed by SN : 04/22/2026 (0 days ago)",
+              "WARREN, CHARELS MR# 178809 Non-Admit#VA PATIENT SOC: 4/9/2026 / DOB: 6/1/1953 LOS: 14 days WPS TRIWEST 1925 Malambro Court North Las Vegas NV 89032 (702)272-3848"
+            ]
+          },
+          {
+            "key": "sn_visit_count",
+            "label": "SN visits were identified from visit-note content",
+            "status": "MISSING",
+            "notes": "Visit-note content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "discipline_detection",
+            "label": "Applicable disciplines were detected",
+            "status": "MISSING",
+            "notes": "Visit-note content is not available for discipline detection.",
+            "evidence": []
+          },
+          {
+            "key": "physician_orders",
+            "label": "Physician orders were checked",
+            "status": "NOT_APPLICABLE",
+            "notes": "No additional physician orders were discovered for this patient.",
+            "evidence": []
+          },
+          {
+            "key": "supporting_notes",
+            "label": "Supporting note categories were reviewed",
+            "status": "NOT_APPLICABLE",
+            "notes": "No additional supporting note categories were discovered for this patient.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "final_check",
+        "label": "Final Check",
+        "status": "FAIL",
+        "items": [
+          {
+            "key": "critical_sections_clear",
+            "label": "Critical QA sections are complete before billing prep",
+            "status": "FAIL",
+            "notes": "Blocking sections: OASIS content is available to support coding review, OASIS document content extracted, Medical necessity is stated, Homebound reason is stated, Health assessment is documented, Skilled interventions during the OASIS visit are documented, Plan of care content extracted, POC QA completed in workbook, Diagnoses or codes are present in the plan of care, Interventions, goals, and frequency are present in the plan of care, Conditions or exacerbations are reflected in the plan of care, Visit note content extracted, Visit notes review completed in workbook, Skilled need is clearly documented, Interventions performed are specific and detailed, Patient response to interventions is documented, Progress toward goals is noted, Vitals and focused assessment are documented, Medication review is documented, Changes in condition are clearly reported and addressed, Documentation supports billed services, Documentation remains consistent with OASIS and diagnoses, Portal patient match resolved, SN visits were identified from visit-note content, Applicable disciplines were detected",
+            "evidence": [
+              "Timing / OASIS Due: PASS",
+              "Coding Review: MISSING",
+              "OASIS QA: MISSING",
+              "Plan Of Care QA: MISSING",
+              "Visit Notes Review: MISSING",
+              "Technical Review: FAIL"
+            ]
+          },
+          {
+            "key": "billing_prep_status",
+            "label": "Billing prep status in workbook",
+            "status": "MISSING",
+            "notes": "Workbook status: NOT_STARTED",
+            "evidence": [
+              "NOT_STARTED"
+            ]
+          }
+        ]
+      }
+    ],
+    "blockers": [
+      "OASIS content is available to support coding review",
+      "OASIS document content extracted",
+      "Medical necessity is stated",
+      "Homebound reason is stated",
+      "Health assessment is documented",
+      "Skilled interventions during the OASIS visit are documented",
+      "Plan of care content extracted",
+      "POC QA completed in workbook",
+      "Diagnoses or codes are present in the plan of care",
+      "Interventions, goals, and frequency are present in the plan of care",
+      "Conditions or exacerbations are reflected in the plan of care",
+      "Visit note content extracted",
+      "Visit notes review completed in workbook",
+      "Skilled need is clearly documented",
+      "Interventions performed are specific and detailed",
+      "Patient response to interventions is documented",
+      "Progress toward goals is noted",
+      "Vitals and focused assessment are documented",
+      "Medication review is documented",
+      "Changes in condition are clearly reported and addressed",
+      "Documentation supports billed services",
+      "Documentation remains consistent with OASIS and diagnoses",
+      "Portal patient match resolved",
+      "SN visits were identified from visit-note content",
+      "Applicable disciplines were detected"
+    ]
+  },
+  "documentInventory": [],
+  "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patient-results\\CHARELS_WARREN__f5f777ccb79e12d9.json",
+  "bundleAvailable": true,
+  "logPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\logs\\CHARELS_WARREN__f5f777ccb79e12d9.json",
+  "logAvailable": true,
+  "retryEligible": true,
+  "errorSummary": "Multiple exact patient matches were returned by the global search.",
+  "auditArtifacts": {
+    "tracePath": null,
+    "screenshotPaths": [],
+    "downloadPaths": []
+  },
+  "workflowRuns": [
+    {
+      "workflowRunId": "batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4-CHARELS_WARREN__f5f777ccb79e12d9:coding",
+      "workflowDomain": "coding",
+      "status": "NOT_STARTED",
+      "stepName": "NOT_STARTED",
+      "message": null,
+      "chartUrl": null,
+      "startedAt": null,
+      "completedAt": null,
+      "lastUpdatedAt": "2026-04-22T20:02:48.306Z",
+      "workflowResultPath": null,
+      "workflowLogPath": null
+    },
+    {
+      "workflowRunId": "batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4-CHARELS_WARREN__f5f777ccb79e12d9:qa",
+      "workflowDomain": "qa",
+      "status": "NOT_STARTED",
+      "stepName": "NOT_STARTED",
+      "message": null,
+      "chartUrl": null,
+      "startedAt": null,
+      "completedAt": null,
+      "lastUpdatedAt": "2026-04-22T20:02:48.306Z",
+      "workflowResultPath": null,
+      "workflowLogPath": null
+    }
+  ],
+  "workItemSnapshot": {
+    "id": "CHARELS_WARREN__f5f777ccb79e12d9",
+    "subsidiaryId": "aplus-home-health",
+    "patientIdentity": {
+      "displayName": "Charels Warren",
+      "normalizedName": "CHARELS WARREN",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-04-16",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "TRIWEST HEALTHCARE ALLIANCE",
+      "assignedStaff": "Bangayan, Antonio RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "01-SOC"
+    },
+    "workflowTypes": [
+      "SOC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 24,
+      "daysInPeriod": null,
+      "daysLeft": 24,
+      "daysLeftBeforeOasisDueDate": 24,
+      "rawTrackingValues": [
+        "24"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "IN_PROGRESS",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "Validated"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "04/16/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 45
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 45,
+        "values": {
+          "patientName": "WARREN, CHARELS",
+          "episodeDate": "04/16/2026",
+          "assignedStaff": "Bangayan, Antonio RN",
+          "payer": "TRIWEST HEALTHCARE ALLIANCE",
+          "rfa": "01-SOC",
+          "trackingDays": "24",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "Validated",
+          "oasisQaRemarks": "04/16/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  "automationStepLogs": [
+    {
+      "timestamp": "2026-04-22T20:04:52.704Z",
+      "step": "login",
+      "message": "Reused the authenticated portal session established for this batch.",
+      "patientName": "Charels Warren",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T20:02:48.371Z",
+      "step": "run_started",
+      "message": "Patient run started from the shared Playwright portal runner.",
+      "patientName": "Charels Warren",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69c5729a6308c30c7957c002/intake/69c573786ae59046faff4997/documents/note/oasis/69c573896ae59046faff49b3",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69c5729a6308c30c7957c002/intake/69c573786ae59046faff4997/documents/note/oasis/69c573896ae59046faff49b3",
+      "selectorUsed": null,
+      "found": [
+        "currentUrl=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69c5729a6308c30c7957c002/intake/69c573786ae59046faff4997/documents/note/oasis/69c573896ae59046faff49b3"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "subsidiaryId=aplus-home-health",
+        "portalBaseUrl=https://app.finalehealth.com",
+        "configuredDashboardUrl=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+        "resolvedDashboardUrl=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+        "currentContextRequiresReset=true"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T20:02:56.905Z",
+      "step": "dashboard_reset",
+      "message": "Reset the portal session to the provider dashboard before patient matching.",
+      "patientName": "Charels Warren",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69c5729a6308c30c7957c002/intake/69c573786ae59046faff4997/documents/note/oasis/69c573896ae59046faff49b3",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "selectorUsed": null,
+      "found": [
+        "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Reset triggered: true",
+        "Current URL before patient: https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69c5729a6308c30c7957c002/intake/69c573786ae59046faff4997/documents/note/oasis/69c573896ae59046faff49b3",
+        "Current URL after reset: https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+        "Dashboard reset target URL: https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+        "Dashboard markers found: true",
+        "goto_base_url: dashboardDetected=true currentUrl=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T20:02:56.905Z",
+      "step": "dashboard_ready",
+      "message": "Provider dashboard ready confirmed using 'button:has-text(\"Search Patient\")'.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "selectorUsed": null,
+      "found": [
+        "button:has-text(\"Search Patient\")"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "attempt=1 signal=button:has-text(\"Search Patient\") stableDom=false url=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard title=Finale Health buttons=162 inputs=7 text=A Plus Home Health Systems LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifica"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T20:03:15.846Z",
+      "step": "patient_lookup_entry",
+      "message": "Global patient search is available from the current authenticated page context.",
+      "patientName": "Charels Warren",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "selectorUsed": "getByText(/Search Patient/i) -> nearest clickable parent (present)",
+      "found": [
+        "getByText(/Search Patient/i) -> nearest clickable parent (present)"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Current URL before patient lookup: https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+        "Global search available in current context: true",
+        "Global search availability selector used: getByText(/Search Patient/i) -> nearest clickable parent (present)",
+        "Resolved global search trigger with present manual selector 'getByText(/Search Patient/i) -> nearest clickable parent (present)' even though Playwright visibility did not confirm it in the probe path.",
+        "[not_found] Global patient search button by accessible name count=0 visible=0 elapsedMs=105",
+        "[not_visible] Global patient search button containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=93 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=96 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search button containing Search Patient text count=1 visible=0 elapsedMs=77 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search visible control containing Search Patient text count=1 visible=0 elapsedMs=76 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search fin-button wrapper containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=59 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control inside fin-button wrapper count=1 visible=0 elapsedMs=67 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by shortcut hint count=0 visible=0 elapsedMs=48",
+        "[not_visible] Global patient search button containing search icon and patient-search text count=1 visible=0 elapsedMs=58 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by accessible name count=0 visible=0 elapsedMs=45",
+        "[not_visible] Global patient search button containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=71 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=68 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search button containing Search Patient text count=1 visible=0 elapsedMs=64 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search visible control containing Search Patient text count=1 visible=0 elapsedMs=74 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search fin-button wrapper containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=64 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control inside fin-button wrapper count=1 visible=0 elapsedMs=75 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by shortcut hint count=0 visible=0 elapsedMs=46",
+        "[not_visible] Global patient search button containing search icon and patient-search text count=1 visible=0 elapsedMs=72 samples=Search Patient...Ctrl K"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T20:03:15.846Z",
+      "step": "patient_lookup_entry",
+      "message": "Patient lookup will start after shared dashboard bootstrap confirmed provider dashboard readiness and global search availability.",
+      "patientName": "Charels Warren",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69c5729a6308c30c7957c002/intake/69c573786ae59046faff4997/documents/note/oasis/69c573896ae59046faff49b3",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "selectorUsed": null,
+      "found": [
+        "patientLookupEntryContext=dashboard_reset_then_global_search",
+        "dashboard_context_established",
+        "globalSearchAvailable=true"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "currentUrlAfterLogin=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69c5729a6308c30c7957c002/intake/69c573786ae59046faff4997/documents/note/oasis/69c573896ae59046faff49b3",
+        "currentUrlBeforeSearch=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+        "resolvedDashboardUrl=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+        "globalSearchSelectorUsed=getByText(/Search Patient/i) -> nearest clickable parent (present)"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T20:03:15.846Z",
+      "step": "patient_search_start",
+      "message": "Starting patient search with 3 query variant(s).",
+      "patientName": "Charels Warren",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "selectorUsed": null,
+      "found": [
+        "warren, charels",
+        "WARREN, CHARELS",
+        "Charels Warren",
+        "CHARELS WARREN",
+        "WARREN, CHARELS"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Original workbook patient name: Charels Warren",
+        "Normalized global search query: warren, charels",
+        "Normalized expected display name: WARREN, CHARELS",
+        "Workbook name variants: Charels Warren | CHARELS WARREN | WARREN, CHARELS"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T20:03:48.445Z",
+      "step": "global_patient_search_open",
+      "message": "Clicked the global Search Patient trigger and found the visible search input.",
+      "patientName": "Charels Warren",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "selectorUsed": "getByText(/Search Patient/i) -> nearest clickable parent (present)",
+      "found": [
+        "Search Patient trigger",
+        "search input"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Original workbook patient name: Charels Warren",
+        "Normalized global search query: warren, charels",
+        "Search trigger clicked: true",
+        "Trigger click method: dom_click",
+        "Search modal visible: true",
+        "Global search control selector used: getByText(/Search Patient/i) -> nearest clickable parent (present)",
+        "Global search surface selector used: Global patient search overlay/dialog containing an input",
+        "Global search modal selector used: div.search-header.open",
+        "Resolved global search trigger with present manual selector 'getByText(/Search Patient/i) -> nearest clickable parent (present)' even though Playwright visibility did not confirm it in the probe path.",
+        "[not_found] Global patient search button by accessible name count=0 visible=0 elapsedMs=47",
+        "[not_visible] Global patient search button containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=89 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=63 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search button containing Search Patient text count=1 visible=0 elapsedMs=63 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search visible control containing Search Patient text count=1 visible=0 elapsedMs=57 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search fin-button wrapper containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=62 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control inside fin-button wrapper count=1 visible=0 elapsedMs=75 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by shortcut hint count=0 visible=0 elapsedMs=42",
+        "[not_visible] Global patient search button containing search icon and patient-search text count=1 visible=0 elapsedMs=72 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by accessible name count=0 visible=0 elapsedMs=58",
+        "[not_visible] Global patient search button containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=84 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=62 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search button containing Search Patient text count=1 visible=0 elapsedMs=47 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search visible control containing Search Patient text count=1 visible=0 elapsedMs=69 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search fin-button wrapper containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=55 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control inside fin-button wrapper count=1 visible=0 elapsedMs=67 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by shortcut hint count=0 visible=0 elapsedMs=42",
+        "[not_visible] Global patient search button containing search icon and patient-search text count=1 visible=0 elapsedMs=70 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search dialog by accessible name count=0 visible=0 elapsedMs=94",
+        "[matched] Global patient search overlay/dialog containing an input count=1 visible=1 elapsedMs=74 samples=EscPatients Sort By 3Sort By×Full Name×asc×SOC Date×desc×Status×ascAdd another sort itemNo recent searchesSearch by:Status:ActivePendingOn-HoldLeadNon-AdmitDischarged",
+        "Search input found by confirmed Search patients placeholder selector.",
+        "[matched] Global patient search input by confirmed Search patients placeholder count=1 visible=1 elapsedMs=72"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T20:04:01.849Z",
+      "step": "patient_search_input",
+      "message": "Typed the normalized query into the global patient search and waited for results.",
+      "patientName": "Charels Warren",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "selectorUsed": "input[type=\"text\"][placeholder*=\"Search patients\"]",
+      "found": [
+        "WARREN, CHARELS MR# 178809 Active #VA PATIENTSOC: 4/16/2026 / DOB: 6/1/1953 LOS: 7 daysWPS TRIWEST1925 Malambro Court North Las Vegas NV 89032(702)272-3848Last Visit Confirmed by SN : 04/22/2026 (0 days ago)",
+        "WARREN, CHARELS MR# 178809 Non-Admit #VA PATIENTSOC: 4/9/2026 / DOB: 6/1/1953 LOS: 14 daysWPS TRIWEST1925 Malambro Court North Las Vegas NV 89032(702)272-3848"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Search trigger clicked: true",
+        "Search input found: true",
+        "Typing into focused field succeeded: true",
+        "Used direct input fallback: false",
+        "Search query typed: warren, charels",
+        "Result count: 2",
+        "Candidate search result texts: WARREN, CHARELS MR# 178809 Active #VA PATIENTSOC: 4/16/2026 / DOB: 6/1/1953 LOS: 7 daysWPS TRIWEST1925 Malambro Court North Las Vegas NV 89032(702)272-3848Last Visit Confirmed by SN : 04/22/2026 (0 days ago) | WARREN, CHARELS MR# 178809 Non-Admit #VA PATIENTSOC: 4/9/2026 / DOB: 6/1/1953 LOS: 14 daysWPS TRIWEST1925 Malambro Court North Las Vegas NV 89032(702)272-3848",
+        "attempt=1 rowCount=2 text=WARREN, CHARELS MR# 178809 Active #VA PATIENTSOC: 4/16/2026 / DOB: 6/1/1953 LOS: 7 daysWPS TRIWEST1925 Malambro Court North Las Vegas NV 89032(702)272-3848Last Visit Confirmed by SN : 04/22/2026 (0 days ago) | WARREN, CHARELS MR# 178809 Non-Admit #VA PATIENTSOC: 4/9/2026 / DOB: 6/1/1953 LOS: 14 daysWPS TRIWEST1925 Malambro Court North Las Vegas NV 89032(702)272-3848"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T20:04:52.703Z",
+      "step": "patient_search",
+      "message": "Global patient search completed with 2 candidate(s).",
+      "patientName": "Charels Warren",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "selectorUsed": "getByText(/Search Patient/i) -> nearest clickable parent (present) -> input[type=\"text\"][placeholder*=\"Search patients\"] -> Global patient search result tiles containing ngb-highlight",
+      "found": [
+        "WARREN, CHARELS MR# 178809 Active#VA PATIENT SOC: 4/16/2026 / DOB: 6/1/1953 LOS: 7 days WPS TRIWEST 1925 Malambro Court North Las Vegas NV 89032 (702)272-3848 Last Visit Confirmed by SN : 04/22/2026 (0 days ago)",
+        "WARREN, CHARELS MR# 178809 Non-Admit#VA PATIENT SOC: 4/9/2026 / DOB: 6/1/1953 LOS: 14 days WPS TRIWEST 1925 Malambro Court North Las Vegas NV 89032 (702)272-3848"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Original workbook patient name: Charels Warren",
+        "Normalized global search query: warren, charels",
+        "Normalized expected display name: WARREN, CHARELS",
+        "Global search control selector used: getByText(/Search Patient/i) -> nearest clickable parent (present)",
+        "Global search surface selector used: Global patient search overlay/dialog containing an input",
+        "Global search input selector used: input[type=\"text\"][placeholder*=\"Search patients\"]",
+        "Result selector used: Global patient search result tiles containing ngb-highlight",
+        "Search results ready: true",
+        "Visible result row count: 2",
+        "No results marker visible: false",
+        "Candidate search result texts: WARREN, CHARELS MR# 178809 Active#VA PATIENT SOC: 4/16/2026 / DOB: 6/1/1953 LOS: 7 days WPS TRIWEST 1925 Malambro Court North Las Vegas NV 89032 (702)272-3848 Last Visit Confirmed by SN : 04/22/2026 (0 days ago) | WARREN, CHARELS MR# 178809 Non-Admit#VA PATIENT SOC: 4/9/2026 / DOB: 6/1/1953 LOS: 14 days WPS TRIWEST 1925 Malambro Court North Las Vegas NV 89032 (702)272-3848",
+        "Result text sample: WARREN, CHARELS MR# 178809 Active#VA PATIENT SOC: 4/16/2026 / DOB: 6/1/1953 LOS: 7 days WPS TRIWEST 1925 Malambro Court North Las Vegas NV 89032 (702)272-3848 Last Visit Confirmed by SN : 04/22/2026 (0 days ago) | WARREN, CHARELS MR# 178809 Non-Admit#VA PATIENT SOC: 4/9/2026 / DOB: 6/1/1953 LOS: 14 days WPS TRIWEST 1925 Malambro Court North Las Vegas NV 89032 (702)272-3848",
+        "attempt=1 rowCount=2 text=WARREN, CHARELS MR# 178809 Active #VA PATIENTSOC: 4/16/2026 / DOB: 6/1/1953 LOS: 7 daysWPS TRIWEST1925 Malambro Court North Las Vegas NV 89032(702)272-3848Last Visit Confirmed by SN : 04/22/2026 (0 days ago) | WARREN, CHARELS MR# 178809 Non-Admit #VA PATIENTSOC: 4/9/2026 / DOB: 6/1/1953 LOS: 14 daysWPS TRIWEST1925 Malambro Court North Las Vegas NV 89032(702)272-3848",
+        "rowCount=2",
+        "noResultsVisible=false",
+        "Normalized query typed=warren, charels",
+        "Normalized expected display name=WARREN, CHARELS",
+        "candidate[1]=WARREN, CHARELS MR# 178809 Active#VA PATIENT SOC: 4/16/2026 / DOB: 6/1/1953 LOS: 7 days WPS TRIWEST 1925 Malambro Court North Las Vegas NV 89032 (702)272-3848 Last Visit Confirmed by SN : 04/22/2026 (0 days ago)",
+        "candidate[2]=WARREN, CHARELS MR# 178809 Non-Admit#VA PATIENT SOC: 4/9/2026 / DOB: 6/1/1953 LOS: 14 days WPS TRIWEST 1925 Malambro Court North Las Vegas NV 89032 (702)272-3848",
+        "Candidate 'WARREN, CHARELS MR# 178809 Active#VA PATIENT SOC: 4/16/2026 / DOB: 6/1/1953 LOS: 7 days WPS TRIWEST 1925 Malambro Court North Las Vegas NV 89032 (702)272-3848 Last Visit Confirmed by SN : 04/22/2026 (0 days ago)' row='WARREN, CHARELS MR# 178809 Active#VA PATIENT SOC: 4/16/2026 / DOB: 6/1/1953 LOS: 7 days WPS TRIWEST 1925 Malambro Court North Las Vegas NV 89032 (702)272-3848 Last Visit Confirmed by SN : 04/22/2026 (0 days ago)' selector='Global patient search result tiles containing ngb-highlight' container='search-body__item ng-star-inserted' score=420 exact=true containsFullQuery=true containsFirstAndLast=true reasons=all patient name tokens present; ngb-highlight patient-name text starts with the normalized LAST, FIRST display name; row/card text contains both last and first name tokens; row text contains the full first-name segment",
+        "Candidate 'WARREN, CHARELS MR# 178809 Non-Admit#VA PATIENT SOC: 4/9/2026 / DOB: 6/1/1953 LOS: 14 days WPS TRIWEST 1925 Malambro Court North Las Vegas NV 89032 (702)272-3848' row='WARREN, CHARELS MR# 178809 Non-Admit#VA PATIENT SOC: 4/9/2026 / DOB: 6/1/1953 LOS: 14 days WPS TRIWEST 1925 Malambro Court North Las Vegas NV 89032 (702)272-3848' selector='Global patient search result tiles containing ngb-highlight' container='search-body__item ng-star-inserted' score=420 exact=true containsFullQuery=true containsFirstAndLast=true reasons=all patient name tokens present; ngb-highlight patient-name text starts with the normalized LAST, FIRST display name; row/card text contains both last and first name tokens; row text contains the full first-name segment"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T20:04:52.704Z",
+      "step": "patient_search_match_resolution",
+      "message": "Multiple exact patient matches were returned by the global search.",
+      "patientName": "Charels Warren",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "selectorUsed": null,
+      "found": [
+        "WARREN, CHARELS MR# 178809 Active#VA PATIENT SOC: 4/16/2026 / DOB: 6/1/1953 LOS: 7 days WPS TRIWEST 1925 Malambro Court North Las Vegas NV 89032 (702)272-3848 Last Visit Confirmed by SN : 04/22/2026 (0 days ago)",
+        "WARREN, CHARELS MR# 178809 Non-Admit#VA PATIENT SOC: 4/9/2026 / DOB: 6/1/1953 LOS: 14 days WPS TRIWEST 1925 Malambro Court North Las Vegas NV 89032 (702)272-3848"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Ambiguous candidate 'WARREN, CHARELS MR# 178809 Active#VA PATIENT SOC: 4/16/2026 / DOB: 6/1/1953 LOS: 7 days WPS TRIWEST 1925 Malambro Court North Las Vegas NV 89032 (702)272-3848 Last Visit Confirmed by SN : 04/22/2026 (0 days ago)' score=420 exact=true containsFirstAndLast=true",
+        "all patient name tokens present",
+        "ngb-highlight patient-name text starts with the normalized LAST, FIRST display name",
+        "row/card text contains both last and first name tokens",
+        "row text contains the full first-name segment",
+        "Ambiguous candidate 'WARREN, CHARELS MR# 178809 Non-Admit#VA PATIENT SOC: 4/9/2026 / DOB: 6/1/1953 LOS: 14 days WPS TRIWEST 1925 Malambro Court North Las Vegas NV 89032 (702)272-3848' score=420 exact=true containsFirstAndLast=true",
+        "all patient name tokens present",
+        "ngb-highlight patient-name text starts with the normalized LAST, FIRST display name",
+        "row/card text contains both last and first name tokens",
+        "row text contains the full first-name segment"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T20:04:52.704Z",
+      "step": "chart_open",
+      "message": "Patient chart open was skipped because global patient search results were ambiguous.",
+      "patientName": "Charels Warren",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "selectorUsed": null,
+      "found": [
+        "WARREN, CHARELS MR# 178809 Active#VA PATIENT SOC: 4/16/2026 / DOB: 6/1/1953 LOS: 7 days WPS TRIWEST 1925 Malambro Court North Las Vegas NV 89032 (702)272-3848 Last Visit Confirmed by SN : 04/22/2026 (0 days ago)",
+        "WARREN, CHARELS MR# 178809 Non-Admit#VA PATIENT SOC: 4/9/2026 / DOB: 6/1/1953 LOS: 14 days WPS TRIWEST 1925 Malambro Court North Las Vegas NV 89032 (702)272-3848"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Ambiguous candidate 'WARREN, CHARELS MR# 178809 Active#VA PATIENT SOC: 4/16/2026 / DOB: 6/1/1953 LOS: 7 days WPS TRIWEST 1925 Malambro Court North Las Vegas NV 89032 (702)272-3848 Last Visit Confirmed by SN : 04/22/2026 (0 days ago)' score=420 exact=true containsFirstAndLast=true",
+        "all patient name tokens present",
+        "ngb-highlight patient-name text starts with the normalized LAST, FIRST display name",
+        "row/card text contains both last and first name tokens",
+        "row text contains the full first-name segment",
+        "Ambiguous candidate 'WARREN, CHARELS MR# 178809 Non-Admit#VA PATIENT SOC: 4/9/2026 / DOB: 6/1/1953 LOS: 14 days WPS TRIWEST 1925 Malambro Court North Las Vegas NV 89032 (702)272-3848' score=420 exact=true containsFirstAndLast=true",
+        "all patient name tokens present",
+        "ngb-highlight patient-name text starts with the normalized LAST, FIRST display name",
+        "row/card text contains both last and first name tokens",
+        "row text contains the full first-name segment"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T20:04:52.704Z",
+      "step": "shared_portal_access",
+      "message": "Shared portal access completed without a patient chart context because match status was AMBIGUOUS.",
+      "patientName": "Charels Warren",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "selectorUsed": null,
+      "found": [],
+      "missing": [
+        "patient chart context"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "matchStatus=AMBIGUOUS",
+        "portalPatientId=none",
+        "portalAdmissionStatus=none",
+        "dashboardUrl=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+        "chartUrl=none"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T20:04:52.704Z",
+      "step": "chart_discovery_skipped",
+      "message": "Chart discovery skipped because patient match status was AMBIGUOUS.",
+      "patientName": "Charels Warren",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "WARREN, CHARELS MR# 178809 Active#VA PATIENT SOC: 4/16/2026 / DOB: 6/1/1953 LOS: 7 days WPS TRIWEST 1925 Malambro Court North Las Vegas NV 89032 (702)272-3848 Last Visit Confirmed by SN : 04/22/2026 (0 days ago)",
+        "WARREN, CHARELS MR# 178809 Non-Admit#VA PATIENT SOC: 4/9/2026 / DOB: 6/1/1953 LOS: 14 days WPS TRIWEST 1925 Malambro Court North Las Vegas NV 89032 (702)272-3848"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Multiple exact patient matches were returned by the global search."
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T20:04:52.778Z",
+      "step": "coding_input_export",
+      "message": "Wrote fallback coding-input.json for downstream read-only diagnosis consumers.",
+      "patientName": "Charels Warren",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "codingInputPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\CHARELS_WARREN__f5f777ccb79e12d9\\coding-input.json",
+        "diagnosisCount:0",
+        "primaryDiagnosisSelected:none",
+        "otherDiagnosisCount:0",
+        "codeConfidenceSummary:high:0 medium:0 low:0"
+      ],
+      "missing": [
+        "primary diagnosis"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "suggestedOnsetType:onset",
+        "matchStatus:AMBIGUOUS"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    }
+  ],
+  "notes": [
+    "Multiple exact patient matches were returned by the global search.",
+    "Fallback coding input exported: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\CHARELS_WARREN__f5f777ccb79e12d9\\coding-input.json"
+  ]
+}

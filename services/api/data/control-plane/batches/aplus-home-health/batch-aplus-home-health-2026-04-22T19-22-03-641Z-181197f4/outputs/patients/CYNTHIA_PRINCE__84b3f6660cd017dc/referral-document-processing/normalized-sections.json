@@ -1,0 +1,233 @@
+[
+  {
+    "sectionName": "patient_identity",
+    "extractedTextSpans": [
+      "Patient Name: Cynthia Prince",
+      "DOB: 08/13/1963",
+      "DOB: 08/13/1963",
+      "DOB: 08/13/1963, 62 years"
+    ],
+    "normalizedSummary": "Patient Name: Cynthia Prince DOB: 08/13/1963 DOB: 08/13/1963",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 14,
+        "lineEnd": 14,
+        "charStart": 258,
+        "charEnd": 286
+      },
+      {
+        "lineStart": 139,
+        "lineEnd": 139,
+        "charStart": 2612,
+        "charEnd": 2627
+      },
+      {
+        "lineStart": 152,
+        "lineEnd": 152,
+        "charStart": 2865,
+        "charEnd": 2880
+      },
+      {
+        "lineStart": 176,
+        "lineEnd": 176,
+        "charStart": 3352,
+        "charEnd": 3377
+      }
+    ]
+  },
+  {
+    "sectionName": "hospitalization_history",
+    "extractedTextSpans": [
+      "stating that if they receive pain medication from the hospital not receive pain medication from any other providers."
+    ],
+    "normalizedSummary": "stating that if they receive pain medication from the hospital not receive pain medication from any other providers.",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 263,
+        "lineEnd": 263,
+        "charStart": 6910,
+        "charEnd": 7026
+      }
+    ]
+  },
+  {
+    "sectionName": "diagnoses",
+    "extractedTextSpans": [
+      "Diagnosis:"
+    ],
+    "normalizedSummary": "Diagnosis:",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 22,
+        "lineEnd": 22,
+        "charStart": 466,
+        "charEnd": 476
+      }
+    ]
+  },
+  {
+    "sectionName": "medications",
+    "extractedTextSpans": [
+      "Allergies:",
+      "Allergies",
+      "Allergies Reconciled",
+      "The patient was warned not to mix pain medication with any other pain medications.",
+      "stating that if they receive pain medication from the hospital not receive pain medication from any other providers.",
+      "was warned not to mix pain medication with alcohol, nor to take at the same time as operating heavy machinery, or any",
+      "They were instructed to take the pain medication only as directed."
+    ],
+    "normalizedSummary": "Allergies: Allergies Allergies Reconciled",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 29,
+        "lineEnd": 29,
+        "charStart": 775,
+        "charEnd": 785
+      },
+      {
+        "lineStart": 183,
+        "lineEnd": 183,
+        "charStart": 3572,
+        "charEnd": 3581
+      },
+      {
+        "lineStart": 186,
+        "lineEnd": 186,
+        "charStart": 3639,
+        "charEnd": 3659
+      },
+      {
+        "lineStart": 261,
+        "lineEnd": 261,
+        "charStart": 6795,
+        "charEnd": 6877
+      },
+      {
+        "lineStart": 263,
+        "lineEnd": 263,
+        "charStart": 6910,
+        "charEnd": 7026
+      },
+      {
+        "lineStart": 265,
+        "lineEnd": 265,
+        "charStart": 7035,
+        "charEnd": 7152
+      },
+      {
+        "lineStart": 267,
+        "lineEnd": 267,
+        "charStart": 7202,
+        "charEnd": 7268
+      }
+    ]
+  },
+  {
+    "sectionName": "functional_limitations",
+    "extractedTextSpans": [
+      "Chief complaint: Right shoulder pain and weakness",
+      "Increased Strength and Endurance"
+    ],
+    "normalizedSummary": "Chief complaint: Right shoulder pain and weakness Increased Strength and Endurance",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 237,
+        "lineEnd": 237,
+        "charStart": 5707,
+        "charEnd": 5756
+      },
+      {
+        "lineStart": 536,
+        "lineEnd": 536,
+        "charStart": 14484,
+        "charEnd": 14516
+      }
+    ]
+  },
+  {
+    "sectionName": "risk_factors",
+    "extractedTextSpans": [
+      "potential risk is that the rotator cuff tear could become irreparable which would change surgical options"
+    ],
+    "normalizedSummary": "potential risk is that the rotator cuff tear could become irreparable which would change surgical options",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 271,
+        "lineEnd": 271,
+        "charStart": 7515,
+        "charEnd": 7620
+      }
+    ]
+  },
+  {
+    "sectionName": "other_clinical_notes",
+    "extractedTextSpans": [
+      "Plan Information",
+      "Plan #: 4PX9A11JP47",
+      "Plan Type: Undefined",
+      "Plan #: 00002499073",
+      "Plan Type: Undefined",
+      "History Note: She has right shoulder pain since she was knocked over by dogs",
+      "Plan is right arthroscopic rotator cuff repair of a chronic retracted tear",
+      "Assessment and Plan"
+    ],
+    "normalizedSummary": "Plan Information Plan #: 4PX9A11JP47 Plan Type: Undefined",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 132,
+        "lineEnd": 132,
+        "charStart": 2502,
+        "charEnd": 2518
+      },
+      {
+        "lineStart": 138,
+        "lineEnd": 138,
+        "charStart": 2592,
+        "charEnd": 2611
+      },
+      {
+        "lineStart": 145,
+        "lineEnd": 145,
+        "charStart": 2750,
+        "charEnd": 2770
+      },
+      {
+        "lineStart": 151,
+        "lineEnd": 151,
+        "charStart": 2845,
+        "charEnd": 2864
+      },
+      {
+        "lineStart": 159,
+        "lineEnd": 159,
+        "charStart": 3031,
+        "charEnd": 3051
+      },
+      {
+        "lineStart": 219,
+        "lineEnd": 219,
+        "charStart": 5054,
+        "charEnd": 5130
+      },
+      {
+        "lineStart": 269,
+        "lineEnd": 269,
+        "charStart": 7315,
+        "charEnd": 7389
+      },
+      {
+        "lineStart": 275,
+        "lineEnd": 275,
+        "charStart": 7706,
+        "charEnd": 7725
+      }
+    ]
+  }
+]

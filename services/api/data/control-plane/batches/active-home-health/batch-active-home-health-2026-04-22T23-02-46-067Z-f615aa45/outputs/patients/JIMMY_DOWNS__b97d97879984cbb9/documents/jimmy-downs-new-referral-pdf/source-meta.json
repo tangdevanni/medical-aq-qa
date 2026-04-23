@@ -1,0 +1,79 @@
+{
+  "selectedSourceFile": "jimmy downs new referral.pdf",
+  "selectedSourceFileNormalized": "jimmy downs new referral.pdf",
+  "admissionOrderTitle": "📄 jimmy downs new referral.pdf 📝 ✏️ 🗑️ 🔗",
+  "admissionOrderSelectorUsed": "File Uploads source document row by .file-item/.file-label or table row",
+  "sourceUrlBeforeClick": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69dd5e979faee4193dd60a33/intake/69dd5ef29faee4193dd60ad5/calendar",
+  "sourceUrlAfterClick": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69dd5e979faee4193dd60a33/file-uploads",
+  "matchedReferralFileLabel": "jimmy downs new referral.pdf",
+  "normalizedFileLabels": [
+    "jimmy downs new referral.pdf",
+    "jimmy downs new dc summary.pdf"
+  ],
+  "matchedSourceDocuments": [
+    {
+      "label": "📄 jimmy downs new referral.pdf",
+      "normalizedLabel": "jimmy downs new referral.pdf",
+      "score": 150
+    },
+    {
+      "label": "📄 jimmy downs new referral.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedLabel": "jimmy downs new referral.pdf",
+      "score": 150
+    },
+    {
+      "label": "📄 jimmy downs new dc summary.pdf",
+      "normalizedLabel": "jimmy downs new dc summary.pdf",
+      "score": 20
+    },
+    {
+      "label": "📄 jimmy downs new dc summary.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedLabel": "jimmy downs new dc summary.pdf",
+      "score": 20
+    }
+  ],
+  "viewerDetected": true,
+  "viewerMarkerSamples": [
+    "of ⁨32⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools",
+    "Tools",
+    "Print"
+  ],
+  "printButtonDetected": true,
+  "printButtonVisible": true,
+  "printButtonSelectorUsed": "pdf-print #printButton, #printButton, pdf-shy-button[primarytoolbarid='printButton'] button",
+  "printClickSucceeded": false,
+  "pdfResponseDetected": true,
+  "pdfResponseUrl": "https://api.finalehealth.com/api/v1/files/69dd5e8104b8470c47000b4e?index=documents",
+  "pdfContentType": "application/pdf",
+  "pdfSavedPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\JIMMY_DOWNS__b97d97879984cbb9\\documents\\jimmy-downs-new-referral-pdf\\source.pdf",
+  "pdfByteSize": 2114629,
+  "printAcquisitionMethodUsed": "network_pdf_response",
+  "printedPdfSaved": false,
+  "printedPdfPath": null,
+  "sourcePdfPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\JIMMY_DOWNS__b97d97879984cbb9\\documents\\jimmy-downs-new-referral-pdf\\source.pdf",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\JIMMY_DOWNS__b97d97879984cbb9\\documents\\jimmy-downs-new-referral-pdf\\extracted-text.txt",
+  "extractionResultPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\JIMMY_DOWNS__b97d97879984cbb9\\documents\\jimmy-downs-new-referral-pdf\\extraction-result.json",
+  "extractedTextLength": 104,
+  "rawExtractedTextSource": "dom",
+  "domExtractionRejectedReasons": [
+    "viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS"
+  ],
+  "extractionSuccess": false,
+  "queuedForLlm": true,
+  "extractionPolicyDecision": {
+    "mode": "ocr_required",
+    "confidence": "high",
+    "reasons": [
+      "PDF appears image-based/scanned; OCR likely required",
+      "No printed PDF available",
+      "OCR is the cheapest acceptable option that preserves clinically meaningful content"
+    ],
+    "recommendedSourcePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\JIMMY_DOWNS__b97d97879984cbb9\\documents\\jimmy-downs-new-referral-pdf\\source.pdf",
+    "fallbackSourcePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\JIMMY_DOWNS__b97d97879984cbb9\\documents\\jimmy-downs-new-referral-pdf\\source.pdf",
+    "hasUsablePdfTextLayer": false,
+    "hasPdfSource": true,
+    "hasPrintedPdfSource": false,
+    "hasHtmlSource": false
+  },
+  "generatedAt": "2026-04-23T00:10:22.485Z"
+}

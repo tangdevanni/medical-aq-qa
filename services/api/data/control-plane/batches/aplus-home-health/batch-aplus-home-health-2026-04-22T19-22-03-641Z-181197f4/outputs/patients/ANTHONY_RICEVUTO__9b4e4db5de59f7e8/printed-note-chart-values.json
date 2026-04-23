@@ -1,0 +1,54 @@
+{
+  "generatedAt": "2026-04-22T19:40:43.939Z",
+  "source": "printed_note_ocr",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\evidence\\ANTHONY_RICEVUTO__9b4e4db5de59f7e8\\oasis-printed-note\\extracted-text.txt",
+  "llmInputSource": "fact_pack_primary",
+  "extractedFieldCount": 3,
+  "invocationModelId": "us.amazon.nova-lite-v1:0",
+  "currentChartValues": {
+    "patient_name": "Anthony Ricevuto",
+    "code_status": "full_code",
+    "allergy_list": [
+      "No Known Allergies"
+    ]
+  },
+  "extractedFieldValues": [
+    {
+      "field_key": "patient_name",
+      "current_value": "Anthony Ricevuto",
+      "confidence": 0.95,
+      "source_spans": [
+        "Patient Name: Anthony Ricevuto"
+      ]
+    },
+    {
+      "field_key": "code_status",
+      "current_value": "full_code",
+      "confidence": 0.98,
+      "source_spans": [
+        "Full Code"
+      ]
+    },
+    {
+      "field_key": "allergy_list",
+      "current_value": [
+        "No Known Allergies"
+      ],
+      "confidence": 0.92,
+      "source_spans": [
+        "None known"
+      ]
+    }
+  ],
+  "warnings": [
+    "LLM input source: fact_pack_primary.",
+    "Fact pack coverage: diagnoses, assessmentValues, homeboundEvidence, skilledNeedEvidence, hospitalizationReasons, medications, allergies, supportingSnippets.",
+    "Fact pack coverage score: 1.",
+    "Prompt character estimate: 2693.",
+    "Fallback reason: none.",
+    "Deterministic printed-note chart values: code_status, allergy_list.",
+    "Selected option labels detected: 14.",
+    "Printed-note chart-value extraction used inference profile us.amazon.nova-lite-v1:0.",
+    "diagnosis_candidates: rejected as low-confidence or suspicious for the field"
+  ]
+}

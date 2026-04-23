@@ -1,0 +1,483 @@
+[
+  {
+    "sectionName": "patient_identity",
+    "extractedTextSpans": [
+      "Patient Name:",
+      "DOB:",
+      "DOB:",
+      "DOB",
+      "SUB.DOB",
+      "DOB:",
+      "DOB:"
+    ],
+    "normalizedSummary": "Patient Name: DOB: DOB:",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 12,
+        "lineEnd": 12,
+        "charStart": 271,
+        "charEnd": 284
+      },
+      {
+        "lineStart": 13,
+        "lineEnd": 13,
+        "charStart": 285,
+        "charEnd": 289
+      },
+      {
+        "lineStart": 113,
+        "lineEnd": 113,
+        "charStart": 1934,
+        "charEnd": 1938
+      },
+      {
+        "lineStart": 173,
+        "lineEnd": 173,
+        "charStart": 2615,
+        "charEnd": 2618
+      },
+      {
+        "lineStart": 196,
+        "lineEnd": 196,
+        "charStart": 2894,
+        "charEnd": 2901
+      },
+      {
+        "lineStart": 273,
+        "lineEnd": 273,
+        "charStart": 4507,
+        "charEnd": 4511
+      },
+      {
+        "lineStart": 410,
+        "lineEnd": 410,
+        "charStart": 7291,
+        "charEnd": 7295
+      }
+    ]
+  },
+  {
+    "sectionName": "referral_metadata",
+    "extractedTextSpans": [
+      "Home Health Referral"
+    ],
+    "normalizedSummary": "Home Health Referral",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 4,
+        "lineEnd": 4,
+        "charStart": 53,
+        "charEnd": 73
+      }
+    ]
+  },
+  {
+    "sectionName": "referring_provider",
+    "extractedTextSpans": [
+      "NPI: 1205034832",
+      "NPI: 1205034832"
+    ],
+    "normalizedSummary": "NPI: 1205034832 NPI: 1205034832",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 230,
+        "lineEnd": 230,
+        "charStart": 3346,
+        "charEnd": 3361
+      },
+      {
+        "lineStart": 261,
+        "lineEnd": 261,
+        "charStart": 4359,
+        "charEnd": 4374
+      }
+    ]
+  },
+  {
+    "sectionName": "hospitalization_history",
+    "extractedTextSpans": [
+      "Perform at: Valley Health Specialty Hospital",
+      "Specialty Hospital.",
+      "right anatomic total shoulder on April 14th at Valley Specialty Hospital."
+    ],
+    "normalizedSummary": "Perform at: Valley Health Specialty Hospital Specialty Hospital. right anatomic total shoulder on April 14th at Valley Specialty Hospital.",
+    "confidence": 0.95,
+    "lineReferences": [
+      {
+        "lineStart": 234,
+        "lineEnd": 234,
+        "charStart": 3461,
+        "charEnd": 3505
+      },
+      {
+        "lineStart": 295,
+        "lineEnd": 295,
+        "charStart": 5068,
+        "charEnd": 5087
+      },
+      {
+        "lineStart": 377,
+        "lineEnd": 377,
+        "charStart": 6470,
+        "charEnd": 6543
+      }
+    ]
+  },
+  {
+    "sectionName": "medical_necessity",
+    "extractedTextSpans": [
+      "Skilled Nursing",
+      "[SELECTED][page 1] Skilled Nursing"
+    ],
+    "normalizedSummary": "Skilled Nursing [SELECTED][page 1] Skilled Nursing",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 56,
+        "lineEnd": 56,
+        "charStart": 898,
+        "charEnd": 913
+      },
+      {
+        "lineStart": 452,
+        "lineEnd": 452,
+        "charStart": 8838,
+        "charEnd": 8872
+      }
+    ]
+  },
+  {
+    "sectionName": "homebound_evidence",
+    "extractedTextSpans": [
+      "Homebound due to (i.e inability to leave home, leaving",
+      "medically contraindicated or requires assistance/DME):"
+    ],
+    "normalizedSummary": "Homebound due to (i.e inability to leave home, leaving medically contraindicated or requires assistance/DME):",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 24,
+        "lineEnd": 24,
+        "charStart": 479,
+        "charEnd": 533
+      },
+      {
+        "lineStart": 29,
+        "lineEnd": 29,
+        "charStart": 610,
+        "charEnd": 664
+      }
+    ]
+  },
+  {
+    "sectionName": "diagnoses",
+    "extractedTextSpans": [
+      "DIAGNOSES",
+      "Diagnosis",
+      "Diagnosis: Shoulder Arthritis, Right - M19.011, M75.21",
+      "Associated diagnosis: Bicipital Tendinitis",
+      "Diagnosis: Shoulder Arthritis, Right"
+    ],
+    "normalizedSummary": "DIAGNOSES Diagnosis Diagnosis: Shoulder Arthritis, Right - M19.011, M75.21",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 217,
+        "lineEnd": 217,
+        "charStart": 3144,
+        "charEnd": 3153
+      },
+      {
+        "lineStart": 218,
+        "lineEnd": 218,
+        "charStart": 3154,
+        "charEnd": 3163
+      },
+      {
+        "lineStart": 243,
+        "lineEnd": 243,
+        "charStart": 3721,
+        "charEnd": 3775
+      },
+      {
+        "lineStart": 367,
+        "lineEnd": 367,
+        "charStart": 6132,
+        "charEnd": 6174
+      },
+      {
+        "lineStart": 388,
+        "lineEnd": 388,
+        "charStart": 6801,
+        "charEnd": 6837
+      }
+    ]
+  },
+  {
+    "sectionName": "medications",
+    "extractedTextSpans": [
+      "- Medication reconciliation/management",
+      "Allergies",
+      "No known drug allergies",
+      "medication.",
+      "Plan: Prescription Medication Management.",
+      "Initiate Treatment: Initiate treatment with prescription medication.",
+      "Plan: Counseling - Preoperative Instructions, Additional Notes, Brace - Shoulder, Prescription Medication Management, Opioid Risk Tool, and"
+    ],
+    "normalizedSummary": "- Medication reconciliation/management Allergies No known drug allergies",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 63,
+        "lineEnd": 63,
+        "charStart": 1096,
+        "charEnd": 1134
+      },
+      {
+        "lineStart": 277,
+        "lineEnd": 277,
+        "charStart": 4573,
+        "charEnd": 4582
+      },
+      {
+        "lineStart": 280,
+        "lineEnd": 280,
+        "charStart": 4625,
+        "charEnd": 4648
+      },
+      {
+        "lineStart": 384,
+        "lineEnd": 384,
+        "charStart": 6705,
+        "charEnd": 6716
+      },
+      {
+        "lineStart": 414,
+        "lineEnd": 414,
+        "charStart": 7357,
+        "charEnd": 7398
+      },
+      {
+        "lineStart": 415,
+        "lineEnd": 415,
+        "charStart": 7399,
+        "charEnd": 7467
+      },
+      {
+        "lineStart": 438,
+        "lineEnd": 438,
+        "charStart": 8333,
+        "charEnd": 8472
+      }
+    ]
+  },
+  {
+    "sectionName": "caregiver_support",
+    "extractedTextSpans": [
+      "RELATIONSHIP TO PATIENT",
+      "RELATIONSHIP",
+      "RELATIONSHIP"
+    ],
+    "normalizedSummary": "RELATIONSHIP TO PATIENT RELATIONSHIP RELATIONSHIP",
+    "confidence": 0.95,
+    "lineReferences": [
+      {
+        "lineStart": 135,
+        "lineEnd": 135,
+        "charStart": 2153,
+        "charEnd": 2176
+      },
+      {
+        "lineStart": 171,
+        "lineEnd": 171,
+        "charStart": 2597,
+        "charEnd": 2609
+      },
+      {
+        "lineStart": 195,
+        "lineEnd": 195,
+        "charStart": 2881,
+        "charEnd": 2893
+      }
+    ]
+  },
+  {
+    "sectionName": "functional_limitations",
+    "extractedTextSpans": [
+      "endurance"
+    ],
+    "normalizedSummary": "endurance",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 87,
+        "lineEnd": 87,
+        "charStart": 1558,
+        "charEnd": 1567
+      }
+    ]
+  },
+  {
+    "sectionName": "therapy_need",
+    "extractedTextSpans": [
+      "Occupational Therapy"
+    ],
+    "normalizedSummary": "Occupational Therapy",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 58,
+        "lineEnd": 58,
+        "charStart": 933,
+        "charEnd": 953
+      }
+    ]
+  },
+  {
+    "sectionName": "risk_factors",
+    "extractedTextSpans": [
+      "Home safety/fall precaution",
+      "Plan: Opioid Risk Tool.",
+      "Opioid Risk Tool (ORT) Score:",
+      "Based on Risk Selected: Low Risk (0-3 points)",
+      "Plan: Counseling - Preoperative Instructions, Additional Notes, Brace - Shoulder, Prescription Medication Management, Opioid Risk Tool, and"
+    ],
+    "normalizedSummary": "Home safety/fall precaution Plan: Opioid Risk Tool. Opioid Risk Tool (ORT) Score:",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 64,
+        "lineEnd": 64,
+        "charStart": 1135,
+        "charEnd": 1162
+      },
+      {
+        "lineStart": 416,
+        "lineEnd": 416,
+        "charStart": 7468,
+        "charEnd": 7491
+      },
+      {
+        "lineStart": 417,
+        "lineEnd": 417,
+        "charStart": 7492,
+        "charEnd": 7521
+      },
+      {
+        "lineStart": 418,
+        "lineEnd": 418,
+        "charStart": 7522,
+        "charEnd": 7567
+      },
+      {
+        "lineStart": 438,
+        "lineEnd": 438,
+        "charStart": 8333,
+        "charEnd": 8472
+      }
+    ]
+  },
+  {
+    "sectionName": "other_clinical_notes",
+    "extractedTextSpans": [
+      "Visit Note - April 2, 2026",
+      "Impression/Plan:",
+      "Plan: Counseling - Preoperative Instructions.",
+      "Plan: Additional Notes.",
+      "Patient Specific Notes: Toni presents today for preoperative visit.",
+      "Plan: Brace - Shoulder.",
+      "Visit Note - April 2, 2026",
+      "Plan: Prescription Medication Management.",
+      "Plan: Opioid Risk Tool.",
+      "Plan: Prescription.",
+      "Approve the plan of care.",
+      "I saw the patient with Rhianna McGowan, elicited a history, performed an exam, and developed an impression and plan.",
+      "Plan: Counseling - Preoperative Instructions, Additional Notes, Brace - Shoulder, Prescription Medication Management, Opioid Risk Tool, and"
+    ],
+    "normalizedSummary": "Visit Note - April 2, 2026 Impression/Plan: Plan: Counseling - Preoperative Instructions.",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 270,
+        "lineEnd": 270,
+        "charStart": 4467,
+        "charEnd": 4493
+      },
+      {
+        "lineStart": 358,
+        "lineEnd": 358,
+        "charStart": 5947,
+        "charEnd": 5963
+      },
+      {
+        "lineStart": 369,
+        "lineEnd": 369,
+        "charStart": 6197,
+        "charEnd": 6242
+      },
+      {
+        "lineStart": 373,
+        "lineEnd": 373,
+        "charStart": 6342,
+        "charEnd": 6365
+      },
+      {
+        "lineStart": 375,
+        "lineEnd": 375,
+        "charStart": 6379,
+        "charEnd": 6446
+      },
+      {
+        "lineStart": 387,
+        "lineEnd": 387,
+        "charStart": 6777,
+        "charEnd": 6800
+      },
+      {
+        "lineStart": 407,
+        "lineEnd": 407,
+        "charStart": 7251,
+        "charEnd": 7277
+      },
+      {
+        "lineStart": 414,
+        "lineEnd": 414,
+        "charStart": 7357,
+        "charEnd": 7398
+      },
+      {
+        "lineStart": 416,
+        "lineEnd": 416,
+        "charStart": 7468,
+        "charEnd": 7491
+      },
+      {
+        "lineStart": 419,
+        "lineEnd": 419,
+        "charStart": 7568,
+        "charEnd": 7587
+      },
+      {
+        "lineStart": 431,
+        "lineEnd": 431,
+        "charStart": 7984,
+        "charEnd": 8009
+      },
+      {
+        "lineStart": 433,
+        "lineEnd": 433,
+        "charStart": 8081,
+        "charEnd": 8197
+      },
+      {
+        "lineStart": 438,
+        "lineEnd": 438,
+        "charStart": 8333,
+        "charEnd": 8472
+      }
+    ]
+  }
+]

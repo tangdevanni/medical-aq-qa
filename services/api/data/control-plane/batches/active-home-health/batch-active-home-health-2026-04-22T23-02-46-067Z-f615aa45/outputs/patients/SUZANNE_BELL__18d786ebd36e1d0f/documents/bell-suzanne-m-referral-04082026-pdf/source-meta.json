@@ -1,0 +1,68 @@
+{
+  "selectedSourceFile": "BELL SUZANNE M referral 04082026.pdf",
+  "selectedSourceFileNormalized": "bell suzanne m referral 04082026.pdf",
+  "admissionOrderTitle": "📄 BELL, SUZANNE M referral 04082026.pdf 📝 ✏️ 🗑️ 🔗",
+  "admissionOrderSelectorUsed": "File Uploads source document row by .file-item/.file-label or table row",
+  "sourceUrlBeforeClick": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69d7c759bc889d7bf02b7d75/intake/69d7c7a655d1266e32e3b4ea/calendar",
+  "sourceUrlAfterClick": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69d7c759bc889d7bf02b7d75/file-uploads",
+  "matchedReferralFileLabel": "BELL SUZANNE M referral 04082026.pdf",
+  "normalizedFileLabels": [
+    "bell suzanne m referral 04082026.pdf"
+  ],
+  "matchedSourceDocuments": [
+    {
+      "label": "📄 BELL, SUZANNE M referral 04082026.pdf",
+      "normalizedLabel": "bell suzanne m referral 04082026.pdf",
+      "score": 150
+    },
+    {
+      "label": "📄 BELL, SUZANNE M referral 04082026.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedLabel": "bell suzanne m referral 04082026.pdf",
+      "score": 150
+    }
+  ],
+  "viewerDetected": true,
+  "viewerMarkerSamples": [
+    "of ⁨8⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools",
+    "Tools",
+    "Print"
+  ],
+  "printButtonDetected": true,
+  "printButtonVisible": true,
+  "printButtonSelectorUsed": "pdf-print #printButton, #printButton, pdf-shy-button[primarytoolbarid='printButton'] button",
+  "printClickSucceeded": false,
+  "pdfResponseDetected": true,
+  "pdfResponseUrl": "https://api.finalehealth.com/api/v1/files/69d7c6ed0932d18f71545834?index=documents",
+  "pdfContentType": "application/pdf",
+  "pdfSavedPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\SUZANNE_BELL__18d786ebd36e1d0f\\documents\\bell-suzanne-m-referral-04082026-pdf\\source.pdf",
+  "pdfByteSize": 1049016,
+  "printAcquisitionMethodUsed": "network_pdf_response",
+  "printedPdfSaved": false,
+  "printedPdfPath": null,
+  "sourcePdfPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\SUZANNE_BELL__18d786ebd36e1d0f\\documents\\bell-suzanne-m-referral-04082026-pdf\\source.pdf",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\SUZANNE_BELL__18d786ebd36e1d0f\\documents\\bell-suzanne-m-referral-04082026-pdf\\extracted-text.txt",
+  "extractionResultPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\SUZANNE_BELL__18d786ebd36e1d0f\\documents\\bell-suzanne-m-referral-04082026-pdf\\extraction-result.json",
+  "extractedTextLength": 104,
+  "rawExtractedTextSource": "dom",
+  "domExtractionRejectedReasons": [
+    "viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS"
+  ],
+  "extractionSuccess": false,
+  "queuedForLlm": true,
+  "extractionPolicyDecision": {
+    "mode": "ocr_required",
+    "confidence": "high",
+    "reasons": [
+      "PDF appears image-based/scanned; OCR likely required",
+      "No printed PDF available",
+      "OCR is the cheapest acceptable option that preserves clinically meaningful content"
+    ],
+    "recommendedSourcePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\SUZANNE_BELL__18d786ebd36e1d0f\\documents\\bell-suzanne-m-referral-04082026-pdf\\source.pdf",
+    "fallbackSourcePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\SUZANNE_BELL__18d786ebd36e1d0f\\documents\\bell-suzanne-m-referral-04082026-pdf\\source.pdf",
+    "hasUsablePdfTextLayer": false,
+    "hasPdfSource": true,
+    "hasPrintedPdfSource": false,
+    "hasHtmlSource": false
+  },
+  "generatedAt": "2026-04-23T01:01:12.624Z"
+}

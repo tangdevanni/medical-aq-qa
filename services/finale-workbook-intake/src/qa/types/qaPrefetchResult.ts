@@ -12,6 +12,16 @@ export type QaSignalSource =
   | "interactive_label";
 
 export type QaLockStatus = "locked" | "unlocked" | "unknown";
+export type QaOasisAssessmentProcessingStatus =
+  | "NOT_STARTED"
+  | "IN_PROGRESS"
+  | "VALIDATED"
+  | "SIGNED"
+  | "ESIGNED"
+  | "FOR_EXPORT"
+  | "LOCKED"
+  | "UNKNOWN";
+export type QaOasisAssessmentProcessingDecision = "PROCESS" | "SKIP";
 
 export interface QaRouteCandidate {
   label: string;
@@ -56,6 +66,15 @@ export interface QaPrefetchLockSection {
   signals: QaDiscoverySignal[];
 }
 
+export interface QaPrefetchOasisAssessmentStatusSection {
+  detectedStatuses: QaOasisAssessmentProcessingStatus[];
+  primaryStatus: QaOasisAssessmentProcessingStatus;
+  decision: QaOasisAssessmentProcessingDecision;
+  processingEligible: boolean;
+  reason: string;
+  signals: QaDiscoverySignal[];
+}
+
 export interface QaPrefetchResult {
   workflowDomain: "qa";
   workflowRunId: string;
@@ -70,6 +89,7 @@ export interface QaPrefetchResult {
   oasisRoute: QaPrefetchDetectionSection;
   diagnosisRoute: QaPrefetchDiagnosisSection;
   lockStatus: QaPrefetchLockSection;
+  oasisAssessmentStatus?: QaPrefetchOasisAssessmentStatusSection;
   selectedRouteSummary: string;
   warningCount: number;
   topWarning: string | null;

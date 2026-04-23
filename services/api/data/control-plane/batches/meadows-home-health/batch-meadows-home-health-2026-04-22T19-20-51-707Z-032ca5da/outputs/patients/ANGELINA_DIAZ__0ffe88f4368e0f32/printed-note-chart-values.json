@@ -1,0 +1,117 @@
+{
+  "generatedAt": "2026-04-22T19:43:28.599Z",
+  "source": "printed_note_ocr",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-22T19-20-51-707Z-032ca5da\\outputs\\evidence\\ANGELINA_DIAZ__0ffe88f4368e0f32\\oasis-printed-note\\extracted-text.txt",
+  "llmInputSource": "fact_pack_primary",
+  "extractedFieldCount": 7,
+  "invocationModelId": "us.amazon.nova-lite-v1:0",
+  "currentChartValues": {
+    "patient_name": "Angelina Diaz",
+    "medication_list": [
+      "5 mg",
+      "6.75 mg"
+    ],
+    "allergy_list": [
+      "No Known Allergies"
+    ],
+    "primary_reason_for_home_health_medical_necessity": "postoperative care following right knee arthroplasty, including reconciliation, as well as education and training related to disease processes, prescribed diet, activity level, home safety evaluation, fall prevention, universal precautions, and recognition of signs and symptoms of infection.",
+    "homebound_supporting_factors": [
+      "weakness",
+      "shortness of breath"
+    ],
+    "functional_limitations": [
+      "Ambulation",
+      "Dyspnea with minimal exertion",
+      "Endurance"
+    ],
+    "code_status": "full_code"
+  },
+  "extractedFieldValues": [
+    {
+      "field_key": "patient_name",
+      "current_value": "Angelina Diaz",
+      "confidence": 0.95,
+      "source_spans": [
+        "Angelina Diaz",
+        "Angelina Diaz"
+      ]
+    },
+    {
+      "field_key": "medication_list",
+      "current_value": [
+        "5 mg",
+        "6.75 mg"
+      ],
+      "confidence": 0.95,
+      "source_spans": [
+        "5 mg",
+        "6.75 mg"
+      ]
+    },
+    {
+      "field_key": "allergy_list",
+      "current_value": [
+        "No Known Allergies"
+      ],
+      "confidence": 0.92,
+      "source_spans": [
+        "None known"
+      ]
+    },
+    {
+      "field_key": "primary_reason_for_home_health_medical_necessity",
+      "current_value": "postoperative care following right knee arthroplasty, including reconciliation, as well as education and training related to disease processes, prescribed diet, activity level, home safety evaluation, fall prevention, universal precautions, and recognition of signs and symptoms of infection.",
+      "confidence": 0.95,
+      "source_spans": [
+        "postoperative care following right knee arthroplasty",
+        "education and training related to disease processes"
+      ]
+    },
+    {
+      "field_key": "homebound_supporting_factors",
+      "current_value": [
+        "weakness",
+        "shortness of breath"
+      ],
+      "confidence": 0.95,
+      "source_spans": [
+        "weakness",
+        "shortness of breath"
+      ]
+    },
+    {
+      "field_key": "functional_limitations",
+      "current_value": [
+        "Ambulation",
+        "Dyspnea with minimal exertion",
+        "Endurance"
+      ],
+      "confidence": 0.96,
+      "source_spans": [
+        "Severe pain on ambulation",
+        "6 - Endurance",
+        "7 Ambulation"
+      ]
+    },
+    {
+      "field_key": "code_status",
+      "current_value": "full_code",
+      "confidence": 0.98,
+      "source_spans": [
+        "Full Code"
+      ]
+    }
+  ],
+  "warnings": [
+    "LLM input source: fact_pack_primary.",
+    "Fact pack coverage: diagnoses, assessmentValues, homeboundEvidence, skilledNeedEvidence, hospitalizationReasons, medications, allergies, supportingSnippets.",
+    "Fact pack coverage score: 1.",
+    "Prompt character estimate: 3389.",
+    "Fallback reason: none.",
+    "Deterministic printed-note chart values: code_status, functional_limitations, allergy_list.",
+    "Selected option labels detected: 142.",
+    "Printed-note chart-value extraction used inference profile us.amazon.nova-lite-v1:0.",
+    "primary_diagnosis: rejected as low-confidence or suspicious for the field",
+    "secondary_diagnoses: rejected as low-confidence or suspicious for the field"
+  ]
+}

@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 import {
   createBackendRunSample,
-  getBackendPatient,
+  getLatestBackendPatient,
   getBackendPatientArtifacts,
   getBackendRun,
 } from "../../../../../lib/server/backendApi";
-import { requireSelectedAgencySession } from "../../../../../lib/auth/session";
+import { agencyIdsMatch, requireSelectedAgencySession } from "../../../../../lib/auth/session";
 
 type Params = {
   params: Promise<{
@@ -24,7 +24,7 @@ export async function GET(_request: Request, { params }: Params) {
   try {
     if (segments.length === 1) {
       const run = await getBackendRun(segments[0]!);
-      if (run.subsidiaryId !== session.selectedAgencyId) {
+      if (!agencyIdsMatch(run.subsidiaryId, session.selectedAgencyId)) {
         return unauthorizedAgencyResponse();
       }
       return NextResponse.json(run);
@@ -32,30 +32,37 @@ export async function GET(_request: Request, { params }: Params) {
 
     if (segments.length === 2 && segments[1] === "status") {
       const run = await getBackendRun(segments[0]!);
-      if (run.subsidiaryId !== session.selectedAgencyId) {
+      if (!agencyIdsMatch(run.subsidiaryId, session.selectedAgencyId)) {
         return unauthorizedAgencyResponse();
       }
       return NextResponse.json(run);
     }
 
     if (segments.length === 3 && segments[1] === "patients") {
-      const patient = await getBackendPatient(segments[0]!, segments[2]!);
-      if (patient.subsidiaryId !== session.selectedAgencyId) {
+      const run = await getBackendRun(segments[0]!);
+      if (!agencyIdsMatch(run.subsidiaryId, session.selectedAgencyId)) {
         return unauthorizedAgencyResponse();
       }
+      const patient = await getLatestBackendPatient(run.subsidiaryId, segments[2]!);
       return NextResponse.json(patient);
     }
 
     if (segments.length === 4 && segments[1] === "patients" && segments[3] === "status") {
-      const patient = await getBackendPatient(segments[0]!, segments[2]!);
-      if (patient.subsidiaryId !== session.selectedAgencyId) {
+      const run = await getBackendRun(segments[0]!);
+      if (!agencyIdsMatch(run.subsidiaryId, session.selectedAgencyId)) {
         return unauthorizedAgencyResponse();
       }
+      const patient = await getLatestBackendPatient(run.subsidiaryId, segments[2]!);
       return NextResponse.json(patient);
     }
 
     if (segments.length === 4 && segments[1] === "patients" && segments[3] === "artifacts") {
-      const patientArtifacts = await getBackendPatientArtifacts(segments[0]!, segments[2]!);
+      const run = await getBackendRun(segments[0]!);
+      if (!agencyIdsMatch(run.subsidiaryId, session.selectedAgencyId)) {
+        return unauthorizedAgencyResponse();
+      }
+      const patient = await getLatestBackendPatient(run.subsidiaryId, segments[2]!);
+      const patientArtifacts = await getBackendPatientArtifacts(patient.batchId, patient.workItemId);
       return NextResponse.json(patientArtifacts);
     }
 
@@ -75,7 +82,7 @@ export async function POST(request: Request, { params }: Params) {
   try {
     if (segments.length === 2 && segments[1] === "sample") {
       const sourceRun = await getBackendRun(segments[0]!);
-      if (sourceRun.subsidiaryId !== session.selectedAgencyId) {
+      if (!agencyIdsMatch(sourceRun.subsidiaryId, session.selectedAgencyId)) {
         return unauthorizedAgencyResponse();
       }
 

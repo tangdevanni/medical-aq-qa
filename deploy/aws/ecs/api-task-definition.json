@@ -1,5 +1,5 @@
 {
-  "family": "medical-ai-qa-api-demo",
+  "family": "medical-ai-qa-api",
   "networkMode": "awsvpc",
   "requiresCompatibilities": ["FARGATE"],
   "cpu": "1024",
@@ -9,7 +9,7 @@
   "containerDefinitions": [
     {
       "name": "api",
-      "image": "<ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/medical-ai-qa-api:demo",
+      "image": "<ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/medical-ai-qa-api:prod",
       "essential": true,
       "portMappings": [
         {
@@ -23,7 +23,18 @@
         { "name": "API_STORAGE_ROOT", "value": "/data/control-plane" },
         { "name": "API_LOG_LEVEL", "value": "info" },
         { "name": "API_CORS_ORIGIN", "value": "https://YOUR_ALB_DNS" },
-        { "name": "OASIS_WRITE_ENABLED", "value": "false" }
+        { "name": "OASIS_WRITE_ENABLED", "value": "false" },
+        { "name": "AUTONOMOUS_AGENCY_IDS", "value": "aplus-home-health,active-home-health,avery-home-health,meadows-home-health,star-home-health" },
+        { "name": "DEFAULT_SUBSIDIARY_RERUN_ENABLED", "value": "true" },
+        { "name": "DEFAULT_SUBSIDIARY_RERUN_INTERVAL_HOURS", "value": "24" },
+        { "name": "PORTAL_HEADLESS", "value": "true" },
+        { "name": "CODE_LLM_ENABLED", "value": "true" },
+        { "name": "LLM_PROVIDER", "value": "bedrock" },
+        { "name": "BEDROCK_REGION", "value": "<BEDROCK_REGION>" },
+        { "name": "BEDROCK_MODEL_ID", "value": "<BEDROCK_MODEL_ID>" },
+        { "name": "TEXTRACT_S3_REGION", "value": "<TEXTRACT_S3_REGION>" },
+        { "name": "TEXTRACT_S3_BUCKET", "value": "<TEXTRACT_S3_BUCKET>" },
+        { "name": "TEXTRACT_S3_PREFIX", "value": "finale-workbook-intake/textract" }
       ],
       "secrets": [
         {
@@ -49,7 +60,7 @@
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-          "awslogs-group": "/ecs/medical-ai-qa-api-demo",
+          "awslogs-group": "/ecs/medical-ai-qa-api",
           "awslogs-region": "<REGION>",
           "awslogs-stream-prefix": "ecs"
         }
@@ -61,7 +72,7 @@
       "name": "control-plane-data",
       "efsVolumeConfiguration": {
         "fileSystemId": "<EFS_FILE_SYSTEM_ID>",
-        "rootDirectory": "/medical-ai-qa-demo"
+        "rootDirectory": "/medical-ai-qa"
       }
     }
   ]

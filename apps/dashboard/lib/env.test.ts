@@ -13,7 +13,7 @@ describe("dashboard env", () => {
       email: "qa@example.com",
       name: "QA User",
       passwordHash: hashQaUserPassword("correct horse battery staple"),
-      allowedAgencyIds: ["default"],
+      allowedAgencyIds: ["star-home-health"],
     };
 
     assert.equal(verifyQaUserPassword(user, "correct horse battery staple"), true);
@@ -31,7 +31,7 @@ describe("dashboard env", () => {
             email: "qa@example.com",
             password: "plaintext-password",
             name: "QA User",
-            allowedAgencyIds: ["default"],
+            allowedAgencyIds: ["star-home-health"],
           },
         ]),
       }),
@@ -48,7 +48,7 @@ describe("dashboard env", () => {
           email: "qa@example.com",
           passwordHash: hashQaUserPassword("strong-password"),
           name: "QA User",
-          allowedAgencyIds: ["default"],
+          allowedAgencyIds: ["star-home-health"],
         },
       ]),
     });

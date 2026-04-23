@@ -1,0 +1,442 @@
+[
+  {
+    "sectionName": "hospitalization_history",
+    "extractedTextSpans": [
+      "and inpatient hospitalizations.",
+      "SN needed d/t high potential for disease progression and inpatient hospitalizations.",
+      "Pt will need skilled nursing due to high potential for hospital admission."
+    ],
+    "normalizedSummary": "and inpatient hospitalizations. SN needed d/t high potential for disease progression and inpatient hospitalizations. Pt will need skilled nursing due to high potential for hospital admission.",
+    "confidence": 0.95,
+    "lineReferences": [
+      {
+        "lineStart": 278,
+        "lineEnd": 278,
+        "charStart": 10294,
+        "charEnd": 10325
+      },
+      {
+        "lineStart": 286,
+        "lineEnd": 286,
+        "charStart": 10715,
+        "charEnd": 10799
+      },
+      {
+        "lineStart": 292,
+        "lineEnd": 292,
+        "charStart": 11114,
+        "charEnd": 11188
+      }
+    ]
+  },
+  {
+    "sectionName": "medical_necessity",
+    "extractedTextSpans": [
+      "MEDICAL NECESSITY: This visit with a FTF encounter with the patient in the home",
+      "Skilled nursing is",
+      "Pt will need skilled nursing due to high potential for hospital admission.",
+      "Pt will need skilled nursing for teachings of disease process, diet and new medication"
+    ],
+    "normalizedSummary": "MEDICAL NECESSITY: This visit with a FTF encounter with the patient in the home Skilled nursing is Pt will need skilled nursing due to high potential for hospital admission.",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 16,
+        "lineEnd": 16,
+        "charStart": 392,
+        "charEnd": 471
+      },
+      {
+        "lineStart": 45,
+        "lineEnd": 45,
+        "charStart": 1736,
+        "charEnd": 1754
+      },
+      {
+        "lineStart": 292,
+        "lineEnd": 292,
+        "charStart": 11114,
+        "charEnd": 11188
+      },
+      {
+        "lineStart": 293,
+        "lineEnd": 293,
+        "charStart": 11189,
+        "charEnd": 11275
+      }
+    ]
+  },
+  {
+    "sectionName": "homebound_evidence",
+    "extractedTextSpans": [
+      "Patient is homebound, ambulates with hemicane,",
+      "easily, dyspnea with moderate exertion and consequently leaving home would require a",
+      "Patient is homebound due to poor endurance and balance, unsteady gait, weakness,",
+      "Ambulation: Needs assistive devices (side-hemi walker and motorized wheelchair)",
+      "homebound status.",
+      "homebound status and the transitional care period ends."
+    ],
+    "normalizedSummary": "Patient is homebound, ambulates with hemicane, easily, dyspnea with moderate exertion and consequently leaving home would require a Patient is homebound due to poor endurance and balance, unsteady gait, weakness,",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 20,
+        "lineEnd": 20,
+        "charStart": 597,
+        "charEnd": 643
+      },
+      {
+        "lineStart": 22,
+        "lineEnd": 22,
+        "charStart": 730,
+        "charEnd": 814
+      },
+      {
+        "lineStart": 57,
+        "lineEnd": 57,
+        "charStart": 2333,
+        "charEnd": 2413
+      },
+      {
+        "lineStart": 222,
+        "lineEnd": 222,
+        "charStart": 7551,
+        "charEnd": 7630
+      },
+      {
+        "lineStart": 267,
+        "lineEnd": 267,
+        "charStart": 9717,
+        "charEnd": 9734
+      },
+      {
+        "lineStart": 271,
+        "lineEnd": 271,
+        "charStart": 9850,
+        "charEnd": 9905
+      }
+    ]
+  },
+  {
+    "sectionName": "medications",
+    "extractedTextSpans": [
+      "on medication use and side effects.",
+      "(Medication reconciliation last updated 04/10/2026 12:57 PM, JAYSON BAUTISTA -",
+      "Allergies",
+      "physical examination, medication reconciliation and discussion of treatment plan.",
+      "medications, medication regimen, comorbidities, and care plan and educate appropriately.",
+      "Pt needs assistance with medication management, observation and assessment for",
+      "Pt will need skilled nursing for teachings of disease process, diet and new medication"
+    ],
+    "normalizedSummary": "on medication use and side effects. (Medication reconciliation last updated 04/10/2026 12:57 PM, JAYSON BAUTISTA - Allergies",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 47,
+        "lineEnd": 47,
+        "charStart": 1845,
+        "charEnd": 1880
+      },
+      {
+        "lineStart": 114,
+        "lineEnd": 114,
+        "charStart": 3979,
+        "charEnd": 4057
+      },
+      {
+        "lineStart": 131,
+        "lineEnd": 131,
+        "charStart": 4814,
+        "charEnd": 4823
+      },
+      {
+        "lineStart": 260,
+        "lineEnd": 260,
+        "charStart": 9283,
+        "charEnd": 9364
+      },
+      {
+        "lineStart": 281,
+        "lineEnd": 281,
+        "charStart": 10461,
+        "charEnd": 10549
+      },
+      {
+        "lineStart": 290,
+        "lineEnd": 290,
+        "charStart": 11013,
+        "charEnd": 11091
+      },
+      {
+        "lineStart": 293,
+        "lineEnd": 293,
+        "charStart": 11189,
+        "charEnd": 11275
+      }
+    ]
+  },
+  {
+    "sectionName": "living_situation",
+    "extractedTextSpans": [
+      "lives with roommates, in a 2 story home."
+    ],
+    "normalizedSummary": "lives with roommates, in a 2 story home.",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 29,
+        "lineEnd": 29,
+        "charStart": 1038,
+        "charEnd": 1078
+      }
+    ]
+  },
+  {
+    "sectionName": "functional_limitations",
+    "extractedTextSpans": [
+      "with poor endurance and balance, unsteady gait, generalized muscle weakness, fatigues",
+      "Patient is homebound due to poor endurance and balance, unsteady gait, weakness,",
+      "weakness right sided CVA.",
+      "Ambulation: Needs assistive devices (side-hemi walker and motorized wheelchair)",
+      "Weakness as a late effect of cerebrovascular accident (disorder) (R53.1/780.79)",
+      "Weakness modified 1 Oct, 2021"
+    ],
+    "normalizedSummary": "with poor endurance and balance, unsteady gait, generalized muscle weakness, fatigues Patient is homebound due to poor endurance and balance, unsteady gait, weakness, weakness right sided CVA.",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 21,
+        "lineEnd": 21,
+        "charStart": 644,
+        "charEnd": 729
+      },
+      {
+        "lineStart": 57,
+        "lineEnd": 57,
+        "charStart": 2333,
+        "charEnd": 2413
+      },
+      {
+        "lineStart": 103,
+        "lineEnd": 103,
+        "charStart": 3641,
+        "charEnd": 3666
+      },
+      {
+        "lineStart": 222,
+        "lineEnd": 222,
+        "charStart": 7551,
+        "charEnd": 7630
+      },
+      {
+        "lineStart": 233,
+        "lineEnd": 233,
+        "charStart": 8192,
+        "charEnd": 8271
+      },
+      {
+        "lineStart": 234,
+        "lineEnd": 234,
+        "charStart": 8272,
+        "charEnd": 8301
+      }
+    ]
+  },
+  {
+    "sectionName": "therapy_need",
+    "extractedTextSpans": [
+      "occupational therapy to continue working on upper body",
+      "PT/OT to evaluate and treat appropriately to increase functionality, decreases debility and"
+    ],
+    "normalizedSummary": "occupational therapy to continue working on upper body PT/OT to evaluate and treat appropriately to increase functionality, decreases debility and",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 50,
+        "lineEnd": 50,
+        "charStart": 1965,
+        "charEnd": 2019
+      },
+      {
+        "lineStart": 295,
+        "lineEnd": 295,
+        "charStart": 11285,
+        "charEnd": 11376
+      }
+    ]
+  },
+  {
+    "sectionName": "risk_factors",
+    "extractedTextSpans": [
+      "with poor endurance and balance, unsteady gait, generalized muscle weakness, fatigues",
+      "needed for monitoring vital signs, teachings on disease processes, home safety, education",
+      "Patient is homebound due to poor endurance and balance, unsteady gait, weakness,",
+      "Denies fall in the past 2 weeks.",
+      "Functional Ability/Safety Screen",
+      "- Musculoskeletal: (+) unsteady gait (+) poor balance. (-) clubbing (-) cyanosis. (+)"
+    ],
+    "normalizedSummary": "with poor endurance and balance, unsteady gait, generalized muscle weakness, fatigues needed for monitoring vital signs, teachings on disease processes, home safety, education Patient is homebound due to poor endurance and balance, unsteady gait, weakness,",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 21,
+        "lineEnd": 21,
+        "charStart": 644,
+        "charEnd": 729
+      },
+      {
+        "lineStart": 46,
+        "lineEnd": 46,
+        "charStart": 1755,
+        "charEnd": 1844
+      },
+      {
+        "lineStart": 57,
+        "lineEnd": 57,
+        "charStart": 2333,
+        "charEnd": 2413
+      },
+      {
+        "lineStart": 101,
+        "lineEnd": 101,
+        "charStart": 3593,
+        "charEnd": 3625
+      },
+      {
+        "lineStart": 150,
+        "lineEnd": 150,
+        "charStart": 5552,
+        "charEnd": 5584
+      },
+      {
+        "lineStart": 209,
+        "lineEnd": 209,
+        "charStart": 7064,
+        "charEnd": 7149
+      }
+    ]
+  },
+  {
+    "sectionName": "advance_directives",
+    "extractedTextSpans": [
+      "Advance directive discussed with patient (finding) (Z71.89/V65.49) Other specified"
+    ],
+    "normalizedSummary": "Advance directive discussed with patient (finding) (Z71.89/V65.49) Other specified",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 231,
+        "lineEnd": 231,
+        "charStart": 8077,
+        "charEnd": 8159
+      }
+    ]
+  },
+  {
+    "sectionName": "other_clinical_notes",
+    "extractedTextSpans": [
+      "SOAP Note",
+      "Note created using Tebra",
+      "SOAP Note",
+      "Note created using Tebra",
+      "SOAP Note",
+      "Note created using Tebra",
+      "SOAP Note",
+      "Plan",
+      "- It has been explained to Patient that the Nurse Practitioner and the care plan is being",
+      "physical examination, medication reconciliation and discussion of treatment plan.",
+      "medications, medication regimen, comorbidities, and care plan and educate appropriately.",
+      "Note created using Tebra",
+      "SOAP Note",
+      "Note created using Tebra"
+    ],
+    "normalizedSummary": "SOAP Note Note created using Tebra SOAP Note",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 2,
+        "lineEnd": 2,
+        "charStart": 22,
+        "charEnd": 31
+      },
+      {
+        "lineStart": 84,
+        "lineEnd": 84,
+        "charStart": 3157,
+        "charEnd": 3181
+      },
+      {
+        "lineStart": 86,
+        "lineEnd": 86,
+        "charStart": 3204,
+        "charEnd": 3213
+      },
+      {
+        "lineStart": 177,
+        "lineEnd": 177,
+        "charStart": 6036,
+        "charEnd": 6060
+      },
+      {
+        "lineStart": 179,
+        "lineEnd": 179,
+        "charStart": 6083,
+        "charEnd": 6092
+      },
+      {
+        "lineStart": 237,
+        "lineEnd": 237,
+        "charStart": 8344,
+        "charEnd": 8368
+      },
+      {
+        "lineStart": 239,
+        "lineEnd": 239,
+        "charStart": 8391,
+        "charEnd": 8400
+      },
+      {
+        "lineStart": 256,
+        "lineEnd": 256,
+        "charStart": 9037,
+        "charEnd": 9041
+      },
+      {
+        "lineStart": 257,
+        "lineEnd": 257,
+        "charStart": 9042,
+        "charEnd": 9131
+      },
+      {
+        "lineStart": 260,
+        "lineEnd": 260,
+        "charStart": 9283,
+        "charEnd": 9364
+      },
+      {
+        "lineStart": 281,
+        "lineEnd": 281,
+        "charStart": 10461,
+        "charEnd": 10549
+      },
+      {
+        "lineStart": 304,
+        "lineEnd": 304,
+        "charStart": 11618,
+        "charEnd": 11642
+      },
+      {
+        "lineStart": 306,
+        "lineEnd": 306,
+        "charStart": 11665,
+        "charEnd": 11674
+      },
+      {
+        "lineStart": 322,
+        "lineEnd": 322,
+        "charStart": 12095,
+        "charEnd": 12119
+      }
+    ]
+  }
+]

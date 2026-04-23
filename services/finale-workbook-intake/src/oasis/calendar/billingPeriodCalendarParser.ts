@@ -25,6 +25,7 @@ import {
   formatIsoDate,
   parseSupportedDate,
 } from "./billingPeriodClassifier";
+import { buildBillingPeriodWorkbookColumns } from "./billingPeriodWorkbookSummary";
 import { normalizeCalendarCard } from "./visitCardNormalizer";
 
 export interface RawBillingCalendarCardInput {
@@ -166,6 +167,7 @@ export function buildBillingPeriodCalendarSummary(input: {
         totalCards: first30Cards.length,
         countsByType: countByType(first30Cards),
         cards: first30Cards,
+        workbookColumns: buildBillingPeriodWorkbookColumns(first30Cards),
       },
       second30Days: {
         startDate: periodBounds.second30Days.startDate,
@@ -173,6 +175,7 @@ export function buildBillingPeriodCalendarSummary(input: {
         totalCards: second30Cards.length,
         countsByType: countByType(second30Cards),
         cards: second30Cards,
+        workbookColumns: buildBillingPeriodWorkbookColumns(second30Cards),
       },
       outsideRange: {
         startDate: null,
@@ -180,6 +183,7 @@ export function buildBillingPeriodCalendarSummary(input: {
         totalCards: outsideCards.length,
         countsByType: countByType(outsideCards),
         cards: outsideCards,
+        workbookColumns: buildBillingPeriodWorkbookColumns(outsideCards),
       },
     },
     visibleDays,

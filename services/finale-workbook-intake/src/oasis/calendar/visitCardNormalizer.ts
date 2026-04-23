@@ -41,6 +41,8 @@ export function classifyCalendarEventType(value: string): CalendarEventType {
     [/\bpt\s+visit\b/i, "pt_visit"],
     [/\b(?:st|slp)\s+visit\b/i, "st_visit"],
     [/\bot\s+visit\b/i, "ot_visit"],
+    [/\bhha\b.*\bvisit\b|\bvisit\b.*\bhha\b/i, "hha_visit"],
+    [/\b(?:msw|social\s+work(?:er)?)\b.*\bvisit\b|\bvisit\b.*\b(?:msw|social\s+work(?:er)?)\b/i, "msw_visit"],
     [/\boasis\b|\bstart of care\b|\brecert(?:ification)?\b|\broc\b/i, "oasis"],
   ];
 

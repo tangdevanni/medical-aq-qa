@@ -6,6 +6,8 @@ export type CalendarEventType =
   | "st_visit"
   | "ot_visit"
   | "sn_visit"
+  | "hha_visit"
+  | "msw_visit"
   | "physician_order"
   | "communication_note"
   | "admission_order"
@@ -25,6 +27,12 @@ export interface NormalizedCalendarCard {
   statusLabel?: string | null;
 }
 
+export interface BillingPeriodWorkbookColumns {
+  sn: string;
+  ptOtSt: string;
+  hhaMsw: string;
+}
+
 export interface CalendarDaySnapshot {
   date: string | null;
   rawDateLabel: string | null;
@@ -41,6 +49,7 @@ export interface BillingPeriodCardGroup {
   totalCards: number;
   countsByType: Record<string, number>;
   cards: NormalizedCalendarCard[];
+  workbookColumns: BillingPeriodWorkbookColumns;
 }
 
 export interface BillingPeriodCalendarSummary {

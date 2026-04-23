@@ -90,11 +90,26 @@ describe("billingPeriodCalendarParser", () => {
       oasis: 1,
       sn_visit: 1,
     });
+    expect(summary.periods.first30Days.workbookColumns).toEqual({
+      sn: "SN - 1",
+      ptOtSt: "NA",
+      hhaMsw: "NA",
+    });
     expect(summary.periods.second30Days.countsByType).toEqual({
       pt_visit: 1,
       physician_order: 1,
     });
+    expect(summary.periods.second30Days.workbookColumns).toEqual({
+      sn: "NA",
+      ptOtSt: "PT - 1",
+      hhaMsw: "NA",
+    });
     expect(summary.periods.outsideRange.countsByType).toEqual({});
+    expect(summary.periods.outsideRange.workbookColumns).toEqual({
+      sn: "NA",
+      ptOtSt: "NA",
+      hhaMsw: "NA",
+    });
   });
 
   it("emits a warning when the visible window does not cover the full selected episode", () => {
@@ -242,6 +257,109 @@ describe("billingPeriodCalendarParser", () => {
       date: "2026-03-14",
       billingPeriod: "first30",
       eventType: "sn_visit",
+    });
+    expect(summary.periods.first30Days.workbookColumns.sn).toBe("SN - 1\nSN visit 3/14: validated");
+  });
+
+  it("derives workbook-style visit summaries from calendar alerts and discipline groups", () => {
+    const summary = buildBillingPeriodCalendarSummary({
+      chartUrl: "https://demo.portal/provider/branch/client/PT-1/intake/calendar",
+      selectedEpisode: {
+        rawLabel: "11/01/2025 - 12/30/2025",
+        startDate: "11/01/2025",
+        endDate: "12/30/2025",
+        isSelected: true,
+      },
+      rawDayCells: [
+        {
+          rawDateLabel: "11/20/2025",
+          normalizedDate: "2025-11-20",
+          visualPeriodHint: "green",
+          warnings: [],
+          cards: [
+            {
+              rawText: "RN Regular Visit 08:00 - 09:00",
+              titleText: "RN Regular Visit",
+              tooltipTitles: [],
+              titleAttributes: [],
+              attributeSummary: [],
+            },
+          ],
+        },
+        {
+          rawDateLabel: "11/25/2025",
+          normalizedDate: "2025-11-25",
+          visualPeriodHint: "green",
+          warnings: [],
+          cards: [
+            {
+              rawText: "SN Visit not started",
+              titleText: "SN Visit",
+              tooltipTitles: [],
+              titleAttributes: [],
+              attributeSummary: [],
+            },
+          ],
+        },
+        {
+          rawDateLabel: "11/26/2025",
+          normalizedDate: "2025-11-26",
+          visualPeriodHint: "green",
+          warnings: [],
+          cards: [
+            {
+              rawText: "Missed SN Visit",
+              titleText: "Missed SN Visit",
+              tooltipTitles: [],
+              titleAttributes: [],
+              attributeSummary: [],
+            },
+          ],
+        },
+        {
+          rawDateLabel: "11/27/2025",
+          normalizedDate: "2025-11-27",
+          visualPeriodHint: "green",
+          warnings: [],
+          cards: [
+            {
+              rawText: "PT Evaluation Order",
+              titleText: "PT Eval Order",
+              tooltipTitles: [],
+              titleAttributes: [],
+              attributeSummary: [],
+            },
+            {
+              rawText: "PT Visit not started",
+              titleText: "PT Visit",
+              tooltipTitles: [],
+              titleAttributes: [],
+              attributeSummary: [],
+            },
+          ],
+        },
+        {
+          rawDateLabel: "11/28/2025",
+          normalizedDate: "2025-11-28",
+          visualPeriodHint: "green",
+          warnings: [],
+          cards: [
+            {
+              rawText: "HHA Visit unassigned",
+              titleText: "HHA Visit",
+              tooltipTitles: [],
+              titleAttributes: [],
+              attributeSummary: [],
+            },
+          ],
+        },
+      ],
+    });
+
+    expect(summary.periods.first30Days.workbookColumns).toEqual({
+      sn: "SN - 1, MV - 1\nSNV 11/25 - not started",
+      ptOtSt: "PTV 11/27 - not started\nPT Eval Order 11/27",
+      hhaMsw: "visits 11/28 - unassigned",
     });
   });
 });

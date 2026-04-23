@@ -1,0 +1,326 @@
+[
+  {
+    "sectionName": "patient_identity",
+    "extractedTextSpans": [
+      "Patient Name:",
+      "DOB: 10/01/1968",
+      "DOB: 10/01/1968",
+      "DOB: 10/01/1968, 57 years",
+      "PATIENT NAME:",
+      "PATIENT NAME:",
+      "PATIENT NAME:"
+    ],
+    "normalizedSummary": "Patient Name: DOB: 10/01/1968 DOB: 10/01/1968",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 53,
+        "lineEnd": 53,
+        "charStart": 1366,
+        "charEnd": 1379
+      },
+      {
+        "lineStart": 112,
+        "lineEnd": 112,
+        "charStart": 2188,
+        "charEnd": 2203
+      },
+      {
+        "lineStart": 128,
+        "lineEnd": 128,
+        "charStart": 2519,
+        "charEnd": 2534
+      },
+      {
+        "lineStart": 155,
+        "lineEnd": 155,
+        "charStart": 3081,
+        "charEnd": 3106
+      },
+      {
+        "lineStart": 292,
+        "lineEnd": 292,
+        "charStart": 8362,
+        "charEnd": 8375
+      },
+      {
+        "lineStart": 370,
+        "lineEnd": 370,
+        "charStart": 9649,
+        "charEnd": 9662
+      },
+      {
+        "lineStart": 463,
+        "lineEnd": 463,
+        "charStart": 13027,
+        "charEnd": 13040
+      }
+    ]
+  },
+  {
+    "sectionName": "referral_metadata",
+    "extractedTextSpans": [
+      "Order Date: 04/08/2026"
+    ],
+    "normalizedSummary": "Order Date: 04/08/2026",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 13,
+        "lineEnd": 13,
+        "charStart": 254,
+        "charEnd": 276
+      }
+    ]
+  },
+  {
+    "sectionName": "hospitalization_history",
+    "extractedTextSpans": [
+      "RECORDS FROM HOSPITAL",
+      "RECORDS FROM HOSPITAL",
+      "RECORDS FROM HOSPITAL"
+    ],
+    "normalizedSummary": "RECORDS FROM HOSPITAL RECORDS FROM HOSPITAL RECORDS FROM HOSPITAL",
+    "confidence": 0.95,
+    "lineReferences": [
+      {
+        "lineStart": 288,
+        "lineEnd": 288,
+        "charStart": 8263,
+        "charEnd": 8284
+      },
+      {
+        "lineStart": 366,
+        "lineEnd": 366,
+        "charStart": 9550,
+        "charEnd": 9571
+      },
+      {
+        "lineStart": 457,
+        "lineEnd": 457,
+        "charStart": 12906,
+        "charEnd": 12927
+      }
+    ]
+  },
+  {
+    "sectionName": "medical_necessity",
+    "extractedTextSpans": [
+      "PT: Eval & Treat w/ Modalities Frequency/Duration: HOME HEALTH EVAL AND TREAT: SKILLED NURSING: HOME PT RT UPPER"
+    ],
+    "normalizedSummary": "PT: Eval & Treat w/ Modalities Frequency/Duration: HOME HEALTH EVAL AND TREAT: SKILLED NURSING: HOME PT RT UPPER",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 34,
+        "lineEnd": 34,
+        "charStart": 862,
+        "charEnd": 974
+      }
+    ]
+  },
+  {
+    "sectionName": "diagnoses",
+    "extractedTextSpans": [
+      "Diagnosis",
+      "DIAGNOSES:",
+      "DIAGNOSES:"
+    ],
+    "normalizedSummary": "Diagnosis DIAGNOSES: DIAGNOSES:",
+    "confidence": 0.95,
+    "lineReferences": [
+      {
+        "lineStart": 22,
+        "lineEnd": 22,
+        "charStart": 413,
+        "charEnd": 422
+      },
+      {
+        "lineStart": 303,
+        "lineEnd": 303,
+        "charStart": 8511,
+        "charEnd": 8521
+      },
+      {
+        "lineStart": 309,
+        "lineEnd": 309,
+        "charStart": 8589,
+        "charEnd": 8599
+      }
+    ]
+  },
+  {
+    "sectionName": "medications",
+    "extractedTextSpans": [
+      "Allergies",
+      "Azithromycin *CHEMICALS* [Drug allergy]",
+      "Sulfa 10 *OPHTHALMIC AGENTS* [Drug allergy]"
+    ],
+    "normalizedSummary": "Allergies Azithromycin *CHEMICALS* [Drug allergy] Sulfa 10 *OPHTHALMIC AGENTS* [Drug allergy]",
+    "confidence": 0.95,
+    "lineReferences": [
+      {
+        "lineStart": 161,
+        "lineEnd": 161,
+        "charStart": 3263,
+        "charEnd": 3272
+      },
+      {
+        "lineStart": 162,
+        "lineEnd": 162,
+        "charStart": 3273,
+        "charEnd": 3312
+      },
+      {
+        "lineStart": 163,
+        "lineEnd": 163,
+        "charStart": 3313,
+        "charEnd": 3356
+      }
+    ]
+  },
+  {
+    "sectionName": "therapy_need",
+    "extractedTextSpans": [
+      "Physical/Occupational Therapy Order",
+      "Physical/Occupational Therapy Facility",
+      "PT: Eval & Treat w/ Modalities Frequency/Duration: HOME HEALTH EVAL AND TREAT: SKILLED NURSING: HOME PT RT UPPER"
+    ],
+    "normalizedSummary": "Physical/Occupational Therapy Order Physical/Occupational Therapy Facility PT: Eval & Treat w/ Modalities Frequency/Duration: HOME HEALTH EVAL AND TREAT: SKILLED NURSING: HOME PT RT UPPER",
+    "confidence": 0.95,
+    "lineReferences": [
+      {
+        "lineStart": 12,
+        "lineEnd": 12,
+        "charStart": 218,
+        "charEnd": 253
+      },
+      {
+        "lineStart": 32,
+        "lineEnd": 32,
+        "charStart": 816,
+        "charEnd": 854
+      },
+      {
+        "lineStart": 34,
+        "lineEnd": 34,
+        "charStart": 862,
+        "charEnd": 974
+      }
+    ]
+  },
+  {
+    "sectionName": "other_clinical_notes",
+    "extractedTextSpans": [
+      "Plan #2TE2JD9TV88",
+      "Plan #62263100001",
+      "Plan Information",
+      "Plan # :2TE2JD9TV88",
+      "Plan Type: Undefined",
+      "Plan # :62263100001",
+      "Plan # :2TE2JD9TV88",
+      "Plan Type: Undefined",
+      "Plan # :62263100001",
+      "notes the date of injury for the shoulder fracture was 6 weeks ago.",
+      "Plan:",
+      "Patient does voice understanding and agrees with the above plan of care.",
+      "Holman Chan, along with plan collaboration",
+      "Future plan:",
+      "Assessment and Plan"
+    ],
+    "normalizedSummary": "Plan #2TE2JD9TV88 Plan #62263100001 Plan Information",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 28,
+        "lineEnd": 28,
+        "charStart": 736,
+        "charEnd": 753
+      },
+      {
+        "lineStart": 31,
+        "lineEnd": 31,
+        "charStart": 798,
+        "charEnd": 815
+      },
+      {
+        "lineStart": 104,
+        "lineEnd": 104,
+        "charStart": 2050,
+        "charEnd": 2066
+      },
+      {
+        "lineStart": 111,
+        "lineEnd": 111,
+        "charStart": 2168,
+        "charEnd": 2187
+      },
+      {
+        "lineStart": 116,
+        "lineEnd": 116,
+        "charStart": 2282,
+        "charEnd": 2302
+      },
+      {
+        "lineStart": 119,
+        "lineEnd": 119,
+        "charStart": 2342,
+        "charEnd": 2361
+      },
+      {
+        "lineStart": 127,
+        "lineEnd": 127,
+        "charStart": 2499,
+        "charEnd": 2518
+      },
+      {
+        "lineStart": 132,
+        "lineEnd": 132,
+        "charStart": 2613,
+        "charEnd": 2633
+      },
+      {
+        "lineStart": 135,
+        "lineEnd": 135,
+        "charStart": 2673,
+        "charEnd": 2692
+      },
+      {
+        "lineStart": 218,
+        "lineEnd": 218,
+        "charStart": 5336,
+        "charEnd": 5403
+      },
+      {
+        "lineStart": 242,
+        "lineEnd": 242,
+        "charStart": 6548,
+        "charEnd": 6553
+      },
+      {
+        "lineStart": 251,
+        "lineEnd": 251,
+        "charStart": 6926,
+        "charEnd": 6998
+      },
+      {
+        "lineStart": 256,
+        "lineEnd": 256,
+        "charStart": 7295,
+        "charEnd": 7337
+      },
+      {
+        "lineStart": 257,
+        "lineEnd": 257,
+        "charStart": 7338,
+        "charEnd": 7350
+      },
+      {
+        "lineStart": 265,
+        "lineEnd": 265,
+        "charStart": 7629,
+        "charEnd": 7648
+      }
+    ]
+  }
+]

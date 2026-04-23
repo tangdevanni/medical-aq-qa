@@ -1,0 +1,128 @@
+{
+  "generatedAt": "2026-04-22T20:02:19.591Z",
+  "source": "printed_note_ocr",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\evidence\\CAROL_COLE__b536a2459968141e\\oasis-printed-note\\extracted-text.txt",
+  "llmInputSource": "fact_pack_primary",
+  "extractedFieldCount": 8,
+  "invocationModelId": "us.amazon.nova-lite-v1:0",
+  "currentChartValues": {
+    "patient_name": "Carol Cole",
+    "secondary_diagnoses": [
+      "I11.0 - Hypertensive heart disease with heart",
+      "I50.9 - Heart failure, unspecified",
+      "I48.91 - Unspecified atrial fibrillation"
+    ],
+    "functional_limitations": [
+      "Ambulation",
+      "Endurance"
+    ],
+    "therapy_need": "Skilled nursing services are required for ongoing monitoring of her potassium and renal status, as well as management, while physical therapy will focus on balance training and safe",
+    "homebound_supporting_factors": [
+      "Limited family support"
+    ],
+    "medication_list": [
+      "Potassium",
+      "Renal management"
+    ],
+    "allergy_list": [
+      "MEDICATION AND"
+    ],
+    "code_status": "dnr"
+  },
+  "extractedFieldValues": [
+    {
+      "field_key": "patient_name",
+      "current_value": "Carol Cole",
+      "confidence": 0.95,
+      "source_spans": [
+        "Patient Name",
+        "Carol Cole"
+      ]
+    },
+    {
+      "field_key": "secondary_diagnoses",
+      "current_value": [
+        "I11.0 - Hypertensive heart disease with heart",
+        "I50.9 - Heart failure, unspecified",
+        "I48.91 - Unspecified atrial fibrillation"
+      ],
+      "confidence": 0.98,
+      "source_spans": [
+        "I11.0 - Hypertensive heart disease with heart",
+        "I50.9 - Heart failure, unspecified",
+        "I48.91 - Unspecified atrial fibrillation"
+      ]
+    },
+    {
+      "field_key": "functional_limitations",
+      "current_value": [
+        "Ambulation",
+        "Endurance"
+      ],
+      "confidence": 0.96,
+      "source_spans": [
+        "6 - Endurance",
+        "7- Ambulation"
+      ]
+    },
+    {
+      "field_key": "therapy_need",
+      "current_value": "Skilled nursing services are required for ongoing monitoring of her potassium and renal status, as well as management, while physical therapy will focus on balance training and safe",
+      "confidence": 0.9,
+      "source_spans": [
+        "Skilled nursing services are required for ongoing monitoring of her potassium and renal status, as well as management, while physical therapy will focus on balance training and safe"
+      ]
+    },
+    {
+      "field_key": "homebound_supporting_factors",
+      "current_value": [
+        "Limited family support"
+      ],
+      "confidence": 0.9,
+      "source_spans": [
+        "limited family support"
+      ]
+    },
+    {
+      "field_key": "medication_list",
+      "current_value": [
+        "Potassium",
+        "Renal management"
+      ],
+      "confidence": 0.9,
+      "source_spans": [
+        "potassium",
+        "renal status"
+      ]
+    },
+    {
+      "field_key": "allergy_list",
+      "current_value": [
+        "MEDICATION AND"
+      ],
+      "confidence": 0.9,
+      "source_spans": [
+        "MEDICATION AND"
+      ]
+    },
+    {
+      "field_key": "code_status",
+      "current_value": "dnr",
+      "confidence": 0.98,
+      "source_spans": [
+        "DNR"
+      ]
+    }
+  ],
+  "warnings": [
+    "LLM input source: fact_pack_primary.",
+    "Fact pack coverage: diagnoses, assessmentValues, homeboundEvidence, skilledNeedEvidence, hospitalizationReasons, medications, allergies, supportingSnippets.",
+    "Fact pack coverage score: 1.",
+    "Prompt character estimate: 2984.",
+    "Fallback reason: none.",
+    "Deterministic printed-note chart values: secondary_diagnoses, code_status, functional_limitations.",
+    "Selected option labels detected: 178.",
+    "Printed-note chart-value extraction used inference profile us.amazon.nova-lite-v1:0.",
+    "primary_diagnosis: rejected as low-confidence or suspicious for the field"
+  ]
+}

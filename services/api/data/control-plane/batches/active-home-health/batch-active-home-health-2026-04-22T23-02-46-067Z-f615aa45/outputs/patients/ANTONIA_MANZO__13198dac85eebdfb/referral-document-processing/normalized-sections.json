@@ -1,0 +1,152 @@
+[
+  {
+    "sectionName": "patient_identity",
+    "extractedTextSpans": [
+      "DOB:",
+      "DOB:",
+      "DOB:"
+    ],
+    "normalizedSummary": "DOB: DOB: DOB:",
+    "confidence": 0.95,
+    "lineReferences": [
+      {
+        "lineStart": 131,
+        "lineEnd": 131,
+        "charStart": 1715,
+        "charEnd": 1719
+      },
+      {
+        "lineStart": 266,
+        "lineEnd": 266,
+        "charStart": 3751,
+        "charEnd": 3755
+      },
+      {
+        "lineStart": 416,
+        "lineEnd": 416,
+        "charStart": 6186,
+        "charEnd": 6190
+      }
+    ]
+  },
+  {
+    "sectionName": "medical_necessity",
+    "extractedTextSpans": [
+      "ICD 10: S/P 1 L.TKA skilled nursing visit for"
+    ],
+    "normalizedSummary": "ICD 10: S/P 1 L.TKA skilled nursing visit for",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 143,
+        "lineEnd": 143,
+        "charStart": 1853,
+        "charEnd": 1898
+      }
+    ]
+  },
+  {
+    "sectionName": "medications",
+    "extractedTextSpans": [
+      "Pharmacy Information",
+      "CVS/pharmacy #8808",
+      "Allergies",
+      "No known drug allergies"
+    ],
+    "normalizedSummary": "Pharmacy Information CVS/pharmacy #8808 Allergies",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 246,
+        "lineEnd": 246,
+        "charStart": 3448,
+        "charEnd": 3468
+      },
+      {
+        "lineStart": 248,
+        "lineEnd": 248,
+        "charStart": 3475,
+        "charEnd": 3493
+      },
+      {
+        "lineStart": 270,
+        "lineEnd": 270,
+        "charStart": 3833,
+        "charEnd": 3842
+      },
+      {
+        "lineStart": 273,
+        "lineEnd": 273,
+        "charStart": 3886,
+        "charEnd": 3909
+      }
+    ]
+  },
+  {
+    "sectionName": "therapy_need",
+    "extractedTextSpans": [
+      "physical therapy, and use of supportive"
+    ],
+    "normalizedSummary": "physical therapy, and use of supportive",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 459,
+        "lineEnd": 459,
+        "charStart": 7394,
+        "charEnd": 7433
+      }
+    ]
+  },
+  {
+    "sectionName": "other_clinical_notes",
+    "extractedTextSpans": [
+      "Visit Note - March 31, 2026",
+      "Additional Notes: DNVI",
+      "Visit Note - March 31, 2026",
+      "Impression/Plan:",
+      "Plan: Counseling - Preoperative Instructions.",
+      "Plan: Counseling - Knee DJD."
+    ],
+    "normalizedSummary": "Visit Note - March 31, 2026 Additional Notes: DNVI Visit Note - March 31, 2026",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 263,
+        "lineEnd": 263,
+        "charStart": 3710,
+        "charEnd": 3737
+      },
+      {
+        "lineStart": 389,
+        "lineEnd": 389,
+        "charStart": 5726,
+        "charEnd": 5748
+      },
+      {
+        "lineStart": 413,
+        "lineEnd": 413,
+        "charStart": 6145,
+        "charEnd": 6172
+      },
+      {
+        "lineStart": 439,
+        "lineEnd": 439,
+        "charStart": 6744,
+        "charEnd": 6760
+      },
+      {
+        "lineStart": 447,
+        "lineEnd": 447,
+        "charStart": 6929,
+        "charEnd": 6974
+      },
+      {
+        "lineStart": 453,
+        "lineEnd": 453,
+        "charStart": 7106,
+        "charEnd": 7134
+      }
+    ]
+  }
+]

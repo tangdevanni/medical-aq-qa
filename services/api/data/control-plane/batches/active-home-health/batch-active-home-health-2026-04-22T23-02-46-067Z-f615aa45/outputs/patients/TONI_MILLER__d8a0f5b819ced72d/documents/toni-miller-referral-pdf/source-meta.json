@@ -1,0 +1,79 @@
+{
+  "selectedSourceFile": "toni miller referral.pdf",
+  "selectedSourceFileNormalized": "toni miller referral.pdf",
+  "admissionOrderTitle": "📄 toni miller referral.pdf 📝 ✏️ 🗑️ 🔗",
+  "admissionOrderSelectorUsed": "File Uploads source document row by .file-item/.file-label or table row",
+  "sourceUrlBeforeClick": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69d8141dad96c00c5491b290/intake/69d8145018ebd20c552e292e/calendar",
+  "sourceUrlAfterClick": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69d8141dad96c00c5491b290/file-uploads",
+  "matchedReferralFileLabel": "toni miller referral.pdf",
+  "normalizedFileLabels": [
+    "toni miller referral.pdf",
+    "miller toni referrals 04 15.pdf"
+  ],
+  "matchedSourceDocuments": [
+    {
+      "label": "📄 toni miller referral.pdf",
+      "normalizedLabel": "toni miller referral.pdf",
+      "score": 150
+    },
+    {
+      "label": "📄 toni miller referral.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedLabel": "toni miller referral.pdf",
+      "score": 150
+    },
+    {
+      "label": "📄 MILLER, TONI referrals 04-15.pdf",
+      "normalizedLabel": "miller toni referrals 04 15.pdf",
+      "score": 20
+    },
+    {
+      "label": "📄 MILLER, TONI referrals 04-15.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedLabel": "miller toni referrals 04 15.pdf",
+      "score": 20
+    }
+  ],
+  "viewerDetected": true,
+  "viewerMarkerSamples": [
+    "of ⁨4⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools",
+    "Tools",
+    "Print"
+  ],
+  "printButtonDetected": true,
+  "printButtonVisible": true,
+  "printButtonSelectorUsed": "pdf-print #printButton, #printButton, pdf-shy-button[primarytoolbarid='printButton'] button",
+  "printClickSucceeded": false,
+  "pdfResponseDetected": true,
+  "pdfResponseUrl": "https://api.finalehealth.com/api/v1/files/69d83384a10e660c4e9ec07c?index=patient",
+  "pdfContentType": "application/pdf",
+  "pdfSavedPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\TONI_MILLER__d8a0f5b819ced72d\\documents\\toni-miller-referral-pdf\\source.pdf",
+  "pdfByteSize": 277293,
+  "printAcquisitionMethodUsed": "network_pdf_response",
+  "printedPdfSaved": false,
+  "printedPdfPath": null,
+  "sourcePdfPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\TONI_MILLER__d8a0f5b819ced72d\\documents\\toni-miller-referral-pdf\\source.pdf",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\TONI_MILLER__d8a0f5b819ced72d\\documents\\toni-miller-referral-pdf\\extracted-text.txt",
+  "extractionResultPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\TONI_MILLER__d8a0f5b819ced72d\\documents\\toni-miller-referral-pdf\\extraction-result.json",
+  "extractedTextLength": 104,
+  "rawExtractedTextSource": "dom",
+  "domExtractionRejectedReasons": [
+    "viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS"
+  ],
+  "extractionSuccess": false,
+  "queuedForLlm": true,
+  "extractionPolicyDecision": {
+    "mode": "ocr_required",
+    "confidence": "high",
+    "reasons": [
+      "PDF appears image-based/scanned; OCR likely required",
+      "No printed PDF available",
+      "OCR is the cheapest acceptable option that preserves clinically meaningful content"
+    ],
+    "recommendedSourcePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\TONI_MILLER__d8a0f5b819ced72d\\documents\\toni-miller-referral-pdf\\source.pdf",
+    "fallbackSourcePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\TONI_MILLER__d8a0f5b819ced72d\\documents\\toni-miller-referral-pdf\\source.pdf",
+    "hasUsablePdfTextLayer": false,
+    "hasPdfSource": true,
+    "hasPrintedPdfSource": false,
+    "hasHtmlSource": false
+  },
+  "generatedAt": "2026-04-23T01:07:59.901Z"
+}

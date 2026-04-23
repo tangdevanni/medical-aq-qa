@@ -1,0 +1,202 @@
+{
+  "patient_context": {
+    "patient_name": null,
+    "dob": null,
+    "soc_date": null,
+    "referral_date": null
+  },
+  "facts": [
+    {
+      "fact_key": "medical_necessity_summary",
+      "category": "medical_necessity",
+      "value": "Pt will need skilled nursing due to high potential for hospital admission. Pt will need skilled nursing for teachings of disease process, diet and new medication",
+      "confidence": 0.78,
+      "evidence_spans": [
+        "Pt will need skilled nursing due to high potential for hospital admission. Pt will need skilled nursing for teachings of disease process, diet and new medication"
+      ],
+      "rationale": "Medical necessity was summarized from referral narrative and skilled-need evidence.",
+      "source_sections": [
+        "primary_reason_for_home_health",
+        "medical_necessity"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "homebound_narrative",
+      "category": "homebound",
+      "value": "homebound status. PCP in the office, returns to baseline, and/or no longer fits the criteria, the homebound",
+      "confidence": 0.8,
+      "evidence_spans": [
+        "homebound status. PCP in the office, returns to baseline, and/or no longer fits the criteria, the homebound"
+      ],
+      "rationale": "Homebound evidence was summarized from referral text.",
+      "source_sections": [
+        "homebound_evidence"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "functional_limitations",
+      "category": "functional",
+      "value": [
+        "weakness",
+        "difficulty_walking"
+      ],
+      "confidence": 0.76,
+      "evidence_spans": [
+        "Reports continued slow unsteady gait, muscle weakness worse on bilateral lower Constitutional: Denies weight loss, fever, chills, admits weakness and fatigue."
+      ],
+      "rationale": "Functional limitations were extracted from referral text.",
+      "source_sections": [
+        "functional_limitations"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "therapy_need",
+      "category": "therapy",
+      "value": "PT/OT to evaluate and treat appropriately to increase functionality, decreases debility and",
+      "confidence": 0.77,
+      "evidence_spans": [
+        "PT/OT to evaluate and treat appropriately to increase functionality, decreases debility and"
+      ],
+      "rationale": "Therapy need was summarized from referral text.",
+      "source_sections": [
+        "therapy_need"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "fall_risk_narrative",
+      "category": "risk",
+      "value": "Patient had suffered a fall in March 2023 and sustained an intertrochanteric fracture on her Reports continued slow unsteady gait, muscle weakness worse on bilateral lower unsteady gait. Reports continued slow unsteady gait, muscle weakness worse on bilateral lower Constitutional: Denies weight loss, fever, chills, admits weakness and fatigue.",
+      "confidence": 0.7,
+      "evidence_spans": [
+        "Patient had suffered a fall in March 2023 and sustained an intertrochanteric fracture on her Reports continued slow unsteady gait, muscle weakness worse on bilateral lower unsteady gait."
+      ],
+      "rationale": "Risk and safety narrative was summarized from referral text.",
+      "source_sections": [
+        "risk_factors",
+        "functional_limitations"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "skilled_interventions",
+      "category": "therapy",
+      "value": "PT/OT to evaluate and treat appropriately to increase functionality, decreases debility and",
+      "confidence": 0.8,
+      "evidence_spans": [
+        "PT/OT to evaluate and treat appropriately to increase functionality, decreases debility and"
+      ],
+      "rationale": "Skilled interventions were summarized from the therapy plan.",
+      "source_sections": [
+        "therapy_need"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "plan_for_next_visit",
+      "category": "therapy",
+      "value": "PT/OT to evaluate and treat appropriately to increase functionality, decreases debility and",
+      "confidence": 0.78,
+      "evidence_spans": [
+        "PT/OT to evaluate and treat appropriately to increase functionality, decreases debility and"
+      ],
+      "rationale": "Next-visit plan was summarized from the therapy plan.",
+      "source_sections": [
+        "therapy_need"
+      ],
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [
+    {
+      "description": "Unspecified",
+      "icd10_code": "S51.801A",
+      "confidence": 0.74,
+      "source_spans": [
+        "S51.801A) Unspecified"
+      ],
+      "is_primary_candidate": true,
+      "requires_human_review": true
+    },
+    {
+      "description": "Pain in left shoulder started",
+      "icd10_code": "M25.512",
+      "confidence": 0.74,
+      "source_spans": [
+        "M25.512) Pain in left shoulder started"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Vitamin D deficiency, unspecified modified 8 Feb, 2025",
+      "icd10_code": "E55.9",
+      "confidence": 0.74,
+      "source_spans": [
+        "E55.9) Vitamin D deficiency, unspecified modified 8 Feb, 2025"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Other specified",
+      "icd10_code": "V65.49",
+      "confidence": 0.74,
+      "source_spans": [
+        "V65.49) Other specified"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Irritable bowel syndrome with",
+      "icd10_code": "K58.1",
+      "confidence": 0.74,
+      "source_spans": [
+        "K58.1) Irritable bowel syndrome with"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Unspecified open wound of right forearm, initial encounter",
+      "icd10_code": "S51.801A",
+      "confidence": 0.74,
+      "source_spans": [
+        "Unspecified open wound of right forearm, initial encounter (S51.801A)"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    }
+  ],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "preferred_language",
+    "interpreter_needed",
+    "homebound_supporting_factors",
+    "recent_hospitalization_discharge_date",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "living_situation",
+    "patient_summary_narrative",
+    "discipline_frequencies",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status",
+    "code_status"
+  ],
+  "warnings": [
+    "Deterministic referral facts extraction was used."
+  ]
+}

@@ -102,6 +102,12 @@ export function getBackendPatient(runId: string, patientId: string): Promise<Pat
   return fetchBackendJson<PatientDetail>(`/runs/${encodeURIComponent(runId)}/patients/${encodeURIComponent(patientId)}`);
 }
 
+export function getLatestBackendPatient(subsidiaryId: string, patientId: string): Promise<PatientDetail> {
+  return fetchBackendJson<PatientDetail>(
+    `/patients/${encodeURIComponent(patientId)}/latest?subsidiaryId=${encodeURIComponent(subsidiaryId)}`,
+  );
+}
+
 export function getBackendPatientArtifacts(runId: string, patientId: string): Promise<PatientArtifactsResponse> {
   return fetchBackendJson<PatientArtifactsResponse>(`/runs/${encodeURIComponent(runId)}/patients/${encodeURIComponent(patientId)}/artifacts`);
 }

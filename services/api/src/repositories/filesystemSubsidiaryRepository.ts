@@ -3,6 +3,7 @@ import path from "node:path";
 import type { SubsidiaryRecord } from "@medical-ai-qa/shared-types";
 import { subsidiaryRecordSchema } from "../../../../packages/shared-types/src/subsidiary";
 import { readJsonFile, writeJsonFile } from "../utils/jsonFile";
+import { rm } from "node:fs/promises";
 
 function sanitizeFileName(value: string): string {
   return value.replace(/[^A-Za-z0-9._-]+/g, "_");
@@ -37,6 +38,14 @@ export class FilesystemSubsidiaryRepository {
       );
     } catch {
       return null;
+    }
+  }
+
+  async deleteSubsidiary(subsidiaryId: string): Promise<void> {
+    try {
+      await rm(this.getMetadataPath(subsidiaryId), { force: true });
+    } catch {
+      // Ignore missing files during config normalization.
     }
   }
 

@@ -1,0 +1,209 @@
+{
+  "patient_context": {
+    "patient_name": null,
+    "dob": "07/27/1960",
+    "soc_date": null,
+    "referral_date": null
+  },
+  "proposed_field_values": [
+    {
+      "field_key": "recent_hospitalization_discharge_date",
+      "proposed_value": "04/08/2026",
+      "confidence": 0.9,
+      "source_spans": [
+        "04/08/26"
+      ],
+      "rationale": "Direct evidence from the document's extracted facts.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "homebound_narrative",
+      "proposed_value": "walker. requires minimal assistance for bed mobility, transfers, ambulation with a front-wheeled walker, Requires assistance with ADLs X] Requires assistive device: wheelchair, walker and/or assistance of another person to leave home homebound status and need for [SELECTED][page 22] Requires assistive device: wheelchair, walker and/or assistance of another person to leave home",
+      "confidence": 0.8,
+      "source_spans": [
+        "walker."
+      ],
+      "rationale": "Direct evidence from the document's extracted facts describing the patient's homebound status.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "homebound_supporting_factors",
+      "proposed_value": [
+        "uses_walker",
+        "needs_assistance"
+      ],
+      "confidence": 0.73,
+      "source_spans": [
+        "walker."
+      ],
+      "rationale": "Direct evidence from the document's extracted facts supporting the patient's homebound status.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "functional_limitations",
+      "proposed_value": [
+        "ambulation_limitations",
+        "reduced_endurance"
+      ],
+      "confidence": 0.76,
+      "source_spans": [
+        "requires minimal assistance for bed mobility, transfers, ambulation with a front-wheeled walker, transfers, ambulation, basic ADLs, and dressing, reflecting a new burden of care and reduced Prior Level of Function: Am"
+      ],
+      "rationale": "Direct evidence from the document's extracted facts describing the patient's functional limitations.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "therapy_need",
+      "proposed_value": "Occupational Therapy Discharge Recommendations Physical Therapy Discharge Recommendations Occupational Therapy,",
+      "confidence": 0.77,
+      "source_spans": [
+        "Occupational Therapy Discharge Recommendations Physical Therapy Discharge Recommendations Occupational Therapy,"
+      ],
+      "rationale": "Direct evidence from the document's extracted facts indicating the need for therapy.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "fall_risk_narrative",
+      "proposed_value": "reduce fall risk.",
+      "confidence": 0.7,
+      "source_spans": [
+        "reduce fall risk."
+      ],
+      "rationale": "Direct evidence from the document's extracted facts describing the fall risk narrative.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "skilled_interventions",
+      "proposed_value": "Occupational Therapy Discharge Recommendations Physical Therapy Discharge Recommendations Occupational Therapy,",
+      "confidence": 0.8,
+      "source_spans": [
+        "Occupational Therapy Discharge Recommendations Physical Therapy Discharge Recommendations Occupational Therapy,"
+      ],
+      "rationale": "Direct evidence from the document's extracted facts describing the skilled interventions.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "plan_for_next_visit",
+      "proposed_value": "Occupational Therapy Discharge Recommendations Physical Therapy Discharge Recommendations Occupational Therapy,",
+      "confidence": 0.78,
+      "source_spans": [
+        "Occupational Therapy Discharge Recommendations Physical Therapy Discharge Recommendations Occupational Therapy,"
+      ],
+      "rationale": "Direct evidence from the document's extracted facts describing the plan for the next visit.",
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [
+    {
+      "description": "Diagnosis code candidate from extracted document metadata",
+      "icd10_code": "I36",
+      "confidence": 0.9,
+      "source_spans": [
+        "I36"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Diagnosis code candidate from extracted document metadata",
+      "icd10_code": "I00",
+      "confidence": 0.9,
+      "source_spans": [
+        "I00"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Diagnosis code candidate from extracted document metadata",
+      "icd10_code": "I38",
+      "confidence": 0.9,
+      "source_spans": [
+        "I38"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Diagnosis code candidate from extracted document metadata",
+      "icd10_code": "I03",
+      "confidence": 0.9,
+      "source_spans": [
+        "I03"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Diagnosis code candidate from extracted document metadata",
+      "icd10_code": "I37",
+      "confidence": 0.9,
+      "source_spans": [
+        "I37"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Diagnosis code candidate from extracted document metadata",
+      "icd10_code": "I48",
+      "confidence": 0.9,
+      "source_spans": [
+        "I48"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Diagnosis code candidate from extracted document metadata",
+      "icd10_code": "I74",
+      "confidence": 0.9,
+      "source_spans": [
+        "I74"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Diagnosis code candidate from extracted document metadata",
+      "icd10_code": "I60",
+      "confidence": 0.9,
+      "source_spans": [
+        "I60"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    }
+  ],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "preferred_language",
+    "interpreter_needed",
+    "primary_reason_for_home_health_medical_necessity",
+    "admit_reason_to_home_health",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "living_situation",
+    "patient_summary_narrative",
+    "discipline_frequencies",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status",
+    "code_status"
+  ],
+  "warnings": [
+    "LLM input source: fact_pack_primary.",
+    "Fact pack coverage: diagnoses, medications, allergies, homeboundEvidence, skilledNeedEvidence, hospitalizationReasons, assessmentValues, supportingSnippets.",
+    "Fact pack coverage score: 1.",
+    "Prompt character estimate: 3197.",
+    "Fallback reason: none."
+  ]
+}

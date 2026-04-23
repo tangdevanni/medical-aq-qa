@@ -4,6 +4,8 @@ import type { Logger } from "pino";
 import { selectorRegistry } from "../selectorRegistry";
 import { createAutomationStepLog } from "../utils/automationLog";
 import {
+  clickPortalControl,
+  dismissVisiblePortalModal,
   resolveFirstVisibleLocator,
   resolveVisibleLocatorList,
   selectorAttemptToEvidence,
@@ -152,7 +154,9 @@ export class FinaleDashboardPage {
     selectedTabLabel: string;
     stepLogs: AutomationStepLog[];
   }> {
-    const tabsResolution = await resolveVisibleLocatorList({
+    const attemptedTabLabels: string[] = [];
+    const modalDismissals: string[] = [];
+    let tabsResolution = await resolveVisibleLocatorList({
       page: this.page,
       candidates: selectorRegistry.finaleDashboard.oasisThirtyDaysTabs,
       step: "oasis_thirty_days_tabs",
@@ -161,24 +165,41 @@ export class FinaleDashboardPage {
       maxItems: 30,
     });
 
-    const visibleTabs: ControlCandidate[] = [];
-    for (const item of tabsResolution.items) {
-      const label = await readControlLabel(item.locator);
-      if (!label) {
-        continue;
+    const collectVisibleTabs = async (): Promise<ControlCandidate[]> => {
+      const controls: ControlCandidate[] = [];
+      for (const item of tabsResolution.items) {
+        const label = await readControlLabel(item.locator);
+        if (!label) {
+          continue;
+        }
+        controls.push({
+          label,
+          locator: item.locator,
+        });
       }
-      visibleTabs.push({
-        label,
-        locator: item.locator,
+      return controls;
+    };
+
+    let visibleTabs = await collectVisibleTabs();
+    if (visibleTabs.length === 0) {
+      await waitForPortalPageSettled(this.page, this.options.debugConfig, 500);
+      tabsResolution = await resolveVisibleLocatorList({
+        page: this.page,
+        candidates: selectorRegistry.finaleDashboard.oasisThirtyDaysTabs,
+        step: "oasis_thirty_days_tabs_retry",
+        logger: this.options.logger,
+        debugConfig: this.options.debugConfig,
+        maxItems: 30,
       });
+      visibleTabs = await collectVisibleTabs();
     }
 
-    const best = visibleTabs
+    const rankedTabs = visibleTabs
       .map((entry) => ({ ...entry, score: scoreOasisThirtyDaysControl(entry.label) }))
       .filter((entry) => entry.score > 0)
-      .sort((left, right) => right.score - left.score)[0];
+      .sort((left, right) => right.score - left.score);
 
-    if (!best) {
+    if (rankedTabs.length === 0) {
       const failureArtifacts = await capturePageDebugArtifacts({
         page: this.page,
         outputDir: this.options.debugDir,
@@ -194,58 +215,82 @@ export class FinaleDashboardPage {
     }
 
     const urlBefore = this.page.url();
-    await best.locator.click();
-    await waitForPortalPageSettled(this.page, this.options.debugConfig);
-    const panelResolution = await resolveFirstVisibleLocator({
-      page: this.page,
-      candidates: selectorRegistry.finaleDashboard.panelReadinessSignals,
-      step: "oasis_thirty_days_panel_ready",
-      logger: this.options.logger,
-      debugConfig: this.options.debugConfig,
-      settle: async () => waitForPortalPageSettled(this.page, this.options.debugConfig),
-    });
-
-    if (!panelResolution.locator) {
-      const failureArtifacts = await capturePageDebugArtifacts({
+    for (const candidate of rankedTabs) {
+      attemptedTabLabels.push(candidate.label);
+      const modalDismissal = await dismissVisiblePortalModal({
         page: this.page,
-        outputDir: this.options.debugDir,
-        step: "oasis-thirty-days",
-        reason: "panel-not-ready",
+        logger: this.options.logger,
         debugConfig: this.options.debugConfig,
-        textHints: [best.label, "Export", "Excel", "Patient"],
       });
-      await pauseOnFailureIfRequested(this.page, this.options.debugConfig);
-      throw new Error(
-        `The OASIS 30 Day's panel did not become ready after clicking '${best.label}'. Debug summary: ${failureArtifacts.summaryPath ?? "not captured"}.`,
+      if (modalDismissal.dismissed) {
+        modalDismissals.push(
+          `${modalDismissal.selectorUsed ?? "unknown"}:${modalDismissal.actionUsed ?? "unknown"}`,
+        );
+      }
+
+      await clickPortalControl({
+        page: this.page,
+        locator: candidate.locator,
+        debugConfig: this.options.debugConfig,
+      }).catch(() => undefined);
+
+      const panelResolution = await resolveFirstVisibleLocator({
+        page: this.page,
+        candidates: [
+          ...selectorRegistry.finaleDashboard.exportControls,
+          ...selectorRegistry.finaleDashboard.panelReadinessSignals,
+        ],
+        step: "oasis_thirty_days_panel_ready",
+        logger: this.options.logger,
+        debugConfig: this.options.debugConfig,
+        settle: async () => waitForPortalPageSettled(this.page, this.options.debugConfig),
+      });
+
+      if (!panelResolution.locator) {
+        continue;
+      }
+
+      this.options.logger?.info(
+        {
+          selectedTabLabel: candidate.label,
+          dashboardUrl: this.page.url(),
+          modalDismissals,
+        },
+        "located OASIS 30 Day's dashboard tab",
       );
+
+      return {
+        selectedTabLabel: candidate.label,
+        stepLogs: [
+          createAutomationStepLog({
+            step: "oasis_thirty_days_tab",
+            message: `Opened the '${candidate.label}' dashboard panel.`,
+            urlBefore,
+            urlAfter: this.page.url(),
+            selectorUsed: "finaleDashboard.oasisThirtyDaysTabs",
+            found: visibleTabs.map((entry) => entry.label),
+            evidence: [
+              ...tabsResolution.attempts.map(selectorAttemptToEvidence),
+              ...panelResolution.attempts.map(selectorAttemptToEvidence),
+              ...modalDismissals.map((entry) => `modalDismissed=${entry}`),
+              `selectedTab=${candidate.label}`,
+            ],
+            safeReadConfirmed: true,
+          }),
+        ],
+      };
     }
-
-    this.options.logger?.info(
-      {
-        selectedTabLabel: best.label,
-        dashboardUrl: this.page.url(),
-      },
-      "located OASIS 30 Day's dashboard tab",
+    const failureArtifacts = await capturePageDebugArtifacts({
+      page: this.page,
+      outputDir: this.options.debugDir,
+      step: "oasis-thirty-days",
+      reason: "panel-not-ready",
+      debugConfig: this.options.debugConfig,
+      textHints: [...attemptedTabLabels, "Export", "Excel", "Patient"],
+    });
+    await pauseOnFailureIfRequested(this.page, this.options.debugConfig);
+    throw new Error(
+      `The OASIS 30 Day's panel did not become ready after trying '${attemptedTabLabels.join(", ")}'. Debug summary: ${failureArtifacts.summaryPath ?? "not captured"}.`,
     );
-
-    return {
-      selectedTabLabel: best.label,
-      stepLogs: [
-        createAutomationStepLog({
-          step: "oasis_thirty_days_tab",
-          message: `Opened the '${best.label}' dashboard panel.`,
-          urlBefore,
-          urlAfter: this.page.url(),
-          selectorUsed: "finaleDashboard.oasisThirtyDaysTabs",
-          found: visibleTabs.map((entry) => entry.label),
-          evidence: [
-            ...tabsResolution.attempts.map(selectorAttemptToEvidence),
-            ...panelResolution.attempts.map(selectorAttemptToEvidence),
-            `selectedTab=${best.label}`,
-          ],
-          safeReadConfirmed: true,
-        }),
-      ],
-    };
   }
 }

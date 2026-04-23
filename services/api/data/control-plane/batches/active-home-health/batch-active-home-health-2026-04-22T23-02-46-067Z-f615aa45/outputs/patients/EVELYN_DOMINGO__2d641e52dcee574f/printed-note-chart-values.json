@@ -1,0 +1,31 @@
+{
+  "generatedAt": "2026-04-22T23:47:59.650Z",
+  "source": "printed_note_ocr",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\evidence\\EVELYN_DOMINGO__2d641e52dcee574f\\oasis-printed-note\\extracted-text.txt",
+  "llmInputSource": "fact_pack_primary",
+  "extractedFieldCount": 1,
+  "invocationModelId": "us.amazon.nova-lite-v1:0",
+  "currentChartValues": {
+    "patient_name": "Evelyn Domingo"
+  },
+  "extractedFieldValues": [
+    {
+      "field_key": "patient_name",
+      "current_value": "Evelyn Domingo",
+      "confidence": 0.95,
+      "source_spans": [
+        "Patient: Evelyn Domingo"
+      ]
+    }
+  ],
+  "warnings": [
+    "LLM input source: fact_pack_primary.",
+    "Fact pack coverage: diagnoses, hospitalizationReasons, medications.",
+    "Fact pack coverage score: 0.55.",
+    "Prompt character estimate: 730.",
+    "Fallback reason: none.",
+    "Deterministic printed-note chart values: none.",
+    "Selected option labels detected: 0.",
+    "Printed-note chart-value extraction used inference profile us.amazon.nova-lite-v1:0."
+  ]
+}

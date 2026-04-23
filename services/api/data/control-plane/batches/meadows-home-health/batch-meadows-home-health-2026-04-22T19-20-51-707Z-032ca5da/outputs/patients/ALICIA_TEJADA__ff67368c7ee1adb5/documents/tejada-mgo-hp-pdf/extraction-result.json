@@ -1,0 +1,51 @@
+{
+  "documentType": "ORDER",
+  "sourceLabel": "TEJADA MGO HP.pdf",
+  "normalizedSourceLabel": "tejada mgo hp.pdf",
+  "viewerDetected": true,
+  "printButtonDetected": true,
+  "printButtonSelectorUsed": "pdf-print #printButton, #printButton, pdf-shy-button[primarytoolbarid='printButton'] button",
+  "printClickSucceeded": false,
+  "pdfResponseDetected": true,
+  "pdfResponseUrl": "https://api.finalehealth.com/api/v1/files/69e2bc3b1f57730c3f8a1123?index=patient",
+  "pdfContentType": "application/pdf",
+  "pdfSavedPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-22T19-20-51-707Z-032ca5da\\outputs\\patients\\ALICIA_TEJADA__ff67368c7ee1adb5\\documents\\tejada-mgo-hp-pdf\\source.pdf",
+  "pdfByteSize": 5262134,
+  "printAcquisitionMethodUsed": "network_pdf_response",
+  "printedPdfSaved": false,
+  "printedPdfPath": null,
+  "sourcePdfPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-22T19-20-51-707Z-032ca5da\\outputs\\patients\\ALICIA_TEJADA__ff67368c7ee1adb5\\documents\\tejada-mgo-hp-pdf\\source.pdf",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-22T19-20-51-707Z-032ca5da\\outputs\\patients\\ALICIA_TEJADA__ff67368c7ee1adb5\\documents\\tejada-mgo-hp-pdf\\extracted-text.txt",
+  "extractedTextLength": 104,
+  "extractionMethodUsed": "click",
+  "rawExtractedTextSource": "dom",
+  "domExtractionRejectedReasons": [
+    "viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS"
+  ],
+  "extractionSuccess": false,
+  "queuedForLlm": true,
+  "extractionPolicyDecision": {
+    "mode": "ocr_required",
+    "confidence": "high",
+    "reasons": [
+      "PDF appears image-based/scanned; OCR likely required",
+      "No printed PDF available",
+      "OCR is the cheapest acceptable option that preserves clinically meaningful content"
+    ],
+    "recommendedSourcePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-22T19-20-51-707Z-032ca5da\\outputs\\patients\\ALICIA_TEJADA__ff67368c7ee1adb5\\documents\\tejada-mgo-hp-pdf\\source.pdf",
+    "fallbackSourcePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-22T19-20-51-707Z-032ca5da\\outputs\\patients\\ALICIA_TEJADA__ff67368c7ee1adb5\\documents\\tejada-mgo-hp-pdf\\source.pdf",
+    "hasUsablePdfTextLayer": false,
+    "hasPdfSource": true,
+    "hasPrintedPdfSource": false,
+    "hasHtmlSource": false
+  },
+  "admissionReasonPrimary": null,
+  "admissionReasonSnippets": [],
+  "possibleIcd10Codes": [
+    "I00",
+    "I25",
+    "I50"
+  ],
+  "textPreview": "Automatic Zoom Actual Size Page Fit Page Width ⁨50⁩% ⁨100⁩% ⁨125⁩% ⁨150⁩% ⁨200⁩% ⁨300⁩% ⁨400⁩% 90% Tools",
+  "generatedAt": "2026-04-22T19:24:16.950Z"
+}

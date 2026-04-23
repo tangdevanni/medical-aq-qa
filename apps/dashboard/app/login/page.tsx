@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { getDashboardSession } from "../../lib/auth/session";
 import { loadDashboardEnv } from "../../lib/env";
 import { redirect } from "next/navigation";
@@ -31,10 +30,10 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
     <main className="page-shell stack">
       <section className="hero-panel">
         <div className="hero-copy">
-          <span className="eyebrow">QA Access</span>
-          <h1 className="page-title">Sign in to the QA dashboard</h1>
+          <span className="eyebrow">OASIS QA</span>
+          <h1 className="page-title">Sign in</h1>
           <p>
-            Dashboard access is separate from workbook synchronization and portal automation. Sign in, select an agency, and review the agency-scoped patient queue already maintained by the backend refresh cycle.
+            Review patient queues, OASIS snapshots, referral support, and documentation gaps for your assigned agencies.
           </p>
         </div>
 
@@ -73,7 +72,6 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
               Local development is allowing plaintext passwords from `DASHBOARD_QA_USERS_JSON`.
             </div>
           ) : null}
-          <Link className="link" href="/healthz">Health check</Link>
         </form>
       </section>
     </main>

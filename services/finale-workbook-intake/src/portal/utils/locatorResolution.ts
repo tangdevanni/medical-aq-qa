@@ -33,6 +33,11 @@ export interface ResolvedSelectorResult {
   attempts: SelectorAttemptResult[];
 }
 
+export interface VisiblePortalModalResolution {
+  locator: Locator | null;
+  selectorUsed: string | null;
+}
+
 async function readSampleTexts(locator: Locator, count: number): Promise<string[]> {
   const samples: string[] = [];
   const sampleCount = Math.min(count, 3);
@@ -165,6 +170,208 @@ export async function waitForPortalPageSettled(
   await page.waitForLoadState("domcontentloaded", { timeout: timeoutMs }).catch(() => undefined);
   await page.waitForLoadState("networkidle", { timeout: Math.min(timeoutMs, 3_500) }).catch(() => undefined);
   await page.waitForTimeout(delayMs);
+}
+
+export async function clickPortalControl(input: {
+  page: Page;
+  locator: Locator;
+  debugConfig?: PortalDebugConfig;
+}): Promise<string> {
+  const clickStrategies: Array<{
+    name: string;
+    action: () => Promise<void>;
+  }> = [
+    {
+      name: "scrollIntoViewIfNeeded()+click()",
+      action: async () => {
+        await input.locator.scrollIntoViewIfNeeded().catch(() => undefined);
+        await input.locator.click();
+      },
+    },
+    {
+      name: "click({ force: true })",
+      action: async () => {
+        await input.locator.scrollIntoViewIfNeeded().catch(() => undefined);
+        await input.locator.click({ force: true });
+      },
+    },
+    {
+      name: "evaluate(el => el.click())",
+      action: async () => {
+        await input.locator.evaluate((element) => {
+          (element as { click: () => void }).click();
+        });
+      },
+    },
+    {
+      name: "focus()+Enter",
+      action: async () => {
+        await input.locator.focus().catch(() => undefined);
+        await input.page.keyboard.press("Enter");
+      },
+    },
+  ];
+
+  let lastError: unknown = null;
+  for (const strategy of clickStrategies) {
+    try {
+      await strategy.action();
+      await waitForPortalPageSettled(input.page, input.debugConfig);
+      return strategy.name;
+    } catch (error) {
+      lastError = error;
+    }
+  }
+
+  throw lastError instanceof Error
+    ? lastError
+    : new Error("Unable to activate portal control with available click strategies.");
+}
+
+export async function resolveVisiblePortalModal(page: Page): Promise<VisiblePortalModalResolution> {
+  const selectors = [
+    "ngb-modal-window[role='dialog']",
+    "ngb-modal-window",
+    ".modal.show [role='dialog']",
+    ".modal.show .modal-dialog",
+    ".modal.show",
+    '[aria-modal="true"]',
+  ];
+
+  for (const selector of selectors) {
+    const locator = page.locator(selector).last();
+    if (await locator.count().catch(() => 0) > 0 && await locator.isVisible().catch(() => false)) {
+      return {
+        locator,
+        selectorUsed: selector,
+      };
+    }
+  }
+
+  return {
+    locator: null,
+    selectorUsed: null,
+  };
+}
+
+export async function dismissVisiblePortalModal(input: {
+  page: Page;
+  logger?: Logger;
+  debugConfig?: PortalDebugConfig;
+}): Promise<{
+  dismissed: boolean;
+  selectorUsed: string | null;
+  actionUsed: string | null;
+}> {
+  const modalResolution = await resolveVisiblePortalModal(input.page);
+  if (!modalResolution.locator) {
+    return {
+      dismissed: false,
+      selectorUsed: null,
+      actionUsed: null,
+    };
+  }
+
+  const closeSelectors = [
+    '[aria-label="Close"]',
+    'button[aria-label="Close"]',
+    "button.btn-close",
+    "button.close",
+    'button:has-text("Close")',
+    'button:has-text("Dismiss")',
+    'button:has-text("Got it")',
+    'button:has-text("OK")',
+    'button:has-text("Okay")',
+    'button:has-text("Continue")',
+    'button:has-text("Skip")',
+    ".modal-footer button",
+    "button",
+  ];
+
+  for (const selector of closeSelectors) {
+    const button = modalResolution.locator.locator(selector).filter({ visible: true }).last();
+    if (await button.count().catch(() => 0) === 0) {
+      continue;
+    }
+
+    try {
+      const label = (
+        (await button.getAttribute("aria-label").catch(() => null)) ??
+        (await button.textContent().catch(() => null)) ??
+        selector
+      ).replace(/\s+/g, " ").trim() || selector;
+      const clickMethod = await clickPortalControl({
+        page: input.page,
+        locator: button,
+        debugConfig: input.debugConfig,
+      });
+      const remainingModal = await resolveVisiblePortalModal(input.page);
+      if (!remainingModal.locator) {
+        input.logger?.info(
+          {
+            selectorUsed: modalResolution.selectorUsed,
+            modalAction: `${selector}:${label}:${clickMethod}`,
+          },
+          "dismissed visible portal modal",
+        );
+        return {
+          dismissed: true,
+          selectorUsed: modalResolution.selectorUsed,
+          actionUsed: `${selector}:${label}:${clickMethod}`,
+        };
+      }
+    } catch {
+      continue;
+    }
+  }
+
+  const keyboardActions = ["Escape", "Esc"] as const;
+  for (const key of keyboardActions) {
+    await input.page.keyboard.press(key).catch(() => undefined);
+    await waitForPortalPageSettled(input.page, input.debugConfig);
+    const remainingModal = await resolveVisiblePortalModal(input.page);
+    if (!remainingModal.locator) {
+      input.logger?.info(
+        {
+          selectorUsed: modalResolution.selectorUsed,
+          modalAction: `keyboard:${key}`,
+        },
+        "dismissed visible portal modal",
+      );
+      return {
+        dismissed: true,
+        selectorUsed: modalResolution.selectorUsed,
+        actionUsed: `keyboard:${key}`,
+      };
+    }
+  }
+
+  const viewport = input.page.viewportSize();
+  if (viewport) {
+    await input.page.mouse.click(Math.max(8, Math.floor(viewport.width * 0.02)), Math.max(8, Math.floor(viewport.height * 0.98))).catch(() => undefined);
+    await waitForPortalPageSettled(input.page, input.debugConfig);
+    const remainingModal = await resolveVisiblePortalModal(input.page);
+    if (!remainingModal.locator) {
+      input.logger?.info(
+        {
+          selectorUsed: modalResolution.selectorUsed,
+          modalAction: "backdrop:mouse-click",
+        },
+        "dismissed visible portal modal",
+      );
+      return {
+        dismissed: true,
+        selectorUsed: modalResolution.selectorUsed,
+        actionUsed: "backdrop:mouse-click",
+      };
+    }
+  }
+
+  return {
+    dismissed: false,
+    selectorUsed: modalResolution.selectorUsed,
+    actionUsed: null,
+  };
 }
 
 export async function resolveFirstVisibleLocator(input: {

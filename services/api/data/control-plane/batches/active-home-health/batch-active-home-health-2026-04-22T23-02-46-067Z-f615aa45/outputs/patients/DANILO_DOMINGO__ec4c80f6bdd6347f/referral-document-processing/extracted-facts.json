@@ -1,0 +1,183 @@
+{
+  "patient_context": {
+    "patient_name": null,
+    "dob": null,
+    "soc_date": null,
+    "referral_date": null
+  },
+  "facts": [
+    {
+      "fact_key": "recent_hospitalization_facility",
+      "category": "hospitalization",
+      "value": "Saint Rose",
+      "confidence": 0.78,
+      "evidence_spans": [
+        "Saint Rose"
+      ],
+      "rationale": "Recent inpatient facility was identified in referral history.",
+      "source_sections": [
+        "hospitalization_history"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "homebound_narrative",
+      "category": "homebound",
+      "value": "homebound status. their PCP in the office, returns to baseline, and/or no longer fits the criteria, the homebound",
+      "confidence": 0.8,
+      "evidence_spans": [
+        "homebound status. their PCP in the office, returns to baseline, and/or no longer fits the criteria, the homebound"
+      ],
+      "rationale": "Homebound evidence was summarized from referral text.",
+      "source_sections": [
+        "homebound_evidence"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "functional_limitations",
+      "category": "functional",
+      "value": [
+        "weakness",
+        "ambulation_limitations"
+      ],
+      "confidence": 0.76,
+      "evidence_spans": [
+        "He continues to have generalized weakness, discomfort in both knees, bilateral hips, and Reports continued bilateral lower extremity weakness. cane at all times for assistance in ambulation."
+      ],
+      "rationale": "Functional limitations were extracted from referral text.",
+      "source_sections": [
+        "functional_limitations"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "fall_risk_narrative",
+      "category": "risk",
+      "value": "complaint is unsteady gait; review of xrays Xrays from previous fall reviewed: negative for fractures, does have an unsteady gait. He continues to have generalized weakness, discomfort in both knees, bilateral hips, and Reports continued bilateral lower extremity weakness. cane at all times for assistance in ambulation.",
+      "confidence": 0.7,
+      "evidence_spans": [
+        "complaint is unsteady gait; review of xrays Xrays from previous fall reviewed: negative for fractures, does have an unsteady gait."
+      ],
+      "rationale": "Risk and safety narrative was summarized from referral text.",
+      "source_sections": [
+        "risk_factors",
+        "functional_limitations"
+      ],
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [
+    {
+      "description": "Oth disrd of bone density and structure, unspecified site modified 1",
+      "icd10_code": "M85.80",
+      "confidence": 0.74,
+      "source_spans": [
+        "M85.80) Oth disrd of bone density and structure, unspecified site modified 1"
+      ],
+      "is_primary_candidate": true,
+      "requires_human_review": true
+    },
+    {
+      "description": "Major depressive disorder, single episode, unspecified",
+      "icd10_code": "F32.9",
+      "confidence": 0.74,
+      "source_spans": [
+        "F32.9) Major depressive disorder, single episode, unspecified"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Insomnia, unspecified modified 13 Jan, 2026",
+      "icd10_code": "G47.00",
+      "confidence": 0.74,
+      "source_spans": [
+        "G47.00) Insomnia, unspecified modified 13 Jan, 2026"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Other diseases of mediastinum, not elsewhere",
+      "icd10_code": "J98.59",
+      "confidence": 0.74,
+      "source_spans": [
+        "J98.59) Other diseases of mediastinum, not elsewhere"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Chronic cough modified 12 Mar, 2024",
+      "icd10_code": "R05.3",
+      "confidence": 0.74,
+      "source_spans": [
+        "R05.3) Chronic cough modified 12 Mar, 2024"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Abnormal findings",
+      "icd10_code": "R93.89",
+      "confidence": 0.74,
+      "source_spans": [
+        "R93.89) Abnormal findings"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Low back pain, unspecified (chronic) modified 5",
+      "icd10_code": "M54.50",
+      "confidence": 0.74,
+      "source_spans": [
+        "M54.50) Low back pain, unspecified (chronic) modified 5"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Vitamin B12 deficiency anemia",
+      "icd10_code": "D51.9",
+      "confidence": 0.74,
+      "source_spans": [
+        "D51.9) Vitamin B12 deficiency anemia"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    }
+  ],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "preferred_language",
+    "interpreter_needed",
+    "primary_reason_for_home_health_medical_necessity",
+    "admit_reason_to_home_health",
+    "homebound_supporting_factors",
+    "recent_hospitalization_discharge_date",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "living_situation",
+    "therapy_need",
+    "patient_summary_narrative",
+    "skilled_interventions",
+    "discipline_frequencies",
+    "plan_for_next_visit",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status",
+    "code_status"
+  ],
+  "warnings": [
+    "Deterministic referral facts extraction was used."
+  ]
+}

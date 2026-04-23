@@ -1,0 +1,847 @@
+[
+  {
+    "sectionName": "patient_identity",
+    "extractedTextSpans": [
+      "DOB/Age/Gender: 8/17/1977 48 years",
+      "Patient Name: LILORE, JENNIFER M",
+      "DOB: 08/17/1977",
+      "DOB/Age/Gender: 8/17/1977 48 years Female",
+      "DOB: 8/17/1977",
+      "DOB/Age/Gender: 8/17/1977 48 years Female",
+      "DOB/Age/Gender: 8/17/1977 48 years Female",
+      "DOB/Age/Gender: 8/17/1977 48 years Female",
+      "DOB/Age/Gender: 8/17/1977 48 years Female",
+      "DOB/Age/Gender: 8/17/1977 48 years",
+      "DOB/Age/Gender: 8/17/1977 48 years",
+      "DOB/Age/Gender: 8/17/1977 48 years Female",
+      "DOB: 8/17/1977",
+      "DOB/Age/Gender: 8/17/1977 48 years"
+    ],
+    "normalizedSummary": "DOB/Age/Gender: 8/17/1977 48 years Patient Name: LILORE, JENNIFER M DOB: 08/17/1977",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 12,
+        "lineEnd": 12,
+        "charStart": 262,
+        "charEnd": 296
+      },
+      {
+        "lineStart": 49,
+        "lineEnd": 49,
+        "charStart": 1130,
+        "charEnd": 1162
+      },
+      {
+        "lineStart": 53,
+        "lineEnd": 53,
+        "charStart": 1214,
+        "charEnd": 1229
+      },
+      {
+        "lineStart": 121,
+        "lineEnd": 121,
+        "charStart": 2703,
+        "charEnd": 2744
+      },
+      {
+        "lineStart": 139,
+        "lineEnd": 139,
+        "charStart": 3112,
+        "charEnd": 3126
+      },
+      {
+        "lineStart": 194,
+        "lineEnd": 194,
+        "charStart": 5671,
+        "charEnd": 5712
+      },
+      {
+        "lineStart": 255,
+        "lineEnd": 255,
+        "charStart": 8542,
+        "charEnd": 8583
+      },
+      {
+        "lineStart": 312,
+        "lineEnd": 312,
+        "charStart": 9958,
+        "charEnd": 9999
+      },
+      {
+        "lineStart": 374,
+        "lineEnd": 374,
+        "charStart": 11801,
+        "charEnd": 11842
+      },
+      {
+        "lineStart": 455,
+        "lineEnd": 455,
+        "charStart": 14536,
+        "charEnd": 14570
+      },
+      {
+        "lineStart": 556,
+        "lineEnd": 556,
+        "charStart": 17584,
+        "charEnd": 17618
+      },
+      {
+        "lineStart": 618,
+        "lineEnd": 618,
+        "charStart": 20054,
+        "charEnd": 20095
+      },
+      {
+        "lineStart": 637,
+        "lineEnd": 637,
+        "charStart": 20491,
+        "charEnd": 20505
+      },
+      {
+        "lineStart": 686,
+        "lineEnd": 686,
+        "charStart": 22165,
+        "charEnd": 22199
+      }
+    ]
+  },
+  {
+    "sectionName": "referral_metadata",
+    "extractedTextSpans": [
+      "Home Health Referral",
+      "HH Referral Progress Note-Physician",
+      "Home Health Referral",
+      "Home Health Referral",
+      "HOME HEALTH REFERRAL AND ORDERS:"
+    ],
+    "normalizedSummary": "Home Health Referral HH Referral Progress Note-Physician Home Health Referral",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 620,
+        "lineEnd": 620,
+        "charStart": 20127,
+        "charEnd": 20147
+      },
+      {
+        "lineStart": 622,
+        "lineEnd": 622,
+        "charStart": 20163,
+        "charEnd": 20198
+      },
+      {
+        "lineStart": 631,
+        "lineEnd": 631,
+        "charStart": 20384,
+        "charEnd": 20404
+      },
+      {
+        "lineStart": 689,
+        "lineEnd": 689,
+        "charStart": 22240,
+        "charEnd": 22260
+      },
+      {
+        "lineStart": 695,
+        "lineEnd": 695,
+        "charStart": 22375,
+        "charEnd": 22407
+      }
+    ]
+  },
+  {
+    "sectionName": "referring_provider",
+    "extractedTextSpans": [
+      "Attending Physician:",
+      "Attending Physician -"
+    ],
+    "normalizedSummary": "Attending Physician: Attending Physician -",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 432,
+        "lineEnd": 432,
+        "charStart": 13984,
+        "charEnd": 14004
+      },
+      {
+        "lineStart": 470,
+        "lineEnd": 470,
+        "charStart": 14964,
+        "charEnd": 14985
+      }
+    ]
+  },
+  {
+    "sectionName": "hospitalization_history",
+    "extractedTextSpans": [
+      "Encompass Health Rehabilitation Hospital of Las Vegas",
+      "Discharge Date:",
+      "Encompass Health Rehabilitation Hospital of Las Vegas",
+      "Patient Type: Inpatient",
+      "Encompass Health Rehabilitation Hospital of Las Vegas",
+      "Discharge Date:",
+      "at 4 PM and found unresponsive at 6 PM Emergency medi services brought her to the hospital,",
+      "the hospital.",
+      "Her hospital course was complicated by persistent altered ment al status, garbled",
+      "Patient is now admitted to Encompass acute inpatient rehab for comprehensive",
+      "therapy program prior to safe discharge home.",
+      "Encompass Health Rehabilitation Hospital of Las Vegas",
+      "Discharge Date:",
+      "Encompass Health Rehabilitation Hospital of Las Vegas",
+      "Discharge Date:",
+      "Encompass Health Rehabilitation Hospital of Las Vegas",
+      "Discharge Date:",
+      "Encompass Health Rehabilitation Hospital of Las Vegas",
+      "Discharge Date:",
+      "intensive rehabilitation as described above in an inpatient hospital environment due to the",
+      "to participate in and benefit from an Inpatient stay with an plinary team appr oach to the",
+      "Discharge Meds",
+      "Location: Encompass Health Rehabilitation Hospital of Las Vegas",
+      "Encompass Health Rehabilitation Hospital of Las Vegas",
+      "Discharge Date:",
+      "Discharge Orders",
+      "Discharge Plan:",
+      "Inpatient Hospice:",
+      "Encompass Health Rehabilitation Hospital of Las Vegas",
+      "Discharge Date:",
+      "Encompass Health Rehabilitation Hospital of Las Vegas",
+      "Discharge Date:",
+      "Encompass Health Rehabilitation Hospital of Las Vegas",
+      "Discharge Date:"
+    ],
+    "normalizedSummary": "Encompass Health Rehabilitation Hospital of Las Vegas Discharge Date: Encompass Health Rehabilitation Hospital of Las Vegas",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 3,
+        "lineEnd": 3,
+        "charStart": 63,
+        "charEnd": 116
+      },
+      {
+        "lineStart": 11,
+        "lineEnd": 11,
+        "charStart": 246,
+        "charEnd": 261
+      },
+      {
+        "lineStart": 26,
+        "lineEnd": 26,
+        "charStart": 569,
+        "charEnd": 622
+      },
+      {
+        "lineStart": 32,
+        "lineEnd": 32,
+        "charStart": 718,
+        "charEnd": 741
+      },
+      {
+        "lineStart": 114,
+        "lineEnd": 114,
+        "charStart": 2553,
+        "charEnd": 2606
+      },
+      {
+        "lineStart": 120,
+        "lineEnd": 120,
+        "charStart": 2687,
+        "charEnd": 2702
+      },
+      {
+        "lineStart": 149,
+        "lineEnd": 149,
+        "charStart": 3587,
+        "charEnd": 3678
+      },
+      {
+        "lineStart": 154,
+        "lineEnd": 154,
+        "charStart": 3962,
+        "charEnd": 3975
+      },
+      {
+        "lineStart": 155,
+        "lineEnd": 155,
+        "charStart": 3976,
+        "charEnd": 4057
+      },
+      {
+        "lineStart": 164,
+        "lineEnd": 164,
+        "charStart": 4566,
+        "charEnd": 4642
+      },
+      {
+        "lineStart": 165,
+        "lineEnd": 165,
+        "charStart": 4643,
+        "charEnd": 4688
+      },
+      {
+        "lineStart": 187,
+        "lineEnd": 187,
+        "charStart": 5521,
+        "charEnd": 5574
+      },
+      {
+        "lineStart": 193,
+        "lineEnd": 193,
+        "charStart": 5655,
+        "charEnd": 5670
+      },
+      {
+        "lineStart": 248,
+        "lineEnd": 248,
+        "charStart": 8392,
+        "charEnd": 8445
+      },
+      {
+        "lineStart": 254,
+        "lineEnd": 254,
+        "charStart": 8526,
+        "charEnd": 8541
+      },
+      {
+        "lineStart": 305,
+        "lineEnd": 305,
+        "charStart": 9808,
+        "charEnd": 9861
+      },
+      {
+        "lineStart": 311,
+        "lineEnd": 311,
+        "charStart": 9942,
+        "charEnd": 9957
+      },
+      {
+        "lineStart": 367,
+        "lineEnd": 367,
+        "charStart": 11651,
+        "charEnd": 11704
+      },
+      {
+        "lineStart": 373,
+        "lineEnd": 373,
+        "charStart": 11785,
+        "charEnd": 11800
+      },
+      {
+        "lineStart": 388,
+        "lineEnd": 388,
+        "charStart": 12407,
+        "charEnd": 12498
+      },
+      {
+        "lineStart": 390,
+        "lineEnd": 390,
+        "charStart": 12599,
+        "charEnd": 12689
+      },
+      {
+        "lineStart": 408,
+        "lineEnd": 408,
+        "charStart": 13187,
+        "charEnd": 13201
+      },
+      {
+        "lineStart": 425,
+        "lineEnd": 425,
+        "charStart": 13714,
+        "charEnd": 13777
+      },
+      {
+        "lineStart": 448,
+        "lineEnd": 448,
+        "charStart": 14386,
+        "charEnd": 14439
+      },
+      {
+        "lineStart": 454,
+        "lineEnd": 454,
+        "charStart": 14520,
+        "charEnd": 14535
+      },
+      {
+        "lineStart": 494,
+        "lineEnd": 494,
+        "charStart": 15726,
+        "charEnd": 15742
+      },
+      {
+        "lineStart": 503,
+        "lineEnd": 503,
+        "charStart": 15949,
+        "charEnd": 15964
+      },
+      {
+        "lineStart": 519,
+        "lineEnd": 519,
+        "charStart": 16414,
+        "charEnd": 16432
+      },
+      {
+        "lineStart": 549,
+        "lineEnd": 549,
+        "charStart": 17434,
+        "charEnd": 17487
+      },
+      {
+        "lineStart": 555,
+        "lineEnd": 555,
+        "charStart": 17568,
+        "charEnd": 17583
+      },
+      {
+        "lineStart": 611,
+        "lineEnd": 611,
+        "charStart": 19904,
+        "charEnd": 19957
+      },
+      {
+        "lineStart": 617,
+        "lineEnd": 617,
+        "charStart": 20038,
+        "charEnd": 20053
+      },
+      {
+        "lineStart": 679,
+        "lineEnd": 679,
+        "charStart": 22015,
+        "charEnd": 22068
+      },
+      {
+        "lineStart": 685,
+        "lineEnd": 685,
+        "charStart": 22149,
+        "charEnd": 22164
+      }
+    ]
+  },
+  {
+    "sectionName": "medical_necessity",
+    "extractedTextSpans": [
+      "energency department from skilled nursing facility on 03/30/2026 after she was last seen well",
+      "requiring Narcan administration both at the skilled nursing facility and again by EMS en route to"
+    ],
+    "normalizedSummary": "energency department from skilled nursing facility on 03/30/2026 after she was last seen well requiring Narcan administration both at the skilled nursing facility and again by EMS en route to",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 148,
+        "lineEnd": 148,
+        "charStart": 3493,
+        "charEnd": 3586
+      },
+      {
+        "lineStart": 153,
+        "lineEnd": 153,
+        "charStart": 3864,
+        "charEnd": 3961
+      }
+    ]
+  },
+  {
+    "sectionName": "homebound_evidence",
+    "extractedTextSpans": [
+      "Patient uses a walker for mobility.",
+      "decline and use of a walker suggest limited ability to travel independently.",
+      "Requires assistance with ADLs",
+      "Requires assistance with ADLs",
+      "[X] Requires assistive device: wheelchair, walker and/ or assistance of another person to leave home",
+      "homebound status and need for",
+      "[SELECTED][page 10] Requires assistive device: wheelchair, walker and/ or assistance of another person to leave home"
+    ],
+    "normalizedSummary": "Patient uses a walker for mobility. decline and use of a walker suggest limited ability to travel independently. Requires assistance with ADLs",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 227,
+        "lineEnd": 227,
+        "charStart": 7264,
+        "charEnd": 7299
+      },
+      {
+        "lineStart": 232,
+        "lineEnd": 232,
+        "charStart": 7500,
+        "charEnd": 7576
+      },
+      {
+        "lineStart": 329,
+        "lineEnd": 329,
+        "charStart": 10478,
+        "charEnd": 10507
+      },
+      {
+        "lineStart": 648,
+        "lineEnd": 648,
+        "charStart": 20938,
+        "charEnd": 20967
+      },
+      {
+        "lineStart": 659,
+        "lineEnd": 659,
+        "charStart": 21242,
+        "charEnd": 21342
+      },
+      {
+        "lineStart": 715,
+        "lineEnd": 715,
+        "charStart": 23634,
+        "charEnd": 23663
+      },
+      {
+        "lineStart": 730,
+        "lineEnd": 730,
+        "charStart": 24229,
+        "charEnd": 24345
+      }
+    ]
+  },
+  {
+    "sectionName": "diagnoses",
+    "extractedTextSpans": [
+      "Diagnoses"
+    ],
+    "normalizedSummary": "Diagnoses",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 484,
+        "lineEnd": 484,
+        "charStart": 15367,
+        "charEnd": 15376
+      }
+    ]
+  },
+  {
+    "sectionName": "medications",
+    "extractedTextSpans": [
+      "Allergies (1) Active",
+      "No Known Allergies",
+      "Allergies",
+      "No Known Allergies",
+      "[X] Medication Management",
+      "[SELECTED][page 10] Medication Management"
+    ],
+    "normalizedSummary": "Allergies (1) Active No Known Allergies Allergies",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 197,
+        "lineEnd": 197,
+        "charStart": 5767,
+        "charEnd": 5787
+      },
+      {
+        "lineStart": 199,
+        "lineEnd": 199,
+        "charStart": 5797,
+        "charEnd": 5815
+      },
+      {
+        "lineStart": 424,
+        "lineEnd": 424,
+        "charStart": 13704,
+        "charEnd": 13713
+      },
+      {
+        "lineStart": 426,
+        "lineEnd": 426,
+        "charStart": 13778,
+        "charEnd": 13796
+      },
+      {
+        "lineStart": 666,
+        "lineEnd": 666,
+        "charStart": 21646,
+        "charEnd": 21671
+      },
+      {
+        "lineStart": 728,
+        "lineEnd": 728,
+        "charStart": 24132,
+        "charEnd": 24173
+      }
+    ]
+  },
+  {
+    "sectionName": "functional_limitations",
+    "extractedTextSpans": [
+      "ndependent with ambulation, activities of daily living, and cognition.",
+      "ambulation, and ADLs, reflecting a significant decline in functional status.",
+      "Prior Level of Function: Ambulation: Independent ADLs: Independent Prior Cognitive Status:",
+      "Goal s: Modified ndependent for self care, transfers and for ambulation.",
+      "Impaired gait, nobility, endurance"
+    ],
+    "normalizedSummary": "ndependent with ambulation, activities of daily living, and cognition. ambulation, and ADLs, reflecting a significant decline in functional status. Prior Level of Function: Ambulation: Independent ADLs: Independent Prior Cognitive Status:",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 223,
+        "lineEnd": 223,
+        "charStart": 7021,
+        "charEnd": 7091
+      },
+      {
+        "lineStart": 237,
+        "lineEnd": 237,
+        "charStart": 7876,
+        "charEnd": 7952
+      },
+      {
+        "lineStart": 241,
+        "lineEnd": 241,
+        "charStart": 8106,
+        "charEnd": 8196
+      },
+      {
+        "lineStart": 385,
+        "lineEnd": 385,
+        "charStart": 12229,
+        "charEnd": 12301
+      },
+      {
+        "lineStart": 647,
+        "lineEnd": 647,
+        "charStart": 20903,
+        "charEnd": 20937
+      }
+    ]
+  },
+  {
+    "sectionName": "therapy_need",
+    "extractedTextSpans": [
+      "- Initiate PT/OT/SLP within 24 hrs as delineated bel OW.",
+      "Physical Therapy f or : X] gait/bal ance X] herapeutic ex. / activity [] Other:",
+      "physical therapy and/or speech therapy or continues to need",
+      "occupational therapy) as indicated in"
+    ],
+    "normalizedSummary": "- Initiate PT/OT/SLP within 24 hrs as delineated bel OW. Physical Therapy f or : X] gait/bal ance X] herapeutic ex. / activity [] Other: physical therapy and/or speech therapy or continues to need",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 339,
+        "lineEnd": 339,
+        "charStart": 10688,
+        "charEnd": 10744
+      },
+      {
+        "lineStart": 701,
+        "lineEnd": 701,
+        "charStart": 22733,
+        "charEnd": 22812
+      },
+      {
+        "lineStart": 712,
+        "lineEnd": 712,
+        "charStart": 23472,
+        "charEnd": 23531
+      },
+      {
+        "lineStart": 713,
+        "lineEnd": 713,
+        "charStart": 23532,
+        "charEnd": 23569
+      }
+    ]
+  },
+  {
+    "sectionName": "risk_factors",
+    "extractedTextSpans": [
+      "Sherequired bilateral wist restraints and lower extremity splints for safety. a not e,",
+      "she al so has mpaired mobility due to a recent fall and right lower extremity injury, which is",
+      "associated with acute toxic-metabolio encephal opat hy, recent fall with right lower extremity injury,",
+      "and increased pain and fall risk.",
+      "Precautions: Fall, RLE NWB/ CAM boot",
+      "Safety,",
+      "Risk Factors",
+      "High fall risk",
+      "X] Fal Risk/Bal ance Assessment and training",
+      "[] Safety Assessment and training",
+      "[SELECTED][page 10] Fal Risk/Bal ance Assessment and training"
+    ],
+    "normalizedSummary": "Sherequired bilateral wist restraints and lower extremity splints for safety. a not e, she al so has mpaired mobility due to a recent fall and right lower extremity injury, which is associated with acute toxic-metabolio encephal opat hy, recent fall with right lower extremity injury,",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 161,
+        "lineEnd": 161,
+        "charStart": 4361,
+        "charEnd": 4447
+      },
+      {
+        "lineStart": 162,
+        "lineEnd": 162,
+        "charStart": 4448,
+        "charEnd": 4542
+      },
+      {
+        "lineStart": 239,
+        "lineEnd": 239,
+        "charStart": 7969,
+        "charEnd": 8071
+      },
+      {
+        "lineStart": 240,
+        "lineEnd": 240,
+        "charStart": 8072,
+        "charEnd": 8105
+      },
+      {
+        "lineStart": 341,
+        "lineEnd": 341,
+        "charStart": 10747,
+        "charEnd": 10783
+      },
+      {
+        "lineStart": 379,
+        "lineEnd": 379,
+        "charStart": 11982,
+        "charEnd": 11989
+      },
+      {
+        "lineStart": 528,
+        "lineEnd": 528,
+        "charStart": 16693,
+        "charEnd": 16705
+      },
+      {
+        "lineStart": 530,
+        "lineEnd": 530,
+        "charStart": 16738,
+        "charEnd": 16752
+      },
+      {
+        "lineStart": 671,
+        "lineEnd": 671,
+        "charStart": 21769,
+        "charEnd": 21813
+      },
+      {
+        "lineStart": 692,
+        "lineEnd": 692,
+        "charStart": 22308,
+        "charEnd": 22341
+      },
+      {
+        "lineStart": 725,
+        "lineEnd": 725,
+        "charStart": 24003,
+        "charEnd": 24064
+      }
+    ]
+  },
+  {
+    "sectionName": "advance_directives",
+    "extractedTextSpans": [
+      "Advance Directive",
+      "Advance Directive Type:",
+      "Surrogate Name:"
+    ],
+    "normalizedSummary": "Advance Directive Advance Directive Type: Surrogate Name:",
+    "confidence": 0.95,
+    "lineReferences": [
+      {
+        "lineStart": 525,
+        "lineEnd": 525,
+        "charStart": 16595,
+        "charEnd": 16612
+      },
+      {
+        "lineStart": 527,
+        "lineEnd": 527,
+        "charStart": 16669,
+        "charEnd": 16692
+      },
+      {
+        "lineStart": 531,
+        "lineEnd": 531,
+        "charStart": 16753,
+        "charEnd": 16768
+      }
+    ]
+  },
+  {
+    "sectionName": "other_clinical_notes",
+    "extractedTextSpans": [
+      "Comprehensive Rehabilitation Plan",
+      "Treatment Plan Anticipated",
+      "Discharge Plan:",
+      "Patient, Family Plan Concerns:",
+      "wound APRN Capistrano, C.; see provider notes for details (04/09/26",
+      "APRN Capistrano, C.; see provider notes for details (04/09/26 11:00:00)",
+      "HH Referral Progress Note-Physician",
+      "the physician responsible for the home care plan of care.",
+      "This patient is currently under my care, and I have initiated the establishment of a plan of care",
+      "of the plan of care and recertification as applicable."
+    ],
+    "normalizedSummary": "Comprehensive Rehabilitation Plan Treatment Plan Anticipated Discharge Plan:",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 337,
+        "lineEnd": 337,
+        "charStart": 10648,
+        "charEnd": 10681
+      },
+      {
+        "lineStart": 356,
+        "lineEnd": 356,
+        "charStart": 11271,
+        "charEnd": 11297
+      },
+      {
+        "lineStart": 503,
+        "lineEnd": 503,
+        "charStart": 15949,
+        "charEnd": 15964
+      },
+      {
+        "lineStart": 523,
+        "lineEnd": 523,
+        "charStart": 16510,
+        "charEnd": 16540
+      },
+      {
+        "lineStart": 571,
+        "lineEnd": 571,
+        "charStart": 18225,
+        "charEnd": 18292
+      },
+      {
+        "lineStart": 586,
+        "lineEnd": 586,
+        "charStart": 18901,
+        "charEnd": 18972
+      },
+      {
+        "lineStart": 622,
+        "lineEnd": 622,
+        "charStart": 20163,
+        "charEnd": 20198
+      },
+      {
+        "lineStart": 697,
+        "lineEnd": 697,
+        "charStart": 22506,
+        "charEnd": 22563
+      },
+      {
+        "lineStart": 708,
+        "lineEnd": 708,
+        "charStart": 23176,
+        "charEnd": 23273
+      },
+      {
+        "lineStart": 718,
+        "lineEnd": 718,
+        "charStart": 23764,
+        "charEnd": 23818
+      }
+    ]
+  }
+]

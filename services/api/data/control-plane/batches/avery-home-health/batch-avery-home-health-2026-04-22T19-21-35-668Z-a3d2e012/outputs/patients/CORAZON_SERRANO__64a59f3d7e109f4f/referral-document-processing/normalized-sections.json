@@ -1,0 +1,316 @@
+[
+  {
+    "sectionName": "patient_identity",
+    "extractedTextSpans": [
+      "DOB: 05/12/1940"
+    ],
+    "normalizedSummary": "DOB: 05/12/1940",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 54,
+        "lineEnd": 54,
+        "charStart": 864,
+        "charEnd": 879
+      }
+    ]
+  },
+  {
+    "sectionName": "referral_metadata",
+    "extractedTextSpans": [
+      "Order: REFERRAL (AMB)",
+      "» Order: Referral (AMB) by Rodriguez DO, Shirley on 04/16/26 10:17; 04/16/26 10:16:00 PDT, Home Health, PHYSICAL",
+      "Order Date/Time",
+      "Referral (AMB)"
+    ],
+    "normalizedSummary": "Order: REFERRAL (AMB) » Order: Referral (AMB) by Rodriguez DO, Shirley on 04/16/26 10:17; 04/16/26 10:16:00 PDT, Home Health, PHYSICAL Order Date/Time",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 66,
+        "lineEnd": 66,
+        "charStart": 1091,
+        "charEnd": 1112
+      },
+      {
+        "lineStart": 338,
+        "lineEnd": 338,
+        "charStart": 9808,
+        "charEnd": 9920
+      },
+      {
+        "lineStart": 358,
+        "lineEnd": 358,
+        "charStart": 10696,
+        "charEnd": 10711
+      },
+      {
+        "lineStart": 364,
+        "lineEnd": 364,
+        "charStart": 10772,
+        "charEnd": 10786
+      }
+    ]
+  },
+  {
+    "sectionName": "referring_provider",
+    "extractedTextSpans": [
+      "NPI:1043506744"
+    ],
+    "normalizedSummary": "NPI:1043506744",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 83,
+        "lineEnd": 83,
+        "charStart": 1608,
+        "charEnd": 1622
+      }
+    ]
+  },
+  {
+    "sectionName": "diagnoses",
+    "extractedTextSpans": [
+      "Diagnoses:",
+      "Diagnoses"
+    ],
+    "normalizedSummary": "Diagnoses: Diagnoses",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 79,
+        "lineEnd": 79,
+        "charStart": 1376,
+        "charEnd": 1386
+      },
+      {
+        "lineStart": 325,
+        "lineEnd": 325,
+        "charStart": 9522,
+        "charEnd": 9531
+      }
+    ]
+  },
+  {
+    "sectionName": "medications",
+    "extractedTextSpans": [
+      "Allergies:",
+      "Memory Impairment and medication management",
+      "Allergies (Active and Proposed Allergies Only)",
+      "- Home health ordered for imbalance with Intermittent dizziness and to support medication management; agency to call family to"
+    ],
+    "normalizedSummary": "Allergies: Memory Impairment and medication management Allergies (Active and Proposed Allergies Only)",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 39,
+        "lineEnd": 39,
+        "charStart": 580,
+        "charEnd": 590
+      },
+      {
+        "lineStart": 125,
+        "lineEnd": 125,
+        "charStart": 2957,
+        "charEnd": 3000
+      },
+      {
+        "lineStart": 156,
+        "lineEnd": 156,
+        "charStart": 3929,
+        "charEnd": 3975
+      },
+      {
+        "lineStart": 353,
+        "lineEnd": 353,
+        "charStart": 10419,
+        "charEnd": 10545
+      }
+    ]
+  },
+  {
+    "sectionName": "caregiver_support",
+    "extractedTextSpans": [
+      "Patient/Caregiver Counseling:"
+    ],
+    "normalizedSummary": "Patient/Caregiver Counseling:",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 355,
+        "lineEnd": 355,
+        "charStart": 10576,
+        "charEnd": 10605
+      }
+    ]
+  },
+  {
+    "sectionName": "living_situation",
+    "extractedTextSpans": [
+      "Lives with Siblings."
+    ],
+    "normalizedSummary": "Lives with Siblings.",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 226,
+        "lineEnd": 226,
+        "charStart": 5521,
+        "charEnd": 5541
+      }
+    ]
+  },
+  {
+    "sectionName": "therapy_need",
+    "extractedTextSpans": [
+      "PHYSICAL THERAPY, HOME HEALTH",
+      "physical therapy support",
+      "physical therapy",
+      "physical therapy for right shoulder pain and joint pain."
+    ],
+    "normalizedSummary": "PHYSICAL THERAPY, HOME HEALTH physical therapy support physical therapy",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 78,
+        "lineEnd": 78,
+        "charStart": 1346,
+        "charEnd": 1375
+      },
+      {
+        "lineStart": 120,
+        "lineEnd": 120,
+        "charStart": 2828,
+        "charEnd": 2852
+      },
+      {
+        "lineStart": 124,
+        "lineEnd": 124,
+        "charStart": 2940,
+        "charEnd": 2956
+      },
+      {
+        "lineStart": 343,
+        "lineEnd": 343,
+        "charStart": 10153,
+        "charEnd": 10209
+      }
+    ]
+  },
+  {
+    "sectionName": "risk_factors",
+    "extractedTextSpans": [
+      "Risk Assessment: Denies Alcohol Use;",
+      "Risk Assessment: Denies Substance Abuse;"
+    ],
+    "normalizedSummary": "Risk Assessment: Denies Alcohol Use; Risk Assessment: Denies Substance Abuse;",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 220,
+        "lineEnd": 220,
+        "charStart": 5407,
+        "charEnd": 5443
+      },
+      {
+        "lineStart": 228,
+        "lineEnd": 228,
+        "charStart": 5558,
+        "charEnd": 5598
+      }
+    ]
+  },
+  {
+    "sectionName": "other_clinical_notes",
+    "extractedTextSpans": [
+      "Primary Health Plan:",
+      "Secondary Health Plan: TRICARE for Life",
+      "Ambulatory Provider Note",
+      "Ambulatory Provider Note",
+      "Office Visit Note",
+      "Disclaimer: The content of this note was generated by an artificial Intelligence (AI) language model.",
+      "Ambulatory Provider Note",
+      "Ambulatory Provider Note",
+      "Ambulatory Provider Note",
+      "Assessment/Plan",
+      "Ambulatory Provider Note",
+      "Patient verbally understood and agreed with the above plan."
+    ],
+    "normalizedSummary": "Primary Health Plan: Secondary Health Plan: TRICARE for Life Ambulatory Provider Note",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 47,
+        "lineEnd": 47,
+        "charStart": 754,
+        "charEnd": 774
+      },
+      {
+        "lineStart": 55,
+        "lineEnd": 55,
+        "charStart": 880,
+        "charEnd": 919
+      },
+      {
+        "lineStart": 89,
+        "lineEnd": 89,
+        "charStart": 1735,
+        "charEnd": 1759
+      },
+      {
+        "lineStart": 93,
+        "lineEnd": 93,
+        "charStart": 1826,
+        "charEnd": 1850
+      },
+      {
+        "lineStart": 99,
+        "lineEnd": 99,
+        "charStart": 1941,
+        "charEnd": 1958
+      },
+      {
+        "lineStart": 110,
+        "lineEnd": 110,
+        "charStart": 2266,
+        "charEnd": 2367
+      },
+      {
+        "lineStart": 150,
+        "lineEnd": 150,
+        "charStart": 3796,
+        "charEnd": 3820
+      },
+      {
+        "lineStart": 211,
+        "lineEnd": 211,
+        "charStart": 5209,
+        "charEnd": 5233
+      },
+      {
+        "lineStart": 293,
+        "lineEnd": 293,
+        "charStart": 7339,
+        "charEnd": 7363
+      },
+      {
+        "lineStart": 324,
+        "lineEnd": 324,
+        "charStart": 9506,
+        "charEnd": 9521
+      },
+      {
+        "lineStart": 349,
+        "lineEnd": 349,
+        "charStart": 10320,
+        "charEnd": 10344
+      },
+      {
+        "lineStart": 356,
+        "lineEnd": 356,
+        "charStart": 10606,
+        "charEnd": 10665
+      }
+    ]
+  }
+]

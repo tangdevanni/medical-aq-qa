@@ -1,0 +1,533 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-04-22T20:03:49.814Z",
+  "batchId": "batch-meadows-home-health-2026-04-22T19-20-51-707Z-032ca5da",
+  "patientId": "ENRIQUE_FRANCO_SALCEDO__0a608484cdfe65fb",
+  "runId": "batch-meadows-home-health-2026-04-22T19-20-51-707Z-032ca5da-ENRIQUE_FRANCO_SALCEDO__0a608484cdfe65fb",
+  "subsidiaryId": "meadows-home-health",
+  "patientName": "Enrique Franco-Salcedo",
+  "processingStatus": "BLOCKED",
+  "executionStep": "PATIENT_STATUS_EXCLUDED",
+  "progressPercent": 100,
+  "startedAt": "2026-04-22T20:01:56.037Z",
+  "completedAt": "2026-04-22T20:03:49.797Z",
+  "lastUpdatedAt": "2026-04-22T20:03:49.804Z",
+  "matchResult": {
+    "status": "EXACT",
+    "searchQuery": "franco-salcedo, enrique",
+    "portalPatientId": null,
+    "portalDisplayName": "FRANCO-SALCEDO, ENRIQUE MR# 3244 PendingCULINARY SOC: 4/22/2026 / DOB: 11/17/1967 LOS: 1 days Culinary Health Fund Local 4416 Mayflower Lane Las Vegas NV 89152 (702)336-8205",
+    "candidateNames": [
+      "FRANCO-SALCEDO, ENRIQUE MR# 3244 PendingCULINARY SOC: 4/22/2026 / DOB: 11/17/1967 LOS: 1 days Culinary Health Fund Local 4416 Mayflower Lane Las Vegas NV 89152 (702)336-8205"
+    ],
+    "note": null
+  },
+  "qaOutcome": "PORTAL_MISMATCH",
+  "oasisQaSummary": {
+    "overallStatus": "BLOCKED",
+    "urgency": "ON_TRACK",
+    "daysInPeriod": 30,
+    "daysLeft": 25,
+    "sections": [
+      {
+        "key": "timing",
+        "label": "Timing / OASIS Due",
+        "status": "PASS",
+        "items": [
+          {
+            "key": "days_in_period",
+            "label": "Days in the 30-day period captured",
+            "status": "PASS",
+            "notes": "Workbook shows 30 days in period.",
+            "evidence": [
+              "Workbook days in period: 30"
+            ]
+          },
+          {
+            "key": "days_left",
+            "label": "Days left before OASIS due date verified",
+            "status": "PASS",
+            "notes": "25 day(s) remain before OASIS is due.",
+            "evidence": [
+              "Workbook days left: 25"
+            ]
+          },
+          {
+            "key": "urgency_bucket",
+            "label": "Urgency bucket",
+            "status": "PASS",
+            "notes": "ON TRACK",
+            "evidence": [
+              "Derived urgency from 25 day(s) left."
+            ]
+          }
+        ]
+      },
+      {
+        "key": "coding",
+        "label": "Coding Review",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "coding_review_complete",
+            "label": "Coding review completed in workbook",
+            "status": "NEEDS_REVIEW",
+            "notes": "Workbook status: IN_PROGRESS",
+            "evidence": [
+              "IN_PROGRESS"
+            ]
+          },
+          {
+            "key": "coding_supported_by_oasis",
+            "label": "OASIS content is available to support coding review",
+            "status": "MISSING",
+            "notes": "No OASIS content was extracted for coding validation.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "oasis",
+        "label": "OASIS QA",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "oasis_document",
+            "label": "OASIS document content extracted",
+            "status": "MISSING",
+            "notes": "No OASIS document content was available for extraction.",
+            "evidence": []
+          },
+          {
+            "key": "oasis_workbook_status",
+            "label": "OASIS QA completed in workbook",
+            "status": "NEEDS_REVIEW",
+            "notes": "Workbook status: IN_PROGRESS",
+            "evidence": [
+              "IN_PROGRESS"
+            ]
+          },
+          {
+            "key": "medical_necessity",
+            "label": "Medical necessity is stated",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "homebound_reason",
+            "label": "Homebound reason is stated",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "health_assessment",
+            "label": "Health assessment is documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "skilled_interventions",
+            "label": "Skilled interventions during the OASIS visit are documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "poc",
+        "label": "Plan Of Care QA",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "poc_document",
+            "label": "Plan of care content extracted",
+            "status": "MISSING",
+            "notes": "No plan-of-care content was available for extraction.",
+            "evidence": []
+          },
+          {
+            "key": "poc_workbook_status",
+            "label": "POC QA completed in workbook",
+            "status": "MISSING",
+            "notes": "Workbook status: NOT_STARTED",
+            "evidence": [
+              "NOT_STARTED"
+            ]
+          },
+          {
+            "key": "poc_diagnoses_codes",
+            "label": "Diagnoses or codes are present in the plan of care",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "poc_interventions_goals_frequency",
+            "label": "Interventions, goals, and frequency are present in the plan of care",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "poc_conditions_exacerbations",
+            "label": "Conditions or exacerbations are reflected in the plan of care",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "visit_notes",
+        "label": "Visit Notes Review",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "visit_notes_document",
+            "label": "Visit note content extracted",
+            "status": "MISSING",
+            "notes": "No visit-note content was available for extraction.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_workbook_status",
+            "label": "Visit notes review completed in workbook",
+            "status": "MISSING",
+            "notes": "Workbook status: NOT_STARTED",
+            "evidence": [
+              "NOT_STARTED"
+            ]
+          },
+          {
+            "key": "visit_notes_skilled_need",
+            "label": "Skilled need is clearly documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_intervention_detail",
+            "label": "Interventions performed are specific and detailed",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_patient_response",
+            "label": "Patient response to interventions is documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_progress",
+            "label": "Progress toward goals is noted",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_vitals",
+            "label": "Vitals and focused assessment are documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_medication_review",
+            "label": "Medication review is documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_condition_changes",
+            "label": "Changes in condition are clearly reported and addressed",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_billed_services_support",
+            "label": "Documentation supports billed services",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_consistency",
+            "label": "Documentation remains consistent with OASIS and diagnoses",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "technical_review",
+        "label": "Technical Review",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "portal_patient_match",
+            "label": "Portal patient match resolved",
+            "status": "PASS",
+            "notes": "Portal match status: EXACT",
+            "evidence": [
+              "franco-salcedo, enrique",
+              "FRANCO-SALCEDO, ENRIQUE MR# 3244 PendingCULINARY SOC: 4/22/2026 / DOB: 11/17/1967 LOS: 1 days Culinary Health Fund Local 4416 Mayflower Lane Las Vegas NV 89152 (702)336-8205"
+            ]
+          },
+          {
+            "key": "sn_visit_count",
+            "label": "SN visits were identified from visit-note content",
+            "status": "MISSING",
+            "notes": "Visit-note content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "discipline_detection",
+            "label": "Applicable disciplines were detected",
+            "status": "MISSING",
+            "notes": "Visit-note content is not available for discipline detection.",
+            "evidence": []
+          },
+          {
+            "key": "physician_orders",
+            "label": "Physician orders were checked",
+            "status": "NOT_APPLICABLE",
+            "notes": "No additional physician orders were discovered for this patient.",
+            "evidence": []
+          },
+          {
+            "key": "supporting_notes",
+            "label": "Supporting note categories were reviewed",
+            "status": "NOT_APPLICABLE",
+            "notes": "No additional supporting note categories were discovered for this patient.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "final_check",
+        "label": "Final Check",
+        "status": "FAIL",
+        "items": [
+          {
+            "key": "critical_sections_clear",
+            "label": "Critical QA sections are complete before billing prep",
+            "status": "FAIL",
+            "notes": "Blocking sections: OASIS content is available to support coding review, OASIS document content extracted, Medical necessity is stated, Homebound reason is stated, Health assessment is documented, Skilled interventions during the OASIS visit are documented, Plan of care content extracted, POC QA completed in workbook, Diagnoses or codes are present in the plan of care, Interventions, goals, and frequency are present in the plan of care, Conditions or exacerbations are reflected in the plan of care, Visit note content extracted, Visit notes review completed in workbook, Skilled need is clearly documented, Interventions performed are specific and detailed, Patient response to interventions is documented, Progress toward goals is noted, Vitals and focused assessment are documented, Medication review is documented, Changes in condition are clearly reported and addressed, Documentation supports billed services, Documentation remains consistent with OASIS and diagnoses, SN visits were identified from visit-note content, Applicable disciplines were detected",
+            "evidence": [
+              "Timing / OASIS Due: PASS",
+              "Coding Review: MISSING",
+              "OASIS QA: MISSING",
+              "Plan Of Care QA: MISSING",
+              "Visit Notes Review: MISSING",
+              "Technical Review: MISSING"
+            ]
+          },
+          {
+            "key": "billing_prep_status",
+            "label": "Billing prep status in workbook",
+            "status": "MISSING",
+            "notes": "Workbook status: NOT_STARTED",
+            "evidence": [
+              "NOT_STARTED"
+            ]
+          }
+        ]
+      }
+    ],
+    "blockers": [
+      "OASIS content is available to support coding review",
+      "OASIS document content extracted",
+      "Medical necessity is stated",
+      "Homebound reason is stated",
+      "Health assessment is documented",
+      "Skilled interventions during the OASIS visit are documented",
+      "Plan of care content extracted",
+      "POC QA completed in workbook",
+      "Diagnoses or codes are present in the plan of care",
+      "Interventions, goals, and frequency are present in the plan of care",
+      "Conditions or exacerbations are reflected in the plan of care",
+      "Visit note content extracted",
+      "Visit notes review completed in workbook",
+      "Skilled need is clearly documented",
+      "Interventions performed are specific and detailed",
+      "Patient response to interventions is documented",
+      "Progress toward goals is noted",
+      "Vitals and focused assessment are documented",
+      "Medication review is documented",
+      "Changes in condition are clearly reported and addressed",
+      "Documentation supports billed services",
+      "Documentation remains consistent with OASIS and diagnoses",
+      "SN visits were identified from visit-note content",
+      "Applicable disciplines were detected"
+    ]
+  },
+  "artifactCount": 0,
+  "hasFindings": false,
+  "bundleAvailable": true,
+  "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-22T19-20-51-707Z-032ca5da\\outputs\\patient-results\\ENRIQUE_FRANCO_SALCEDO__0a608484cdfe65fb.json",
+  "logPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-22T19-20-51-707Z-032ca5da\\outputs\\logs\\ENRIQUE_FRANCO_SALCEDO__0a608484cdfe65fb.json",
+  "errorSummary": "Portal patient status 'Pending' excludes this patient from autonomous QA evaluation.",
+  "workItem": {
+    "id": "ENRIQUE_FRANCO_SALCEDO__0a608484cdfe65fb",
+    "subsidiaryId": "meadows-home-health",
+    "patientIdentity": {
+      "displayName": "Enrique Franco-Salcedo",
+      "normalizedName": "ENRIQUE FRANCO-SALCEDO",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-04-22",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Culinary Health Fund",
+      "assignedStaff": "Reyes, Petra RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "01-SOC"
+    },
+    "workflowTypes": [
+      "SOC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 25,
+      "daysInPeriod": null,
+      "daysLeft": 25,
+      "daysLeftBeforeOasisDueDate": 25,
+      "rawTrackingValues": [
+        "25"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "IN_PROGRESS",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "In Progress"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "04/17/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 17
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 17,
+        "values": {
+          "patientName": "FRANCO-SALCEDO, ENRIQUE",
+          "episodeDate": "04/22/2026",
+          "assignedStaff": "Reyes, Petra RN",
+          "payer": "Culinary Health Fund",
+          "rfa": "01-SOC",
+          "trackingDays": "25",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "In Progress",
+          "oasisQaRemarks": "04/17/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  "workflowRuns": [
+    {
+      "workflowRunId": "batch-meadows-home-health-2026-04-22T19-20-51-707Z-032ca5da-ENRIQUE_FRANCO_SALCEDO__0a608484cdfe65fb:coding",
+      "workflowDomain": "coding",
+      "status": "BLOCKED",
+      "stepName": "PATIENT_STATUS_EXCLUDED",
+      "message": "Portal patient status 'Pending' excludes this patient from autonomous QA evaluation.",
+      "chartUrl": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69e169f21a260a0c56bb7ad2/intake/69e16a8766016e19022ea998/calendar",
+      "startedAt": "2026-04-22T20:03:49.748Z",
+      "completedAt": "2026-04-22T20:03:49.748Z",
+      "lastUpdatedAt": "2026-04-22T20:03:49.748Z",
+      "workflowResultPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-22T19-20-51-707Z-032ca5da\\outputs\\patients\\ENRIQUE_FRANCO_SALCEDO__0a608484cdfe65fb\\coding-input.json",
+      "workflowLogPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-22T19-20-51-707Z-032ca5da\\outputs\\logs\\ENRIQUE_FRANCO_SALCEDO__0a608484cdfe65fb.json"
+    },
+    {
+      "workflowRunId": "batch-meadows-home-health-2026-04-22T19-20-51-707Z-032ca5da-ENRIQUE_FRANCO_SALCEDO__0a608484cdfe65fb:qa",
+      "workflowDomain": "qa",
+      "status": "BLOCKED",
+      "stepName": "PATIENT_STATUS_EXCLUDED",
+      "message": "Portal patient status 'Pending' excludes this patient from autonomous QA evaluation.",
+      "chartUrl": "https://app.finalehealth.com/provider/691de9e967052347d890e991/client/69e169f21a260a0c56bb7ad2/intake/69e16a8766016e19022ea998/calendar",
+      "startedAt": "2026-04-22T20:03:49.748Z",
+      "completedAt": "2026-04-22T20:03:49.748Z",
+      "lastUpdatedAt": "2026-04-22T20:03:49.748Z",
+      "workflowResultPath": null,
+      "workflowLogPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-22T19-20-51-707Z-032ca5da\\outputs\\logs\\ENRIQUE_FRANCO_SALCEDO__0a608484cdfe65fb.json"
+    }
+  ],
+  "artifactPaths": {
+    "codingInput": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-22T19-20-51-707Z-032ca5da\\outputs\\patients\\ENRIQUE_FRANCO_SALCEDO__0a608484cdfe65fb\\coding-input.json",
+    "documentText": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-22T19-20-51-707Z-032ca5da\\outputs\\patients\\ENRIQUE_FRANCO_SALCEDO__0a608484cdfe65fb\\document-text.json",
+    "qaPrefetch": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-22T19-20-51-707Z-032ca5da\\outputs\\patients\\ENRIQUE_FRANCO_SALCEDO__0a608484cdfe65fb\\qa-prefetch-result.json",
+    "patientQaReference": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-22T19-20-51-707Z-032ca5da\\outputs\\patients\\ENRIQUE_FRANCO_SALCEDO__0a608484cdfe65fb\\referral-document-processing\\patient-qa-reference.json",
+    "qaDocumentSummary": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-22T19-20-51-707Z-032ca5da\\outputs\\patients\\ENRIQUE_FRANCO_SALCEDO__0a608484cdfe65fb\\referral-document-processing\\qa-document-summary.json",
+    "fieldMapSnapshot": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-22T19-20-51-707Z-032ca5da\\outputs\\patients\\ENRIQUE_FRANCO_SALCEDO__0a608484cdfe65fb\\referral-document-processing\\field-map-snapshot.json",
+    "printedNoteChartValues": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-22T19-20-51-707Z-032ca5da\\outputs\\patients\\ENRIQUE_FRANCO_SALCEDO__0a608484cdfe65fb\\printed-note-chart-values.json",
+    "printedNoteReview": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-22T19-20-51-707Z-032ca5da\\outputs\\patients\\ENRIQUE_FRANCO_SALCEDO__0a608484cdfe65fb\\oasis-printed-note-review.json"
+  },
+  "artifactContents": {
+    "codingInput": {
+      "primaryDiagnosis": {
+        "code": "",
+        "description": "",
+        "confidence": "low"
+      },
+      "otherDiagnoses": [],
+      "suggestedOnsetType": "onset",
+      "suggestedSeverity": 0,
+      "comorbidityFlags": {
+        "pvd_pad": false,
+        "diabetes": false,
+        "none": true
+      },
+      "notes": [
+        "Primary diagnosis code left blank because no explicit or strongly inferable ICD-10 mapping was retained."
+      ]
+    },
+    "documentText": null,
+    "qaPrefetch": null,
+    "patientQaReference": null,
+    "qaDocumentSummary": null,
+    "fieldMapSnapshot": null,
+    "printedNoteChartValues": null,
+    "printedNoteReview": null
+  }
+}

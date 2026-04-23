@@ -1,0 +1,54 @@
+{
+  "generatedAt": "2026-04-22T21:48:20.565Z",
+  "source": "printed_note_ocr",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\evidence\\AMEERA_ALSAEDI__5844dd3b5b7e0b21\\oasis-printed-note\\extracted-text.txt",
+  "llmInputSource": "fact_pack_primary",
+  "extractedFieldCount": 2,
+  "invocationModelId": "us.amazon.nova-lite-v1:0",
+  "currentChartValues": {
+    "secondary_diagnoses": [
+      "M47.12 - Other spondylosis with myelopathy,",
+      "M17.0 - Bilateral primary osteoarthritis of",
+      "G56.01 - Carpal tunnel syndrome, right",
+      "R53.1 - Weakness",
+      "E11.9 - Type 2 diabetes mellitus without"
+    ],
+    "code_status": "full_code"
+  },
+  "extractedFieldValues": [
+    {
+      "field_key": "secondary_diagnoses",
+      "current_value": [
+        "M47.12 - Other spondylosis with myelopathy,",
+        "M17.0 - Bilateral primary osteoarthritis of",
+        "G56.01 - Carpal tunnel syndrome, right",
+        "R53.1 - Weakness",
+        "E11.9 - Type 2 diabetes mellitus without"
+      ],
+      "confidence": 0.98,
+      "source_spans": [
+        "M47.12 - Other spondylosis with myelopathy,",
+        "M17.0 - Bilateral primary osteoarthritis of",
+        "G56.01 - Carpal tunnel syndrome, right"
+      ]
+    },
+    {
+      "field_key": "code_status",
+      "current_value": "full_code",
+      "confidence": 0.98,
+      "source_spans": [
+        "Full Code >"
+      ]
+    }
+  ],
+  "warnings": [
+    "LLM input source: fact_pack_primary.",
+    "Fact pack coverage: diagnoses, assessmentValues, homeboundEvidence, skilledNeedEvidence, hospitalizationReasons, medications, allergies, supportingSnippets.",
+    "Fact pack coverage score: 1.",
+    "Prompt character estimate: 3304.",
+    "Fallback reason: none.",
+    "Deterministic printed-note chart values: secondary_diagnoses, code_status.",
+    "Selected option labels detected: 119.",
+    "Printed-note chart-value extraction returned invalid JSON after retrying with inference profile us.amazon.nova-lite-v1:0."
+  ]
+}

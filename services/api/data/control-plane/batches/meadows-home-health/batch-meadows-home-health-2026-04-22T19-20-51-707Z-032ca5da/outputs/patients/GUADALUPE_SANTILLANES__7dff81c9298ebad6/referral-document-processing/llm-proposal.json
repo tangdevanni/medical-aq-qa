@@ -1,0 +1,92 @@
+{
+  "patient_context": {
+    "patient_name": null,
+    "dob": null,
+    "soc_date": null,
+    "referral_date": null
+  },
+  "proposed_field_values": [
+    {
+      "field_key": "homebound_narrative",
+      "proposed_value": "DME Preauthorization 1: Cam Walker Boot L4361",
+      "confidence": 0.8,
+      "source_spans": [
+        "DME Preauthorization 1: Cam Walker Boot L4361"
+      ],
+      "rationale": "The evidence directly supports the homebound narrative by indicating the use of a walker.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "homebound_supporting_factors",
+      "proposed_value": [
+        "uses_walker"
+      ],
+      "confidence": 0.73,
+      "source_spans": [
+        "DME Preauthorization 1: Cam Walker Boot L4361"
+      ],
+      "rationale": "The evidence directly supports the use of a walker as a factor for homebound status.",
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [
+    {
+      "description": "Foot Pain, Right",
+      "icd10_code": "M79.671",
+      "confidence": 0.9,
+      "source_spans": [
+        "Diagnosis: Foot Pain, Right - M79.671"
+      ],
+      "is_primary_candidate": true,
+      "requires_human_review": true
+    },
+    {
+      "description": "Heart Failure",
+      "icd10_code": "I50",
+      "confidence": 0.8,
+      "source_spans": [
+        "I50 Diagnosis code candidate from extracted document metadata"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    }
+  ],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "preferred_language",
+    "interpreter_needed",
+    "primary_reason_for_home_health_medical_necessity",
+    "admit_reason_to_home_health",
+    "recent_hospitalization_discharge_date",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "living_situation",
+    "prior_functioning",
+    "functional_limitations",
+    "therapy_need",
+    "patient_summary_narrative",
+    "skilled_interventions",
+    "discipline_frequencies",
+    "plan_for_next_visit",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "fall_risk_narrative",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status",
+    "code_status"
+  ],
+  "warnings": [
+    "LLM input source: fact_pack_primary.",
+    "Fact pack coverage: diagnoses, homeboundEvidence, hospitalizationReasons, assessmentValues.",
+    "Fact pack coverage score: 0.9.",
+    "Prompt character estimate: 651.",
+    "Fallback reason: none."
+  ]
+}

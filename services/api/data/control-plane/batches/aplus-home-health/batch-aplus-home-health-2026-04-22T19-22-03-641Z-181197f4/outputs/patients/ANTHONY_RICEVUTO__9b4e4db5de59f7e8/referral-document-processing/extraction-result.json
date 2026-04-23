@@ -1,0 +1,33 @@
+{
+  "documentId": "ANTHONY_RICEVUTO__9b4e4db5de59f7e8-referral-1",
+  "localFilePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\ANTHONY_RICEVUTO__9b4e4db5de59f7e8\\documents\\ricevuto-anthony-h-referral-04072026-pdf\\source.pdf",
+  "fileType": "pdf",
+  "extractionMethod": "ocr_text",
+  "extractionSuccess": true,
+  "effectiveTextSource": "ocr_text",
+  "rawExtractedTextSource": "ocr",
+  "textSelectionReason": "policy_ocr_required_direct_ocr:PDF appears image-based/scanned; OCR likely required|No printed PDF available|OCR is the cheapest acceptable option that preserves clinically meaningful content",
+  "domExtractionRejectedReasons": [],
+  "pdfType": "scanned_image_pdf",
+  "ocrUsed": true,
+  "ocrProvider": "textract",
+  "ocrResultPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\ANTHONY_RICEVUTO__9b4e4db5de59f7e8\\documents\\ricevuto-anthony-h-referral-04072026-pdf\\ocr-result.json",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\ANTHONY_RICEVUTO__9b4e4db5de59f7e8\\referral-document-processing\\extracted-text.txt",
+  "extractionQuality": {
+    "characterCount": 8193,
+    "lineCount": 390,
+    "normalizedTokenCount": 1242,
+    "containsClinicalVocabulary": true,
+    "containsDiagnosisLikePatterns": true,
+    "containsDatePatterns": true,
+    "containsSectionLikeHeadings": true,
+    "likelyUsableForLlm": true,
+    "likelyRequiresOcrRetry": false,
+    "likelyCorruptedEncoding": false,
+    "rejectedReasons": [],
+    "usabilityStatus": "usable"
+  },
+  "failureReasons": [],
+  "warnings": [],
+  "generatedAt": "2026-04-22T19:40:43.976Z"
+}

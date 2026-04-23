@@ -38,6 +38,7 @@ import type { ScheduledRunRecord } from "../types/scheduledRun";
 import { writeJsonFile } from "../utils/jsonFile";
 import { isWorkbookRotationDue } from "../utils/workbookRotation";
 import type { SubsidiaryConfigService } from "./subsidiaryConfigService";
+import { toDashboardPatientSummary } from "../mappers/dashboardRunViews";
 
 const DEFAULT_RERUN_INTERVAL_HOURS = 24;
 const SCHEDULE_POLL_INTERVAL_MS = 60_000;
@@ -72,6 +73,20 @@ function isTransientPatientStatus(status: BatchRecord["patientRuns"][number]["pr
 
 function isRetryEligibleStatus(status: BatchRecord["patientRuns"][number]["processingStatus"]): boolean {
   return ["BLOCKED", "FAILED", "NEEDS_HUMAN_REVIEW"].includes(status);
+}
+
+function getSubsidiaryLookupKeys(
+  subsidiary: Pick<SubsidiaryRecord, "id" | "slug" | "lookupAliases">,
+): Set<string> {
+  return new Set([subsidiary.id, subsidiary.slug, ...subsidiary.lookupAliases].filter(Boolean));
+}
+
+function batchBelongsToSubsidiary(
+  batch: BatchRecord,
+  subsidiary: Pick<SubsidiaryRecord, "id" | "slug" | "lookupAliases">,
+): boolean {
+  const lookupKeys = getSubsidiaryLookupKeys(subsidiary);
+  return lookupKeys.has(batch.subsidiary.id) || lookupKeys.has(batch.subsidiary.slug);
 }
 
 async function canReuseCompletedPatientRun(
@@ -522,7 +537,7 @@ export class BatchControlPlaneService {
     const subsidiary = await this.subsidiaryConfigService.getSubsidiaryConfig(agencyId);
     const batches = await this.repository.listBatches();
     const activeBatch = batches.find((batch) =>
-      batch.subsidiary.id === agencyId && this.activeBatchJobs.has(batch.id),
+      batchBelongsToSubsidiary(batch, subsidiary) && this.activeBatchJobs.has(batch.id),
     );
     if (activeBatch) {
       throw new Error(`Agency refresh already running for ${subsidiary.name}.`);
@@ -667,7 +682,7 @@ export class BatchControlPlaneService {
       }
 
       const activeAgencyBatch = batches.find((batch) =>
-        batch.subsidiary.id === subsidiary.id &&
+        batchBelongsToSubsidiary(batch, subsidiary) &&
         batch.schedule.active &&
         batch.sourceWorkbook.acquisitionProvider === "FINALE" &&
         batch.sourceWorkbook.acquisitionStatus === "ACQUIRED"
@@ -1105,8 +1120,9 @@ export class BatchControlPlaneService {
     summary: BatchRecord["patientRuns"][number];
     detail: PatientRun | null;
   } | null> {
+    const subsidiary = await this.subsidiaryConfigService.getSubsidiaryConfig(input.subsidiaryId);
     const candidateBatches = (await this.repository.listBatches())
-      .filter((batch) => batch.subsidiary.id === input.subsidiaryId)
+      .filter((batch) => batchBelongsToSubsidiary(batch, subsidiary))
       .sort((left, right) => right.updatedAt.localeCompare(left.updatedAt));
 
     const candidates = await Promise.all(
@@ -1440,6 +1456,78 @@ export class BatchControlPlaneService {
     };
   }
 
+  private async derivePatientDocumentationSignal(
+    batch: BatchRecord,
+    summary: BatchRecord["patientRuns"][number],
+  ): Promise<{
+    missingReferralDocumentation: boolean;
+    missingReferralFieldCount: number;
+  }> {
+    const overlay = await this.findPreferredPatientArtifactOverlay(batch, summary.workItemId);
+    const patientArtifactsDirectory =
+      overlay?.patientArtifactsDirectory ??
+      path.join(batch.storage.outputRoot, "patients", summary.workItemId);
+    const patientDashboardStatePath =
+      overlay?.patientDashboardStatePath ??
+      path.join(patientArtifactsDirectory, "patient-dashboard-state.json");
+    const patientDashboardState = await this.repository.readJsonIfExists<PatientDashboardState>(
+      patientDashboardStatePath,
+    );
+
+    const artifactContents = patientDashboardState
+      ? {
+          codingInput: patientDashboardState.artifactContents.codingInput ?? null,
+          documentText: patientDashboardState.artifactContents.documentText ?? null,
+          qaPrefetch: patientDashboardState.artifactContents.qaPrefetch ?? null,
+          patientQaReference: patientDashboardState.artifactContents.patientQaReference ?? null,
+          qaDocumentSummary: patientDashboardState.artifactContents.qaDocumentSummary ?? null,
+          fieldMapSnapshot: patientDashboardState.artifactContents.fieldMapSnapshot ?? null,
+          printedNoteChartValues: patientDashboardState.artifactContents.printedNoteChartValues ?? null,
+          printedNoteReview: patientDashboardState.artifactContents.printedNoteReview ?? null,
+        }
+      : {
+          codingInput: await this.repository.readJsonIfExists(
+            path.join(patientArtifactsDirectory, "coding-input.json"),
+          ),
+          documentText: await this.repository.readJsonIfExists(
+            path.join(patientArtifactsDirectory, "document-text.json"),
+          ),
+          qaPrefetch: await this.repository.readJsonIfExists(
+            path.join(patientArtifactsDirectory, "qa-prefetch-result.json"),
+          ),
+          patientQaReference: await this.repository.readJsonIfExists(
+            path.join(patientArtifactsDirectory, "referral-document-processing", "patient-qa-reference.json"),
+          ),
+          qaDocumentSummary: await this.repository.readJsonIfExists(
+            path.join(patientArtifactsDirectory, "referral-document-processing", "qa-document-summary.json"),
+          ),
+          fieldMapSnapshot: await this.repository.readJsonIfExists(
+            path.join(patientArtifactsDirectory, "referral-document-processing", "field-map-snapshot.json"),
+          ),
+          printedNoteChartValues: await this.repository.readJsonIfExists(
+            path.join(patientArtifactsDirectory, "printed-note-chart-values.json"),
+          ),
+          printedNoteReview: await this.repository.readJsonIfExists(
+            path.join(patientArtifactsDirectory, "oasis-printed-note-review.json"),
+          ),
+        };
+
+    const dashboardSummary = toDashboardPatientSummary({
+      batch,
+      summary,
+      workItem: patientDashboardState?.workItem ?? null,
+      artifactContents,
+    });
+    const referralCoverageAvailable = dashboardSummary.referralQa.referralDataAvailable;
+
+    return {
+      missingReferralDocumentation: !referralCoverageAvailable,
+      missingReferralFieldCount: referralCoverageAvailable
+        ? 0
+        : dashboardSummary.dashboardReview.missingInReferralCount,
+    };
+  }
+
   async getAgencyDashboardSnapshot(agencyId: string): Promise<AgencyDashboardSnapshot> {
     const agencyRecord = await this.subsidiaryConfigService.getSubsidiaryConfig(agencyId);
     const agency: Agency = {
@@ -1450,7 +1538,7 @@ export class BatchControlPlaneService {
       timezone: agencyRecord.timezone,
     };
     const batches = (await this.repository.listBatches())
-      .filter((batch) => batch.subsidiary.id === agencyId)
+      .filter((batch) => batchBelongsToSubsidiary(batch, agencyRecord))
       .sort((left, right) => right.createdAt.localeCompare(left.createdAt));
     const batch = batches.find((candidate) => candidate.schedule.active) ?? batches[0] ?? null;
 
@@ -1480,8 +1568,14 @@ export class BatchControlPlaneService {
         this.resolvePreferredPatientRunSummary(batch, patientRun),
       ),
     );
-    const patientRecords: DashboardPatientRecord[] = queueEntries.map((queueEntry) => {
+    const patientRecords: DashboardPatientRecord[] = await Promise.all(queueEntries.map(async (queueEntry) => {
       const patientRun = resolvedPatientRuns.find((candidate) => candidate.workItemId === queueEntry.workItemId);
+      const documentationSignal = patientRun
+        ? await this.derivePatientDocumentationSignal(batch, patientRun)
+        : {
+            missingReferralDocumentation: false,
+            missingReferralFieldCount: 0,
+          };
       return {
         queueEntry,
         runId: patientRun ? batch.id : null,
@@ -1489,8 +1583,11 @@ export class BatchControlPlaneService {
         processingStatus: patientRun?.processingStatus ?? null,
         lastUpdatedAt: patientRun?.lastUpdatedAt ?? null,
         errorSummary: patientRun?.errorSummary ?? null,
+        qaOutcome: patientRun?.qaOutcome ?? null,
+        missingReferralDocumentation: documentationSignal.missingReferralDocumentation,
+        missingReferralFieldCount: documentationSignal.missingReferralFieldCount,
       };
-    });
+    }));
     const resolvedWorkbookSource: WorkbookSource = workbookSource
       ? {
           ...workbookSource,
@@ -2003,12 +2100,13 @@ export class BatchControlPlaneService {
     subsidiaryId: string,
     updatedAt: string,
   ): Promise<void> {
+    const subsidiary = await this.subsidiaryConfigService.getSubsidiaryConfig(subsidiaryId);
     const batches = await this.repository.listBatches();
 
     for (const batch of batches) {
       if (
         batch.id === currentBatchId ||
-        batch.subsidiary.id !== subsidiaryId ||
+        !batchBelongsToSubsidiary(batch, subsidiary) ||
         !batch.schedule.active
       ) {
         continue;
@@ -2032,12 +2130,13 @@ export class BatchControlPlaneService {
   }
 
   private async removeSupersededAgencyBatches(currentBatch: BatchRecord): Promise<void> {
+    const subsidiary = await this.subsidiaryConfigService.getSubsidiaryConfig(currentBatch.subsidiary.id);
     const batches = await this.repository.listBatches();
 
     for (const batch of batches) {
       if (
         batch.id === currentBatch.id ||
-        batch.subsidiary.id !== currentBatch.subsidiary.id ||
+        !batchBelongsToSubsidiary(batch, subsidiary) ||
         this.activeBatchJobs.has(batch.id)
       ) {
         continue;

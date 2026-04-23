@@ -1,0 +1,25 @@
+{
+  "patientId": "ALICIA_TEJADA__ff67368c7ee1adb5",
+  "selectedDocumentId": "ALICIA_TEJADA__ff67368c7ee1adb5-referral-1",
+  "sourceDocuments": [
+    {
+      "documentId": "ALICIA_TEJADA__ff67368c7ee1adb5-referral-1",
+      "sourceIndex": 0,
+      "sourceLabel": "📄 TEJADA MGO HP.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedSourceLabel": "tejada-mgo-hp-pdf",
+      "sourceType": "REFERRAL_ORDER",
+      "acquisitionMethod": "printed_pdf",
+      "selectionStatus": "selected",
+      "portalLabel": "📄 TEJADA MGO HP.pdf 📝 ✏️ 🗑️ 🔗",
+      "localFilePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-22T19-20-51-707Z-032ca5da\\outputs\\patients\\ALICIA_TEJADA__ff67368c7ee1adb5\\documents\\tejada-mgo-hp-pdf\\source.pdf",
+      "effectiveTextSource": "ocr_text",
+      "fileType": "pdf",
+      "fileSizeBytes": 5262134,
+      "extractedTextLength": 46300,
+      "selectedReason": "highest-ranked referral/admission-order source with local file preference",
+      "rejectedReasons": []
+    }
+  ],
+  "warnings": [],
+  "generatedAt": "2026-04-22T19:28:15.787Z"
+}

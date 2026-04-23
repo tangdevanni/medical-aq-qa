@@ -1,0 +1,101 @@
+{
+  "generatedAt": "2026-04-22T20:01:42.068Z",
+  "source": "printed_note_ocr",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-22T19-20-51-707Z-032ca5da\\outputs\\evidence\\DIEGO_FLORES_MARTINEZ__ebe4a8767117f740\\oasis-printed-note\\extracted-text.txt",
+  "llmInputSource": "fact_pack_primary",
+  "extractedFieldCount": 6,
+  "invocationModelId": "us.amazon.nova-lite-v1:0",
+  "currentChartValues": {
+    "primary_diagnosis": "S52.131D - and nicotine dependence (F17",
+    "homebound_supporting_factors": [
+      "postoperative right elbow wound",
+      "activity-provoked pain of the right elbow/shoulder",
+      "documented need to maintain limb rest and support during movement",
+      "documented fall risk"
+    ],
+    "mahc10_fall_risk": "5",
+    "code_status": "full_code",
+    "functional_limitations": [
+      "Ambulation",
+      "Endurance"
+    ],
+    "allergy_list": [
+      "No Known Allergies"
+    ]
+  },
+  "extractedFieldValues": [
+    {
+      "field_key": "primary_diagnosis",
+      "current_value": "S52.131D - and nicotine dependence (F17",
+      "confidence": 0.99,
+      "source_spans": [
+        "primary diagnosis, he also has a secondary diagnosis of a displaced fracture of the neck of the right radius (S52.131D) and nicotine dependence (F17"
+      ]
+    },
+    {
+      "field_key": "homebound_supporting_factors",
+      "current_value": [
+        "postoperative right elbow wound",
+        "activity-provoked pain of the right elbow/shoulder",
+        "documented need to maintain limb rest and support during movement",
+        "documented fall risk"
+      ],
+      "confidence": 0.9,
+      "source_spans": [
+        "postoperative right elbow wound",
+        "frequent activity-provoked pain of the right elbow/shoulder",
+        "documented need to maintain limb rest and support during movement",
+        "documented fall risk"
+      ]
+    },
+    {
+      "field_key": "mahc10_fall_risk",
+      "current_value": "5",
+      "confidence": 0.9,
+      "source_spans": [
+        "MAHC score 5"
+      ]
+    },
+    {
+      "field_key": "code_status",
+      "current_value": "full_code",
+      "confidence": 0.98,
+      "source_spans": [
+        "Full Code"
+      ]
+    },
+    {
+      "field_key": "functional_limitations",
+      "current_value": [
+        "Ambulation",
+        "Endurance"
+      ],
+      "confidence": 0.96,
+      "source_spans": [
+        "6 - Endurance",
+        "Ambulation",
+        "Severe pain on ambulation"
+      ]
+    },
+    {
+      "field_key": "allergy_list",
+      "current_value": [
+        "No Known Allergies"
+      ],
+      "confidence": 0.92,
+      "source_spans": [
+        "None known"
+      ]
+    }
+  ],
+  "warnings": [
+    "LLM input source: fact_pack_primary.",
+    "Fact pack coverage: diagnoses, assessmentValues, homeboundEvidence, skilledNeedEvidence, hospitalizationReasons, medications, allergies, supportingSnippets.",
+    "Fact pack coverage score: 1.",
+    "Prompt character estimate: 3240.",
+    "Fallback reason: none.",
+    "Deterministic printed-note chart values: primary_diagnosis, code_status, functional_limitations, allergy_list.",
+    "Selected option labels detected: 185.",
+    "Printed-note chart-value extraction used inference profile us.amazon.nova-lite-v1:0."
+  ]
+}

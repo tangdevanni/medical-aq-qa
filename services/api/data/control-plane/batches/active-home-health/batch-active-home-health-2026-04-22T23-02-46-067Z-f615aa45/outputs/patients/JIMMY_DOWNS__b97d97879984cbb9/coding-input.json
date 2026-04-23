@@ -1,0 +1,64 @@
+{
+  "primaryDiagnosis": {
+    "code": "I50.23",
+    "description": "Heart failure with preserved ejection fraction",
+    "confidence": "high"
+  },
+  "otherDiagnoses": [
+    {
+      "code": "I12.9",
+      "description": "Hypertension, unspecified",
+      "confidence": "high"
+    },
+    {
+      "code": "E11.9",
+      "description": "Diabetes mellitus, unspecified",
+      "confidence": "high"
+    },
+    {
+      "code": "N18.3",
+      "description": "Chronic kidney disease, stage 3",
+      "confidence": "high"
+    },
+    {
+      "code": "I25.10",
+      "description": "Coronary artery disease, unspecified",
+      "confidence": "high"
+    },
+    {
+      "code": "I48.91",
+      "description": "Atrial fibrillation",
+      "confidence": "high"
+    },
+    {
+      "code": "R07.1",
+      "description": "Chest pain on breathing",
+      "confidence": "high"
+    },
+    {
+      "code": "E11.65",
+      "description": "Diabetes mellitus with foot ulcer",
+      "confidence": "high"
+    },
+    {
+      "code": "",
+      "description": "DM",
+      "confidence": "medium"
+    },
+    {
+      "code": "",
+      "description": "UTI",
+      "confidence": "medium"
+    }
+  ],
+  "suggestedOnsetType": "onset",
+  "suggestedSeverity": 3,
+  "comorbidityFlags": {
+    "pvd_pad": false,
+    "diabetes": true,
+    "none": false
+  },
+  "notes": [
+    "Ordered services: Physical Therapy"
+  ]
+}

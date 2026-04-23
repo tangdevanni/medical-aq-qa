@@ -7,6 +7,8 @@ import { selectorRegistry } from "../selectorRegistry";
 import type { PortalSelectorCandidate } from "../selectors/types";
 import { createAutomationStepLog } from "../utils/automationLog";
 import {
+  clickPortalControl,
+  dismissVisiblePortalModal,
   resolveVisibleLocatorList,
   selectorAttemptToEvidence,
   waitForPortalPageSettled,
@@ -123,8 +125,16 @@ export class OasisThirtyDaysPage {
     let download = await waitForDownloadAfterClick(
       this.page,
       async () => {
-        await exportControl.locator.click();
-        await waitForPortalPageSettled(this.page, this.options.debugConfig);
+        await dismissVisiblePortalModal({
+          page: this.page,
+          logger: this.options.logger,
+          debugConfig: this.options.debugConfig,
+        });
+        await clickPortalControl({
+          page: this.page,
+          locator: exportControl.locator,
+          debugConfig: this.options.debugConfig,
+        });
       },
       4_000,
     );
@@ -159,8 +169,16 @@ export class OasisThirtyDaysPage {
       download = await waitForDownloadAfterClick(
         this.page,
         async () => {
-          await menuControl.locator.click();
-          await waitForPortalPageSettled(this.page, this.options.debugConfig);
+          await dismissVisiblePortalModal({
+            page: this.page,
+            logger: this.options.logger,
+            debugConfig: this.options.debugConfig,
+          });
+          await clickPortalControl({
+            page: this.page,
+            locator: menuControl.locator,
+            debugConfig: this.options.debugConfig,
+          });
         },
         downloadTimeoutMs,
       );

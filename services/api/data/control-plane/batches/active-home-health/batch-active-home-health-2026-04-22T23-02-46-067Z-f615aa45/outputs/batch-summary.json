@@ -1,0 +1,245 @@
+{
+  "batchId": "batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45",
+  "status": "COMPLETED",
+  "startedAt": "2026-04-22T23:03:12.040Z",
+  "completedAt": "2026-04-23T01:12:10.530Z",
+  "lastUpdatedAt": "2026-04-23T01:12:10.530Z",
+  "totalWorkItems": 21,
+  "automationEligible": 21,
+  "processed": 21,
+  "totalCompleted": 0,
+  "totalBlocked": 21,
+  "totalFailed": 0,
+  "totalNeedsHumanReview": 0,
+  "totalReadyForBillingPrep": 0,
+  "totalParserExceptions": 0,
+  "percentComplete": 100,
+  "currentlyRunningCount": 0,
+  "currentBatchStatus": "COMPLETED",
+  "complete": 0,
+  "blocked": 21,
+  "failed": 0,
+  "needsHumanReview": 0,
+  "parserExceptions": 0,
+  "qaOutcomes": {
+    "READY_FOR_BILLING_PREP": 0,
+    "INCOMPLETE": 0,
+    "MISSING_DOCUMENTS": 18,
+    "PORTAL_NOT_FOUND": 3,
+    "PORTAL_MISMATCH": 0,
+    "AMBIGUOUS_PATIENT": 0,
+    "NEEDS_MANUAL_QA": 0
+  },
+  "patientRuns": [
+    {
+      "workItemId": "ANTONIA_MANZO__13198dac85eebdfb",
+      "patientName": "Antonia Manzo",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Diagnosis code candidates: M17.12, I00, I97.0, I58, I25, I50",
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patient-results\\ANTONIA_MANZO__13198dac85eebdfb.json"
+    },
+    {
+      "workItemId": "BARBARA_DOUGHTY__298dfd0458ac078e",
+      "patientName": "Barbara Doughty",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Diagnosis code candidates: I88.5014, I06, I00, I08, I16, I23, I30, I38",
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patient-results\\BARBARA_DOUGHTY__298dfd0458ac078e.json"
+    },
+    {
+      "workItemId": "BRUCE_LINDSAY__0878b65bfea00b73",
+      "patientName": "Bruce Lindsay",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Diagnosis code candidates: M19.011, M75.21",
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patient-results\\BRUCE_LINDSAY__0878b65bfea00b73.json"
+    },
+    {
+      "workItemId": "CORA_ANTONIO__af097c606dc4f5c1",
+      "patientName": "Cora Antonio",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Diagnosis code candidates: Z71.89, G47.00, M62.81, R26.81, W19.XXXA, E87.1, N18.9, E78.5, I00",
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patient-results\\CORA_ANTONIO__af097c606dc4f5c1.json"
+    },
+    {
+      "workItemId": "CYNTHIA_FRAGA__8dbb47b64b73c052",
+      "patientName": "Cynthia Fraga",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "PORTAL_NOT_FOUND",
+      "errorSummary": "Global patient search completed, but no matching patient result was available to open.",
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patient-results\\CYNTHIA_FRAGA__8dbb47b64b73c052.json"
+    },
+    {
+      "workItemId": "DANILO_DOMINGO__ec4c80f6bdd6347f",
+      "patientName": "Danilo Domingo",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Diagnosis code candidates: M85.80, F32.9, G47.00, J98.59, R35.0, R05.3, R93.89, M25.362, I00, M62.81, M54.50",
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patient-results\\DANILO_DOMINGO__ec4c80f6bdd6347f.json"
+    },
+    {
+      "workItemId": "ELMER_LAUB__feaca6b1593d4bac",
+      "patientName": "Elmer Laub",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Diagnosis code candidates: I00, I25, I50",
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patient-results\\ELMER_LAUB__feaca6b1593d4bac.json"
+    },
+    {
+      "workItemId": "EVELYN_DOMINGO__2d641e52dcee574f",
+      "patientName": "Evelyn Domingo",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Coding input exported: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\EVELYN_DOMINGO__2d641e52dcee574f\\coding-input.json",
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patient-results\\EVELYN_DOMINGO__2d641e52dcee574f.json"
+    },
+    {
+      "workItemId": "GARY_PLANCHON__f0aa0b19c0761d1a",
+      "patientName": "Gary Planchon",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Diagnosis code candidates: R63.0, J44.1, H35.9, R05.9, Z73.6, Z71.89, R26.81, M85.861, I00",
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patient-results\\GARY_PLANCHON__f0aa0b19c0761d1a.json"
+    },
+    {
+      "workItemId": "GREGORY_ROONEY__e7b62a849bac849c",
+      "patientName": "Gregory Rooney",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Diagnosis code candidates: I00, I25, I50",
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patient-results\\GREGORY_ROONEY__e7b62a849bac849c.json"
+    },
+    {
+      "workItemId": "JENNIFER_LILORE__9f682a10c9a7bf71",
+      "patientName": "Jennifer Lilore",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Diagnosis code candidates: I38, I45, I00, I29, I50, I25",
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patient-results\\JENNIFER_LILORE__9f682a10c9a7bf71.json"
+    },
+    {
+      "workItemId": "JIMMY_DOWNS__b97d97879984cbb9",
+      "patientName": "Jimmy Downs",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Diagnosis code candidates: X01, I00, I80, I50.23, I12.9, E11.9, N18.3, I25.10, I48.91, R53.1, R07.1, E11.65",
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patient-results\\JIMMY_DOWNS__b97d97879984cbb9.json"
+    },
+    {
+      "workItemId": "JUANITA_FELIPE__de7994dbc3c8bc33",
+      "patientName": "Juanita Felipe",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "PORTAL_NOT_FOUND",
+      "errorSummary": "Global patient search completed, but no matching patient result was available to open.",
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patient-results\\JUANITA_FELIPE__de7994dbc3c8bc33.json"
+    },
+    {
+      "workItemId": "KAREN_HALABY__a7017243867c839e",
+      "patientName": "Karen Halaby",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Diagnosis code candidates: M17.11, I20, I00, I70, I25, I50",
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patient-results\\KAREN_HALABY__a7017243867c839e.json"
+    },
+    {
+      "workItemId": "MILDRED_SHIELDS__0d06715ab34ca151",
+      "patientName": "Mildred Shields",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Diagnosis code candidates: S51.801A, M25.512, E55.9, M25.562, Z71.89, V65.49, R53.81, R53.1, I45, I00",
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patient-results\\MILDRED_SHIELDS__0d06715ab34ca151.json"
+    },
+    {
+      "workItemId": "NANCY_VU__5f64915cd7ca9729",
+      "patientName": "Nancy Vu",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Diagnosis code candidates: F19, I23, F20, A23, M23, I24",
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patient-results\\NANCY_VU__5f64915cd7ca9729.json"
+    },
+    {
+      "workItemId": "RICHARD_COBB__1a17f85096daceed",
+      "patientName": "Richard Cobb",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Diagnosis code candidates: I40, I00, I25, I04, I07, I91",
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patient-results\\RICHARD_COBB__1a17f85096daceed.json"
+    },
+    {
+      "workItemId": "ROBERT_BRYANT__d463cea934a6b4e2",
+      "patientName": "Robert Bryant",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Diagnosis code candidates: R00.2, H53.8, M25.511, G62.9, R32, Z71.89, V65.49, R53.1, I00, I50.9, I69.390",
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patient-results\\ROBERT_BRYANT__d463cea934a6b4e2.json"
+    },
+    {
+      "workItemId": "ROMELIA_PRIETO__ce220b6d77541e8f",
+      "patientName": "Romelia Prieto",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "PORTAL_NOT_FOUND",
+      "errorSummary": "Global patient search completed, but no matching patient result was available to open.",
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patient-results\\ROMELIA_PRIETO__ce220b6d77541e8f.json"
+    },
+    {
+      "workItemId": "SUZANNE_BELL__18d786ebd36e1d0f",
+      "patientName": "Suzanne Bell",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Diagnosis code candidates: S42.201D, S52.231D, I60, I61, I00",
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patient-results\\SUZANNE_BELL__18d786ebd36e1d0f.json"
+    },
+    {
+      "workItemId": "TONI_MILLER__d8a0f5b819ced72d",
+      "patientName": "Toni Miller",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Diagnosis code candidates: M19.011, M75.21, I37",
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patient-results\\TONI_MILLER__d8a0f5b819ced72d.json"
+    }
+  ]
+}

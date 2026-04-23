@@ -1,0 +1,102 @@
+{
+  "generatedAt": "2026-04-22T23:36:55.121Z",
+  "source": "printed_note_ocr",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\evidence\\DANILO_DOMINGO__ec4c80f6bdd6347f\\oasis-printed-note\\extracted-text.txt",
+  "llmInputSource": "fact_pack_primary",
+  "extractedFieldCount": 5,
+  "invocationModelId": "us.amazon.nova-lite-v1:0",
+  "currentChartValues": {
+    "medication_list": [
+      "5 mg",
+      "4.5 mcg",
+      "1000 mcg"
+    ],
+    "allergy_list": [
+      "No Known Allergies"
+    ],
+    "secondary_diagnoses": [
+      "M17.0 - Bilateral primary osteoarthritis of knee",
+      "M85.80 - Oth disrd of bone density and",
+      "E78.5 - Hyperlipidemia, unspecified"
+    ],
+    "code_status": "full_code",
+    "functional_limitations": [
+      "Ambulation",
+      "Dyspnea with minimal exertion",
+      "Endurance"
+    ]
+  },
+  "extractedFieldValues": [
+    {
+      "field_key": "medication_list",
+      "current_value": [
+        "5 mg",
+        "4.5 mcg",
+        "1000 mcg"
+      ],
+      "confidence": 0.95,
+      "source_spans": [
+        "1 Tab At bedtime 5 mg",
+        "80- /puff MDI 120 puff 2 4.5 mcg",
+        "1 Tab Once a day 1000 mcg"
+      ]
+    },
+    {
+      "field_key": "allergy_list",
+      "current_value": [
+        "No Known Allergies"
+      ],
+      "confidence": 0.92,
+      "source_spans": [
+        "None known"
+      ]
+    },
+    {
+      "field_key": "secondary_diagnoses",
+      "current_value": [
+        "M17.0 - Bilateral primary osteoarthritis of knee",
+        "M85.80 - Oth disrd of bone density and",
+        "E78.5 - Hyperlipidemia, unspecified"
+      ],
+      "confidence": 0.98,
+      "source_spans": [
+        "M17.0 - Bilateral primary osteoarthritis of knee",
+        "M85.80 - Oth disrd of bone density and",
+        "E78.5 - Hyperlipidemia, unspecified"
+      ]
+    },
+    {
+      "field_key": "code_status",
+      "current_value": "full_code",
+      "confidence": 0.98,
+      "source_spans": [
+        "Full Code"
+      ]
+    },
+    {
+      "field_key": "functional_limitations",
+      "current_value": [
+        "Ambulation",
+        "Dyspnea with minimal exertion",
+        "Endurance"
+      ],
+      "confidence": 0.96,
+      "source_spans": [
+        "Severe pain on ambulation",
+        "6 - Endurance",
+        "Ambulation"
+      ]
+    }
+  ],
+  "warnings": [
+    "LLM input source: fact_pack_primary.",
+    "Fact pack coverage: diagnoses, assessmentValues, homeboundEvidence, skilledNeedEvidence, hospitalizationReasons, medications, allergies, supportingSnippets.",
+    "Fact pack coverage score: 1.",
+    "Prompt character estimate: 3643.",
+    "Fallback reason: none.",
+    "Deterministic printed-note chart values: secondary_diagnoses, code_status, functional_limitations, allergy_list.",
+    "Selected option labels detected: 135.",
+    "Printed-note chart-value extraction used inference profile us.amazon.nova-lite-v1:0.",
+    "primary_diagnosis: rejected as low-confidence or suspicious for the field"
+  ]
+}

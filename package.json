@@ -9,8 +9,10 @@
   "scripts": {
     "build": "pnpm -r build",
     "typecheck": "pnpm -r typecheck",
+    "reset:control-plane": "pnpm exec tsx services/api/src/testing/resetAgencyControlPlane.ts --all",
     "dev:api": "pnpm --filter @medical-ai-qa/api dev",
     "dev:dashboard": "pnpm --filter @medical-ai-qa/dashboard dev",
+    "dashboard:qa-user": "node apps/dashboard/scripts/create-qa-user.mjs",
     "clean:dashboard": "pnpm --filter @medical-ai-qa/dashboard clean",
     "rebuild:dashboard": "pnpm --filter @medical-ai-qa/dashboard rebuild",
     "docker:demo:up": "docker compose -f docker-compose.demo.yml up --build",

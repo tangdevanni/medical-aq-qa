@@ -98,17 +98,25 @@ export async function runQaWorkflowOrchestrator(
   });
   stepLogs.push(...assessmentNote.stepLogs);
 
-  const printedNoteReview = await capturePrintedOasisNoteReview({
-    context: params.context,
-    workItem: params.workItem,
-    evidenceDir: params.evidenceDir,
-    outputDir: params.outputDir,
-    logger: params.logger,
-    portalClient: params.portalClient,
-    sharedEvidence: params.sharedEvidence,
-    assessmentNote: assessmentNote.result,
-    assessmentType: assessmentSelection.result.selectedAssessmentType,
-  });
+  const shouldCapturePrintedNote =
+    assessmentNote.result.oasisAssessmentStatus?.decision !== "SKIP";
+  const printedNoteReview = shouldCapturePrintedNote
+    ? await capturePrintedOasisNoteReview({
+        context: params.context,
+        workItem: params.workItem,
+        evidenceDir: params.evidenceDir,
+        outputDir: params.outputDir,
+        logger: params.logger,
+        portalClient: params.portalClient,
+        sharedEvidence: params.sharedEvidence,
+        assessmentNote: assessmentNote.result,
+        assessmentType: assessmentSelection.result.selectedAssessmentType,
+      })
+    : {
+        result: null,
+        reviewPath: null,
+        stepLogs: [] as AutomationStepLog[],
+      };
   stepLogs.push(...printedNoteReview.stepLogs);
 
   const timestamp = new Date().toISOString();
@@ -119,7 +127,10 @@ export async function runQaWorkflowOrchestrator(
     ...oasisMenu.result.warnings,
     ...assessmentSelection.result.warnings,
     ...assessmentNote.result.warnings,
-    ...printedNoteReview.result.warnings,
+    ...(shouldCapturePrintedNote
+      ? []
+      : [assessmentNote.result.oasisAssessmentStatus?.reason ?? "Skipped printed OASIS note capture due to OASIS page status."]),
+    ...(printedNoteReview.result?.warnings ?? []),
   ];
   const result: OasisQaEntryResult = {
     workflowDomain: "qa",
@@ -176,6 +187,19 @@ export async function runQaWorkflowOrchestrator(
         ? []
         : [{ source: "page_text", value: assessmentNote.result.lockStatus }],
     },
+    oasisAssessmentStatus: assessmentNote.result.oasisAssessmentStatus
+      ? {
+          detectedStatuses: assessmentNote.result.oasisAssessmentStatus.detectedStatuses,
+          primaryStatus: assessmentNote.result.oasisAssessmentStatus.primaryStatus,
+          decision: assessmentNote.result.oasisAssessmentStatus.decision,
+          processingEligible: assessmentNote.result.oasisAssessmentStatus.processingEligible,
+          reason: assessmentNote.result.oasisAssessmentStatus.reason,
+          signals: assessmentNote.result.oasisAssessmentStatus.matchedSignals.map((value) => ({
+            source: "page_text" as const,
+            value,
+          })),
+        }
+      : undefined,
     selectedRouteSummary: oasisMenu.result.opened
       ? `oasis review entry via ${oasisMenu.result.selectorUsed ?? "sidebar"}`
       : "OASIS menu not opened",
@@ -244,6 +268,10 @@ export async function runQaWorkflowOrchestrator(
       second30TotalCards: result.billingCalendarSummary?.periods.second30Days.totalCards ?? 0,
       requestedAssessmentType: result.assessmentSelection.requestedAssessmentType,
       selectedAssessmentType: result.assessmentSelection.selectedAssessmentType,
+      oasisAssessmentPrimaryStatus:
+        result.oasisAssessmentStatus?.primaryStatus ?? "UNKNOWN",
+      oasisAssessmentDecision:
+        result.oasisAssessmentStatus?.decision ?? "PROCESS",
     },
     "qa workflow completed downstream OASIS entry review",
   );

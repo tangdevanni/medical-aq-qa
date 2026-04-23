@@ -2,6 +2,10 @@ import type { QaPrefetchResult, QaVisibleDiagnosis } from "../../qa/types/qaPref
 import type { BillingPeriodCalendarSummary } from "./billingPeriodCalendarSummary";
 import type { EpisodeRangeOption } from "../navigation/episodeRangeDropdownService";
 import type { OasisPrintedNoteReviewResult } from "./oasisPrintedNoteReview";
+import type {
+  OasisAssessmentProcessingDecision,
+  OasisAssessmentProcessingStatus,
+} from "../status/oasisAssessmentProcessingStatus";
 
 export type OasisEpisodeSelectionStatus =
   | "SELECTED"
@@ -47,6 +51,14 @@ export interface OasisAssessmentNoteOpenResult {
   diagnosisListSamples: string[];
   visibleDiagnoses: QaVisibleDiagnosis[];
   lockStatus: "locked" | "unlocked" | "unknown";
+  oasisAssessmentStatus?: {
+    detectedStatuses: OasisAssessmentProcessingStatus[];
+    primaryStatus: OasisAssessmentProcessingStatus;
+    decision: OasisAssessmentProcessingDecision;
+    processingEligible: boolean;
+    reason: string;
+    matchedSignals: string[];
+  };
   warnings: string[];
 }
 

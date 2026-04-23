@@ -1,0 +1,3276 @@
+{
+  "runId": "batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4-BARBARA_LAMBERT__ec7d0b906058f49b",
+  "batchId": "batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4",
+  "subsidiaryId": "aplus-home-health",
+  "workItemId": "BARBARA_LAMBERT__ec7d0b906058f49b",
+  "patientName": "Barbara Lambert",
+  "processingStatus": "BLOCKED",
+  "executionStep": "BLOCKED",
+  "progressPercent": 100,
+  "startedAt": "2026-04-22T19:40:59.762Z",
+  "completedAt": "2026-04-22T19:46:45.381Z",
+  "lastUpdatedAt": "2026-04-22T19:46:45.287Z",
+  "matchResult": {
+    "status": "EXACT",
+    "searchQuery": "lambert, barbara",
+    "portalPatientId": null,
+    "portalDisplayName": "LAMBERT, BARBARA J MR# 178682 Active SOC: 2/26/2026 / DOB: 2/16/1958 LOS: 56 days MEDICARE 7675 Canyon Rain Street Las Vegas NV 89139 (702)806-0577 Last Visit Confirmed by SN : 04/18/2026 (4 days ago)",
+    "candidateNames": [
+      "LAMBERT, BARBARA J MR# 178682 Active SOC: 2/26/2026 / DOB: 2/16/1958 LOS: 56 days MEDICARE 7675 Canyon Rain Street Las Vegas NV 89139 (702)806-0577 Last Visit Confirmed by SN : 04/18/2026 (4 days ago)"
+    ],
+    "note": null
+  },
+  "artifacts": [
+    {
+      "artifactType": "OASIS",
+      "status": "DOWNLOADED",
+      "portalLabel": "ROC OASIS",
+      "locatorUsed": "button:has-text('Print')",
+      "discoveredAt": "2026-04-22T19:46:20.138Z",
+      "downloadPath": null,
+      "extractedFields": {
+        "assessmentType": "ROC",
+        "reviewSource": "printed_note_ocr",
+        "overallStatus": "PARTIAL",
+        "printProfileKey": "soc_full_document_v1",
+        "printButtonDetected": "true",
+        "printModalDetected": "false",
+        "printModalConfirmSucceeded": "false",
+        "extractionMethod": "visible_text_fallback",
+        "textLength": "2266",
+        "completedSectionCount": "0",
+        "incompleteSectionCount": "18",
+        "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\evidence\\BARBARA_LAMBERT__ec7d0b906058f49b\\oasis-printed-note\\extracted-text.txt",
+        "printedPdfPath": null,
+        "ocrResultPath": null,
+        "diagnosisMentionCount": "5",
+        "diagnosisMentions": "Hypertensive heart disease with heart failure | heart failure | chronic kidney disease | Diagnosis code candidate from extracted document metadata | wound infection",
+        "diagnosisCodeCount": "7",
+        "diagnosisCodes": "I24 | I18 | I33 | I35 | I38 | I40 | I14",
+        "diagnosisCodeCategories": "I24:Diseases of the circulatory system | I18:Diseases of the circulatory system | I33:Diseases of the circulatory system | I35:Diseases of the circulatory system | I38:Diseases of the circulatory system | I40:Diseases of the circulatory system | I14:Diseases of the circulatory system",
+        "diagnosisCanonicalJson": "{\"reason_for_admission\":null,\"diagnosis_phrases\":[\"Hypertensive heart disease with heart failure\",\"heart failure\",\"chronic kidney disease\",\"Diagnosis code candidate from extracted document metadata\",\"wound infection\"],\"diagnosis_code_pairs\":[{\"diagnosis\":\"Hypertensive heart disease with heart failure\",\"code\":\"I18\",\"code_source\":\"ocr text explicit or inferred\"},{\"diagnosis\":\"heart failure\",\"code\":\"I18\",\"code_source\":\"ocr text explicit or inferred\"},{\"diagnosis\":\"chronic kidney disease\",\"code\":\"I14\",\"code_source\":\"ocr text explicit or inferred\"},{\"diagnosis\":\"Diagnosis code candidate from extracted document metadata\",\"code\":\"I24\",\"code_source\":\"ocr text explicit\"},{\"diagnosis\":\"Diagnosis code candidate from extracted document metadata\",\"code\":\"I18\",\"code_source\":\"ocr text explicit\"},{\"diagnosis\":\"Diagnosis code candidate from extracted document metadata\",\"code\":\"I33\",\"code_source\":\"ocr text explicit\"},{\"diagnosis\":\"Diagnosis code candidate from extracted document metadata\",\"code\":\"I35\",\"code_source\":\"ocr text explicit\"},{\"diagnosis\":\"Diagnosis code candidate from extracted document metadata\",\"code\":\"I38\",\"code_source\":\"ocr text explicit\"},{\"diagnosis\":\"Diagnosis code candidate from extracted document metadata\",\"code\":\"I40\",\"code_source\":\"ocr text explicit\"}],\"icd10_codes_found_verbatim\":[\"I24\",\"I18\",\"I33\",\"I35\",\"I38\",\"I40\",\"I14\"],\"ordered_services\":[\"Physical Therapy\",\"Occupational Therapy\"],\"clinical_summary\":\"Diagnoses: - REHAB DIAGNOSIS: - I24 Diagnosis code candidate from extracted document metadata - I18 Diagnosis code candidate from extracted document metadata - I33 Diagnosis code candidate from extracted document metadata - I35 Diagnosis code candidate from extracted document metadata - I38 Diagnosis code candidate fro Chan continued wound care and extensive rehabilitation program as she is significantly - the medical management and continue transfer medications, continue the wound care and - seen was going on WC to therapy this am - Impression and Plan/Medical Assessment: - 2/19/25 continue wound care - continue wound care Hospitali\",\"source_quotes\":[\"Diagnoses: - REHAB DIAGNOSIS: - I24 Diagnosis code candidate from extracted document metadata - I18 Diagnosis code candidate from extracted document metadata - I33 Diagnosis code candidate from extracted document metadata - I35 Diagnosis code candidate from extracted document metadata - I38 Diagnosis code candidate fro\",\"Chan continued wound care and extensive rehabilitation program as she is significantly - the medical management and continue transfer medications, continue the wound care and - seen was going on WC to therapy this am - Impression and Plan/Medical Assessment: - 2/19/25 continue wound care - continue wound care Hospitali\"],\"uncertain_items\":[\"Multiple ICD-10 codes inferred from document metadata, but not explicitly stated in the text.\",\"Confidence levels are medium due to indirect references and lack of explicit confirmation in the text.\"],\"document_type\":\"Admission Order\",\"extraction_confidence\":\"high\"}",
+        "codingInputPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\coding-input.json",
+        "codingInputJson": "{\"primaryDiagnosis\":{\"code\":\"I18\",\"description\":\"Hypertensive heart disease with heart failure\",\"confidence\":\"high\"},\"otherDiagnoses\":[{\"code\":\"I14\",\"description\":\"chronic kidney disease\",\"confidence\":\"high\"},{\"code\":\"I24\",\"description\":\"Diagnosis code candidate from extracted document metadata\",\"confidence\":\"high\"}],\"suggestedOnsetType\":\"onset\",\"suggestedSeverity\":3,\"comorbidityFlags\":{\"pvd_pad\":false,\"diabetes\":false,\"none\":true},\"notes\":[\"Ordered services: Physical Therapy, Occupational Therapy\"]}",
+        "reasonForAdmission": null,
+        "diagnosisCodePairs": "Hypertensive heart disease with heart failure => I18 (ocr text explicit or inferred) | heart failure => I18 (ocr text explicit or inferred) | chronic kidney disease => I14 (ocr text explicit or inferred) | Diagnosis code candidate from extracted document metadata => I24 (ocr text explicit) | Diagnosis code candidate from extracted document metadata => I18 (ocr text explicit) | Diagnosis code candidate from extracted document metadata => I33 (ocr text explicit) | Diagnosis code candidate from extracted document metadata => I35 (ocr text explicit) | Diagnosis code candidate from extracted document metadata => I38 (ocr text explicit) | Diagnosis code candidate from extracted document metadata => I40 (ocr text explicit)",
+        "primaryDiagnosis": "Hypertensive heart disease with heart failure",
+        "primaryDiagnosisCode": "I18",
+        "otherDiagnoses": "chronic kidney disease (I14) | Diagnosis code candidate from extracted document metadata (I24)",
+        "suggestedOnsetType": "onset",
+        "suggestedSeverity": "3",
+        "comorbidityFlags": "{\"pvd_pad\":false,\"diabetes\":false,\"none\":true}",
+        "orderedServices": "Physical Therapy | Occupational Therapy",
+        "extractionConfidence": "high",
+        "uncertainDiagnosisItems": "Multiple ICD-10 codes inferred from document metadata, but not explicitly stated in the text. | Confidence levels are medium due to indirect references and lack of explicit confirmation in the text.",
+        "codingLlmUsed": "true",
+        "codingLlmModel": "us.amazon.nova-lite-v1:0",
+        "codingLlmError": null,
+        "documentTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\document-text.json"
+      },
+      "notes": [
+        "Printed-note review status: PARTIAL",
+        "Assessment type ROC is not explicitly automated yet; attempting the current SOC-oriented note open path.",
+        "OASIS print button click did not open a print modal.",
+        "Fell back to visible page text because printed-note OCR text was unavailable."
+      ]
+    }
+  ],
+  "artifactCount": 1,
+  "findings": [
+    {
+      "ruleId": "oasis-qa.coding.needs_review",
+      "stage": "CODING_REVIEW",
+      "outcome": "MISSING_DOCUMENTS",
+      "message": "Coding Review is needs review.",
+      "evidence": []
+    },
+    {
+      "ruleId": "oasis-qa.oasis.fail",
+      "stage": "OASIS_QA",
+      "outcome": "MISSING_DOCUMENTS",
+      "message": "OASIS QA is fail.",
+      "evidence": [
+        "Medical necessity is stated",
+        "Homebound reason is stated",
+        "Health assessment is documented"
+      ]
+    },
+    {
+      "ruleId": "oasis-qa.poc.missing",
+      "stage": "POC_QA",
+      "outcome": "MISSING_DOCUMENTS",
+      "message": "Plan Of Care QA is missing.",
+      "evidence": [
+        "Plan of care content extracted",
+        "POC QA completed in workbook",
+        "Diagnoses or codes are present in the plan of care",
+        "Interventions, goals, and frequency are present in the plan of care",
+        "Conditions or exacerbations are reflected in the plan of care"
+      ]
+    },
+    {
+      "ruleId": "oasis-qa.visit_notes.missing",
+      "stage": "VISIT_NOTES_REVIEW",
+      "outcome": "MISSING_DOCUMENTS",
+      "message": "Visit Notes Review is missing.",
+      "evidence": [
+        "Visit note content extracted",
+        "Visit notes review completed in workbook",
+        "Skilled need is clearly documented",
+        "Interventions performed are specific and detailed",
+        "Patient response to interventions is documented",
+        "Progress toward goals is noted",
+        "Vitals and focused assessment are documented",
+        "Medication review is documented",
+        "Changes in condition are clearly reported and addressed",
+        "Documentation supports billed services",
+        "Documentation remains consistent with OASIS and diagnoses"
+      ]
+    },
+    {
+      "ruleId": "oasis-qa.technical_review.missing",
+      "stage": "TECHNICAL_REVIEW",
+      "outcome": "MISSING_DOCUMENTS",
+      "message": "Technical Review is missing.",
+      "evidence": [
+        "SN visits were identified from visit-note content",
+        "Applicable disciplines were detected"
+      ]
+    },
+    {
+      "ruleId": "oasis-qa.final_check.fail",
+      "stage": "FINAL_BILLING_PREP_READINESS",
+      "outcome": "MISSING_DOCUMENTS",
+      "message": "Final Check is fail.",
+      "evidence": [
+        "Critical QA sections are complete before billing prep",
+        "Billing prep status in workbook"
+      ]
+    }
+  ],
+  "hasFindings": false,
+  "qaOutcome": "MISSING_DOCUMENTS",
+  "oasisQaSummary": {
+    "overallStatus": "BLOCKED",
+    "urgency": "ON_TRACK",
+    "daysInPeriod": 30,
+    "daysLeft": 30,
+    "sections": [
+      {
+        "key": "timing",
+        "label": "Timing / OASIS Due",
+        "status": "PASS",
+        "items": [
+          {
+            "key": "days_in_period",
+            "label": "Days in the 30-day period captured",
+            "status": "PASS",
+            "notes": "Workbook shows 30 days in period.",
+            "evidence": [
+              "Workbook days in period: 30"
+            ]
+          },
+          {
+            "key": "days_left",
+            "label": "Days left before OASIS due date verified",
+            "status": "PASS",
+            "notes": "30 day(s) remain before OASIS is due.",
+            "evidence": [
+              "Workbook days left: 30"
+            ]
+          },
+          {
+            "key": "urgency_bucket",
+            "label": "Urgency bucket",
+            "status": "PASS",
+            "notes": "ON TRACK",
+            "evidence": [
+              "Derived urgency from 30 day(s) left."
+            ]
+          }
+        ]
+      },
+      {
+        "key": "coding",
+        "label": "Coding Review",
+        "status": "NEEDS_REVIEW",
+        "items": [
+          {
+            "key": "coding_review_complete",
+            "label": "Coding review completed in workbook",
+            "status": "NEEDS_REVIEW",
+            "notes": "Workbook status: IN_PROGRESS",
+            "evidence": [
+              "IN_PROGRESS"
+            ]
+          },
+          {
+            "key": "coding_supported_by_oasis",
+            "label": "OASIS content is available to support coding review",
+            "status": "PASS",
+            "notes": "OASIS content extracted for coding review support.",
+            "evidence": [
+              "OASIS C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\evidence\\BARBARA_LAMBERT__ec7d0b906058f49b\\oasis-printed-note\\extracted-text.txt"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "oasis",
+        "label": "OASIS QA",
+        "status": "FAIL",
+        "items": [
+          {
+            "key": "oasis_document",
+            "label": "OASIS document content extracted",
+            "status": "PASS",
+            "notes": "1 supporting document(s) extracted.",
+            "evidence": [
+              "OASIS C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\evidence\\BARBARA_LAMBERT__ec7d0b906058f49b\\oasis-printed-note\\extracted-text.txt"
+            ]
+          },
+          {
+            "key": "oasis_workbook_status",
+            "label": "OASIS QA completed in workbook",
+            "status": "NEEDS_REVIEW",
+            "notes": "Workbook status: IN_PROGRESS",
+            "evidence": [
+              "IN_PROGRESS"
+            ]
+          },
+          {
+            "key": "medical_necessity",
+            "label": "Medical necessity is stated",
+            "status": "FAIL",
+            "notes": "OASIS text did not show medical necessity language.",
+            "evidence": []
+          },
+          {
+            "key": "homebound_reason",
+            "label": "Homebound reason is stated",
+            "status": "FAIL",
+            "notes": "OASIS text did not show a homebound reason.",
+            "evidence": []
+          },
+          {
+            "key": "health_assessment",
+            "label": "Health assessment is documented",
+            "status": "FAIL",
+            "notes": "OASIS text did not show a health assessment section or phrase.",
+            "evidence": []
+          },
+          {
+            "key": "skilled_interventions",
+            "label": "Skilled interventions during the OASIS visit are documented",
+            "status": "PASS",
+            "notes": "Requirement confirmed from extracted document content.",
+            "evidence": [
+              "Found skilled-intervention evidence: 4/22/2026 00:00 Berberova, Emiliya RN - Skilled Nursing In Progress YANN, DARYL Sabellano, Andrea 1-1 of 1 items 1 FINALE AI FINALE CLINICAL ASSISTANT START CON"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "poc",
+        "label": "Plan Of Care QA",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "poc_document",
+            "label": "Plan of care content extracted",
+            "status": "MISSING",
+            "notes": "No plan-of-care content was available for extraction.",
+            "evidence": []
+          },
+          {
+            "key": "poc_workbook_status",
+            "label": "POC QA completed in workbook",
+            "status": "MISSING",
+            "notes": "Workbook status: NOT_STARTED",
+            "evidence": [
+              "NOT_STARTED"
+            ]
+          },
+          {
+            "key": "poc_diagnoses_codes",
+            "label": "Diagnoses or codes are present in the plan of care",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "poc_interventions_goals_frequency",
+            "label": "Interventions, goals, and frequency are present in the plan of care",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "poc_conditions_exacerbations",
+            "label": "Conditions or exacerbations are reflected in the plan of care",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "visit_notes",
+        "label": "Visit Notes Review",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "visit_notes_document",
+            "label": "Visit note content extracted",
+            "status": "MISSING",
+            "notes": "No visit-note content was available for extraction.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_workbook_status",
+            "label": "Visit notes review completed in workbook",
+            "status": "MISSING",
+            "notes": "Workbook status: NOT_STARTED",
+            "evidence": [
+              "NOT_STARTED"
+            ]
+          },
+          {
+            "key": "visit_notes_skilled_need",
+            "label": "Skilled need is clearly documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_intervention_detail",
+            "label": "Interventions performed are specific and detailed",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_patient_response",
+            "label": "Patient response to interventions is documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_progress",
+            "label": "Progress toward goals is noted",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_vitals",
+            "label": "Vitals and focused assessment are documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_medication_review",
+            "label": "Medication review is documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_condition_changes",
+            "label": "Changes in condition are clearly reported and addressed",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_billed_services_support",
+            "label": "Documentation supports billed services",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_consistency",
+            "label": "Documentation remains consistent with OASIS and diagnoses",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "technical_review",
+        "label": "Technical Review",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "portal_patient_match",
+            "label": "Portal patient match resolved",
+            "status": "PASS",
+            "notes": "Portal match status: EXACT",
+            "evidence": [
+              "lambert, barbara",
+              "LAMBERT, BARBARA J MR# 178682 Active SOC: 2/26/2026 / DOB: 2/16/1958 LOS: 56 days MEDICARE 7675 Canyon Rain Street Las Vegas NV 89139 (702)806-0577 Last Visit Confirmed by SN : 04/18/2026 (4 days ago)"
+            ]
+          },
+          {
+            "key": "sn_visit_count",
+            "label": "SN visits were identified from visit-note content",
+            "status": "MISSING",
+            "notes": "Visit-note content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "discipline_detection",
+            "label": "Applicable disciplines were detected",
+            "status": "MISSING",
+            "notes": "Visit-note content is not available for discipline detection.",
+            "evidence": []
+          },
+          {
+            "key": "physician_orders",
+            "label": "Physician orders were checked",
+            "status": "NEEDS_REVIEW",
+            "notes": "Orders evidence was discovered (1 candidate(s)).",
+            "evidence": [
+              "Detected 1 order document candidate(s)."
+            ]
+          },
+          {
+            "key": "supporting_notes",
+            "label": "Supporting note categories were reviewed",
+            "status": "NOT_APPLICABLE",
+            "notes": "No additional supporting note categories were discovered for this patient.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "final_check",
+        "label": "Final Check",
+        "status": "FAIL",
+        "items": [
+          {
+            "key": "critical_sections_clear",
+            "label": "Critical QA sections are complete before billing prep",
+            "status": "FAIL",
+            "notes": "Blocking sections: Medical necessity is stated, Homebound reason is stated, Health assessment is documented, Plan of care content extracted, POC QA completed in workbook, Diagnoses or codes are present in the plan of care, Interventions, goals, and frequency are present in the plan of care, Conditions or exacerbations are reflected in the plan of care, Visit note content extracted, Visit notes review completed in workbook, Skilled need is clearly documented, Interventions performed are specific and detailed, Patient response to interventions is documented, Progress toward goals is noted, Vitals and focused assessment are documented, Medication review is documented, Changes in condition are clearly reported and addressed, Documentation supports billed services, Documentation remains consistent with OASIS and diagnoses, SN visits were identified from visit-note content, Applicable disciplines were detected",
+            "evidence": [
+              "Timing / OASIS Due: PASS",
+              "Coding Review: NEEDS_REVIEW",
+              "OASIS QA: FAIL",
+              "Plan Of Care QA: MISSING",
+              "Visit Notes Review: MISSING",
+              "Technical Review: MISSING"
+            ]
+          },
+          {
+            "key": "billing_prep_status",
+            "label": "Billing prep status in workbook",
+            "status": "MISSING",
+            "notes": "Workbook status: NOT_STARTED",
+            "evidence": [
+              "NOT_STARTED"
+            ]
+          }
+        ]
+      }
+    ],
+    "blockers": [
+      "Medical necessity is stated",
+      "Homebound reason is stated",
+      "Health assessment is documented",
+      "Plan of care content extracted",
+      "POC QA completed in workbook",
+      "Diagnoses or codes are present in the plan of care",
+      "Interventions, goals, and frequency are present in the plan of care",
+      "Conditions or exacerbations are reflected in the plan of care",
+      "Visit note content extracted",
+      "Visit notes review completed in workbook",
+      "Skilled need is clearly documented",
+      "Interventions performed are specific and detailed",
+      "Patient response to interventions is documented",
+      "Progress toward goals is noted",
+      "Vitals and focused assessment are documented",
+      "Medication review is documented",
+      "Changes in condition are clearly reported and addressed",
+      "Documentation supports billed services",
+      "Documentation remains consistent with OASIS and diagnoses",
+      "SN visits were identified from visit-note content",
+      "Applicable disciplines were detected"
+    ]
+  },
+  "documentInventory": [
+    {
+      "sourceLabel": "LAMBERT BARBARA J REFERRAL 02242026.pdf",
+      "normalizedType": "ORDER",
+      "discipline": "UNKNOWN",
+      "confidence": 0.92,
+      "evidence": [
+        "Workflow phase: file_uploads_only",
+        "oasisReadyDiagnosisPath:none",
+        "primaryDiagnosisSelected:none",
+        "otherDiagnosisCount:0",
+        "codeConfidenceSummary:high:0 medium:0 low:0",
+        "oasisLockState:none",
+        "unlockControlVisible:false",
+        "unlockControlText:none",
+        "fieldsEditable:false",
+        "verificationOnly:true",
+        "inputEligible:false",
+        "Active OASIS workflow path: chart -> File Uploads/referral -> OASIS sidebar -> OASIS document table -> SOC document -> Active Diagnoses",
+        "Dangerous controls detected: none",
+        "oasisMenuClicked:false",
+        "oasisDocumentListDetected:false",
+        "socDocumentFound:false",
+        "socDocumentClicked:false",
+        "matchedSocRowText:none",
+        "matchedSocAnchorText:none",
+        "diagnosisSectionOpened:false",
+        "diagnosisListFound:false",
+        "diagnosisNavigationMethod:none",
+        "diagnosisListSamples:none",
+        "diagnosisSnapshotRowCount:0",
+        "fileUploadsAccessible:true",
+        "fileUploadsUrl:https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads",
+        "visibleUploadedDocuments:📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf | 📄 LAMBERT, BARBARA J REFERRAL 02252026.pdf | 📄 LAMBERT, BARBARA J. ORDER 03302026.pdf | 📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf 📝 ✏️ 🗑️ 🔗 | 📄 LAMBERT, BARBARA J REFERRAL 02252026.pdf 📝 ✏️ 🗑️ 🔗 | 📄 LAMBERT, BARBARA J. ORDER 03302026.pdf 📝 ✏️ 🗑️ 🔗",
+        "admissionOrderAccessible:true",
+        "admissionOrderTitle:📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf 📝 ✏️ 🗑️ 🔗",
+        "admissionReasonPrimary:none",
+        "admissionReasonSnippets:none",
+        "rawExtractedTextSource:dom",
+        "domExtractionRejectedReasons:viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS",
+        "possibleIcd10Codes:I00 | I25 | I50",
+        "sourceMetaPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\documents\\lambert-barbara-j-referral-02242026-pdf\\source-meta.json",
+        "sourcePdfPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\documents\\lambert-barbara-j-referral-02242026-pdf\\source.pdf",
+        "extractedTextPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\documents\\lambert-barbara-j-referral-02242026-pdf\\extracted-text.txt",
+        "printedPdfPath:none"
+      ],
+      "sourceUrl": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads",
+      "sourcePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\documents\\lambert-barbara-j-referral-02242026-pdf\\source.pdf",
+      "discoveredAt": "2026-04-22T19:44:12.376Z",
+      "openBehavior": "SAME_PAGE"
+    }
+  ],
+  "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patient-results\\BARBARA_LAMBERT__ec7d0b906058f49b.json",
+  "bundleAvailable": true,
+  "logPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\logs\\BARBARA_LAMBERT__ec7d0b906058f49b.json",
+  "logAvailable": true,
+  "retryEligible": false,
+  "errorSummary": "Diagnosis code candidates: I24, I18, I33, I35, I38, I40, I14",
+  "auditArtifacts": {
+    "tracePath": null,
+    "screenshotPaths": [],
+    "downloadPaths": []
+  },
+  "workflowRuns": [
+    {
+      "workflowRunId": "batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4-BARBARA_LAMBERT__ec7d0b906058f49b:coding",
+      "workflowDomain": "coding",
+      "status": "BLOCKED",
+      "stepName": "BLOCKED",
+      "message": "Diagnosis code candidates: I24, I18, I33, I35, I38, I40, I14",
+      "chartUrl": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/calendar",
+      "startedAt": "2026-04-22T19:46:45.065Z",
+      "completedAt": "2026-04-22T19:46:45.381Z",
+      "lastUpdatedAt": "2026-04-22T19:46:45.381Z",
+      "workflowResultPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\coding-input.json",
+      "workflowLogPath": null
+    },
+    {
+      "workflowRunId": "batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4-BARBARA_LAMBERT__ec7d0b906058f49b:qa",
+      "workflowDomain": "qa",
+      "status": "COMPLETED",
+      "stepName": "OASIS_QA_ENTRY_COMPLETE",
+      "message": "OASIS QA entry completed with warnings: LLM input source: fact_pack_primary.",
+      "chartUrl": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/calendar",
+      "startedAt": "2026-04-22T19:40:59.818Z",
+      "completedAt": "2026-04-22T19:46:20.134Z",
+      "lastUpdatedAt": "2026-04-22T19:46:20.134Z",
+      "workflowResultPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\qa-prefetch-result.json",
+      "workflowLogPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\logs\\BARBARA_LAMBERT__ec7d0b906058f49b.json"
+    }
+  ],
+  "workItemSnapshot": {
+    "id": "BARBARA_LAMBERT__ec7d0b906058f49b",
+    "subsidiaryId": "aplus-home-health",
+    "patientIdentity": {
+      "displayName": "Barbara Lambert",
+      "normalizedName": "BARBARA LAMBERT",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-02-26",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Berberova, Emiliya RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "03-ROC"
+    },
+    "workflowTypes": [
+      "ROC",
+      "SOC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 30,
+      "daysInPeriod": null,
+      "daysLeft": 30,
+      "daysLeftBeforeOasisDueDate": 30,
+      "rawTrackingValues": [
+        "30",
+        "27"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "IN_PROGRESS",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "ROC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "In Progress"
+      },
+      {
+        "workflowTypes": [
+          "ROC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "04/22/2026"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "In Progress"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "04/19/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "ROC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 9
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 27
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 9,
+        "values": {
+          "patientName": "LAMBERT, BARBARA",
+          "episodeDate": "02/26/2026",
+          "assignedStaff": "Berberova, Emiliya RN",
+          "payer": "Medicare",
+          "rfa": "03-ROC",
+          "trackingDays": "30",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "In Progress",
+          "oasisQaRemarks": "04/22/2026",
+          "pocQaRemarks": null
+        }
+      },
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 27,
+        "values": {
+          "patientName": "LAMBERT, BARBARA",
+          "episodeDate": "02/26/2026",
+          "assignedStaff": "Macaraeg, Kristin RN",
+          "payer": "Medicare",
+          "rfa": "06-XFER",
+          "trackingDays": "27",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "In Progress",
+          "oasisQaRemarks": "04/19/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  "automationStepLogs": [
+    {
+      "timestamp": "2026-04-22T19:42:52.554Z",
+      "step": "login",
+      "message": "Reused the authenticated portal session established for this batch.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:40:59.819Z",
+      "step": "run_started",
+      "message": "Patient run started from the shared Playwright portal runner.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69dd3e89f944e92b68fd6c0d/intake/69dd3f31842b6015299c62f8/documents/note/oasis/69dd3f459faee4193dd5dc38",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69dd3e89f944e92b68fd6c0d/intake/69dd3f31842b6015299c62f8/documents/note/oasis/69dd3f459faee4193dd5dc38",
+      "selectorUsed": null,
+      "found": [
+        "currentUrl=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69dd3e89f944e92b68fd6c0d/intake/69dd3f31842b6015299c62f8/documents/note/oasis/69dd3f459faee4193dd5dc38"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "subsidiaryId=aplus-home-health",
+        "portalBaseUrl=https://app.finalehealth.com",
+        "configuredDashboardUrl=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+        "resolvedDashboardUrl=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+        "currentContextRequiresReset=true"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:41:08.344Z",
+      "step": "dashboard_reset",
+      "message": "Reset the portal session to the provider dashboard before patient matching.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69dd3e89f944e92b68fd6c0d/intake/69dd3f31842b6015299c62f8/documents/note/oasis/69dd3f459faee4193dd5dc38",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "selectorUsed": null,
+      "found": [
+        "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Reset triggered: true",
+        "Current URL before patient: https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69dd3e89f944e92b68fd6c0d/intake/69dd3f31842b6015299c62f8/documents/note/oasis/69dd3f459faee4193dd5dc38",
+        "Current URL after reset: https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+        "Dashboard reset target URL: https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+        "Dashboard markers found: true",
+        "goto_base_url: dashboardDetected=true currentUrl=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:41:08.344Z",
+      "step": "dashboard_ready",
+      "message": "Provider dashboard ready confirmed using 'button:has-text(\"Search Patient\")'.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "selectorUsed": null,
+      "found": [
+        "button:has-text(\"Search Patient\")"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "attempt=1 signal=button:has-text(\"Search Patient\") stableDom=false url=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard title=Finale Health buttons=114 inputs=7 text=A Plus Home Health Systems LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifica"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:41:24.782Z",
+      "step": "patient_lookup_entry",
+      "message": "Global patient search is available from the current authenticated page context.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "selectorUsed": "getByText(/Search Patient/i) -> nearest clickable parent (present)",
+      "found": [
+        "getByText(/Search Patient/i) -> nearest clickable parent (present)"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Current URL before patient lookup: https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+        "Global search available in current context: true",
+        "Global search availability selector used: getByText(/Search Patient/i) -> nearest clickable parent (present)",
+        "Resolved global search trigger with present manual selector 'getByText(/Search Patient/i) -> nearest clickable parent (present)' even though Playwright visibility did not confirm it in the probe path.",
+        "[not_found] Global patient search button by accessible name count=0 visible=0 elapsedMs=80",
+        "[not_visible] Global patient search button containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=60 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=67 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search button containing Search Patient text count=1 visible=0 elapsedMs=90 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search visible control containing Search Patient text count=1 visible=0 elapsedMs=67 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search fin-button wrapper containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=52 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control inside fin-button wrapper count=1 visible=0 elapsedMs=83 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by shortcut hint count=0 visible=0 elapsedMs=60",
+        "[not_visible] Global patient search button containing search icon and patient-search text count=1 visible=0 elapsedMs=67 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by accessible name count=0 visible=0 elapsedMs=59",
+        "[not_visible] Global patient search button containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=74 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=81 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search button containing Search Patient text count=1 visible=0 elapsedMs=75 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search visible control containing Search Patient text count=1 visible=0 elapsedMs=73 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search fin-button wrapper containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=67 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control inside fin-button wrapper count=1 visible=0 elapsedMs=75 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by shortcut hint count=0 visible=0 elapsedMs=44",
+        "[not_visible] Global patient search button containing search icon and patient-search text count=1 visible=0 elapsedMs=74 samples=Search Patient...Ctrl K"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:41:24.782Z",
+      "step": "patient_lookup_entry",
+      "message": "Patient lookup will start after shared dashboard bootstrap confirmed provider dashboard readiness and global search availability.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69dd3e89f944e92b68fd6c0d/intake/69dd3f31842b6015299c62f8/documents/note/oasis/69dd3f459faee4193dd5dc38",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "selectorUsed": null,
+      "found": [
+        "patientLookupEntryContext=dashboard_reset_then_global_search",
+        "dashboard_context_established",
+        "globalSearchAvailable=true"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "currentUrlAfterLogin=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69dd3e89f944e92b68fd6c0d/intake/69dd3f31842b6015299c62f8/documents/note/oasis/69dd3f459faee4193dd5dc38",
+        "currentUrlBeforeSearch=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+        "resolvedDashboardUrl=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+        "globalSearchSelectorUsed=getByText(/Search Patient/i) -> nearest clickable parent (present)"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:41:24.783Z",
+      "step": "patient_search_start",
+      "message": "Starting patient search with 3 query variant(s).",
+      "patientName": "Barbara Lambert",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "selectorUsed": null,
+      "found": [
+        "lambert, barbara",
+        "LAMBERT, BARBARA",
+        "Barbara Lambert",
+        "BARBARA LAMBERT",
+        "LAMBERT, BARBARA"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Original workbook patient name: Barbara Lambert",
+        "Normalized global search query: lambert, barbara",
+        "Normalized expected display name: LAMBERT, BARBARA",
+        "Workbook name variants: Barbara Lambert | BARBARA LAMBERT | LAMBERT, BARBARA"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:41:57.461Z",
+      "step": "global_patient_search_open",
+      "message": "Clicked the global Search Patient trigger and found the visible search input.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "selectorUsed": "getByText(/Search Patient/i) -> nearest clickable parent (present)",
+      "found": [
+        "Search Patient trigger",
+        "search input"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Original workbook patient name: Barbara Lambert",
+        "Normalized global search query: lambert, barbara",
+        "Search trigger clicked: true",
+        "Trigger click method: dom_click",
+        "Search modal visible: true",
+        "Global search control selector used: getByText(/Search Patient/i) -> nearest clickable parent (present)",
+        "Global search surface selector used: Global patient search overlay/dialog containing an input",
+        "Global search modal selector used: div.search-header.open",
+        "Resolved global search trigger with present manual selector 'getByText(/Search Patient/i) -> nearest clickable parent (present)' even though Playwright visibility did not confirm it in the probe path.",
+        "[not_found] Global patient search button by accessible name count=0 visible=0 elapsedMs=43",
+        "[not_visible] Global patient search button containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=62 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=67 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search button containing Search Patient text count=1 visible=0 elapsedMs=90 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search visible control containing Search Patient text count=1 visible=0 elapsedMs=59 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search fin-button wrapper containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=58 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control inside fin-button wrapper count=1 visible=0 elapsedMs=58 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by shortcut hint count=0 visible=0 elapsedMs=44",
+        "[not_visible] Global patient search button containing search icon and patient-search text count=1 visible=0 elapsedMs=61 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by accessible name count=0 visible=0 elapsedMs=45",
+        "[not_visible] Global patient search button containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=68 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=117 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search button containing Search Patient text count=1 visible=0 elapsedMs=67 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search visible control containing Search Patient text count=1 visible=0 elapsedMs=68 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search fin-button wrapper containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=57 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control inside fin-button wrapper count=1 visible=0 elapsedMs=71 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by shortcut hint count=0 visible=0 elapsedMs=52",
+        "[not_visible] Global patient search button containing search icon and patient-search text count=1 visible=0 elapsedMs=60 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search dialog by accessible name count=0 visible=0 elapsedMs=44",
+        "[matched] Global patient search overlay/dialog containing an input count=1 visible=1 elapsedMs=77 samples=EscPatients Sort By 3Sort By×Full Name×asc×SOC Date×desc×Status×ascAdd another sort itemNo recent searchesSearch by:Status:ActivePendingOn-HoldLeadNon-AdmitDischarged",
+        "Search input found by confirmed Search patients placeholder selector.",
+        "[matched] Global patient search input by confirmed Search patients placeholder count=1 visible=1 elapsedMs=100"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:42:10.784Z",
+      "step": "patient_search_input",
+      "message": "Typed the normalized query into the global patient search and waited for results.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "selectorUsed": "input[type=\"text\"][placeholder*=\"Search patients\"]",
+      "found": [
+        "LAMBERT, BARBARA J MR# 178682 Active SOC: 2/26/2026 / DOB: 2/16/1958 LOS: 56 daysMEDICARE7675 Canyon Rain Street Las Vegas NV 89139(702)806-0577Last Visit Confirmed by SN : 04/18/2026 (4 days ago)"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Search trigger clicked: true",
+        "Search input found: true",
+        "Typing into focused field succeeded: true",
+        "Used direct input fallback: false",
+        "Search query typed: lambert, barbara",
+        "Result count: 1",
+        "Candidate search result texts: LAMBERT, BARBARA J MR# 178682 Active SOC: 2/26/2026 / DOB: 2/16/1958 LOS: 56 daysMEDICARE7675 Canyon Rain Street Las Vegas NV 89139(702)806-0577Last Visit Confirmed by SN : 04/18/2026 (4 days ago)",
+        "attempt=1 rowCount=1 text=LAMBERT, BARBARA J MR# 178682 Active SOC: 2/26/2026 / DOB: 2/16/1958 LOS: 56 daysMEDICARE7675 Canyon Rain Street Las Vegas NV 89139(702)806-0577Last Visit Confirmed by SN : 04/18/2026 (4 days ago)"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:42:37.777Z",
+      "step": "patient_search",
+      "message": "Global patient search completed with 1 candidate(s).",
+      "patientName": "Barbara Lambert",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "selectorUsed": "getByText(/Search Patient/i) -> nearest clickable parent (present) -> input[type=\"text\"][placeholder*=\"Search patients\"] -> Global patient search result tiles containing ngb-highlight",
+      "found": [
+        "LAMBERT, BARBARA J MR# 178682 Active SOC: 2/26/2026 / DOB: 2/16/1958 LOS: 56 days MEDICARE 7675 Canyon Rain Street Las Vegas NV 89139 (702)806-0577 Last Visit Confirmed by SN : 04/18/2026 (4 days ago)"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Original workbook patient name: Barbara Lambert",
+        "Normalized global search query: lambert, barbara",
+        "Normalized expected display name: LAMBERT, BARBARA",
+        "Global search control selector used: getByText(/Search Patient/i) -> nearest clickable parent (present)",
+        "Global search surface selector used: Global patient search overlay/dialog containing an input",
+        "Global search input selector used: input[type=\"text\"][placeholder*=\"Search patients\"]",
+        "Result selector used: Global patient search result tiles containing ngb-highlight",
+        "Search results ready: true",
+        "Visible result row count: 1",
+        "No results marker visible: false",
+        "Candidate search result texts: LAMBERT, BARBARA J MR# 178682 Active SOC: 2/26/2026 / DOB: 2/16/1958 LOS: 56 days MEDICARE 7675 Canyon Rain Street Las Vegas NV 89139 (702)806-0577 Last Visit Confirmed by SN : 04/18/2026 (4 days ago)",
+        "Result text sample: LAMBERT, BARBARA J MR# 178682 Active SOC: 2/26/2026 / DOB: 2/16/1958 LOS: 56 days MEDICARE 7675 Canyon Rain Street Las Vegas NV 89139 (702)806-0577 Last Visit Confirmed by SN : 04/18/2026 (4 days ago)",
+        "attempt=1 rowCount=1 text=LAMBERT, BARBARA J MR# 178682 Active SOC: 2/26/2026 / DOB: 2/16/1958 LOS: 56 daysMEDICARE7675 Canyon Rain Street Las Vegas NV 89139(702)806-0577Last Visit Confirmed by SN : 04/18/2026 (4 days ago)",
+        "rowCount=1",
+        "noResultsVisible=false",
+        "Normalized query typed=lambert, barbara",
+        "Normalized expected display name=LAMBERT, BARBARA",
+        "candidate[1]=LAMBERT, BARBARA J MR# 178682 Active SOC: 2/26/2026 / DOB: 2/16/1958 LOS: 56 days MEDICARE 7675 Canyon Rain Street Las Vegas NV 89139 (702)806-0577 Last Visit Confirmed by SN : 04/18/2026 (4 days ago)",
+        "Candidate 'LAMBERT, BARBARA J MR# 178682 Active SOC: 2/26/2026 / DOB: 2/16/1958 LOS: 56 days MEDICARE 7675 Canyon Rain Street Las Vegas NV 89139 (702)806-0577 Last Visit Confirmed by SN : 04/18/2026 (4 days ago)' row='LAMBERT, BARBARA J MR# 178682 Active SOC: 2/26/2026 / DOB: 2/16/1958 LOS: 56 days MEDICARE 7675 Canyon Rain Street Las Vegas NV 89139 (702)806-0577 Last Visit Confirmed by SN : 04/18/2026 (4 days ago)' selector='Global patient search result tiles containing ngb-highlight' container='search-body__item ng-star-inserted' score=420 exact=true containsFullQuery=true containsFirstAndLast=true reasons=all patient name tokens present; ngb-highlight patient-name text starts with the normalized LAST, FIRST display name; row/card text contains both last and first name tokens; row text contains the full first-name segment"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:42:48.508Z",
+      "step": "patient_search_match_resolution",
+      "message": "Selected patient result 'LAMBERT, BARBARA J MR# 178682 Active SOC: 2/26/2026 / DOB: 2/16/1958 LOS: 56 days MEDICARE 7675 Canyon Rain Street Las Vegas NV 89139 (702)806-0577 Last Visit Confirmed by SN : 04/18/2026 (4 days ago)' from the global search.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/calendar",
+      "selectorUsed": null,
+      "found": [
+        "LAMBERT, BARBARA J MR# 178682 Active SOC: 2/26/2026 / DOB: 2/16/1958 LOS: 56 days MEDICARE 7675 Canyon Rain Street Las Vegas NV 89139 (702)806-0577 Last Visit Confirmed by SN : 04/18/2026 (4 days ago)"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Matched patient result text: LAMBERT, BARBARA J MR# 178682 Active SOC: 2/26/2026 / DOB: 2/16/1958 LOS: 56 days MEDICARE 7675 Canyon Rain Street Las Vegas NV 89139 (702)806-0577 Last Visit Confirmed by SN : 04/18/2026 (4 days ago)",
+        "Matched row text: LAMBERT, BARBARA J MR# 178682 Active SOC: 2/26/2026 / DOB: 2/16/1958 LOS: 56 days MEDICARE 7675 Canyon Rain Street Las Vegas NV 89139 (702)806-0577 Last Visit Confirmed by SN : 04/18/2026 (4 days ago)",
+        "Normalized global search query: lambert, barbara",
+        "Normalized expected display name: LAMBERT, BARBARA",
+        "Clicked tile selector/container summary: Global patient search result tiles containing ngb-highlight :: search-body__item ng-star-inserted",
+        "all patient name tokens present",
+        "ngb-highlight patient-name text starts with the normalized LAST, FIRST display name",
+        "row/card text contains both last and first name tokens",
+        "row text contains the full first-name segment"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:42:48.508Z",
+      "step": "chart_open",
+      "message": "Opened the patient page from global search in read-only mode for LAMBERT, BARBARA J MR# 178682 Active SOC: 2/26/2026 / DOB: 2/16/1958 LOS: 56 days MEDICARE 7675 Canyon Rain Street Las Vegas NV 89139 (702)806-0577 Last Visit Confirmed by SN : 04/18/2026 (4 days ago).",
+      "patientName": "Barbara Lambert",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/calendar",
+      "selectorUsed": "Global patient search result tiles containing ngb-highlight :: nearest clickable parent around ngb-highlight",
+      "found": [
+        "Documents",
+        "Clinical: , Functional: , Comorbidity:",
+        "FINALE CLINICAL ASSISTANT"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Matched patient result text: LAMBERT, BARBARA J MR# 178682 Active SOC: 2/26/2026 / DOB: 2/16/1958 LOS: 56 days MEDICARE 7675 Canyon Rain Street Las Vegas NV 89139 (702)806-0577 Last Visit Confirmed by SN : 04/18/2026 (4 days ago)",
+        "Clicked patient result text: LAMBERT, BARBARA J MR# 178682 Active SOC: 2/26/2026 / DOB: 2/16/1958 LOS: 56 days MEDICARE 7675 Canyon Rain Street Las Vegas NV 89139 (702)806-0577 Last Visit Confirmed by SN : 04/18/2026 (4 days ago)",
+        "Clicked tile selector/container summary: Global patient search result tiles containing ngb-highlight :: search-body__item ng-star-inserted",
+        "Click target summary: Global patient search result tiles containing ngb-highlight :: nearest clickable parent around ngb-highlight",
+        "URL after patient navigation: https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/calendar",
+        "Used Enter retry: false",
+        "Dashboard URL changed: true",
+        "Chart/page markers found: Documents | Clinical: , Functional: , Comorbidity: | FINALE CLINICAL ASSISTANT",
+        "Preferred click target was the nearest clickable parent around the highlighted patient name.",
+        "all patient name tokens present",
+        "ngb-highlight patient-name text starts with the normalized LAST, FIRST display name",
+        "row/card text contains both last and first name tokens",
+        "row text contains the full first-name segment",
+        "attempt=1 urlChanged=true dashboardUrlChanged=true urlLooksLikePatientIntakePage=true chartMarkersFound=true markers=Documents | Clinical: , Functional: , Comorbidity: | FINALE CLINICAL ASSISTANT url=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/calendar"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:42:52.553Z",
+      "step": "patient_admission_status",
+      "message": "Captured patient admission status from chart header: Active.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/calendar",
+      "selectorUsed": "Patient admission status badge in app-patient-status component",
+      "found": [
+        "Active"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "[matched] Patient admission status badge in app-patient-status component count=1 visible=1 elapsedMs=52 samples=Active"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:42:52.553Z",
+      "step": "shared_portal_access",
+      "message": "Shared portal access reached the patient chart and produced 2 workflow context(s).",
+      "patientName": "Barbara Lambert",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/calendar",
+      "selectorUsed": null,
+      "found": [
+        "coding:https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/calendar",
+        "qa:https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/calendar"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "matchStatus=EXACT",
+        "portalPatientId=none",
+        "portalAdmissionStatus=Active",
+        "dashboardUrl=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+        "chartUrl=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/calendar"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:42:52.554Z",
+      "step": "shared_evidence_discovery_start",
+      "message": "Shared evidence workflow started from the patient chart context.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/calendar",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=coding",
+        "patientRunId=batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4-BARBARA_LAMBERT__ec7d0b906058f49b",
+        "status=started",
+        "chartUrl=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/calendar"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:44:12.376Z",
+      "step": "file_uploads_open",
+      "message": "Opened File Uploads section and enumerated available uploaded records.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads",
+      "selectorUsed": "patient File Uploads sidebar anchor by /file-uploads href",
+      "found": [
+        "fileUploadsAccessible:true",
+        "patientFileUploadsRouteDetected:true",
+        "genericProviderDocumentsRouteDetected:false",
+        "fileUploadsSidebarClickSucceeded:true",
+        "pageComponentDetected:true",
+        "traversalMode:file_list_view",
+        "usedChartDocumentsFallback:false",
+        "matchedFileUploadsLabel:File Uploads",
+        "matchedFileUploadsHref:/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads",
+        "referralFolderSelected:true",
+        "referralFolderLabel:📁 Referral Files 🔀 ✏️ 🗑️",
+        "matchedReferralFileLabel:📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf",
+        "normalizedFileLabels:lambert barbara j referral 02242026.pdf | lambert barbara j referral 02252026.pdf | lambert barbara j.order 03302026.pdf",
+        "matchedSourceDocuments:lambert barbara j referral 02242026.pdf | lambert barbara j referral 02242026.pdf | lambert barbara j referral 02252026.pdf | lambert barbara j referral 02252026.pdf | lambert barbara j.order 03302026.pdf | lambert barbara j.order 03302026.pdf",
+        "selectedSourceFile:LAMBERT BARBARA J REFERRAL 02242026.pdf",
+        "viewerDetected:true",
+        "printButtonDetected:true",
+        "printButtonVisible:true",
+        "printClickSucceeded:false",
+        "pdfResponseDetected:true",
+        "pdfResponseUrl:https://api.finalehealth.com/api/v1/files/699f40e654c58e0c82c39562?index=documents",
+        "pdfContentType:application/pdf",
+        "pdfSavedPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\documents\\lambert-barbara-j-referral-02242026-pdf\\source.pdf",
+        "pdfByteSize:1567526",
+        "printAcquisitionMethodUsed:network_pdf_response",
+        "sourcePdfPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\documents\\lambert-barbara-j-referral-02242026-pdf\\source.pdf",
+        "printedPdfPath:none",
+        "extractionMethodUsed:click",
+        "rawExtractedTextSource:dom",
+        "domExtractionRejectedReasons:viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS",
+        "extractionSuccess:false",
+        "uploadedDocumentCount:6"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Sidebar container count: 5",
+        "Sidebar diagnostics: [{\"index\":0,\"visible\":true,\"fileUploadsLabelCount\":0,\"fileUploadsAnchorCount\":1}]",
+        "[matched] patient File Uploads sidebar anchor by /file-uploads href count=1 visible=1 elapsedMs=47 samples=File Uploads",
+        "Matched File Uploads sidebar label: File Uploads",
+        "Matched File Uploads sidebar href: /provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads",
+        "File Uploads sidebar click succeeded: true",
+        "File Uploads URL after sidebar click: https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads",
+        "File Uploads ready attempt=1 url=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads urlChanged=true patientFileUploadsRouteDetected=true genericProviderDocumentsRouteDetected=false pageComponentDetected=true traversalMode=folder_view folderCount=5 fileCount=0 markers=Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root 📁 Referral Files 🔀 ✏️ 🗑️ 📁 ADMISSION PACKETS 🔀 ✏️ 🗑️ 📁 Progress Notes 2026 🔀 ✏️ 🗑️ 📁 Epi 04/27/2026 - 06/25/2026 🔀 ✏️ 🗑️ 📁 Hospital Records 🔀 ✏️ anchorCount=3",
+        "[matched] File Uploads page root component app-client-file-upload count=1 visible=1 elapsedMs=43 samples=Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root 📁 Referral Files 🔀 ✏️ 🗑️ 📁 ADMISSION PACKETS 🔀 ✏️ 🗑️ 📁 Progress Notes 2026 🔀 ✏️ 🗑️ 📁 Epi",
+        "[not_found] File Uploads downloadable file rows by .file-item count=0 visible=0 elapsedMs=21",
+        "[not_found] File Uploads downloadable file labels by .file-label count=0 visible=0 elapsedMs=18",
+        "[not_found] File Uploads document row click targets count=0 visible=0 elapsedMs=22",
+        "[not_found] File Uploads referral click targets outside table rows count=0 visible=0 elapsedMs=20",
+        "[not_found] File Uploads intake/referral click targets outside table rows count=0 visible=0 elapsedMs=26",
+        "[matched] Admission-related click targets count=3 visible=3 elapsedMs=86 samples=Admission 02-26-2026 | Admission Info | Admission Packets",
+        "[matched] File Uploads Referral folder row by .folder-item count=5 visible=5 elapsedMs=102 samples=📁 Referral Files 🔀 ✏️ 🗑️ | 📁 ADMISSION PACKETS 🔀 ✏️ 🗑️ | 📁 Progress Notes 2026 🔀 ✏️ 🗑️",
+        "Referral folder target clicked: 📁 Referral Files 🔀 ✏️ 🗑️ via File Uploads Referral folder row by .folder-item",
+        "File Uploads ready attempt=1 url=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads urlChanged=true patientFileUploadsRouteDetected=true genericProviderDocumentsRouteDetected=false pageComponentDetected=true traversalMode=file_list_view folderCount=0 fileCount=3 markers=Patient File Uploads View All Uploaded Files View Logs Reorder Root / Referral Files⬅️ Back 🔄 ➕ ⬆️ 📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf 📝 ✏️ 🗑️ 🔗 📄 LAMBERT, BARBARA J REFERRAL 02252026.pdf 📝 ✏️ 🗑️ 🔗 📄 LAMBERT, BARBARA J. ORD anchorCount=3",
+        "[matched] File Uploads page root component app-client-file-upload count=1 visible=1 elapsedMs=30 samples=Patient File Uploads View All Uploaded Files View Logs Reorder Root / Referral Files⬅️ Back 🔄 ➕ ⬆️ 📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf 📝 ✏️ 🗑️ 🔗 📄 LAMBERT, BARBARA J R",
+        "[matched] File Uploads downloadable file rows by .file-item count=3 visible=3 elapsedMs=79 samples=📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf 📝 ✏️ 🗑️ 🔗 | 📄 LAMBERT, BARBARA J REFERRAL 02252026.pdf 📝 ✏️ 🗑️ 🔗 | 📄 LAMBERT, BARBARA J. ORDER 03302026.pdf 📝 ✏️ 🗑️ 🔗",
+        "File Uploads accessible: true",
+        "Patient-specific File Uploads route detected: true",
+        "Generic provider Documents route detected: false",
+        "Matched File Uploads sidebar label: File Uploads",
+        "Matched File Uploads sidebar href: /provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads",
+        "File Uploads sidebar click succeeded: true",
+        "File Uploads page component detected: true",
+        "File Uploads traversal mode: file_list_view",
+        "Used chart Documents fallback: false",
+        "File Uploads URL: https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads",
+        "File Uploads URL changed from prior page: true",
+        "File Uploads ready attempt count: 1",
+        "File Uploads page markers: Patient File Uploads View All Uploaded Files View Logs Reorder Root / Referral Files⬅️ Back 🔄 ➕ ⬆️ 📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf 📝 ✏️ 🗑️ 🔗 📄 LAMBERT, BARBARA J REFERRAL 02252026.pdf 📝 ✏️ 🗑️ 🔗 📄 LAMBERT, BARBARA J. ORD",
+        "Referral folder selected: true",
+        "Referral folder label: 📁 Referral Files 🔀 ✏️ 🗑️",
+        "Referral file label (if resolved instead of folder): 📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf",
+        "Discovered folder labels: none",
+        "Discovered file labels: 📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf | 📄 LAMBERT, BARBARA J REFERRAL 02252026.pdf | 📄 LAMBERT, BARBARA J. ORDER 03302026.pdf",
+        "Normalized file labels: lambert barbara j referral 02242026.pdf | lambert barbara j referral 02252026.pdf | lambert barbara j.order 03302026.pdf",
+        "Matched source documents: 📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf [normalized=lambert barbara j referral 02242026.pdf] [score=150] | 📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf 📝 ✏️ 🗑️ 🔗 [normalized=lambert barbara j referral 02242026.pdf] [score=150] | 📄 LAMBERT, BARBARA J REFERRAL 02252026.pdf [normalized=lambert barbara j referral 02252026.pdf] [score=150] | 📄 LAMBERT, BARBARA J REFERRAL 02252026.pdf 📝 ✏️ 🗑️ 🔗 [normalized=lambert barbara j referral 02252026.pdf] [score=150] | 📄 LAMBERT, BARBARA J. ORDER 03302026.pdf [normalized=lambert barbara j.order 03302026.pdf] [score=120] | 📄 LAMBERT, BARBARA J. ORDER 03302026.pdf 📝 ✏️ 🗑️ 🔗 [normalized=lambert barbara j.order 03302026.pdf] [score=120]",
+        "Visible uploaded documents: 📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf | 📄 LAMBERT, BARBARA J REFERRAL 02252026.pdf | 📄 LAMBERT, BARBARA J. ORDER 03302026.pdf | 📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf 📝 ✏️ 🗑️ 🔗 | 📄 LAMBERT, BARBARA J REFERRAL 02252026.pdf 📝 ✏️ 🗑️ 🔗 | 📄 LAMBERT, BARBARA J. ORDER 03302026.pdf 📝 ✏️ 🗑️ 🔗",
+        "Admission Order candidate count: 3",
+        "Admission Order candidate labels: 📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf 📝 ✏️ 🗑️ 🔗 [score=340] | 📄 LAMBERT, BARBARA J REFERRAL 02252026.pdf 📝 ✏️ 🗑️ 🔗 [score=249] | 📄 LAMBERT, BARBARA J. ORDER 03302026.pdf 📝 ✏️ 🗑️ 🔗 [score=218]",
+        "[matched] embedded PDF viewer toolbar and print controls count=5 visible=4 elapsedMs=202 samples=of ⁨33⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools | of ⁨33⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools | Tools",
+        "[not_found] Admission Order text marker count=0 visible=0 elapsedMs=44",
+        "[not_found] Admission clinical reason/diagnosis text markers count=0 visible=0 elapsedMs=43",
+        "[not_found] Admission order wrapper by class/id count=0 visible=0 elapsedMs=37",
+        "Selected source file: LAMBERT BARBARA J REFERRAL 02242026.pdf",
+        "Selected source file normalized: lambert barbara j referral 02242026.pdf",
+        "Viewer detected: true",
+        "Viewer marker samples: of ⁨33⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools | Tools | Print",
+        "Print button detected: true",
+        "Print button visible: true",
+        "Print button selector used: pdf-print #printButton, #printButton, pdf-shy-button[primarytoolbarid='printButton'] button",
+        "Print click succeeded: false",
+        "PDF response detected: true",
+        "PDF response URL: https://api.finalehealth.com/api/v1/files/699f40e654c58e0c82c39562?index=documents",
+        "PDF content type: application/pdf",
+        "PDF saved path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\documents\\lambert-barbara-j-referral-02242026-pdf\\source.pdf",
+        "PDF byte size: 1567526",
+        "Print acquisition method used: network_pdf_response",
+        "Printed PDF saved: false",
+        "Printed PDF path: none",
+        "Source meta path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\documents\\lambert-barbara-j-referral-02242026-pdf\\source-meta.json",
+        "Extracted text path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\documents\\lambert-barbara-j-referral-02242026-pdf\\extracted-text.txt",
+        "Extraction result path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\documents\\lambert-barbara-j-referral-02242026-pdf\\extraction-result.json",
+        "Capture method used: download",
+        "Downloaded artifact available: true",
+        "Admission Order title: 📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf 📝 ✏️ 🗑️ 🔗",
+        "Admission Order URL after click: https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads",
+        "Admission Order markers: none",
+        "Extraction policy mode: ocr_required",
+        "Extraction policy confidence: high",
+        "Extraction policy reasons: PDF appears image-based/scanned; OCR likely required | No printed PDF available | OCR is the cheapest acceptable option that preserves clinically meaningful content",
+        "Extraction policy recommended source: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\documents\\lambert-barbara-j-referral-02242026-pdf\\source.pdf",
+        "Extraction policy fallback source: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\documents\\lambert-barbara-j-referral-02242026-pdf\\source.pdf",
+        "Extracted text length: 104",
+        "Raw extracted text source: dom",
+        "DOM extraction rejected reasons: viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS",
+        "Extraction method used: click",
+        "Extraction success: false",
+        "Queued for LLM: true",
+        "Admission text candidates ranked: [1] score=2.6 text=Automatic Zoom Actual Size Page Fit Page Width ⁨50⁩% ⁨100⁩% ⁨125⁩% ⁨150⁩% ⁨200⁩% ⁨300⁩% ⁨400⁩% 90% Tools || [2] score=1.4 text=📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf 📝 ✏️ 🗑️ 🔗",
+        "Admission reason primary: none",
+        "Admission reason snippets: none",
+        "Possible ICD-10 codes: I00 | I25 | I50",
+        "Admission order text excerpt: Automatic Zoom Actual Size Page Fit Page Width ⁨50⁩% ⁨100⁩% ⁨125⁩% ⁨150⁩% ⁨200⁩% ⁨300⁩% ⁨400⁩% 90% Tools"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:44:12.376Z",
+      "step": "admission_order_open",
+      "message": "Opened Admission Order from File Uploads for coding-reference verification.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads",
+      "selectorUsed": "File Uploads source document row by .file-item/.file-label or table row",
+      "found": [
+        "fileUploadsAccessible:true",
+        "patientFileUploadsRouteDetected:true",
+        "genericProviderDocumentsRouteDetected:false",
+        "fileUploadsSidebarClickSucceeded:true",
+        "pageComponentDetected:true",
+        "traversalMode:file_list_view",
+        "usedChartDocumentsFallback:false",
+        "referralFolderSelected:true",
+        "admissionOrderAccessible:true",
+        "admissionOrderTitle:📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf 📝 ✏️ 🗑️ 🔗",
+        "selectedSourceFile:LAMBERT BARBARA J REFERRAL 02242026.pdf",
+        "viewerDetected:true",
+        "printButtonDetected:true",
+        "printClickSucceeded:false",
+        "pdfResponseDetected:true",
+        "pdfResponseUrl:https://api.finalehealth.com/api/v1/files/699f40e654c58e0c82c39562?index=documents",
+        "pdfContentType:application/pdf",
+        "pdfSavedPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\documents\\lambert-barbara-j-referral-02242026-pdf\\source.pdf",
+        "pdfByteSize:1567526",
+        "printAcquisitionMethodUsed:network_pdf_response",
+        "sourcePdfPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\documents\\lambert-barbara-j-referral-02242026-pdf\\source.pdf",
+        "printedPdfPath:none",
+        "extractionMethodUsed:click",
+        "rawExtractedTextSource:dom",
+        "domExtractionRejectedReasons:viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS",
+        "extractionSuccess:false",
+        "admissionReasonPrimary:none",
+        "possibleIcd10Codes:I00 | I25 | I50"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Sidebar container count: 5",
+        "Sidebar diagnostics: [{\"index\":0,\"visible\":true,\"fileUploadsLabelCount\":0,\"fileUploadsAnchorCount\":1}]",
+        "[matched] patient File Uploads sidebar anchor by /file-uploads href count=1 visible=1 elapsedMs=47 samples=File Uploads",
+        "Matched File Uploads sidebar label: File Uploads",
+        "Matched File Uploads sidebar href: /provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads",
+        "File Uploads sidebar click succeeded: true",
+        "File Uploads URL after sidebar click: https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads",
+        "File Uploads ready attempt=1 url=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads urlChanged=true patientFileUploadsRouteDetected=true genericProviderDocumentsRouteDetected=false pageComponentDetected=true traversalMode=folder_view folderCount=5 fileCount=0 markers=Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root 📁 Referral Files 🔀 ✏️ 🗑️ 📁 ADMISSION PACKETS 🔀 ✏️ 🗑️ 📁 Progress Notes 2026 🔀 ✏️ 🗑️ 📁 Epi 04/27/2026 - 06/25/2026 🔀 ✏️ 🗑️ 📁 Hospital Records 🔀 ✏️ anchorCount=3",
+        "[matched] File Uploads page root component app-client-file-upload count=1 visible=1 elapsedMs=43 samples=Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root 📁 Referral Files 🔀 ✏️ 🗑️ 📁 ADMISSION PACKETS 🔀 ✏️ 🗑️ 📁 Progress Notes 2026 🔀 ✏️ 🗑️ 📁 Epi",
+        "[not_found] File Uploads downloadable file rows by .file-item count=0 visible=0 elapsedMs=21",
+        "[not_found] File Uploads downloadable file labels by .file-label count=0 visible=0 elapsedMs=18",
+        "[not_found] File Uploads document row click targets count=0 visible=0 elapsedMs=22",
+        "[not_found] File Uploads referral click targets outside table rows count=0 visible=0 elapsedMs=20",
+        "[not_found] File Uploads intake/referral click targets outside table rows count=0 visible=0 elapsedMs=26",
+        "[matched] Admission-related click targets count=3 visible=3 elapsedMs=86 samples=Admission 02-26-2026 | Admission Info | Admission Packets",
+        "[matched] File Uploads Referral folder row by .folder-item count=5 visible=5 elapsedMs=102 samples=📁 Referral Files 🔀 ✏️ 🗑️ | 📁 ADMISSION PACKETS 🔀 ✏️ 🗑️ | 📁 Progress Notes 2026 🔀 ✏️ 🗑️",
+        "Referral folder target clicked: 📁 Referral Files 🔀 ✏️ 🗑️ via File Uploads Referral folder row by .folder-item",
+        "File Uploads ready attempt=1 url=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads urlChanged=true patientFileUploadsRouteDetected=true genericProviderDocumentsRouteDetected=false pageComponentDetected=true traversalMode=file_list_view folderCount=0 fileCount=3 markers=Patient File Uploads View All Uploaded Files View Logs Reorder Root / Referral Files⬅️ Back 🔄 ➕ ⬆️ 📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf 📝 ✏️ 🗑️ 🔗 📄 LAMBERT, BARBARA J REFERRAL 02252026.pdf 📝 ✏️ 🗑️ 🔗 📄 LAMBERT, BARBARA J. ORD anchorCount=3",
+        "[matched] File Uploads page root component app-client-file-upload count=1 visible=1 elapsedMs=30 samples=Patient File Uploads View All Uploaded Files View Logs Reorder Root / Referral Files⬅️ Back 🔄 ➕ ⬆️ 📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf 📝 ✏️ 🗑️ 🔗 📄 LAMBERT, BARBARA J R",
+        "[matched] File Uploads downloadable file rows by .file-item count=3 visible=3 elapsedMs=79 samples=📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf 📝 ✏️ 🗑️ 🔗 | 📄 LAMBERT, BARBARA J REFERRAL 02252026.pdf 📝 ✏️ 🗑️ 🔗 | 📄 LAMBERT, BARBARA J. ORDER 03302026.pdf 📝 ✏️ 🗑️ 🔗",
+        "File Uploads accessible: true",
+        "Patient-specific File Uploads route detected: true",
+        "Generic provider Documents route detected: false",
+        "Matched File Uploads sidebar label: File Uploads",
+        "Matched File Uploads sidebar href: /provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads",
+        "File Uploads sidebar click succeeded: true",
+        "File Uploads page component detected: true",
+        "File Uploads traversal mode: file_list_view",
+        "Used chart Documents fallback: false",
+        "File Uploads URL: https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads",
+        "File Uploads URL changed from prior page: true",
+        "File Uploads ready attempt count: 1",
+        "File Uploads page markers: Patient File Uploads View All Uploaded Files View Logs Reorder Root / Referral Files⬅️ Back 🔄 ➕ ⬆️ 📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf 📝 ✏️ 🗑️ 🔗 📄 LAMBERT, BARBARA J REFERRAL 02252026.pdf 📝 ✏️ 🗑️ 🔗 📄 LAMBERT, BARBARA J. ORD",
+        "Referral folder selected: true",
+        "Referral folder label: 📁 Referral Files 🔀 ✏️ 🗑️",
+        "Referral file label (if resolved instead of folder): 📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf",
+        "Discovered folder labels: none",
+        "Discovered file labels: 📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf | 📄 LAMBERT, BARBARA J REFERRAL 02252026.pdf | 📄 LAMBERT, BARBARA J. ORDER 03302026.pdf",
+        "Normalized file labels: lambert barbara j referral 02242026.pdf | lambert barbara j referral 02252026.pdf | lambert barbara j.order 03302026.pdf",
+        "Matched source documents: 📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf [normalized=lambert barbara j referral 02242026.pdf] [score=150] | 📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf 📝 ✏️ 🗑️ 🔗 [normalized=lambert barbara j referral 02242026.pdf] [score=150] | 📄 LAMBERT, BARBARA J REFERRAL 02252026.pdf [normalized=lambert barbara j referral 02252026.pdf] [score=150] | 📄 LAMBERT, BARBARA J REFERRAL 02252026.pdf 📝 ✏️ 🗑️ 🔗 [normalized=lambert barbara j referral 02252026.pdf] [score=150] | 📄 LAMBERT, BARBARA J. ORDER 03302026.pdf [normalized=lambert barbara j.order 03302026.pdf] [score=120] | 📄 LAMBERT, BARBARA J. ORDER 03302026.pdf 📝 ✏️ 🗑️ 🔗 [normalized=lambert barbara j.order 03302026.pdf] [score=120]",
+        "Visible uploaded documents: 📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf | 📄 LAMBERT, BARBARA J REFERRAL 02252026.pdf | 📄 LAMBERT, BARBARA J. ORDER 03302026.pdf | 📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf 📝 ✏️ 🗑️ 🔗 | 📄 LAMBERT, BARBARA J REFERRAL 02252026.pdf 📝 ✏️ 🗑️ 🔗 | 📄 LAMBERT, BARBARA J. ORDER 03302026.pdf 📝 ✏️ 🗑️ 🔗",
+        "Admission Order candidate count: 3",
+        "Admission Order candidate labels: 📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf 📝 ✏️ 🗑️ 🔗 [score=340] | 📄 LAMBERT, BARBARA J REFERRAL 02252026.pdf 📝 ✏️ 🗑️ 🔗 [score=249] | 📄 LAMBERT, BARBARA J. ORDER 03302026.pdf 📝 ✏️ 🗑️ 🔗 [score=218]",
+        "[matched] embedded PDF viewer toolbar and print controls count=5 visible=4 elapsedMs=202 samples=of ⁨33⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools | of ⁨33⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools | Tools",
+        "[not_found] Admission Order text marker count=0 visible=0 elapsedMs=44",
+        "[not_found] Admission clinical reason/diagnosis text markers count=0 visible=0 elapsedMs=43",
+        "[not_found] Admission order wrapper by class/id count=0 visible=0 elapsedMs=37",
+        "Selected source file: LAMBERT BARBARA J REFERRAL 02242026.pdf",
+        "Selected source file normalized: lambert barbara j referral 02242026.pdf",
+        "Viewer detected: true",
+        "Viewer marker samples: of ⁨33⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools | Tools | Print",
+        "Print button detected: true",
+        "Print button visible: true",
+        "Print button selector used: pdf-print #printButton, #printButton, pdf-shy-button[primarytoolbarid='printButton'] button",
+        "Print click succeeded: false",
+        "PDF response detected: true",
+        "PDF response URL: https://api.finalehealth.com/api/v1/files/699f40e654c58e0c82c39562?index=documents",
+        "PDF content type: application/pdf",
+        "PDF saved path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\documents\\lambert-barbara-j-referral-02242026-pdf\\source.pdf",
+        "PDF byte size: 1567526",
+        "Print acquisition method used: network_pdf_response",
+        "Printed PDF saved: false",
+        "Printed PDF path: none",
+        "Source meta path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\documents\\lambert-barbara-j-referral-02242026-pdf\\source-meta.json",
+        "Extracted text path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\documents\\lambert-barbara-j-referral-02242026-pdf\\extracted-text.txt",
+        "Extraction result path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\documents\\lambert-barbara-j-referral-02242026-pdf\\extraction-result.json",
+        "Capture method used: download",
+        "Downloaded artifact available: true",
+        "Admission Order title: 📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf 📝 ✏️ 🗑️ 🔗",
+        "Admission Order URL after click: https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads",
+        "Admission Order markers: none",
+        "Extraction policy mode: ocr_required",
+        "Extraction policy confidence: high",
+        "Extraction policy reasons: PDF appears image-based/scanned; OCR likely required | No printed PDF available | OCR is the cheapest acceptable option that preserves clinically meaningful content",
+        "Extraction policy recommended source: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\documents\\lambert-barbara-j-referral-02242026-pdf\\source.pdf",
+        "Extraction policy fallback source: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\documents\\lambert-barbara-j-referral-02242026-pdf\\source.pdf",
+        "Extracted text length: 104",
+        "Raw extracted text source: dom",
+        "DOM extraction rejected reasons: viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS",
+        "Extraction method used: click",
+        "Extraction success: false",
+        "Queued for LLM: true",
+        "Admission text candidates ranked: [1] score=2.6 text=Automatic Zoom Actual Size Page Fit Page Width ⁨50⁩% ⁨100⁩% ⁨125⁩% ⁨150⁩% ⁨200⁩% ⁨300⁩% ⁨400⁩% 90% Tools || [2] score=1.4 text=📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf 📝 ✏️ 🗑️ 🔗",
+        "Admission reason primary: none",
+        "Admission reason snippets: none",
+        "Possible ICD-10 codes: I00 | I25 | I50",
+        "Admission order text excerpt: Automatic Zoom Actual Size Page Fit Page Width ⁨50⁩% ⁨100⁩% ⁨125⁩% ⁨150⁩% ⁨200⁩% ⁨300⁩% ⁨400⁩% 90% Tools"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:44:12.376Z",
+      "step": "qa_summary",
+      "message": "File Uploads and Admission Order were successfully accessed for coding reference.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads",
+      "selectorUsed": "File Uploads source document row by .file-item/.file-label or table row",
+      "found": [
+        "fileUploadsAccessible:true",
+        "patientFileUploadsRouteDetected:true",
+        "genericProviderDocumentsRouteDetected:false",
+        "fileUploadsSidebarClickSucceeded:true",
+        "pageComponentDetected:true",
+        "traversalMode:file_list_view",
+        "usedChartDocumentsFallback:false",
+        "referralFolderSelected:true",
+        "admissionOrderAccessible:true",
+        "admissionOrderTitle:📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf 📝 ✏️ 🗑️ 🔗",
+        "selectedSourceFile:LAMBERT BARBARA J REFERRAL 02242026.pdf",
+        "viewerDetected:true",
+        "printButtonDetected:true",
+        "printClickSucceeded:false",
+        "pdfResponseDetected:true",
+        "pdfResponseUrl:https://api.finalehealth.com/api/v1/files/699f40e654c58e0c82c39562?index=documents",
+        "pdfContentType:application/pdf",
+        "pdfSavedPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\documents\\lambert-barbara-j-referral-02242026-pdf\\source.pdf",
+        "pdfByteSize:1567526",
+        "printAcquisitionMethodUsed:network_pdf_response",
+        "sourcePdfPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\documents\\lambert-barbara-j-referral-02242026-pdf\\source.pdf",
+        "printedPdfPath:none",
+        "extractionMethodUsed:click",
+        "rawExtractedTextSource:dom",
+        "domExtractionRejectedReasons:viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS",
+        "extractionSuccess:false",
+        "admissionReasonPrimary:none",
+        "possibleIcd10Codes:I00 | I25 | I50"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Sidebar container count: 5",
+        "Sidebar diagnostics: [{\"index\":0,\"visible\":true,\"fileUploadsLabelCount\":0,\"fileUploadsAnchorCount\":1}]",
+        "[matched] patient File Uploads sidebar anchor by /file-uploads href count=1 visible=1 elapsedMs=47 samples=File Uploads",
+        "Matched File Uploads sidebar label: File Uploads",
+        "Matched File Uploads sidebar href: /provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads",
+        "File Uploads sidebar click succeeded: true",
+        "File Uploads URL after sidebar click: https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads",
+        "File Uploads ready attempt=1 url=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads urlChanged=true patientFileUploadsRouteDetected=true genericProviderDocumentsRouteDetected=false pageComponentDetected=true traversalMode=folder_view folderCount=5 fileCount=0 markers=Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root 📁 Referral Files 🔀 ✏️ 🗑️ 📁 ADMISSION PACKETS 🔀 ✏️ 🗑️ 📁 Progress Notes 2026 🔀 ✏️ 🗑️ 📁 Epi 04/27/2026 - 06/25/2026 🔀 ✏️ 🗑️ 📁 Hospital Records 🔀 ✏️ anchorCount=3",
+        "[matched] File Uploads page root component app-client-file-upload count=1 visible=1 elapsedMs=43 samples=Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root 📁 Referral Files 🔀 ✏️ 🗑️ 📁 ADMISSION PACKETS 🔀 ✏️ 🗑️ 📁 Progress Notes 2026 🔀 ✏️ 🗑️ 📁 Epi",
+        "[not_found] File Uploads downloadable file rows by .file-item count=0 visible=0 elapsedMs=21",
+        "[not_found] File Uploads downloadable file labels by .file-label count=0 visible=0 elapsedMs=18",
+        "[not_found] File Uploads document row click targets count=0 visible=0 elapsedMs=22",
+        "[not_found] File Uploads referral click targets outside table rows count=0 visible=0 elapsedMs=20",
+        "[not_found] File Uploads intake/referral click targets outside table rows count=0 visible=0 elapsedMs=26",
+        "[matched] Admission-related click targets count=3 visible=3 elapsedMs=86 samples=Admission 02-26-2026 | Admission Info | Admission Packets",
+        "[matched] File Uploads Referral folder row by .folder-item count=5 visible=5 elapsedMs=102 samples=📁 Referral Files 🔀 ✏️ 🗑️ | 📁 ADMISSION PACKETS 🔀 ✏️ 🗑️ | 📁 Progress Notes 2026 🔀 ✏️ 🗑️",
+        "Referral folder target clicked: 📁 Referral Files 🔀 ✏️ 🗑️ via File Uploads Referral folder row by .folder-item",
+        "File Uploads ready attempt=1 url=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads urlChanged=true patientFileUploadsRouteDetected=true genericProviderDocumentsRouteDetected=false pageComponentDetected=true traversalMode=file_list_view folderCount=0 fileCount=3 markers=Patient File Uploads View All Uploaded Files View Logs Reorder Root / Referral Files⬅️ Back 🔄 ➕ ⬆️ 📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf 📝 ✏️ 🗑️ 🔗 📄 LAMBERT, BARBARA J REFERRAL 02252026.pdf 📝 ✏️ 🗑️ 🔗 📄 LAMBERT, BARBARA J. ORD anchorCount=3",
+        "[matched] File Uploads page root component app-client-file-upload count=1 visible=1 elapsedMs=30 samples=Patient File Uploads View All Uploaded Files View Logs Reorder Root / Referral Files⬅️ Back 🔄 ➕ ⬆️ 📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf 📝 ✏️ 🗑️ 🔗 📄 LAMBERT, BARBARA J R",
+        "[matched] File Uploads downloadable file rows by .file-item count=3 visible=3 elapsedMs=79 samples=📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf 📝 ✏️ 🗑️ 🔗 | 📄 LAMBERT, BARBARA J REFERRAL 02252026.pdf 📝 ✏️ 🗑️ 🔗 | 📄 LAMBERT, BARBARA J. ORDER 03302026.pdf 📝 ✏️ 🗑️ 🔗",
+        "File Uploads accessible: true",
+        "Patient-specific File Uploads route detected: true",
+        "Generic provider Documents route detected: false",
+        "Matched File Uploads sidebar label: File Uploads",
+        "Matched File Uploads sidebar href: /provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads",
+        "File Uploads sidebar click succeeded: true",
+        "File Uploads page component detected: true",
+        "File Uploads traversal mode: file_list_view",
+        "Used chart Documents fallback: false",
+        "File Uploads URL: https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads",
+        "File Uploads URL changed from prior page: true",
+        "File Uploads ready attempt count: 1",
+        "File Uploads page markers: Patient File Uploads View All Uploaded Files View Logs Reorder Root / Referral Files⬅️ Back 🔄 ➕ ⬆️ 📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf 📝 ✏️ 🗑️ 🔗 📄 LAMBERT, BARBARA J REFERRAL 02252026.pdf 📝 ✏️ 🗑️ 🔗 📄 LAMBERT, BARBARA J. ORD",
+        "Referral folder selected: true",
+        "Referral folder label: 📁 Referral Files 🔀 ✏️ 🗑️",
+        "Referral file label (if resolved instead of folder): 📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf",
+        "Discovered folder labels: none",
+        "Discovered file labels: 📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf | 📄 LAMBERT, BARBARA J REFERRAL 02252026.pdf | 📄 LAMBERT, BARBARA J. ORDER 03302026.pdf",
+        "Normalized file labels: lambert barbara j referral 02242026.pdf | lambert barbara j referral 02252026.pdf | lambert barbara j.order 03302026.pdf",
+        "Matched source documents: 📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf [normalized=lambert barbara j referral 02242026.pdf] [score=150] | 📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf 📝 ✏️ 🗑️ 🔗 [normalized=lambert barbara j referral 02242026.pdf] [score=150] | 📄 LAMBERT, BARBARA J REFERRAL 02252026.pdf [normalized=lambert barbara j referral 02252026.pdf] [score=150] | 📄 LAMBERT, BARBARA J REFERRAL 02252026.pdf 📝 ✏️ 🗑️ 🔗 [normalized=lambert barbara j referral 02252026.pdf] [score=150] | 📄 LAMBERT, BARBARA J. ORDER 03302026.pdf [normalized=lambert barbara j.order 03302026.pdf] [score=120] | 📄 LAMBERT, BARBARA J. ORDER 03302026.pdf 📝 ✏️ 🗑️ 🔗 [normalized=lambert barbara j.order 03302026.pdf] [score=120]",
+        "Visible uploaded documents: 📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf | 📄 LAMBERT, BARBARA J REFERRAL 02252026.pdf | 📄 LAMBERT, BARBARA J. ORDER 03302026.pdf | 📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf 📝 ✏️ 🗑️ 🔗 | 📄 LAMBERT, BARBARA J REFERRAL 02252026.pdf 📝 ✏️ 🗑️ 🔗 | 📄 LAMBERT, BARBARA J. ORDER 03302026.pdf 📝 ✏️ 🗑️ 🔗",
+        "Admission Order candidate count: 3",
+        "Admission Order candidate labels: 📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf 📝 ✏️ 🗑️ 🔗 [score=340] | 📄 LAMBERT, BARBARA J REFERRAL 02252026.pdf 📝 ✏️ 🗑️ 🔗 [score=249] | 📄 LAMBERT, BARBARA J. ORDER 03302026.pdf 📝 ✏️ 🗑️ 🔗 [score=218]",
+        "[matched] embedded PDF viewer toolbar and print controls count=5 visible=4 elapsedMs=202 samples=of ⁨33⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools | of ⁨33⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools | Tools",
+        "[not_found] Admission Order text marker count=0 visible=0 elapsedMs=44",
+        "[not_found] Admission clinical reason/diagnosis text markers count=0 visible=0 elapsedMs=43",
+        "[not_found] Admission order wrapper by class/id count=0 visible=0 elapsedMs=37",
+        "Selected source file: LAMBERT BARBARA J REFERRAL 02242026.pdf",
+        "Selected source file normalized: lambert barbara j referral 02242026.pdf",
+        "Viewer detected: true",
+        "Viewer marker samples: of ⁨33⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools | Tools | Print",
+        "Print button detected: true",
+        "Print button visible: true",
+        "Print button selector used: pdf-print #printButton, #printButton, pdf-shy-button[primarytoolbarid='printButton'] button",
+        "Print click succeeded: false",
+        "PDF response detected: true",
+        "PDF response URL: https://api.finalehealth.com/api/v1/files/699f40e654c58e0c82c39562?index=documents",
+        "PDF content type: application/pdf",
+        "PDF saved path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\documents\\lambert-barbara-j-referral-02242026-pdf\\source.pdf",
+        "PDF byte size: 1567526",
+        "Print acquisition method used: network_pdf_response",
+        "Printed PDF saved: false",
+        "Printed PDF path: none",
+        "Source meta path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\documents\\lambert-barbara-j-referral-02242026-pdf\\source-meta.json",
+        "Extracted text path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\documents\\lambert-barbara-j-referral-02242026-pdf\\extracted-text.txt",
+        "Extraction result path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\documents\\lambert-barbara-j-referral-02242026-pdf\\extraction-result.json",
+        "Capture method used: download",
+        "Downloaded artifact available: true",
+        "Admission Order title: 📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf 📝 ✏️ 🗑️ 🔗",
+        "Admission Order URL after click: https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads",
+        "Admission Order markers: none",
+        "Extraction policy mode: ocr_required",
+        "Extraction policy confidence: high",
+        "Extraction policy reasons: PDF appears image-based/scanned; OCR likely required | No printed PDF available | OCR is the cheapest acceptable option that preserves clinically meaningful content",
+        "Extraction policy recommended source: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\documents\\lambert-barbara-j-referral-02242026-pdf\\source.pdf",
+        "Extraction policy fallback source: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\documents\\lambert-barbara-j-referral-02242026-pdf\\source.pdf",
+        "Extracted text length: 104",
+        "Raw extracted text source: dom",
+        "DOM extraction rejected reasons: viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS",
+        "Extraction method used: click",
+        "Extraction success: false",
+        "Queued for LLM: true",
+        "Admission text candidates ranked: [1] score=2.6 text=Automatic Zoom Actual Size Page Fit Page Width ⁨50⁩% ⁨100⁩% ⁨125⁩% ⁨150⁩% ⁨200⁩% ⁨300⁩% ⁨400⁩% 90% Tools || [2] score=1.4 text=📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf 📝 ✏️ 🗑️ 🔗",
+        "Admission reason primary: none",
+        "Admission reason snippets: none",
+        "Possible ICD-10 codes: I00 | I25 | I50",
+        "Admission order text excerpt: Automatic Zoom Actual Size Page Fit Page Width ⁨50⁩% ⁨100⁩% ⁨125⁩% ⁨150⁩% ⁨200⁩% ⁨300⁩% ⁨400⁩% 90% Tools"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:44:40.153Z",
+      "step": "document_text_export",
+      "message": "Wrote normalized extracted document text for read-only dashboard reference and troubleshooting.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "documentTextPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\document-text.json",
+        "documentCount:2",
+        "orderDocumentCount:1",
+        "hasAdmissionOrderText:true"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "[0] type=OASIS source=artifact_fallback effectiveTextSource=viewer_text_fallback textLength=1874",
+        "[0] rawExtractedTextSource=dom textSelectionReason=artifact_fallback_text",
+        "[0] domExtractionRejectedReasons=none",
+        "[0] preview=OASIS documents page false false false false false false 0 none 0 high:0 medium:0 low:0 false false true false true https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads 📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf | 📄 LAMBERT, BARBARA J REFERRAL 02252026.pdf | 📄 LAMBERT, BARBARA J. ORDER 03302026.pdf | 📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf 📝 ✏️ 🗑️ 🔗 | 📄 LAMBERT, BARBARA J REFERRAL 02252026.pdf 📝 ✏️ 🗑️ 🔗 | 📄 LAMBERT, BARBARA J.",
+        "[1] type=ORDER source=printed_pdf effectiveTextSource=ocr_text textLength=61783",
+        "[1] rawExtractedTextSource=ocr textSelectionReason=policy_ocr_required_direct_ocr:PDF appears image-based/scanned; OCR likely required|No printed PDF available|OCR is the cheapest acceptable option that preserves clinically meaningful content",
+        "[1] domExtractionRejectedReasons=none",
+        "[1] preview=LAMBERT, BARBARA J 875003035 2/16/1958 501361583 * Facesheet Auth (Verified) * Encompass Health Rehabilitation Hospital of Desert Canyon 7022527342 Encounter Information FIN: 501361583 Third Party MRN: Admit Dt/Tm: 02/16/2026 19:35 Patient Type: Inpatient Disch Dt/Tm: Medical Service: CVA Stroke Program Attend Physician: Qurashi MD, Munawar A Admit Physician: Qurashi MD, Munawar A Subspecialty: PCP: Location: NURS DC Referring Physician: Shuja MD, Amir Room/Bed: 208 / P Onset of Symptoms/Illness"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:44:40.179Z",
+      "step": "document_fact_pack_export",
+      "message": "Wrote compact document fact pack to reduce downstream token usage while preserving chart evidence.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "documentFactPackPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\document-fact-pack.json",
+        "diagnosisCount:12",
+        "medicationCount:12",
+        "allergyCount:4",
+        "rawCharacters:63657",
+        "packedCharacters:4282",
+        "reductionPercent:93.3"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "diagnosis:no-code:REHAB DIAGNOSIS:",
+        "diagnosis:I00:Diagnosis code candidate from extracted document metadata",
+        "diagnosis:I25:Diagnosis code candidate from extracted document metadata",
+        "diagnosis:I50:Diagnosis code candidate from extracted document metadata",
+        "diagnosis:I24:Diagnosis code candidate from extracted document metadata",
+        "diagnosis:I18:Diagnosis code candidate from extracted document metadata",
+        "homebound:Wheelchair Cushion OT:",
+        "homebound:Wheelchair Cushion PT:",
+        "homebound:Walker rolling",
+        "skilled_need:She was placed on antibiotics, followed by the ID. Wound care was continued. Wound VAC",
+        "skilled_need:The patient had pericardial effusion. CT chest was done and no further intervention",
+        "skilled_need:Dr. Chan continued wound care and extensive rehabilitation program as she is significantly"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:44:42.588Z",
+      "step": "diagnosis_code_extract",
+      "message": "Extracted 7 diagnosis code candidate(s) from admission/referral/OASIS text.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "icd10CodeCount:7",
+        "diagnosisMentionCount:5",
+        "diagnosisCodePairCount:9",
+        "extractionConfidence:high",
+        "llmUsed:true"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "selectedOrderDocumentCount:1",
+        "bestOrderEffectiveTextSource:ocr_text",
+        "[0] type=ORDER effectiveTextSource=ocr_text source=printed_pdf textLength=61783 pdfType=scanned_image_pdf ocrSuccess=true ocrTextLength=61783",
+        "[1] type=OASIS effectiveTextSource=viewer_text_fallback source=artifact_fallback textLength=1874 pdfType=none ocrSuccess=false ocrTextLength=0",
+        "llmInputSource:fact_pack_primary",
+        "factPackRawCharacters:63657",
+        "factPackPackedCharacters:4284",
+        "factPackReductionPercent:93.3",
+        "factPackCoverageScore:1",
+        "missingCriticalSections:none",
+        "fallbackReason:none",
+        "promptCharacterEstimate:3140",
+        "sourceDocumentCount:2",
+        "sourceCharacterCount:3140",
+        "llmInputSource:fact_pack_primary",
+        "sourceTextPreview:Diagnoses: - REHAB DIAGNOSIS: - I24 Diagnosis code candidate from extracted document metadata - I18 Diagnosis code candidate from extracted document metadata - I33 Diagnosis code candidate from extracted document metadata - I35 Diagnosis code candidate from extracted document metadata - I38 Diagnosis code candidate from extracted document metadata - I40 Diagnosis code candidate from extracted document metadata - I14 Diagnosis code candidate from extracted document metadata Medications: - She is ",
+        "llmProvider:bedrock",
+        "llmUsed:true",
+        "llmModel:us.amazon.nova-lite-v1:0",
+        "llmError:none",
+        "reasonForAdmission:none",
+        "diagnosisPhraseCount:5",
+        "diagnosisCodePairCount:9",
+        "icd10Codes:I24 | I18 | I33 | I35 | I38 | I40 | I14",
+        "orderedServices:Physical Therapy | Occupational Therapy",
+        "documentType:Admission Order",
+        "extractionConfidence:high",
+        "uncertainItems:Multiple ICD-10 codes inferred from document metadata, but not explicitly stated in the text. | Confidence levels are medium due to indirect references and lack of explicit confirmation in the text.",
+        "codeCategories:I24:Diseases of the circulatory system | I18:Diseases of the circulatory system | I33:Diseases of the circulatory system | I35:Diseases of the circulatory system | I38:Diseases of the circulatory system | I40:Diseases of the circulatory system | I14:Diseases of the circulatory system"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:44:42.759Z",
+      "step": "source_document_identified",
+      "message": "Identified referral/admission-order source document candidates and selected the best source for processing.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "BARBARA_LAMBERT__ec7d0b906058f49b-referral-1:REFERRAL_ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\documents\\lambert-barbara-j-referral-02242026-pdf\\source.pdf"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "selectedDocumentId=BARBARA_LAMBERT__ec7d0b906058f49b-referral-1"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:44:42.759Z",
+      "step": "source_document_acquired",
+      "message": "Selected referral/admission-order file is available locally for read-only processing.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\documents\\lambert-barbara-j-referral-02242026-pdf\\source.pdf"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "acquisitionMethod=printed_pdf"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:44:42.759Z",
+      "step": "document_extraction_started",
+      "message": "Started referral/admission-order document extraction from the canonical local file when available.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\documents\\lambert-barbara-j-referral-02242026-pdf\\source.pdf"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:44:42.771Z",
+      "step": "document_extraction_completed",
+      "message": "Completed referral/admission-order extraction.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "extractionMethod=ocr_text",
+        "effectiveTextSource=ocr_text",
+        "textLength=61783"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:44:42.771Z",
+      "step": "extraction_quality_evaluated",
+      "message": "Evaluated extraction quality with usability status usable.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "characterCount=61783",
+        "tokenCount=9636",
+        "likelyUsableForLlm=true",
+        "likelyRequiresOcrRetry=false"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:44:42.785Z",
+      "step": "referral_sections_normalized",
+      "message": "Normalized referral text into 13 semantic sections.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "patient_identity:1",
+        "hospitalization_history:1",
+        "medical_necessity:0.55",
+        "homebound_evidence:0.75",
+        "diagnoses:1",
+        "medications:1",
+        "caregiver_support:0.95",
+        "living_situation:0.55",
+        "functional_limitations:0.55",
+        "therapy_need:1",
+        "risk_factors:1",
+        "code_status:0.55",
+        "other_clinical_notes:1"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:44:42.804Z",
+      "step": "chart_snapshot_created",
+      "message": "Built a read-only chart/OASIS field snapshot and categorization buckets for referral comparison.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "alreadyPopulated=1",
+        "llmCandidates=31",
+        "humanReviewRequired=46",
+        "referenceOnly=3"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:44:42.804Z",
+      "step": "referral_facts_extracted",
+      "message": "Extracted 11 referral facts before field mapping.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "recent_hospitalization_discharge_date:hospitalization",
+        "code_status:directive",
+        "medical_necessity_summary:medical_necessity",
+        "homebound_narrative:homebound",
+        "homebound_supporting_factors:homebound",
+        "living_situation:living_situation",
+        "functional_limitations:functional",
+        "therapy_need:therapy",
+        "fall_risk_narrative:risk",
+        "skilled_interventions:therapy",
+        "plan_for_next_visit:therapy"
+      ],
+      "missing": [
+        "referral_date",
+        "preferred_language",
+        "interpreter_needed",
+        "recent_hospitalization_facility",
+        "caregiver_name",
+        "caregiver_relationship",
+        "caregiver_phone",
+        "patient_summary_narrative",
+        "discipline_frequencies",
+        "patient_caregiver_goals",
+        "care_plan_problems_goals_interventions",
+        "respiratory_status",
+        "integumentary_wound_status",
+        "pain_assessment_narrative",
+        "emotional_behavioral_status",
+        "past_medical_history",
+        "immunization_status"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "02/25/26",
+        "Code status: full_code",
+        "for inpatient rehab rather than at subacute level of care, continue the medical management and continue transfer",
+        "Walker rolling Walker - rolling",
+        "Walker rolling Walker - rolling",
+        "the family, was",
+        "Ambulation : Education Ongoing",
+        "Occupational Therapy Occupational Therapy Occupational Therapy"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:44:42.804Z",
+      "step": "llm_field_proposal_started",
+      "message": "Started referral-to-field proposal generation using the strict JSON contract.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "candidateFieldCount=31"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:44:51.173Z",
+      "step": "llm_field_proposal_completed",
+      "message": "Completed referral-to-field proposal generation with 10 field proposals.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "proposalCount=10",
+        "diagnosisCandidateCount=8"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "LLM input source: fact_pack_primary.",
+        "Fact pack coverage: diagnoses, medications, allergies, homeboundEvidence, skilledNeedEvidence, hospitalizationReasons, assessmentValues, supportingSnippets.",
+        "Fact pack coverage score: 1.",
+        "Prompt character estimate: 2337.",
+        "Fallback reason: none."
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:44:51.174Z",
+      "step": "field_comparison_completed",
+      "message": "Completed referral proposal comparison across 53 fields.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "patient_name:unsupported",
+        "dob:unsupported",
+        "soc_date:unsupported",
+        "referral_date:requires_human_review",
+        "preferred_language:unsupported",
+        "interpreter_needed:requires_human_review",
+        "primary_reason_for_home_health_medical_necessity:requires_human_review",
+        "admit_reason_to_home_health:requires_human_review",
+        "homebound_narrative:requires_human_review",
+        "homebound_supporting_factors:requires_human_review",
+        "recent_hospitalization_discharge_date:requires_human_review",
+        "recent_hospitalization_facility:requires_human_review",
+        "caregiver_name:unsupported",
+        "caregiver_relationship:unsupported",
+        "caregiver_phone:requires_human_review",
+        "living_situation:unsupported",
+        "prior_functioning:requires_human_review",
+        "functional_limitations:requires_human_review",
+        "therapy_need:requires_human_review",
+        "patient_summary_narrative:requires_human_review",
+        "skilled_interventions:requires_human_review",
+        "discipline_frequencies:requires_human_review",
+        "plan_for_next_visit:requires_human_review",
+        "patient_caregiver_goals:requires_human_review",
+        "care_plan_problems_goals_interventions:requires_human_review",
+        "fall_risk_narrative:requires_human_review",
+        "respiratory_status:requires_human_review",
+        "integumentary_wound_status:requires_human_review",
+        "pain_assessment_narrative:requires_human_review",
+        "emotional_behavioral_status:requires_human_review",
+        "past_medical_history:requires_human_review",
+        "immunization_status:requires_human_review",
+        "diagnosis_candidates:requires_human_review",
+        "primary_diagnosis:requires_human_review",
+        "secondary_diagnoses:requires_human_review",
+        "medication_list:requires_human_review",
+        "allergy_list:requires_human_review",
+        "special_treatments_o0110:requires_human_review",
+        "injectable_medications:requires_human_review",
+        "high_risk_medication_notes:requires_human_review",
+        "gg_self_care:requires_human_review",
+        "gg_mobility:requires_human_review",
+        "neurological_status:requires_human_review",
+        "eyes_ears_status:requires_human_review",
+        "cardiovascular_status:requires_human_review",
+        "gastrointestinal_status:requires_human_review",
+        "genitourinary_status:requires_human_review",
+        "mahc10_fall_risk:requires_human_review",
+        "norton_scale:requires_human_review",
+        "wound_risk_review:requires_human_review",
+        "hospitalization_risk_summary:requires_human_review",
+        "patient_coordination_orders:requires_human_review",
+        "code_status:requires_human_review"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:44:51.174Z",
+      "step": "llm_qa_insights_started",
+      "message": "Started referral QA insight synthesis for comparisons, source highlights, and draft narratives.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:45:04.447Z",
+      "step": "llm_qa_insights_completed",
+      "message": "Completed referral QA insight synthesis with 7 consistency checks and 7 narrative drafts.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "consistencyChecks=7",
+        "sourceHighlights=7",
+        "draftNarratives=7"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Deterministic referral QA insights fallback was used.",
+        "Bedrock returned invalid referral QA insights output; deterministic fallback was used."
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:45:05.635Z",
+      "step": "qa_document_summary_persisted",
+      "message": "Persisted read-only referral document QA artifacts.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\referral-document-processing\\source-meta.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\referral-document-processing\\extraction-result.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\referral-document-processing\\normalized-sections.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\referral-document-processing\\extracted-facts.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\referral-document-processing\\field-map-snapshot.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\referral-document-processing\\llm-proposal.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\referral-document-processing\\field-comparison.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\referral-document-processing\\patient-qa-reference.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\referral-document-processing\\qa-document-summary.json"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:45:05.635Z",
+      "step": "shared_evidence_discovery_complete",
+      "message": "Shared evidence workflow completed and produced reusable extracted chart evidence.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/calendar",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=coding",
+        "patientRunId=batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4-BARBARA_LAMBERT__ec7d0b906058f49b",
+        "status=completed",
+        "chartUrl=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/calendar",
+        "artifactCount=1",
+        "documentInventoryCount=1",
+        "extractedDocumentCount=2",
+        "diagnosisCodeCount=7"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:45:05.635Z",
+      "step": "referral_document_check",
+      "message": "Referral/admission-order evidence was found in shared chart documents.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "artifactOrderCount:0",
+        "inventoryOrderCount:1",
+        "extractedOrderCount:1"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf 📝 ✏️ 🗑️ 🔗:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\documents\\lambert-barbara-j-referral-02242026-pdf\\source.pdf:LAMBERT, BARBARA J\n875003035\n2/16/1958\n501361583\n* Facesheet Auth (Verified) *\nEncompass Health Rehabilitation Hospital of Desert Canyon\n7022527342\nEncounter Information\nFIN: 50136"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:45:09.771Z",
+      "step": "episode_option_selection_failed",
+      "message": "Episode of dropdown with a valid date range could not be located on the patient dashboard.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=qa",
+        "patientRunId=batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4-BARBARA_LAMBERT__ec7d0b906058f49b"
+      ],
+      "missing": [
+        "Episode of dropdown"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Episode of dropdown with a valid date range could not be located on the patient dashboard."
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:45:09.772Z",
+      "step": "episode_option_selection_failed",
+      "message": "Episode of selection could not be resolved to a concrete dropdown option.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=qa",
+        "patientRunId=batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4-BARBARA_LAMBERT__ec7d0b906058f49b"
+      ],
+      "missing": [
+        "matching Episode of option"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Episode of dropdown with a valid date range could not be located on the patient dashboard.",
+        "Episode of selection could not be resolved because no matching option was found."
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:45:09.772Z",
+      "step": "oasis_episode_resolution",
+      "message": "Resolved the target episode for OASIS review using workbook context plus the Episode of dropdown.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/calendar",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=qa",
+        "patientRunId=batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4-BARBARA_LAMBERT__ec7d0b906058f49b",
+        "episodeSelectionStatus=UNRESOLVED",
+        "targetEpisodeLabel=2026-02-26",
+        "rfa=03-ROC",
+        "selectionMethod=unresolved",
+        "changedSelection=false",
+        "selectedRange=none"
+      ],
+      "missing": [
+        "Episode of review target"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "billingPeriod=none",
+        "episodePeriod=none",
+        "availableRanges=none",
+        "Episode of dropdown with a valid date range could not be located on the patient dashboard.",
+        "Episode of selection could not be resolved because no matching option was found."
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:45:13.570Z",
+      "step": "billing_calendar_parse_start",
+      "message": "Started read-only billing calendar parsing from the patient dashboard.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=qa",
+        "patientRunId=batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4-BARBARA_LAMBERT__ec7d0b906058f49b",
+        "selectedEpisode=none"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:45:14.386Z",
+      "step": "billing_calendar_grid_located",
+      "message": "Located the patient dashboard calendar grid.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=qa",
+        "patientRunId=batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4-BARBARA_LAMBERT__ec7d0b906058f49b",
+        "Calendar root by grid/calendar container selectors"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "dayCellCount=0"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:45:14.386Z",
+      "step": "billing_calendar_day_cells_discovered",
+      "message": "Discovered 0 visible calendar day cell(s).",
+      "patientName": "Barbara Lambert",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=qa",
+        "patientRunId=batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4-BARBARA_LAMBERT__ec7d0b906058f49b"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:45:14.386Z",
+      "step": "billing_calendar_cards_extracted",
+      "message": "Extracted 0 visible calendar card(s) from the current dashboard window.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=qa",
+        "patientRunId=batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4-BARBARA_LAMBERT__ec7d0b906058f49b"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "cardCount=0"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:45:14.387Z",
+      "step": "billing_period_classification_complete",
+      "message": "Completed billing period classification for visible calendar days and cards.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=qa",
+        "patientRunId=batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4-BARBARA_LAMBERT__ec7d0b906058f49b"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "first30=0",
+        "second30=0",
+        "outside=0"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:45:14.391Z",
+      "step": "billing_calendar_summary_persisted",
+      "message": "Persisted the billing-period calendar summary artifact for downstream dashboard use.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=qa",
+        "patientRunId=batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4-BARBARA_LAMBERT__ec7d0b906058f49b"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\evidence\\BARBARA_LAMBERT__ec7d0b906058f49b\\billing-period-calendar-summary.json"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:45:59.328Z",
+      "step": "oasis_menu",
+      "message": "Opened the OASIS documents page from the in-app sidebar and verified it opened.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/documents?type=oasis",
+      "selectorUsed": "li.notes-sub-menu #documents span:has-text(\"OASIS\")",
+      "found": [
+        "Document TypeDateAssigned StaffStatusAssigned PhysicianCreated ByAction OASIS-OASIS E2 - ROC 04/22/2026 00:00 Berberova, Emiliya RN - Skilled Nursing In Progress YANN, DARYL Sabellano, Andrea 1-1 of 1 items 1"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Current chart URL: https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads",
+        "Sidebar navigation attempted: true",
+        "Selected label: OASIS",
+        "Selected span selector: li.notes-sub-menu #documents span:has-text(\"OASIS\")",
+        "Selected click selector: li.notes-sub-menu #documents span:has-text(\"OASIS\")",
+        "Click method used: li.notes-sub-menu #documents span:has-text(\"OASIS\") :: scrollIntoViewIfNeeded()+click()",
+        "Post-navigation URL: https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/documents?type=oasis",
+        "OASIS documents URL detected: true",
+        "OASIS documents page detected: true",
+        "OASIS document list count: 1",
+        "OASIS content ready attempts: 1",
+        "OASIS page markers: Document TypeDateAssigned StaffStatusAssigned PhysicianCreated ByAction OASIS-OASIS E2 - ROC 04/22/2026 00:00 Berberova, Emiliya RN - Skilled Nursing In Progress YANN, DARYL Sabellano, Andrea 1-1 of 1 items 1",
+        "Candidate li.notes-sub-menu #documents count=1 visible=true text=OASIS box=x=78 y=80 w=195 h=18",
+        "Attempt li.notes-sub-menu #documents :: scrollIntoViewIfNeeded()+click() -> url=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads opened=false urlDetected=false listCount=0",
+        "Attempt li.notes-sub-menu #documents :: click({ force: true }) -> url=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads opened=false urlDetected=false listCount=0",
+        "Attempt li.notes-sub-menu #documents :: evaluate(el => el.click()) -> url=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads opened=false urlDetected=false listCount=0",
+        "Candidate li.notes-sub-menu #documents span:has-text(\"OASIS\") count=1 visible=true text=OASIS box=x=99 y=413 w=40 h=18",
+        "Attempt li.notes-sub-menu #documents span:has-text(\"OASIS\") :: scrollIntoViewIfNeeded()+click() -> url=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/documents?type=oasis opened=true urlDetected=true listCount=1",
+        "[matched] OASIS document table rows by app-private-documents/fin-datatable/table tbody tr count=1 visible=1 elapsedMs=61 samples=OASIS-OASIS E2 - ROC 04/22/2026 00:00 Berberova, Emiliya RN - Skilled Nursing In Progress YANN, DARYL Sabellano, Andrea",
+        "Final URL: https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/documents?type=oasis",
+        "OASIS documents rows detected: 1"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:45:59.328Z",
+      "step": "qa_summary",
+      "message": "Active OASIS workflow confirmed the OASIS documents page is open.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/documents?type=oasis",
+      "selectorUsed": "li.notes-sub-menu #documents span:has-text(\"OASIS\")",
+      "found": [
+        "oasisMenuClicked:true",
+        "oasisDocumentListDetected:true",
+        "socDocumentFound:false",
+        "socDocumentClicked:false"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Current chart URL: https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads",
+        "Sidebar navigation attempted: true",
+        "Selected label: OASIS",
+        "Selected span selector: li.notes-sub-menu #documents span:has-text(\"OASIS\")",
+        "Selected click selector: li.notes-sub-menu #documents span:has-text(\"OASIS\")",
+        "Click method used: li.notes-sub-menu #documents span:has-text(\"OASIS\") :: scrollIntoViewIfNeeded()+click()",
+        "Post-navigation URL: https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/documents?type=oasis",
+        "OASIS documents URL detected: true",
+        "OASIS documents page detected: true",
+        "OASIS document list count: 1",
+        "OASIS content ready attempts: 1",
+        "OASIS page markers: Document TypeDateAssigned StaffStatusAssigned PhysicianCreated ByAction OASIS-OASIS E2 - ROC 04/22/2026 00:00 Berberova, Emiliya RN - Skilled Nursing In Progress YANN, DARYL Sabellano, Andrea 1-1 of 1 items 1",
+        "Candidate li.notes-sub-menu #documents count=1 visible=true text=OASIS box=x=78 y=80 w=195 h=18",
+        "Attempt li.notes-sub-menu #documents :: scrollIntoViewIfNeeded()+click() -> url=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads opened=false urlDetected=false listCount=0",
+        "Attempt li.notes-sub-menu #documents :: click({ force: true }) -> url=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads opened=false urlDetected=false listCount=0",
+        "Attempt li.notes-sub-menu #documents :: evaluate(el => el.click()) -> url=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/file-uploads opened=false urlDetected=false listCount=0",
+        "Candidate li.notes-sub-menu #documents span:has-text(\"OASIS\") count=1 visible=true text=OASIS box=x=99 y=413 w=40 h=18",
+        "Attempt li.notes-sub-menu #documents span:has-text(\"OASIS\") :: scrollIntoViewIfNeeded()+click() -> url=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/documents?type=oasis opened=true urlDetected=true listCount=1",
+        "[matched] OASIS document table rows by app-private-documents/fin-datatable/table tbody tr count=1 visible=1 elapsedMs=61 samples=OASIS-OASIS E2 - ROC 04/22/2026 00:00 Berberova, Emiliya RN - Skilled Nursing In Progress YANN, DARYL Sabellano, Andrea",
+        "OASIS menu clicked: true",
+        "OASIS documents page detected: true",
+        "Final URL: https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/documents?type=oasis"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:45:59.402Z",
+      "step": "oasis_type_selected",
+      "message": "Selected ROC as the target OASIS assessment type for read-only review.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/documents?type=oasis",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=qa",
+        "requestedAssessmentType=ROC",
+        "selectedAssessmentType=ROC",
+        "selectionReason=requested_exact"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "availableAssessmentTypes=ROC"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:46:03.490Z",
+      "step": "oasis_soc_document",
+      "message": "OASIS document table was visible, but no SOC anchor was found.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/documents?type=oasis",
+      "selectorUsed": "table tbody tr a.tbl-link",
+      "found": [],
+      "missing": [
+        "SOC OASIS document anchor"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "[matched] OASIS document table rows by app-private-documents/fin-datatable/table tbody tr count=1 visible=1 elapsedMs=50 samples=OASIS-OASIS E2 - ROC 04/22/2026 00:00 Berberova, Emiliya RN - Skilled Nursing In Progress YANN, DARYL Sabellano, Andrea",
+        "Total table tbody tr count: 1",
+        "Total a.tbl-link anchor count: 1",
+        "All anchor texts: OASIS-OASIS E2 - ROC",
+        "Normalized anchor texts: OASIS-OASIS E2 - ROC",
+        "Visible document rows inspected: 1"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:46:03.490Z",
+      "step": "qa_summary",
+      "message": "OASIS workflow stopped because no SOC OASIS anchor was found in the OASIS table/list.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/documents?type=oasis",
+      "selectorUsed": "table tbody tr a.tbl-link",
+      "found": [
+        "oasisMenuClicked:true",
+        "oasisDocumentListDetected:true",
+        "socDocumentFound:false",
+        "socDocumentClicked:false",
+        "failureReason:no_soc_anchor_found"
+      ],
+      "missing": [
+        "SOC OASIS document anchor"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "[matched] OASIS document table rows by app-private-documents/fin-datatable/table tbody tr count=1 visible=1 elapsedMs=50 samples=OASIS-OASIS E2 - ROC 04/22/2026 00:00 Berberova, Emiliya RN - Skilled Nursing In Progress YANN, DARYL Sabellano, Andrea",
+        "Total table tbody tr count: 1",
+        "Total a.tbl-link anchor count: 1",
+        "All anchor texts: OASIS-OASIS E2 - ROC",
+        "Normalized anchor texts: OASIS-OASIS E2 - ROC",
+        "Visible document rows inspected: 1"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:46:20.129Z",
+      "step": "oasis_print_capture",
+      "message": "Attempted OASIS assessment print capture and fell back to visible text review.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/documents?type=oasis",
+      "selectorUsed": "button:has-text('Print')",
+      "found": [
+        "assessmentType=ROC",
+        "printProfileKey=soc_full_document_v1",
+        "printButtonDetected=true",
+        "printClickSucceeded=false",
+        "printModalDetected=false",
+        "printModalConfirmSucceeded=false",
+        "extractionMethod=visible_text_fallback",
+        "textLength=2266"
+      ],
+      "missing": [],
+      "openedDocumentLabel": "ROC OASIS",
+      "openedDocumentUrl": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/documents?type=oasis",
+      "evidence": [
+        "printedPdfPath=none",
+        "selectedSectionLabels=none",
+        "extractedTextPath=C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\evidence\\BARBARA_LAMBERT__ec7d0b906058f49b\\oasis-printed-note\\extracted-text.txt",
+        "ocrResultPath=none",
+        "extractionResultPath=C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\evidence\\BARBARA_LAMBERT__ec7d0b906058f49b\\oasis-printed-note\\extraction-result.json",
+        "warnings=OASIS print button click did not open a print modal. | Fell back to visible page text because printed-note OCR text was unavailable."
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:46:20.134Z",
+      "step": "oasis_printed_note_review",
+      "message": "Persisted read-only OASIS printed-note review with 18 section summaries.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/documents?type=oasis",
+      "selectorUsed": null,
+      "found": [
+        "assessmentType=ROC",
+        "printProfileKey=soc_full_document_v1",
+        "printButtonDetected=true",
+        "printClickSucceeded=false",
+        "textLength=2266",
+        "overallStatus=PARTIAL"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/documents?type=oasis",
+      "evidence": [
+        "reviewPath=C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\oasis-printed-note-review.json",
+        "extractedTextPath=C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\evidence\\BARBARA_LAMBERT__ec7d0b906058f49b\\oasis-printed-note\\extracted-text.txt",
+        "ocrResultPath=none",
+        "sourcePdfPath=none",
+        "printedPdfPath=none",
+        "selectedSectionLabels=none",
+        "administrative_information:MISSING:0/15",
+        "primary_reason_medical_necessity:MISSING:0/3",
+        "vital_signs:MISSING:0/4",
+        "neurological:MISSING:0/3",
+        "eyes_ears:MISSING:0/4",
+        "cardiovascular:MISSING:0/4",
+        "respiratory:MISSING:0/4",
+        "gastrointestinal:MISSING:0/4"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:46:20.148Z",
+      "step": "document_text_refresh_after_qa",
+      "message": "Refreshed document-text.json after the QA printed-note review replaced the shared OASIS artifact.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "documentTextPath=C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\document-text.json",
+        "documentCount=2",
+        "oasisDocumentCount=1",
+        "orderDocumentCount=1"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "[0] ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\documents\\lambert-barbara-j-referral-02242026-pdf\\source.pdf:61783",
+        "[1] OASIS:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\evidence\\BARBARA_LAMBERT__ec7d0b906058f49b\\oasis-printed-note\\extracted-text.txt:2260"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:46:21.748Z",
+      "step": "printed_note_chart_values",
+      "message": "Extracted 2 current chart value(s) from printed OASIS note text.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "fieldCount=2",
+        "artifactPath=C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\printed-note-chart-values.json",
+        "invocationModelId=us.amazon.nova-lite-v1:0"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "LLM input source: raw_text_fallback.",
+        "Fact pack unavailable or empty; using bounded raw text fallback.",
+        "Deterministic printed-note chart values: none.",
+        "Selected option labels detected: 0.",
+        "Printed-note chart-value extraction used inference profile us.amazon.nova-lite-v1:0."
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:46:21.923Z",
+      "step": "source_document_identified",
+      "message": "Identified referral/admission-order source document candidates and selected the best source for processing.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "BARBARA_LAMBERT__ec7d0b906058f49b-referral-1:REFERRAL_ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\documents\\lambert-barbara-j-referral-02242026-pdf\\source.pdf"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "selectedDocumentId=BARBARA_LAMBERT__ec7d0b906058f49b-referral-1"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:46:21.923Z",
+      "step": "source_document_acquired",
+      "message": "Selected referral/admission-order file is available locally for read-only processing.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\documents\\lambert-barbara-j-referral-02242026-pdf\\source.pdf"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "acquisitionMethod=printed_pdf"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:46:21.923Z",
+      "step": "document_extraction_started",
+      "message": "Started referral/admission-order document extraction from the canonical local file when available.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\documents\\lambert-barbara-j-referral-02242026-pdf\\source.pdf"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:46:21.935Z",
+      "step": "document_extraction_completed",
+      "message": "Completed referral/admission-order extraction.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "extractionMethod=ocr_text",
+        "effectiveTextSource=ocr_text",
+        "textLength=61783"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:46:21.935Z",
+      "step": "extraction_quality_evaluated",
+      "message": "Evaluated extraction quality with usability status usable.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "characterCount=61783",
+        "tokenCount=9636",
+        "likelyUsableForLlm=true",
+        "likelyRequiresOcrRetry=false"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:46:21.952Z",
+      "step": "referral_sections_normalized",
+      "message": "Normalized referral text into 13 semantic sections.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "patient_identity:1",
+        "hospitalization_history:1",
+        "medical_necessity:0.55",
+        "homebound_evidence:0.75",
+        "diagnoses:1",
+        "medications:1",
+        "caregiver_support:0.95",
+        "living_situation:0.55",
+        "functional_limitations:0.55",
+        "therapy_need:1",
+        "risk_factors:1",
+        "code_status:0.55",
+        "other_clinical_notes:1"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:46:21.964Z",
+      "step": "chart_snapshot_created",
+      "message": "Built a read-only chart/OASIS field snapshot and categorization buckets for referral comparison.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "alreadyPopulated=2",
+        "llmCandidates=31",
+        "humanReviewRequired=46",
+        "referenceOnly=3"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:46:21.964Z",
+      "step": "referral_facts_extracted",
+      "message": "Extracted 11 referral facts before field mapping.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "recent_hospitalization_discharge_date:hospitalization",
+        "code_status:directive",
+        "medical_necessity_summary:medical_necessity",
+        "homebound_narrative:homebound",
+        "homebound_supporting_factors:homebound",
+        "living_situation:living_situation",
+        "functional_limitations:functional",
+        "therapy_need:therapy",
+        "fall_risk_narrative:risk",
+        "skilled_interventions:therapy",
+        "plan_for_next_visit:therapy"
+      ],
+      "missing": [
+        "referral_date",
+        "preferred_language",
+        "interpreter_needed",
+        "recent_hospitalization_facility",
+        "caregiver_name",
+        "caregiver_relationship",
+        "caregiver_phone",
+        "patient_summary_narrative",
+        "discipline_frequencies",
+        "patient_caregiver_goals",
+        "care_plan_problems_goals_interventions",
+        "respiratory_status",
+        "integumentary_wound_status",
+        "pain_assessment_narrative",
+        "emotional_behavioral_status",
+        "past_medical_history",
+        "immunization_status"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "02/25/26",
+        "Code status: full_code",
+        "for inpatient rehab rather than at subacute level of care, continue the medical management and continue transfer",
+        "Walker rolling Walker - rolling",
+        "Walker rolling Walker - rolling",
+        "the family, was",
+        "Ambulation : Education Ongoing",
+        "Occupational Therapy Occupational Therapy Occupational Therapy"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:46:21.964Z",
+      "step": "llm_field_proposal_started",
+      "message": "Started referral-to-field proposal generation using the strict JSON contract.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "candidateFieldCount=31"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:46:30.751Z",
+      "step": "llm_field_proposal_completed",
+      "message": "Completed referral-to-field proposal generation with 10 field proposals.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "proposalCount=10",
+        "diagnosisCandidateCount=8"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "LLM input source: fact_pack_primary.",
+        "Fact pack coverage: diagnoses, medications, allergies, homeboundEvidence, skilledNeedEvidence, hospitalizationReasons, assessmentValues, supportingSnippets.",
+        "Fact pack coverage score: 1.",
+        "Prompt character estimate: 2337.",
+        "Fallback reason: none."
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:46:30.751Z",
+      "step": "field_comparison_completed",
+      "message": "Completed referral proposal comparison across 53 fields.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "patient_name:unsupported",
+        "dob:unsupported",
+        "soc_date:unsupported",
+        "referral_date:requires_human_review",
+        "preferred_language:unsupported",
+        "interpreter_needed:requires_human_review",
+        "primary_reason_for_home_health_medical_necessity:requires_human_review",
+        "admit_reason_to_home_health:requires_human_review",
+        "homebound_narrative:requires_human_review",
+        "homebound_supporting_factors:requires_human_review",
+        "recent_hospitalization_discharge_date:requires_human_review",
+        "recent_hospitalization_facility:requires_human_review",
+        "caregiver_name:unsupported",
+        "caregiver_relationship:unsupported",
+        "caregiver_phone:requires_human_review",
+        "living_situation:unsupported",
+        "prior_functioning:requires_human_review",
+        "functional_limitations:requires_human_review",
+        "therapy_need:requires_human_review",
+        "patient_summary_narrative:requires_human_review",
+        "skilled_interventions:requires_human_review",
+        "discipline_frequencies:requires_human_review",
+        "plan_for_next_visit:requires_human_review",
+        "patient_caregiver_goals:requires_human_review",
+        "care_plan_problems_goals_interventions:requires_human_review",
+        "fall_risk_narrative:requires_human_review",
+        "respiratory_status:requires_human_review",
+        "integumentary_wound_status:requires_human_review",
+        "pain_assessment_narrative:requires_human_review",
+        "emotional_behavioral_status:requires_human_review",
+        "past_medical_history:requires_human_review",
+        "immunization_status:requires_human_review",
+        "diagnosis_candidates:requires_human_review",
+        "primary_diagnosis:requires_human_review",
+        "secondary_diagnoses:requires_human_review",
+        "medication_list:requires_human_review",
+        "allergy_list:requires_human_review",
+        "special_treatments_o0110:requires_human_review",
+        "injectable_medications:requires_human_review",
+        "high_risk_medication_notes:requires_human_review",
+        "gg_self_care:requires_human_review",
+        "gg_mobility:requires_human_review",
+        "neurological_status:requires_human_review",
+        "eyes_ears_status:requires_human_review",
+        "cardiovascular_status:requires_human_review",
+        "gastrointestinal_status:requires_human_review",
+        "genitourinary_status:requires_human_review",
+        "mahc10_fall_risk:requires_human_review",
+        "norton_scale:requires_human_review",
+        "wound_risk_review:requires_human_review",
+        "hospitalization_risk_summary:requires_human_review",
+        "patient_coordination_orders:requires_human_review",
+        "code_status:requires_human_review"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:46:30.751Z",
+      "step": "llm_qa_insights_started",
+      "message": "Started referral QA insight synthesis for comparisons, source highlights, and draft narratives.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:46:43.814Z",
+      "step": "llm_qa_insights_completed",
+      "message": "Completed referral QA insight synthesis with 7 consistency checks and 7 narrative drafts.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "consistencyChecks=7",
+        "sourceHighlights=7",
+        "draftNarratives=7"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Deterministic referral QA insights fallback was used.",
+        "Bedrock returned invalid referral QA insights output; deterministic fallback was used."
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:46:45.065Z",
+      "step": "qa_document_summary_persisted",
+      "message": "Persisted read-only referral document QA artifacts.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\referral-document-processing\\source-meta.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\referral-document-processing\\extraction-result.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\referral-document-processing\\normalized-sections.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\referral-document-processing\\extracted-facts.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\referral-document-processing\\field-map-snapshot.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\referral-document-processing\\llm-proposal.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\referral-document-processing\\field-comparison.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\referral-document-processing\\patient-qa-reference.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\referral-document-processing\\qa-document-summary.json"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:46:45.065Z",
+      "step": "coding_workflow_start",
+      "message": "Coding workflow branch started from the shared patient chart context.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/calendar",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=coding",
+        "patientRunId=batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4-BARBARA_LAMBERT__ec7d0b906058f49b",
+        "status=started",
+        "chartUrl=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/calendar"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:46:45.377Z",
+      "step": "document_extraction",
+      "message": "Extracted 2 document(s) for QA evaluation.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "0:ORDER:ocr_text:printed_pdf:61783",
+        "1:OASIS:viewer_text_fallback:download:2260"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "[0] type=ORDER source=printed_pdf effectiveTextSource=ocr_text portalLabel=📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf 📝 ✏️ 🗑️ 🔗 textLength=61783",
+        "[0] rawExtractedTextSource=ocr textSelectionReason=policy_ocr_required_direct_ocr:PDF appears image-based/scanned; OCR likely required|No printed PDF available|OCR is the cheapest acceptable option that preserves clinically meaningful content",
+        "[0] domExtractionRejectedReasons=none",
+        "[0] preview=LAMBERT, BARBARA J\n875003035\n2/16/1958\n501361583\n* Facesheet Auth (Verified) *\nEncompass Health Rehabilitation Hospital of Desert Canyon\n7022527342\nEncounter Information\nFIN: 501361583\nThird Party MRN:\nAdmit Dt/Tm: 02/16/2026 19:35\nPatient Type: Inpatient\nDisch Dt/Tm:\nMedical Service: CVA Stroke Program\nAttend Physician: Qurashi MD, Munawar A\nAdmit Physician: Qurashi MD, Munawar A\nSubspecialty:\nPCP:\nLocation: NURS DC\nReferring Physician: Shuja MD, Amir\nRoom/Bed: 208 / P\nOnset of Symptoms/Illness",
+        "[0] admissionReasonPrimary=none",
+        "[0] admissionReasonSnippets=none",
+        "[0] possibleIcd10Codes=I24 | I18 | I33 | I35 | I38 | I40 | I14 | I50 | I19 | I00 | I00.5 | I25 | I08 | I30 | X10",
+        "[0] possibleIcd10CodeCount=15",
+        "[1] type=OASIS source=download effectiveTextSource=viewer_text_fallback portalLabel=ROC OASIS textLength=2260",
+        "[1] rawExtractedTextSource=dom textSelectionReason=accepted_printable_text",
+        "[1] domExtractionRejectedReasons=none",
+        "[1] preview=A Plus Home Health Systems LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifications1Messages1 NewWelcomeMichael YuviencoHello! Welcome! All of us at Finale Health would like to welcome View all messages71376 A Plus Home Health Systems LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC "
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:46:45.377Z",
+      "step": "admission_document_extract",
+      "message": "Extracted 1 Admission Order/referral document text block(s).",
+      "patientName": "Barbara Lambert",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "📄 LAMBERT, BARBARA J REFERRAL 02242026.pdf 📝 ✏️ 🗑️ 🔗:61783"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "[0] source=printed_pdf",
+        "[0] effectiveTextSource=ocr_text",
+        "[0] rawExtractedTextSource=ocr",
+        "[0] textSelectionReason=policy_ocr_required_direct_ocr:PDF appears image-based/scanned; OCR likely required|No printed PDF available|OCR is the cheapest acceptable option that preserves clinically meaningful content",
+        "[0] domExtractionRejectedReasons=none",
+        "[0] preview=LAMBERT, BARBARA J\n875003035\n2/16/1958\n501361583\n* Facesheet Auth (Verified) *\nEncompass Health Rehabilitation Hospital of Desert Canyon\n7022527342\nEncounter Information\nFIN: 501361583\nThird Party MRN:\nAdmit Dt/Tm: 02/16/2026 19:35\nPatient Type: Inpatient\nDisch Dt/Tm:\nMedical Service: CVA Stroke Program\nAttend Physician: Qurashi MD, Munawar A\nAdmit Physician: Qurashi MD, Munawar A\nSubspecialty:\nPCP:\nLocation: NURS DC\nReferring Physician: Shuja MD, Amir\nRoom/Bed: 208 / P\nOnset of Symptoms/Illness",
+        "[0] admissionReasonPrimary=none",
+        "[0] admissionReasonSnippets=none",
+        "[0] possibleIcd10Codes=I24 | I18 | I33 | I35 | I38 | I40 | I14 | I50 | I19 | I00 | I00.5 | I25 | I08 | I30 | X10"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:46:45.377Z",
+      "step": "oasis_extract",
+      "message": "Extracted 1 OASIS document(s).",
+      "patientName": "Barbara Lambert",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "ROC OASIS"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "skilled nursing",
+        "medication",
+        "physician order",
+        "communication note"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:46:45.377Z",
+      "step": "poc_extract",
+      "message": "No plan-of-care content was extracted.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [],
+      "missing": [
+        "POC"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:46:45.377Z",
+      "step": "visit_note_extract",
+      "message": "No visit-note content was extracted.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [],
+      "missing": [
+        "VISIT_NOTE"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:46:45.377Z",
+      "step": "technical_review_extract",
+      "message": "Aggregated technical-review evidence from document inventory and extracted content.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "orders:1",
+        "summaries:0",
+        "supervisory:0",
+        "communication:0",
+        "missed_visits:0",
+        "sn_visits:0"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Detected 1 order document candidate(s)."
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:46:45.380Z",
+      "step": "coding_input_export",
+      "message": "Wrote read-only diagnosis reference output for dashboard consumption.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "codingInputPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\coding-input.json",
+        "diagnosisCount:3",
+        "primaryDiagnosisSelected:I18 Hypertensive heart disease with heart failure",
+        "otherDiagnosisCount:2",
+        "codeConfidenceSummary:high:3 medium:0 low:0",
+        "noteCount:1",
+        "primaryDiagnosisCode:I18"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "primaryDiagnosisDescription:Hypertensive heart disease with heart failure",
+        "suggestedOnsetType:onset",
+        "suggestedSeverity:3",
+        "comorbidityFlags:{\"pvd_pad\":false,\"diabetes\":false,\"none\":true}"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:46:45.381Z",
+      "step": "qa_summary",
+      "message": "QA summary computed with overallStatus=BLOCKED.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "timing:PASS",
+        "coding:NEEDS_REVIEW",
+        "oasis:FAIL",
+        "poc:MISSING",
+        "visit_notes:MISSING",
+        "technical_review:MISSING",
+        "final_check:FAIL"
+      ],
+      "missing": [
+        "Medical necessity is stated",
+        "Homebound reason is stated",
+        "Health assessment is documented",
+        "Plan of care content extracted",
+        "POC QA completed in workbook",
+        "Diagnoses or codes are present in the plan of care",
+        "Interventions, goals, and frequency are present in the plan of care",
+        "Conditions or exacerbations are reflected in the plan of care",
+        "Visit note content extracted",
+        "Visit notes review completed in workbook",
+        "Skilled need is clearly documented",
+        "Interventions performed are specific and detailed",
+        "Patient response to interventions is documented",
+        "Progress toward goals is noted",
+        "Vitals and focused assessment are documented",
+        "Medication review is documented",
+        "Changes in condition are clearly reported and addressed",
+        "Documentation supports billed services",
+        "Documentation remains consistent with OASIS and diagnoses",
+        "SN visits were identified from visit-note content",
+        "Applicable disciplines were detected"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Medical necessity is stated",
+        "Homebound reason is stated",
+        "Health assessment is documented",
+        "Plan of care content extracted",
+        "POC QA completed in workbook",
+        "Diagnoses or codes are present in the plan of care",
+        "Interventions, goals, and frequency are present in the plan of care",
+        "Conditions or exacerbations are reflected in the plan of care",
+        "Visit note content extracted",
+        "Visit notes review completed in workbook",
+        "Skilled need is clearly documented",
+        "Interventions performed are specific and detailed",
+        "Patient response to interventions is documented",
+        "Progress toward goals is noted",
+        "Vitals and focused assessment are documented",
+        "Medication review is documented",
+        "Changes in condition are clearly reported and addressed",
+        "Documentation supports billed services",
+        "Documentation remains consistent with OASIS and diagnoses",
+        "SN visits were identified from visit-note content",
+        "Applicable disciplines were detected"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:46:45.381Z",
+      "step": "coding_workflow_complete",
+      "message": "Coding workflow branch completed.",
+      "patientName": "Barbara Lambert",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/calendar",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=coding",
+        "patientRunId=batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4-BARBARA_LAMBERT__ec7d0b906058f49b",
+        "status=completed",
+        "chartUrl=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/699f4208038c1c0c59ce9a6f/intake/699f42d1eb7128bce8cf9e5d/calendar"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    }
+  ],
+  "notes": [
+    "Document inventory exported: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\document-inventory.json",
+    "Document text exported: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\document-text.json",
+    "Referral document QA summary persisted: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\referral-document-processing\\qa-document-summary.json",
+    "QA prefetch result persisted: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\qa-prefetch-result.json",
+    "Document text refreshed after printed OASIS review: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\document-text.json",
+    "Printed-note chart values persisted: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\printed-note-chart-values.json",
+    "Referral comparison refreshed from printed OASIS note: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\referral-document-processing\\qa-document-summary.json",
+    "Document inventory exported: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\document-inventory.json",
+    "Document text exported: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\document-text.json",
+    "Extracted 2 document(s) for QA evaluation.",
+    "Coding input exported: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\BARBARA_LAMBERT__ec7d0b906058f49b\\coding-input.json",
+    "Diagnosis code candidates: I24, I18, I33, I35, I38, I40, I14"
+  ]
+}

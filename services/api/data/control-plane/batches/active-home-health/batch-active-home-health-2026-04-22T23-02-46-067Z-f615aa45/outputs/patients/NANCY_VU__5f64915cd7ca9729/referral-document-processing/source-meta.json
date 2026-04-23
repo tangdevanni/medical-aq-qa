@@ -1,0 +1,25 @@
+{
+  "patientId": "NANCY_VU__5f64915cd7ca9729",
+  "selectedDocumentId": "NANCY_VU__5f64915cd7ca9729-referral-1",
+  "sourceDocuments": [
+    {
+      "documentId": "NANCY_VU__5f64915cd7ca9729-referral-1",
+      "sourceIndex": 0,
+      "sourceLabel": "📄 VU, NANCY REFERRAL 04012026.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedSourceLabel": "vu-nancy-referral-04012026-pdf",
+      "sourceType": "REFERRAL_ORDER",
+      "acquisitionMethod": "printed_pdf",
+      "selectionStatus": "selected",
+      "portalLabel": "📄 VU, NANCY REFERRAL 04012026.pdf 📝 ✏️ 🗑️ 🔗",
+      "localFilePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\NANCY_VU__5f64915cd7ca9729\\documents\\vu-nancy-referral-04012026-pdf\\source.pdf",
+      "effectiveTextSource": "raw_pdf_fallback",
+      "fileType": "pdf",
+      "fileSizeBytes": 1436939,
+      "extractedTextLength": 293728,
+      "selectedReason": "highest-ranked referral/admission-order source with local file preference",
+      "rejectedReasons": []
+    }
+  ],
+  "warnings": [],
+  "generatedAt": "2026-04-23T00:41:00.234Z"
+}

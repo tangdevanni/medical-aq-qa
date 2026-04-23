@@ -1,0 +1,26 @@
+{
+  "assessmentType": "ROC",
+  "matchedAssessmentLabel": null,
+  "printProfileKey": "soc_full_document_v1",
+  "printProfileLabel": "Full OASIS document",
+  "currentUrl": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/676df8ec4bafa553b43b18e9/file-uploads",
+  "printButtonDetected": true,
+  "printButtonVisible": false,
+  "printButtonSelectorUsed": "fin-button[title='Print Preview'] > button, fin-button[title*='Print'] > button, fin-button[icon='ft-printer'] > button, button:has(.ft-printer), button:has-text('Print'), role=button[name=/^print$/i]",
+  "printClickSucceeded": false,
+  "printModalDetected": false,
+  "printModalSelectorUsed": null,
+  "printModalConfirmSelectorUsed": null,
+  "printModalConfirmSucceeded": false,
+  "selectedSectionLabels": [],
+  "printedPdfPath": null,
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\evidence\\BARBRA_NEWTON__c549fe0583d92a92\\oasis-printed-note\\extracted-text.txt",
+  "ocrResultPath": null,
+  "textLength": 2085,
+  "extractionMethod": "visible_text_fallback",
+  "warnings": [
+    "Print button could not be located on the OASIS assessment page.",
+    "Fell back to visible page text because printed-note OCR text was unavailable."
+  ],
+  "generatedAt": "2026-04-22T19:50:49.152Z"
+}

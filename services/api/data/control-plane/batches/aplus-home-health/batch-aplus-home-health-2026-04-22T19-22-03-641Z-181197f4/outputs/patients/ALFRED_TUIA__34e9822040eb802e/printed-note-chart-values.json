@@ -1,0 +1,112 @@
+{
+  "generatedAt": "2026-04-22T19:33:19.546Z",
+  "source": "printed_note_ocr",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\evidence\\ALFRED_TUIA__34e9822040eb802e\\oasis-printed-note\\extracted-text.txt",
+  "llmInputSource": "fact_pack_primary",
+  "extractedFieldCount": 7,
+  "invocationModelId": "us.amazon.nova-lite-v1:0",
+  "currentChartValues": {
+    "secondary_diagnoses": [
+      "M75.02 - Adhesive capsulitis of left shoulder"
+    ],
+    "therapy_need": "skilled nursing care for pain management, management, and monitoring of his response to ongoing therapies.",
+    "medication_list": [
+      "opioid medication",
+      "Brilinta",
+      "Allopurinol"
+    ],
+    "high_risk_medication_notes": "requires careful management considering his overall health condition and potential interactions.",
+    "code_status": "full_code",
+    "functional_limitations": [
+      "Ambulation",
+      "Endurance"
+    ],
+    "allergy_list": [
+      "No Known Allergies"
+    ]
+  },
+  "extractedFieldValues": [
+    {
+      "field_key": "secondary_diagnoses",
+      "current_value": [
+        "M75.02 - Adhesive capsulitis of left shoulder"
+      ],
+      "confidence": 0.98,
+      "source_spans": [
+        "M75.02 - Adhesive capsulitis of left shoulder"
+      ]
+    },
+    {
+      "field_key": "therapy_need",
+      "current_value": "skilled nursing care for pain management, management, and monitoring of his response to ongoing therapies.",
+      "confidence": 0.95,
+      "source_spans": [
+        "skilled nursing care for pain management, management, and monitoring of his response to ongoing therapies."
+      ]
+    },
+    {
+      "field_key": "medication_list",
+      "current_value": [
+        "opioid medication",
+        "Brilinta",
+        "Allopurinol"
+      ],
+      "confidence": 0.95,
+      "source_spans": [
+        "potential adjustments to his opioid medication",
+        "Brilinta",
+        "Allopurinol"
+      ]
+    },
+    {
+      "field_key": "high_risk_medication_notes",
+      "current_value": "requires careful management considering his overall health condition and potential interactions.",
+      "confidence": 0.95,
+      "source_spans": [
+        "requires careful management considering his overall health condition and potential interactions."
+      ]
+    },
+    {
+      "field_key": "code_status",
+      "current_value": "full_code",
+      "confidence": 0.98,
+      "source_spans": [
+        "Full Code"
+      ]
+    },
+    {
+      "field_key": "functional_limitations",
+      "current_value": [
+        "Ambulation",
+        "Endurance"
+      ],
+      "confidence": 0.96,
+      "source_spans": [
+        "6 - Endurance",
+        "7 Ambulation",
+        "Severe pain on ambulation"
+      ]
+    },
+    {
+      "field_key": "allergy_list",
+      "current_value": [
+        "No Known Allergies"
+      ],
+      "confidence": 0.92,
+      "source_spans": [
+        "None known"
+      ]
+    }
+  ],
+  "warnings": [
+    "LLM input source: fact_pack_primary.",
+    "Fact pack coverage: diagnoses, assessmentValues, homeboundEvidence, skilledNeedEvidence, hospitalizationReasons, medications, allergies, supportingSnippets.",
+    "Fact pack coverage score: 1.",
+    "Prompt character estimate: 3770.",
+    "Fallback reason: none.",
+    "Deterministic printed-note chart values: secondary_diagnoses, code_status, functional_limitations, allergy_list.",
+    "Selected option labels detected: 134.",
+    "Printed-note chart-value extraction used inference profile us.amazon.nova-lite-v1:0.",
+    "primary_diagnosis: rejected as low-confidence or suspicious for the field"
+  ]
+}

@@ -30,7 +30,15 @@ describe("decideDocumentExtractionPolicy", () => {
       const pdfPath = path.join(tempDir, "source.pdf");
       await writeFile(
         htmlPath,
-        "<html><body><h1>Admission Order</h1><p>Reason for admission pneumonia. Skilled nursing for medication management and assessment.</p></body></html>",
+        [
+          "<html><body>",
+          "<h1>Admission Order</h1>",
+          "<p>Patient Name: Christine Young</p>",
+          "<p>Referral Date: 02/17/2026</p>",
+          "<p>Reason for admission pneumonia with weakness after discharge.</p>",
+          "<p>Skilled nursing for medication management and assessment.</p>",
+          "</body></html>",
+        ].join(""),
         "utf8",
       );
       await writeFile(pdfPath, "%PDF-1.4 /Subtype /Image", "latin1");
@@ -69,6 +77,31 @@ describe("decideDocumentExtractionPolicy", () => {
       expect(decision.confidence).toBe("high");
       expect(decision.recommendedSourcePath).toBe(pdfPath);
       expect(decision.hasUsablePdfTextLayer).toBe(true);
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
+  });
+
+  it("does not trust raw pdf structure text as a usable native text layer", async () => {
+    const tempDir = await mkdtemp(path.join(os.tmpdir(), "doc-policy-raw-pdf-"));
+
+    try {
+      const pdfPath = path.join(tempDir, "source.pdf");
+      const rawPdfText = [
+        "PDF-1.4",
+        "1 0 obj Creator (Apache FOP Version 2.10)",
+        "2 0 obj /Length 3 0 R /Filter /FlateDecode stream",
+        "endstream endobj",
+        "xref trailer startxref",
+      ].join(" ");
+      await writeFile(pdfPath, `%PDF-1.4 BT (${rawPdfText}) Tj ET`, "latin1");
+
+      const decision = await decideDocumentExtractionPolicy(buildCapturedChartDocument({
+        sourcePdfPath: pdfPath,
+      }));
+
+      expect(decision.mode).not.toBe("native_text");
+      expect(decision.hasUsablePdfTextLayer).toBe(false);
     } finally {
       await rm(tempDir, { recursive: true, force: true });
     }

@@ -1,5 +1,5 @@
 {
-  "family": "medical-ai-qa-dashboard-demo",
+  "family": "medical-ai-qa-dashboard",
   "networkMode": "awsvpc",
   "requiresCompatibilities": ["FARGATE"],
   "cpu": "512",
@@ -9,7 +9,7 @@
   "containerDefinitions": [
     {
       "name": "dashboard",
-      "image": "<ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/medical-ai-qa-dashboard:demo",
+      "image": "<ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/medical-ai-qa-dashboard:prod",
       "essential": true,
       "portMappings": [
         {
@@ -21,12 +21,38 @@
         {
           "name": "NEXT_PUBLIC_API_BASE_URL",
           "value": "https://YOUR_ALB_DNS/api"
+        },
+        {
+          "name": "DASHBOARD_SESSION_TTL_HOURS",
+          "value": "12"
+        },
+        {
+          "name": "DASHBOARD_ALLOW_PLAINTEXT_PASSWORDS",
+          "value": "false"
+        },
+        {
+          "name": "DASHBOARD_AUTH_AUDIT_LOG_GROUP",
+          "value": "/medical-ai-qa/dashboard-auth"
+        },
+        {
+          "name": "DASHBOARD_AUTH_AUDIT_AWS_REGION",
+          "value": "<REGION>"
+        }
+      ],
+      "secrets": [
+        {
+          "name": "DASHBOARD_SESSION_SECRET",
+          "valueFrom": "arn:aws:secretsmanager:<REGION>:<ACCOUNT_ID>:secret:medical-ai-qa/dashboard-session-secret"
+        },
+        {
+          "name": "DASHBOARD_QA_USERS_JSON",
+          "valueFrom": "arn:aws:secretsmanager:<REGION>:<ACCOUNT_ID>:secret:medical-ai-qa/dashboard-qa-users-json"
         }
       ],
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-          "awslogs-group": "/ecs/medical-ai-qa-dashboard-demo",
+          "awslogs-group": "/ecs/medical-ai-qa-dashboard",
           "awslogs-region": "<REGION>",
           "awslogs-stream-prefix": "ecs"
         }

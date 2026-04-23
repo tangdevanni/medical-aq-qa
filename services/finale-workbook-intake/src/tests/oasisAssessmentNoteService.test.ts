@@ -44,6 +44,14 @@ describe("oasisAssessmentNoteService", () => {
             diagnosisListSamples: [],
             visibleDiagnoses: [],
             lockStatus: "locked",
+            oasisAssessmentStatus: {
+              detectedStatuses: ["SIGNED", "VALIDATED"],
+              primaryStatus: "VALIDATED",
+              decision: "PROCESS",
+              processingEligible: true,
+              reason: "Continue downstream OASIS capture because no skip-only status was detected.",
+              matchedSignals: ["button role=button name=VALIDATED"],
+            },
             warnings: [],
           },
           stepLogs: [],
@@ -53,6 +61,7 @@ describe("oasisAssessmentNoteService", () => {
 
     expect(result.result.assessmentOpened).toBe(true);
     expect(result.result.matchedRequestedAssessment).toBe(true);
+    expect(result.result.oasisAssessmentStatus?.primaryStatus).toBe("VALIDATED");
     expect(result.result.warnings).toEqual([]);
   });
 
@@ -83,6 +92,14 @@ describe("oasisAssessmentNoteService", () => {
             diagnosisListSamples: [],
             visibleDiagnoses: [],
             lockStatus: "locked",
+            oasisAssessmentStatus: {
+              detectedStatuses: ["FOR_EXPORT"],
+              primaryStatus: "FOR_EXPORT",
+              decision: "SKIP",
+              processingEligible: false,
+              reason: "Skip downstream OASIS capture because the assessment page shows for export.",
+              matchedSignals: ["button role=button name=FOR EXPORT"],
+            },
             warnings: [],
           },
           stepLogs: [],

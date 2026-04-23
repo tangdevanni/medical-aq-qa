@@ -1,0 +1,182 @@
+{
+  "patient_context": {
+    "patient_name": null,
+    "dob": "06/02/1972",
+    "soc_date": "12/22/2025",
+    "referral_date": null
+  },
+  "proposed_field_values": [
+    {
+      "field_key": "code_status",
+      "proposed_value": "dnr",
+      "confidence": 0.75,
+      "source_spans": [
+        "Code status: dnr"
+      ],
+      "rationale": "Code status was explicitly stated in referral text.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "living_situation",
+      "proposed_value": "Home independently",
+      "confidence": 0.72,
+      "source_spans": [
+        "Home independently"
+      ],
+      "rationale": "Living situation was summarized from referral text.",
+      "requires_human_review": false
+    },
+    {
+      "field_key": "skilled_interventions",
+      "proposed_value": "reconciliation, PT/OT for balance and strengthening Physical Therapy Forms Physical Therapy Orders : Miscellaneous",
+      "confidence": 0.8,
+      "source_spans": [
+        "reconciliation, PT/OT for balance and strengthening Physical Therapy Forms Physical Therapy Orders : Miscellaneous"
+      ],
+      "rationale": "Skilled interventions were summarized from the therapy plan.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "plan_for_next_visit",
+      "proposed_value": "reconciliation, PT/OT for balance and strengthening Physical Therapy Forms Physical Therapy Orders : Miscellaneous",
+      "confidence": 0.78,
+      "source_spans": [
+        "reconciliation, PT/OT for balance and strengthening Physical Therapy Forms Physical Therapy Orders : Miscellaneous"
+      ],
+      "rationale": "Next-visit plan was summarized from the therapy plan.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "functional_limitations",
+      "proposed_value": [
+        "weakness",
+        "ambulation_limitations",
+        "reduced_endurance"
+      ],
+      "confidence": 0.76,
+      "source_spans": [
+        "Mobility & Ambulation Level Ambulation : Verbalizes understanding, Demonstrates, Needs further teaching, Needs PT Impairments or Limitations : Ambulation deficits, Balance deficits, Bed mobility deficits, Endurance weakn"
+      ],
+      "rationale": "Functional limitations were extracted from referral text.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "therapy_need",
+      "proposed_value": "reconciliation, PT/OT for balance and strengthening Physical Therapy Forms Physical Therapy Orders : Miscellaneous",
+      "confidence": 0.77,
+      "source_spans": [
+        "reconciliation, PT/OT for balance and strengthening Physical Therapy Forms Physical Therapy Orders : Miscellaneous"
+      ],
+      "rationale": "Therapy need was summarized from referral text.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "fall_risk_narrative",
+      "proposed_value": "Readmit Risk: 63 - HIGH 08/30/24 09:45 Risk Assessment: Denies Alcohol Use; Risk Assessment: Denies Substance Abuse; Mobility & Ambulation Level Ambulation : Verbalizes understanding, Demonstrates, Needs further teaching, Needs PT Impairments or Limitations : Ambulation deficits, Balance deficits, Bed mobility deficits, Endurance",
+      "confidence": 0.7,
+      "source_spans": [
+        "Readmit Risk: 63 - HIGH 08/30/24 09:45 Risk Assessment: Denies Alcohol Use; Risk Assessment: Denies Substance Abuse; Mobility & Ambulation Level Ambulation : Verbalizes understanding, Demonstrates, Needs further teaching"
+      ],
+      "rationale": "Risk and safety narrative was summarized from referral text.",
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [
+    {
+      "description": "Bilateral lower extremity edema ( R60",
+      "icd10_code": "N17.9",
+      "confidence": 0.74,
+      "source_spans": [
+        "N17.9) Bilateral lower extremity edema ( R60"
+      ],
+      "is_primary_candidate": true,
+      "requires_human_review": true
+    },
+    {
+      "description": "History of pneumonia (Z87",
+      "icd10_code": "R50.9",
+      "confidence": 0.74,
+      "source_spans": [
+        "R50.9) History of pneumonia (Z87"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Hypertensive emergency (116",
+      "icd10_code": "E11.65",
+      "confidence": 0.74,
+      "source_spans": [
+        "E11.65) Hypertensive emergency (116"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Print Date/Time 9/1/2024 14",
+      "icd10_code": "E87.1",
+      "confidence": 0.74,
+      "source_spans": [
+        "E87.1) Print Date/Time 9/1/2024 14"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Acute respiratory failure",
+      "icd10_code": "N17.9",
+      "confidence": 0.74,
+      "source_spans": [
+        "N17.9) Acute respiratory failure"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Hyperglycemia due to diabetes mellitus (E11",
+      "icd10_code": "R73.9",
+      "confidence": 0.74,
+      "source_spans": [
+        "R73.9) Hyperglycemia due to diabetes mellitus (E11"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    }
+  ],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "preferred_language",
+    "interpreter_needed",
+    "primary_reason_for_home_health_medical_necessity",
+    "admit_reason_to_home_health",
+    "homebound_narrative",
+    "homebound_supporting_factors",
+    "recent_hospitalization_discharge_date",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "patient_summary_narrative",
+    "discipline_frequencies",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status",
+    "prior_functioning"
+  ],
+  "warnings": [
+    "Deterministic referral facts extraction was used.",
+    "LLM disabled or unavailable; deterministic referral proposal fallback was used.",
+    "LLM input source: fact_pack_primary.",
+    "Fact pack coverage: diagnoses, medications, allergies, homeboundEvidence, skilledNeedEvidence, hospitalizationReasons, assessmentValues, supportingSnippets.",
+    "Fact pack coverage score: 1.",
+    "Prompt character estimate: 1557.",
+    "Fallback reason: none.",
+    "Bedrock returned invalid or non-JSON referral proposal output; deterministic fallback was used."
+  ]
+}

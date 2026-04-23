@@ -1,0 +1,157 @@
+{
+  "patient_context": {
+    "patient_name": null,
+    "dob": "05/12/1940",
+    "soc_date": null,
+    "referral_date": null
+  },
+  "proposed_field_values": [
+    {
+      "field_key": "living_situation",
+      "proposed_value": "Living with siblings.",
+      "confidence": 0.72,
+      "source_spans": [
+        "Siblings."
+      ],
+      "rationale": "The living situation is explicitly mentioned as living with siblings.",
+      "requires_human_review": false
+    },
+    {
+      "field_key": "therapy_need",
+      "proposed_value": "Physical therapy and home health support are needed.",
+      "confidence": 0.77,
+      "source_spans": [
+        "PHYSICAL THERAPY, HOME HEALTH physical therapy support physical therapy"
+      ],
+      "rationale": "The patient has requested physical therapy and home health support.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "skilled_interventions",
+      "proposed_value": "Physical therapy and home health support are needed.",
+      "confidence": 0.8,
+      "source_spans": [
+        "PHYSICAL THERAPY, HOME HEALTH physical therapy support physical therapy"
+      ],
+      "rationale": "The patient has requested physical therapy and home health support.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "plan_for_next_visit",
+      "proposed_value": "Continue with physical therapy and home health support.",
+      "confidence": 0.78,
+      "source_spans": [
+        "PHYSICAL THERAPY, HOME HEALTH physical therapy support physical therapy"
+      ],
+      "rationale": "The patient has requested physical therapy and home health support.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "fall_risk_narrative",
+      "proposed_value": "The patient denies alcohol use and substance abuse.",
+      "confidence": 0.7,
+      "source_spans": [
+        "Risk Assessment: Denies Alcohol Use; Risk Assessment: Denies Substance Abuse;"
+      ],
+      "rationale": "The patient denies alcohol use and substance abuse.",
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [
+    {
+      "description": "Chronic kidney disease stage 3",
+      "icd10_code": "N18.30",
+      "confidence": 0.7,
+      "source_spans": [
+        "N18.30 Chronic kidney disease stage 3"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Essential hypertension",
+      "icd10_code": "I10",
+      "confidence": 0.7,
+      "source_spans": [
+        "I10 HTN - Hypertension"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Hyperlipidemia",
+      "icd10_code": "E78.5",
+      "confidence": 0.7,
+      "source_spans": [
+        "E78.5 Hyperlipidemia"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Hypothyroidism",
+      "icd10_code": "E03.9",
+      "confidence": 0.7,
+      "source_spans": [
+        "Hypothyroldism"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Osteoarthritis of right shoulder",
+      "icd10_code": "M19.011",
+      "confidence": 0.7,
+      "source_spans": [
+        "M19.011 Osteoarthritis of joint of right shoulder region"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Imbalance",
+      "icd10_code": "R26",
+      "confidence": 0.7,
+      "source_spans": [
+        "R26 Imbalance"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    }
+  ],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "preferred_language",
+    "interpreter_needed",
+    "primary_reason_for_home_health_medical_necessity",
+    "admit_reason_to_home_health",
+    "homebound_narrative",
+    "homebound_supporting_factors",
+    "recent_hospitalization_discharge_date",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "prior_functioning",
+    "functional_limitations",
+    "patient_summary_narrative",
+    "discipline_frequencies",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status",
+    "code_status"
+  ],
+  "warnings": [
+    "LLM input source: fact_pack_primary.",
+    "Fact pack coverage: diagnoses, medications, allergies, skilledNeedEvidence, assessmentValues, supportingSnippets.",
+    "Fact pack coverage score: 1.",
+    "Prompt character estimate: 1585.",
+    "Fallback reason: none."
+  ]
+}

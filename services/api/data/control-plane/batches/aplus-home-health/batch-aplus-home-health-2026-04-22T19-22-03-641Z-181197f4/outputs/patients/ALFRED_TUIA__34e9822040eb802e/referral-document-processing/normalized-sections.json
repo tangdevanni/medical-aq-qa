@@ -1,0 +1,608 @@
+[
+  {
+    "sectionName": "patient_identity",
+    "extractedTextSpans": [
+      "DOB: 12/02/1978 I AC (MRN): 35069",
+      "DOB: 12/02/1978 (47 yo M) Acc No. 35069 DOS: 03/20/2026",
+      "DOB: 12/02/1978",
+      "DOB: 12/02/1978 (47 yo M) Acc No. 35069 DOS: 03/20/2026",
+      "DOB: 12/02/1978 (47 yo M) Acc No. 35069 DOS: 03/20/2026",
+      "DOB: 12/02/1978 (47 yo M) Acc No. 35069 DOS: 03/20/2026",
+      "DOB: 12/02/1978 (47 yo M) Acc No. 35069 DOS: 03/20/2026",
+      "DOB: 12/02/1978 (47 yo M) Acc No. 35069 DOS: 03/20/2026",
+      "DOB: 12/02/1978 (47 yo M) Acc No. 35069 DOS: 03/20/2026",
+      "DOB: 12/02/1978 (47 yo M) Acc No. 35069 DOS: 03/20/2026"
+    ],
+    "normalizedSummary": "DOB: 12/02/1978 I AC (MRN): 35069 DOB: 12/02/1978 (47 yo M) Acc No. 35069 DOS: 03/20/2026 DOB: 12/02/1978",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 4,
+        "lineEnd": 4,
+        "charStart": 77,
+        "charEnd": 110
+      },
+      {
+        "lineStart": 248,
+        "lineEnd": 248,
+        "charStart": 3125,
+        "charEnd": 3180
+      },
+      {
+        "lineStart": 252,
+        "lineEnd": 252,
+        "charStart": 3231,
+        "charEnd": 3246
+      },
+      {
+        "lineStart": 347,
+        "lineEnd": 347,
+        "charStart": 6132,
+        "charEnd": 6187
+      },
+      {
+        "lineStart": 494,
+        "lineEnd": 494,
+        "charStart": 10378,
+        "charEnd": 10433
+      },
+      {
+        "lineStart": 597,
+        "lineEnd": 597,
+        "charStart": 13294,
+        "charEnd": 13349
+      },
+      {
+        "lineStart": 668,
+        "lineEnd": 668,
+        "charStart": 15841,
+        "charEnd": 15896
+      },
+      {
+        "lineStart": 740,
+        "lineEnd": 740,
+        "charStart": 18705,
+        "charEnd": 18760
+      },
+      {
+        "lineStart": 811,
+        "lineEnd": 811,
+        "charStart": 21314,
+        "charEnd": 21369
+      },
+      {
+        "lineStart": 885,
+        "lineEnd": 885,
+        "charStart": 23965,
+        "charEnd": 24020
+      }
+    ]
+  },
+  {
+    "sectionName": "referral_metadata",
+    "extractedTextSpans": [
+      "-ORDERed referral to Dr.",
+      "-Discussed potential referral to Rheumatology for further"
+    ],
+    "normalizedSummary": "-ORDERed referral to Dr. -Discussed potential referral to Rheumatology for further",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 709,
+        "lineEnd": 709,
+        "charStart": 17651,
+        "charEnd": 17675
+      },
+      {
+        "lineStart": 746,
+        "lineEnd": 746,
+        "charStart": 18943,
+        "charEnd": 19000
+      }
+    ]
+  },
+  {
+    "sectionName": "medications",
+    "extractedTextSpans": [
+      "PHARMACY",
+      "PHARMACY",
+      "Patient is here today for post procedure follow up and medication refill.",
+      "on the current medication regimen, we did refill the medications today.",
+      "Pharmacy Controlled Substances",
+      "consistent with the patient's medication history.",
+      "stability on the current medication regimen, we did refill the",
+      "patient was consistent with the patient's current medication regimen.",
+      "All questions regarding the medication were",
+      "Allergies",
+      "Allergies Verified.",
+      "current medication regimen with occasional knee injections.",
+      "management of this medication.",
+      "this medication moving forward but needs to be through PCP",
+      "-F/u 1 month for reassessment and medication refills",
+      "presumptive/standard urine drug testing to monitor for medication",
+      "medication tolerance, physical dependence, respiratory depression,",
+      "warned to keep their medication in a safe place.",
+      "and disposal of the medication was discussed.",
+      "told not to drink alcohol while using the medication.",
+      "The patient believes the medication is helping to control",
+      "are only taking the medication as prescribed.",
+      "and serious side effects of this medication and the need to alert me if",
+      "medication effect.",
+      "patient's stability on the current medication regimen, we did refill",
+      "Pharmacy"
+    ],
+    "normalizedSummary": "PHARMACY PHARMACY Patient is here today for post procedure follow up and medication refill.",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 167,
+        "lineEnd": 167,
+        "charStart": 2236,
+        "charEnd": 2244
+      },
+      {
+        "lineStart": 177,
+        "lineEnd": 177,
+        "charStart": 2339,
+        "charEnd": 2347
+      },
+      {
+        "lineStart": 279,
+        "lineEnd": 279,
+        "charStart": 3864,
+        "charEnd": 3937
+      },
+      {
+        "lineStart": 391,
+        "lineEnd": 391,
+        "charStart": 7423,
+        "charEnd": 7494
+      },
+      {
+        "lineStart": 396,
+        "lineEnd": 396,
+        "charStart": 7594,
+        "charEnd": 7624
+      },
+      {
+        "lineStart": 399,
+        "lineEnd": 399,
+        "charStart": 7706,
+        "charEnd": 7755
+      },
+      {
+        "lineStart": 402,
+        "lineEnd": 402,
+        "charStart": 7801,
+        "charEnd": 7863
+      },
+      {
+        "lineStart": 408,
+        "lineEnd": 408,
+        "charStart": 8036,
+        "charEnd": 8105
+      },
+      {
+        "lineStart": 416,
+        "lineEnd": 416,
+        "charStart": 8343,
+        "charEnd": 8386
+      },
+      {
+        "lineStart": 426,
+        "lineEnd": 426,
+        "charStart": 8631,
+        "charEnd": 8640
+      },
+      {
+        "lineStart": 436,
+        "lineEnd": 436,
+        "charStart": 8856,
+        "charEnd": 8875
+      },
+      {
+        "lineStart": 671,
+        "lineEnd": 671,
+        "charStart": 15964,
+        "charEnd": 16023
+      },
+      {
+        "lineStart": 747,
+        "lineEnd": 747,
+        "charStart": 19001,
+        "charEnd": 19031
+      },
+      {
+        "lineStart": 749,
+        "lineEnd": 749,
+        "charStart": 19068,
+        "charEnd": 19126
+      },
+      {
+        "lineStart": 753,
+        "lineEnd": 753,
+        "charStart": 19217,
+        "charEnd": 19269
+      },
+      {
+        "lineStart": 758,
+        "lineEnd": 758,
+        "charStart": 19429,
+        "charEnd": 19494
+      },
+      {
+        "lineStart": 785,
+        "lineEnd": 785,
+        "charStart": 20423,
+        "charEnd": 20489
+      },
+      {
+        "lineStart": 789,
+        "lineEnd": 789,
+        "charStart": 20618,
+        "charEnd": 20666
+      },
+      {
+        "lineStart": 791,
+        "lineEnd": 791,
+        "charStart": 20688,
+        "charEnd": 20733
+      },
+      {
+        "lineStart": 793,
+        "lineEnd": 793,
+        "charStart": 20754,
+        "charEnd": 20807
+      },
+      {
+        "lineStart": 818,
+        "lineEnd": 818,
+        "charStart": 21573,
+        "charEnd": 21630
+      },
+      {
+        "lineStart": 821,
+        "lineEnd": 821,
+        "charStart": 21699,
+        "charEnd": 21744
+      },
+      {
+        "lineStart": 823,
+        "lineEnd": 823,
+        "charStart": 21766,
+        "charEnd": 21837
+      },
+      {
+        "lineStart": 825,
+        "lineEnd": 825,
+        "charStart": 21897,
+        "charEnd": 21915
+      },
+      {
+        "lineStart": 839,
+        "lineEnd": 839,
+        "charStart": 22453,
+        "charEnd": 22521
+      },
+      {
+        "lineStart": 842,
+        "lineEnd": 842,
+        "charStart": 22577,
+        "charEnd": 22585
+      }
+    ]
+  },
+  {
+    "sectionName": "caregiver_support",
+    "extractedTextSpans": [
+      "Relationship"
+    ],
+    "normalizedSummary": "Relationship",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 221,
+        "lineEnd": 221,
+        "charStart": 2845,
+        "charEnd": 2857
+      }
+    ]
+  },
+  {
+    "sectionName": "living_situation",
+    "extractedTextSpans": [
+      "Living Situation:"
+    ],
+    "normalizedSummary": "Living Situation:",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 125,
+        "lineEnd": 125,
+        "charStart": 1838,
+        "charEnd": 1855
+      }
+    ]
+  },
+  {
+    "sectionName": "functional_limitations",
+    "extractedTextSpans": [
+      "Weakness.",
+      "Muscle Weakness, Patient"
+    ],
+    "normalizedSummary": "Weakness. Muscle Weakness, Patient",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 479,
+        "lineEnd": 479,
+        "charStart": 10039,
+        "charEnd": 10048
+      },
+      {
+        "lineStart": 546,
+        "lineEnd": 546,
+        "charStart": 11836,
+        "charEnd": 11860
+      }
+    ]
+  },
+  {
+    "sectionName": "risk_factors",
+    "extractedTextSpans": [
+      "Brilinta for one week prior to injections, low risk for cardiovascular",
+      "medications, and risk assessment plan I am requesting",
+      "based on individual risk potential which I believe is in a low risk",
+      "increased risk of a motor vehicle accident.",
+      "opioid risk tool was also utilized to determine opioid overdose risk"
+    ],
+    "normalizedSummary": "Brilinta for one week prior to injections, low risk for cardiovascular medications, and risk assessment plan I am requesting based on individual risk potential which I believe is in a low risk",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 326,
+        "lineEnd": 326,
+        "charStart": 5475,
+        "charEnd": 5545
+      },
+      {
+        "lineStart": 757,
+        "lineEnd": 757,
+        "charStart": 19375,
+        "charEnd": 19428
+      },
+      {
+        "lineStart": 761,
+        "lineEnd": 761,
+        "charStart": 19564,
+        "charEnd": 19631
+      },
+      {
+        "lineStart": 800,
+        "lineEnd": 800,
+        "charStart": 21075,
+        "charEnd": 21118
+      },
+      {
+        "lineStart": 848,
+        "lineEnd": 848,
+        "charStart": 22785,
+        "charEnd": 22853
+      }
+    ]
+  },
+  {
+    "sectionName": "advance_directives",
+    "extractedTextSpans": [
+      "Advance Directive:"
+    ],
+    "normalizedSummary": "Advance Directive:",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 19,
+        "lineEnd": 19,
+        "charStart": 433,
+        "charEnd": 451
+      }
+    ]
+  },
+  {
+    "sectionName": "other_clinical_notes",
+    "extractedTextSpans": [
+      "Plan Type:",
+      "Deceased Notes: N/A",
+      "Notes",
+      "Notes to Pharmacist: *Reorder from",
+      "Notes to Pharmacist: *Reorder from",
+      "Notes to Pharmacist: *Reorder from",
+      "Notes to Pharmacist: prn",
+      "Progress Note: Carlos Nunez Cendan.",
+      "The patient notes no serious side effects and feels",
+      "Progress Note: Carlos Nunez Cendan.",
+      "note of heterotopic ossification at the anterior tibial tubercle.",
+      "note of enthesopathic changes at the posterior cortex of the proximal",
+      "note of heterotopic ossification at the anterior tibial tubercle.",
+      "note of enthesopathic changes at the posterior cortex of the proximal",
+      "Progress Note: Carlos Nunez Cendan.",
+      "Progress Note: Carlos Nunez Cendan.",
+      "Plan:",
+      "Progress Note: Carlos Nunez Cendan.",
+      "Given the patient's history, physical exam, treatment plan, prescribed",
+      "medications, and risk assessment plan I am requesting",
+      "Notes: Nunes Cendan, Carlos 03/20/2026 08:27:36 AM PDT",
+      "Notes: I discussed the risks of opioid medications for pain",
+      "Progress Note: Carlos Nunez Cendan.",
+      "Patient notes no serious side effects,",
+      "Notes: Clinical Info: Please note: Confirmatory tests are forwarded",
+      "Progress Note: Carlos Nunez Cendan.",
+      "Progress Note: Carlos Nunez Cendan."
+    ],
+    "normalizedSummary": "Plan Type: Deceased Notes: N/A Notes",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 31,
+        "lineEnd": 31,
+        "charStart": 672,
+        "charEnd": 682
+      },
+      {
+        "lineStart": 44,
+        "lineEnd": 44,
+        "charStart": 957,
+        "charEnd": 976
+      },
+      {
+        "lineStart": 225,
+        "lineEnd": 225,
+        "charStart": 2894,
+        "charEnd": 2899
+      },
+      {
+        "lineStart": 284,
+        "lineEnd": 284,
+        "charStart": 4087,
+        "charEnd": 4121
+      },
+      {
+        "lineStart": 298,
+        "lineEnd": 298,
+        "charStart": 4533,
+        "charEnd": 4567
+      },
+      {
+        "lineStart": 305,
+        "lineEnd": 305,
+        "charStart": 4760,
+        "charEnd": 4794
+      },
+      {
+        "lineStart": 330,
+        "lineEnd": 330,
+        "charStart": 5630,
+        "charEnd": 5654
+      },
+      {
+        "lineStart": 339,
+        "lineEnd": 339,
+        "charStart": 5952,
+        "charEnd": 5987
+      },
+      {
+        "lineStart": 386,
+        "lineEnd": 386,
+        "charStart": 7245,
+        "charEnd": 7296
+      },
+      {
+        "lineStart": 485,
+        "lineEnd": 485,
+        "charStart": 10197,
+        "charEnd": 10232
+      },
+      {
+        "lineStart": 560,
+        "lineEnd": 560,
+        "charStart": 12180,
+        "charEnd": 12245
+      },
+      {
+        "lineStart": 563,
+        "lineEnd": 563,
+        "charStart": 12290,
+        "charEnd": 12359
+      },
+      {
+        "lineStart": 579,
+        "lineEnd": 579,
+        "charStart": 12721,
+        "charEnd": 12786
+      },
+      {
+        "lineStart": 581,
+        "lineEnd": 581,
+        "charStart": 12798,
+        "charEnd": 12867
+      },
+      {
+        "lineStart": 589,
+        "lineEnd": 589,
+        "charStart": 13118,
+        "charEnd": 13153
+      },
+      {
+        "lineStart": 658,
+        "lineEnd": 658,
+        "charStart": 15639,
+        "charEnd": 15674
+      },
+      {
+        "lineStart": 706,
+        "lineEnd": 706,
+        "charStart": 17555,
+        "charEnd": 17560
+      },
+      {
+        "lineStart": 733,
+        "lineEnd": 733,
+        "charStart": 18531,
+        "charEnd": 18566
+      },
+      {
+        "lineStart": 756,
+        "lineEnd": 756,
+        "charStart": 19304,
+        "charEnd": 19374
+      },
+      {
+        "lineStart": 757,
+        "lineEnd": 757,
+        "charStart": 19375,
+        "charEnd": 19428
+      },
+      {
+        "lineStart": 768,
+        "lineEnd": 768,
+        "charStart": 19815,
+        "charEnd": 19869
+      },
+      {
+        "lineStart": 782,
+        "lineEnd": 782,
+        "charStart": 20303,
+        "charEnd": 20362
+      },
+      {
+        "lineStart": 802,
+        "lineEnd": 802,
+        "charStart": 21136,
+        "charEnd": 21171
+      },
+      {
+        "lineStart": 836,
+        "lineEnd": 836,
+        "charStart": 22350,
+        "charEnd": 22388
+      },
+      {
+        "lineStart": 855,
+        "lineEnd": 855,
+        "charStart": 23045,
+        "charEnd": 23112
+      },
+      {
+        "lineStart": 874,
+        "lineEnd": 874,
+        "charStart": 23755,
+        "charEnd": 23790
+      },
+      {
+        "lineStart": 892,
+        "lineEnd": 892,
+        "charStart": 24155,
+        "charEnd": 24190
+      }
+    ]
+  }
+]

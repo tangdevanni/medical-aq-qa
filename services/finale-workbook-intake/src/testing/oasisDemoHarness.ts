@@ -883,6 +883,7 @@ class DemoReadOnlyPortalClient implements BatchPortalAutomationClient {
           totalCards: 4,
           countsByType: { oasis: 1, sn_visit: 2, physician_order: 1 },
           cards: [],
+          workbookColumns: { sn: "SN - 2", ptOtSt: "NA", hhaMsw: "NA" },
         },
         second30Days: {
           startDate: "2026-03-31",
@@ -890,6 +891,7 @@ class DemoReadOnlyPortalClient implements BatchPortalAutomationClient {
           totalCards: 2,
           countsByType: { pt_visit: 1, communication_note: 1 },
           cards: [],
+          workbookColumns: { sn: "NA", ptOtSt: "PT - 1", hhaMsw: "NA" },
         },
         outsideRange: {
           startDate: null,
@@ -897,6 +899,7 @@ class DemoReadOnlyPortalClient implements BatchPortalAutomationClient {
           totalCards: 0,
           countsByType: {},
           cards: [],
+          workbookColumns: { sn: "NA", ptOtSt: "NA", hhaMsw: "NA" },
         },
       },
       visibleDays: [],

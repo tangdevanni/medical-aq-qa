@@ -1,0 +1,25 @@
+{
+  "patientId": "ELMER_LAUB__feaca6b1593d4bac",
+  "selectedDocumentId": "ELMER_LAUB__feaca6b1593d4bac-referral-1",
+  "sourceDocuments": [
+    {
+      "documentId": "ELMER_LAUB__feaca6b1593d4bac-referral-1",
+      "sourceIndex": 0,
+      "sourceLabel": "📄 LAUB, ELMER B ORDER 04152026.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedSourceLabel": "laub-elmer-b-order-04152026-pdf",
+      "sourceType": "REFERRAL_ORDER",
+      "acquisitionMethod": "printed_pdf",
+      "selectionStatus": "selected",
+      "portalLabel": "📄 LAUB, ELMER B ORDER 04152026.pdf 📝 ✏️ 🗑️ 🔗",
+      "localFilePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\ELMER_LAUB__feaca6b1593d4bac\\documents\\laub-elmer-b-order-04152026-pdf\\source.pdf",
+      "effectiveTextSource": "ocr_text",
+      "fileType": "pdf",
+      "fileSizeBytes": 26990,
+      "extractedTextLength": 240,
+      "selectedReason": "highest-ranked referral/admission-order source with local file preference",
+      "rejectedReasons": []
+    }
+  ],
+  "warnings": [],
+  "generatedAt": "2026-04-22T23:43:44.029Z"
+}

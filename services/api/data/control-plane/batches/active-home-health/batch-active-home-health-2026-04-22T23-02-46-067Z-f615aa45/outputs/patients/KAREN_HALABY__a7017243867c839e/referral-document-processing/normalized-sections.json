@@ -1,0 +1,339 @@
+[
+  {
+    "sectionName": "patient_identity",
+    "extractedTextSpans": [
+      "DOB:",
+      "DOB:",
+      "DOB:",
+      "Patient Name:",
+      "DOB:"
+    ],
+    "normalizedSummary": "DOB: DOB: DOB:",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 91,
+        "lineEnd": 91,
+        "charStart": 1349,
+        "charEnd": 1353
+      },
+      {
+        "lineStart": 197,
+        "lineEnd": 197,
+        "charStart": 4408,
+        "charEnd": 4412
+      },
+      {
+        "lineStart": 300,
+        "lineEnd": 300,
+        "charStart": 9593,
+        "charEnd": 9597
+      },
+      {
+        "lineStart": 355,
+        "lineEnd": 355,
+        "charStart": 11995,
+        "charEnd": 12008
+      },
+      {
+        "lineStart": 356,
+        "lineEnd": 356,
+        "charStart": 12009,
+        "charEnd": 12013
+      }
+    ]
+  },
+  {
+    "sectionName": "referral_metadata",
+    "extractedTextSpans": [
+      "Home Health Referral"
+    ],
+    "normalizedSummary": "Home Health Referral",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 346,
+        "lineEnd": 346,
+        "charStart": 11750,
+        "charEnd": 11770
+      }
+    ]
+  },
+  {
+    "sectionName": "referring_provider",
+    "extractedTextSpans": [
+      "professional (not separately reported) (MRI Interpretation Knee (MRI Knee previously ordered by this",
+      "MRI: right MRI Knee previously ordered by this physician/extender"
+    ],
+    "normalizedSummary": "professional (not separately reported) (MRI Interpretation Knee (MRI Knee previously ordered by this MRI: right MRI Knee previously ordered by this physician/extender",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 174,
+        "lineEnd": 174,
+        "charStart": 3910,
+        "charEnd": 4010
+      },
+      {
+        "lineStart": 178,
+        "lineEnd": 178,
+        "charStart": 4062,
+        "charEnd": 4127
+      }
+    ]
+  },
+  {
+    "sectionName": "medical_necessity",
+    "extractedTextSpans": [
+      "Skilled Nursing"
+    ],
+    "normalizedSummary": "Skilled Nursing",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 403,
+        "lineEnd": 403,
+        "charStart": 12788,
+        "charEnd": 12803
+      }
+    ]
+  },
+  {
+    "sectionName": "homebound_evidence",
+    "extractedTextSpans": [
+      "Homebound due to (i.e inability to leave home, leaving",
+      "medically contraindicated or requires assistance/ DME):"
+    ],
+    "normalizedSummary": "Homebound due to (i.e inability to leave home, leaving medically contraindicated or requires assistance/ DME):",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 369,
+        "lineEnd": 369,
+        "charStart": 12306,
+        "charEnd": 12360
+      },
+      {
+        "lineStart": 374,
+        "lineEnd": 374,
+        "charStart": 12437,
+        "charEnd": 12492
+      }
+    ]
+  },
+  {
+    "sectionName": "diagnoses",
+    "extractedTextSpans": [
+      "Diagnosis: Knee Osteoarthritis, Right M17.11"
+    ],
+    "normalizedSummary": "Diagnosis: Knee Osteoarthritis, Right M17.11",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 312,
+        "lineEnd": 312,
+        "charStart": 10033,
+        "charEnd": 10077
+      }
+    ]
+  },
+  {
+    "sectionName": "medications",
+    "extractedTextSpans": [
+      "Pharmacy Information",
+      "CVS/pharmacy #0121",
+      "No allergy to no",
+      "allergy to Mar. 40 effergy to",
+      "Allergies",
+      "No known drug allergies",
+      "Medication reconciliation/managerment"
+    ],
+    "normalizedSummary": "Pharmacy Information CVS/pharmacy #0121 No allergy to no",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 72,
+        "lineEnd": 72,
+        "charStart": 1064,
+        "charEnd": 1084
+      },
+      {
+        "lineStart": 74,
+        "lineEnd": 74,
+        "charStart": 1091,
+        "charEnd": 1109
+      },
+      {
+        "lineStart": 97,
+        "lineEnd": 97,
+        "charStart": 1456,
+        "charEnd": 1472
+      },
+      {
+        "lineStart": 101,
+        "lineEnd": 101,
+        "charStart": 1517,
+        "charEnd": 1546
+      },
+      {
+        "lineStart": 105,
+        "lineEnd": 105,
+        "charStart": 1626,
+        "charEnd": 1635
+      },
+      {
+        "lineStart": 109,
+        "lineEnd": 109,
+        "charStart": 1741,
+        "charEnd": 1764
+      },
+      {
+        "lineStart": 410,
+        "lineEnd": 410,
+        "charStart": 12981,
+        "charEnd": 13018
+      }
+    ]
+  },
+  {
+    "sectionName": "functional_limitations",
+    "extractedTextSpans": [
+      "endurance"
+    ],
+    "normalizedSummary": "endurance",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 428,
+        "lineEnd": 428,
+        "charStart": 13415,
+        "charEnd": 13424
+      }
+    ]
+  },
+  {
+    "sectionName": "therapy_need",
+    "extractedTextSpans": [
+      "physical therapy, and use of",
+      "Physical Therapy",
+      "Occupational Therapy"
+    ],
+    "normalizedSummary": "physical therapy, and use of Physical Therapy Occupational Therapy",
+    "confidence": 0.95,
+    "lineReferences": [
+      {
+        "lineStart": 272,
+        "lineEnd": 272,
+        "charStart": 8724,
+        "charEnd": 8752
+      },
+      {
+        "lineStart": 387,
+        "lineEnd": 387,
+        "charStart": 12598,
+        "charEnd": 12614
+      },
+      {
+        "lineStart": 405,
+        "lineEnd": 405,
+        "charStart": 12822,
+        "charEnd": 12842
+      }
+    ]
+  },
+  {
+    "sectionName": "risk_factors",
+    "extractedTextSpans": [
+      "We will have her evaluated medically and she will undergo risk stratification and lab work prior to surgery.",
+      "Home safety /tall precaution"
+    ],
+    "normalizedSummary": "We will have her evaluated medically and she will undergo risk stratification and lab work prior to surgery. Home safety /tall precaution",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 221,
+        "lineEnd": 221,
+        "charStart": 5529,
+        "charEnd": 5637
+      },
+      {
+        "lineStart": 411,
+        "lineEnd": 411,
+        "charStart": 13019,
+        "charEnd": 13047
+      }
+    ]
+  },
+  {
+    "sectionName": "other_clinical_notes",
+    "extractedTextSpans": [
+      "Humana Health Plan PPO",
+      "Visit Note March 2, 2026",
+      "Visit Note March 2, 2026",
+      "Impression/Plan:",
+      "Once these all have been completed we will plan for a right unicompartmental mako robot-assisted knee arthroplasty.",
+      "Plan: Counseling - Orthobiologics.",
+      "Plan: Counseling - Knee DJD.",
+      "Visit Note - March 2, 2026",
+      "Plan: Order Surgery: Knee Arthroplasty."
+    ],
+    "normalizedSummary": "Humana Health Plan PPO Visit Note March 2, 2026 Visit Note March 2, 2026",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 66,
+        "lineEnd": 66,
+        "charStart": 977,
+        "charEnd": 999
+      },
+      {
+        "lineStart": 88,
+        "lineEnd": 88,
+        "charStart": 1314,
+        "charEnd": 1338
+      },
+      {
+        "lineStart": 194,
+        "lineEnd": 194,
+        "charStart": 4372,
+        "charEnd": 4396
+      },
+      {
+        "lineStart": 211,
+        "lineEnd": 211,
+        "charStart": 4981,
+        "charEnd": 4997
+      },
+      {
+        "lineStart": 226,
+        "lineEnd": 226,
+        "charStart": 5811,
+        "charEnd": 5926
+      },
+      {
+        "lineStart": 239,
+        "lineEnd": 239,
+        "charStart": 6501,
+        "charEnd": 6535
+      },
+      {
+        "lineStart": 269,
+        "lineEnd": 269,
+        "charStart": 8468,
+        "charEnd": 8496
+      },
+      {
+        "lineStart": 297,
+        "lineEnd": 297,
+        "charStart": 9556,
+        "charEnd": 9582
+      },
+      {
+        "lineStart": 307,
+        "lineEnd": 307,
+        "charStart": 9877,
+        "charEnd": 9916
+      }
+    ]
+  }
+]

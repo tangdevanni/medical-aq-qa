@@ -1,0 +1,87 @@
+{
+  "generatedAt": "2026-04-22T20:10:41.393Z",
+  "source": "printed_note_ocr",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\meadows-home-health\\batch-meadows-home-health-2026-04-22T19-20-51-707Z-032ca5da\\outputs\\evidence\\GUADALUPE_SANTILLANES__7dff81c9298ebad6\\oasis-printed-note\\extracted-text.txt",
+  "llmInputSource": "fact_pack_primary",
+  "extractedFieldCount": 5,
+  "invocationModelId": "us.amazon.nova-lite-v1:0",
+  "currentChartValues": {
+    "patient_name": "Guadalupe Santillanes",
+    "medication_list": [
+      "Acetaminophen/HYDROcodone (Oral 325- 1 Tab 5 mg 1 Cap Four times a day 500 mg"
+    ],
+    "allergy_list": [
+      "No Known Allergies"
+    ],
+    "functional_limitations": [
+      "Ambulation",
+      "Endurance",
+      "Hearing"
+    ],
+    "code_status": "full_code"
+  },
+  "extractedFieldValues": [
+    {
+      "field_key": "patient_name",
+      "current_value": "Guadalupe Santillanes",
+      "confidence": 0.95,
+      "source_spans": [
+        "Guadalupe Santillanes",
+        "Guadalupe Santillanes"
+      ]
+    },
+    {
+      "field_key": "medication_list",
+      "current_value": [
+        "Acetaminophen/HYDROcodone (Oral 325- 1 Tab 5 mg 1 Cap Four times a day 500 mg"
+      ],
+      "confidence": 0.9,
+      "source_spans": [
+        "Acetaminophen/HYDROcodone (Oral 325- 1 Tab 5 mg 1 Cap Four times a day 500 mg"
+      ]
+    },
+    {
+      "field_key": "allergy_list",
+      "current_value": [
+        "No Known Allergies"
+      ],
+      "confidence": 0.92,
+      "source_spans": [
+        "None known"
+      ]
+    },
+    {
+      "field_key": "functional_limitations",
+      "current_value": [
+        "Ambulation",
+        "Endurance",
+        "Hearing"
+      ],
+      "confidence": 0.96,
+      "source_spans": [
+        "6 - Endurance",
+        "7 Ambulation",
+        "Right Hearing Impairment"
+      ]
+    },
+    {
+      "field_key": "code_status",
+      "current_value": "full_code",
+      "confidence": 0.98,
+      "source_spans": [
+        "Full Code"
+      ]
+    }
+  ],
+  "warnings": [
+    "LLM input source: fact_pack_primary.",
+    "Fact pack coverage: diagnoses, assessmentValues, homeboundEvidence, skilledNeedEvidence, hospitalizationReasons, medications, allergies, supportingSnippets.",
+    "Fact pack coverage score: 1.",
+    "Prompt character estimate: 3031.",
+    "Fallback reason: none.",
+    "Deterministic printed-note chart values: code_status, functional_limitations, allergy_list.",
+    "Selected option labels detected: 118.",
+    "Printed-note chart-value extraction used inference profile us.amazon.nova-lite-v1:0.",
+    "primary_diagnosis: rejected as low-confidence or suspicious for the field"
+  ]
+}

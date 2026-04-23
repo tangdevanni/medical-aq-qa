@@ -1,0 +1,453 @@
+[
+  {
+    "sectionName": "patient_identity",
+    "extractedTextSpans": [
+      "Patient Name:",
+      "DOB:",
+      "DOB:",
+      "DOB",
+      "DOB",
+      "DOB:",
+      "DOB:",
+      "DOB:"
+    ],
+    "normalizedSummary": "Patient Name: DOB: DOB:",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 12,
+        "lineEnd": 12,
+        "charStart": 271,
+        "charEnd": 284
+      },
+      {
+        "lineStart": 13,
+        "lineEnd": 13,
+        "charStart": 285,
+        "charEnd": 289
+      },
+      {
+        "lineStart": 112,
+        "lineEnd": 112,
+        "charStart": 1942,
+        "charEnd": 1946
+      },
+      {
+        "lineStart": 172,
+        "lineEnd": 172,
+        "charStart": 2649,
+        "charEnd": 2652
+      },
+      {
+        "lineStart": 194,
+        "lineEnd": 194,
+        "charStart": 2917,
+        "charEnd": 2920
+      },
+      {
+        "lineStart": 270,
+        "lineEnd": 270,
+        "charStart": 4458,
+        "charEnd": 4462
+      },
+      {
+        "lineStart": 425,
+        "lineEnd": 425,
+        "charStart": 7609,
+        "charEnd": 7613
+      },
+      {
+        "lineStart": 540,
+        "lineEnd": 540,
+        "charStart": 10783,
+        "charEnd": 10787
+      }
+    ]
+  },
+  {
+    "sectionName": "referral_metadata",
+    "extractedTextSpans": [
+      "Home Health Referral"
+    ],
+    "normalizedSummary": "Home Health Referral",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 4,
+        "lineEnd": 4,
+        "charStart": 53,
+        "charEnd": 73
+      }
+    ]
+  },
+  {
+    "sectionName": "referring_provider",
+    "extractedTextSpans": [
+      "NPI: 1205034832",
+      "NPI: 1205034832"
+    ],
+    "normalizedSummary": "NPI: 1205034832 NPI: 1205034832",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 227,
+        "lineEnd": 227,
+        "charStart": 3351,
+        "charEnd": 3366
+      },
+      {
+        "lineStart": 258,
+        "lineEnd": 258,
+        "charStart": 4300,
+        "charEnd": 4315
+      }
+    ]
+  },
+  {
+    "sectionName": "medical_necessity",
+    "extractedTextSpans": [
+      "Skilled Nursing",
+      "[SELECTED][page 1] Skilled Nursing"
+    ],
+    "normalizedSummary": "Skilled Nursing [SELECTED][page 1] Skilled Nursing",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 55,
+        "lineEnd": 55,
+        "charStart": 900,
+        "charEnd": 915
+      },
+      {
+        "lineStart": 558,
+        "lineEnd": 558,
+        "charStart": 11311,
+        "charEnd": 11345
+      }
+    ]
+  },
+  {
+    "sectionName": "homebound_evidence",
+    "extractedTextSpans": [
+      "Homebound due to (i.e inability to leave home, leaving",
+      "medically contraindicated or requires assistance/DME):"
+    ],
+    "normalizedSummary": "Homebound due to (i.e inability to leave home, leaving medically contraindicated or requires assistance/DME):",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 23,
+        "lineEnd": 23,
+        "charStart": 481,
+        "charEnd": 535
+      },
+      {
+        "lineStart": 28,
+        "lineEnd": 28,
+        "charStart": 612,
+        "charEnd": 666
+      }
+    ]
+  },
+  {
+    "sectionName": "diagnoses",
+    "extractedTextSpans": [
+      "DIAGNOSES",
+      "Diagnosis",
+      "Diagnosis: Shoulder Arthritis, Right - M19.011, M75.21",
+      "Associated diagnosis: Bicipital Tendinitis",
+      "Diagnosis: Shoulder Arthritis, Right"
+    ],
+    "normalizedSummary": "DIAGNOSES Diagnosis Diagnosis: Shoulder Arthritis, Right - M19.011, M75.21",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 214,
+        "lineEnd": 214,
+        "charStart": 3149,
+        "charEnd": 3158
+      },
+      {
+        "lineStart": 215,
+        "lineEnd": 215,
+        "charStart": 3159,
+        "charEnd": 3168
+      },
+      {
+        "lineStart": 241,
+        "lineEnd": 241,
+        "charStart": 3712,
+        "charEnd": 3766
+      },
+      {
+        "lineStart": 432,
+        "lineEnd": 432,
+        "charStart": 7771,
+        "charEnd": 7813
+      },
+      {
+        "lineStart": 456,
+        "lineEnd": 456,
+        "charStart": 8486,
+        "charEnd": 8522
+      }
+    ]
+  },
+  {
+    "sectionName": "medications",
+    "extractedTextSpans": [
+      "- Medication reconciliation/management",
+      "He was provided with a sling and post op pain medication.",
+      "Plan: Prescription Medication Management.",
+      "Initiate Treatment: Initiate treatment with prescription medication.",
+      "Prescription Medication Management, and MRI Interpretation Shoulder."
+    ],
+    "normalizedSummary": "- Medication reconciliation/management He was provided with a sling and post op pain medication. Plan: Prescription Medication Management.",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 62,
+        "lineEnd": 62,
+        "charStart": 1096,
+        "charEnd": 1134
+      },
+      {
+        "lineStart": 442,
+        "lineEnd": 442,
+        "charStart": 8072,
+        "charEnd": 8129
+      },
+      {
+        "lineStart": 477,
+        "lineEnd": 477,
+        "charStart": 9163,
+        "charEnd": 9204
+      },
+      {
+        "lineStart": 480,
+        "lineEnd": 480,
+        "charStart": 9250,
+        "charEnd": 9318
+      },
+      {
+        "lineStart": 521,
+        "lineEnd": 521,
+        "charStart": 10394,
+        "charEnd": 10462
+      }
+    ]
+  },
+  {
+    "sectionName": "caregiver_support",
+    "extractedTextSpans": [
+      "RELATIONSHIP TO PATIENT",
+      "RELATIONSHIP",
+      "RELATIONSHIP"
+    ],
+    "normalizedSummary": "RELATIONSHIP TO PATIENT RELATIONSHIP RELATIONSHIP",
+    "confidence": 0.95,
+    "lineReferences": [
+      {
+        "lineStart": 134,
+        "lineEnd": 134,
+        "charStart": 2180,
+        "charEnd": 2203
+      },
+      {
+        "lineStart": 170,
+        "lineEnd": 170,
+        "charStart": 2631,
+        "charEnd": 2643
+      },
+      {
+        "lineStart": 192,
+        "lineEnd": 192,
+        "charStart": 2899,
+        "charEnd": 2911
+      }
+    ]
+  },
+  {
+    "sectionName": "functional_limitations",
+    "extractedTextSpans": [
+      "endurance"
+    ],
+    "normalizedSummary": "endurance",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 87,
+        "lineEnd": 87,
+        "charStart": 1558,
+        "charEnd": 1567
+      }
+    ]
+  },
+  {
+    "sectionName": "therapy_need",
+    "extractedTextSpans": [
+      "Occupational Therapy"
+    ],
+    "normalizedSummary": "Occupational Therapy",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 57,
+        "lineEnd": 57,
+        "charStart": 935,
+        "charEnd": 955
+      }
+    ]
+  },
+  {
+    "sectionName": "risk_factors",
+    "extractedTextSpans": [
+      "Home safety/fall precaution",
+      "Plan: Opioid Risk Tool.",
+      "Opioid Risk Tool (ORT) Score:",
+      "Based on Risk Selected:",
+      "Plan: Additional Notes, Counseling - Preoperative Instructions, Brace Shoulder, Prescription, Opioid Risk Tool,"
+    ],
+    "normalizedSummary": "Home safety/fall precaution Plan: Opioid Risk Tool. Opioid Risk Tool (ORT) Score:",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 63,
+        "lineEnd": 63,
+        "charStart": 1135,
+        "charEnd": 1162
+      },
+      {
+        "lineStart": 472,
+        "lineEnd": 472,
+        "charStart": 9047,
+        "charEnd": 9070
+      },
+      {
+        "lineStart": 474,
+        "lineEnd": 474,
+        "charStart": 9094,
+        "charEnd": 9123
+      },
+      {
+        "lineStart": 475,
+        "lineEnd": 475,
+        "charStart": 9124,
+        "charEnd": 9147
+      },
+      {
+        "lineStart": 519,
+        "lineEnd": 519,
+        "charStart": 10268,
+        "charEnd": 10379
+      }
+    ]
+  },
+  {
+    "sectionName": "other_clinical_notes",
+    "extractedTextSpans": [
+      "Visit Note - April 2, 2026",
+      "Impression/Plan:",
+      "Visit Note - April 2, 2026",
+      "Plan: Additional Notes.",
+      "Patient Specific Notes: Bruce presents today for preoperative visit.",
+      "Plan: Counseling - Preoperative Instructions.",
+      "Plan: Brace - Shoulder.",
+      "Plan: Prescription.",
+      "Plan: Opioid Risk Tool.",
+      "Plan: Prescription Medication Management.",
+      "plan.",
+      "Plan: Additional Notes, Counseling - Preoperative Instructions, Brace Shoulder, Prescription, Opioid Risk Tool,",
+      "Visit Note - April 2, 2026",
+      "Approve the plan of care."
+    ],
+    "normalizedSummary": "Visit Note - April 2, 2026 Impression/Plan: Visit Note - April 2, 2026",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 267,
+        "lineEnd": 267,
+        "charStart": 4418,
+        "charEnd": 4444
+      },
+      {
+        "lineStart": 403,
+        "lineEnd": 403,
+        "charStart": 7196,
+        "charEnd": 7212
+      },
+      {
+        "lineStart": 423,
+        "lineEnd": 423,
+        "charStart": 7569,
+        "charEnd": 7595
+      },
+      {
+        "lineStart": 434,
+        "lineEnd": 434,
+        "charStart": 7827,
+        "charEnd": 7850
+      },
+      {
+        "lineStart": 436,
+        "lineEnd": 436,
+        "charStart": 7867,
+        "charEnd": 7935
+      },
+      {
+        "lineStart": 449,
+        "lineEnd": 449,
+        "charStart": 8268,
+        "charEnd": 8313
+      },
+      {
+        "lineStart": 454,
+        "lineEnd": 454,
+        "charStart": 8437,
+        "charEnd": 8460
+      },
+      {
+        "lineStart": 462,
+        "lineEnd": 462,
+        "charStart": 8718,
+        "charEnd": 8737
+      },
+      {
+        "lineStart": 472,
+        "lineEnd": 472,
+        "charStart": 9047,
+        "charEnd": 9070
+      },
+      {
+        "lineStart": 477,
+        "lineEnd": 477,
+        "charStart": 9163,
+        "charEnd": 9204
+      },
+      {
+        "lineStart": 511,
+        "lineEnd": 511,
+        "charStart": 10054,
+        "charEnd": 10059
+      },
+      {
+        "lineStart": 519,
+        "lineEnd": 519,
+        "charStart": 10268,
+        "charEnd": 10379
+      },
+      {
+        "lineStart": 538,
+        "lineEnd": 538,
+        "charStart": 10743,
+        "charEnd": 10769
+      },
+      {
+        "lineStart": 545,
+        "lineEnd": 545,
+        "charStart": 10938,
+        "charEnd": 10963
+      }
+    ]
+  }
+]

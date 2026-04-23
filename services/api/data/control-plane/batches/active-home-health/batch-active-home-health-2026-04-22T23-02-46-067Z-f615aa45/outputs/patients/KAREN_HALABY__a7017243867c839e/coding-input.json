@@ -1,0 +1,24 @@
+{
+  "primaryDiagnosis": {
+    "code": "I50",
+    "description": "Heart failure",
+    "confidence": "high"
+  },
+  "otherDiagnoses": [
+    {
+      "code": "I20",
+      "description": "Diagnosis code candidate from extracted document metadata",
+      "confidence": "high"
+    }
+  ],
+  "suggestedOnsetType": "onset",
+  "suggestedSeverity": 3,
+  "comorbidityFlags": {
+    "pvd_pad": false,
+    "diabetes": false,
+    "none": true
+  },
+  "notes": [
+    "Ordered services: Skilled Nursing, Physical Therapy, Occupational Therapy"
+  ]
+}

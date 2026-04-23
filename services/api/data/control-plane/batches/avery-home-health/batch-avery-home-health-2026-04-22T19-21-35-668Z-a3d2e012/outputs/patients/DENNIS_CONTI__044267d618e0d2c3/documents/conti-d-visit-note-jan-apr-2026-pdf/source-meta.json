@@ -1,0 +1,65 @@
+{
+  "selectedSourceFile": "CONTI D. VISIT NOTE JAN-APR 2026.pdf",
+  "selectedSourceFileNormalized": "conti d.visit note jan apr 2026.pdf",
+  "admissionOrderTitle": "📄 CONTI, D. VISIT NOTE JAN-APR 2026.pdf 📝 ✏️ 🗑️ 🔗",
+  "admissionOrderSelectorUsed": "File Uploads source document row by .file-item/.file-label or table row",
+  "sourceUrlBeforeClick": "https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/client/69e155d6d7bb39352a82f6b6/intake/69e156162acef519050f7519/calendar",
+  "sourceUrlAfterClick": "https://app.finalehealth.com/provider/62f398913768d30fbdddc08b/client/69e155d6d7bb39352a82f6b6/file-uploads",
+  "matchedReferralFileLabel": "CONTI D. VISIT NOTE JAN-APR 2026.pdf",
+  "normalizedFileLabels": [
+    "conti d.visit note jan apr 2026.pdf"
+  ],
+  "matchedSourceDocuments": [
+    {
+      "label": "📄 CONTI, D. VISIT NOTE JAN-APR 2026.pdf",
+      "normalizedLabel": "conti d.visit note jan apr 2026.pdf",
+      "score": 20
+    },
+    {
+      "label": "📄 CONTI, D. VISIT NOTE JAN-APR 2026.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedLabel": "conti d.visit note jan apr 2026.pdf",
+      "score": 20
+    }
+  ],
+  "viewerDetected": true,
+  "viewerMarkerSamples": [
+    "of ⁨5⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools",
+    "Tools",
+    "Print"
+  ],
+  "printButtonDetected": true,
+  "printButtonVisible": true,
+  "printButtonSelectorUsed": "pdf-print #printButton, #printButton, pdf-shy-button[primarytoolbarid='printButton'] button",
+  "printClickSucceeded": false,
+  "pdfResponseDetected": true,
+  "pdfResponseUrl": "https://api.finalehealth.com/api/v1/files/69e1550dda48663525394fbb?index=documents",
+  "pdfContentType": "application/pdf",
+  "pdfSavedPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-22T19-21-35-668Z-a3d2e012\\outputs\\patients\\DENNIS_CONTI__044267d618e0d2c3\\documents\\conti-d-visit-note-jan-apr-2026-pdf\\source.pdf",
+  "pdfByteSize": 805585,
+  "printAcquisitionMethodUsed": "network_pdf_response",
+  "printedPdfSaved": false,
+  "printedPdfPath": null,
+  "sourcePdfPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-22T19-21-35-668Z-a3d2e012\\outputs\\patients\\DENNIS_CONTI__044267d618e0d2c3\\documents\\conti-d-visit-note-jan-apr-2026-pdf\\source.pdf",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-22T19-21-35-668Z-a3d2e012\\outputs\\patients\\DENNIS_CONTI__044267d618e0d2c3\\documents\\conti-d-visit-note-jan-apr-2026-pdf\\extracted-text.txt",
+  "extractionResultPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-22T19-21-35-668Z-a3d2e012\\outputs\\patients\\DENNIS_CONTI__044267d618e0d2c3\\documents\\conti-d-visit-note-jan-apr-2026-pdf\\extraction-result.json",
+  "extractedTextLength": 104,
+  "rawExtractedTextSource": "dom",
+  "domExtractionRejectedReasons": [
+    "viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS"
+  ],
+  "extractionSuccess": false,
+  "queuedForLlm": true,
+  "extractionPolicyDecision": {
+    "mode": "native_text",
+    "confidence": "high",
+    "reasons": [
+      "PDF contains usable text layer; OCR unnecessary"
+    ],
+    "recommendedSourcePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\avery-home-health\\batch-avery-home-health-2026-04-22T19-21-35-668Z-a3d2e012\\outputs\\patients\\DENNIS_CONTI__044267d618e0d2c3\\documents\\conti-d-visit-note-jan-apr-2026-pdf\\source.pdf",
+    "hasUsablePdfTextLayer": true,
+    "hasPdfSource": true,
+    "hasPrintedPdfSource": false,
+    "hasHtmlSource": false
+  },
+  "generatedAt": "2026-04-22T19:56:40.206Z"
+}

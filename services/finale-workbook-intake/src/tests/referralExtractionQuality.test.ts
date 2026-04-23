@@ -78,4 +78,25 @@ describe("evaluateDocumentExtractionQuality", () => {
     expect(result.likelyCorruptedEncoding).toBe(true);
     expect(result.rejectedReasons).toContain("corrupted_encoding");
   });
+
+  it("routes raw pdf structure text toward OCR retry instead of LLM use", () => {
+    const result = evaluateDocumentExtractionQuality({
+      text: [
+        "PDF-1.4 1 0 obj Creator (Apache FOP Version 2.10)",
+        "2 0 obj /Length 3 0 R /Filter /FlateDecode stream x QDEei g",
+        "endstream endobj xref trailer startxref",
+      ].join("\n"),
+      extraction: {
+        pdfType: "digital_text_pdf",
+        rawExtractedTextSource: "dom",
+        domExtractionRejectedReasons: [],
+      },
+      fileType: "pdf",
+    });
+
+    expect(result.likelyUsableForLlm).toBe(false);
+    expect(result.likelyRequiresOcrRetry).toBe(true);
+    expect(result.rejectedReasons).toContain("pdf_structure_text");
+    expect(result.usabilityStatus).toBe("needs_ocr_retry");
+  });
 });

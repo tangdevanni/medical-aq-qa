@@ -1,0 +1,3228 @@
+{
+  "runId": "batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4-AIMEE_BUSCEMI__f312adc729a94262",
+  "batchId": "batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4",
+  "subsidiaryId": "aplus-home-health",
+  "workItemId": "AIMEE_BUSCEMI__f312adc729a94262",
+  "patientName": "Aimee Buscemi",
+  "processingStatus": "BLOCKED",
+  "executionStep": "BLOCKED",
+  "progressPercent": 100,
+  "startedAt": "2026-04-22T19:24:03.404Z",
+  "completedAt": "2026-04-22T19:26:26.478Z",
+  "lastUpdatedAt": "2026-04-22T19:26:26.366Z",
+  "matchResult": {
+    "status": "EXACT",
+    "searchQuery": "buscemi, aimee",
+    "portalPatientId": null,
+    "portalDisplayName": "BUSCEMI, AIMEE D MR# 178895 Active SOC: 4/22/2026 / DOB: 12/26/1973 LOS: 1 days MEDICARE 6770 Grandview Ridge Avenue Las Vegas NV 89139 (702)290-9690 Last Visit Confirmed by SN : 04/22/2026 (0 days ago)",
+    "candidateNames": [
+      "BUSCEMI, AIMEE D MR# 178895 Active SOC: 4/22/2026 / DOB: 12/26/1973 LOS: 1 days MEDICARE 6770 Grandview Ridge Avenue Las Vegas NV 89139 (702)290-9690 Last Visit Confirmed by SN : 04/22/2026 (0 days ago)"
+    ],
+    "note": null
+  },
+  "artifacts": [
+    {
+      "artifactType": "OASIS",
+      "status": "DOWNLOADED",
+      "portalLabel": "SOC OASIS",
+      "locatorUsed": "fin-button[title='Print Preview'] > button, fin-button[title*='Print'] > button, fin-button[icon='ft-printer'] > button, button:has(.ft-printer), button:has-text('Print'), role=button[name=/^print$/i]",
+      "discoveredAt": "2026-04-22T19:26:14.052Z",
+      "downloadPath": null,
+      "extractedFields": {
+        "assessmentType": "SOC",
+        "reviewSource": "printed_note_ocr",
+        "overallStatus": "PARTIAL",
+        "printProfileKey": "soc_full_document_v1",
+        "printButtonDetected": "true",
+        "printModalDetected": "false",
+        "printModalConfirmSucceeded": "false",
+        "extractionMethod": "visible_text_fallback",
+        "textLength": "1924",
+        "completedSectionCount": "0",
+        "incompleteSectionCount": "18",
+        "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\evidence\\AIMEE_BUSCEMI__f312adc729a94262\\oasis-printed-note\\extracted-text.txt",
+        "printedPdfPath": null,
+        "ocrResultPath": null,
+        "diagnosisMentionCount": "3",
+        "diagnosisMentions": "Diagnoses: - 178895 Quick View Basic Info Admission 04-22-2026 Admission Info Admission Packets Calendar Insurance | Payer Diagnosis Physicians Care Team Documentations AllPhysician OrdersVisit NotesOASISCommunication NotesOther Notes Hospitalization | Payer Diagnosis Physicians Care Team Documentations AllPhysician OrdersVisit NotesOASISCommunication NotesOther Notes",
+        "diagnosisCodeCount": "0",
+        "diagnosisCodes": "",
+        "diagnosisCodeCategories": "",
+        "diagnosisCanonicalJson": "{\"reason_for_admission\":\"Diagnoses: - 178895 Quick View Basic Info Admission 04-22-2026 Admission Info Admission Packets Calendar Insurance/Payer Diagnosis Physicians Care Team Documentations AllPhysician\",\"diagnosis_phrases\":[\"Diagnoses: - 178895 Quick View Basic Info Admission 04-22-2026 Admission Info Admission Packets Calendar Insurance\",\"Payer Diagnosis Physicians Care Team Documentations AllPhysician OrdersVisit NotesOASISCommunication NotesOther Notes Hospitalization\",\"Payer Diagnosis Physicians Care Team Documentations AllPhysician OrdersVisit NotesOASISCommunication NotesOther Notes\"],\"diagnosis_code_pairs\":[{\"diagnosis\":\"Diagnoses: - 178895 Quick View Basic Info Admission 04-22-2026 Admission Info Admission Packets Calendar Insurance\",\"code\":null,\"code_source\":null},{\"diagnosis\":\"Payer Diagnosis Physicians Care Team Documentations AllPhysician OrdersVisit NotesOASISCommunication NotesOther Notes Hospitalization\",\"code\":null,\"code_source\":null},{\"diagnosis\":\"Payer Diagnosis Physicians Care Team Documentations AllPhysician OrdersVisit NotesOASISCommunication NotesOther Notes\",\"code\":null,\"code_source\":null}],\"icd10_codes_found_verbatim\":[],\"ordered_services\":[],\"clinical_summary\":\"Diagnoses: - 178895 Quick View Basic Info Admission 04-22-2026 Admission Info Admission Packets Calendar Insurance/Payer Diagnosis Physicians Care Team Documentations AllPhysician OrdersVisit NotesOASISCommunication NotesOther Notes Medications: - 178895 Quick View Basic Info Admission 04-22-2026 Admission Info Admissi\",\"source_quotes\":[\"Diagnoses: - 178895 Quick View Basic Info Admission 04-22-2026 Admission Info Admission Packets Calendar Insurance/Payer Diagnosis Physicians Care Team Documentations AllPhysician OrdersVisit NotesOASISCommunication NotesOther Notes Medications: - 178895 Quick View Basic Info Admission 04-22-2026 Admission Info Admissi\"],\"uncertain_items\":[\"No clinically relevant diagnoses found in provided text.\"],\"document_type\":\"Admission Order\",\"extraction_confidence\":\"medium\"}",
+        "codingInputPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\coding-input.json",
+        "codingInputJson": "{\"primaryDiagnosis\":{\"code\":\"\",\"description\":\"Diagnoses: - 178895 Quick View Basic Info Admission 04-22-2026 Admission Info Admission Packets Calendar Insurance\",\"confidence\":\"medium\"},\"otherDiagnoses\":[{\"code\":\"\",\"description\":\"Payer Diagnosis Physicians Care Team Documentations AllPhysician OrdersVisit NotesOASISCommunication NotesOther Notes Hospitalization\",\"confidence\":\"medium\"}],\"suggestedOnsetType\":\"onset\",\"suggestedSeverity\":2,\"comorbidityFlags\":{\"pvd_pad\":false,\"diabetes\":false,\"none\":true},\"notes\":[\"Reason for admission: Diagnoses: - 178895 Quick View Basic Info Admission 04-22-2026 Admission Info Admission Packets Calendar Insurance/Payer Diagnosis Physicians Care Team Documentations AllPhysician\",\"Primary diagnosis code left blank because no explicit or strongly inferable ICD-10 mapping was retained.\"]}",
+        "reasonForAdmission": "Diagnoses: - 178895 Quick View Basic Info Admission 04-22-2026 Admission Info Admission Packets Calendar Insurance/Payer Diagnosis Physicians Care Team Documentations AllPhysician",
+        "diagnosisCodePairs": "Diagnoses: - 178895 Quick View Basic Info Admission 04-22-2026 Admission Info Admission Packets Calendar Insurance => null (null) | Payer Diagnosis Physicians Care Team Documentations AllPhysician OrdersVisit NotesOASISCommunication NotesOther Notes Hospitalization => null (null) | Payer Diagnosis Physicians Care Team Documentations AllPhysician OrdersVisit NotesOASISCommunication NotesOther Notes => null (null)",
+        "primaryDiagnosis": "Diagnoses: - 178895 Quick View Basic Info Admission 04-22-2026 Admission Info Admission Packets Calendar Insurance",
+        "primaryDiagnosisCode": "",
+        "otherDiagnoses": "Payer Diagnosis Physicians Care Team Documentations AllPhysician OrdersVisit NotesOASISCommunication NotesOther Notes Hospitalization",
+        "suggestedOnsetType": "onset",
+        "suggestedSeverity": "2",
+        "comorbidityFlags": "{\"pvd_pad\":false,\"diabetes\":false,\"none\":true}",
+        "orderedServices": "",
+        "extractionConfidence": "medium",
+        "uncertainDiagnosisItems": "No clinically relevant diagnoses found in provided text.",
+        "codingLlmUsed": "true",
+        "codingLlmModel": "us.amazon.nova-lite-v1:0",
+        "codingLlmError": null,
+        "documentTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\document-text.json"
+      },
+      "notes": [
+        "Printed-note review status: PARTIAL",
+        "Print button could not be located on the OASIS assessment page.",
+        "Fell back to visible page text because printed-note OCR text was unavailable."
+      ]
+    }
+  ],
+  "artifactCount": 1,
+  "findings": [
+    {
+      "ruleId": "oasis-qa.coding.needs_review",
+      "stage": "CODING_REVIEW",
+      "outcome": "MISSING_DOCUMENTS",
+      "message": "Coding Review is needs review.",
+      "evidence": []
+    },
+    {
+      "ruleId": "oasis-qa.oasis.fail",
+      "stage": "OASIS_QA",
+      "outcome": "MISSING_DOCUMENTS",
+      "message": "OASIS QA is fail.",
+      "evidence": [
+        "Medical necessity is stated",
+        "Homebound reason is stated",
+        "Health assessment is documented",
+        "Skilled interventions during the OASIS visit are documented"
+      ]
+    },
+    {
+      "ruleId": "oasis-qa.poc.missing",
+      "stage": "POC_QA",
+      "outcome": "MISSING_DOCUMENTS",
+      "message": "Plan Of Care QA is missing.",
+      "evidence": [
+        "Plan of care content extracted",
+        "POC QA completed in workbook",
+        "Diagnoses or codes are present in the plan of care",
+        "Interventions, goals, and frequency are present in the plan of care",
+        "Conditions or exacerbations are reflected in the plan of care"
+      ]
+    },
+    {
+      "ruleId": "oasis-qa.visit_notes.missing",
+      "stage": "VISIT_NOTES_REVIEW",
+      "outcome": "MISSING_DOCUMENTS",
+      "message": "Visit Notes Review is missing.",
+      "evidence": [
+        "Visit note content extracted",
+        "Visit notes review completed in workbook",
+        "Skilled need is clearly documented",
+        "Interventions performed are specific and detailed",
+        "Patient response to interventions is documented",
+        "Progress toward goals is noted",
+        "Vitals and focused assessment are documented",
+        "Medication review is documented",
+        "Changes in condition are clearly reported and addressed",
+        "Documentation supports billed services",
+        "Documentation remains consistent with OASIS and diagnoses"
+      ]
+    },
+    {
+      "ruleId": "oasis-qa.technical_review.missing",
+      "stage": "TECHNICAL_REVIEW",
+      "outcome": "MISSING_DOCUMENTS",
+      "message": "Technical Review is missing.",
+      "evidence": [
+        "SN visits were identified from visit-note content",
+        "Applicable disciplines were detected"
+      ]
+    },
+    {
+      "ruleId": "oasis-qa.final_check.fail",
+      "stage": "FINAL_BILLING_PREP_READINESS",
+      "outcome": "MISSING_DOCUMENTS",
+      "message": "Final Check is fail.",
+      "evidence": [
+        "Critical QA sections are complete before billing prep",
+        "Billing prep status in workbook"
+      ]
+    }
+  ],
+  "hasFindings": false,
+  "qaOutcome": "MISSING_DOCUMENTS",
+  "oasisQaSummary": {
+    "overallStatus": "BLOCKED",
+    "urgency": "ON_TRACK",
+    "daysInPeriod": 30,
+    "daysLeft": 29,
+    "sections": [
+      {
+        "key": "timing",
+        "label": "Timing / OASIS Due",
+        "status": "PASS",
+        "items": [
+          {
+            "key": "days_in_period",
+            "label": "Days in the 30-day period captured",
+            "status": "PASS",
+            "notes": "Workbook shows 30 days in period.",
+            "evidence": [
+              "Workbook days in period: 30"
+            ]
+          },
+          {
+            "key": "days_left",
+            "label": "Days left before OASIS due date verified",
+            "status": "PASS",
+            "notes": "29 day(s) remain before OASIS is due.",
+            "evidence": [
+              "Workbook days left: 29"
+            ]
+          },
+          {
+            "key": "urgency_bucket",
+            "label": "Urgency bucket",
+            "status": "PASS",
+            "notes": "ON TRACK",
+            "evidence": [
+              "Derived urgency from 29 day(s) left."
+            ]
+          }
+        ]
+      },
+      {
+        "key": "coding",
+        "label": "Coding Review",
+        "status": "NEEDS_REVIEW",
+        "items": [
+          {
+            "key": "coding_review_complete",
+            "label": "Coding review completed in workbook",
+            "status": "NEEDS_REVIEW",
+            "notes": "Workbook status: IN_PROGRESS",
+            "evidence": [
+              "IN_PROGRESS"
+            ]
+          },
+          {
+            "key": "coding_supported_by_oasis",
+            "label": "OASIS content is available to support coding review",
+            "status": "PASS",
+            "notes": "OASIS content extracted for coding review support.",
+            "evidence": [
+              "OASIS C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\evidence\\AIMEE_BUSCEMI__f312adc729a94262\\oasis-printed-note\\extracted-text.txt"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "oasis",
+        "label": "OASIS QA",
+        "status": "FAIL",
+        "items": [
+          {
+            "key": "oasis_document",
+            "label": "OASIS document content extracted",
+            "status": "PASS",
+            "notes": "1 supporting document(s) extracted.",
+            "evidence": [
+              "OASIS C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\evidence\\AIMEE_BUSCEMI__f312adc729a94262\\oasis-printed-note\\extracted-text.txt"
+            ]
+          },
+          {
+            "key": "oasis_workbook_status",
+            "label": "OASIS QA completed in workbook",
+            "status": "NEEDS_REVIEW",
+            "notes": "Workbook status: IN_PROGRESS",
+            "evidence": [
+              "IN_PROGRESS"
+            ]
+          },
+          {
+            "key": "medical_necessity",
+            "label": "Medical necessity is stated",
+            "status": "FAIL",
+            "notes": "OASIS text did not show medical necessity language.",
+            "evidence": []
+          },
+          {
+            "key": "homebound_reason",
+            "label": "Homebound reason is stated",
+            "status": "FAIL",
+            "notes": "OASIS text did not show a homebound reason.",
+            "evidence": []
+          },
+          {
+            "key": "health_assessment",
+            "label": "Health assessment is documented",
+            "status": "FAIL",
+            "notes": "OASIS text did not show a health assessment section or phrase.",
+            "evidence": []
+          },
+          {
+            "key": "skilled_interventions",
+            "label": "Skilled interventions during the OASIS visit are documented",
+            "status": "FAIL",
+            "notes": "OASIS text did not show skilled interventions performed during the visit.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "poc",
+        "label": "Plan Of Care QA",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "poc_document",
+            "label": "Plan of care content extracted",
+            "status": "MISSING",
+            "notes": "No plan-of-care content was available for extraction.",
+            "evidence": []
+          },
+          {
+            "key": "poc_workbook_status",
+            "label": "POC QA completed in workbook",
+            "status": "MISSING",
+            "notes": "Workbook status: NOT_STARTED",
+            "evidence": [
+              "NOT_STARTED"
+            ]
+          },
+          {
+            "key": "poc_diagnoses_codes",
+            "label": "Diagnoses or codes are present in the plan of care",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "poc_interventions_goals_frequency",
+            "label": "Interventions, goals, and frequency are present in the plan of care",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "poc_conditions_exacerbations",
+            "label": "Conditions or exacerbations are reflected in the plan of care",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "visit_notes",
+        "label": "Visit Notes Review",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "visit_notes_document",
+            "label": "Visit note content extracted",
+            "status": "MISSING",
+            "notes": "No visit-note content was available for extraction.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_workbook_status",
+            "label": "Visit notes review completed in workbook",
+            "status": "MISSING",
+            "notes": "Workbook status: NOT_STARTED",
+            "evidence": [
+              "NOT_STARTED"
+            ]
+          },
+          {
+            "key": "visit_notes_skilled_need",
+            "label": "Skilled need is clearly documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_intervention_detail",
+            "label": "Interventions performed are specific and detailed",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_patient_response",
+            "label": "Patient response to interventions is documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_progress",
+            "label": "Progress toward goals is noted",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_vitals",
+            "label": "Vitals and focused assessment are documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_medication_review",
+            "label": "Medication review is documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_condition_changes",
+            "label": "Changes in condition are clearly reported and addressed",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_billed_services_support",
+            "label": "Documentation supports billed services",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_consistency",
+            "label": "Documentation remains consistent with OASIS and diagnoses",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "technical_review",
+        "label": "Technical Review",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "portal_patient_match",
+            "label": "Portal patient match resolved",
+            "status": "PASS",
+            "notes": "Portal match status: EXACT",
+            "evidence": [
+              "buscemi, aimee",
+              "BUSCEMI, AIMEE D MR# 178895 Active SOC: 4/22/2026 / DOB: 12/26/1973 LOS: 1 days MEDICARE 6770 Grandview Ridge Avenue Las Vegas NV 89139 (702)290-9690 Last Visit Confirmed by SN : 04/22/2026 (0 days ago)"
+            ]
+          },
+          {
+            "key": "sn_visit_count",
+            "label": "SN visits were identified from visit-note content",
+            "status": "MISSING",
+            "notes": "Visit-note content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "discipline_detection",
+            "label": "Applicable disciplines were detected",
+            "status": "MISSING",
+            "notes": "Visit-note content is not available for discipline detection.",
+            "evidence": []
+          },
+          {
+            "key": "physician_orders",
+            "label": "Physician orders were checked",
+            "status": "NEEDS_REVIEW",
+            "notes": "Orders evidence was discovered (1 candidate(s)).",
+            "evidence": [
+              "Detected 1 order document candidate(s)."
+            ]
+          },
+          {
+            "key": "supporting_notes",
+            "label": "Supporting note categories were reviewed",
+            "status": "NOT_APPLICABLE",
+            "notes": "No additional supporting note categories were discovered for this patient.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "final_check",
+        "label": "Final Check",
+        "status": "FAIL",
+        "items": [
+          {
+            "key": "critical_sections_clear",
+            "label": "Critical QA sections are complete before billing prep",
+            "status": "FAIL",
+            "notes": "Blocking sections: Medical necessity is stated, Homebound reason is stated, Health assessment is documented, Skilled interventions during the OASIS visit are documented, Plan of care content extracted, POC QA completed in workbook, Diagnoses or codes are present in the plan of care, Interventions, goals, and frequency are present in the plan of care, Conditions or exacerbations are reflected in the plan of care, Visit note content extracted, Visit notes review completed in workbook, Skilled need is clearly documented, Interventions performed are specific and detailed, Patient response to interventions is documented, Progress toward goals is noted, Vitals and focused assessment are documented, Medication review is documented, Changes in condition are clearly reported and addressed, Documentation supports billed services, Documentation remains consistent with OASIS and diagnoses, SN visits were identified from visit-note content, Applicable disciplines were detected",
+            "evidence": [
+              "Timing / OASIS Due: PASS",
+              "Coding Review: NEEDS_REVIEW",
+              "OASIS QA: FAIL",
+              "Plan Of Care QA: MISSING",
+              "Visit Notes Review: MISSING",
+              "Technical Review: MISSING"
+            ]
+          },
+          {
+            "key": "billing_prep_status",
+            "label": "Billing prep status in workbook",
+            "status": "MISSING",
+            "notes": "Workbook status: NOT_STARTED",
+            "evidence": [
+              "NOT_STARTED"
+            ]
+          }
+        ]
+      }
+    ],
+    "blockers": [
+      "Medical necessity is stated",
+      "Homebound reason is stated",
+      "Health assessment is documented",
+      "Skilled interventions during the OASIS visit are documented",
+      "Plan of care content extracted",
+      "POC QA completed in workbook",
+      "Diagnoses or codes are present in the plan of care",
+      "Interventions, goals, and frequency are present in the plan of care",
+      "Conditions or exacerbations are reflected in the plan of care",
+      "Visit note content extracted",
+      "Visit notes review completed in workbook",
+      "Skilled need is clearly documented",
+      "Interventions performed are specific and detailed",
+      "Patient response to interventions is documented",
+      "Progress toward goals is noted",
+      "Vitals and focused assessment are documented",
+      "Medication review is documented",
+      "Changes in condition are clearly reported and addressed",
+      "Documentation supports billed services",
+      "Documentation remains consistent with OASIS and diagnoses",
+      "SN visits were identified from visit-note content",
+      "Applicable disciplines were detected"
+    ]
+  },
+  "documentInventory": [
+    {
+      "sourceLabel": "Admission 04-22-2026",
+      "normalizedType": "ORDER",
+      "discipline": "UNKNOWN",
+      "confidence": 0.92,
+      "evidence": [
+        "Workflow phase: file_uploads_only",
+        "oasisReadyDiagnosisPath:none",
+        "primaryDiagnosisSelected:none",
+        "otherDiagnosisCount:0",
+        "codeConfidenceSummary:high:0 medium:0 low:0",
+        "oasisLockState:none",
+        "unlockControlVisible:false",
+        "unlockControlText:none",
+        "fieldsEditable:false",
+        "verificationOnly:true",
+        "inputEligible:false",
+        "Active OASIS workflow path: chart -> File Uploads/referral -> OASIS sidebar -> OASIS document table -> SOC document -> Active Diagnoses",
+        "Dangerous controls detected: none",
+        "oasisMenuClicked:false",
+        "oasisDocumentListDetected:false",
+        "socDocumentFound:false",
+        "socDocumentClicked:false",
+        "matchedSocRowText:none",
+        "matchedSocAnchorText:none",
+        "diagnosisSectionOpened:false",
+        "diagnosisListFound:false",
+        "diagnosisNavigationMethod:none",
+        "diagnosisListSamples:none",
+        "diagnosisSnapshotRowCount:0",
+        "fileUploadsAccessible:true",
+        "fileUploadsUrl:https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+        "visibleUploadedDocuments:Admission 04-22-2026 | Admission Info | Admission Packets",
+        "admissionOrderAccessible:true",
+        "admissionOrderTitle:Admission 04-22-2026",
+        "admissionReasonPrimary:Hospitalization Billing QA Checklist Supplies Vital Graphs Wound History Care Coordination Intake File Uploads Alerts File Uploads Event Calendar Notifications RCD Tracking BUSCEMI, AIMEE178895 Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root",
+        "admissionReasonSnippets:Hospitalization Billing QA Checklist Supplies Vital Graphs Wound History Care Coordination Intake File Uploads Alerts File Uploads Event Calendar Notifications RCD Tracking BUSCEMI, AIMEE178895 Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root",
+        "rawExtractedTextSource:dom",
+        "domExtractionRejectedReasons:none",
+        "possibleIcd10Codes:none",
+        "sourceMetaPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\documents\\admission-04-22-2026\\source-meta.json",
+        "sourcePdfPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\documents\\admission-04-22-2026\\source.pdf",
+        "extractedTextPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\documents\\admission-04-22-2026\\extracted-text.txt",
+        "printedPdfPath:none"
+      ],
+      "sourceUrl": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+      "sourcePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\documents\\admission-04-22-2026\\source.pdf",
+      "discoveredAt": "2026-04-22T19:25:51.647Z",
+      "openBehavior": "SAME_PAGE"
+    }
+  ],
+  "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patient-results\\AIMEE_BUSCEMI__f312adc729a94262.json",
+  "bundleAvailable": true,
+  "logPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\logs\\AIMEE_BUSCEMI__f312adc729a94262.json",
+  "logAvailable": true,
+  "retryEligible": false,
+  "errorSummary": "Coding input exported: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\coding-input.json",
+  "auditArtifacts": {
+    "tracePath": null,
+    "screenshotPaths": [],
+    "downloadPaths": []
+  },
+  "workflowRuns": [
+    {
+      "workflowRunId": "batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4-AIMEE_BUSCEMI__f312adc729a94262:coding",
+      "workflowDomain": "coding",
+      "status": "BLOCKED",
+      "stepName": "BLOCKED",
+      "message": "Coding input exported: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\coding-input.json",
+      "chartUrl": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/intake/69e6af7b2b18070c4b43ed57/calendar",
+      "startedAt": "2026-04-22T19:26:26.177Z",
+      "completedAt": "2026-04-22T19:26:26.478Z",
+      "lastUpdatedAt": "2026-04-22T19:26:26.478Z",
+      "workflowResultPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\coding-input.json",
+      "workflowLogPath": null
+    },
+    {
+      "workflowRunId": "batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4-AIMEE_BUSCEMI__f312adc729a94262:qa",
+      "workflowDomain": "qa",
+      "status": "COMPLETED",
+      "stepName": "OASIS_QA_ENTRY_COMPLETE",
+      "message": "OASIS QA entry completed with warnings: Local file extraction failed for C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\documents\\admission-04-22-2026\\source.pdf: ENOENT: no such file or directory, open 'C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\documents\\admission-04-22-2026\\source.pdf'",
+      "chartUrl": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/intake/69e6af7b2b18070c4b43ed57/calendar",
+      "startedAt": "2026-04-22T19:24:03.488Z",
+      "completedAt": "2026-04-22T19:26:14.048Z",
+      "lastUpdatedAt": "2026-04-22T19:26:14.048Z",
+      "workflowResultPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\qa-prefetch-result.json",
+      "workflowLogPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\logs\\AIMEE_BUSCEMI__f312adc729a94262.json"
+    }
+  ],
+  "workItemSnapshot": {
+    "id": "AIMEE_BUSCEMI__f312adc729a94262",
+    "subsidiaryId": "aplus-home-health",
+    "patientIdentity": {
+      "displayName": "Aimee Buscemi",
+      "normalizedName": "AIMEE BUSCEMI",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-04-22",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Fuentes, Joshua RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "01-SOC"
+    },
+    "workflowTypes": [
+      "SOC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 29,
+      "daysInPeriod": null,
+      "daysLeft": 29,
+      "daysLeftBeforeOasisDueDate": 29,
+      "rawTrackingValues": [
+        "29"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "IN_PROGRESS",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "In Progress"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "04/21/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 16
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 16,
+        "values": {
+          "patientName": "BUSCEMI, AIMEE",
+          "episodeDate": "04/22/2026",
+          "assignedStaff": "Fuentes, Joshua RN",
+          "payer": "Medicare",
+          "rfa": "01-SOC",
+          "trackingDays": "29",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "In Progress",
+          "oasisQaRemarks": "04/21/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  "automationStepLogs": [
+    {
+      "timestamp": "2026-04-22T19:25:22.554Z",
+      "step": "login",
+      "message": "Reused the authenticated portal session established for this batch.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:24:03.488Z",
+      "step": "run_started",
+      "message": "Patient run started from the shared Playwright portal runner.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "selectorUsed": null,
+      "found": [
+        "currentUrl=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "subsidiaryId=aplus-home-health",
+        "portalBaseUrl=https://app.finalehealth.com",
+        "configuredDashboardUrl=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+        "resolvedDashboardUrl=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+        "currentContextRequiresReset=false"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:24:03.750Z",
+      "step": "dashboard_ready",
+      "message": "Provider dashboard ready confirmed using 'button:has-text(\"Search Patient\")'.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "selectorUsed": null,
+      "found": [
+        "button:has-text(\"Search Patient\")"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "attempt=1 signal=button:has-text(\"Search Patient\") stableDom=false url=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard title=Finale Health buttons=177 inputs=20 text=A Plus Home Health Systems LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifica"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:24:14.486Z",
+      "step": "patient_lookup_entry",
+      "message": "Global patient search is available from the current authenticated page context.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "selectorUsed": "getByText(/Search Patient/i) -> nearest clickable parent (present)",
+      "found": [
+        "getByText(/Search Patient/i) -> nearest clickable parent (present)"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Current URL before patient lookup: https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+        "Global search available in current context: true",
+        "Global search availability selector used: getByText(/Search Patient/i) -> nearest clickable parent (present)",
+        "Resolved global search trigger with present manual selector 'getByText(/Search Patient/i) -> nearest clickable parent (present)' even though Playwright visibility did not confirm it in the probe path.",
+        "[not_found] Global patient search button by accessible name count=0 visible=0 elapsedMs=58",
+        "[not_visible] Global patient search button containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=109 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=353 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search button containing Search Patient text count=1 visible=0 elapsedMs=87 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search visible control containing Search Patient text count=1 visible=0 elapsedMs=107 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search fin-button wrapper containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=73 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control inside fin-button wrapper count=1 visible=0 elapsedMs=86 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by shortcut hint count=0 visible=0 elapsedMs=45",
+        "[not_visible] Global patient search button containing search icon and patient-search text count=1 visible=0 elapsedMs=100 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by accessible name count=0 visible=0 elapsedMs=48",
+        "[not_visible] Global patient search button containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=100 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=87 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search button containing Search Patient text count=1 visible=0 elapsedMs=78 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search visible control containing Search Patient text count=1 visible=0 elapsedMs=81 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search fin-button wrapper containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=105 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control inside fin-button wrapper count=1 visible=0 elapsedMs=111 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by shortcut hint count=0 visible=0 elapsedMs=52",
+        "[not_visible] Global patient search button containing search icon and patient-search text count=1 visible=0 elapsedMs=85 samples=Search Patient...Ctrl K"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:24:14.486Z",
+      "step": "patient_lookup_entry",
+      "message": "Patient lookup will start after shared dashboard bootstrap confirmed provider dashboard readiness and global search availability.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "selectorUsed": null,
+      "found": [
+        "patientLookupEntryContext=current_page_global_search",
+        "dashboard_context_established",
+        "globalSearchAvailable=true"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "currentUrlAfterLogin=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+        "currentUrlBeforeSearch=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+        "resolvedDashboardUrl=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+        "globalSearchSelectorUsed=getByText(/Search Patient/i) -> nearest clickable parent (present)"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:24:14.487Z",
+      "step": "patient_search_start",
+      "message": "Starting patient search with 3 query variant(s).",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "selectorUsed": null,
+      "found": [
+        "buscemi, aimee",
+        "BUSCEMI, AIMEE",
+        "Aimee Buscemi",
+        "AIMEE BUSCEMI",
+        "BUSCEMI, AIMEE"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Original workbook patient name: Aimee Buscemi",
+        "Normalized global search query: buscemi, aimee",
+        "Normalized expected display name: BUSCEMI, AIMEE",
+        "Workbook name variants: Aimee Buscemi | AIMEE BUSCEMI | BUSCEMI, AIMEE"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:24:41.603Z",
+      "step": "global_patient_search_open",
+      "message": "Clicked the global Search Patient trigger and found the visible search input.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "selectorUsed": "getByText(/Search Patient/i) -> nearest clickable parent (present)",
+      "found": [
+        "Search Patient trigger",
+        "search input"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Original workbook patient name: Aimee Buscemi",
+        "Normalized global search query: buscemi, aimee",
+        "Search trigger clicked: true",
+        "Trigger click method: dom_click",
+        "Search modal visible: true",
+        "Global search control selector used: getByText(/Search Patient/i) -> nearest clickable parent (present)",
+        "Global search surface selector used: Global patient search overlay/dialog containing an input",
+        "Global search modal selector used: div.search-header.open",
+        "Resolved global search trigger with present manual selector 'getByText(/Search Patient/i) -> nearest clickable parent (present)' even though Playwright visibility did not confirm it in the probe path.",
+        "[not_found] Global patient search button by accessible name count=0 visible=0 elapsedMs=59",
+        "[not_visible] Global patient search button containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=99 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=78 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search button containing Search Patient text count=1 visible=0 elapsedMs=73 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search visible control containing Search Patient text count=1 visible=0 elapsedMs=82 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search fin-button wrapper containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=73 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control inside fin-button wrapper count=1 visible=0 elapsedMs=96 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by shortcut hint count=0 visible=0 elapsedMs=44",
+        "[not_visible] Global patient search button containing search icon and patient-search text count=1 visible=0 elapsedMs=78 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by accessible name count=0 visible=0 elapsedMs=47",
+        "[not_visible] Global patient search button containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=80 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=89 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search button containing Search Patient text count=1 visible=0 elapsedMs=82 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search visible control containing Search Patient text count=1 visible=0 elapsedMs=86 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search fin-button wrapper containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=69 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control inside fin-button wrapper count=1 visible=0 elapsedMs=82 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by shortcut hint count=0 visible=0 elapsedMs=47",
+        "[not_visible] Global patient search button containing search icon and patient-search text count=1 visible=0 elapsedMs=86 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search dialog by accessible name count=0 visible=0 elapsedMs=45",
+        "[matched] Global patient search overlay/dialog containing an input count=1 visible=1 elapsedMs=84 samples=EscPatients Sort By 3Sort By×Full Name×asc×SOC Date×desc×Status×ascAdd another sort itemNo recent searchesSearch by:Status:ActivePendingOn-HoldLeadNon-AdmitDischarged",
+        "Search input found by confirmed Search patients placeholder selector.",
+        "[matched] Global patient search input by confirmed Search patients placeholder count=1 visible=1 elapsedMs=84"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:24:47.985Z",
+      "step": "patient_search_input",
+      "message": "Typed the normalized query into the global patient search and waited for results.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "selectorUsed": "input[type=\"text\"][placeholder*=\"Search patients\"]",
+      "found": [
+        "BUSCEMI, AIMEE D MR# 178895 Active SOC: 4/22/2026 / DOB: 12/26/1973 LOS: 1 daysMEDICARE6770 Grandview Ridge Avenue Las Vegas NV 89139(702)290-9690Last Visit Confirmed by SN : 04/22/2026 (0 days ago)"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Search trigger clicked: true",
+        "Search input found: true",
+        "Typing into focused field succeeded: true",
+        "Used direct input fallback: false",
+        "Search query typed: buscemi, aimee",
+        "Result count: 1",
+        "Candidate search result texts: BUSCEMI, AIMEE D MR# 178895 Active SOC: 4/22/2026 / DOB: 12/26/1973 LOS: 1 daysMEDICARE6770 Grandview Ridge Avenue Las Vegas NV 89139(702)290-9690Last Visit Confirmed by SN : 04/22/2026 (0 days ago)",
+        "attempt=1 rowCount=1 text=BUSCEMI, AIMEE D MR# 178895 Active SOC: 4/22/2026 / DOB: 12/26/1973 LOS: 1 daysMEDICARE6770 Grandview Ridge Avenue Las Vegas NV 89139(702)290-9690Last Visit Confirmed by SN : 04/22/2026 (0 days ago)"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:25:14.465Z",
+      "step": "patient_search",
+      "message": "Global patient search completed with 1 candidate(s).",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "selectorUsed": "getByText(/Search Patient/i) -> nearest clickable parent (present) -> input[type=\"text\"][placeholder*=\"Search patients\"] -> Global patient search result tiles containing ngb-highlight",
+      "found": [
+        "BUSCEMI, AIMEE D MR# 178895 Active SOC: 4/22/2026 / DOB: 12/26/1973 LOS: 1 days MEDICARE 6770 Grandview Ridge Avenue Las Vegas NV 89139 (702)290-9690 Last Visit Confirmed by SN : 04/22/2026 (0 days ago)"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Original workbook patient name: Aimee Buscemi",
+        "Normalized global search query: buscemi, aimee",
+        "Normalized expected display name: BUSCEMI, AIMEE",
+        "Global search control selector used: getByText(/Search Patient/i) -> nearest clickable parent (present)",
+        "Global search surface selector used: Global patient search overlay/dialog containing an input",
+        "Global search input selector used: input[type=\"text\"][placeholder*=\"Search patients\"]",
+        "Result selector used: Global patient search result tiles containing ngb-highlight",
+        "Search results ready: true",
+        "Visible result row count: 1",
+        "No results marker visible: false",
+        "Candidate search result texts: BUSCEMI, AIMEE D MR# 178895 Active SOC: 4/22/2026 / DOB: 12/26/1973 LOS: 1 days MEDICARE 6770 Grandview Ridge Avenue Las Vegas NV 89139 (702)290-9690 Last Visit Confirmed by SN : 04/22/2026 (0 days ago)",
+        "Result text sample: BUSCEMI, AIMEE D MR# 178895 Active SOC: 4/22/2026 / DOB: 12/26/1973 LOS: 1 days MEDICARE 6770 Grandview Ridge Avenue Las Vegas NV 89139 (702)290-9690 Last Visit Confirmed by SN : 04/22/2026 (0 days ago)",
+        "attempt=1 rowCount=1 text=BUSCEMI, AIMEE D MR# 178895 Active SOC: 4/22/2026 / DOB: 12/26/1973 LOS: 1 daysMEDICARE6770 Grandview Ridge Avenue Las Vegas NV 89139(702)290-9690Last Visit Confirmed by SN : 04/22/2026 (0 days ago)",
+        "rowCount=1",
+        "noResultsVisible=false",
+        "Normalized query typed=buscemi, aimee",
+        "Normalized expected display name=BUSCEMI, AIMEE",
+        "candidate[1]=BUSCEMI, AIMEE D MR# 178895 Active SOC: 4/22/2026 / DOB: 12/26/1973 LOS: 1 days MEDICARE 6770 Grandview Ridge Avenue Las Vegas NV 89139 (702)290-9690 Last Visit Confirmed by SN : 04/22/2026 (0 days ago)",
+        "Candidate 'BUSCEMI, AIMEE D MR# 178895 Active SOC: 4/22/2026 / DOB: 12/26/1973 LOS: 1 days MEDICARE 6770 Grandview Ridge Avenue Las Vegas NV 89139 (702)290-9690 Last Visit Confirmed by SN : 04/22/2026 (0 days ago)' row='BUSCEMI, AIMEE D MR# 178895 Active SOC: 4/22/2026 / DOB: 12/26/1973 LOS: 1 days MEDICARE 6770 Grandview Ridge Avenue Las Vegas NV 89139 (702)290-9690 Last Visit Confirmed by SN : 04/22/2026 (0 days ago)' selector='Global patient search result tiles containing ngb-highlight' container='search-body__item ng-star-inserted' score=420 exact=true containsFullQuery=true containsFirstAndLast=true reasons=all patient name tokens present; ngb-highlight patient-name text starts with the normalized LAST, FIRST display name; row/card text contains both last and first name tokens; row text contains the full first-name segment"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:25:21.972Z",
+      "step": "patient_search_match_resolution",
+      "message": "Selected patient result 'BUSCEMI, AIMEE D MR# 178895 Active SOC: 4/22/2026 / DOB: 12/26/1973 LOS: 1 days MEDICARE 6770 Grandview Ridge Avenue Las Vegas NV 89139 (702)290-9690 Last Visit Confirmed by SN : 04/22/2026 (0 days ago)' from the global search.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/intake/69e6af7b2b18070c4b43ed57/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/intake/69e6af7b2b18070c4b43ed57/calendar",
+      "selectorUsed": null,
+      "found": [
+        "BUSCEMI, AIMEE D MR# 178895 Active SOC: 4/22/2026 / DOB: 12/26/1973 LOS: 1 days MEDICARE 6770 Grandview Ridge Avenue Las Vegas NV 89139 (702)290-9690 Last Visit Confirmed by SN : 04/22/2026 (0 days ago)"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Matched patient result text: BUSCEMI, AIMEE D MR# 178895 Active SOC: 4/22/2026 / DOB: 12/26/1973 LOS: 1 days MEDICARE 6770 Grandview Ridge Avenue Las Vegas NV 89139 (702)290-9690 Last Visit Confirmed by SN : 04/22/2026 (0 days ago)",
+        "Matched row text: BUSCEMI, AIMEE D MR# 178895 Active SOC: 4/22/2026 / DOB: 12/26/1973 LOS: 1 days MEDICARE 6770 Grandview Ridge Avenue Las Vegas NV 89139 (702)290-9690 Last Visit Confirmed by SN : 04/22/2026 (0 days ago)",
+        "Normalized global search query: buscemi, aimee",
+        "Normalized expected display name: BUSCEMI, AIMEE",
+        "Clicked tile selector/container summary: Global patient search result tiles containing ngb-highlight :: search-body__item ng-star-inserted",
+        "all patient name tokens present",
+        "ngb-highlight patient-name text starts with the normalized LAST, FIRST display name",
+        "row/card text contains both last and first name tokens",
+        "row text contains the full first-name segment"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:25:21.972Z",
+      "step": "chart_open",
+      "message": "Opened the patient page from global search in read-only mode for BUSCEMI, AIMEE D MR# 178895 Active SOC: 4/22/2026 / DOB: 12/26/1973 LOS: 1 days MEDICARE 6770 Grandview Ridge Avenue Las Vegas NV 89139 (702)290-9690 Last Visit Confirmed by SN : 04/22/2026 (0 days ago).",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/intake/69e6af7b2b18070c4b43ed57/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/intake/69e6af7b2b18070c4b43ed57/calendar",
+      "selectorUsed": "Global patient search result tiles containing ngb-highlight :: nearest clickable parent around ngb-highlight",
+      "found": [
+        "Documents",
+        "Clinical: , Functional: , Comorbidity:",
+        "FINALE CLINICAL ASSISTANT"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Matched patient result text: BUSCEMI, AIMEE D MR# 178895 Active SOC: 4/22/2026 / DOB: 12/26/1973 LOS: 1 days MEDICARE 6770 Grandview Ridge Avenue Las Vegas NV 89139 (702)290-9690 Last Visit Confirmed by SN : 04/22/2026 (0 days ago)",
+        "Clicked patient result text: BUSCEMI, AIMEE D MR# 178895 Active SOC: 4/22/2026 / DOB: 12/26/1973 LOS: 1 days MEDICARE 6770 Grandview Ridge Avenue Las Vegas NV 89139 (702)290-9690 Last Visit Confirmed by SN : 04/22/2026 (0 days ago)",
+        "Clicked tile selector/container summary: Global patient search result tiles containing ngb-highlight :: search-body__item ng-star-inserted",
+        "Click target summary: Global patient search result tiles containing ngb-highlight :: nearest clickable parent around ngb-highlight",
+        "URL after patient navigation: https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/intake/69e6af7b2b18070c4b43ed57/calendar",
+        "Used Enter retry: false",
+        "Dashboard URL changed: true",
+        "Chart/page markers found: Documents | Clinical: , Functional: , Comorbidity: | FINALE CLINICAL ASSISTANT",
+        "Preferred click target was the nearest clickable parent around the highlighted patient name.",
+        "all patient name tokens present",
+        "ngb-highlight patient-name text starts with the normalized LAST, FIRST display name",
+        "row/card text contains both last and first name tokens",
+        "row text contains the full first-name segment",
+        "attempt=1 urlChanged=true dashboardUrlChanged=true urlLooksLikePatientIntakePage=true chartMarkersFound=true markers=Documents | Clinical: , Functional: , Comorbidity: | FINALE CLINICAL ASSISTANT url=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/intake/69e6af7b2b18070c4b43ed57/calendar"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:25:22.554Z",
+      "step": "patient_admission_status",
+      "message": "Captured patient admission status from chart header: Active.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/intake/69e6af7b2b18070c4b43ed57/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/intake/69e6af7b2b18070c4b43ed57/calendar",
+      "selectorUsed": "Patient admission status badge in app-patient-status component",
+      "found": [
+        "Active"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "[matched] Patient admission status badge in app-patient-status component count=1 visible=1 elapsedMs=83 samples=Active"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:25:22.554Z",
+      "step": "shared_portal_access",
+      "message": "Shared portal access reached the patient chart and produced 2 workflow context(s).",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/intake/69e6af7b2b18070c4b43ed57/calendar",
+      "selectorUsed": null,
+      "found": [
+        "coding:https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/intake/69e6af7b2b18070c4b43ed57/calendar",
+        "qa:https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/intake/69e6af7b2b18070c4b43ed57/calendar"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "matchStatus=EXACT",
+        "portalPatientId=none",
+        "portalAdmissionStatus=Active",
+        "dashboardUrl=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/dashboard",
+        "chartUrl=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/intake/69e6af7b2b18070c4b43ed57/calendar"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:25:22.554Z",
+      "step": "shared_evidence_discovery_start",
+      "message": "Shared evidence workflow started from the patient chart context.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/intake/69e6af7b2b18070c4b43ed57/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/intake/69e6af7b2b18070c4b43ed57/calendar",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=coding",
+        "patientRunId=batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4-AIMEE_BUSCEMI__f312adc729a94262",
+        "status=started",
+        "chartUrl=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/intake/69e6af7b2b18070c4b43ed57/calendar"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:25:51.646Z",
+      "step": "file_uploads_open",
+      "message": "Opened File Uploads section and enumerated available uploaded records.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/intake/69e6af7b2b18070c4b43ed57/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+      "selectorUsed": "patient File Uploads sidebar anchor by /file-uploads href",
+      "found": [
+        "fileUploadsAccessible:true",
+        "patientFileUploadsRouteDetected:true",
+        "genericProviderDocumentsRouteDetected:false",
+        "fileUploadsSidebarClickSucceeded:true",
+        "pageComponentDetected:true",
+        "traversalMode:unknown",
+        "usedChartDocumentsFallback:false",
+        "matchedFileUploadsLabel:File Uploads",
+        "matchedFileUploadsHref:/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+        "referralFolderSelected:false",
+        "referralFolderLabel:none",
+        "matchedReferralFileLabel:none",
+        "normalizedFileLabels:admission 04 22 2026 | admission info | admission packets",
+        "matchedSourceDocuments:admission 04 22 2026 | admission info | admission packets",
+        "selectedSourceFile:Admission 04-22-2026",
+        "viewerDetected:false",
+        "printButtonDetected:false",
+        "printButtonVisible:false",
+        "printClickSucceeded:false",
+        "pdfResponseDetected:false",
+        "pdfResponseUrl:none",
+        "pdfContentType:none",
+        "pdfSavedPath:none",
+        "pdfByteSize:0",
+        "printAcquisitionMethodUsed:metadata_fallback",
+        "sourcePdfPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\documents\\admission-04-22-2026\\source.pdf",
+        "printedPdfPath:none",
+        "extractionMethodUsed:click",
+        "rawExtractedTextSource:dom",
+        "domExtractionRejectedReasons:none",
+        "extractionSuccess:true",
+        "uploadedDocumentCount:3"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Sidebar container count: 5",
+        "Sidebar diagnostics: [{\"index\":0,\"visible\":true,\"fileUploadsLabelCount\":0,\"fileUploadsAnchorCount\":1}]",
+        "[matched] patient File Uploads sidebar anchor by /file-uploads href count=1 visible=1 elapsedMs=62 samples=File Uploads",
+        "Matched File Uploads sidebar label: File Uploads",
+        "Matched File Uploads sidebar href: /provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+        "File Uploads sidebar click succeeded: true",
+        "File Uploads URL after sidebar click: https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+        "File Uploads ready attempt=1 url=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads urlChanged=true patientFileUploadsRouteDetected=true genericProviderDocumentsRouteDetected=false pageComponentDetected=true traversalMode=unknown folderCount=0 fileCount=0 markers=Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root Select FILE to view or a FOLDER to upload file into. anchorCount=3",
+        "[matched] File Uploads page root component app-client-file-upload count=1 visible=1 elapsedMs=43 samples=Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root Select FILE to view or a FOLDER to upload file into.",
+        "[not_found] File Uploads downloadable file rows by .file-item count=0 visible=0 elapsedMs=21",
+        "[not_found] File Uploads downloadable file labels by .file-label count=0 visible=0 elapsedMs=23",
+        "[not_found] File Uploads document row click targets count=0 visible=0 elapsedMs=25",
+        "[not_found] File Uploads referral click targets outside table rows count=0 visible=0 elapsedMs=25",
+        "[not_found] File Uploads intake/referral click targets outside table rows count=0 visible=0 elapsedMs=24",
+        "[matched] Admission-related click targets count=3 visible=3 elapsedMs=100 samples=Admission 04-22-2026 | Admission Info | Admission Packets",
+        "[not_found] File Uploads Referral folder row by .folder-item count=0 visible=0 elapsedMs=20",
+        "[not_found] File Uploads Referral folder label by .folder-label count=0 visible=0 elapsedMs=23",
+        "[not_found] File Uploads root/Referral folder target count=0 visible=0 elapsedMs=25",
+        "[not_found] File Uploads root/Intake/Referral folder target count=0 visible=0 elapsedMs=22",
+        "[not_found] File Uploads Referral folder target count=0 visible=0 elapsedMs=22",
+        "[not_found] File Uploads Intake/Referral folder target count=0 visible=0 elapsedMs=25",
+        "[not_found] File Uploads root/Referral folder text marker count=0 visible=0 elapsedMs=27",
+        "[not_found] File Uploads root/Intake/Referral folder text marker count=0 visible=0 elapsedMs=28",
+        "[not_found] File Uploads Referral folder exact label count=0 visible=0 elapsedMs=23",
+        "[not_found] File Uploads Intake/Referral exact label count=0 visible=0 elapsedMs=28",
+        "[not_found] File Uploads Referral folder row by .folder-item count=0 visible=0 elapsedMs=23",
+        "[not_found] File Uploads Referral folder label by .folder-label count=0 visible=0 elapsedMs=20",
+        "[not_found] File Uploads root/Referral folder target count=0 visible=0 elapsedMs=21",
+        "[not_found] File Uploads root/Intake/Referral folder target count=0 visible=0 elapsedMs=24",
+        "[not_found] File Uploads Referral folder target count=0 visible=0 elapsedMs=23",
+        "[not_found] File Uploads Intake/Referral folder target count=0 visible=0 elapsedMs=20",
+        "[not_found] File Uploads root/Referral folder text marker count=0 visible=0 elapsedMs=24",
+        "[not_found] File Uploads root/Intake/Referral folder text marker count=0 visible=0 elapsedMs=25",
+        "[not_found] File Uploads Referral folder exact label count=0 visible=0 elapsedMs=27",
+        "[not_found] File Uploads Intake/Referral exact label count=0 visible=0 elapsedMs=24",
+        "Referral folder target not resolved; proceeding with currently visible uploads list.",
+        "File Uploads accessible: true",
+        "Patient-specific File Uploads route detected: true",
+        "Generic provider Documents route detected: false",
+        "Matched File Uploads sidebar label: File Uploads",
+        "Matched File Uploads sidebar href: /provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+        "File Uploads sidebar click succeeded: true",
+        "File Uploads page component detected: true",
+        "File Uploads traversal mode: unknown",
+        "Used chart Documents fallback: false",
+        "File Uploads URL: https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+        "File Uploads URL changed from prior page: true",
+        "File Uploads ready attempt count: 1",
+        "File Uploads page markers: Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root Select FILE to view or a FOLDER to upload file into.",
+        "Referral folder selected: false",
+        "Referral folder label: none",
+        "Referral file label (if resolved instead of folder): none",
+        "Discovered folder labels: none",
+        "Discovered file labels: none",
+        "Normalized file labels: admission 04 22 2026 | admission info | admission packets",
+        "Matched source documents: Admission 04-22-2026 [normalized=admission 04 22 2026] [score=120] | Admission Info [normalized=admission info] [score=120] | Admission Packets [normalized=admission packets] [score=120]",
+        "Visible uploaded documents: Admission 04-22-2026 | Admission Info | Admission Packets",
+        "Admission Order candidate count: 3",
+        "Admission Order candidate labels: Admission 04-22-2026 [score=305] | Admission Info [score=304] | Admission Packets [score=303]",
+        "[not_found] embedded PDF viewer toolbar and print controls count=0 visible=0 elapsedMs=31",
+        "[not_found] embedded PDF viewer container or text layer count=0 visible=0 elapsedMs=26",
+        "[not_found] Admission Order text marker count=0 visible=0 elapsedMs=46",
+        "[not_found] Admission clinical reason/diagnosis text markers count=0 visible=0 elapsedMs=25",
+        "[not_found] Admission order wrapper by class/id count=0 visible=0 elapsedMs=23",
+        "Selected source file: Admission 04-22-2026",
+        "Selected source file normalized: admission 04 22 2026",
+        "Viewer detected: false",
+        "Viewer marker samples: none",
+        "Print button detected: false",
+        "Print button visible: false",
+        "Print button selector used: none",
+        "Print click succeeded: false",
+        "PDF response detected: false",
+        "PDF response URL: none",
+        "PDF content type: none",
+        "PDF saved path: none",
+        "PDF byte size: 0",
+        "Print acquisition method used: metadata_fallback",
+        "Printed PDF saved: false",
+        "Printed PDF path: none",
+        "Source meta path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\documents\\admission-04-22-2026\\source-meta.json",
+        "Extracted text path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\documents\\admission-04-22-2026\\extracted-text.txt",
+        "Extraction result path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\documents\\admission-04-22-2026\\extraction-result.json",
+        "Capture method used: dom",
+        "Downloaded artifact available: false",
+        "Admission Order title: Admission 04-22-2026",
+        "Admission Order URL after click: https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+        "Admission Order markers: none",
+        "Extraction policy mode: unusable",
+        "Extraction policy confidence: low",
+        "Extraction policy reasons: No viable HTML or PDF source exists for extraction",
+        "Extraction policy recommended source: none",
+        "Extraction policy fallback source: none",
+        "Extracted text length: 1924",
+        "Raw extracted text source: dom",
+        "DOM extraction rejected reasons: none",
+        "Extraction method used: click",
+        "Extraction success: true",
+        "Queued for LLM: false",
+        "Admission text candidates ranked: none",
+        "Admission reason primary: Hospitalization Billing QA Checklist Supplies Vital Graphs Wound History Care Coordination Intake File Uploads Alerts File Uploads Event Calendar Notifications RCD Tracking BUSCEMI, AIMEE178895 Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root",
+        "Admission reason snippets: Hospitalization Billing QA Checklist Supplies Vital Graphs Wound History Care Coordination Intake File Uploads Alerts File Uploads Event Calendar Notifications RCD Tracking BUSCEMI, AIMEE178895 Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root",
+        "Possible ICD-10 codes: none",
+        "Admission order text excerpt: A Plus Home Health Systems LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifications1Messages1 NewWelcomeMichael YuviencoHello! Welcome! All of us at Finale Health would like to welcome View all messages713 A Plus Home Health Systems LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesSearch Patient...Ctrl KNotificationsNo notifications.View all notifications1Messages1 NewWelcomeMichael YuviencoHello! Welcome! All of us at Finale Health would like to welcome View all messages713DVT Edit Profile My Inbox Task Release Note Training Resources LogoutDashboardInsightsField Staff PortalEVVBenchmarkIncident InsightsPrior Aut"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:25:51.646Z",
+      "step": "admission_order_open",
+      "message": "Opened Admission Order from File Uploads for coding-reference verification.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/intake/69e6af7b2b18070c4b43ed57/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+      "selectorUsed": "File Uploads source document row by .file-item/.file-label or table row",
+      "found": [
+        "fileUploadsAccessible:true",
+        "patientFileUploadsRouteDetected:true",
+        "genericProviderDocumentsRouteDetected:false",
+        "fileUploadsSidebarClickSucceeded:true",
+        "pageComponentDetected:true",
+        "traversalMode:unknown",
+        "usedChartDocumentsFallback:false",
+        "referralFolderSelected:false",
+        "admissionOrderAccessible:true",
+        "admissionOrderTitle:Admission 04-22-2026",
+        "selectedSourceFile:Admission 04-22-2026",
+        "viewerDetected:false",
+        "printButtonDetected:false",
+        "printClickSucceeded:false",
+        "pdfResponseDetected:false",
+        "pdfResponseUrl:none",
+        "pdfContentType:none",
+        "pdfSavedPath:none",
+        "pdfByteSize:0",
+        "printAcquisitionMethodUsed:metadata_fallback",
+        "sourcePdfPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\documents\\admission-04-22-2026\\source.pdf",
+        "printedPdfPath:none",
+        "extractionMethodUsed:click",
+        "rawExtractedTextSource:dom",
+        "domExtractionRejectedReasons:none",
+        "extractionSuccess:true",
+        "admissionReasonPrimary:Hospitalization Billing QA Checklist Supplies Vital Graphs Wound History Care Coordination Intake File Uploads Alerts File Uploads Event Calendar Notifications RCD Tracking BUSCEMI, AIMEE178895 Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root",
+        "possibleIcd10Codes:none"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Sidebar container count: 5",
+        "Sidebar diagnostics: [{\"index\":0,\"visible\":true,\"fileUploadsLabelCount\":0,\"fileUploadsAnchorCount\":1}]",
+        "[matched] patient File Uploads sidebar anchor by /file-uploads href count=1 visible=1 elapsedMs=62 samples=File Uploads",
+        "Matched File Uploads sidebar label: File Uploads",
+        "Matched File Uploads sidebar href: /provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+        "File Uploads sidebar click succeeded: true",
+        "File Uploads URL after sidebar click: https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+        "File Uploads ready attempt=1 url=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads urlChanged=true patientFileUploadsRouteDetected=true genericProviderDocumentsRouteDetected=false pageComponentDetected=true traversalMode=unknown folderCount=0 fileCount=0 markers=Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root Select FILE to view or a FOLDER to upload file into. anchorCount=3",
+        "[matched] File Uploads page root component app-client-file-upload count=1 visible=1 elapsedMs=43 samples=Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root Select FILE to view or a FOLDER to upload file into.",
+        "[not_found] File Uploads downloadable file rows by .file-item count=0 visible=0 elapsedMs=21",
+        "[not_found] File Uploads downloadable file labels by .file-label count=0 visible=0 elapsedMs=23",
+        "[not_found] File Uploads document row click targets count=0 visible=0 elapsedMs=25",
+        "[not_found] File Uploads referral click targets outside table rows count=0 visible=0 elapsedMs=25",
+        "[not_found] File Uploads intake/referral click targets outside table rows count=0 visible=0 elapsedMs=24",
+        "[matched] Admission-related click targets count=3 visible=3 elapsedMs=100 samples=Admission 04-22-2026 | Admission Info | Admission Packets",
+        "[not_found] File Uploads Referral folder row by .folder-item count=0 visible=0 elapsedMs=20",
+        "[not_found] File Uploads Referral folder label by .folder-label count=0 visible=0 elapsedMs=23",
+        "[not_found] File Uploads root/Referral folder target count=0 visible=0 elapsedMs=25",
+        "[not_found] File Uploads root/Intake/Referral folder target count=0 visible=0 elapsedMs=22",
+        "[not_found] File Uploads Referral folder target count=0 visible=0 elapsedMs=22",
+        "[not_found] File Uploads Intake/Referral folder target count=0 visible=0 elapsedMs=25",
+        "[not_found] File Uploads root/Referral folder text marker count=0 visible=0 elapsedMs=27",
+        "[not_found] File Uploads root/Intake/Referral folder text marker count=0 visible=0 elapsedMs=28",
+        "[not_found] File Uploads Referral folder exact label count=0 visible=0 elapsedMs=23",
+        "[not_found] File Uploads Intake/Referral exact label count=0 visible=0 elapsedMs=28",
+        "[not_found] File Uploads Referral folder row by .folder-item count=0 visible=0 elapsedMs=23",
+        "[not_found] File Uploads Referral folder label by .folder-label count=0 visible=0 elapsedMs=20",
+        "[not_found] File Uploads root/Referral folder target count=0 visible=0 elapsedMs=21",
+        "[not_found] File Uploads root/Intake/Referral folder target count=0 visible=0 elapsedMs=24",
+        "[not_found] File Uploads Referral folder target count=0 visible=0 elapsedMs=23",
+        "[not_found] File Uploads Intake/Referral folder target count=0 visible=0 elapsedMs=20",
+        "[not_found] File Uploads root/Referral folder text marker count=0 visible=0 elapsedMs=24",
+        "[not_found] File Uploads root/Intake/Referral folder text marker count=0 visible=0 elapsedMs=25",
+        "[not_found] File Uploads Referral folder exact label count=0 visible=0 elapsedMs=27",
+        "[not_found] File Uploads Intake/Referral exact label count=0 visible=0 elapsedMs=24",
+        "Referral folder target not resolved; proceeding with currently visible uploads list.",
+        "File Uploads accessible: true",
+        "Patient-specific File Uploads route detected: true",
+        "Generic provider Documents route detected: false",
+        "Matched File Uploads sidebar label: File Uploads",
+        "Matched File Uploads sidebar href: /provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+        "File Uploads sidebar click succeeded: true",
+        "File Uploads page component detected: true",
+        "File Uploads traversal mode: unknown",
+        "Used chart Documents fallback: false",
+        "File Uploads URL: https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+        "File Uploads URL changed from prior page: true",
+        "File Uploads ready attempt count: 1",
+        "File Uploads page markers: Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root Select FILE to view or a FOLDER to upload file into.",
+        "Referral folder selected: false",
+        "Referral folder label: none",
+        "Referral file label (if resolved instead of folder): none",
+        "Discovered folder labels: none",
+        "Discovered file labels: none",
+        "Normalized file labels: admission 04 22 2026 | admission info | admission packets",
+        "Matched source documents: Admission 04-22-2026 [normalized=admission 04 22 2026] [score=120] | Admission Info [normalized=admission info] [score=120] | Admission Packets [normalized=admission packets] [score=120]",
+        "Visible uploaded documents: Admission 04-22-2026 | Admission Info | Admission Packets",
+        "Admission Order candidate count: 3",
+        "Admission Order candidate labels: Admission 04-22-2026 [score=305] | Admission Info [score=304] | Admission Packets [score=303]",
+        "[not_found] embedded PDF viewer toolbar and print controls count=0 visible=0 elapsedMs=31",
+        "[not_found] embedded PDF viewer container or text layer count=0 visible=0 elapsedMs=26",
+        "[not_found] Admission Order text marker count=0 visible=0 elapsedMs=46",
+        "[not_found] Admission clinical reason/diagnosis text markers count=0 visible=0 elapsedMs=25",
+        "[not_found] Admission order wrapper by class/id count=0 visible=0 elapsedMs=23",
+        "Selected source file: Admission 04-22-2026",
+        "Selected source file normalized: admission 04 22 2026",
+        "Viewer detected: false",
+        "Viewer marker samples: none",
+        "Print button detected: false",
+        "Print button visible: false",
+        "Print button selector used: none",
+        "Print click succeeded: false",
+        "PDF response detected: false",
+        "PDF response URL: none",
+        "PDF content type: none",
+        "PDF saved path: none",
+        "PDF byte size: 0",
+        "Print acquisition method used: metadata_fallback",
+        "Printed PDF saved: false",
+        "Printed PDF path: none",
+        "Source meta path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\documents\\admission-04-22-2026\\source-meta.json",
+        "Extracted text path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\documents\\admission-04-22-2026\\extracted-text.txt",
+        "Extraction result path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\documents\\admission-04-22-2026\\extraction-result.json",
+        "Capture method used: dom",
+        "Downloaded artifact available: false",
+        "Admission Order title: Admission 04-22-2026",
+        "Admission Order URL after click: https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+        "Admission Order markers: none",
+        "Extraction policy mode: unusable",
+        "Extraction policy confidence: low",
+        "Extraction policy reasons: No viable HTML or PDF source exists for extraction",
+        "Extraction policy recommended source: none",
+        "Extraction policy fallback source: none",
+        "Extracted text length: 1924",
+        "Raw extracted text source: dom",
+        "DOM extraction rejected reasons: none",
+        "Extraction method used: click",
+        "Extraction success: true",
+        "Queued for LLM: false",
+        "Admission text candidates ranked: none",
+        "Admission reason primary: Hospitalization Billing QA Checklist Supplies Vital Graphs Wound History Care Coordination Intake File Uploads Alerts File Uploads Event Calendar Notifications RCD Tracking BUSCEMI, AIMEE178895 Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root",
+        "Admission reason snippets: Hospitalization Billing QA Checklist Supplies Vital Graphs Wound History Care Coordination Intake File Uploads Alerts File Uploads Event Calendar Notifications RCD Tracking BUSCEMI, AIMEE178895 Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root",
+        "Possible ICD-10 codes: none",
+        "Admission order text excerpt: A Plus Home Health Systems LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifications1Messages1 NewWelcomeMichael YuviencoHello! Welcome! All of us at Finale Health would like to welcome View all messages713 A Plus Home Health Systems LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesSearch Patient...Ctrl KNotificationsNo notifications.View all notifications1Messages1 NewWelcomeMichael YuviencoHello! Welcome! All of us at Finale Health would like to welcome View all messages713DVT Edit Profile My Inbox Task Release Note Training Resources LogoutDashboardInsightsField Staff PortalEVVBenchmarkIncident InsightsPrior Aut"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:25:51.646Z",
+      "step": "qa_summary",
+      "message": "File Uploads and Admission Order were successfully accessed for coding reference.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/intake/69e6af7b2b18070c4b43ed57/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+      "selectorUsed": "File Uploads source document row by .file-item/.file-label or table row",
+      "found": [
+        "fileUploadsAccessible:true",
+        "patientFileUploadsRouteDetected:true",
+        "genericProviderDocumentsRouteDetected:false",
+        "fileUploadsSidebarClickSucceeded:true",
+        "pageComponentDetected:true",
+        "traversalMode:unknown",
+        "usedChartDocumentsFallback:false",
+        "referralFolderSelected:false",
+        "admissionOrderAccessible:true",
+        "admissionOrderTitle:Admission 04-22-2026",
+        "selectedSourceFile:Admission 04-22-2026",
+        "viewerDetected:false",
+        "printButtonDetected:false",
+        "printClickSucceeded:false",
+        "pdfResponseDetected:false",
+        "pdfResponseUrl:none",
+        "pdfContentType:none",
+        "pdfSavedPath:none",
+        "pdfByteSize:0",
+        "printAcquisitionMethodUsed:metadata_fallback",
+        "sourcePdfPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\documents\\admission-04-22-2026\\source.pdf",
+        "printedPdfPath:none",
+        "extractionMethodUsed:click",
+        "rawExtractedTextSource:dom",
+        "domExtractionRejectedReasons:none",
+        "extractionSuccess:true",
+        "admissionReasonPrimary:Hospitalization Billing QA Checklist Supplies Vital Graphs Wound History Care Coordination Intake File Uploads Alerts File Uploads Event Calendar Notifications RCD Tracking BUSCEMI, AIMEE178895 Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root",
+        "possibleIcd10Codes:none"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Sidebar container count: 5",
+        "Sidebar diagnostics: [{\"index\":0,\"visible\":true,\"fileUploadsLabelCount\":0,\"fileUploadsAnchorCount\":1}]",
+        "[matched] patient File Uploads sidebar anchor by /file-uploads href count=1 visible=1 elapsedMs=62 samples=File Uploads",
+        "Matched File Uploads sidebar label: File Uploads",
+        "Matched File Uploads sidebar href: /provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+        "File Uploads sidebar click succeeded: true",
+        "File Uploads URL after sidebar click: https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+        "File Uploads ready attempt=1 url=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads urlChanged=true patientFileUploadsRouteDetected=true genericProviderDocumentsRouteDetected=false pageComponentDetected=true traversalMode=unknown folderCount=0 fileCount=0 markers=Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root Select FILE to view or a FOLDER to upload file into. anchorCount=3",
+        "[matched] File Uploads page root component app-client-file-upload count=1 visible=1 elapsedMs=43 samples=Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root Select FILE to view or a FOLDER to upload file into.",
+        "[not_found] File Uploads downloadable file rows by .file-item count=0 visible=0 elapsedMs=21",
+        "[not_found] File Uploads downloadable file labels by .file-label count=0 visible=0 elapsedMs=23",
+        "[not_found] File Uploads document row click targets count=0 visible=0 elapsedMs=25",
+        "[not_found] File Uploads referral click targets outside table rows count=0 visible=0 elapsedMs=25",
+        "[not_found] File Uploads intake/referral click targets outside table rows count=0 visible=0 elapsedMs=24",
+        "[matched] Admission-related click targets count=3 visible=3 elapsedMs=100 samples=Admission 04-22-2026 | Admission Info | Admission Packets",
+        "[not_found] File Uploads Referral folder row by .folder-item count=0 visible=0 elapsedMs=20",
+        "[not_found] File Uploads Referral folder label by .folder-label count=0 visible=0 elapsedMs=23",
+        "[not_found] File Uploads root/Referral folder target count=0 visible=0 elapsedMs=25",
+        "[not_found] File Uploads root/Intake/Referral folder target count=0 visible=0 elapsedMs=22",
+        "[not_found] File Uploads Referral folder target count=0 visible=0 elapsedMs=22",
+        "[not_found] File Uploads Intake/Referral folder target count=0 visible=0 elapsedMs=25",
+        "[not_found] File Uploads root/Referral folder text marker count=0 visible=0 elapsedMs=27",
+        "[not_found] File Uploads root/Intake/Referral folder text marker count=0 visible=0 elapsedMs=28",
+        "[not_found] File Uploads Referral folder exact label count=0 visible=0 elapsedMs=23",
+        "[not_found] File Uploads Intake/Referral exact label count=0 visible=0 elapsedMs=28",
+        "[not_found] File Uploads Referral folder row by .folder-item count=0 visible=0 elapsedMs=23",
+        "[not_found] File Uploads Referral folder label by .folder-label count=0 visible=0 elapsedMs=20",
+        "[not_found] File Uploads root/Referral folder target count=0 visible=0 elapsedMs=21",
+        "[not_found] File Uploads root/Intake/Referral folder target count=0 visible=0 elapsedMs=24",
+        "[not_found] File Uploads Referral folder target count=0 visible=0 elapsedMs=23",
+        "[not_found] File Uploads Intake/Referral folder target count=0 visible=0 elapsedMs=20",
+        "[not_found] File Uploads root/Referral folder text marker count=0 visible=0 elapsedMs=24",
+        "[not_found] File Uploads root/Intake/Referral folder text marker count=0 visible=0 elapsedMs=25",
+        "[not_found] File Uploads Referral folder exact label count=0 visible=0 elapsedMs=27",
+        "[not_found] File Uploads Intake/Referral exact label count=0 visible=0 elapsedMs=24",
+        "Referral folder target not resolved; proceeding with currently visible uploads list.",
+        "File Uploads accessible: true",
+        "Patient-specific File Uploads route detected: true",
+        "Generic provider Documents route detected: false",
+        "Matched File Uploads sidebar label: File Uploads",
+        "Matched File Uploads sidebar href: /provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+        "File Uploads sidebar click succeeded: true",
+        "File Uploads page component detected: true",
+        "File Uploads traversal mode: unknown",
+        "Used chart Documents fallback: false",
+        "File Uploads URL: https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+        "File Uploads URL changed from prior page: true",
+        "File Uploads ready attempt count: 1",
+        "File Uploads page markers: Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root Select FILE to view or a FOLDER to upload file into.",
+        "Referral folder selected: false",
+        "Referral folder label: none",
+        "Referral file label (if resolved instead of folder): none",
+        "Discovered folder labels: none",
+        "Discovered file labels: none",
+        "Normalized file labels: admission 04 22 2026 | admission info | admission packets",
+        "Matched source documents: Admission 04-22-2026 [normalized=admission 04 22 2026] [score=120] | Admission Info [normalized=admission info] [score=120] | Admission Packets [normalized=admission packets] [score=120]",
+        "Visible uploaded documents: Admission 04-22-2026 | Admission Info | Admission Packets",
+        "Admission Order candidate count: 3",
+        "Admission Order candidate labels: Admission 04-22-2026 [score=305] | Admission Info [score=304] | Admission Packets [score=303]",
+        "[not_found] embedded PDF viewer toolbar and print controls count=0 visible=0 elapsedMs=31",
+        "[not_found] embedded PDF viewer container or text layer count=0 visible=0 elapsedMs=26",
+        "[not_found] Admission Order text marker count=0 visible=0 elapsedMs=46",
+        "[not_found] Admission clinical reason/diagnosis text markers count=0 visible=0 elapsedMs=25",
+        "[not_found] Admission order wrapper by class/id count=0 visible=0 elapsedMs=23",
+        "Selected source file: Admission 04-22-2026",
+        "Selected source file normalized: admission 04 22 2026",
+        "Viewer detected: false",
+        "Viewer marker samples: none",
+        "Print button detected: false",
+        "Print button visible: false",
+        "Print button selector used: none",
+        "Print click succeeded: false",
+        "PDF response detected: false",
+        "PDF response URL: none",
+        "PDF content type: none",
+        "PDF saved path: none",
+        "PDF byte size: 0",
+        "Print acquisition method used: metadata_fallback",
+        "Printed PDF saved: false",
+        "Printed PDF path: none",
+        "Source meta path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\documents\\admission-04-22-2026\\source-meta.json",
+        "Extracted text path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\documents\\admission-04-22-2026\\extracted-text.txt",
+        "Extraction result path: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\documents\\admission-04-22-2026\\extraction-result.json",
+        "Capture method used: dom",
+        "Downloaded artifact available: false",
+        "Admission Order title: Admission 04-22-2026",
+        "Admission Order URL after click: https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+        "Admission Order markers: none",
+        "Extraction policy mode: unusable",
+        "Extraction policy confidence: low",
+        "Extraction policy reasons: No viable HTML or PDF source exists for extraction",
+        "Extraction policy recommended source: none",
+        "Extraction policy fallback source: none",
+        "Extracted text length: 1924",
+        "Raw extracted text source: dom",
+        "DOM extraction rejected reasons: none",
+        "Extraction method used: click",
+        "Extraction success: true",
+        "Queued for LLM: false",
+        "Admission text candidates ranked: none",
+        "Admission reason primary: Hospitalization Billing QA Checklist Supplies Vital Graphs Wound History Care Coordination Intake File Uploads Alerts File Uploads Event Calendar Notifications RCD Tracking BUSCEMI, AIMEE178895 Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root",
+        "Admission reason snippets: Hospitalization Billing QA Checklist Supplies Vital Graphs Wound History Care Coordination Intake File Uploads Alerts File Uploads Event Calendar Notifications RCD Tracking BUSCEMI, AIMEE178895 Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root",
+        "Possible ICD-10 codes: none",
+        "Admission order text excerpt: A Plus Home Health Systems LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifications1Messages1 NewWelcomeMichael YuviencoHello! Welcome! All of us at Finale Health would like to welcome View all messages713 A Plus Home Health Systems LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesSearch Patient...Ctrl KNotificationsNo notifications.View all notifications1Messages1 NewWelcomeMichael YuviencoHello! Welcome! All of us at Finale Health would like to welcome View all messages713DVT Edit Profile My Inbox Task Release Note Training Resources LogoutDashboardInsightsField Staff PortalEVVBenchmarkIncident InsightsPrior Aut"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:25:51.659Z",
+      "step": "document_text_export",
+      "message": "Wrote normalized extracted document text for read-only dashboard reference and troubleshooting.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "documentTextPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\document-text.json",
+        "documentCount:2",
+        "orderDocumentCount:1",
+        "hasAdmissionOrderText:true"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "[0] type=OASIS source=artifact_fallback effectiveTextSource=viewer_text_fallback textLength=3787",
+        "[0] rawExtractedTextSource=dom textSelectionReason=artifact_fallback_text",
+        "[0] domExtractionRejectedReasons=none",
+        "[0] preview=OASIS documents page false false false false false false 0 none 0 high:0 medium:0 low:0 false false true false true https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads Admission 04-22-2026 | Admission Info | Admission Packets true Admission 04-22-2026 Hospitalization Billing QA Checklist Supplies Vital Graphs Wound History Care Coordination Intake File Uploads Alerts File Uploads Event Calendar Notifications RCD Tracking BUSCEMI, AIMEE17889",
+        "[1] type=ORDER source=admission_order_excerpt effectiveTextSource=viewer_text_fallback textLength=1924",
+        "[1] rawExtractedTextSource=dom textSelectionReason=accepted_admission_excerpt_text",
+        "[1] domExtractionRejectedReasons=none",
+        "[1] preview=A Plus Home Health Systems LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifications1Messages1 NewWelcomeMichael YuviencoHello! Welcome! All of us at Finale Health would like to welcome View all messages713 A Plus Home Health Systems LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Me"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:25:51.670Z",
+      "step": "document_fact_pack_export",
+      "message": "Wrote compact document fact pack to reduce downstream token usage while preserving chart evidence.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "documentFactPackPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\document-fact-pack.json",
+        "diagnosisCount:1",
+        "medicationCount:1",
+        "allergyCount:0",
+        "rawCharacters:5711",
+        "packedCharacters:887",
+        "reductionPercent:84.5"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "diagnosis:no-code:178895 Quick View Basic Info Admission 04-22-2026 Admission Info Admission Packets Calendar Insurance/Payer Diagnosis Physicians Care Team Documentations AllPhysician OrdersVisit NotesOASISCommunication NotesOther Notes…"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:25:52.937Z",
+      "step": "diagnosis_code_extract",
+      "message": "No ICD-10 code candidates were extracted from admission/referral/OASIS text.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "icd10CodeCount:0",
+        "diagnosisMentionCount:3",
+        "diagnosisCodePairCount:3",
+        "extractionConfidence:medium",
+        "llmUsed:true"
+      ],
+      "missing": [
+        "ICD-10 code candidates"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "availableDocumentCount:2",
+        "selectedDocumentCount:2",
+        "orderDocumentCount:1",
+        "selectedOrderDocumentCount:1",
+        "bestOrderEffectiveTextSource:viewer_text_fallback",
+        "[0] type=ORDER effectiveTextSource=viewer_text_fallback source=admission_order_excerpt textLength=1924 pdfType=none ocrSuccess=false ocrTextLength=0",
+        "[1] type=OASIS effectiveTextSource=viewer_text_fallback source=artifact_fallback textLength=3787 pdfType=none ocrSuccess=false ocrTextLength=0",
+        "llmInputSource:fact_pack_primary",
+        "factPackRawCharacters:5711",
+        "factPackPackedCharacters:887",
+        "factPackReductionPercent:84.5",
+        "factPackCoverageScore:0.8",
+        "missingCriticalSections:clinicalSupport",
+        "fallbackReason:none",
+        "promptCharacterEstimate:730",
+        "sourceDocumentCount:2",
+        "sourceCharacterCount:730",
+        "llmInputSource:fact_pack_primary",
+        "sourceTextPreview:Diagnoses: - 178895 Quick View Basic Info Admission 04-22-2026 Admission Info Admission Packets Calendar Insurance/Payer Diagnosis Physicians Care Team Documentations AllPhysician OrdersVisit NotesOASISCommunication NotesOther Notes… Medications: - 178895 Quick View Basic Info Admission 04-22-2026 Admission Info Admission Packets Calendar Insurance/Payer Diagnosis Physicians Care Team Documentations AllPhysician OrdersVisit NotesOASISCommunication NotesOther Notes… Hospitalization / Referral Rea",
+        "llmProvider:bedrock",
+        "llmUsed:true",
+        "llmModel:us.amazon.nova-lite-v1:0",
+        "llmError:none",
+        "reasonForAdmission:Diagnoses: - 178895 Quick View Basic Info Admission 04-22-2026 Admission Info Admission Packets Calendar Insurance/Payer Diagnosis Physicians Care Team Documentations AllPhysician",
+        "diagnosisPhraseCount:3",
+        "diagnosisCodePairCount:3",
+        "icd10Codes:none",
+        "orderedServices:none",
+        "documentType:Admission Order",
+        "extractionConfidence:medium",
+        "uncertainItems:No clinically relevant diagnoses found in provided text.",
+        "codeCategories:none"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:25:52.948Z",
+      "step": "source_document_identified",
+      "message": "Identified referral/admission-order source document candidates and selected the best source for processing.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "AIMEE_BUSCEMI__f312adc729a94262-referral-1:ADMISSION_ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\documents\\admission-04-22-2026\\source.pdf"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "selectedDocumentId=AIMEE_BUSCEMI__f312adc729a94262-referral-1"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:25:52.949Z",
+      "step": "source_document_acquired",
+      "message": "Selected referral/admission-order file is available locally for read-only processing.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\documents\\admission-04-22-2026\\source.pdf"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "acquisitionMethod=local_file"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:25:52.949Z",
+      "step": "document_extraction_started",
+      "message": "Started referral/admission-order document extraction from the canonical local file when available.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\documents\\admission-04-22-2026\\source.pdf"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:25:52.950Z",
+      "step": "document_extraction_completed",
+      "message": "Completed referral/admission-order extraction.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "extractionMethod=in_memory_fallback",
+        "effectiveTextSource=none",
+        "textLength=1924"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:25:52.950Z",
+      "step": "extraction_quality_evaluated",
+      "message": "Evaluated extraction quality with usability status usable.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "characterCount=1924",
+        "tokenCount=249",
+        "likelyUsableForLlm=true",
+        "likelyRequiresOcrRetry=false"
+      ],
+      "missing": [
+        "no_date_patterns"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:25:52.954Z",
+      "step": "referral_sections_normalized",
+      "message": "Normalized referral text into 4 semantic sections.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "referral_metadata:0.55",
+        "diagnoses:0.55",
+        "medications:0.55",
+        "other_clinical_notes:0.55"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:25:52.972Z",
+      "step": "chart_snapshot_created",
+      "message": "Built a read-only chart/OASIS field snapshot and categorization buckets for referral comparison.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "alreadyPopulated=1",
+        "llmCandidates=31",
+        "humanReviewRequired=46",
+        "referenceOnly=3"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:25:52.973Z",
+      "step": "referral_facts_extracted",
+      "message": "Extracted 0 referral facts before field mapping.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [],
+      "missing": [
+        "referral_date",
+        "preferred_language",
+        "interpreter_needed",
+        "primary_reason_for_home_health_medical_necessity",
+        "admit_reason_to_home_health",
+        "homebound_narrative",
+        "homebound_supporting_factors",
+        "recent_hospitalization_discharge_date",
+        "recent_hospitalization_facility",
+        "caregiver_name",
+        "caregiver_relationship",
+        "caregiver_phone",
+        "living_situation",
+        "prior_functioning",
+        "functional_limitations",
+        "therapy_need",
+        "patient_summary_narrative",
+        "skilled_interventions",
+        "discipline_frequencies",
+        "plan_for_next_visit",
+        "patient_caregiver_goals",
+        "care_plan_problems_goals_interventions",
+        "fall_risk_narrative",
+        "respiratory_status",
+        "integumentary_wound_status",
+        "pain_assessment_narrative",
+        "emotional_behavioral_status",
+        "past_medical_history",
+        "immunization_status",
+        "code_status"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:25:52.973Z",
+      "step": "llm_field_proposal_started",
+      "message": "Started referral-to-field proposal generation using the strict JSON contract.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "candidateFieldCount=31"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:25:55.179Z",
+      "step": "llm_field_proposal_completed",
+      "message": "Completed referral-to-field proposal generation with 0 field proposals.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "proposalCount=0",
+        "diagnosisCandidateCount=0"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "LLM input source: fact_pack_plus_raw_fallback.",
+        "Fact pack coverage: diagnoses, medications, hospitalizationReasons.",
+        "Fact pack coverage score: 0.6.",
+        "Prompt character estimate: 2654.",
+        "Fallback reason: homeboundEvidence, supportingEvidence.",
+        "Raw fallback appended for missing coverage: homeboundEvidence, supportingEvidence."
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:25:55.180Z",
+      "step": "field_comparison_completed",
+      "message": "Completed referral proposal comparison across 53 fields.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "patient_name:unsupported",
+        "dob:unsupported",
+        "soc_date:unsupported",
+        "referral_date:requires_human_review",
+        "preferred_language:unsupported",
+        "interpreter_needed:requires_human_review",
+        "primary_reason_for_home_health_medical_necessity:requires_human_review",
+        "admit_reason_to_home_health:requires_human_review",
+        "homebound_narrative:requires_human_review",
+        "homebound_supporting_factors:requires_human_review",
+        "recent_hospitalization_discharge_date:requires_human_review",
+        "recent_hospitalization_facility:requires_human_review",
+        "caregiver_name:unsupported",
+        "caregiver_relationship:unsupported",
+        "caregiver_phone:requires_human_review",
+        "living_situation:unsupported",
+        "prior_functioning:requires_human_review",
+        "functional_limitations:requires_human_review",
+        "therapy_need:requires_human_review",
+        "patient_summary_narrative:requires_human_review",
+        "skilled_interventions:requires_human_review",
+        "discipline_frequencies:requires_human_review",
+        "plan_for_next_visit:requires_human_review",
+        "patient_caregiver_goals:requires_human_review",
+        "care_plan_problems_goals_interventions:requires_human_review",
+        "fall_risk_narrative:requires_human_review",
+        "respiratory_status:requires_human_review",
+        "integumentary_wound_status:requires_human_review",
+        "pain_assessment_narrative:requires_human_review",
+        "emotional_behavioral_status:requires_human_review",
+        "past_medical_history:requires_human_review",
+        "immunization_status:requires_human_review",
+        "diagnosis_candidates:requires_human_review",
+        "primary_diagnosis:requires_human_review",
+        "secondary_diagnoses:requires_human_review",
+        "medication_list:requires_human_review",
+        "allergy_list:requires_human_review",
+        "special_treatments_o0110:requires_human_review",
+        "injectable_medications:requires_human_review",
+        "high_risk_medication_notes:requires_human_review",
+        "gg_self_care:requires_human_review",
+        "gg_mobility:requires_human_review",
+        "neurological_status:requires_human_review",
+        "eyes_ears_status:requires_human_review",
+        "cardiovascular_status:requires_human_review",
+        "gastrointestinal_status:requires_human_review",
+        "genitourinary_status:requires_human_review",
+        "mahc10_fall_risk:requires_human_review",
+        "norton_scale:requires_human_review",
+        "wound_risk_review:requires_human_review",
+        "hospitalization_risk_summary:requires_human_review",
+        "patient_coordination_orders:requires_human_review",
+        "code_status:requires_human_review"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:25:55.180Z",
+      "step": "llm_qa_insights_started",
+      "message": "Started referral QA insight synthesis for comparisons, source highlights, and draft narratives.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:26:01.739Z",
+      "step": "llm_qa_insights_completed",
+      "message": "Completed referral QA insight synthesis with 7 consistency checks and 7 narrative drafts.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "consistencyChecks=7",
+        "sourceHighlights=7",
+        "draftNarratives=7"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Deterministic referral facts extraction was used."
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:26:01.766Z",
+      "step": "qa_document_summary_persisted",
+      "message": "Persisted read-only referral document QA artifacts.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\referral-document-processing\\source-meta.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\referral-document-processing\\extraction-result.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\referral-document-processing\\normalized-sections.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\referral-document-processing\\extracted-facts.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\referral-document-processing\\field-map-snapshot.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\referral-document-processing\\llm-proposal.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\referral-document-processing\\field-comparison.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\referral-document-processing\\patient-qa-reference.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\referral-document-processing\\qa-document-summary.json"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:26:01.766Z",
+      "step": "shared_evidence_discovery_complete",
+      "message": "Shared evidence workflow completed and produced reusable extracted chart evidence.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/intake/69e6af7b2b18070c4b43ed57/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/intake/69e6af7b2b18070c4b43ed57/calendar",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=coding",
+        "patientRunId=batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4-AIMEE_BUSCEMI__f312adc729a94262",
+        "status=completed",
+        "chartUrl=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/intake/69e6af7b2b18070c4b43ed57/calendar",
+        "artifactCount=1",
+        "documentInventoryCount=1",
+        "extractedDocumentCount=2",
+        "diagnosisCodeCount=0"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:26:01.767Z",
+      "step": "referral_document_check",
+      "message": "Referral/admission-order evidence was found in shared chart documents.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "artifactOrderCount:0",
+        "inventoryOrderCount:1",
+        "extractedOrderCount:1"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Admission 04-22-2026:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\documents\\admission-04-22-2026\\source.pdf:A Plus Home Health Systems LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:26:02.275Z",
+      "step": "episode_option_selection_failed",
+      "message": "Episode of dropdown with a valid date range could not be located on the patient dashboard.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/intake/69e6af7b2b18070c4b43ed57/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=qa",
+        "patientRunId=batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4-AIMEE_BUSCEMI__f312adc729a94262"
+      ],
+      "missing": [
+        "Episode of dropdown"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Episode of dropdown with a valid date range could not be located on the patient dashboard."
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:26:02.275Z",
+      "step": "episode_option_selection_failed",
+      "message": "Episode of selection could not be resolved to a concrete dropdown option.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/intake/69e6af7b2b18070c4b43ed57/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=qa",
+        "patientRunId=batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4-AIMEE_BUSCEMI__f312adc729a94262"
+      ],
+      "missing": [
+        "matching Episode of option"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Episode of dropdown with a valid date range could not be located on the patient dashboard.",
+        "Episode of selection could not be resolved because no matching option was found."
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:26:02.276Z",
+      "step": "oasis_episode_resolution",
+      "message": "Resolved the target episode for OASIS review using workbook context plus the Episode of dropdown.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/intake/69e6af7b2b18070c4b43ed57/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/intake/69e6af7b2b18070c4b43ed57/calendar",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=qa",
+        "patientRunId=batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4-AIMEE_BUSCEMI__f312adc729a94262",
+        "episodeSelectionStatus=UNRESOLVED",
+        "targetEpisodeLabel=2026-04-22",
+        "rfa=01-SOC",
+        "selectionMethod=unresolved",
+        "changedSelection=false",
+        "selectedRange=none"
+      ],
+      "missing": [
+        "Episode of review target"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "billingPeriod=none",
+        "episodePeriod=none",
+        "availableRanges=none",
+        "Episode of dropdown with a valid date range could not be located on the patient dashboard.",
+        "Episode of selection could not be resolved because no matching option was found."
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:26:02.576Z",
+      "step": "billing_calendar_parse_start",
+      "message": "Started read-only billing calendar parsing from the patient dashboard.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=qa",
+        "patientRunId=batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4-AIMEE_BUSCEMI__f312adc729a94262",
+        "selectedEpisode=none"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:26:03.150Z",
+      "step": "billing_calendar_grid_located",
+      "message": "Located the patient dashboard calendar grid.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=qa",
+        "patientRunId=batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4-AIMEE_BUSCEMI__f312adc729a94262",
+        "Calendar root by grid/calendar container selectors"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "dayCellCount=0"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:26:03.150Z",
+      "step": "billing_calendar_day_cells_discovered",
+      "message": "Discovered 0 visible calendar day cell(s).",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=qa",
+        "patientRunId=batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4-AIMEE_BUSCEMI__f312adc729a94262"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:26:03.150Z",
+      "step": "billing_calendar_cards_extracted",
+      "message": "Extracted 0 visible calendar card(s) from the current dashboard window.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=qa",
+        "patientRunId=batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4-AIMEE_BUSCEMI__f312adc729a94262"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "cardCount=0"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:26:03.151Z",
+      "step": "billing_period_classification_complete",
+      "message": "Completed billing period classification for visible calendar days and cards.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=qa",
+        "patientRunId=batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4-AIMEE_BUSCEMI__f312adc729a94262"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "first30=0",
+        "second30=0",
+        "outside=0"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:26:03.154Z",
+      "step": "billing_calendar_summary_persisted",
+      "message": "Persisted the billing-period calendar summary artifact for downstream dashboard use.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=qa",
+        "patientRunId=batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4-AIMEE_BUSCEMI__f312adc729a94262"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\evidence\\AIMEE_BUSCEMI__f312adc729a94262\\billing-period-calendar-summary.json"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:26:12.613Z",
+      "step": "oasis_menu",
+      "message": "OASIS sidebar navigation did not open a verifiable OASIS documents page.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+      "selectorUsed": "li.notes-sub-menu #documents span:has-text(\"OASIS\")",
+      "found": [
+        "oasisMenuClicked:false",
+        "oasisDocumentListDetected:false",
+        "socDocumentFound:false",
+        "socDocumentClicked:false",
+        "postNavigationUrl:https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+        "failureReason:oasis_documents_page_not_verified"
+      ],
+      "missing": [
+        "OASIS documents page"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Current chart URL: https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+        "Sidebar navigation attempted: true",
+        "Selected label: OASIS",
+        "Selected span selector: li.notes-sub-menu #documents span:has-text(\"OASIS\")",
+        "Selected click selector: li.notes-sub-menu #documents span:has-text(\"OASIS\")",
+        "Click method used: none",
+        "Post-navigation URL: https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+        "OASIS documents URL detected: false",
+        "OASIS documents page detected: false",
+        "OASIS document list count: 0",
+        "OASIS content ready attempts: 8",
+        "OASIS page markers: none",
+        "Candidate li.notes-sub-menu #documents count=1 visible=false text=OASIS box=null",
+        "Candidate li.notes-sub-menu #documents span:has-text(\"OASIS\") count=1 visible=false text=OASIS box=null",
+        "Candidate li.notes-sub-menu:has-text(\"OASIS\") count=1 visible=false text=OASIS box=null"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:26:12.613Z",
+      "step": "qa_summary",
+      "message": "OASIS sidebar navigation did not open a verifiable OASIS documents page.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+      "selectorUsed": "li.notes-sub-menu #documents span:has-text(\"OASIS\")",
+      "found": [
+        "oasisMenuClicked:false",
+        "oasisDocumentListDetected:false",
+        "socDocumentFound:false",
+        "socDocumentClicked:false",
+        "postNavigationUrl:https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+        "failureReason:oasis_documents_page_not_verified"
+      ],
+      "missing": [
+        "OASIS documents page"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Current chart URL: https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+        "Sidebar navigation attempted: true",
+        "Selected label: OASIS",
+        "Selected span selector: li.notes-sub-menu #documents span:has-text(\"OASIS\")",
+        "Selected click selector: li.notes-sub-menu #documents span:has-text(\"OASIS\")",
+        "Click method used: none",
+        "Post-navigation URL: https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+        "OASIS documents URL detected: false",
+        "OASIS documents page detected: false",
+        "OASIS document list count: 0",
+        "OASIS content ready attempts: 8",
+        "OASIS page markers: none",
+        "Candidate li.notes-sub-menu #documents count=1 visible=false text=OASIS box=null",
+        "Candidate li.notes-sub-menu #documents span:has-text(\"OASIS\") count=1 visible=false text=OASIS box=null",
+        "Candidate li.notes-sub-menu:has-text(\"OASIS\") count=1 visible=false text=OASIS box=null"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:26:12.613Z",
+      "step": "oasis_type_selected",
+      "message": "Selected SOC as the target OASIS assessment type for read-only review.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/intake/69e6af7b2b18070c4b43ed57/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=qa",
+        "requestedAssessmentType=SOC",
+        "selectedAssessmentType=SOC",
+        "selectionReason=fallback_requested"
+      ],
+      "missing": [
+        "OASIS menu"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "availableAssessmentTypes=none"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:26:13.029Z",
+      "step": "oasis_soc_document",
+      "message": "OASIS documents page was not verifiable before SOC selection.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/intake/69e6af7b2b18070c4b43ed57/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+      "selectorUsed": "oasis_menu_for_review",
+      "found": [],
+      "missing": [
+        "OASIS document table/list"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "[not_found] OASIS document table rows by app-private-documents/fin-datatable/table tbody tr count=0 visible=0 elapsedMs=18",
+        "[not_found] OASIS document rows containing anchors count=0 visible=0 elapsedMs=26",
+        "[not_found] OASIS document anchors by tbl-link/table fallback count=0 visible=0 elapsedMs=20",
+        "Total table tbody tr count: 0",
+        "Total a.tbl-link anchor count: 0",
+        "All anchor texts: none",
+        "Normalized anchor texts: none",
+        "Post-click URL: https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:26:13.029Z",
+      "step": "qa_summary",
+      "message": "OASIS workflow stopped because the OASIS document table/list was not available for SOC selection.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/intake/69e6af7b2b18070c4b43ed57/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+      "selectorUsed": "oasis_menu_for_review",
+      "found": [
+        "oasisMenuClicked:true",
+        "oasisDocumentListDetected:false",
+        "socDocumentFound:false",
+        "socDocumentClicked:false",
+        "failureReason:oasis_document_table_unavailable"
+      ],
+      "missing": [
+        "OASIS document table/list",
+        "SOC document click"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "[not_found] OASIS document table rows by app-private-documents/fin-datatable/table tbody tr count=0 visible=0 elapsedMs=18",
+        "[not_found] OASIS document rows containing anchors count=0 visible=0 elapsedMs=26",
+        "[not_found] OASIS document anchors by tbl-link/table fallback count=0 visible=0 elapsedMs=20",
+        "Total table tbody tr count: 0",
+        "Total a.tbl-link anchor count: 0",
+        "All anchor texts: none",
+        "Normalized anchor texts: none",
+        "Post-click URL: https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:26:14.030Z",
+      "step": "oasis_print_capture",
+      "message": "Attempted OASIS assessment print capture and fell back to visible text review.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/intake/69e6af7b2b18070c4b43ed57/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+      "selectorUsed": "fin-button[title='Print Preview'] > button, fin-button[title*='Print'] > button, fin-button[icon='ft-printer'] > button, button:has(.ft-printer), button:has-text('Print'), role=button[name=/^print$/i]",
+      "found": [
+        "assessmentType=SOC",
+        "printProfileKey=soc_full_document_v1",
+        "printButtonDetected=true",
+        "printClickSucceeded=false",
+        "printModalDetected=false",
+        "printModalConfirmSucceeded=false",
+        "extractionMethod=visible_text_fallback",
+        "textLength=1924"
+      ],
+      "missing": [],
+      "openedDocumentLabel": "SOC OASIS",
+      "openedDocumentUrl": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+      "evidence": [
+        "printedPdfPath=none",
+        "selectedSectionLabels=none",
+        "extractedTextPath=C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\evidence\\AIMEE_BUSCEMI__f312adc729a94262\\oasis-printed-note\\extracted-text.txt",
+        "ocrResultPath=none",
+        "extractionResultPath=C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\evidence\\AIMEE_BUSCEMI__f312adc729a94262\\oasis-printed-note\\extraction-result.json",
+        "warnings=Print button could not be located on the OASIS assessment page. | Fell back to visible page text because printed-note OCR text was unavailable."
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:26:14.048Z",
+      "step": "oasis_printed_note_review",
+      "message": "Persisted read-only OASIS printed-note review with 18 section summaries.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/intake/69e6af7b2b18070c4b43ed57/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+      "selectorUsed": null,
+      "found": [
+        "assessmentType=SOC",
+        "printProfileKey=soc_full_document_v1",
+        "printButtonDetected=true",
+        "printClickSucceeded=false",
+        "textLength=1924",
+        "overallStatus=PARTIAL"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/file-uploads",
+      "evidence": [
+        "reviewPath=C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\oasis-printed-note-review.json",
+        "extractedTextPath=C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\evidence\\AIMEE_BUSCEMI__f312adc729a94262\\oasis-printed-note\\extracted-text.txt",
+        "ocrResultPath=none",
+        "sourcePdfPath=none",
+        "printedPdfPath=none",
+        "selectedSectionLabels=none",
+        "administrative_information:MISSING:0/15",
+        "primary_reason_medical_necessity:MISSING:0/3",
+        "vital_signs:MISSING:0/4",
+        "neurological:MISSING:0/3",
+        "eyes_ears:MISSING:0/4",
+        "cardiovascular:MISSING:0/4",
+        "respiratory:MISSING:0/4",
+        "gastrointestinal:MISSING:0/4"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:26:14.060Z",
+      "step": "document_text_refresh_after_qa",
+      "message": "Refreshed document-text.json after the QA printed-note review replaced the shared OASIS artifact.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "documentTextPath=C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\document-text.json",
+        "documentCount=2",
+        "oasisDocumentCount=1",
+        "orderDocumentCount=1"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "[0] ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\documents\\admission-04-22-2026\\source.pdf:1924",
+        "[1] OASIS:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\evidence\\AIMEE_BUSCEMI__f312adc729a94262\\oasis-printed-note\\extracted-text.txt:1881"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:26:15.477Z",
+      "step": "printed_note_chart_values",
+      "message": "Extracted 1 current chart value(s) from printed OASIS note text.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "fieldCount=1",
+        "artifactPath=C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\printed-note-chart-values.json",
+        "invocationModelId=us.amazon.nova-lite-v1:0"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "LLM input source: fact_pack_primary.",
+        "Fact pack coverage: diagnoses, hospitalizationReasons, medications.",
+        "Fact pack coverage score: 0.55.",
+        "Prompt character estimate: 730.",
+        "Fallback reason: none.",
+        "Deterministic printed-note chart values: none.",
+        "Selected option labels detected: 0.",
+        "Printed-note chart-value extraction used inference profile us.amazon.nova-lite-v1:0."
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:26:15.483Z",
+      "step": "source_document_identified",
+      "message": "Identified referral/admission-order source document candidates and selected the best source for processing.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "AIMEE_BUSCEMI__f312adc729a94262-referral-1:ADMISSION_ORDER:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\documents\\admission-04-22-2026\\source.pdf"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "selectedDocumentId=AIMEE_BUSCEMI__f312adc729a94262-referral-1"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:26:15.484Z",
+      "step": "source_document_acquired",
+      "message": "Selected referral/admission-order file is available locally for read-only processing.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\documents\\admission-04-22-2026\\source.pdf"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "acquisitionMethod=local_file"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:26:15.484Z",
+      "step": "document_extraction_started",
+      "message": "Started referral/admission-order document extraction from the canonical local file when available.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\documents\\admission-04-22-2026\\source.pdf"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:26:15.485Z",
+      "step": "document_extraction_completed",
+      "message": "Completed referral/admission-order extraction.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "extractionMethod=in_memory_fallback",
+        "effectiveTextSource=none",
+        "textLength=1924"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:26:15.485Z",
+      "step": "extraction_quality_evaluated",
+      "message": "Evaluated extraction quality with usability status usable.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "characterCount=1924",
+        "tokenCount=249",
+        "likelyUsableForLlm=true",
+        "likelyRequiresOcrRetry=false"
+      ],
+      "missing": [
+        "no_date_patterns"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:26:15.487Z",
+      "step": "referral_sections_normalized",
+      "message": "Normalized referral text into 4 semantic sections.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "referral_metadata:0.55",
+        "diagnoses:0.55",
+        "medications:0.55",
+        "other_clinical_notes:0.55"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:26:15.501Z",
+      "step": "chart_snapshot_created",
+      "message": "Built a read-only chart/OASIS field snapshot and categorization buckets for referral comparison.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "alreadyPopulated=1",
+        "llmCandidates=31",
+        "humanReviewRequired=46",
+        "referenceOnly=3"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:26:15.501Z",
+      "step": "referral_facts_extracted",
+      "message": "Extracted 0 referral facts before field mapping.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [],
+      "missing": [
+        "referral_date",
+        "preferred_language",
+        "interpreter_needed",
+        "primary_reason_for_home_health_medical_necessity",
+        "admit_reason_to_home_health",
+        "homebound_narrative",
+        "homebound_supporting_factors",
+        "recent_hospitalization_discharge_date",
+        "recent_hospitalization_facility",
+        "caregiver_name",
+        "caregiver_relationship",
+        "caregiver_phone",
+        "living_situation",
+        "prior_functioning",
+        "functional_limitations",
+        "therapy_need",
+        "patient_summary_narrative",
+        "skilled_interventions",
+        "discipline_frequencies",
+        "plan_for_next_visit",
+        "patient_caregiver_goals",
+        "care_plan_problems_goals_interventions",
+        "fall_risk_narrative",
+        "respiratory_status",
+        "integumentary_wound_status",
+        "pain_assessment_narrative",
+        "emotional_behavioral_status",
+        "past_medical_history",
+        "immunization_status",
+        "code_status"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:26:15.501Z",
+      "step": "llm_field_proposal_started",
+      "message": "Started referral-to-field proposal generation using the strict JSON contract.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "candidateFieldCount=31"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:26:17.844Z",
+      "step": "llm_field_proposal_completed",
+      "message": "Completed referral-to-field proposal generation with 0 field proposals.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "proposalCount=0",
+        "diagnosisCandidateCount=0"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "LLM input source: fact_pack_plus_raw_fallback.",
+        "Fact pack coverage: diagnoses, medications, hospitalizationReasons.",
+        "Fact pack coverage score: 0.6.",
+        "Prompt character estimate: 2654.",
+        "Fallback reason: homeboundEvidence, supportingEvidence.",
+        "Raw fallback appended for missing coverage: homeboundEvidence, supportingEvidence."
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:26:17.844Z",
+      "step": "field_comparison_completed",
+      "message": "Completed referral proposal comparison across 53 fields.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "patient_name:unsupported",
+        "dob:unsupported",
+        "soc_date:unsupported",
+        "referral_date:requires_human_review",
+        "preferred_language:unsupported",
+        "interpreter_needed:requires_human_review",
+        "primary_reason_for_home_health_medical_necessity:requires_human_review",
+        "admit_reason_to_home_health:requires_human_review",
+        "homebound_narrative:requires_human_review",
+        "homebound_supporting_factors:requires_human_review",
+        "recent_hospitalization_discharge_date:requires_human_review",
+        "recent_hospitalization_facility:requires_human_review",
+        "caregiver_name:unsupported",
+        "caregiver_relationship:unsupported",
+        "caregiver_phone:requires_human_review",
+        "living_situation:unsupported",
+        "prior_functioning:requires_human_review",
+        "functional_limitations:requires_human_review",
+        "therapy_need:requires_human_review",
+        "patient_summary_narrative:requires_human_review",
+        "skilled_interventions:requires_human_review",
+        "discipline_frequencies:requires_human_review",
+        "plan_for_next_visit:requires_human_review",
+        "patient_caregiver_goals:requires_human_review",
+        "care_plan_problems_goals_interventions:requires_human_review",
+        "fall_risk_narrative:requires_human_review",
+        "respiratory_status:requires_human_review",
+        "integumentary_wound_status:requires_human_review",
+        "pain_assessment_narrative:requires_human_review",
+        "emotional_behavioral_status:requires_human_review",
+        "past_medical_history:requires_human_review",
+        "immunization_status:requires_human_review",
+        "diagnosis_candidates:requires_human_review",
+        "primary_diagnosis:requires_human_review",
+        "secondary_diagnoses:requires_human_review",
+        "medication_list:requires_human_review",
+        "allergy_list:requires_human_review",
+        "special_treatments_o0110:requires_human_review",
+        "injectable_medications:requires_human_review",
+        "high_risk_medication_notes:requires_human_review",
+        "gg_self_care:requires_human_review",
+        "gg_mobility:requires_human_review",
+        "neurological_status:requires_human_review",
+        "eyes_ears_status:requires_human_review",
+        "cardiovascular_status:requires_human_review",
+        "gastrointestinal_status:requires_human_review",
+        "genitourinary_status:requires_human_review",
+        "mahc10_fall_risk:requires_human_review",
+        "norton_scale:requires_human_review",
+        "wound_risk_review:requires_human_review",
+        "hospitalization_risk_summary:requires_human_review",
+        "patient_coordination_orders:requires_human_review",
+        "code_status:requires_human_review"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:26:17.844Z",
+      "step": "llm_qa_insights_started",
+      "message": "Started referral QA insight synthesis for comparisons, source highlights, and draft narratives.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:26:26.160Z",
+      "step": "llm_qa_insights_completed",
+      "message": "Completed referral QA insight synthesis with 7 consistency checks and 7 narrative drafts.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "consistencyChecks=7",
+        "sourceHighlights=7",
+        "draftNarratives=7"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Deterministic referral facts extraction was used."
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:26:26.176Z",
+      "step": "qa_document_summary_persisted",
+      "message": "Persisted read-only referral document QA artifacts.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\referral-document-processing\\source-meta.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\referral-document-processing\\extraction-result.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\referral-document-processing\\normalized-sections.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\referral-document-processing\\extracted-facts.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\referral-document-processing\\field-map-snapshot.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\referral-document-processing\\llm-proposal.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\referral-document-processing\\field-comparison.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\referral-document-processing\\patient-qa-reference.json",
+        "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\referral-document-processing\\qa-document-summary.json"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:26:26.177Z",
+      "step": "coding_workflow_start",
+      "message": "Coding workflow branch started from the shared patient chart context.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/intake/69e6af7b2b18070c4b43ed57/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/intake/69e6af7b2b18070c4b43ed57/calendar",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=coding",
+        "patientRunId=batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4-AIMEE_BUSCEMI__f312adc729a94262",
+        "status=started",
+        "chartUrl=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/intake/69e6af7b2b18070c4b43ed57/calendar"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:26:26.470Z",
+      "step": "document_extraction",
+      "message": "Extracted 2 document(s) for QA evaluation.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "0:ORDER:viewer_text_fallback:admission_order_excerpt:1924",
+        "1:OASIS:viewer_text_fallback:download:1881"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "[0] type=ORDER source=admission_order_excerpt effectiveTextSource=viewer_text_fallback portalLabel=Admission 04-22-2026 textLength=1924",
+        "[0] rawExtractedTextSource=dom textSelectionReason=accepted_admission_excerpt_text",
+        "[0] domExtractionRejectedReasons=none",
+        "[0] preview=A Plus Home Health Systems LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifications1Messages1 NewWelcomeMichael YuviencoHello! Welcome! All of us at Finale Health would like to welcome View all messages713 A Plus Home Health Systems LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Me",
+        "[0] admissionReasonPrimary=Hospitalization Billing QA Checklist Supplies Vital Graphs Wound History Care Coordination Intake File Uploads Alerts File Uploads Event Calendar Notifications RCD Tracking BUSCEMI, AIMEE178895 Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root",
+        "[0] admissionReasonSnippets=Hospitalization Billing QA Checklist Supplies Vital Graphs Wound History Care Coordination Intake File Uploads Alerts File Uploads Event Calendar Notifications RCD Tracking BUSCEMI, AIMEE178895 Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root",
+        "[0] possibleIcd10Codes=none",
+        "[0] possibleIcd10CodeCount=0",
+        "[1] type=OASIS source=download effectiveTextSource=viewer_text_fallback portalLabel=SOC OASIS textLength=1881",
+        "[1] rawExtractedTextSource=dom textSelectionReason=accepted_printable_text",
+        "[1] domExtractionRejectedReasons=none",
+        "[1] preview=A Plus Home Health Systems LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifications1Messages1 NewWelcomeMichael YuviencoHello! Welcome! All of us at Finale Health would like to welcome View all messages713 A Plus Home Health Systems LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Me"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:26:26.470Z",
+      "step": "admission_document_extract",
+      "message": "Extracted 1 Admission Order/referral document text block(s).",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "Admission 04-22-2026:1924"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "[0] source=admission_order_excerpt",
+        "[0] effectiveTextSource=viewer_text_fallback",
+        "[0] rawExtractedTextSource=dom",
+        "[0] textSelectionReason=accepted_admission_excerpt_text",
+        "[0] domExtractionRejectedReasons=none",
+        "[0] preview=A Plus Home Health Systems LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifications1Messages1 NewWelcomeMichael YuviencoHello! Welcome! All of us at Finale Health would like to welcome View all messages713 A Plus Home Health Systems LLC A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Me",
+        "[0] admissionReasonPrimary=Hospitalization Billing QA Checklist Supplies Vital Graphs Wound History Care Coordination Intake File Uploads Alerts File Uploads Event Calendar Notifications RCD Tracking BUSCEMI, AIMEE178895 Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root",
+        "[0] admissionReasonSnippets=Hospitalization Billing QA Checklist Supplies Vital Graphs Wound History Care Coordination Intake File Uploads Alerts File Uploads Event Calendar Notifications RCD Tracking BUSCEMI, AIMEE178895 Patient File Uploads View All Uploaded Files View Logs Reorder Add Folder In Root",
+        "[0] possibleIcd10Codes=none"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:26:26.470Z",
+      "step": "oasis_extract",
+      "message": "Extracted 1 OASIS document(s).",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "SOC OASIS"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "medication",
+        "physician order",
+        "communication note"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:26:26.470Z",
+      "step": "poc_extract",
+      "message": "No plan-of-care content was extracted.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [],
+      "missing": [
+        "POC"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:26:26.470Z",
+      "step": "visit_note_extract",
+      "message": "No visit-note content was extracted.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [],
+      "missing": [
+        "VISIT_NOTE"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:26:26.470Z",
+      "step": "technical_review_extract",
+      "message": "Aggregated technical-review evidence from document inventory and extracted content.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "orders:1",
+        "summaries:0",
+        "supervisory:0",
+        "communication:0",
+        "missed_visits:0",
+        "sn_visits:0"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Detected 1 order document candidate(s)."
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:26:26.476Z",
+      "step": "coding_input_export",
+      "message": "Wrote read-only diagnosis reference output for dashboard consumption.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "codingInputPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\coding-input.json",
+        "diagnosisCount:2",
+        "primaryDiagnosisSelected:Diagnoses: - 178895 Quick View Basic Info Admission 04-22-2026 Admission Info Admission Packets Calendar Insurance",
+        "otherDiagnosisCount:1",
+        "codeConfidenceSummary:high:0 medium:2 low:0",
+        "noteCount:2",
+        "primaryDiagnosisCode:none"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "primaryDiagnosisDescription:Diagnoses: - 178895 Quick View Basic Info Admission 04-22-2026 Admission Info Admission Packets Calendar Insurance",
+        "suggestedOnsetType:onset",
+        "suggestedSeverity:2",
+        "comorbidityFlags:{\"pvd_pad\":false,\"diabetes\":false,\"none\":true}"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:26:26.477Z",
+      "step": "qa_summary",
+      "message": "QA summary computed with overallStatus=BLOCKED.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "timing:PASS",
+        "coding:NEEDS_REVIEW",
+        "oasis:FAIL",
+        "poc:MISSING",
+        "visit_notes:MISSING",
+        "technical_review:MISSING",
+        "final_check:FAIL"
+      ],
+      "missing": [
+        "Medical necessity is stated",
+        "Homebound reason is stated",
+        "Health assessment is documented",
+        "Skilled interventions during the OASIS visit are documented",
+        "Plan of care content extracted",
+        "POC QA completed in workbook",
+        "Diagnoses or codes are present in the plan of care",
+        "Interventions, goals, and frequency are present in the plan of care",
+        "Conditions or exacerbations are reflected in the plan of care",
+        "Visit note content extracted",
+        "Visit notes review completed in workbook",
+        "Skilled need is clearly documented",
+        "Interventions performed are specific and detailed",
+        "Patient response to interventions is documented",
+        "Progress toward goals is noted",
+        "Vitals and focused assessment are documented",
+        "Medication review is documented",
+        "Changes in condition are clearly reported and addressed",
+        "Documentation supports billed services",
+        "Documentation remains consistent with OASIS and diagnoses",
+        "SN visits were identified from visit-note content",
+        "Applicable disciplines were detected"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Medical necessity is stated",
+        "Homebound reason is stated",
+        "Health assessment is documented",
+        "Skilled interventions during the OASIS visit are documented",
+        "Plan of care content extracted",
+        "POC QA completed in workbook",
+        "Diagnoses or codes are present in the plan of care",
+        "Interventions, goals, and frequency are present in the plan of care",
+        "Conditions or exacerbations are reflected in the plan of care",
+        "Visit note content extracted",
+        "Visit notes review completed in workbook",
+        "Skilled need is clearly documented",
+        "Interventions performed are specific and detailed",
+        "Patient response to interventions is documented",
+        "Progress toward goals is noted",
+        "Vitals and focused assessment are documented",
+        "Medication review is documented",
+        "Changes in condition are clearly reported and addressed",
+        "Documentation supports billed services",
+        "Documentation remains consistent with OASIS and diagnoses",
+        "SN visits were identified from visit-note content",
+        "Applicable disciplines were detected"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T19:26:26.478Z",
+      "step": "coding_workflow_complete",
+      "message": "Coding workflow branch completed.",
+      "patientName": "Aimee Buscemi",
+      "urlBefore": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/intake/69e6af7b2b18070c4b43ed57/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/intake/69e6af7b2b18070c4b43ed57/calendar",
+      "selectorUsed": null,
+      "found": [
+        "workflowDomain=coding",
+        "patientRunId=batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4-AIMEE_BUSCEMI__f312adc729a94262",
+        "status=completed",
+        "chartUrl=https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69e6aee2abe2b40c4947e0e9/intake/69e6af7b2b18070c4b43ed57/calendar"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    }
+  ],
+  "notes": [
+    "Document inventory exported: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\document-inventory.json",
+    "Document text exported: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\document-text.json",
+    "Referral document QA summary persisted: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\referral-document-processing\\qa-document-summary.json",
+    "QA prefetch result persisted: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\qa-prefetch-result.json",
+    "Document text refreshed after printed OASIS review: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\document-text.json",
+    "Printed-note chart values persisted: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\printed-note-chart-values.json",
+    "Referral comparison refreshed from printed OASIS note: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\referral-document-processing\\qa-document-summary.json",
+    "Document inventory exported: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\document-inventory.json",
+    "Document text exported: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\document-text.json",
+    "Extracted 2 document(s) for QA evaluation.",
+    "Coding input exported: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\AIMEE_BUSCEMI__f312adc729a94262\\coding-input.json"
+  ]
+}

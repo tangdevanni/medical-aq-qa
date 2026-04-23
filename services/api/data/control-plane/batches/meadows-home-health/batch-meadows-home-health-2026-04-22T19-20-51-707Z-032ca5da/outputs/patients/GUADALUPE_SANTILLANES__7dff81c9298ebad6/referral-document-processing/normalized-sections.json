@@ -1,0 +1,175 @@
+[
+  {
+    "sectionName": "patient_identity",
+    "extractedTextSpans": [
+      "DOB:",
+      "DOB",
+      "DOB",
+      "DOB:"
+    ],
+    "normalizedSummary": "DOB: DOB DOB",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 12,
+        "lineEnd": 12,
+        "charStart": 129,
+        "charEnd": 133
+      },
+      {
+        "lineStart": 67,
+        "lineEnd": 67,
+        "charStart": 794,
+        "charEnd": 797
+      },
+      {
+        "lineStart": 90,
+        "lineEnd": 90,
+        "charStart": 1087,
+        "charEnd": 1090
+      },
+      {
+        "lineStart": 167,
+        "lineEnd": 167,
+        "charStart": 2914,
+        "charEnd": 2918
+      }
+    ]
+  },
+  {
+    "sectionName": "referring_provider",
+    "extractedTextSpans": [
+      "NPI: 1780662817",
+      "NPI: 1952041139",
+      "NPI: 1780662817",
+      "NPI: 1780662817"
+    ],
+    "normalizedSummary": "NPI: 1780662817 NPI: 1952041139 NPI: 1780662817",
+    "confidence": 1,
+    "lineReferences": [
+      {
+        "lineStart": 120,
+        "lineEnd": 120,
+        "charStart": 1456,
+        "charEnd": 1471
+      },
+      {
+        "lineStart": 122,
+        "lineEnd": 122,
+        "charStart": 1502,
+        "charEnd": 1517
+      },
+      {
+        "lineStart": 154,
+        "lineEnd": 154,
+        "charStart": 2744,
+        "charEnd": 2759
+      },
+      {
+        "lineStart": 181,
+        "lineEnd": 181,
+        "charStart": 3333,
+        "charEnd": 3348
+      }
+    ]
+  },
+  {
+    "sectionName": "hospitalization_history",
+    "extractedTextSpans": [
+      "Perform at: Henderson Hospital",
+      "Other Labs/Tests: Labs to be done at Henderson Hospital"
+    ],
+    "normalizedSummary": "Perform at: Henderson Hospital Other Labs/Tests: Labs to be done at Henderson Hospital",
+    "confidence": 0.75,
+    "lineReferences": [
+      {
+        "lineStart": 125,
+        "lineEnd": 125,
+        "charStart": 1569,
+        "charEnd": 1599
+      },
+      {
+        "lineStart": 146,
+        "lineEnd": 146,
+        "charStart": 2536,
+        "charEnd": 2591
+      }
+    ]
+  },
+  {
+    "sectionName": "homebound_evidence",
+    "extractedTextSpans": [
+      "DME Preauthorization 1: Cam Walker Boot L4361"
+    ],
+    "normalizedSummary": "DME Preauthorization 1: Cam Walker Boot L4361",
+    "confidence": 0.55,
+    "lineReferences": [
+      {
+        "lineStart": 172,
+        "lineEnd": 172,
+        "charStart": 3066,
+        "charEnd": 3111
+      }
+    ]
+  },
+  {
+    "sectionName": "diagnoses",
+    "extractedTextSpans": [
+      "DIAGNOSES",
+      "Diagnosis",
+      "Diagnosis: Foot Pain, Right - M79.671"
+    ],
+    "normalizedSummary": "DIAGNOSES Diagnosis Diagnosis: Foot Pain, Right - M79.671",
+    "confidence": 0.95,
+    "lineReferences": [
+      {
+        "lineStart": 110,
+        "lineEnd": 110,
+        "charStart": 1313,
+        "charEnd": 1322
+      },
+      {
+        "lineStart": 111,
+        "lineEnd": 111,
+        "charStart": 1323,
+        "charEnd": 1332
+      },
+      {
+        "lineStart": 136,
+        "lineEnd": 136,
+        "charStart": 1862,
+        "charEnd": 1899
+      }
+    ]
+  },
+  {
+    "sectionName": "caregiver_support",
+    "extractedTextSpans": [
+      "RELATIONSHIP TO PATIENT",
+      "RELATIONSHIP",
+      "RELATIONSHIP"
+    ],
+    "normalizedSummary": "RELATIONSHIP TO PATIENT RELATIONSHIP RELATIONSHIP",
+    "confidence": 0.95,
+    "lineReferences": [
+      {
+        "lineStart": 32,
+        "lineEnd": 32,
+        "charStart": 375,
+        "charEnd": 398
+      },
+      {
+        "lineStart": 65,
+        "lineEnd": 65,
+        "charStart": 776,
+        "charEnd": 788
+      },
+      {
+        "lineStart": 88,
+        "lineEnd": 88,
+        "charStart": 1069,
+        "charEnd": 1081
+      }
+    ]
+  }
+]

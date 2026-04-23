@@ -438,6 +438,7 @@ class FakePortalClient implements BatchPortalAutomationClient {
           totalCards: 3,
           countsByType: { oasis: 1, sn_visit: 1, physician_order: 1 },
           cards: [],
+          workbookColumns: { sn: "SN - 1", ptOtSt: "NA", hhaMsw: "NA" },
         },
         second30Days: {
           startDate: "2026-03-31",
@@ -445,6 +446,7 @@ class FakePortalClient implements BatchPortalAutomationClient {
           totalCards: 2,
           countsByType: { pt_visit: 1, communication_note: 1 },
           cards: [],
+          workbookColumns: { sn: "NA", ptOtSt: "PT - 1", hhaMsw: "NA" },
         },
         outsideRange: {
           startDate: null,
@@ -452,6 +454,7 @@ class FakePortalClient implements BatchPortalAutomationClient {
           totalCards: 1,
           countsByType: { other: 1 },
           cards: [],
+          workbookColumns: { sn: "NA", ptOtSt: "NA", hhaMsw: "NA" },
         },
       },
       visibleDays: [],
@@ -730,6 +733,54 @@ class FirstMissingReferralPortalClient extends FakePortalClient {
       ...result,
       artifacts: result.artifacts.filter((artifact) => artifact.artifactType !== "PHYSICIAN_ORDERS"),
       documentInventory: result.documentInventory.filter((item) => item.normalizedType !== "ORDER"),
+    };
+  }
+}
+
+class SharedEvidenceFallbackOasisClient extends FakePortalClient {
+  override async discoverArtifacts(
+    workItem: PatientEpisodeWorkItem,
+    evidenceDir: string,
+    options?: {
+      workflowPhase?: "full_discovery" | "file_uploads_only" | "oasis_diagnosis_only";
+    },
+  ): Promise<{
+    artifacts: ArtifactRecord[];
+    documentInventory: DocumentInventoryItem[];
+    stepLogs: AutomationStepLog[];
+  }> {
+    const result = await super.discoverArtifacts(workItem, evidenceDir, options);
+    const orderArtifact = result.artifacts.find((artifact) => artifact.artifactType === "PHYSICIAN_ORDERS");
+
+    return {
+      ...result,
+      artifacts: result.artifacts.map((artifact) =>
+        artifact.artifactType !== "OASIS"
+          ? artifact
+          : {
+              ...artifact,
+              status: "FOUND",
+              portalLabel: "OASIS documents page",
+              locatorUsed: "text=OASIS documents page",
+              downloadPath: null,
+              extractedFields: {
+                oasisMenuClicked: "false",
+                oasisDocumentListDetected: "false",
+                socDocumentFound: "false",
+                socDocumentClicked: "false",
+                fileUploadsAccessible: "true",
+                fileUploadsUrl: "https://demo.portal/provider/branch/client/PT-1/file-uploads",
+                visibleUploadedDocuments: "fixture-order.txt",
+                admissionOrderAccessible: "true",
+                admissionOrderTitle: "fixture-order.txt",
+                admissionOrderTextExcerpt: "Automatic Zoom Actual Size Tools",
+                admissionOrderSourcePdfPath: orderArtifact?.downloadPath ?? null,
+                rawExtractedTextSource: "dom",
+                domExtractionRejectedReasons: "viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|TOOLS",
+                possibleIcd10Codes: "I00 | I25 | I50",
+              },
+              notes: ["Active OASIS workflow did not open the OASIS documents page."],
+            }),
     };
   }
 }
@@ -1032,6 +1083,52 @@ describe("runFinaleBatch", () => {
           extractionMethod: "visible_text_fallback",
         }),
       });
+    } finally {
+      fixture.cleanup();
+    }
+  });
+
+  it("refreshes document-text.json after QA replaces a stale OASIS fallback artifact", async () => {
+    const fixture = writeWorkbookFixture();
+
+    try {
+      const intake = await intakeWorkbook({
+        workbookPath: fixture.workbookPath,
+        outputDir: fixture.outputDir,
+      });
+
+      const patientRun = await runQAForPatient({
+        batchId: `${intake.manifest.batchId}-refresh-oasis-doc-text`,
+        patient: intake.workItems[0]!,
+        outputDir: fixture.outputDir,
+        workflowDomains: ["qa"],
+        portalClient: new SharedEvidenceFallbackOasisClient(),
+      });
+
+      const documentTextPath = path.join(
+        fixture.outputDir,
+        "patients",
+        patientRun.workItemId,
+        "document-text.json",
+      );
+      expect(existsSync(documentTextPath)).toBe(true);
+
+      const documentText = JSON.parse(readFileSync(documentTextPath, "utf8")) as {
+        documents: Array<{
+          type: string;
+          source: string;
+          sourcePath: string | null;
+          text: string;
+        }>;
+      };
+      const oasisDocument = documentText.documents.find((document) => document.type === "OASIS");
+
+      expect(oasisDocument).toBeTruthy();
+      expect(oasisDocument?.sourcePath).toMatch(/oasis-printed-note[\\\/]extracted-text\.txt$/);
+      expect(oasisDocument?.text).toContain("Patient is homebound and medical necessity is documented.");
+      expect(oasisDocument?.text).not.toContain("Active OASIS workflow did not open the OASIS documents page.");
+      expect(patientRun.notes.some((note) => note.includes("Document text refreshed after printed OASIS review:"))).toBe(true);
+      expect(patientRun.automationStepLogs.some((log) => log.step === "document_text_refresh_after_qa")).toBe(true);
     } finally {
       fixture.cleanup();
     }

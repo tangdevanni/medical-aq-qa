@@ -358,6 +358,13 @@ const patientViewInput = {
       lockStatus: {
         status: "locked",
       },
+      oasisAssessmentStatus: {
+        detectedStatuses: ["SIGNED", "VALIDATED"],
+        primaryStatus: "VALIDATED",
+        decision: "PROCESS",
+        processingEligible: true,
+        reason: "Continue downstream OASIS capture because no skip-only status was detected. Observed signed, validated.",
+      },
       warningCount: 1,
       topWarning: "Patient-specific route confirmed through sidebar labels.",
       billingCalendarSummary: {
@@ -372,6 +379,11 @@ const patientViewInput = {
               sn_visit: 1,
               physician_order: 1,
             },
+            workbookColumns: {
+              sn: "SN - 1",
+              ptOtSt: "NA",
+              hhaMsw: "NA",
+            },
           },
           second30Days: {
             totalCards: 2,
@@ -379,11 +391,21 @@ const patientViewInput = {
               pt_visit: 1,
               communication_note: 1,
             },
+            workbookColumns: {
+              sn: "NA",
+              ptOtSt: "PT - 1",
+              hhaMsw: "NA",
+            },
           },
           outsideRange: {
             totalCards: 1,
             countsByType: {
               other: 1,
+            },
+            workbookColumns: {
+              sn: "NA",
+              ptOtSt: "NA",
+              hhaMsw: "NA",
             },
           },
         },
@@ -440,6 +462,9 @@ const patientViewInput = {
           status: "COMPLETED",
           filledFieldCount: 4,
           missingFieldCount: 0,
+          evidence: [
+            "Primary Reason for Home Health/Medical Necessity (POC Element): Skilled nursing for medication management and wound care.",
+          ],
         },
       ],
     },
@@ -467,11 +492,17 @@ describe("dashboardRunViews", () => {
     assert.equal(summary.codingWorkflow?.status, "COMPLETED");
     assert.equal(summary.qaWorkflow?.status, "COMPLETED");
     assert.equal(summary.qaPrefetch?.lockStatus, "locked");
+    assert.equal(summary.qaPrefetch?.oasisAssessmentPrimaryStatus, "VALIDATED");
+    assert.deepEqual(summary.qaPrefetch?.oasisAssessmentStatuses, ["SIGNED", "VALIDATED"]);
+    assert.equal(summary.qaPrefetch?.oasisAssessmentDecision, "PROCESS");
+    assert.equal(summary.qaPrefetch?.oasisAssessmentProcessingEligible, true);
     assert.equal(summary.qaPrefetch?.oasisFound, true);
     assert.equal(summary.qaPrefetch?.diagnosisFound, true);
     assert.equal(summary.qaPrefetch?.selectedEpisodeRange, "03/01/2026 - 04/29/2026");
     assert.equal(summary.qaPrefetch?.first30TotalCards, 3);
     assert.equal(summary.qaPrefetch?.second30TotalCards, 2);
+    assert.equal(summary.qaPrefetch?.first30WorkbookColumns.sn, "SN - 1");
+    assert.equal(summary.qaPrefetch?.second30WorkbookColumns.ptOtSt, "PT - 1");
     assert.equal(summary.qaPrefetch?.printedNoteStatus, "PARTIAL");
     assert.equal(summary.qaPrefetch?.printedNoteAssessmentType, "SOC");
     assert.equal(summary.qaPrefetch?.printedNoteCompletedSectionCount, 1);
@@ -508,9 +539,12 @@ describe("dashboardRunViews", () => {
     assert.equal(detail.codingWorkflow?.workflowDomain, "coding");
     assert.equal(detail.qaWorkflow?.workflowDomain, "qa");
     assert.equal(detail.qaPrefetch?.selectedRouteSummary, "patient documents via sidebar_label: File Uploads");
+    assert.equal(detail.qaPrefetch?.oasisAssessmentPrimaryStatus, "VALIDATED");
     assert.equal(detail.qaPrefetch?.visibleDiagnosisCount, 1);
     assert.equal(detail.qaPrefetch?.selectedEpisodeRange, "03/01/2026 - 04/29/2026");
     assert.equal(detail.qaPrefetch?.outsideRangeTotalCards, 1);
+    assert.equal(detail.qaPrefetch?.first30WorkbookColumns.sn, "SN - 1");
+    assert.equal(detail.qaPrefetch?.second30WorkbookColumns.ptOtSt, "PT - 1");
     assert.equal(detail.qaPrefetch?.printedNoteReviewSource, "printed_note_ocr");
     assert.equal(detail.qaPrefetch?.printedNoteSections.length, 2);
     assert.equal(detail.qaPrefetch?.printedNoteSections[1]?.label, "Care Plan");
@@ -809,6 +843,108 @@ describe("dashboardRunViews", () => {
     assert.equal(detail.referralSections[0]?.fields[0]?.currentChartValueSource, "chart_read");
     assert.equal(detail.dashboardState.rows[0]?.currentChartValue, "Live chart value");
     assert.equal(detail.dashboardState.rows[0]?.currentChartValueSource, "chart_read");
+  });
+
+  it("falls back to printed-note review evidence when structured chart values are missing", () => {
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        fieldMapSnapshot: {
+          ...patientViewInput.artifactContents.fieldMapSnapshot,
+          fields: [
+            {
+              ...patientViewInput.artifactContents.fieldMapSnapshot.fields[0]!,
+              currentChartValue: null,
+              currentChartValueSource: "unavailable",
+              populatedInChart: false,
+            },
+          ],
+        },
+        printedNoteChartValues: {
+          currentChartValues: {},
+        },
+        printedNoteReview: {
+          reviewSource: "printed_note_ocr",
+          sections: [
+            {
+              key: "primary_reason_medical_necessity",
+              label: "Primary Reason / Medical Necessity",
+              status: "COMPLETED",
+              filledFieldCount: 4,
+              missingFieldCount: 0,
+              evidence: [
+                "Primary Reason for Home Health/Medical Necessity (POC Element): Skilled nursing for medication management and wound care.",
+              ],
+            },
+          ],
+        },
+      },
+    });
+
+    assert.equal(
+      detail.dashboardState.rows[0]?.displayPortalValue,
+      "Printed OASIS review found Primary Reason / Medical Necessity (completed; 4 captured, 0 missing).",
+    );
+    assert.equal(detail.dashboardState.rows[0]?.currentChartValueSourceLabel, "Printed note review");
+    assert.equal(
+      detail.dashboardState.rows[0]?.portalSnippet,
+      "Primary Reason for Home Health/Medical Necessity (POC Element): Skilled nursing for medication management and wound care.",
+    );
+    assert.equal(detail.dashboardState.rows[0]?.comparisonResult, "uncertain");
+    assert.equal(detail.dashboardState.rows[0]?.reviewStatus, "Needs Source Review");
+  });
+
+  it("surfaces OASIS capture skip reasons instead of generic missing-chart messaging", () => {
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        fieldMapSnapshot: {
+          ...patientViewInput.artifactContents.fieldMapSnapshot,
+          fields: [
+            {
+              ...patientViewInput.artifactContents.fieldMapSnapshot.fields[0]!,
+              currentChartValue: null,
+              currentChartValueSource: "unavailable",
+              populatedInChart: false,
+            },
+          ],
+        },
+        qaPrefetch: {
+          ...patientViewInput.artifactContents.qaPrefetch,
+          oasisAssessmentStatus: {
+            detectedStatuses: ["LOCKED"],
+            primaryStatus: "LOCKED",
+            decision: "SKIP",
+            processingEligible: false,
+            reason: "Skip downstream OASIS capture because the assessment page shows locked.",
+          },
+          printedNoteReview: null,
+        },
+        printedNoteChartValues: {
+          currentChartValues: {},
+        },
+        printedNoteReview: null,
+      },
+    });
+
+    assert.equal(detail.dashboardState.rows[0]?.comparisonResult, "uncertain");
+    assert.equal(detail.dashboardState.rows[0]?.currentChartValueSource, "oasis_capture_skipped");
+    assert.equal(detail.dashboardState.rows[0]?.currentChartValueSourceLabel, "OASIS capture skipped");
+    assert.equal(
+      detail.dashboardState.rows[0]?.displayPortalValue,
+      "Skip downstream OASIS capture because the assessment page shows locked.",
+    );
+    assert.equal(
+      detail.dashboardState.rows[0]?.shortReason,
+      "Skip downstream OASIS capture because the assessment page shows locked.",
+    );
+    assert.deepEqual(detail.dashboardState.rows[0]?.sourceArtifacts.includes("qa-prefetch-result.json"), true);
+    assert.deepEqual(
+      detail.dashboardState.rows[0]?.strictnessFlags.includes("oasis_capture_skipped_by_assessment_status"),
+      true,
+    );
   });
 
   it("tracks meaningful rows that are hidden because the backend marked them resolved", () => {

@@ -1,0 +1,209 @@
+{
+  "patient_context": {
+    "patient_name": null,
+    "dob": "07/28/1959",
+    "soc_date": null,
+    "referral_date": null
+  },
+  "proposed_field_values": [
+    {
+      "field_key": "recent_hospitalization_discharge_date",
+      "proposed_value": "04/09/2026",
+      "confidence": 0.9,
+      "source_spans": [
+        "04/09/26"
+      ],
+      "rationale": "Direct evidence from the document.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "homebound_narrative",
+      "proposed_value": "Requires assistive device: wheelchair, walker and/or assistance of another person to leave home.",
+      "confidence": 0.8,
+      "source_spans": [
+        "[x] Requires assistive device: wheelchair, walker and/or assistance of another person to leave home homebound status and need for [SELECTED][page 29] Requires assistive device: wheelchair, walker and/or assistance of another person to leave home"
+      ],
+      "rationale": "Direct evidence from the document describing the patient's homebound status.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "homebound_supporting_factors",
+      "proposed_value": [
+        "uses_walker"
+      ],
+      "confidence": 0.73,
+      "source_spans": [
+        "[x] Requires assistive device: wheelchair, walker and/or assistance of another person to leave home homebound status and need for [SELECTED][page 29] Requires assistive device: wheelchair, walker and/or assistance of another person to leave home"
+      ],
+      "rationale": "Direct evidence from the document supporting the patient's homebound status.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "functional_limitations",
+      "proposed_value": [
+        "weakness",
+        "ambulation_limitations",
+        "reduced_endurance"
+      ],
+      "confidence": 0.76,
+      "source_spans": [
+        "weakness and left upper extremity contracture. mobility and also transfers and ambulation ADLs."
+      ],
+      "rationale": "Direct evidence from the document describing the patient's functional limitations.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "therapy_need",
+      "proposed_value": "Physical therapy, occupational therapy, physical therapy.",
+      "confidence": 0.77,
+      "source_spans": [
+        "physical therapy, occupational therapy, physical therapy."
+      ],
+      "rationale": "Direct evidence from the document indicating the need for therapy.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "fall_risk_narrative",
+      "proposed_value": "Fatigability, poor endurance, shortness of breath, unsteady gait.",
+      "confidence": 0.7,
+      "source_spans": [
+        "fatigability, poor endurance and shortness of breath and unsteady gait."
+      ],
+      "rationale": "Direct evidence from the document describing the patient's fall risk factors.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "skilled_interventions",
+      "proposed_value": "Physical therapy, occupational therapy, physical therapy.",
+      "confidence": 0.8,
+      "source_spans": [
+        "physical therapy, occupational therapy, physical therapy."
+      ],
+      "rationale": "Direct evidence from the document indicating skilled interventions.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "plan_for_next_visit",
+      "proposed_value": "Physical therapy, occupational therapy, physical therapy.",
+      "confidence": 0.78,
+      "source_spans": [
+        "physical therapy, occupational therapy, physical therapy."
+      ],
+      "rationale": "Direct evidence from the document describing the plan for the next visit.",
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [
+    {
+      "description": "Rehab diagnosis",
+      "icd10_code": null,
+      "confidence": 0.9,
+      "source_spans": [
+        "Rehab diagnosis"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Diagnosis",
+      "icd10_code": null,
+      "confidence": 0.9,
+      "source_spans": [
+        "Diagnosis"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "I40 Diagnosis code candidate from extracted document metadata",
+      "icd10_code": "I40",
+      "confidence": 0.9,
+      "source_spans": [
+        "I40 Diagnosis code candidate from extracted document metadata"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "I00 Diagnosis code candidate from extracted document metadata",
+      "icd10_code": "I00",
+      "confidence": 0.9,
+      "source_spans": [
+        "I00 Diagnosis code candidate from extracted document metadata"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "I25 Diagnosis code candidate from extracted document metadata",
+      "icd10_code": "I25",
+      "confidence": 0.9,
+      "source_spans": [
+        "I25 Diagnosis code candidate from extracted document metadata"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "I04 Diagnosis code candidate from extracted document metadata",
+      "icd10_code": "I04",
+      "confidence": 0.9,
+      "source_spans": [
+        "I04 Diagnosis code candidate from extracted document metadata"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "I07 Diagnosis code candidate from extracted document metadata",
+      "icd10_code": "I07",
+      "confidence": 0.9,
+      "source_spans": [
+        "I07 Diagnosis code candidate from extracted document metadata"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "I91 Diagnosis code candidate from extracted document metadata",
+      "icd10_code": "I91",
+      "confidence": 0.9,
+      "source_spans": [
+        "I91 Diagnosis code candidate from extracted document metadata"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    }
+  ],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "preferred_language",
+    "interpreter_needed",
+    "primary_reason_for_home_health_medical_necessity",
+    "admit_reason_to_home_health",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "living_situation",
+    "patient_summary_narrative",
+    "discipline_frequencies",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status",
+    "code_status"
+  ],
+  "warnings": [
+    "LLM input source: fact_pack_primary.",
+    "Fact pack coverage: diagnoses, medications, homeboundEvidence, skilledNeedEvidence, hospitalizationReasons, assessmentValues, supportingSnippets.",
+    "Fact pack coverage score: 1.",
+    "Prompt character estimate: 2632.",
+    "Fallback reason: none."
+  ]
+}

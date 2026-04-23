@@ -1,0 +1,959 @@
+{
+  "runId": "batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41-KATHLEEN_WHARTON__400ac8dc0cd939cb",
+  "batchId": "batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41",
+  "subsidiaryId": "star-home-health",
+  "workItemId": "KATHLEEN_WHARTON__400ac8dc0cd939cb",
+  "patientName": "Kathleen Wharton",
+  "processingStatus": "BLOCKED",
+  "executionStep": "PATIENT_STATUS_EXCLUDED",
+  "progressPercent": 100,
+  "startedAt": "2026-04-22T22:13:57.487Z",
+  "completedAt": "2026-04-22T22:15:46.467Z",
+  "lastUpdatedAt": "2026-04-22T22:15:46.438Z",
+  "matchResult": {
+    "status": "EXACT",
+    "searchQuery": "wharton, kathleen",
+    "portalPatientId": null,
+    "portalDisplayName": "WHARTON, KATHLEEN MR# 168 Pending SOC: 4/9/2026 / DOB: 6/23/1944 LOS: 14 days Medicare 6930 East Granada Street Mesa AZ 85207 (480)650-8499",
+    "candidateNames": [
+      "WHARTON, KATHLEEN MR# 168 Pending SOC: 4/9/2026 / DOB: 6/23/1944 LOS: 14 days Medicare 6930 East Granada Street Mesa AZ 85207 (480)650-8499"
+    ],
+    "note": null
+  },
+  "artifacts": [],
+  "artifactCount": 0,
+  "findings": [],
+  "hasFindings": false,
+  "qaOutcome": "PORTAL_MISMATCH",
+  "oasisQaSummary": {
+    "overallStatus": "BLOCKED",
+    "urgency": "ON_TRACK",
+    "daysInPeriod": 30,
+    "daysLeft": 17,
+    "sections": [
+      {
+        "key": "timing",
+        "label": "Timing / OASIS Due",
+        "status": "PASS",
+        "items": [
+          {
+            "key": "days_in_period",
+            "label": "Days in the 30-day period captured",
+            "status": "PASS",
+            "notes": "Workbook shows 30 days in period.",
+            "evidence": [
+              "Workbook days in period: 30"
+            ]
+          },
+          {
+            "key": "days_left",
+            "label": "Days left before OASIS due date verified",
+            "status": "PASS",
+            "notes": "17 day(s) remain before OASIS is due.",
+            "evidence": [
+              "Workbook days left: 17"
+            ]
+          },
+          {
+            "key": "urgency_bucket",
+            "label": "Urgency bucket",
+            "status": "PASS",
+            "notes": "ON TRACK",
+            "evidence": [
+              "Derived urgency from 17 day(s) left."
+            ]
+          }
+        ]
+      },
+      {
+        "key": "coding",
+        "label": "Coding Review",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "coding_review_complete",
+            "label": "Coding review completed in workbook",
+            "status": "NEEDS_REVIEW",
+            "notes": "Workbook status: IN_PROGRESS",
+            "evidence": [
+              "IN_PROGRESS"
+            ]
+          },
+          {
+            "key": "coding_supported_by_oasis",
+            "label": "OASIS content is available to support coding review",
+            "status": "MISSING",
+            "notes": "No OASIS content was extracted for coding validation.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "oasis",
+        "label": "OASIS QA",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "oasis_document",
+            "label": "OASIS document content extracted",
+            "status": "MISSING",
+            "notes": "No OASIS document content was available for extraction.",
+            "evidence": []
+          },
+          {
+            "key": "oasis_workbook_status",
+            "label": "OASIS QA completed in workbook",
+            "status": "NEEDS_REVIEW",
+            "notes": "Workbook status: IN_PROGRESS",
+            "evidence": [
+              "IN_PROGRESS"
+            ]
+          },
+          {
+            "key": "medical_necessity",
+            "label": "Medical necessity is stated",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "homebound_reason",
+            "label": "Homebound reason is stated",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "health_assessment",
+            "label": "Health assessment is documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "skilled_interventions",
+            "label": "Skilled interventions during the OASIS visit are documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "poc",
+        "label": "Plan Of Care QA",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "poc_document",
+            "label": "Plan of care content extracted",
+            "status": "MISSING",
+            "notes": "No plan-of-care content was available for extraction.",
+            "evidence": []
+          },
+          {
+            "key": "poc_workbook_status",
+            "label": "POC QA completed in workbook",
+            "status": "MISSING",
+            "notes": "Workbook status: NOT_STARTED",
+            "evidence": [
+              "NOT_STARTED"
+            ]
+          },
+          {
+            "key": "poc_diagnoses_codes",
+            "label": "Diagnoses or codes are present in the plan of care",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "poc_interventions_goals_frequency",
+            "label": "Interventions, goals, and frequency are present in the plan of care",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "poc_conditions_exacerbations",
+            "label": "Conditions or exacerbations are reflected in the plan of care",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "visit_notes",
+        "label": "Visit Notes Review",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "visit_notes_document",
+            "label": "Visit note content extracted",
+            "status": "MISSING",
+            "notes": "No visit-note content was available for extraction.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_workbook_status",
+            "label": "Visit notes review completed in workbook",
+            "status": "MISSING",
+            "notes": "Workbook status: NOT_STARTED",
+            "evidence": [
+              "NOT_STARTED"
+            ]
+          },
+          {
+            "key": "visit_notes_skilled_need",
+            "label": "Skilled need is clearly documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_intervention_detail",
+            "label": "Interventions performed are specific and detailed",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_patient_response",
+            "label": "Patient response to interventions is documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_progress",
+            "label": "Progress toward goals is noted",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_vitals",
+            "label": "Vitals and focused assessment are documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_medication_review",
+            "label": "Medication review is documented",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_condition_changes",
+            "label": "Changes in condition are clearly reported and addressed",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_billed_services_support",
+            "label": "Documentation supports billed services",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "visit_notes_consistency",
+            "label": "Documentation remains consistent with OASIS and diagnoses",
+            "status": "MISSING",
+            "notes": "Supporting document content is not available.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "technical_review",
+        "label": "Technical Review",
+        "status": "MISSING",
+        "items": [
+          {
+            "key": "portal_patient_match",
+            "label": "Portal patient match resolved",
+            "status": "PASS",
+            "notes": "Portal match status: EXACT",
+            "evidence": [
+              "wharton, kathleen",
+              "WHARTON, KATHLEEN MR# 168 Pending SOC: 4/9/2026 / DOB: 6/23/1944 LOS: 14 days Medicare 6930 East Granada Street Mesa AZ 85207 (480)650-8499"
+            ]
+          },
+          {
+            "key": "sn_visit_count",
+            "label": "SN visits were identified from visit-note content",
+            "status": "MISSING",
+            "notes": "Visit-note content is not available.",
+            "evidence": []
+          },
+          {
+            "key": "discipline_detection",
+            "label": "Applicable disciplines were detected",
+            "status": "MISSING",
+            "notes": "Visit-note content is not available for discipline detection.",
+            "evidence": []
+          },
+          {
+            "key": "physician_orders",
+            "label": "Physician orders were checked",
+            "status": "NOT_APPLICABLE",
+            "notes": "No additional physician orders were discovered for this patient.",
+            "evidence": []
+          },
+          {
+            "key": "supporting_notes",
+            "label": "Supporting note categories were reviewed",
+            "status": "NOT_APPLICABLE",
+            "notes": "No additional supporting note categories were discovered for this patient.",
+            "evidence": []
+          }
+        ]
+      },
+      {
+        "key": "final_check",
+        "label": "Final Check",
+        "status": "FAIL",
+        "items": [
+          {
+            "key": "critical_sections_clear",
+            "label": "Critical QA sections are complete before billing prep",
+            "status": "FAIL",
+            "notes": "Blocking sections: OASIS content is available to support coding review, OASIS document content extracted, Medical necessity is stated, Homebound reason is stated, Health assessment is documented, Skilled interventions during the OASIS visit are documented, Plan of care content extracted, POC QA completed in workbook, Diagnoses or codes are present in the plan of care, Interventions, goals, and frequency are present in the plan of care, Conditions or exacerbations are reflected in the plan of care, Visit note content extracted, Visit notes review completed in workbook, Skilled need is clearly documented, Interventions performed are specific and detailed, Patient response to interventions is documented, Progress toward goals is noted, Vitals and focused assessment are documented, Medication review is documented, Changes in condition are clearly reported and addressed, Documentation supports billed services, Documentation remains consistent with OASIS and diagnoses, SN visits were identified from visit-note content, Applicable disciplines were detected",
+            "evidence": [
+              "Timing / OASIS Due: PASS",
+              "Coding Review: MISSING",
+              "OASIS QA: MISSING",
+              "Plan Of Care QA: MISSING",
+              "Visit Notes Review: MISSING",
+              "Technical Review: MISSING"
+            ]
+          },
+          {
+            "key": "billing_prep_status",
+            "label": "Billing prep status in workbook",
+            "status": "MISSING",
+            "notes": "Workbook status: NOT_STARTED",
+            "evidence": [
+              "NOT_STARTED"
+            ]
+          }
+        ]
+      }
+    ],
+    "blockers": [
+      "OASIS content is available to support coding review",
+      "OASIS document content extracted",
+      "Medical necessity is stated",
+      "Homebound reason is stated",
+      "Health assessment is documented",
+      "Skilled interventions during the OASIS visit are documented",
+      "Plan of care content extracted",
+      "POC QA completed in workbook",
+      "Diagnoses or codes are present in the plan of care",
+      "Interventions, goals, and frequency are present in the plan of care",
+      "Conditions or exacerbations are reflected in the plan of care",
+      "Visit note content extracted",
+      "Visit notes review completed in workbook",
+      "Skilled need is clearly documented",
+      "Interventions performed are specific and detailed",
+      "Patient response to interventions is documented",
+      "Progress toward goals is noted",
+      "Vitals and focused assessment are documented",
+      "Medication review is documented",
+      "Changes in condition are clearly reported and addressed",
+      "Documentation supports billed services",
+      "Documentation remains consistent with OASIS and diagnoses",
+      "SN visits were identified from visit-note content",
+      "Applicable disciplines were detected"
+    ]
+  },
+  "documentInventory": [],
+  "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\patient-results\\KATHLEEN_WHARTON__400ac8dc0cd939cb.json",
+  "bundleAvailable": true,
+  "logPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\logs\\KATHLEEN_WHARTON__400ac8dc0cd939cb.json",
+  "logAvailable": true,
+  "retryEligible": true,
+  "errorSummary": "Portal patient status 'Pending' excludes this patient from autonomous QA evaluation.",
+  "auditArtifacts": {
+    "tracePath": null,
+    "screenshotPaths": [],
+    "downloadPaths": []
+  },
+  "workflowRuns": [
+    {
+      "workflowRunId": "batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41-KATHLEEN_WHARTON__400ac8dc0cd939cb:coding",
+      "workflowDomain": "coding",
+      "status": "BLOCKED",
+      "stepName": "PATIENT_STATUS_EXCLUDED",
+      "message": "Portal patient status 'Pending' excludes this patient from autonomous QA evaluation.",
+      "chartUrl": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69d681738046230c4e145b4b/intake/69d6827c8e50743a08da00e0/calendar",
+      "startedAt": "2026-04-22T22:15:46.437Z",
+      "completedAt": "2026-04-22T22:15:46.437Z",
+      "lastUpdatedAt": "2026-04-22T22:15:46.437Z",
+      "workflowResultPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\patients\\KATHLEEN_WHARTON__400ac8dc0cd939cb\\coding-input.json",
+      "workflowLogPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\logs\\KATHLEEN_WHARTON__400ac8dc0cd939cb.json"
+    },
+    {
+      "workflowRunId": "batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41-KATHLEEN_WHARTON__400ac8dc0cd939cb:qa",
+      "workflowDomain": "qa",
+      "status": "BLOCKED",
+      "stepName": "PATIENT_STATUS_EXCLUDED",
+      "message": "Portal patient status 'Pending' excludes this patient from autonomous QA evaluation.",
+      "chartUrl": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69d681738046230c4e145b4b/intake/69d6827c8e50743a08da00e0/calendar",
+      "startedAt": "2026-04-22T22:15:46.437Z",
+      "completedAt": "2026-04-22T22:15:46.437Z",
+      "lastUpdatedAt": "2026-04-22T22:15:46.437Z",
+      "workflowResultPath": null,
+      "workflowLogPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\logs\\KATHLEEN_WHARTON__400ac8dc0cd939cb.json"
+    }
+  ],
+  "workItemSnapshot": {
+    "id": "KATHLEEN_WHARTON__400ac8dc0cd939cb",
+    "subsidiaryId": "star-home-health",
+    "patientIdentity": {
+      "displayName": "Kathleen Wharton",
+      "normalizedName": "KATHLEEN WHARTON",
+      "medicareNumber": null
+    },
+    "episodeContext": {
+      "episodeDate": "2026-04-09",
+      "socDate": null,
+      "episodePeriod": null,
+      "billingPeriod": null,
+      "payer": "Medicare",
+      "assignedStaff": "Reese, Jaida RN",
+      "clinician": null,
+      "qaSpecialist": null,
+      "rfa": "01-SOC"
+    },
+    "workflowTypes": [
+      "SOC"
+    ],
+    "sourceSheets": [
+      "OASIS Tracking Report"
+    ],
+    "timingMetadata": {
+      "trackingDays": 17,
+      "daysInPeriod": null,
+      "daysLeft": 17,
+      "daysLeftBeforeOasisDueDate": 17,
+      "rawTrackingValues": [
+        "17"
+      ],
+      "rawDaysInPeriodValues": [],
+      "rawDaysLeftValues": []
+    },
+    "codingReviewStatus": "IN_PROGRESS",
+    "oasisQaStatus": "IN_PROGRESS",
+    "pocQaStatus": "NOT_STARTED",
+    "visitNotesQaStatus": "NOT_STARTED",
+    "billingPrepStatus": "NOT_STARTED",
+    "sourceRemarks": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "CODING",
+        "value": "In Progress"
+      },
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "field": "OASIS QA REMARKS",
+        "value": "04/09/2026"
+      }
+    ],
+    "sourceRowReferences": [
+      {
+        "workflowTypes": [
+          "SOC"
+        ],
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 18
+      }
+    ],
+    "sourceValues": [
+      {
+        "sourceSheet": "OASIS Tracking Report",
+        "sourceRowNumber": 18,
+        "values": {
+          "patientName": "WHARTON, KATHLEEN",
+          "episodeDate": "04/09/2026",
+          "assignedStaff": "Reese, Jaida RN",
+          "payer": "Medicare",
+          "rfa": "01-SOC",
+          "trackingDays": "17",
+          "daysInPeriod": null,
+          "daysLeft": null,
+          "coding": "In Progress",
+          "oasisQaRemarks": "04/09/2026",
+          "pocQaRemarks": null
+        }
+      }
+    ],
+    "importWarnings": []
+  },
+  "automationStepLogs": [
+    {
+      "timestamp": "2026-04-22T22:15:46.437Z",
+      "step": "login",
+      "message": "Reused the authenticated portal session established for this batch.",
+      "patientName": "Kathleen Wharton",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T22:13:57.518Z",
+      "step": "run_started",
+      "message": "Patient run started from the shared Playwright portal runner.",
+      "patientName": "Kathleen Wharton",
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/intake/69ab086262ad95579a2040b9/documents/note/oasis/69ab088a68c4fe9829782daf",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/intake/69ab086262ad95579a2040b9/documents/note/oasis/69ab088a68c4fe9829782daf",
+      "selectorUsed": null,
+      "found": [
+        "currentUrl=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/intake/69ab086262ad95579a2040b9/documents/note/oasis/69ab088a68c4fe9829782daf"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "subsidiaryId=star-home-health",
+        "portalBaseUrl=https://app.finalehealth.com",
+        "configuredDashboardUrl=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+        "resolvedDashboardUrl=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+        "currentContextRequiresReset=true"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T22:14:06.518Z",
+      "step": "dashboard_reset",
+      "message": "Reset the portal session to the provider dashboard before patient matching.",
+      "patientName": "Kathleen Wharton",
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/intake/69ab086262ad95579a2040b9/documents/note/oasis/69ab088a68c4fe9829782daf",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      "selectorUsed": null,
+      "found": [
+        "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Reset triggered: true",
+        "Current URL before patient: https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/intake/69ab086262ad95579a2040b9/documents/note/oasis/69ab088a68c4fe9829782daf",
+        "Current URL after reset: https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+        "Dashboard reset target URL: https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+        "Dashboard markers found: true",
+        "goto_base_url: dashboardDetected=true currentUrl=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T22:14:06.517Z",
+      "step": "dashboard_ready",
+      "message": "Provider dashboard ready confirmed using 'button:has-text(\"Search Patient\")'.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      "selectorUsed": null,
+      "found": [
+        "button:has-text(\"Search Patient\")"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "attempt=1 signal=button:has-text(\"Search Patient\") stableDom=true url=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard title=Finale Health buttons=89 inputs=7 text=Star Home Health Care Inc A Plus Home Health Systems LLC Active Home Healthcare LLC Aspire Home Health Avery Home Health LLC Meadows Home Health Star Home Health Care Inc View All AgenciesNotificationsNo notifications.View all notifications"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T22:14:21.837Z",
+      "step": "patient_lookup_entry",
+      "message": "Global patient search is available from the current authenticated page context.",
+      "patientName": "Kathleen Wharton",
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      "selectorUsed": "getByText(/Search Patient/i) -> nearest clickable parent (present)",
+      "found": [
+        "getByText(/Search Patient/i) -> nearest clickable parent (present)"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Current URL before patient lookup: https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+        "Global search available in current context: true",
+        "Global search availability selector used: getByText(/Search Patient/i) -> nearest clickable parent (present)",
+        "Resolved global search trigger with present manual selector 'getByText(/Search Patient/i) -> nearest clickable parent (present)' even though Playwright visibility did not confirm it in the probe path.",
+        "[not_found] Global patient search button by accessible name count=0 visible=0 elapsedMs=46",
+        "[not_visible] Global patient search button containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=42 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=47 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search button containing Search Patient text count=1 visible=0 elapsedMs=47 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search visible control containing Search Patient text count=1 visible=0 elapsedMs=45 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search fin-button wrapper containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=45 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control inside fin-button wrapper count=1 visible=0 elapsedMs=42 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by shortcut hint count=0 visible=0 elapsedMs=33",
+        "[not_visible] Global patient search button containing search icon and patient-search text count=1 visible=0 elapsedMs=49 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by accessible name count=0 visible=0 elapsedMs=28",
+        "[not_visible] Global patient search button containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=40 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=46 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search button containing Search Patient text count=1 visible=0 elapsedMs=44 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search visible control containing Search Patient text count=1 visible=0 elapsedMs=45 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search fin-button wrapper containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=42 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control inside fin-button wrapper count=1 visible=0 elapsedMs=42 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by shortcut hint count=0 visible=0 elapsedMs=28",
+        "[not_visible] Global patient search button containing search icon and patient-search text count=1 visible=0 elapsedMs=42 samples=Search Patient...Ctrl K"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T22:14:21.837Z",
+      "step": "patient_lookup_entry",
+      "message": "Patient lookup will start after shared dashboard bootstrap confirmed provider dashboard readiness and global search availability.",
+      "patientName": "Kathleen Wharton",
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/intake/69ab086262ad95579a2040b9/documents/note/oasis/69ab088a68c4fe9829782daf",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      "selectorUsed": null,
+      "found": [
+        "patientLookupEntryContext=dashboard_reset_then_global_search",
+        "dashboard_context_established",
+        "globalSearchAvailable=true"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "currentUrlAfterLogin=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69ab074f8457f26b68c88693/intake/69ab086262ad95579a2040b9/documents/note/oasis/69ab088a68c4fe9829782daf",
+        "currentUrlBeforeSearch=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+        "resolvedDashboardUrl=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+        "globalSearchSelectorUsed=getByText(/Search Patient/i) -> nearest clickable parent (present)"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T22:14:21.838Z",
+      "step": "patient_search_start",
+      "message": "Starting patient search with 3 query variant(s).",
+      "patientName": "Kathleen Wharton",
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      "selectorUsed": null,
+      "found": [
+        "wharton, kathleen",
+        "WHARTON, KATHLEEN",
+        "Kathleen Wharton",
+        "KATHLEEN WHARTON",
+        "WHARTON, KATHLEEN"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Original workbook patient name: Kathleen Wharton",
+        "Normalized global search query: wharton, kathleen",
+        "Normalized expected display name: WHARTON, KATHLEEN",
+        "Workbook name variants: Kathleen Wharton | KATHLEEN WHARTON | WHARTON, KATHLEEN"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T22:14:53.391Z",
+      "step": "global_patient_search_open",
+      "message": "Clicked the global Search Patient trigger and found the visible search input.",
+      "patientName": "Kathleen Wharton",
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      "selectorUsed": "getByText(/Search Patient/i) -> nearest clickable parent (present)",
+      "found": [
+        "Search Patient trigger",
+        "search input"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Original workbook patient name: Kathleen Wharton",
+        "Normalized global search query: wharton, kathleen",
+        "Search trigger clicked: true",
+        "Trigger click method: dom_click",
+        "Search modal visible: true",
+        "Global search control selector used: getByText(/Search Patient/i) -> nearest clickable parent (present)",
+        "Global search surface selector used: Global patient search overlay/dialog containing an input",
+        "Global search modal selector used: div.search-header.open",
+        "Resolved global search trigger with present manual selector 'getByText(/Search Patient/i) -> nearest clickable parent (present)' even though Playwright visibility did not confirm it in the probe path.",
+        "[not_found] Global patient search button by accessible name count=0 visible=0 elapsedMs=31",
+        "[not_visible] Global patient search button containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=53 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=64 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search button containing Search Patient text count=1 visible=0 elapsedMs=48 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search visible control containing Search Patient text count=1 visible=0 elapsedMs=50 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search fin-button wrapper containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=47 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control inside fin-button wrapper count=1 visible=0 elapsedMs=61 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by shortcut hint count=0 visible=0 elapsedMs=32",
+        "[not_visible] Global patient search button containing search icon and patient-search text count=1 visible=0 elapsedMs=48 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by accessible name count=0 visible=0 elapsedMs=30",
+        "[not_visible] Global patient search button containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=44 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=55 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search button containing Search Patient text count=1 visible=0 elapsedMs=49 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search visible control containing Search Patient text count=1 visible=0 elapsedMs=49 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search fin-button wrapper containing Search Patient and Ctrl K text count=1 visible=0 elapsedMs=45 samples=Search Patient...Ctrl K",
+        "[not_visible] Global patient search control inside fin-button wrapper count=1 visible=0 elapsedMs=45 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search button by shortcut hint count=0 visible=0 elapsedMs=29",
+        "[not_visible] Global patient search button containing search icon and patient-search text count=1 visible=0 elapsedMs=49 samples=Search Patient...Ctrl K",
+        "[not_found] Global patient search dialog by accessible name count=0 visible=0 elapsedMs=33",
+        "[matched] Global patient search overlay/dialog containing an input count=1 visible=1 elapsedMs=59 samples=EscPatients Sort By 3Sort By×Full Name×asc×SOC Date×desc×Status×ascAdd another sort itemNo recent searchesSearch by:Status:ActivePendingOn-HoldLeadNon-AdmitDischarged",
+        "Search input found by confirmed Search patients placeholder selector.",
+        "[matched] Global patient search input by confirmed Search patients placeholder count=1 visible=1 elapsedMs=65"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T22:15:06.437Z",
+      "step": "patient_search_input",
+      "message": "Typed the normalized query into the global patient search and waited for results.",
+      "patientName": "Kathleen Wharton",
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      "selectorUsed": "input[type=\"text\"][placeholder*=\"Search patients\"]",
+      "found": [
+        "WHARTON, KATHLEEN MR# 168 Pending SOC: 4/9/2026 / DOB: 6/23/1944 LOS: 14 daysMedicare6930 East Granada Street Mesa AZ 85207(480)650-8499"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Search trigger clicked: true",
+        "Search input found: true",
+        "Typing into focused field succeeded: true",
+        "Used direct input fallback: false",
+        "Search query typed: wharton, kathleen",
+        "Result count: 1",
+        "Candidate search result texts: WHARTON, KATHLEEN MR# 168 Pending SOC: 4/9/2026 / DOB: 6/23/1944 LOS: 14 daysMedicare6930 East Granada Street Mesa AZ 85207(480)650-8499",
+        "attempt=1 rowCount=1 text=WHARTON, KATHLEEN MR# 168 Pending SOC: 4/9/2026 / DOB: 6/23/1944 LOS: 14 daysMedicare6930 East Granada Street Mesa AZ 85207(480)650-8499"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T22:15:31.938Z",
+      "step": "patient_search",
+      "message": "Global patient search completed with 1 candidate(s).",
+      "patientName": "Kathleen Wharton",
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      "selectorUsed": "getByText(/Search Patient/i) -> nearest clickable parent (present) -> input[type=\"text\"][placeholder*=\"Search patients\"] -> Global patient search result tiles containing ngb-highlight",
+      "found": [
+        "WHARTON, KATHLEEN MR# 168 Pending SOC: 4/9/2026 / DOB: 6/23/1944 LOS: 14 days Medicare 6930 East Granada Street Mesa AZ 85207 (480)650-8499"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Original workbook patient name: Kathleen Wharton",
+        "Normalized global search query: wharton, kathleen",
+        "Normalized expected display name: WHARTON, KATHLEEN",
+        "Global search control selector used: getByText(/Search Patient/i) -> nearest clickable parent (present)",
+        "Global search surface selector used: Global patient search overlay/dialog containing an input",
+        "Global search input selector used: input[type=\"text\"][placeholder*=\"Search patients\"]",
+        "Result selector used: Global patient search result tiles containing ngb-highlight",
+        "Search results ready: true",
+        "Visible result row count: 1",
+        "No results marker visible: false",
+        "Candidate search result texts: WHARTON, KATHLEEN MR# 168 Pending SOC: 4/9/2026 / DOB: 6/23/1944 LOS: 14 days Medicare 6930 East Granada Street Mesa AZ 85207 (480)650-8499",
+        "Result text sample: WHARTON, KATHLEEN MR# 168 Pending SOC: 4/9/2026 / DOB: 6/23/1944 LOS: 14 days Medicare 6930 East Granada Street Mesa AZ 85207 (480)650-8499",
+        "attempt=1 rowCount=1 text=WHARTON, KATHLEEN MR# 168 Pending SOC: 4/9/2026 / DOB: 6/23/1944 LOS: 14 daysMedicare6930 East Granada Street Mesa AZ 85207(480)650-8499",
+        "rowCount=1",
+        "noResultsVisible=false",
+        "Normalized query typed=wharton, kathleen",
+        "Normalized expected display name=WHARTON, KATHLEEN",
+        "candidate[1]=WHARTON, KATHLEEN MR# 168 Pending SOC: 4/9/2026 / DOB: 6/23/1944 LOS: 14 days Medicare 6930 East Granada Street Mesa AZ 85207 (480)650-8499",
+        "Candidate 'WHARTON, KATHLEEN MR# 168 Pending SOC: 4/9/2026 / DOB: 6/23/1944 LOS: 14 days Medicare 6930 East Granada Street Mesa AZ 85207 (480)650-8499' row='WHARTON, KATHLEEN MR# 168 Pending SOC: 4/9/2026 / DOB: 6/23/1944 LOS: 14 days Medicare 6930 East Granada Street Mesa AZ 85207 (480)650-8499' selector='Global patient search result tiles containing ngb-highlight' container='search-body__item ng-star-inserted' score=420 exact=true containsFullQuery=true containsFirstAndLast=true reasons=all patient name tokens present; ngb-highlight patient-name text starts with the normalized LAST, FIRST display name; row/card text contains both last and first name tokens; row text contains the full first-name segment"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T22:15:42.374Z",
+      "step": "patient_search_match_resolution",
+      "message": "Selected patient result 'WHARTON, KATHLEEN MR# 168 Pending SOC: 4/9/2026 / DOB: 6/23/1944 LOS: 14 days Medicare 6930 East Granada Street Mesa AZ 85207 (480)650-8499' from the global search.",
+      "patientName": "Kathleen Wharton",
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69d681738046230c4e145b4b/intake/69d6827c8e50743a08da00e0/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69d681738046230c4e145b4b/intake/69d6827c8e50743a08da00e0/calendar",
+      "selectorUsed": null,
+      "found": [
+        "WHARTON, KATHLEEN MR# 168 Pending SOC: 4/9/2026 / DOB: 6/23/1944 LOS: 14 days Medicare 6930 East Granada Street Mesa AZ 85207 (480)650-8499"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Matched patient result text: WHARTON, KATHLEEN MR# 168 Pending SOC: 4/9/2026 / DOB: 6/23/1944 LOS: 14 days Medicare 6930 East Granada Street Mesa AZ 85207 (480)650-8499",
+        "Matched row text: WHARTON, KATHLEEN MR# 168 Pending SOC: 4/9/2026 / DOB: 6/23/1944 LOS: 14 days Medicare 6930 East Granada Street Mesa AZ 85207 (480)650-8499",
+        "Normalized global search query: wharton, kathleen",
+        "Normalized expected display name: WHARTON, KATHLEEN",
+        "Clicked tile selector/container summary: Global patient search result tiles containing ngb-highlight :: search-body__item ng-star-inserted",
+        "all patient name tokens present",
+        "ngb-highlight patient-name text starts with the normalized LAST, FIRST display name",
+        "row/card text contains both last and first name tokens",
+        "row text contains the full first-name segment"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T22:15:42.374Z",
+      "step": "chart_open",
+      "message": "Opened the patient page from global search in read-only mode for WHARTON, KATHLEEN MR# 168 Pending SOC: 4/9/2026 / DOB: 6/23/1944 LOS: 14 days Medicare 6930 East Granada Street Mesa AZ 85207 (480)650-8499.",
+      "patientName": "Kathleen Wharton",
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69d681738046230c4e145b4b/intake/69d6827c8e50743a08da00e0/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69d681738046230c4e145b4b/intake/69d6827c8e50743a08da00e0/calendar",
+      "selectorUsed": "Global patient search result tiles containing ngb-highlight :: nearest clickable parent around ngb-highlight",
+      "found": [
+        "Documents",
+        "Clinical: , Functional: , Comorbidity:"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "Matched patient result text: WHARTON, KATHLEEN MR# 168 Pending SOC: 4/9/2026 / DOB: 6/23/1944 LOS: 14 days Medicare 6930 East Granada Street Mesa AZ 85207 (480)650-8499",
+        "Clicked patient result text: WHARTON, KATHLEEN MR# 168 Pending SOC: 4/9/2026 / DOB: 6/23/1944 LOS: 14 days Medicare 6930 East Granada Street Mesa AZ 85207 (480)650-8499",
+        "Clicked tile selector/container summary: Global patient search result tiles containing ngb-highlight :: search-body__item ng-star-inserted",
+        "Click target summary: Global patient search result tiles containing ngb-highlight :: nearest clickable parent around ngb-highlight",
+        "URL after patient navigation: https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69d681738046230c4e145b4b/intake/69d6827c8e50743a08da00e0/calendar",
+        "Used Enter retry: false",
+        "Dashboard URL changed: true",
+        "Chart/page markers found: Documents | Clinical: , Functional: , Comorbidity:",
+        "Preferred click target was the nearest clickable parent around the highlighted patient name.",
+        "all patient name tokens present",
+        "ngb-highlight patient-name text starts with the normalized LAST, FIRST display name",
+        "row/card text contains both last and first name tokens",
+        "row text contains the full first-name segment",
+        "attempt=1 urlChanged=true dashboardUrlChanged=true urlLooksLikePatientIntakePage=true chartMarkersFound=true markers=Documents | Clinical: , Functional: , Comorbidity: url=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69d681738046230c4e145b4b/intake/69d6827c8e50743a08da00e0/calendar"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T22:15:46.436Z",
+      "step": "patient_admission_status",
+      "message": "Captured patient admission status from chart header: Pending.",
+      "patientName": null,
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69d681738046230c4e145b4b/intake/69d6827c8e50743a08da00e0/calendar",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69d681738046230c4e145b4b/intake/69d6827c8e50743a08da00e0/calendar",
+      "selectorUsed": "Patient admission status badge in app-patient-status component",
+      "found": [
+        "Pending"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "[matched] Patient admission status badge in app-patient-status component count=1 visible=1 elapsedMs=77 samples=Pending"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T22:15:46.437Z",
+      "step": "shared_portal_access",
+      "message": "Shared portal access reached the patient chart and produced 2 workflow context(s).",
+      "patientName": "Kathleen Wharton",
+      "urlBefore": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+      "urlAfter": "https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69d681738046230c4e145b4b/intake/69d6827c8e50743a08da00e0/calendar",
+      "selectorUsed": null,
+      "found": [
+        "coding:https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69d681738046230c4e145b4b/intake/69d6827c8e50743a08da00e0/calendar",
+        "qa:https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69d681738046230c4e145b4b/intake/69d6827c8e50743a08da00e0/calendar"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "matchStatus=EXACT",
+        "portalPatientId=none",
+        "portalAdmissionStatus=Pending",
+        "dashboardUrl=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/dashboard",
+        "chartUrl=https://app.finalehealth.com/provider/68adab62cdffc4e98756c3d0/client/69d681738046230c4e145b4b/intake/69d6827c8e50743a08da00e0/calendar"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T22:15:46.437Z",
+      "step": "patient_status_gate",
+      "message": "Portal patient status 'Pending' excludes this patient from autonomous QA evaluation.",
+      "patientName": "Kathleen Wharton",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "Pending"
+      ],
+      "missing": [],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "portalExclusionReason=pending"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    },
+    {
+      "timestamp": "2026-04-22T22:15:46.467Z",
+      "step": "coding_input_export",
+      "message": "Wrote fallback coding-input.json for downstream read-only diagnosis consumers.",
+      "patientName": "Kathleen Wharton",
+      "urlBefore": null,
+      "urlAfter": null,
+      "selectorUsed": null,
+      "found": [
+        "codingInputPath:C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\patients\\KATHLEEN_WHARTON__400ac8dc0cd939cb\\coding-input.json",
+        "diagnosisCount:0",
+        "primaryDiagnosisSelected:none",
+        "otherDiagnosisCount:0",
+        "codeConfidenceSummary:high:0 medium:0 low:0"
+      ],
+      "missing": [
+        "primary diagnosis"
+      ],
+      "openedDocumentLabel": null,
+      "openedDocumentUrl": null,
+      "evidence": [
+        "suggestedOnsetType:onset",
+        "matchStatus:EXACT"
+      ],
+      "retryCount": 0,
+      "safeReadConfirmed": true
+    }
+  ],
+  "notes": [
+    "Portal patient status 'Pending' excludes this patient from autonomous QA evaluation.",
+    "Portal admission status evidence: Pending",
+    "Fallback coding input exported: C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\patients\\KATHLEEN_WHARTON__400ac8dc0cd939cb\\coding-input.json"
+  ]
+}

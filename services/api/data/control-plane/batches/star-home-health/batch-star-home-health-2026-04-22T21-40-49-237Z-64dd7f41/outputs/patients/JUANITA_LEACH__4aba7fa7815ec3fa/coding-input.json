@@ -1,0 +1,27 @@
+{
+  "primaryDiagnosis": {
+    "code": "I10",
+    "description": "Essential (primary) hypertension",
+    "confidence": "high"
+  },
+  "otherDiagnoses": [
+    {
+      "code": "I50.9",
+      "description": "Heart failure, unspecified",
+      "confidence": "high"
+    },
+    {
+      "code": "I00",
+      "description": "Diagnosis code candidate from extracted document metadata",
+      "confidence": "high"
+    }
+  ],
+  "suggestedOnsetType": "onset",
+  "suggestedSeverity": 2,
+  "comorbidityFlags": {
+    "pvd_pad": false,
+    "diabetes": false,
+    "none": true
+  },
+  "notes": []
+}

@@ -1,0 +1,596 @@
+[
+  {
+    "field_key": "patient_name",
+    "current_chart_value": "Cora Antonio",
+    "proposed_value": null,
+    "comparison_status": "unsupported",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "medium"
+  },
+  {
+    "field_key": "dob",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "unsupported",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "medium"
+  },
+  {
+    "field_key": "soc_date",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "unsupported",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "medium"
+  },
+  {
+    "field_key": "referral_date",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "preferred_language",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "unsupported",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "medium"
+  },
+  {
+    "field_key": "interpreter_needed",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "primary_reason_for_home_health_medical_necessity",
+    "current_chart_value": null,
+    "proposed_value": "Patient is seen in the home because there is a medical necessity for this visit to be conducted in the patient's environment. The patient suffers from recent pain exacerbated by activity which is contraindicated for the patient to be seen in an office setting today.",
+    "comparison_status": "requires_human_review",
+    "confidence": 0.78,
+    "rationale": "The evidence directly states the medical necessity for the home visit.",
+    "source_spans": [
+      "This visit with a FTF encounter with the patient in the home is not a visit of convenience. Patient is seen in the home because there is a medical necessity for this visit to be conducted in the patient's environment. The patient suffers from recent with pain exacerbated by activity which is contraindicated for the patient to be seen in an office setting today."
+    ],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "admit_reason_to_home_health",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "homebound_narrative",
+    "current_chart_value": null,
+    "proposed_value": "She ambulates with a cane or walker for assistance. homebound status. PCP in the office, returns to baseline, and/or no longer fits the criteria, the homebound",
+    "comparison_status": "requires_human_review",
+    "confidence": 0.8,
+    "rationale": "The evidence directly describes the patient's homebound status.",
+    "source_spans": [
+      "She ambulates with a cane or walker for assistance. homebound status. PCP in the office, returns to baseline, and/or no longer fits the criteria, the homebound"
+    ],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "homebound_supporting_factors",
+    "current_chart_value": null,
+    "proposed_value": "uses_walker",
+    "comparison_status": "requires_human_review",
+    "confidence": 0.73,
+    "rationale": "The evidence directly supports the use of a walker as a factor for homebound status.",
+    "source_spans": [
+      "She ambulates with a cane or walker for assistance. homebound status. PCP in the office, returns to baseline, and/or no longer fits the criteria, the homebound"
+    ],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "recent_hospitalization_discharge_date",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "recent_hospitalization_facility",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "caregiver_name",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "unsupported",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "medium"
+  },
+  {
+    "field_key": "caregiver_relationship",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "unsupported",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "medium"
+  },
+  {
+    "field_key": "caregiver_phone",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "living_situation",
+    "current_chart_value": null,
+    "proposed_value": "husband and son in a 2 storey house, patient stays on the first floor. Non-",
+    "comparison_status": "missing_in_chart",
+    "confidence": 0.72,
+    "rationale": "The evidence directly describes the patient's living situation.",
+    "source_spans": [
+      "husband and son in a 2 storey house, patient stays on the first floor. Non-"
+    ],
+    "reviewer_priority": "medium"
+  },
+  {
+    "field_key": "prior_functioning",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "functional_limitations",
+    "current_chart_value": null,
+    "proposed_value": "weakness",
+    "comparison_status": "requires_human_review",
+    "confidence": 0.76,
+    "rationale": "The evidence directly describes the patient's functional limitation due to muscle weakness.",
+    "source_spans": [
+      "Muscle weakness (M62.81) Muscle weakness (generalized) modified 16 Apr, 2026"
+    ],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "therapy_need",
+    "current_chart_value": null,
+    "proposed_value": "PT/OT to evaluate and treat appropriately to increase functionality, decreases debility and",
+    "comparison_status": "requires_human_review",
+    "confidence": 0.77,
+    "rationale": "The evidence directly states the need for physical and occupational therapy.",
+    "source_spans": [
+      "PT/OT to evaluate and treat appropriately to increase functionality, decreases debility and"
+    ],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "patient_summary_narrative",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "skilled_interventions",
+    "current_chart_value": null,
+    "proposed_value": "PT/OT to evaluate and treat appropriately to increase functionality, decreases debility and",
+    "comparison_status": "requires_human_review",
+    "confidence": 0.8,
+    "rationale": "The evidence directly states the need for skilled interventions.",
+    "source_spans": [
+      "PT/OT to evaluate and treat appropriately to increase functionality, decreases debility and"
+    ],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "discipline_frequencies",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "plan_for_next_visit",
+    "current_chart_value": null,
+    "proposed_value": "PT/OT to evaluate and treat appropriately to increase functionality, decreases debility and",
+    "comparison_status": "requires_human_review",
+    "confidence": 0.78,
+    "rationale": "The evidence directly states the plan for the next visit.",
+    "source_spans": [
+      "PT/OT to evaluate and treat appropriately to increase functionality, decreases debility and"
+    ],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "patient_caregiver_goals",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "care_plan_problems_goals_interventions",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "fall_risk_narrative",
+    "current_chart_value": null,
+    "proposed_value": "a recent fall and was found to have significant hyponatremia and corrected with Sodium Fall (W19.XXXA) Unspecified fall, initial encounter modified 16 Apr, 2026 Muscle weakness (M62.81) Muscle weakness (generalized) modified 16 Apr, 2026",
+    "comparison_status": "requires_human_review",
+    "confidence": 0.7,
+    "rationale": "The evidence directly describes the fall risk narrative.",
+    "source_spans": [
+      "a recent fall and was found to have significant hyponatremia and corrected with Sodium Fall (W19.XXXA) Unspecified fall, initial encounter modified 16 Apr, 2026 Muscle weakness (M62.81) Muscle weakness (generalized) modi"
+    ],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "respiratory_status",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "integumentary_wound_status",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "pain_assessment_narrative",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "emotional_behavioral_status",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "past_medical_history",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "immunization_status",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "diagnosis_candidates",
+    "current_chart_value": null,
+    "proposed_value": [
+      {
+        "description": "Other specified counseling modified",
+        "icd10_code": "Z71.89"
+      },
+      {
+        "description": "Insomnia, unspecified modified 16 Apr, 2026",
+        "icd10_code": "G47.00"
+      },
+      {
+        "description": "Muscle weakness (generalized) modified 16 Apr, 2026",
+        "icd10_code": "M62.81"
+      },
+      {
+        "description": "Unsteadiness on feet modified 16 Apr, 2026",
+        "icd10_code": "R26.81"
+      },
+      {
+        "description": "Unspecified fall, initial encounter modified 16 Apr, 2026",
+        "icd10_code": "W19.XXXA"
+      },
+      {
+        "description": "Hypo-osmolality and hyponatremia modified 16 Apr, 2026",
+        "icd10_code": "E87.1"
+      },
+      {
+        "description": "Chronic kidney disease, unspecified modified 16 Apr",
+        "icd10_code": "N18.9"
+      },
+      {
+        "description": "Hyperlipidemia, unspecified modified 16 Apr, 2026",
+        "icd10_code": "E78.5"
+      }
+    ],
+    "comparison_status": "requires_human_review",
+    "confidence": 0.74,
+    "rationale": "Diagnosis candidates extracted from referral evidence.",
+    "source_spans": [
+      "Z71.89) Other specified counseling modified",
+      "G47.00) Insomnia, unspecified modified 16 Apr, 2026",
+      "M62.81) Muscle weakness (generalized) modified 16 Apr, 2026",
+      "R26.81) Unsteadiness on feet modified 16 Apr, 2026",
+      "W19.XXXA) Unspecified fall, initial encounter modified 16 Apr, 2026",
+      "E87.1) Hypo-osmolality and hyponatremia modified 16 Apr, 2026",
+      "N18.9) Chronic kidney disease, unspecified modified 16 Apr",
+      "E78.5) Hyperlipidemia, unspecified modified 16 Apr, 2026"
+    ],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "primary_diagnosis",
+    "current_chart_value": "I12.9 - Hypertensive chronic kidney disease",
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "secondary_diagnoses",
+    "current_chart_value": [
+      "N18.9 - Chronic kidney disease, unspecified"
+    ],
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "medication_list",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "allergy_list",
+    "current_chart_value": [
+      "No Known Allergies"
+    ],
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "special_treatments_o0110",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "injectable_medications",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "high_risk_medication_notes",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "gg_self_care",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "gg_mobility",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "neurological_status",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "eyes_ears_status",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "cardiovascular_status",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "gastrointestinal_status",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "genitourinary_status",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "mahc10_fall_risk",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "norton_scale",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "wound_risk_review",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "hospitalization_risk_summary",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "patient_coordination_orders",
+    "current_chart_value": null,
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  },
+  {
+    "field_key": "code_status",
+    "current_chart_value": "full_code",
+    "proposed_value": null,
+    "comparison_status": "requires_human_review",
+    "confidence": 0,
+    "rationale": "No referral proposal was available for this field.",
+    "source_spans": [],
+    "reviewer_priority": "high"
+  }
+]

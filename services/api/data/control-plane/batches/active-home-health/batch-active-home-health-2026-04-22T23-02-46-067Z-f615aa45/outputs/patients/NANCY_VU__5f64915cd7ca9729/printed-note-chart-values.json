@@ -1,0 +1,187 @@
+{
+  "generatedAt": "2026-04-23T00:41:00.068Z",
+  "source": "printed_note_ocr",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\evidence\\NANCY_VU__5f64915cd7ca9729\\oasis-printed-note\\extracted-text.txt",
+  "llmInputSource": "fact_pack_primary",
+  "extractedFieldCount": 9,
+  "invocationModelId": "us.amazon.nova-lite-v1:0",
+  "currentChartValues": {
+    "primary_diagnosis": "J96.01 - Acute respiratory failure with",
+    "secondary_diagnoses": [
+      "I12.0 - Hyp chr kidney disease W stage 5 chr",
+      "N18.6 - End stage renal disease",
+      "Z99.2 - Dependence on renal dialysis",
+      "E78.5 - Hyperlipidemia, unspecified"
+    ],
+    "medication_list": [
+      "2.5 mg",
+      "10 mg",
+      "50 mg",
+      "100 mg"
+    ],
+    "allergy_list": [
+      "No Known Allergies"
+    ],
+    "homebound_supporting_factors": [
+      "dementia",
+      "bedbound",
+      "room air saturation <50%",
+      "BVM/NRB",
+      "continuous BiPAP",
+      "stat hemodialysis",
+      "acute on chronic",
+      "PT/OT/SLP evaluations",
+      "dependence for all ADLs and mobility",
+      "manual wheelchair at home",
+      "bilateral lower-extremity weakness",
+      "1:1 supervision for feeding",
+      "visual impairment",
+      "cognitive deficits"
+    ],
+    "functional_limitations": [
+      "Ambulation",
+      "Dyspnea with minimal exertion",
+      "Endurance",
+      "Hearing"
+    ],
+    "therapy_need": "Weakness and pain from recent surgery",
+    "pain_assessment_narrative": "Experiencing pain impairs/restricts mobility",
+    "code_status": "full_code"
+  },
+  "extractedFieldValues": [
+    {
+      "field_key": "primary_diagnosis",
+      "current_value": "J96.01 - Acute respiratory failure with",
+      "confidence": 0.99,
+      "source_spans": [
+        "PRIMARY DIAGNOSIS Onset Date Severity 04/04/2026 J96.01 - Acute respiratory failure with"
+      ]
+    },
+    {
+      "field_key": "secondary_diagnoses",
+      "current_value": [
+        "I12.0 - Hyp chr kidney disease W stage 5 chr",
+        "N18.6 - End stage renal disease",
+        "Z99.2 - Dependence on renal dialysis",
+        "E78.5 - Hyperlipidemia, unspecified"
+      ],
+      "confidence": 0.98,
+      "source_spans": [
+        "I12.0 - Hyp chr kidney disease W stage 5 chr",
+        "N18.6 - End stage renal disease",
+        "Z99.2 - Dependence on renal dialysis"
+      ]
+    },
+    {
+      "field_key": "medication_list",
+      "current_value": [
+        "2.5 mg",
+        "10 mg",
+        "50 mg",
+        "100 mg"
+      ],
+      "confidence": 0.9,
+      "source_spans": [
+        "1 Tab Twice a day 2.5 mg",
+        "1 Tab Once a day at 10 mg",
+        "1 Tab Thrice a day 50 mg",
+        "1 Tab Once a day 100 mg"
+      ]
+    },
+    {
+      "field_key": "allergy_list",
+      "current_value": [
+        "No Known Allergies"
+      ],
+      "confidence": 0.92,
+      "source_spans": [
+        "None known"
+      ]
+    },
+    {
+      "field_key": "homebound_supporting_factors",
+      "current_value": [
+        "dementia",
+        "bedbound",
+        "room air saturation <50%",
+        "BVM/NRB",
+        "continuous BiPAP",
+        "stat hemodialysis",
+        "acute on chronic",
+        "PT/OT/SLP evaluations",
+        "dependence for all ADLs and mobility",
+        "manual wheelchair at home",
+        "bilateral lower-extremity weakness",
+        "1:1 supervision for feeding",
+        "visual impairment",
+        "cognitive deficits"
+      ],
+      "confidence": 0.9,
+      "source_spans": [
+        "dementia",
+        "bedbound at home",
+        "room air saturation <50%",
+        "BVM/NRB",
+        "continuous BiPAP",
+        "stat hemodialysis",
+        "acute on chronic",
+        "PT/OT/SLP evaluations",
+        "dependence for all ADLs and mobility",
+        "manual wheelchair at home",
+        "bilateral lower-extremity weakness",
+        "1:1 supervision for feeding",
+        "visual impairment",
+        "cognitive deficits"
+      ]
+    },
+    {
+      "field_key": "functional_limitations",
+      "current_value": [
+        "Ambulation",
+        "Dyspnea with minimal exertion",
+        "Endurance",
+        "Hearing"
+      ],
+      "confidence": 0.96,
+      "source_spans": [
+        "Dyspnea on minimal exertion",
+        "6 - Endurance",
+        "7 Ambulation"
+      ]
+    },
+    {
+      "field_key": "therapy_need",
+      "current_value": "Weakness and pain from recent surgery",
+      "confidence": 0.85,
+      "source_spans": [
+        "Weakness and pain from recent surgery"
+      ]
+    },
+    {
+      "field_key": "pain_assessment_narrative",
+      "current_value": "Experiencing pain impairs/restricts mobility",
+      "confidence": 0.8,
+      "source_spans": [
+        "Experiencing pain impairs/restricts mobility"
+      ]
+    },
+    {
+      "field_key": "code_status",
+      "current_value": "full_code",
+      "confidence": 0.98,
+      "source_spans": [
+        "Full Code"
+      ]
+    }
+  ],
+  "warnings": [
+    "LLM input source: fact_pack_primary.",
+    "Fact pack coverage: diagnoses, assessmentValues, homeboundEvidence, skilledNeedEvidence, hospitalizationReasons, medications, allergies, supportingSnippets.",
+    "Fact pack coverage score: 1.",
+    "Prompt character estimate: 3668.",
+    "Fallback reason: none.",
+    "Deterministic printed-note chart values: primary_diagnosis, secondary_diagnoses, code_status, functional_limitations, allergy_list.",
+    "Selected option labels detected: 176.",
+    "Printed-note chart-value extraction used inference profile us.amazon.nova-lite-v1:0."
+  ]
+}

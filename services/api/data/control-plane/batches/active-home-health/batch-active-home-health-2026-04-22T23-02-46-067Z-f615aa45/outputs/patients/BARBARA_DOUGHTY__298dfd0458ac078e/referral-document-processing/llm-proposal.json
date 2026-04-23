@@ -1,0 +1,132 @@
+{
+  "patient_context": {
+    "patient_name": null,
+    "dob": null,
+    "soc_date": null,
+    "referral_date": null
+  },
+  "proposed_field_values": [],
+  "diagnosis_candidates": [
+    {
+      "description": "Diagnosis code candidate from extracted document metadata",
+      "icd10_code": "I88.5014",
+      "confidence": 0,
+      "source_spans": [
+        "I88.5014 Diagnosis code candidate from extracted document metadata"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Diagnosis code candidate from extracted document metadata",
+      "icd10_code": "I06",
+      "confidence": 0,
+      "source_spans": [
+        "I06 Diagnosis code candidate from extracted document metadata"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Diagnosis code candidate from extracted document metadata",
+      "icd10_code": "I00",
+      "confidence": 0,
+      "source_spans": [
+        "I00 Diagnosis code candidate from extracted document metadata"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Diagnosis code candidate from extracted document metadata",
+      "icd10_code": "I08",
+      "confidence": 0,
+      "source_spans": [
+        "I08 Diagnosis code candidate from extracted document metadata"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Diagnosis code candidate from extracted document metadata",
+      "icd10_code": "I16",
+      "confidence": 0,
+      "source_spans": [
+        "I16 Diagnosis code candidate from extracted document metadata"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Diagnosis code candidate from extracted document metadata",
+      "icd10_code": "I23",
+      "confidence": 0,
+      "source_spans": [
+        "I23 Diagnosis code candidate from extracted document metadata"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Diagnosis code candidate from extracted document metadata",
+      "icd10_code": "I30",
+      "confidence": 0,
+      "source_spans": [
+        "I30 Diagnosis code candidate from extracted document metadata"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Diagnosis code candidate from extracted document metadata",
+      "icd10_code": "I38",
+      "confidence": 0,
+      "source_spans": [
+        "I38 Diagnosis code candidate from extracted document metadata"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    }
+  ],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "preferred_language",
+    "interpreter_needed",
+    "primary_reason_for_home_health_medical_necessity",
+    "admit_reason_to_home_health",
+    "homebound_narrative",
+    "homebound_supporting_factors",
+    "recent_hospitalization_discharge_date",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "living_situation",
+    "prior_functioning",
+    "functional_limitations",
+    "therapy_need",
+    "patient_summary_narrative",
+    "skilled_interventions",
+    "discipline_frequencies",
+    "plan_for_next_visit",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "fall_risk_narrative",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status",
+    "code_status"
+  ],
+  "warnings": [
+    "LLM input source: fact_pack_plus_raw_fallback.",
+    "Fact pack coverage: diagnoses.",
+    "Fact pack coverage score: 0.25.",
+    "Prompt character estimate: 3027.",
+    "Fallback reason: needEvidence, homeboundEvidence, supportingEvidence.",
+    "Raw fallback appended for missing coverage: needEvidence, homeboundEvidence, supportingEvidence."
+  ]
+}

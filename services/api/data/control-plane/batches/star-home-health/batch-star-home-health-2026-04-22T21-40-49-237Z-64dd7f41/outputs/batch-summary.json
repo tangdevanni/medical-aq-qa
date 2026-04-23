@@ -1,0 +1,175 @@
+{
+  "batchId": "batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41",
+  "status": "COMPLETED",
+  "startedAt": "2026-04-22T21:41:23.365Z",
+  "completedAt": "2026-04-22T22:34:44.246Z",
+  "lastUpdatedAt": "2026-04-22T22:34:44.246Z",
+  "totalWorkItems": 14,
+  "automationEligible": 14,
+  "processed": 14,
+  "totalCompleted": 0,
+  "totalBlocked": 14,
+  "totalFailed": 0,
+  "totalNeedsHumanReview": 0,
+  "totalReadyForBillingPrep": 0,
+  "totalParserExceptions": 0,
+  "percentComplete": 100,
+  "currentlyRunningCount": 0,
+  "currentBatchStatus": "COMPLETED",
+  "complete": 0,
+  "blocked": 14,
+  "failed": 0,
+  "needsHumanReview": 0,
+  "parserExceptions": 0,
+  "qaOutcomes": {
+    "READY_FOR_BILLING_PREP": 0,
+    "INCOMPLETE": 0,
+    "MISSING_DOCUMENTS": 6,
+    "PORTAL_NOT_FOUND": 0,
+    "PORTAL_MISMATCH": 8,
+    "AMBIGUOUS_PATIENT": 0,
+    "NEEDS_MANUAL_QA": 0
+  },
+  "patientRuns": [
+    {
+      "workItemId": "AMEERA_ALSAEDI__5844dd3b5b7e0b21",
+      "patientName": "Ameera Alsaedi",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Diagnosis code candidates: Z48.89, M17.0, M47.812, R20.0, M54.12, G56.01",
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\patient-results\\AMEERA_ALSAEDI__5844dd3b5b7e0b21.json"
+    },
+    {
+      "workItemId": "ANNETTE_ROMO__8a6e655fe12d21ef",
+      "patientName": "Annette Romo",
+      "processingStatus": "BLOCKED",
+      "executionStep": "PATIENT_STATUS_EXCLUDED",
+      "progressPercent": 100,
+      "qaOutcome": "PORTAL_MISMATCH",
+      "errorSummary": "Portal patient status 'Pending' excludes this patient from autonomous QA evaluation.",
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\patient-results\\ANNETTE_ROMO__8a6e655fe12d21ef.json"
+    },
+    {
+      "workItemId": "BRENDA_ROLLINS__9a8346df18dadf61",
+      "patientName": "Brenda Rollins",
+      "processingStatus": "BLOCKED",
+      "executionStep": "PATIENT_STATUS_EXCLUDED",
+      "progressPercent": 100,
+      "qaOutcome": "PORTAL_MISMATCH",
+      "errorSummary": "Portal patient status 'Pending' excludes this patient from autonomous QA evaluation.",
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\patient-results\\BRENDA_ROLLINS__9a8346df18dadf61.json"
+    },
+    {
+      "workItemId": "JAMES_GALEK__d5a27c176c33c4d5",
+      "patientName": "James Galek",
+      "processingStatus": "BLOCKED",
+      "executionStep": "PATIENT_STATUS_EXCLUDED",
+      "progressPercent": 100,
+      "qaOutcome": "PORTAL_MISMATCH",
+      "errorSummary": "Portal patient status 'Pending' excludes this patient from autonomous QA evaluation.",
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\patient-results\\JAMES_GALEK__d5a27c176c33c4d5.json"
+    },
+    {
+      "workItemId": "JONATHAN_COLVIN__11dafa910e272165",
+      "patientName": "Jonathan Colvin",
+      "processingStatus": "BLOCKED",
+      "executionStep": "PATIENT_STATUS_EXCLUDED",
+      "progressPercent": 100,
+      "qaOutcome": "PORTAL_MISMATCH",
+      "errorSummary": "Portal patient status 'Non-Admit' excludes this patient from autonomous QA evaluation.",
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\patient-results\\JONATHAN_COLVIN__11dafa910e272165.json"
+    },
+    {
+      "workItemId": "JUANITA_LEACH__4aba7fa7815ec3fa",
+      "patientName": "Juanita Leach",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Diagnosis code candidates: I00, I10, I25, I50, I50.9",
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\patient-results\\JUANITA_LEACH__4aba7fa7815ec3fa.json"
+    },
+    {
+      "workItemId": "JUDITH_MOORE__8cdf2a7826b753ae",
+      "patientName": "Judith Moore",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Diagnosis code candidates: I51",
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\patient-results\\JUDITH_MOORE__8cdf2a7826b753ae.json"
+    },
+    {
+      "workItemId": "JULIANNE_FICZERI__0a0fe1e727dce03e",
+      "patientName": "Julianne Ficzeri",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Diagnosis code candidates: M17.11, I18, I20, I50, I00, I25",
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\patient-results\\JULIANNE_FICZERI__0a0fe1e727dce03e.json"
+    },
+    {
+      "workItemId": "KATHLEEN_WHARTON__400ac8dc0cd939cb",
+      "patientName": "Kathleen Wharton",
+      "processingStatus": "BLOCKED",
+      "executionStep": "PATIENT_STATUS_EXCLUDED",
+      "progressPercent": 100,
+      "qaOutcome": "PORTAL_MISMATCH",
+      "errorSummary": "Portal patient status 'Pending' excludes this patient from autonomous QA evaluation.",
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\patient-results\\KATHLEEN_WHARTON__400ac8dc0cd939cb.json"
+    },
+    {
+      "workItemId": "OLIVIER_BIZIMANA__0b105019165e9e33",
+      "patientName": "Olivier Bizimana",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Diagnosis code candidates: M54.16, M47.817, G62.9, Z79.891",
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\patient-results\\OLIVIER_BIZIMANA__0b105019165e9e33.json"
+    },
+    {
+      "workItemId": "RONNIE_GLASPIE__ab97bfb9243f0e28",
+      "patientName": "Ronnie Glaspie",
+      "processingStatus": "BLOCKED",
+      "executionStep": "BLOCKED",
+      "progressPercent": 100,
+      "qaOutcome": "MISSING_DOCUMENTS",
+      "errorSummary": "Diagnosis code candidates: M17.0, I18, I20, I50, I00, I80.0",
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\patient-results\\RONNIE_GLASPIE__ab97bfb9243f0e28.json"
+    },
+    {
+      "workItemId": "SANDRA_FRAZIER__1224c36c5a8fb082",
+      "patientName": "Sandra Frazier",
+      "processingStatus": "BLOCKED",
+      "executionStep": "PATIENT_STATUS_EXCLUDED",
+      "progressPercent": 100,
+      "qaOutcome": "PORTAL_MISMATCH",
+      "errorSummary": "Portal patient status 'Non-Admit' excludes this patient from autonomous QA evaluation.",
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\patient-results\\SANDRA_FRAZIER__1224c36c5a8fb082.json"
+    },
+    {
+      "workItemId": "THEODORE_NORTHROP__be4c4cbaaa2205b3",
+      "patientName": "Theodore Northrop",
+      "processingStatus": "BLOCKED",
+      "executionStep": "PATIENT_STATUS_EXCLUDED",
+      "progressPercent": 100,
+      "qaOutcome": "PORTAL_MISMATCH",
+      "errorSummary": "Portal patient status 'Pending' excludes this patient from autonomous QA evaluation.",
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\patient-results\\THEODORE_NORTHROP__be4c4cbaaa2205b3.json"
+    },
+    {
+      "workItemId": "TRINIDAD_OCHOA__aef9f3f48d92a538",
+      "patientName": "Trinidad Ochoa",
+      "processingStatus": "BLOCKED",
+      "executionStep": "PATIENT_STATUS_EXCLUDED",
+      "progressPercent": 100,
+      "qaOutcome": "PORTAL_MISMATCH",
+      "errorSummary": "Portal patient status 'Pending' excludes this patient from autonomous QA evaluation.",
+      "resultBundlePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\patient-results\\TRINIDAD_OCHOA__aef9f3f48d92a538.json"
+    }
+  ]
+}

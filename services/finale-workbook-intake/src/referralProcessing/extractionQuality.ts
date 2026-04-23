@@ -78,9 +78,12 @@ export function evaluateDocumentExtractionQuality(input: {
   const containsDatePatterns = DATE_PATTERNS.some((pattern) => pattern.test(flattenedText));
   const containsSectionLikeHeadings = SECTION_HEADING_PATTERNS.some((pattern) => pattern.test(normalizedText));
   const likelyCorruptedEncoding = CORRUPTED_ENCODING_PATTERNS.some((pattern) => pattern.test(flattenedText));
+  const likelyRawPdfStructureText = input.fileType === "pdf" && input.extraction.rawExtractedTextSource === "dom" &&
+    domAnalysis.rawPdfStructureDetected;
   const likelyRequiresOcrRetry =
     (input.fileType === "pdf" && input.extraction.pdfType === "scanned_image_pdf" && flattenedText.length < 300) ||
-    ((input.fileType === "jpg" || input.fileType === "jpeg" || input.fileType === "png") && flattenedText.length < 200);
+    ((input.fileType === "jpg" || input.fileType === "jpeg" || input.fileType === "png") && flattenedText.length < 200) ||
+    likelyRawPdfStructureText;
 
   const rejectedReasons = new Set<DocumentExtractionQuality["rejectedReasons"][number]>();
   if (!normalizedText) {
@@ -88,6 +91,9 @@ export function evaluateDocumentExtractionQuality(input: {
   }
   if (domAnalysis.viewerChromeDetected) {
     rejectedReasons.add("viewer_chrome_only");
+  }
+  if (likelyRawPdfStructureText) {
+    rejectedReasons.add("pdf_structure_text");
   }
   if (flattenedText.length > 0 && flattenedText.length < 180) {
     rejectedReasons.add("too_short");

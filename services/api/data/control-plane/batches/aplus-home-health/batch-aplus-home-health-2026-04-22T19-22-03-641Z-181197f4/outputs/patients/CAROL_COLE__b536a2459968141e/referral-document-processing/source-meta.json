@@ -1,0 +1,25 @@
+{
+  "patientId": "CAROL_COLE__b536a2459968141e",
+  "selectedDocumentId": "CAROL_COLE__b536a2459968141e-referral-1",
+  "sourceDocuments": [
+    {
+      "documentId": "CAROL_COLE__b536a2459968141e-referral-1",
+      "sourceIndex": 0,
+      "sourceLabel": "📄 COLE, CAROL referral 03242026.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedSourceLabel": "cole-carol-referral-03242026-pdf",
+      "sourceType": "REFERRAL_ORDER",
+      "acquisitionMethod": "printed_pdf",
+      "selectionStatus": "selected",
+      "portalLabel": "📄 COLE, CAROL referral 03242026.pdf 📝 ✏️ 🗑️ 🔗",
+      "localFilePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\CAROL_COLE__b536a2459968141e\\documents\\cole-carol-referral-03242026-pdf\\source.pdf",
+      "effectiveTextSource": "ocr_text",
+      "fileType": "pdf",
+      "fileSizeBytes": 672974,
+      "extractedTextLength": 115093,
+      "selectedReason": "highest-ranked referral/admission-order source with local file preference",
+      "rejectedReasons": []
+    }
+  ],
+  "warnings": [],
+  "generatedAt": "2026-04-22T20:02:19.883Z"
+}

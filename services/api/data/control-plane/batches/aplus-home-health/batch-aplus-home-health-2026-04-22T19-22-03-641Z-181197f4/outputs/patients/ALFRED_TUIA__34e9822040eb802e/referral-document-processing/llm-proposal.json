@@ -1,0 +1,80 @@
+{
+  "patient_context": {
+    "patient_name": "Tuia, Alfred, S",
+    "dob": "12/02/1978",
+    "soc_date": null,
+    "referral_date": null
+  },
+  "proposed_field_values": [
+    {
+      "field_key": "functional_limitations",
+      "proposed_value": "weakness",
+      "confidence": 0.76,
+      "source_spans": [
+        "Weakness.",
+        "Muscle Weakness, Patient"
+      ],
+      "rationale": "The evidence directly mentions weakness and muscle weakness as functional limitations.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "fall_risk_narrative",
+      "proposed_value": "Brilinta for one week prior to injections, low risk for cardiovascular medications, and risk assessment plan I am requesting based on individual risk potential which I believe is in a low risk Weakness.",
+      "confidence": 0.7,
+      "source_spans": [
+        "Brilinta for one week prior to injections, low risk for cardiovascular medications, and risk assessment plan I am requesting based on individual risk potential which I believe is in a low risk Weakness."
+      ],
+      "rationale": "The evidence mentions a low risk for cardiovascular medications and a low risk based on individual risk potential.",
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [
+    {
+      "description": "L1 disc is normal in height and",
+      "icd10_code": "T12",
+      "confidence": 0.74,
+      "source_spans": [
+        "T12-L1 disc is normal in height and"
+      ],
+      "is_primary_candidate": true,
+      "requires_human_review": true
+    }
+  ],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "preferred_language",
+    "interpreter_needed",
+    "primary_reason_for_home_health_medical_necessity",
+    "admit_reason_to_home_health",
+    "homebound_narrative",
+    "homebound_supporting_factors",
+    "recent_hospitalization_discharge_date",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "living_situation",
+    "therapy_need",
+    "patient_summary_narrative",
+    "skilled_interventions",
+    "discipline_frequencies",
+    "plan_for_next_visit",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status",
+    "code_status"
+  ],
+  "warnings": [
+    "LLM input source: fact_pack_primary.",
+    "Fact pack coverage: diagnoses, medications, allergies, homeboundEvidence, skilledNeedEvidence, hospitalizationReasons, assessmentValues, supportingSnippets.",
+    "Fact pack coverage score: 1.",
+    "Prompt character estimate: 1667.",
+    "Fallback reason: none."
+  ]
+}

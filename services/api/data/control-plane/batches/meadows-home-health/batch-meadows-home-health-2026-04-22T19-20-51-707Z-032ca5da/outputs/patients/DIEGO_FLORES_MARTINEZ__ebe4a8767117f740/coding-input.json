@@ -1,0 +1,22 @@
+{
+  "primaryDiagnosis": {
+    "code": "I98",
+    "description": "specified secondary hypertension",
+    "confidence": "high"
+  },
+  "otherDiagnoses": [
+    {
+      "code": "I08",
+      "description": "Diagnosis code candidate from extracted document metadata",
+      "confidence": "high"
+    }
+  ],
+  "suggestedOnsetType": "onset",
+  "suggestedSeverity": 2,
+  "comorbidityFlags": {
+    "pvd_pad": false,
+    "diabetes": false,
+    "none": true
+  },
+  "notes": []
+}

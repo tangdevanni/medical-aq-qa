@@ -1,0 +1,122 @@
+{
+  "patient_context": {
+    "patient_name": "FLORES-MARTINEZ, Diego",
+    "dob": "07/09/1987",
+    "soc_date": null,
+    "referral_date": null
+  },
+  "proposed_field_values": [
+    {
+      "field_key": "fall_risk_narrative",
+      "proposed_value": "38-year-old male visited Sunrise Emergency room after a fall from an",
+      "confidence": 0.7,
+      "source_spans": [
+        "38-year-old male visited Sunrise Emergency room after a fall from an"
+      ],
+      "rationale": "The evidence directly describes the patient's fall risk narrative.",
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [
+    {
+      "description": "fracture",
+      "icd10_code": "S52.131A",
+      "confidence": 0.9,
+      "source_spans": [
+        "S52.131A fracture - (Primary)"
+      ],
+      "is_primary_candidate": true,
+      "requires_human_review": true
+    },
+    {
+      "description": "fracture",
+      "icd10_code": "S52.121A",
+      "confidence": 0.8,
+      "source_spans": [
+        "S52.121A fracture-",
+        "S52.121A fracture -"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Diagnosis code candidate",
+      "icd10_code": "I08",
+      "confidence": 0.7,
+      "source_spans": [
+        "I08 Diagnosis code candidate from extracted document metadata"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Diagnosis code candidate",
+      "icd10_code": "S52.131A",
+      "confidence": 0.7,
+      "source_spans": [
+        "S52.131A Diagnosis code candidate from extracted document metadata"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Diagnosis code candidate",
+      "icd10_code": "S52.121A",
+      "confidence": 0.7,
+      "source_spans": [
+        "S52.121A Diagnosis code candidate from extracted document metadata"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Diagnosis code candidate",
+      "icd10_code": "I98",
+      "confidence": 0.7,
+      "source_spans": [
+        "I98 Diagnosis code candidate from extracted document metadata"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    }
+  ],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "preferred_language",
+    "interpreter_needed",
+    "primary_reason_for_home_health_medical_necessity",
+    "admit_reason_to_home_health",
+    "homebound_narrative",
+    "homebound_supporting_factors",
+    "recent_hospitalization_discharge_date",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "living_situation",
+    "prior_functioning",
+    "functional_limitations",
+    "therapy_need",
+    "patient_summary_narrative",
+    "skilled_interventions",
+    "discipline_frequencies",
+    "plan_for_next_visit",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status",
+    "code_status"
+  ],
+  "warnings": [
+    "LLM input source: fact_pack_primary.",
+    "Fact pack coverage: diagnoses, medications, hospitalizationReasons, assessmentValues, supportingSnippets.",
+    "Fact pack coverage score: 1.",
+    "Prompt character estimate: 924.",
+    "Fallback reason: none."
+  ]
+}

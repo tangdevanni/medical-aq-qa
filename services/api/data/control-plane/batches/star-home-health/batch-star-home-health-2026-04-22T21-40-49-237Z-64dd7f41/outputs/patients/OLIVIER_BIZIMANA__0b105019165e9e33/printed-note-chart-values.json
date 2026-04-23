@@ -1,0 +1,120 @@
+{
+  "generatedAt": "2026-04-22T22:22:25.488Z",
+  "source": "printed_note_ocr",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\star-home-health\\batch-star-home-health-2026-04-22T21-40-49-237Z-64dd7f41\\outputs\\evidence\\OLIVIER_BIZIMANA__0b105019165e9e33\\oasis-printed-note\\extracted-text.txt",
+  "llmInputSource": "fact_pack_primary",
+  "extractedFieldCount": 7,
+  "invocationModelId": "us.amazon.nova-lite-v1:0",
+  "currentChartValues": {
+    "primary_diagnosis": "M47.27 Other spondylosis with",
+    "secondary_diagnoses": [
+      "G62.9 - Polyneuropathy, unspecified"
+    ],
+    "medication_list": [
+      "Cap Twice a day 300 mg",
+      "1 Tab Twice a day 50 mg"
+    ],
+    "allergy_list": [
+      "No Known Allergies"
+    ],
+    "homebound_supporting_factors": [
+      "BLE weakness",
+      "Cane",
+      "Walker"
+    ],
+    "functional_limitations": [
+      "Ambulation",
+      "Dyspnea with minimal exertion",
+      "Endurance"
+    ],
+    "code_status": "full_code"
+  },
+  "extractedFieldValues": [
+    {
+      "field_key": "primary_diagnosis",
+      "current_value": "M47.27 Other spondylosis with",
+      "confidence": 0.95,
+      "source_spans": [
+        "M47.27 Other spondylosis with"
+      ]
+    },
+    {
+      "field_key": "secondary_diagnoses",
+      "current_value": [
+        "G62.9 - Polyneuropathy, unspecified"
+      ],
+      "confidence": 0.98,
+      "source_spans": [
+        "G62.9 - Polyneuropathy, unspecified"
+      ]
+    },
+    {
+      "field_key": "medication_list",
+      "current_value": [
+        "Cap Twice a day 300 mg",
+        "1 Tab Twice a day 50 mg"
+      ],
+      "confidence": 0.9,
+      "source_spans": [
+        "Cap Twice a day 300 mg",
+        "1 Tab Twice a day 50 mg"
+      ]
+    },
+    {
+      "field_key": "allergy_list",
+      "current_value": [
+        "No Known Allergies"
+      ],
+      "confidence": 0.92,
+      "source_spans": [
+        "None known"
+      ]
+    },
+    {
+      "field_key": "homebound_supporting_factors",
+      "current_value": [
+        "BLE weakness",
+        "Cane",
+        "Walker"
+      ],
+      "confidence": 0.9,
+      "source_spans": [
+        "BLE weakness",
+        "Cane",
+        "Walker"
+      ]
+    },
+    {
+      "field_key": "functional_limitations",
+      "current_value": [
+        "Ambulation",
+        "Dyspnea with minimal exertion",
+        "Endurance"
+      ],
+      "confidence": 0.96,
+      "source_spans": [
+        "Dyspnea on minimal exertion",
+        "Severe pain on ambulation",
+        "6 - Endurance"
+      ]
+    },
+    {
+      "field_key": "code_status",
+      "current_value": "full_code",
+      "confidence": 0.98,
+      "source_spans": [
+        "Full Code"
+      ]
+    }
+  ],
+  "warnings": [
+    "LLM input source: fact_pack_primary.",
+    "Fact pack coverage: diagnoses, assessmentValues, homeboundEvidence, skilledNeedEvidence, hospitalizationReasons, medications, allergies, supportingSnippets.",
+    "Fact pack coverage score: 1.",
+    "Prompt character estimate: 2524.",
+    "Fallback reason: none.",
+    "Deterministic printed-note chart values: secondary_diagnoses, code_status, functional_limitations, allergy_list.",
+    "Selected option labels detected: 134.",
+    "Printed-note chart-value extraction used inference profile us.amazon.nova-lite-v1:0."
+  ]
+}

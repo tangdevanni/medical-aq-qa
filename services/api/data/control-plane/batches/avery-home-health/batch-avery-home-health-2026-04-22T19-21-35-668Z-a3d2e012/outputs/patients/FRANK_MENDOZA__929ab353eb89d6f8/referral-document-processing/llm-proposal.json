@@ -1,0 +1,90 @@
+{
+  "patient_context": {
+    "patient_name": null,
+    "dob": "04/02/1936",
+    "soc_date": "02/05/2026",
+    "referral_date": null
+  },
+  "proposed_field_values": [
+    {
+      "field_key": "fall_risk_narrative",
+      "proposed_value": "Falls risk assessment documented (In-House) Pt screen for fall risk; document no falls in past year or only 1 fall w/o injury in past year (GER) (In-House) No history of fall only 1 fall without injury within the past year.",
+      "confidence": 0.7,
+      "source_spans": [
+        "Falls risk assessment documented (In-House) Pt screen for fall risk; document no falls in past year or only 1 fall w/o injury in past year (GER) (In-House) No history of fall only 1 fall without injury within the past year."
+      ],
+      "rationale": "The evidence directly describes the falls risk assessment and history of falls, which is relevant to the fall risk narrative.",
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [
+    {
+      "description": "Age related debility",
+      "icd10_code": "R54",
+      "confidence": 0.8,
+      "source_spans": [
+        "Age related debility"
+      ],
+      "is_primary_candidate": true,
+      "requires_human_review": true
+    },
+    {
+      "description": "Asthma",
+      "icd10_code": "J45",
+      "confidence": 0.7,
+      "source_spans": [
+        "J45 Asthma"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Pneumoconiosis due to asbestos and other mineral fibers",
+      "icd10_code": "J61",
+      "confidence": 0.7,
+      "source_spans": [
+        "J61 Pneumoconiosis due to asbestos and other mineral fibers"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    }
+  ],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "preferred_language",
+    "interpreter_needed",
+    "primary_reason_for_home_health_medical_necessity",
+    "admit_reason_to_home_health",
+    "homebound_narrative",
+    "homebound_supporting_factors",
+    "recent_hospitalization_discharge_date",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "living_situation",
+    "prior_functioning",
+    "functional_limitations",
+    "therapy_need",
+    "patient_summary_narrative",
+    "skilled_interventions",
+    "discipline_frequencies",
+    "plan_for_next_visit",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status",
+    "code_status"
+  ],
+  "warnings": [
+    "LLM input source: fact_pack_primary.",
+    "Fact pack coverage: diagnoses, medications, homeboundEvidence, skilledNeedEvidence, assessmentValues, supportingSnippets.",
+    "Fact pack coverage score: 1.",
+    "Prompt character estimate: 2230.",
+    "Fallback reason: none."
+  ]
+}

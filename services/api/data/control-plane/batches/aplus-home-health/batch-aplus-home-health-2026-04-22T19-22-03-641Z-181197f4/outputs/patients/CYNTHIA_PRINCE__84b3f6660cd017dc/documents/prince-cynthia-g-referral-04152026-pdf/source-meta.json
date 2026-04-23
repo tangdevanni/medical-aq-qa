@@ -1,0 +1,79 @@
+{
+  "selectedSourceFile": "PRINCE CYNTHIA G REFERRAL 04152026.pdf",
+  "selectedSourceFileNormalized": "prince cynthia g referral 04152026.pdf",
+  "admissionOrderTitle": "📄 PRINCE, CYNTHIA G REFERRAL 04152026.pdf 📝 ✏️ 🗑️ 🔗",
+  "admissionOrderSelectorUsed": "File Uploads source document row by .file-item/.file-label or table row",
+  "sourceUrlBeforeClick": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69dfffd7d96fc635270a31a5/intake/69e0009fd9e5860c574aeeeb/calendar",
+  "sourceUrlAfterClick": "https://app.finalehealth.com/provider/63d76c41b32acffc9eb5d29d/client/69dfffd7d96fc635270a31a5/file-uploads",
+  "matchedReferralFileLabel": "PRINCE CYNTHIA G REFERRAL 04152026.pdf",
+  "normalizedFileLabels": [
+    "prince cynthia g referral 04152026.pdf",
+    "prince cynthia op notes 04172026.pdf"
+  ],
+  "matchedSourceDocuments": [
+    {
+      "label": "📄 PRINCE, CYNTHIA G REFERRAL 04152026.pdf",
+      "normalizedLabel": "prince cynthia g referral 04152026.pdf",
+      "score": 150
+    },
+    {
+      "label": "📄 PRINCE, CYNTHIA G REFERRAL 04152026.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedLabel": "prince cynthia g referral 04152026.pdf",
+      "score": 150
+    },
+    {
+      "label": "📄 Prince, Cynthia OP NOTES 04172026.pdf",
+      "normalizedLabel": "prince cynthia op notes 04172026.pdf",
+      "score": 20
+    },
+    {
+      "label": "📄 Prince, Cynthia OP NOTES 04172026.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedLabel": "prince cynthia op notes 04172026.pdf",
+      "score": 20
+    }
+  ],
+  "viewerDetected": true,
+  "viewerMarkerSamples": [
+    "of ⁨17⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools",
+    "Tools",
+    "Print"
+  ],
+  "printButtonDetected": true,
+  "printButtonVisible": true,
+  "printButtonSelectorUsed": "pdf-print #printButton, #printButton, pdf-shy-button[primarytoolbarid='printButton'] button",
+  "printClickSucceeded": false,
+  "pdfResponseDetected": true,
+  "pdfResponseUrl": "https://api.finalehealth.com/api/v1/files/69dfff3c29a83a1907c0bb5b?index=documents",
+  "pdfContentType": "application/pdf",
+  "pdfSavedPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\CYNTHIA_PRINCE__84b3f6660cd017dc\\documents\\prince-cynthia-g-referral-04152026-pdf\\source.pdf",
+  "pdfByteSize": 1121018,
+  "printAcquisitionMethodUsed": "network_pdf_response",
+  "printedPdfSaved": false,
+  "printedPdfPath": null,
+  "sourcePdfPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\CYNTHIA_PRINCE__84b3f6660cd017dc\\documents\\prince-cynthia-g-referral-04152026-pdf\\source.pdf",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\CYNTHIA_PRINCE__84b3f6660cd017dc\\documents\\prince-cynthia-g-referral-04152026-pdf\\extracted-text.txt",
+  "extractionResultPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\CYNTHIA_PRINCE__84b3f6660cd017dc\\documents\\prince-cynthia-g-referral-04152026-pdf\\extraction-result.json",
+  "extractedTextLength": 104,
+  "rawExtractedTextSource": "dom",
+  "domExtractionRejectedReasons": [
+    "viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS"
+  ],
+  "extractionSuccess": false,
+  "queuedForLlm": true,
+  "extractionPolicyDecision": {
+    "mode": "ocr_required",
+    "confidence": "high",
+    "reasons": [
+      "PDF appears image-based/scanned; OCR likely required",
+      "No printed PDF available",
+      "OCR is the cheapest acceptable option that preserves clinically meaningful content"
+    ],
+    "recommendedSourcePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\CYNTHIA_PRINCE__84b3f6660cd017dc\\documents\\prince-cynthia-g-referral-04152026-pdf\\source.pdf",
+    "fallbackSourcePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\CYNTHIA_PRINCE__84b3f6660cd017dc\\documents\\prince-cynthia-g-referral-04152026-pdf\\source.pdf",
+    "hasUsablePdfTextLayer": false,
+    "hasPdfSource": true,
+    "hasPrintedPdfSource": false,
+    "hasHtmlSource": false
+  },
+  "generatedAt": "2026-04-22T20:07:40.395Z"
+}

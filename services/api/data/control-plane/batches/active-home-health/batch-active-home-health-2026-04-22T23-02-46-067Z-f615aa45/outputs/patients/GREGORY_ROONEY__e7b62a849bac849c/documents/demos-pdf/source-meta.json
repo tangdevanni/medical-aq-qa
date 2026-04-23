@@ -1,0 +1,90 @@
+{
+  "selectedSourceFile": "Demos.pdf",
+  "selectedSourceFileNormalized": "demos.pdf",
+  "admissionOrderTitle": "📄 Demos.pdf 📝 ✏️ 🗑️ 🔗",
+  "admissionOrderSelectorUsed": "File Uploads source document row by .file-item/.file-label or table row",
+  "sourceUrlBeforeClick": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69d80330920c660c5379d047/intake/69d8045b99d2f6f4abf573d3/calendar",
+  "sourceUrlAfterClick": "https://app.finalehealth.com/provider/671a3d44a34d4e0dfe1340e7/client/69d80330920c660c5379d047/file-uploads",
+  "matchedReferralFileLabel": "Demos.pdf",
+  "normalizedFileLabels": [
+    "demos.pdf",
+    "h p.pdf",
+    "shh.pdf"
+  ],
+  "matchedSourceDocuments": [
+    {
+      "label": "📄 Demos.pdf",
+      "normalizedLabel": "demos.pdf",
+      "score": 20
+    },
+    {
+      "label": "📄 Demos.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedLabel": "demos.pdf",
+      "score": 20
+    },
+    {
+      "label": "📄 H & P.pdf",
+      "normalizedLabel": "h p.pdf",
+      "score": 20
+    },
+    {
+      "label": "📄 H & P.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedLabel": "h p.pdf",
+      "score": 20
+    },
+    {
+      "label": "📄 SHH.pdf",
+      "normalizedLabel": "shh.pdf",
+      "score": 20
+    },
+    {
+      "label": "📄 SHH.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedLabel": "shh.pdf",
+      "score": 20
+    }
+  ],
+  "viewerDetected": true,
+  "viewerMarkerSamples": [
+    "of ⁨1⁩Automatic ZoomActual SizePage FitPage Width⁨50⁩%⁨100⁩%⁨125⁩%⁨150⁩%⁨200⁩%⁨300⁩%⁨400⁩%90% Tools",
+    "Tools",
+    "Print"
+  ],
+  "printButtonDetected": true,
+  "printButtonVisible": true,
+  "printButtonSelectorUsed": "pdf-print #printButton, #printButton, pdf-shy-button[primarytoolbarid='printButton'] button",
+  "printClickSucceeded": false,
+  "pdfResponseDetected": true,
+  "pdfResponseUrl": "https://api.finalehealth.com/api/v1/files/69d8031ca1ad98f4a6a06d09?index=documents",
+  "pdfContentType": "application/pdf",
+  "pdfSavedPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\GREGORY_ROONEY__e7b62a849bac849c\\documents\\demos-pdf\\source.pdf",
+  "pdfByteSize": 590315,
+  "printAcquisitionMethodUsed": "network_pdf_response",
+  "printedPdfSaved": false,
+  "printedPdfPath": null,
+  "sourcePdfPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\GREGORY_ROONEY__e7b62a849bac849c\\documents\\demos-pdf\\source.pdf",
+  "extractedTextPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\GREGORY_ROONEY__e7b62a849bac849c\\documents\\demos-pdf\\extracted-text.txt",
+  "extractionResultPath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\GREGORY_ROONEY__e7b62a849bac849c\\documents\\demos-pdf\\extraction-result.json",
+  "extractedTextLength": 104,
+  "rawExtractedTextSource": "dom",
+  "domExtractionRejectedReasons": [
+    "viewer_chrome_text:AUTOMATIC ZOOM|ACTUAL SIZE|PAGE FIT|PAGE WIDTH|TOOLS"
+  ],
+  "extractionSuccess": false,
+  "queuedForLlm": true,
+  "extractionPolicyDecision": {
+    "mode": "ocr_required",
+    "confidence": "high",
+    "reasons": [
+      "PDF appears image-based/scanned; OCR likely required",
+      "No printed PDF available",
+      "OCR is the cheapest acceptable option that preserves clinically meaningful content"
+    ],
+    "recommendedSourcePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\GREGORY_ROONEY__e7b62a849bac849c\\documents\\demos-pdf\\source.pdf",
+    "fallbackSourcePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\active-home-health\\batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45\\outputs\\patients\\GREGORY_ROONEY__e7b62a849bac849c\\documents\\demos-pdf\\source.pdf",
+    "hasUsablePdfTextLayer": false,
+    "hasPdfSource": true,
+    "hasPrintedPdfSource": false,
+    "hasHtmlSource": false
+  },
+  "generatedAt": "2026-04-22T23:56:24.453Z"
+}

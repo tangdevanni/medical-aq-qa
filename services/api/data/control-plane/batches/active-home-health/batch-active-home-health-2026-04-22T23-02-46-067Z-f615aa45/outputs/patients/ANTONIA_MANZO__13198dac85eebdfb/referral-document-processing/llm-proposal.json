@@ -1,0 +1,107 @@
+{
+  "patient_context": {
+    "patient_name": null,
+    "dob": null,
+    "soc_date": null,
+    "referral_date": null
+  },
+  "proposed_field_values": [
+    {
+      "field_key": "primary_reason_for_home_health_medical_necessity",
+      "proposed_value": "ICD 10: S/P 1 L.TKA skilled nursing visit for",
+      "confidence": 0.78,
+      "source_spans": [
+        "ICD 10: S/P 1 L.TKA skilled nursing visit for"
+      ],
+      "rationale": "Direct evidence from the medical necessity summary supporting the primary reason for home health.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "therapy_need",
+      "proposed_value": "physical therapy, and use of supportive",
+      "confidence": 0.77,
+      "source_spans": [
+        "physical therapy, and use of supportive"
+      ],
+      "rationale": "Direct evidence from the skilled need evidence supporting the need for therapy.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "skilled_interventions",
+      "proposed_value": "physical therapy, and use of supportive",
+      "confidence": 0.8,
+      "source_spans": [
+        "physical therapy, and use of supportive"
+      ],
+      "rationale": "Direct evidence from the skilled interventions supporting the interventions needed.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "plan_for_next_visit",
+      "proposed_value": "physical therapy, and use of supportive",
+      "confidence": 0.78,
+      "source_spans": [
+        "physical therapy, and use of supportive"
+      ],
+      "rationale": "Direct evidence from the plan for next visit supporting the plan for the next visit.",
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [
+    {
+      "description": "March 31, 2026",
+      "icd10_code": "M17.12",
+      "confidence": 0.74,
+      "source_spans": [
+        "M17.12) March 31, 2026"
+      ],
+      "is_primary_candidate": true,
+      "requires_human_review": true
+    },
+    {
+      "description": "Unilateral primary osteoarthritis, left knee",
+      "icd10_code": "M17.12",
+      "confidence": 0.74,
+      "source_spans": [
+        "Unilateral primary osteoarthritis, left knee (M17.12)"
+      ],
+      "is_primary_candidate": true,
+      "requires_human_review": true
+    }
+  ],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "preferred_language",
+    "interpreter_needed",
+    "homebound_narrative",
+    "homebound_supporting_factors",
+    "recent_hospitalization_discharge_date",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "living_situation",
+    "prior_functioning",
+    "functional_limitations",
+    "patient_summary_narrative",
+    "discipline_frequencies",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "fall_risk_narrative",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status",
+    "code_status"
+  ],
+  "warnings": [
+    "LLM input source: fact_pack_primary.",
+    "Fact pack coverage: diagnoses, medications, allergies, skilledNeedEvidence, assessmentValues, supportingSnippets.",
+    "Fact pack coverage score: 0.8.",
+    "Prompt character estimate: 1356.",
+    "Fallback reason: none."
+  ]
+}

@@ -1,0 +1,25 @@
+"use strict";
+/*
+ * ATTENTION: An "eval-source-map" devtool has been used.
+ * This devtool is neither made for production nor for readable output files.
+ * It uses "eval()" calls to create a separate source file with attached SourceMaps in the browser devtools.
+ * If you are trying to read the output file, select a different devtool (https://webpack.js.org/configuration/devtool/)
+ * or disable the default devtool with "devtool: false".
+ * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
+ */
+exports.id = "vendor-chunks/@smithy+util-hex-encoding@4.2.2";
+exports.ids = ["vendor-chunks/@smithy+util-hex-encoding@4.2.2"];
+exports.modules = {
+
+/***/ "(rsc)/../../node_modules/.pnpm/@smithy+util-hex-encoding@4.2.2/node_modules/@smithy/util-hex-encoding/dist-es/index.js":
+/*!************************************************************************************************************************!*\
+  !*** ../../node_modules/.pnpm/@smithy+util-hex-encoding@4.2.2/node_modules/@smithy/util-hex-encoding/dist-es/index.js ***!
+  \************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   fromHex: () => (/* binding */ fromHex),\n/* harmony export */   toHex: () => (/* binding */ toHex)\n/* harmony export */ });\nconst SHORT_TO_HEX = {};\nconst HEX_TO_SHORT = {};\nfor (let i = 0; i < 256; i++) {\n    let encodedByte = i.toString(16).toLowerCase();\n    if (encodedByte.length === 1) {\n        encodedByte = `0${encodedByte}`;\n    }\n    SHORT_TO_HEX[i] = encodedByte;\n    HEX_TO_SHORT[encodedByte] = i;\n}\nfunction fromHex(encoded) {\n    if (encoded.length % 2 !== 0) {\n        throw new Error(\"Hex encoded strings must have an even number length\");\n    }\n    const out = new Uint8Array(encoded.length / 2);\n    for (let i = 0; i < encoded.length; i += 2) {\n        const encodedByte = encoded.slice(i, i + 2).toLowerCase();\n        if (encodedByte in HEX_TO_SHORT) {\n            out[i / 2] = HEX_TO_SHORT[encodedByte];\n        }\n        else {\n            throw new Error(`Cannot decode unrecognized sequence ${encodedByte} as hexadecimal`);\n        }\n    }\n    return out;\n}\nfunction toHex(bytes) {\n    let out = \"\";\n    for (let i = 0; i < bytes.byteLength; i++) {\n        out += SHORT_TO_HEX[bytes[i]];\n    }\n    return out;\n}\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiKHJzYykvLi4vLi4vbm9kZV9tb2R1bGVzLy5wbnBtL0BzbWl0aHkrdXRpbC1oZXgtZW5jb2RpbmdANC4yLjIvbm9kZV9tb2R1bGVzL0BzbWl0aHkvdXRpbC1oZXgtZW5jb2RpbmcvZGlzdC1lcy9pbmRleC5qcyIsIm1hcHBpbmdzIjoiOzs7OztBQUFBO0FBQ0E7QUFDQSxnQkFBZ0IsU0FBUztBQUN6QjtBQUNBO0FBQ0EsMEJBQTBCLFlBQVk7QUFDdEM7QUFDQTtBQUNBO0FBQ0E7QUFDTztBQUNQO0FBQ0E7QUFDQTtBQUNBO0FBQ0Esb0JBQW9CLG9CQUFvQjtBQUN4QztBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0EsbUVBQW1FLGFBQWE7QUFDaEY7QUFDQTtBQUNBO0FBQ0E7QUFDTztBQUNQO0FBQ0Esb0JBQW9CLHNCQUFzQjtBQUMxQztBQUNBO0FBQ0E7QUFDQSIsInNvdXJjZXMiOlsiQzpcXGRldlxcbWVkaWNhbC1hcS1xYVxcbm9kZV9tb2R1bGVzXFwucG5wbVxcQHNtaXRoeSt1dGlsLWhleC1lbmNvZGluZ0A0LjIuMlxcbm9kZV9tb2R1bGVzXFxAc21pdGh5XFx1dGlsLWhleC1lbmNvZGluZ1xcZGlzdC1lc1xcaW5kZXguanMiXSwic291cmNlc0NvbnRlbnQiOlsiY29uc3QgU0hPUlRfVE9fSEVYID0ge307XG5jb25zdCBIRVhfVE9fU0hPUlQgPSB7fTtcbmZvciAobGV0IGkgPSAwOyBpIDwgMjU2OyBpKyspIHtcbiAgICBsZXQgZW5jb2RlZEJ5dGUgPSBpLnRvU3RyaW5nKDE2KS50b0xvd2VyQ2FzZSgpO1xuICAgIGlmIChlbmNvZGVkQnl0ZS5sZW5ndGggPT09IDEpIHtcbiAgICAgICAgZW5jb2RlZEJ5dGUgPSBgMCR7ZW5jb2RlZEJ5dGV9YDtcbiAgICB9XG4gICAgU0hPUlRfVE9fSEVYW2ldID0gZW5jb2RlZEJ5dGU7XG4gICAgSEVYX1RPX1NIT1JUW2VuY29kZWRCeXRlXSA9IGk7XG59XG5leHBvcnQgZnVuY3Rpb24gZnJvbUhleChlbmNvZGVkKSB7XG4gICAgaWYgKGVuY29kZWQubGVuZ3RoICUgMiAhPT0gMCkge1xuICAgICAgICB0aHJvdyBuZXcgRXJyb3IoXCJIZXggZW5jb2RlZCBzdHJpbmdzIG11c3QgaGF2ZSBhbiBldmVuIG51bWJlciBsZW5ndGhcIik7XG4gICAgfVxuICAgIGNvbnN0IG91dCA9IG5ldyBVaW50OEFycmF5KGVuY29kZWQubGVuZ3RoIC8gMik7XG4gICAgZm9yIChsZXQgaSA9IDA7IGkgPCBlbmNvZGVkLmxlbmd0aDsgaSArPSAyKSB7XG4gICAgICAgIGNvbnN0IGVuY29kZWRCeXRlID0gZW5jb2RlZC5zbGljZShpLCBpICsgMikudG9Mb3dlckNhc2UoKTtcbiAgICAgICAgaWYgKGVuY29kZWRCeXRlIGluIEhFWF9UT19TSE9SVCkge1xuICAgICAgICAgICAgb3V0W2kgLyAyXSA9IEhFWF9UT19TSE9SVFtlbmNvZGVkQnl0ZV07XG4gICAgICAgIH1cbiAgICAgICAgZWxzZSB7XG4gICAgICAgICAgICB0aHJvdyBuZXcgRXJyb3IoYENhbm5vdCBkZWNvZGUgdW5yZWNvZ25pemVkIHNlcXVlbmNlICR7ZW5jb2RlZEJ5dGV9IGFzIGhleGFkZWNpbWFsYCk7XG4gICAgICAgIH1cbiAgICB9XG4gICAgcmV0dXJuIG91dDtcbn1cbmV4cG9ydCBmdW5jdGlvbiB0b0hleChieXRlcykge1xuICAgIGxldCBvdXQgPSBcIlwiO1xuICAgIGZvciAobGV0IGkgPSAwOyBpIDwgYnl0ZXMuYnl0ZUxlbmd0aDsgaSsrKSB7XG4gICAgICAgIG91dCArPSBTSE9SVF9UT19IRVhbYnl0ZXNbaV1dO1xuICAgIH1cbiAgICByZXR1cm4gb3V0O1xufVxuIl0sIm5hbWVzIjpbXSwiaWdub3JlTGlzdCI6WzBdLCJzb3VyY2VSb290IjoiIn0=\n//# sourceURL=webpack-internal:///(rsc)/../../node_modules/.pnpm/@smithy+util-hex-encoding@4.2.2/node_modules/@smithy/util-hex-encoding/dist-es/index.js\n");
+
+/***/ })
+
+};
+;

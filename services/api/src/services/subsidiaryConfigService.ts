@@ -59,12 +59,19 @@ function parseAutonomousAgencyIds(env: ApiEnv): Set<string> {
 function resolveAgencyDashboardUrl(
   env: ApiEnv,
   dashboardUrlEnvKey?: keyof ApiEnv,
+  options?: {
+    allowDefaultFallback?: boolean;
+  },
 ): string | null {
   if (dashboardUrlEnvKey) {
     const configuredValue = env[dashboardUrlEnvKey];
     if (typeof configuredValue === "string" && configuredValue.trim()) {
       return configuredValue;
     }
+  }
+
+  if (!options?.allowDefaultFallback) {
+    return null;
   }
 
   if (env.DEFAULT_SUBSIDIARY_NAME === "Star Home Health" && env.STAR_HOME_HEALTH_PORTAL_DASHBOARD_URL) {
@@ -79,10 +86,16 @@ function buildDefaultSubsidiaryRecord(env: ApiEnv, existing: SubsidiaryRecord | 
   const defaultAliases = env.DEFAULT_SUBSIDIARY_NAME === "Star Home Health"
     ? ["Star Home Health Care Inc"]
     : [];
+  const lookupAliases = env.DEFAULT_SUBSIDIARY_NAME === "Star Home Health"
+    ? ["default", "star-home-health-care-inc"].filter((alias) =>
+        alias !== env.DEFAULT_SUBSIDIARY_ID && alias !== env.DEFAULT_SUBSIDIARY_SLUG
+      )
+    : [];
   return {
     id: env.DEFAULT_SUBSIDIARY_ID,
     slug: env.DEFAULT_SUBSIDIARY_SLUG,
     name: env.DEFAULT_SUBSIDIARY_NAME,
+    lookupAliases: existing?.lookupAliases ?? lookupAliases,
     portalAgencyName: env.DEFAULT_SUBSIDIARY_NAME,
     portalAgencyAliases: existing?.portalAgencyAliases ?? defaultAliases,
     status: "ACTIVE",
@@ -90,7 +103,9 @@ function buildDefaultSubsidiaryRecord(env: ApiEnv, existing: SubsidiaryRecord | 
       env.DEFAULT_SUBSIDIARY_PORTAL_BASE_URL ??
       env.PORTAL_BASE_URL ??
       "https://app.finalehealth.com",
-    portalDashboardUrl: resolveAgencyDashboardUrl(env),
+    portalDashboardUrl: resolveAgencyDashboardUrl(env, undefined, {
+      allowDefaultFallback: true,
+    }),
     portalCredentialsSecretArn: env.DEFAULT_SUBSIDIARY_PORTAL_CREDENTIALS_SECRET_ARN ?? null,
     portalCredentialsEnvVarName: env.DEFAULT_SUBSIDIARY_PORTAL_CREDENTIALS_ENV_VAR,
     rerunEnabled: env.DEFAULT_SUBSIDIARY_RERUN_ENABLED,
@@ -114,6 +129,7 @@ function buildKnownSubsidiaryRecord(
     id: agency.id,
     slug: agency.slug,
     name: agency.name,
+    lookupAliases: existing?.lookupAliases ?? [],
     portalAgencyName: agency.portalAgencyName ?? agency.name,
     portalAgencyAliases: agency.portalAgencyAliases ?? existing?.portalAgencyAliases ?? [],
     status: isActive ? "ACTIVE" : "INACTIVE",
@@ -121,7 +137,9 @@ function buildKnownSubsidiaryRecord(
       env.DEFAULT_SUBSIDIARY_PORTAL_BASE_URL ??
       env.PORTAL_BASE_URL ??
       "https://app.finalehealth.com",
-    portalDashboardUrl: resolveAgencyDashboardUrl(env, agency.dashboardUrlEnvKey),
+    portalDashboardUrl: resolveAgencyDashboardUrl(env, agency.dashboardUrlEnvKey, {
+      allowDefaultFallback: false,
+    }),
     portalCredentialsSecretArn: env.DEFAULT_SUBSIDIARY_PORTAL_CREDENTIALS_SECRET_ARN ?? null,
     portalCredentialsEnvVarName: env.DEFAULT_SUBSIDIARY_PORTAL_CREDENTIALS_ENV_VAR,
     rerunEnabled: isActive ? env.DEFAULT_SUBSIDIARY_RERUN_ENABLED : false,
@@ -143,6 +161,9 @@ export class SubsidiaryConfigService {
 
   async initialize(): Promise<void> {
     await this.repository.ensureReady();
+    if (this.env.DEFAULT_SUBSIDIARY_ID !== "default") {
+      await this.repository.deleteSubsidiary("default");
+    }
     await this.ensureKnownSubsidiaries();
   }
 
@@ -206,7 +227,9 @@ export class SubsidiaryConfigService {
   async getSubsidiaryConfig(subsidiaryIdOrSlug: string): Promise<SubsidiaryRecord> {
     const subsidiaries = await this.repository.listSubsidiaries();
     const subsidiary = subsidiaries.find((candidate) =>
-      candidate.id === subsidiaryIdOrSlug || candidate.slug === subsidiaryIdOrSlug,
+      candidate.id === subsidiaryIdOrSlug ||
+      candidate.slug === subsidiaryIdOrSlug ||
+      candidate.lookupAliases.includes(subsidiaryIdOrSlug),
     );
 
     if (!subsidiary) {
@@ -226,6 +249,7 @@ export class SubsidiaryConfigService {
       subsidiaryId: subsidiary.id,
       subsidiarySlug: subsidiary.slug,
       subsidiaryName: subsidiary.name,
+      lookupAliases: subsidiary.lookupAliases,
       portalAgencyName: subsidiary.portalAgencyName,
       portalAgencyAliases: subsidiary.portalAgencyAliases,
       portalBaseUrl: subsidiary.portalBaseUrl,

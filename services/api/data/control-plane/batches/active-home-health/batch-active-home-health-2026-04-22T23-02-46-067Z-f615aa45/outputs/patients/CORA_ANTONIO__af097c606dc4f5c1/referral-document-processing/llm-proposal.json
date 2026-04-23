@@ -1,0 +1,211 @@
+{
+  "patient_context": {
+    "patient_name": null,
+    "dob": null,
+    "soc_date": null,
+    "referral_date": null
+  },
+  "proposed_field_values": [
+    {
+      "field_key": "primary_reason_for_home_health_medical_necessity",
+      "proposed_value": "Patient is seen in the home because there is a medical necessity for this visit to be conducted in the patient's environment. The patient suffers from recent pain exacerbated by activity which is contraindicated for the patient to be seen in an office setting today.",
+      "confidence": 0.78,
+      "source_spans": [
+        "This visit with a FTF encounter with the patient in the home is not a visit of convenience. Patient is seen in the home because there is a medical necessity for this visit to be conducted in the patient's environment. The patient suffers from recent with pain exacerbated by activity which is contraindicated for the patient to be seen in an office setting today."
+      ],
+      "rationale": "The evidence directly states the medical necessity for the home visit.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "homebound_narrative",
+      "proposed_value": "She ambulates with a cane or walker for assistance. homebound status. PCP in the office, returns to baseline, and/or no longer fits the criteria, the homebound",
+      "confidence": 0.8,
+      "source_spans": [
+        "She ambulates with a cane or walker for assistance. homebound status. PCP in the office, returns to baseline, and/or no longer fits the criteria, the homebound"
+      ],
+      "rationale": "The evidence directly describes the patient's homebound status.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "homebound_supporting_factors",
+      "proposed_value": "uses_walker",
+      "confidence": 0.73,
+      "source_spans": [
+        "She ambulates with a cane or walker for assistance. homebound status. PCP in the office, returns to baseline, and/or no longer fits the criteria, the homebound"
+      ],
+      "rationale": "The evidence directly supports the use of a walker as a factor for homebound status.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "living_situation",
+      "proposed_value": "husband and son in a 2 storey house, patient stays on the first floor. Non-",
+      "confidence": 0.72,
+      "source_spans": [
+        "husband and son in a 2 storey house, patient stays on the first floor. Non-"
+      ],
+      "rationale": "The evidence directly describes the patient's living situation.",
+      "requires_human_review": false
+    },
+    {
+      "field_key": "functional_limitations",
+      "proposed_value": "weakness",
+      "confidence": 0.76,
+      "source_spans": [
+        "Muscle weakness (M62.81) Muscle weakness (generalized) modified 16 Apr, 2026"
+      ],
+      "rationale": "The evidence directly describes the patient's functional limitation due to muscle weakness.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "therapy_need",
+      "proposed_value": "PT/OT to evaluate and treat appropriately to increase functionality, decreases debility and",
+      "confidence": 0.77,
+      "source_spans": [
+        "PT/OT to evaluate and treat appropriately to increase functionality, decreases debility and"
+      ],
+      "rationale": "The evidence directly states the need for physical and occupational therapy.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "fall_risk_narrative",
+      "proposed_value": "a recent fall and was found to have significant hyponatremia and corrected with Sodium Fall (W19.XXXA) Unspecified fall, initial encounter modified 16 Apr, 2026 Muscle weakness (M62.81) Muscle weakness (generalized) modified 16 Apr, 2026",
+      "confidence": 0.7,
+      "source_spans": [
+        "a recent fall and was found to have significant hyponatremia and corrected with Sodium Fall (W19.XXXA) Unspecified fall, initial encounter modified 16 Apr, 2026 Muscle weakness (M62.81) Muscle weakness (generalized) modi"
+      ],
+      "rationale": "The evidence directly describes the fall risk narrative.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "skilled_interventions",
+      "proposed_value": "PT/OT to evaluate and treat appropriately to increase functionality, decreases debility and",
+      "confidence": 0.8,
+      "source_spans": [
+        "PT/OT to evaluate and treat appropriately to increase functionality, decreases debility and"
+      ],
+      "rationale": "The evidence directly states the need for skilled interventions.",
+      "requires_human_review": true
+    },
+    {
+      "field_key": "plan_for_next_visit",
+      "proposed_value": "PT/OT to evaluate and treat appropriately to increase functionality, decreases debility and",
+      "confidence": 0.78,
+      "source_spans": [
+        "PT/OT to evaluate and treat appropriately to increase functionality, decreases debility and"
+      ],
+      "rationale": "The evidence directly states the plan for the next visit.",
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [
+    {
+      "description": "Other specified counseling modified",
+      "icd10_code": "Z71.89",
+      "confidence": 0.74,
+      "source_spans": [
+        "Z71.89) Other specified counseling modified"
+      ],
+      "is_primary_candidate": true,
+      "requires_human_review": true
+    },
+    {
+      "description": "Insomnia, unspecified modified 16 Apr, 2026",
+      "icd10_code": "G47.00",
+      "confidence": 0.74,
+      "source_spans": [
+        "G47.00) Insomnia, unspecified modified 16 Apr, 2026"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Muscle weakness (generalized) modified 16 Apr, 2026",
+      "icd10_code": "M62.81",
+      "confidence": 0.74,
+      "source_spans": [
+        "M62.81) Muscle weakness (generalized) modified 16 Apr, 2026"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Unsteadiness on feet modified 16 Apr, 2026",
+      "icd10_code": "R26.81",
+      "confidence": 0.74,
+      "source_spans": [
+        "R26.81) Unsteadiness on feet modified 16 Apr, 2026"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Unspecified fall, initial encounter modified 16 Apr, 2026",
+      "icd10_code": "W19.XXXA",
+      "confidence": 0.74,
+      "source_spans": [
+        "W19.XXXA) Unspecified fall, initial encounter modified 16 Apr, 2026"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Hypo-osmolality and hyponatremia modified 16 Apr, 2026",
+      "icd10_code": "E87.1",
+      "confidence": 0.74,
+      "source_spans": [
+        "E87.1) Hypo-osmolality and hyponatremia modified 16 Apr, 2026"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Chronic kidney disease, unspecified modified 16 Apr",
+      "icd10_code": "N18.9",
+      "confidence": 0.74,
+      "source_spans": [
+        "N18.9) Chronic kidney disease, unspecified modified 16 Apr"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Hyperlipidemia, unspecified modified 16 Apr, 2026",
+      "icd10_code": "E78.5",
+      "confidence": 0.74,
+      "source_spans": [
+        "E78.5) Hyperlipidemia, unspecified modified 16 Apr, 2026"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    }
+  ],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "preferred_language",
+    "interpreter_needed",
+    "recent_hospitalization_discharge_date",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "patient_summary_narrative",
+    "discipline_frequencies",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status",
+    "code_status"
+  ],
+  "warnings": [
+    "LLM input source: fact_pack_primary.",
+    "Fact pack coverage: diagnoses, medications, allergies, homeboundEvidence, skilledNeedEvidence, assessmentValues, supportingSnippets.",
+    "Fact pack coverage score: 1.",
+    "Prompt character estimate: 2307.",
+    "Fallback reason: none."
+  ]
+}

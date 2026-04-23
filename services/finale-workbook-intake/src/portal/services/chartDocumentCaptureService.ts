@@ -138,6 +138,31 @@ const FILE_UPLOADS_SIDEBAR_LABEL_SELECTORS: PortalSelectorCandidate[] = [
     value: /^File Uploads$/i,
     description: "File Uploads exact label text",
   },
+  {
+    strategy: "css",
+    selector: 'a:has(.fin-sidebar__label:has-text("Intake/Referral")), span.fin-sidebar__label:has-text("Intake/Referral")',
+    description: "patient Intake/Referral sidebar label by fin-sidebar__label",
+  },
+  {
+    strategy: "css",
+    selector: 'fin-sidebar-menu-root a:has(.fin-sidebar__label:has-text("Intake/Referral"))',
+    description: "patient Intake/Referral fin-sidebar-menu-root anchor",
+  },
+  {
+    strategy: "css",
+    selector: "li.notes-sub-menu #documents span:has-text('Intake/Referral')",
+    description: "Intake/Referral sidebar label in notes-sub-menu #documents",
+  },
+  {
+    strategy: "css",
+    selector: "li.notes-sub-menu span:has-text('Intake/Referral')",
+    description: "Intake/Referral sidebar label in notes-sub-menu",
+  },
+  {
+    strategy: "text",
+    value: /^Intake\s*\/\s*Referral$/i,
+    description: "Intake/Referral exact label text",
+  },
 ];
 
 const FILE_UPLOADS_PAGE_MARKERS: PortalSelectorCandidate[] = [
@@ -172,8 +197,13 @@ const FILE_UPLOADS_PAGE_MARKERS: PortalSelectorCandidate[] = [
     description: "File Uploads referral folder markers",
   },
   {
+    strategy: "css",
+    selector: "a:has-text('Intake/Referral'), [role='treeitem']:has-text('Intake/Referral'), a:has-text('root/Intake/Referral')",
+    description: "File Uploads intake/referral folder markers",
+  },
+  {
     strategy: "text",
-    value: /Admission\s+Order|Admission\s+Info|Admission\s+Packets|Doc Uploads|root\s*\/\s*Referral|Referral/i,
+    value: /Admission\s+Order|Admission\s+Info|Admission\s+Packets|Doc Uploads|root\s*\/\s*Referral|root\s*\/\s*Intake\s*\/\s*Referral|Intake\s*\/\s*Referral|Referral/i,
     description: "File Uploads/admission content markers",
   },
   {
@@ -206,6 +236,11 @@ const FILE_UPLOADS_DOCUMENT_ANCHOR_SELECTORS: PortalSelectorCandidate[] = [
   },
   {
     strategy: "css",
+    selector: "a:has-text('Intake/Referral'), [role='button']:has-text('Intake/Referral'), [role='treeitem']:has-text('Intake/Referral')",
+    description: "File Uploads intake/referral click targets outside table rows",
+  },
+  {
+    strategy: "css",
     selector: "a:has-text('Admission'), button:has-text('Admission'), [role='button']:has-text('Admission')",
     description: "Admission-related click targets",
   },
@@ -229,8 +264,18 @@ const REFERRAL_FOLDER_SELECTORS: PortalSelectorCandidate[] = [
   },
   {
     strategy: "css",
+    selector: "a:has-text('root/Intake/Referral'), button:has-text('root/Intake/Referral'), [role='button']:has-text('root/Intake/Referral')",
+    description: "File Uploads root/Intake/Referral folder target",
+  },
+  {
+    strategy: "css",
     selector: "a:has-text('Referral'), button:has-text('Referral'), [role='button']:has-text('Referral')",
     description: "File Uploads Referral folder target",
+  },
+  {
+    strategy: "css",
+    selector: "a:has-text('Intake/Referral'), button:has-text('Intake/Referral'), [role='button']:has-text('Intake/Referral')",
+    description: "File Uploads Intake/Referral folder target",
   },
   {
     strategy: "text",
@@ -239,8 +284,18 @@ const REFERRAL_FOLDER_SELECTORS: PortalSelectorCandidate[] = [
   },
   {
     strategy: "text",
+    value: /root\s*\/\s*intake\s*\/\s*referral/i,
+    description: "File Uploads root/Intake/Referral folder text marker",
+  },
+  {
+    strategy: "text",
     value: /^Referral$/i,
     description: "File Uploads Referral folder exact label",
+  },
+  {
+    strategy: "text",
+    value: /^Intake\s*\/\s*Referral$/i,
+    description: "File Uploads Intake/Referral exact label",
   },
 ];
 
@@ -256,6 +311,9 @@ const SOC_DOC_UPLOADS_TRIGGER_SELECTORS: PortalSelectorCandidate[] = [
     description: "SOC document Doc Uploads exact label",
   },
 ];
+
+const FILE_UPLOADS_ACCESS_LABEL_PATTERN = /^(?:File Uploads|Intake\s*\/\s*Referral)$/i;
+const REFERRAL_FOLDER_LABEL_PATTERN = /(?:root\s*\/\s*)?(?:intake\s*\/\s*)?referral(?:\s+files?)?/i;
 
 const ADMISSION_ORDER_OPEN_MARKERS: PortalSelectorCandidate[] = [
   {
@@ -314,7 +372,7 @@ function normalizeUploadFileLabelForDisplay(value: string | null | undefined): s
   return cleaned || normalizeWhitespace(value);
 }
 
-function scoreReferralOrAdmissionUploadLabel(value: string | null | undefined): number {
+export function scoreReferralOrAdmissionUploadLabel(value: string | null | undefined): number {
   const normalized = normalizeUploadFileNameForMatch(value);
   if (!normalized) {
     return 0;
@@ -346,6 +404,14 @@ function scoreReferralOrAdmissionUploadLabel(value: string | null | undefined): 
     score += 10;
   }
   return score;
+}
+
+export function isFileUploadsAccessLabel(value: string | null | undefined): boolean {
+  return FILE_UPLOADS_ACCESS_LABEL_PATTERN.test(normalizeWhitespace(value));
+}
+
+export function isReferralDocumentsFolderLabel(value: string | null | undefined): boolean {
+  return REFERRAL_FOLDER_LABEL_PATTERN.test(normalizeWhitespace(value));
 }
 
 function isPatientSpecificFileUploadsUrl(value: string | null | undefined): boolean {
@@ -528,7 +594,7 @@ export async function captureChartDocument(
   for (let index = 0; index < sidebarContainerCount; index += 1) {
     const candidate = sidebarContainers.nth(index);
     const visible = await candidate.isVisible().catch(() => false);
-    const fileUploadsLabelCount = await candidate.locator("span").filter({ hasText: /^File Uploads$/i }).count().catch(() => 0);
+    const fileUploadsLabelCount = await candidate.locator("span").filter({ hasText: FILE_UPLOADS_ACCESS_LABEL_PATTERN }).count().catch(() => 0);
     const fileUploadsAnchorCount = await candidate.locator('a[href*="/file-uploads"]').count().catch(() => 0);
     sidebarDiagnostics.push({
       index,
@@ -855,9 +921,15 @@ export async function captureChartDocument(
       const normalizedReferralLabel = referralFolderLabel.toUpperCase();
       const looksLikeFile = /\.(PDF|DOC|DOCX|TXT|RTF|XLS|XLSX|PNG|JPG|JPEG)\b/i.test(referralFolderLabel);
       const looksLikeRootReferralFolder = /ROOT\s*\/\s*REFERRAL/.test(normalizedReferralLabel);
+      const looksLikeRootIntakeReferralFolder = /ROOT\s*\/\s*INTAKE\s*\/\s*REFERRAL/.test(normalizedReferralLabel);
       const looksLikeGenericReferralFolder = /\bREFERRAL\b/.test(normalizedReferralLabel) && !looksLikeFile;
       const looksLikeReferralFilesFolder = /REFERRAL\s+FILES/.test(normalizedReferralLabel) && !looksLikeFile;
-      const referralFolderIsFolder = looksLikeRootReferralFolder || looksLikeGenericReferralFolder || looksLikeReferralFilesFolder;
+      const referralFolderIsFolder =
+        looksLikeRootReferralFolder ||
+        looksLikeRootIntakeReferralFolder ||
+        looksLikeGenericReferralFolder ||
+        looksLikeReferralFilesFolder ||
+        (isReferralDocumentsFolderLabel(referralFolderLabel) && !looksLikeFile);
 
       if (referralFolderIsFolder) {
         const referralFolderClickTarget = referralFolderResolution.locator

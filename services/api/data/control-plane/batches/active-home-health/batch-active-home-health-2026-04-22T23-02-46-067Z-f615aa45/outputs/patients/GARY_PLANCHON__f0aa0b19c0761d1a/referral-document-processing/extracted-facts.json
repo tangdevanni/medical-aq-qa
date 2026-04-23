@@ -1,0 +1,180 @@
+{
+  "patient_context": {
+    "patient_name": null,
+    "dob": null,
+    "soc_date": null,
+    "referral_date": null
+  },
+  "facts": [
+    {
+      "fact_key": "medical_necessity_summary",
+      "category": "medical_necessity",
+      "value": ": This visit with a FTF encounter with the patient in the home is not a visit of convenience. Patient is seen in the home because there is a medical necessity for this visit to be conducted in the patient's environment. It is medically necessary and safer for the patient to be seen in the patient's own environment today. Chief Complaint Follow-up for pneumonia, decreased appetite and weight loss, lower back pain from hitting something in bedroom Subjective History of Present Illness The patient returns for follow-up of pneumonia, reporting significant improvement in symptoms.",
+      "confidence": 0.78,
+      "evidence_spans": [
+        ": This visit with a FTF encounter with the patient in the home is not a visit of convenience. Patient is seen in the home because there is a medical necessity for this visit to be conducted in the patient's environment."
+      ],
+      "rationale": "Medical necessity was summarized from referral narrative and skilled-need evidence.",
+      "source_sections": [
+        "primary_reason_for_home_health",
+        "medical_necessity"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "therapy_need",
+      "category": "therapy",
+      "value": "PT/OT to evaluate and treat appropriately to increase functionality, decreases debility and",
+      "confidence": 0.77,
+      "evidence_spans": [
+        "PT/OT to evaluate and treat appropriately to increase functionality, decreases debility and"
+      ],
+      "rationale": "Therapy need was summarized from referral text.",
+      "source_sections": [
+        "therapy_need"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "skilled_interventions",
+      "category": "therapy",
+      "value": "PT/OT to evaluate and treat appropriately to increase functionality, decreases debility and",
+      "confidence": 0.8,
+      "evidence_spans": [
+        "PT/OT to evaluate and treat appropriately to increase functionality, decreases debility and"
+      ],
+      "rationale": "Skilled interventions were summarized from the therapy plan.",
+      "source_sections": [
+        "therapy_need"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "plan_for_next_visit",
+      "category": "therapy",
+      "value": "PT/OT to evaluate and treat appropriately to increase functionality, decreases debility and",
+      "confidence": 0.78,
+      "evidence_spans": [
+        "PT/OT to evaluate and treat appropriately to increase functionality, decreases debility and"
+      ],
+      "rationale": "Next-visit plan was summarized from the therapy plan.",
+      "source_sections": [
+        "therapy_need"
+      ],
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [
+    {
+      "description": "Anorexia modified 7 Apr, 2026",
+      "icd10_code": "R63.0",
+      "confidence": 0.74,
+      "source_spans": [
+        "R63.0) Anorexia modified 7 Apr, 2026"
+      ],
+      "is_primary_candidate": true,
+      "requires_human_review": true
+    },
+    {
+      "description": "Chronic obstructive pulmonary disease W (acute",
+      "icd10_code": "J44.1",
+      "confidence": 0.74,
+      "source_spans": [
+        "J44.1) Chronic obstructive pulmonary disease W (acute"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Unspecified retinal disorder modified 15 Dec, 2025",
+      "icd10_code": "H35.9",
+      "confidence": 0.74,
+      "source_spans": [
+        "H35.9) Unspecified retinal disorder modified 15 Dec, 2025"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Cough, unspecified modified 17 Mar, 2025",
+      "icd10_code": "R05.9",
+      "confidence": 0.74,
+      "source_spans": [
+        "R05.9) Cough, unspecified modified 17 Mar, 2025"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Limitation of activities due to disability modified 17 Mar, 2025",
+      "icd10_code": "Z73.6",
+      "confidence": 0.74,
+      "source_spans": [
+        "Z73.6) Limitation of activities due to disability modified 17 Mar, 2025"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Other specified counseling modified",
+      "icd10_code": "Z71.89",
+      "confidence": 0.74,
+      "source_spans": [
+        "Z71.89) Other specified counseling modified"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Unsteadiness on feet modified 19 Jan, 2025",
+      "icd10_code": "R26.81",
+      "confidence": 0.74,
+      "source_spans": [
+        "R26.81) Unsteadiness on feet modified 19 Jan, 2025"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    },
+    {
+      "description": "Oth disrd of bone density and structure",
+      "icd10_code": "M85.861",
+      "confidence": 0.74,
+      "source_spans": [
+        "M85.861) Oth disrd of bone density and structure"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    }
+  ],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "preferred_language",
+    "interpreter_needed",
+    "homebound_narrative",
+    "homebound_supporting_factors",
+    "recent_hospitalization_discharge_date",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "living_situation",
+    "prior_functioning",
+    "functional_limitations",
+    "patient_summary_narrative",
+    "discipline_frequencies",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "fall_risk_narrative",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status",
+    "code_status"
+  ],
+  "warnings": [
+    "Deterministic referral facts extraction was used."
+  ]
+}

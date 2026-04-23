@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "1",
+  "generatedAt": "2026-04-22T23:40:11.609Z",
+  "patientId": "ELMER_LAUB__feaca6b1593d4bac",
+  "batchId": "batch-active-home-health-2026-04-22T23-02-46-067Z-f615aa45",
+  "factPack": {
+    "documentType": "oasis",
+    "diagnoses": [
+      {
+        "code": "I00",
+        "description": "Diagnosis code candidate from extracted document metadata",
+        "source": "OASIS documents page"
+      },
+      {
+        "code": "I25",
+        "description": "Diagnosis code candidate from extracted document metadata",
+        "source": "OASIS documents page"
+      },
+      {
+        "code": "I50",
+        "description": "Diagnosis code candidate from extracted document metadata",
+        "source": "OASIS documents page"
+      }
+    ],
+    "medications": [],
+    "allergies": [],
+    "homeboundEvidence": [],
+    "skilledNeedEvidence": [
+      {
+        "field": "skilled_need",
+        "text": "Skilled Nursing / Pt eval $ treat",
+        "source": "📄 LAUB, ELMER B ORDER 04152026.pdf 📝 ✏️ 🗑️ 🔗"
+      }
+    ],
+    "hospitalizationReasons": [],
+    "assessmentValues": [],
+    "uncategorizedEvidence": [],
+    "stats": {
+      "rawCharacters": 2012,
+      "packedCharacters": 219,
+      "reductionPercent": 89.1
+    }
+  }
+}

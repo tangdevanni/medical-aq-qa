@@ -1,0 +1,157 @@
+{
+  "patient_context": {
+    "patient_name": null,
+    "dob": "07/27/1960",
+    "soc_date": null,
+    "referral_date": null
+  },
+  "facts": [
+    {
+      "fact_key": "recent_hospitalization_discharge_date",
+      "category": "hospitalization",
+      "value": "04/08/2026",
+      "confidence": 0.9,
+      "evidence_spans": [
+        "04/08/26"
+      ],
+      "rationale": "Recent discharge date was identified in referral or hospitalization history.",
+      "source_sections": [
+        "hospitalization_history"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "homebound_narrative",
+      "category": "homebound",
+      "value": "walker. requires minimal assistance for bed mobility, transfers, ambulation with a front- wheel ed walker, Requires assistance with ADLs X] Requires assistive device: wheelchair, walker and/or assistance of another person to eave home homebound status and need for [SELECTED][page 22] Requires assistive device: wheelchair, walker and/or assistance of another person to eave home",
+      "confidence": 0.8,
+      "evidence_spans": [
+        "walker."
+      ],
+      "rationale": "Homebound evidence was summarized from referral text.",
+      "source_sections": [
+        "homebound_evidence"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "homebound_supporting_factors",
+      "category": "homebound",
+      "value": [
+        "uses_walker",
+        "needs_assistance"
+      ],
+      "confidence": 0.73,
+      "evidence_spans": [
+        "walker."
+      ],
+      "rationale": "Homebound supporting factors were extracted from referral text.",
+      "source_sections": [
+        "homebound_evidence"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "functional_limitations",
+      "category": "functional",
+      "value": [
+        "ambulation_limitations",
+        "reduced_endurance"
+      ],
+      "confidence": 0.76,
+      "evidence_spans": [
+        "requires minimal assistance for bed mobility, transfers, ambulation with a front- wheel ed walker, transfers, ambulation, basic ADLs, and dressing, reflecting a new bur den of care and reduced Prior Level of Function: Am"
+      ],
+      "rationale": "Functional limitations were extracted from referral text.",
+      "source_sections": [
+        "functional_limitations"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "therapy_need",
+      "category": "therapy",
+      "value": "Occupational Therapy Discharge Recommendations Physical Therapy Discharge Recommendations Occupational Therapy,",
+      "confidence": 0.77,
+      "evidence_spans": [
+        "Occupational Therapy Discharge Recommendations Physical Therapy Discharge Recommendations Occupational Therapy,"
+      ],
+      "rationale": "Therapy need was summarized from referral text.",
+      "source_sections": [
+        "therapy_need"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "fall_risk_narrative",
+      "category": "risk",
+      "value": "reduce fall risk.",
+      "confidence": 0.7,
+      "evidence_spans": [
+        "reduce fall risk."
+      ],
+      "rationale": "Risk and safety narrative was summarized from referral text.",
+      "source_sections": [
+        "risk_factors",
+        "functional_limitations"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "skilled_interventions",
+      "category": "therapy",
+      "value": "Occupational Therapy Discharge Recommendations Physical Therapy Discharge Recommendations Occupational Therapy,",
+      "confidence": 0.8,
+      "evidence_spans": [
+        "Occupational Therapy Discharge Recommendations Physical Therapy Discharge Recommendations Occupational Therapy,"
+      ],
+      "rationale": "Skilled interventions were summarized from the therapy plan.",
+      "source_sections": [
+        "therapy_need"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "plan_for_next_visit",
+      "category": "therapy",
+      "value": "Occupational Therapy Discharge Recommendations Physical Therapy Discharge Recommendations Occupational Therapy,",
+      "confidence": 0.78,
+      "evidence_spans": [
+        "Occupational Therapy Discharge Recommendations Physical Therapy Discharge Recommendations Occupational Therapy,"
+      ],
+      "rationale": "Next-visit plan was summarized from the therapy plan.",
+      "source_sections": [
+        "therapy_need"
+      ],
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "preferred_language",
+    "interpreter_needed",
+    "primary_reason_for_home_health_medical_necessity",
+    "admit_reason_to_home_health",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_relationship",
+    "caregiver_phone",
+    "living_situation",
+    "patient_summary_narrative",
+    "discipline_frequencies",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status",
+    "code_status"
+  ],
+  "warnings": [
+    "Deterministic referral facts extraction was used."
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "patientId": "ANTHONY_RICEVUTO__9b4e4db5de59f7e8",
+  "selectedDocumentId": "ANTHONY_RICEVUTO__9b4e4db5de59f7e8-referral-1",
+  "sourceDocuments": [
+    {
+      "documentId": "ANTHONY_RICEVUTO__9b4e4db5de59f7e8-referral-1",
+      "sourceIndex": 0,
+      "sourceLabel": "📄 RICEVUTO, ANTHONY H REFERRAL 04072026.pdf 📝 ✏️ 🗑️ 🔗",
+      "normalizedSourceLabel": "ricevuto-anthony-h-referral-04072026-pdf",
+      "sourceType": "REFERRAL_ORDER",
+      "acquisitionMethod": "printed_pdf",
+      "selectionStatus": "selected",
+      "portalLabel": "📄 RICEVUTO, ANTHONY H REFERRAL 04072026.pdf 📝 ✏️ 🗑️ 🔗",
+      "localFilePath": "C:\\dev\\medical-aq-qa\\services\\api\\data\\control-plane\\batches\\aplus-home-health\\batch-aplus-home-health-2026-04-22T19-22-03-641Z-181197f4\\outputs\\patients\\ANTHONY_RICEVUTO__9b4e4db5de59f7e8\\documents\\ricevuto-anthony-h-referral-04072026-pdf\\source.pdf",
+      "effectiveTextSource": "ocr_text",
+      "fileType": "pdf",
+      "fileSizeBytes": 262623,
+      "extractedTextLength": 8193,
+      "selectedReason": "highest-ranked referral/admission-order source with local file preference",
+      "rejectedReasons": []
+    }
+  ],
+  "warnings": [],
+  "generatedAt": "2026-04-22T19:40:43.974Z"
+}

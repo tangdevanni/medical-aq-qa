@@ -1,0 +1,204 @@
+{
+  "patient_context": {
+    "patient_name": null,
+    "dob": "12/28/1944",
+    "soc_date": null,
+    "referral_date": null
+  },
+  "facts": [
+    {
+      "fact_key": "caregiver_relationship",
+      "category": "caregiver",
+      "value": "daughter",
+      "confidence": 0.85,
+      "evidence_spans": [
+        "daughter"
+      ],
+      "rationale": "Caregiver relationship was identified in referral caregiver evidence.",
+      "source_sections": [
+        "caregiver_support"
+      ],
+      "requires_human_review": false
+    },
+    {
+      "fact_key": "code_status",
+      "category": "directive",
+      "value": "dnr",
+      "confidence": 0.75,
+      "evidence_spans": [
+        "Code status: dnr"
+      ],
+      "rationale": "Code status was explicitly stated in referral text.",
+      "source_sections": [
+        "code_status",
+        "advance_directives"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "homebound_narrative",
+      "category": "homebound",
+      "value": "Devices/Equipment at Home: Shower chair, Walker, Wheelchair Performed By: Paine RN, Danielle 03/25/2026 Home Equipment Rehab : Elevated toilet seat, 4-Wheel walker, Front-wheel walker (FWW), Shower commode chair Device : Gait belt, Front-wheel walker (FWW) Ambulation with Standard Walker : Verbalizes understanding, Demonstrates, Needs further teaching, Needs PT reviewed walker management and upright posture during mobility, VC for attention to walker placement. Pt AxO4 and ambulatory with personal walker.",
+      "confidence": 0.8,
+      "evidence_spans": [
+        "Devices/Equipment at Home: Shower chair, Walker, Wheelchair Performed By: Paine RN, Danielle 03/25/2026 Home Equipment Rehab : Elevated toilet seat, 4-Wheel walker, Front-wheel walker (FWW), Shower commode chair Device : Gait belt, Front-wheel walker (FWW) Amb"
+      ],
+      "rationale": "Homebound evidence was summarized from referral text.",
+      "source_sections": [
+        "homebound_evidence"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "homebound_supporting_factors",
+      "category": "homebound",
+      "value": [
+        "uses_walker"
+      ],
+      "confidence": 0.73,
+      "evidence_spans": [
+        "Devices/Equipment at Home: Shower chair, Walker, Wheelchair Performed By: Paine RN, Danielle 03/25/2026 Home Equipment Rehab : Elevated toilet seat, 4-Wheel walker, Front-wheel walker (FWW), Shower commode chair Device : Gait belt, Front-wheel walker (FWW) Amb"
+      ],
+      "rationale": "Homebound supporting factors were extracted from referral text.",
+      "source_sections": [
+        "homebound_evidence"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "living_situation",
+      "category": "living_situation",
+      "value": "Home independently Performed By",
+      "confidence": 0.72,
+      "evidence_spans": [
+        "Home independently Performed By"
+      ],
+      "rationale": "Living situation was summarized from referral text.",
+      "source_sections": [
+        "living_situation"
+      ],
+      "requires_human_review": false
+    },
+    {
+      "fact_key": "functional_limitations",
+      "category": "functional",
+      "value": [
+        "weakness",
+        "ambulation_limitations"
+      ],
+      "confidence": 0.76,
+      "evidence_spans": [
+        "Ambulation Level : Close supervision Ambulation Distance : 250 ft PT Impairments or Limitations : Ambulation deficits, Balance deficits Ambulation with Standard Walker : Verbalizes understanding, Demonstrates, Needs furt"
+      ],
+      "rationale": "Functional limitations were extracted from referral text.",
+      "source_sections": [
+        "functional_limitations"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "therapy_need",
+      "category": "therapy",
+      "value": "Physical Therapy Forms Physical Therapy Orders : PT Evaluation and Treatment 03/25/26 13:50:00 PDT, Routine, Stop date 03/25/26 13:50:00 Physical Therapy Forms",
+      "confidence": 0.77,
+      "evidence_spans": [
+        "Physical Therapy Forms Physical Therapy Orders : PT Evaluation and Treatment 03/25/26 13:50:00 PDT, Routine, Stop date 03/25/26 13:50:00 Physical Therapy Forms"
+      ],
+      "rationale": "Therapy need was summarized from referral text.",
+      "source_sections": [
+        "therapy_need"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "fall_risk_narrative",
+      "category": "risk",
+      "value": "Readmit Risk: 34 - LOW 03/25/26 13:45 Precautions, 03/23/26 18:39:00 PDT, Routine, Precautions: Fall, Ordered Safety/Judgment : Intact Ambulation Level : Close supervision Ambulation Distance : 250 ft PT Impairments or Limitations : Ambulation deficits, Balance deficits",
+      "confidence": 0.7,
+      "evidence_spans": [
+        "Readmit Risk: 34 - LOW 03/25/26 13:45 Precautions, 03/23/26 18:39:00 PDT, Routine, Precautions: Fall, Ordered Safety/Judgment : Intact Ambulation Level : Close supervision Ambulation Distance : 250 ft PT Impairments or L"
+      ],
+      "rationale": "Risk and safety narrative was summarized from referral text.",
+      "source_sections": [
+        "risk_factors",
+        "functional_limitations"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "skilled_interventions",
+      "category": "therapy",
+      "value": "Physical Therapy Forms Physical Therapy Orders : PT Evaluation and Treatment 03/25/26 13:50:00 PDT, Routine, Stop date 03/25/26 13:50:00 Physical Therapy Forms",
+      "confidence": 0.8,
+      "evidence_spans": [
+        "Physical Therapy Forms Physical Therapy Orders : PT Evaluation and Treatment 03/25/26 13:50:00 PDT, Routine, Stop date 03/25/26 13:50:00 Physical Therapy Forms"
+      ],
+      "rationale": "Skilled interventions were summarized from the therapy plan.",
+      "source_sections": [
+        "therapy_need"
+      ],
+      "requires_human_review": true
+    },
+    {
+      "fact_key": "plan_for_next_visit",
+      "category": "therapy",
+      "value": "Physical Therapy Forms Physical Therapy Orders : PT Evaluation and Treatment 03/25/26 13:50:00 PDT, Routine, Stop date 03/25/26 13:50:00 Physical Therapy Forms",
+      "confidence": 0.78,
+      "evidence_spans": [
+        "Physical Therapy Forms Physical Therapy Orders : PT Evaluation and Treatment 03/25/26 13:50:00 PDT, Routine, Stop date 03/25/26 13:50:00 Physical Therapy Forms"
+      ],
+      "rationale": "Next-visit plan was summarized from the therapy plan.",
+      "source_sections": [
+        "therapy_need"
+      ],
+      "requires_human_review": true
+    }
+  ],
+  "diagnosis_candidates": [
+    {
+      "description": "AKI (acute kidney injury) (N17",
+      "icd10_code": "E87.6",
+      "confidence": 0.74,
+      "source_spans": [
+        "E87.6) AKI (acute kidney injury) (N17"
+      ],
+      "is_primary_candidate": true,
+      "requires_human_review": true
+    },
+    {
+      "description": "Hypokalemia (E87",
+      "icd10_code": "E83.42",
+      "confidence": 0.74,
+      "source_spans": [
+        "E83.42) Hypokalemia (E87"
+      ],
+      "is_primary_candidate": false,
+      "requires_human_review": true
+    }
+  ],
+  "caregiver_candidates": [],
+  "unsupported_or_missing_fields": [
+    "referral_date",
+    "preferred_language",
+    "interpreter_needed",
+    "primary_reason_for_home_health_medical_necessity",
+    "admit_reason_to_home_health",
+    "recent_hospitalization_discharge_date",
+    "recent_hospitalization_facility",
+    "caregiver_name",
+    "caregiver_phone",
+    "patient_summary_narrative",
+    "discipline_frequencies",
+    "patient_caregiver_goals",
+    "care_plan_problems_goals_interventions",
+    "respiratory_status",
+    "integumentary_wound_status",
+    "pain_assessment_narrative",
+    "emotional_behavioral_status",
+    "past_medical_history",
+    "immunization_status"
+  ],
+  "warnings": [
+    "Deterministic referral facts extraction was used."
+  ]
+}
