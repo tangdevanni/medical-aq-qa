@@ -1,0 +1,68 @@
+export const QA_ITEM_DETAIL_SELECTORS = {
+  modalRootSelectors: [
+    '[role="dialog"]',
+    '[aria-modal="true"]',
+    '[class*="modal"]',
+    '[class*="Modal"]',
+    '[class*="drawer"]',
+    '[class*="Drawer"]',
+  ],
+  splitViewSelectors: [
+    '[class*="split"]',
+    '[class*="Split"]',
+    '[class*="pane"]',
+    '[class*="Pane"]',
+    '[class*="sidebar"]',
+    '[class*="Sidebar"]',
+  ],
+  detailMarkers: [
+    'text=/status/i',
+    'text=/attachments?/i',
+    'text=/related documents/i',
+  ],
+  headerSelectors: [
+    'h1',
+    'h2',
+    '[role="heading"][aria-level="1"]',
+    '[role="heading"][aria-level="2"]',
+    '[class*="header"] h1',
+    '[class*="header"] h2',
+  ],
+  statusSelectors: [
+    '[role="status"]',
+    '[data-testid*="status"]',
+    '[class*="status"]',
+    '[class*="badge"]',
+  ],
+  sectionHeadingSelectors: [
+    'section h2',
+    'section h3',
+    'h2',
+    'h3',
+    'legend',
+    '[role="heading"][aria-level="2"]',
+    '[role="heading"][aria-level="3"]',
+  ],
+  actionLabelSelectors: [
+    'button',
+    '[role="button"]',
+    'a[role="button"]',
+    '[class*="actions"] button',
+    '[class*="toolbar"] button',
+  ],
+  relatedDocumentsSelectors: [
+    'text=/related documents/i',
+    'text=/documents/i',
+  ],
+  attachmentAreaSelectors: [
+    'text=/attachments?/i',
+    '[type="file"]',
+    '[class*="attachment"]',
+    '[class*="upload"]',
+  ],
+  textAreaSelectors: [
+    'textarea',
+    '[contenteditable="true"]',
+    '[role="textbox"][aria-multiline="true"]',
+  ],
+} as const;

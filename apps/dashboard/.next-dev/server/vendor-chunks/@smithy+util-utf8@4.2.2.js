@@ -1,0 +1,45 @@
+"use strict";
+/*
+ * ATTENTION: An "eval-source-map" devtool has been used.
+ * This devtool is neither made for production nor for readable output files.
+ * It uses "eval()" calls to create a separate source file with attached SourceMaps in the browser devtools.
+ * If you are trying to read the output file, select a different devtool (https://webpack.js.org/configuration/devtool/)
+ * or disable the default devtool with "devtool: false".
+ * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
+ */
+exports.id = "vendor-chunks/@smithy+util-utf8@4.2.2";
+exports.ids = ["vendor-chunks/@smithy+util-utf8@4.2.2"];
+exports.modules = {
+
+/***/ "(rsc)/../../node_modules/.pnpm/@smithy+util-utf8@4.2.2/node_modules/@smithy/util-utf8/dist-es/fromUtf8.js":
+/*!***********************************************************************************************************!*\
+  !*** ../../node_modules/.pnpm/@smithy+util-utf8@4.2.2/node_modules/@smithy/util-utf8/dist-es/fromUtf8.js ***!
+  \***********************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   fromUtf8: () => (/* binding */ fromUtf8)\n/* harmony export */ });\n/* harmony import */ var _smithy_util_buffer_from__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @smithy/util-buffer-from */ \"(rsc)/../../node_modules/.pnpm/@smithy+util-buffer-from@4.2.2/node_modules/@smithy/util-buffer-from/dist-es/index.js\");\n\nconst fromUtf8 = (input) => {\n    const buf = (0,_smithy_util_buffer_from__WEBPACK_IMPORTED_MODULE_0__.fromString)(input, \"utf8\");\n    return new Uint8Array(buf.buffer, buf.byteOffset, buf.byteLength / Uint8Array.BYTES_PER_ELEMENT);\n};\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiKHJzYykvLi4vLi4vbm9kZV9tb2R1bGVzLy5wbnBtL0BzbWl0aHkrdXRpbC11dGY4QDQuMi4yL25vZGVfbW9kdWxlcy9Ac21pdGh5L3V0aWwtdXRmOC9kaXN0LWVzL2Zyb21VdGY4LmpzIiwibWFwcGluZ3MiOiI7Ozs7O0FBQXNEO0FBQy9DO0FBQ1AsZ0JBQWdCLG9FQUFVO0FBQzFCO0FBQ0EiLCJzb3VyY2VzIjpbIkM6XFxkZXZcXG1lZGljYWwtYXEtcWFcXG5vZGVfbW9kdWxlc1xcLnBucG1cXEBzbWl0aHkrdXRpbC11dGY4QDQuMi4yXFxub2RlX21vZHVsZXNcXEBzbWl0aHlcXHV0aWwtdXRmOFxcZGlzdC1lc1xcZnJvbVV0ZjguanMiXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgZnJvbVN0cmluZyB9IGZyb20gXCJAc21pdGh5L3V0aWwtYnVmZmVyLWZyb21cIjtcbmV4cG9ydCBjb25zdCBmcm9tVXRmOCA9IChpbnB1dCkgPT4ge1xuICAgIGNvbnN0IGJ1ZiA9IGZyb21TdHJpbmcoaW5wdXQsIFwidXRmOFwiKTtcbiAgICByZXR1cm4gbmV3IFVpbnQ4QXJyYXkoYnVmLmJ1ZmZlciwgYnVmLmJ5dGVPZmZzZXQsIGJ1Zi5ieXRlTGVuZ3RoIC8gVWludDhBcnJheS5CWVRFU19QRVJfRUxFTUVOVCk7XG59O1xuIl0sIm5hbWVzIjpbXSwiaWdub3JlTGlzdCI6WzBdLCJzb3VyY2VSb290IjoiIn0=\n//# sourceURL=webpack-internal:///(rsc)/../../node_modules/.pnpm/@smithy+util-utf8@4.2.2/node_modules/@smithy/util-utf8/dist-es/fromUtf8.js\n");
+
+/***/ }),
+
+/***/ "(rsc)/../../node_modules/.pnpm/@smithy+util-utf8@4.2.2/node_modules/@smithy/util-utf8/dist-es/toUint8Array.js":
+/*!***************************************************************************************************************!*\
+  !*** ../../node_modules/.pnpm/@smithy+util-utf8@4.2.2/node_modules/@smithy/util-utf8/dist-es/toUint8Array.js ***!
+  \***************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   toUint8Array: () => (/* binding */ toUint8Array)\n/* harmony export */ });\n/* harmony import */ var _fromUtf8__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./fromUtf8 */ \"(rsc)/../../node_modules/.pnpm/@smithy+util-utf8@4.2.2/node_modules/@smithy/util-utf8/dist-es/fromUtf8.js\");\n\nconst toUint8Array = (data) => {\n    if (typeof data === \"string\") {\n        return (0,_fromUtf8__WEBPACK_IMPORTED_MODULE_0__.fromUtf8)(data);\n    }\n    if (ArrayBuffer.isView(data)) {\n        return new Uint8Array(data.buffer, data.byteOffset, data.byteLength / Uint8Array.BYTES_PER_ELEMENT);\n    }\n    return new Uint8Array(data);\n};\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiKHJzYykvLi4vLi4vbm9kZV9tb2R1bGVzLy5wbnBtL0BzbWl0aHkrdXRpbC11dGY4QDQuMi4yL25vZGVfbW9kdWxlcy9Ac21pdGh5L3V0aWwtdXRmOC9kaXN0LWVzL3RvVWludDhBcnJheS5qcyIsIm1hcHBpbmdzIjoiOzs7OztBQUFzQztBQUMvQjtBQUNQO0FBQ0EsZUFBZSxtREFBUTtBQUN2QjtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0EiLCJzb3VyY2VzIjpbIkM6XFxkZXZcXG1lZGljYWwtYXEtcWFcXG5vZGVfbW9kdWxlc1xcLnBucG1cXEBzbWl0aHkrdXRpbC11dGY4QDQuMi4yXFxub2RlX21vZHVsZXNcXEBzbWl0aHlcXHV0aWwtdXRmOFxcZGlzdC1lc1xcdG9VaW50OEFycmF5LmpzIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IGZyb21VdGY4IH0gZnJvbSBcIi4vZnJvbVV0ZjhcIjtcbmV4cG9ydCBjb25zdCB0b1VpbnQ4QXJyYXkgPSAoZGF0YSkgPT4ge1xuICAgIGlmICh0eXBlb2YgZGF0YSA9PT0gXCJzdHJpbmdcIikge1xuICAgICAgICByZXR1cm4gZnJvbVV0ZjgoZGF0YSk7XG4gICAgfVxuICAgIGlmIChBcnJheUJ1ZmZlci5pc1ZpZXcoZGF0YSkpIHtcbiAgICAgICAgcmV0dXJuIG5ldyBVaW50OEFycmF5KGRhdGEuYnVmZmVyLCBkYXRhLmJ5dGVPZmZzZXQsIGRhdGEuYnl0ZUxlbmd0aCAvIFVpbnQ4QXJyYXkuQllURVNfUEVSX0VMRU1FTlQpO1xuICAgIH1cbiAgICByZXR1cm4gbmV3IFVpbnQ4QXJyYXkoZGF0YSk7XG59O1xuIl0sIm5hbWVzIjpbXSwiaWdub3JlTGlzdCI6WzBdLCJzb3VyY2VSb290IjoiIn0=\n//# sourceURL=webpack-internal:///(rsc)/../../node_modules/.pnpm/@smithy+util-utf8@4.2.2/node_modules/@smithy/util-utf8/dist-es/toUint8Array.js\n");
+
+/***/ }),
+
+/***/ "(rsc)/../../node_modules/.pnpm/@smithy+util-utf8@4.2.2/node_modules/@smithy/util-utf8/dist-es/toUtf8.js":
+/*!*********************************************************************************************************!*\
+  !*** ../../node_modules/.pnpm/@smithy+util-utf8@4.2.2/node_modules/@smithy/util-utf8/dist-es/toUtf8.js ***!
+  \*********************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   toUtf8: () => (/* binding */ toUtf8)\n/* harmony export */ });\n/* harmony import */ var _smithy_util_buffer_from__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @smithy/util-buffer-from */ \"(rsc)/../../node_modules/.pnpm/@smithy+util-buffer-from@4.2.2/node_modules/@smithy/util-buffer-from/dist-es/index.js\");\n\nconst toUtf8 = (input) => {\n    if (typeof input === \"string\") {\n        return input;\n    }\n    if (typeof input !== \"object\" || typeof input.byteOffset !== \"number\" || typeof input.byteLength !== \"number\") {\n        throw new Error(\"@smithy/util-utf8: toUtf8 encoder function only accepts string | Uint8Array.\");\n    }\n    return (0,_smithy_util_buffer_from__WEBPACK_IMPORTED_MODULE_0__.fromArrayBuffer)(input.buffer, input.byteOffset, input.byteLength).toString(\"utf8\");\n};\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiKHJzYykvLi4vLi4vbm9kZV9tb2R1bGVzLy5wbnBtL0BzbWl0aHkrdXRpbC11dGY4QDQuMi4yL25vZGVfbW9kdWxlcy9Ac21pdGh5L3V0aWwtdXRmOC9kaXN0LWVzL3RvVXRmOC5qcyIsIm1hcHBpbmdzIjoiOzs7OztBQUEyRDtBQUNwRDtBQUNQO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBLFdBQVcseUVBQWU7QUFDMUIiLCJzb3VyY2VzIjpbIkM6XFxkZXZcXG1lZGljYWwtYXEtcWFcXG5vZGVfbW9kdWxlc1xcLnBucG1cXEBzbWl0aHkrdXRpbC11dGY4QDQuMi4yXFxub2RlX21vZHVsZXNcXEBzbWl0aHlcXHV0aWwtdXRmOFxcZGlzdC1lc1xcdG9VdGY4LmpzIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IGZyb21BcnJheUJ1ZmZlciB9IGZyb20gXCJAc21pdGh5L3V0aWwtYnVmZmVyLWZyb21cIjtcbmV4cG9ydCBjb25zdCB0b1V0ZjggPSAoaW5wdXQpID0+IHtcbiAgICBpZiAodHlwZW9mIGlucHV0ID09PSBcInN0cmluZ1wiKSB7XG4gICAgICAgIHJldHVybiBpbnB1dDtcbiAgICB9XG4gICAgaWYgKHR5cGVvZiBpbnB1dCAhPT0gXCJvYmplY3RcIiB8fCB0eXBlb2YgaW5wdXQuYnl0ZU9mZnNldCAhPT0gXCJudW1iZXJcIiB8fCB0eXBlb2YgaW5wdXQuYnl0ZUxlbmd0aCAhPT0gXCJudW1iZXJcIikge1xuICAgICAgICB0aHJvdyBuZXcgRXJyb3IoXCJAc21pdGh5L3V0aWwtdXRmODogdG9VdGY4IGVuY29kZXIgZnVuY3Rpb24gb25seSBhY2NlcHRzIHN0cmluZyB8IFVpbnQ4QXJyYXkuXCIpO1xuICAgIH1cbiAgICByZXR1cm4gZnJvbUFycmF5QnVmZmVyKGlucHV0LmJ1ZmZlciwgaW5wdXQuYnl0ZU9mZnNldCwgaW5wdXQuYnl0ZUxlbmd0aCkudG9TdHJpbmcoXCJ1dGY4XCIpO1xufTtcbiJdLCJuYW1lcyI6W10sImlnbm9yZUxpc3QiOlswXSwic291cmNlUm9vdCI6IiJ9\n//# sourceURL=webpack-internal:///(rsc)/../../node_modules/.pnpm/@smithy+util-utf8@4.2.2/node_modules/@smithy/util-utf8/dist-es/toUtf8.js\n");
+
+/***/ })
+
+};
+;

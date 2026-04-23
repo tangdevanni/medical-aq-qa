@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "1",
+  "capturedAt": "2026-04-02T09:28:36.000Z",
+  "page": {
+    "url": "https://app.finalehealth.com/provider/.../documents/note/oasis/...",
+    "diagnosisContainerFound": true,
+    "diagnosisContainerSelector": "OASIS diagnosis card container by #diagnosis id",
+    "diagnosisFormSelector": "Diagnosis rows by formgroupname inside formarrayname=diagnosis",
+    "sectionMarkers": [
+      "Active Diagnoses"
+    ],
+    "insertDiagnosisVisible": true,
+    "rowCount": 1
+  },
+  "rows": [
+    {
+      "rowIndex": 0,
+      "diagnosisType": "PRIMARY DIAGNOSIS",
+      "sectionLabel": "PRIMARY DIAGNOSIS",
+      "icd10Code": "I50.9",
+      "onsetDate": "02/27/2026",
+      "description": "Congestive heart failure",
+      "severity": null,
+      "timingFlags": [],
+      "rawText": "PRIMARY DIAGNOSIS ICD-10 Code I50.9 Onset Date 02/27/2026 Description Congestive heart failure",
+      "rawHtmlHints": [
+        "tag=div",
+        "formgroupname=0",
+        "formcontrolnames=icdcode,onsetdate,description"
+      ],
+      "extractionWarnings": [],
+      "selectorEvidence": [
+        {
+          "field": "icd10Code",
+          "selectorUsed": "[formcontrolname='icdcode']",
+          "found": true,
+          "valueSource": "value",
+          "disabled": false,
+          "readOnly": false
+        }
+      ]
+    }
+  ],
+  "selectorEvidence": [],
+  "mappingNotes": [
+    "Sample fixture for diagnosis snapshot schema regression checks."
+  ],
+  "extractionWarnings": []
+}
