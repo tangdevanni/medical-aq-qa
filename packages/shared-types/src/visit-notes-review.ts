@@ -240,6 +240,11 @@ export type VisitNotePocMappingAlignmentStatus =
 
 export type VisitNotePocMappingResult = {
   visitNoteKey: string;
+  mappingStatus?: "success" | "reused" | "deterministic_only" | "degraded" | "skipped";
+  mappingSource?: "llm" | "cache" | "deterministic" | "deterministic_only" | "skipped";
+  inputHash?: string;
+  modelId?: string | null;
+  errorReason?: string;
   alignmentStatus: VisitNotePocMappingAlignmentStatus;
   matchStrength: number;
   matchedPocItems: Array<{

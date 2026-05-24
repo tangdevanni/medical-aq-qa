@@ -127,7 +127,7 @@ describe("visit note processing manifest", () => {
 });
 
 describe("visit note QA review", () => {
-  it("detects mobility contradictions against OASIS constraints", () => {
+  it("detects mobility contradictions against OASIS constraints", async () => {
     const notes = discovery([{ key: "note-1", type: "Visit Note-PT", status: "In Progress" }]);
     const factPack: VisitNoteFactPack = {
       schemaVersion: "visit-note-fact-pack.v1",
@@ -147,7 +147,7 @@ describe("visit note QA review", () => {
       }],
       warnings: [],
     };
-    const review = buildVisitNoteQaReview({
+    const review = await buildVisitNoteQaReview({
       discovery: notes,
       factPack,
       planOfCare: minimalPlanOfCare(),
@@ -166,7 +166,7 @@ describe("visit note QA review", () => {
     expect(review.findings[0]?.category).toBe("contradiction");
   });
 
-  it("maps analyzed visit notes to POC problems and interventions addressed", () => {
+  it("maps analyzed visit notes to POC problems and interventions addressed", async () => {
     const notes = discovery([{ key: "note-1", type: "Visit Note-PT", status: "In Progress" }]);
     const factPack: VisitNoteFactPack = {
       schemaVersion: "visit-note-fact-pack.v1",
@@ -201,7 +201,7 @@ describe("visit note QA review", () => {
       ],
       warnings: [],
     };
-    const review = buildVisitNoteQaReview({
+    const review = await buildVisitNoteQaReview({
       discovery: notes,
       factPack,
       planOfCare: minimalPlanOfCare(),
@@ -217,12 +217,238 @@ describe("visit note QA review", () => {
     expect(review.noteSummaries[0]?.pocMappingResult?.matchedPocItems[0]?.problemTitle).toBe("Weakness");
   });
 
-  it("keeps QA Complete notes finalized and out of active monitoring counts", () => {
+  it("maps active visit notes to POC with the LLM mapper", async () => {
+    const notes = discovery([{ key: "note-1", type: "Visit Note-PT", status: "In Progress" }]);
+    const factPack: VisitNoteFactPack = {
+      schemaVersion: "visit-note-fact-pack.v1",
+      generatedAt: "2026-05-07T00:00:00.000Z",
+      factCount: 1,
+      categories: ["mobility"],
+      facts: [{
+        factId: "visit-note-fact-mobility",
+        visitNoteKey: notes.rows[0]!.visitNoteKey,
+        category: "mobility",
+        normalizedValue: "gait training performed",
+        rawSnippet: "Skilled PT provided gait training.",
+        confidence: 0.88,
+        source: {
+          visitType: "physical_therapy",
+          documentType: "Visit Note-PT",
+        },
+      }],
+      warnings: [],
+    };
+    let prompt = "";
+    const review = await buildVisitNoteQaReview({
+      discovery: notes,
+      factPack,
+      planOfCare: minimalPlanOfCare(),
+      oasisClinicalFactPack: { facts: [] },
+      planOfCareHash: "poc-a",
+      oasisFactPackHash: "oasis-a",
+      invokePocMappingText: async (value) => {
+        prompt = value;
+        return JSON.stringify({
+          alignmentStatus: "aligned",
+          matchStrength: 0.91,
+          matchedPocItems: [{
+            problemKey: "weakness",
+            problemTitle: "Weakness",
+            goalTexts: ["Improve safe transfers and ambulation"],
+            interventionTexts: ["Skilled PT to provide gait training, transfer training, and fall prevention instruction."],
+            evidenceIds: ["oasis-mobility-1"],
+          }],
+          visitNoteEvidence: ["visit-note-fact-mobility"],
+          rationale: "The visit note documents gait training tied to the PT mobility intervention.",
+          missingDocumentation: [],
+          contradictions: [],
+          pocUpdateSignals: [],
+        });
+      },
+    });
+
+    expect(prompt).toContain("VISIT_NOTE");
+    expect(prompt).toContain("POC_ITEMS");
+    expect(review.noteSummaries[0]?.pocMappingResult?.mappingSource).toBe("llm");
+    expect(review.noteSummaries[0]?.pocMappingResult?.mappingStatus).toBe("success");
+    expect(review.noteSummaries[0]?.pocMappingResult?.matchedPocItems[0]?.problemKey).toBe("weakness");
+  });
+
+  it("degrades to deterministic mapping when LLM returns invalid JSON", async () => {
+    const notes = discovery([{ key: "note-1", type: "Visit Note-PT", status: "Submitted" }]);
+    const review = await buildVisitNoteQaReview({
+      discovery: notes,
+      factPack: {
+        schemaVersion: "visit-note-fact-pack.v1",
+        generatedAt: "2026-05-07T00:00:00.000Z",
+        factCount: 0,
+        categories: [],
+        facts: [],
+        warnings: [],
+      },
+      planOfCare: minimalPlanOfCare(),
+      oasisClinicalFactPack: { facts: [] },
+      invokePocMappingText: async () => "not-json",
+    });
+
+    expect(review.noteSummaries[0]?.pocMappingResult?.mappingStatus).toBe("degraded");
+    expect(review.noteSummaries[0]?.pocMappingResult?.mappingSource).toBe("deterministic_only");
+    expect(review.warnings.join(" ")).toMatch(/LLM failed/);
+  });
+
+  it("reuses successful LLM mapping when mapping input hash is unchanged", async () => {
+    const notes = discovery([{ key: "note-1", type: "Visit Note-PT", status: "In Progress" }]);
+    const factPack: VisitNoteFactPack = {
+      schemaVersion: "visit-note-fact-pack.v1",
+      generatedAt: "2026-05-07T00:00:00.000Z",
+      factCount: 1,
+      categories: ["mobility"],
+      facts: [{
+        factId: "visit-note-fact-mobility",
+        visitNoteKey: notes.rows[0]!.visitNoteKey,
+        category: "mobility",
+        normalizedValue: "gait training performed",
+        confidence: 0.88,
+        source: {
+          visitType: "physical_therapy",
+          documentType: "Visit Note-PT",
+        },
+      }],
+      warnings: [],
+    };
+    const first = await buildVisitNoteQaReview({
+      discovery: notes,
+      factPack,
+      planOfCare: minimalPlanOfCare(),
+      oasisClinicalFactPack: { facts: [] },
+      planOfCareHash: "poc-a",
+      oasisFactPackHash: "oasis-a",
+      invokePocMappingText: async () => JSON.stringify({
+        alignmentStatus: "aligned",
+        matchStrength: 0.9,
+        matchedPocItems: [{
+          problemKey: "weakness",
+          problemTitle: "Weakness",
+          goalTexts: ["Improve safe transfers and ambulation"],
+          interventionTexts: ["Skilled PT to provide gait training, transfer training, and fall prevention instruction."],
+          evidenceIds: ["oasis-mobility-1"],
+        }],
+        visitNoteEvidence: ["visit-note-fact-mobility"],
+        rationale: "The visit note documents gait training tied to the PT mobility intervention.",
+        missingDocumentation: [],
+        contradictions: [],
+        pocUpdateSignals: [],
+      }),
+    });
+    let invocationCount = 0;
+    const second = await buildVisitNoteQaReview({
+      discovery: notes,
+      factPack,
+      planOfCare: minimalPlanOfCare(),
+      oasisClinicalFactPack: { facts: [] },
+      planOfCareHash: "poc-a",
+      oasisFactPackHash: "oasis-a",
+      previousReview: first,
+      invokePocMappingText: async () => {
+        invocationCount += 1;
+        return "{}";
+      },
+    });
+
+    expect(invocationCount).toBe(0);
+    expect(second.noteSummaries[0]?.pocMappingResult?.mappingStatus).toBe("reused");
+    expect(second.noteSummaries[0]?.pocMappingResult?.mappingSource).toBe("cache");
+  });
+
+  it("reruns LLM mapping when the POC hash changes", async () => {
+    const notes = discovery([{ key: "note-1", type: "Visit Note-PT", status: "In Progress" }]);
+    const factPack: VisitNoteFactPack = {
+      schemaVersion: "visit-note-fact-pack.v1",
+      generatedAt: "2026-05-07T00:00:00.000Z",
+      factCount: 1,
+      categories: ["mobility"],
+      facts: [{
+        factId: "visit-note-fact-mobility",
+        visitNoteKey: notes.rows[0]!.visitNoteKey,
+        category: "mobility",
+        normalizedValue: "gait training performed",
+        confidence: 0.88,
+        source: {
+          visitType: "physical_therapy",
+          documentType: "Visit Note-PT",
+        },
+      }],
+      warnings: [],
+    };
+    const first = await buildVisitNoteQaReview({
+      discovery: notes,
+      factPack,
+      planOfCare: minimalPlanOfCare(),
+      oasisClinicalFactPack: { facts: [] },
+      planOfCareHash: "poc-a",
+      oasisFactPackHash: "oasis-a",
+      invokePocMappingText: async () => JSON.stringify({
+        alignmentStatus: "aligned",
+        matchStrength: 0.9,
+        matchedPocItems: [],
+        visitNoteEvidence: ["visit-note-fact-mobility"],
+        rationale: "The visit note supports the POC.",
+        missingDocumentation: [],
+        contradictions: [],
+        pocUpdateSignals: [],
+      }),
+    });
+    let invocationCount = 0;
+    await buildVisitNoteQaReview({
+      discovery: notes,
+      factPack,
+      planOfCare: minimalPlanOfCare(),
+      oasisClinicalFactPack: { facts: [] },
+      planOfCareHash: "poc-b",
+      oasisFactPackHash: "oasis-a",
+      previousReview: first,
+      invokePocMappingText: async () => {
+        invocationCount += 1;
+        return JSON.stringify({
+          alignmentStatus: "partially_aligned",
+          matchStrength: 0.7,
+          matchedPocItems: [],
+          visitNoteEvidence: ["visit-note-fact-mobility"],
+          rationale: "The changed POC requires a fresh mapping decision.",
+          missingDocumentation: [],
+          contradictions: [],
+          pocUpdateSignals: [],
+        });
+      },
+    });
+
+    expect(invocationCount).toBe(1);
+  });
+
+  it("does not invoke LLM mapping for QA Complete finalized notes", async () => {
+    const notes = discovery([{ key: "note-1", type: "Visit Note-PT", status: "QA Completed" }]);
+    let invocationCount = 0;
+    const review = await buildVisitNoteQaReview({
+      discovery: notes,
+      factPack: null,
+      planOfCare: minimalPlanOfCare(),
+      oasisClinicalFactPack: { facts: [] },
+      invokePocMappingText: async () => {
+        invocationCount += 1;
+        return "{}";
+      },
+    });
+
+    expect(invocationCount).toBe(0);
+    expect(review.noteSummaries[0]?.pocMappingResult?.mappingStatus).toBe("skipped");
+  });
+
+  it("keeps QA Complete notes finalized and out of active monitoring counts", async () => {
     const notes = discovery([
       { key: "note-1", type: "Visit Note-PT", status: "QA Completed" },
       { key: "note-2", type: "Visit Note-RN Regular Visit", status: "Submitted" },
     ]);
-    const review = buildVisitNoteQaReview({
+    const review = await buildVisitNoteQaReview({
       discovery: notes,
       factPack: null,
       planOfCare: minimalPlanOfCare(),
@@ -235,12 +461,12 @@ describe("visit note QA review", () => {
     expect(review.noteSummaries[1]?.lifecycleStatus).toBe("active_monitoring");
   });
 
-  it("counts not-started and missed visits without turning them into findings", () => {
+  it("counts not-started and missed visits without turning them into findings", async () => {
     const notes = discovery([
       { key: "note-1", type: "Visit Note-RN Regular Visit", status: "Not Started" },
       { key: "note-2", type: "Visit Note-PTA", status: "Missed Visit" },
     ]);
-    const review = buildVisitNoteQaReview({
+    const review = await buildVisitNoteQaReview({
       discovery: notes,
       factPack: null,
       planOfCare: minimalPlanOfCare(),

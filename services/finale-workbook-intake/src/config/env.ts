@@ -87,6 +87,12 @@ const envSchema = z.object({
     .enum(["true", "false"])
     .optional()
     .transform((value) => value !== "false"),
+  VISIT_NOTE_POC_MAPPING_LLM_ENABLED: z
+    .enum(["true", "false"])
+    .optional()
+    .transform((value) => value === undefined ? undefined : value === "true"),
+  VISIT_NOTE_POC_MAPPING_MODEL_ID: z.string().min(1).optional(),
+  VISIT_NOTE_POC_MAPPING_MAX_TOKENS: z.coerce.number().int().min(512).max(8_000).optional().default(2_500),
   OASIS_WRITE_ENABLED: z
     .enum(["true", "false"])
     .optional()

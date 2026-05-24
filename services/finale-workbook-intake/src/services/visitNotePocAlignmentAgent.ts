@@ -1,5 +1,14 @@
+import {
+  BedrockRuntimeClient,
+  type ConverseCommandOutput,
+} from "@aws-sdk/client-bedrock-runtime";
 import type { VisitNoteFact, VisitNoteType } from "@medical-ai-qa/shared-types";
 import type { VisitNotePocMappingResult } from "@medical-ai-qa/shared-types";
+import type { FinaleBatchEnv } from "../config/env";
+import {
+  resolveBedrockConfig,
+  sendBedrockConverseWithProfileFallback,
+} from "../config/bedrock";
 import { sanitizeClinicalSnippet } from "./clinicalTextQualityService";
 import { getVisitNoteDisciplineExpectations } from "./visitNoteDisciplineExpectations";
 
@@ -24,6 +33,27 @@ export type VisitNotePocAlignmentResult = {
   pocEvidenceIds: string[];
   oasisFactIds?: string[];
   rationale: string;
+};
+
+export type VisitNotePocMappingLlmInvoke = (prompt: string) => Promise<string>;
+
+export type VisitNotePocMappingLlmResult = {
+  status: "disabled" | "success" | "failed_deterministic_only";
+  mappingResult: VisitNotePocMappingResult | null;
+  warnings: string[];
+  invocationModelId?: string | null;
+  errorCategory?: "invalid_json" | "invocation_failed" | null;
+  promptTokenEstimate: number;
+};
+
+export type VisitNotePocMappingPromptTarget = {
+  problemKey: string;
+  problemTitle: string;
+  problemStatement?: string;
+  goalTexts: string[];
+  interventionTexts: string[];
+  evidenceIds: string[];
+  clinicalDomain?: string;
 };
 
 const POC_ALIGNMENT_VERDICTS = new Set<VisitNotePocAlignmentVerdict>([
@@ -85,6 +115,10 @@ function mappingStringArray(value: unknown): string[] {
   return Array.isArray(value) ? value.filter((entry): entry is string => typeof entry === "string" && entry.trim().length > 0) : [];
 }
 
+function normalizeWhitespace(value: string | null | undefined): string {
+  return value?.replace(/\s+/g, " ").trim() ?? "";
+}
+
 export function parseVisitNotePocMappingLlmJson(raw: string, visitNoteKey = "visit-note"): VisitNotePocMappingResult {
   let parsed: unknown;
   try {
@@ -131,6 +165,191 @@ export function parseVisitNotePocMappingLlmJson(raw: string, visitNoteKey = "vis
     contradictions: mappingStringArray(record.contradictions),
     pocUpdateSignals: mappingStringArray(record.pocUpdateSignals),
   };
+}
+
+const bedrockClientByRegion = new Map<string, BedrockRuntimeClient>();
+
+function getBedrockClient(region: string): BedrockRuntimeClient {
+  const existing = bedrockClientByRegion.get(region);
+  if (existing) {
+    return existing;
+  }
+  const client = new BedrockRuntimeClient({ region });
+  bedrockClientByRegion.set(region, client);
+  return client;
+}
+
+function extractConverseText(response: ConverseCommandOutput): string {
+  const blocks = response.output?.message?.content;
+  if (!blocks) {
+    return "";
+  }
+  return normalizeWhitespace(blocks
+    .map((block) => "text" in block ? block.text : "")
+    .filter((text): text is string => typeof text === "string")
+    .join("\n"));
+}
+
+function compactVisitNoteFact(fact: VisitNoteFact) {
+  return {
+    factId: fact.factId,
+    category: fact.category,
+    normalizedValue: sanitizeClinicalSnippet(fact.normalizedValue, 180),
+    snippet: sanitizeClinicalSnippet(fact.rawSnippet ?? "", 180) || null,
+    confidence: Number(fact.confidence.toFixed(2)),
+  };
+}
+
+function compactPocTarget(target: VisitNotePocMappingPromptTarget) {
+  return {
+    problemKey: target.problemKey,
+    problemTitle: sanitizeClinicalSnippet(target.problemTitle, 160),
+    clinicalDomain: target.clinicalDomain ?? null,
+    problemStatement: sanitizeClinicalSnippet(target.problemStatement ?? "", 220) || null,
+    goalTexts: target.goalTexts.map((goal) => sanitizeClinicalSnippet(goal, 220)).filter(Boolean).slice(0, 4),
+    interventionTexts: target.interventionTexts.map((intervention) => sanitizeClinicalSnippet(intervention, 240)).filter(Boolean).slice(0, 6),
+    evidenceIds: target.evidenceIds.slice(0, 12),
+  };
+}
+
+export function buildVisitNotePocMappingPrompt(input: {
+  visitNoteKey: string;
+  visitType: VisitNoteType;
+  status?: string | null;
+  lifecycleStatus?: string | null;
+  visitDate?: string | null;
+  facts: VisitNoteFact[];
+  pocTargets: VisitNotePocMappingPromptTarget[];
+  diagnosisContext?: string[] | null;
+}): string {
+  return [
+    "Return strict JSON only. Do not include markdown, commentary, or code fences.",
+    "You are mapping one active home-health Visit Note to the supplied Plan of Care items for read-only QA.",
+    "Map only POC items supported by Visit Note evidence. Do not invent matches.",
+    "Use insufficient_documentation when the note does not prove a POC problem, goal, or intervention was addressed.",
+    "Use contradiction only when the Visit Note clearly conflicts with the supplied POC.",
+    "Preserve supplied POC problemKey values exactly.",
+    "Required JSON shape:",
+    JSON.stringify({
+      alignmentStatus: "aligned | partially_aligned | not_aligned | insufficient_documentation | contradiction | needs_review",
+      matchStrength: 0.0,
+      matchedPocItems: [{
+        problemKey: "supplied POC problemKey",
+        problemTitle: "supplied title",
+        goalTexts: ["supported POC goal text"],
+        interventionTexts: ["supported POC intervention text"],
+        evidenceIds: ["supplied POC evidence id"],
+      }],
+      visitNoteEvidence: ["visit-note fact id"],
+      rationale: "one short evidence-grounded reason",
+      missingDocumentation: ["required detail missing from the note"],
+      contradictions: ["clear conflict with POC"],
+      pocUpdateSignals: ["visit-note fact id suggesting POC update"],
+    }),
+    "VISIT_NOTE:",
+    JSON.stringify({
+      visitNoteKey: input.visitNoteKey,
+      visitType: input.visitType,
+      status: input.status ?? null,
+      lifecycleStatus: input.lifecycleStatus ?? null,
+      visitDate: input.visitDate ?? null,
+      facts: input.facts.slice(0, 24).map(compactVisitNoteFact),
+    }),
+    "POC_ITEMS:",
+    JSON.stringify(input.pocTargets.slice(0, 12).map(compactPocTarget)),
+    "DIAGNOSIS_CONTEXT:",
+    JSON.stringify((input.diagnosisContext ?? []).map((entry) => sanitizeClinicalSnippet(entry, 160)).filter(Boolean).slice(0, 12)),
+  ].join("\n");
+}
+
+function isVisitNotePocMappingLlmEnabled(env: FinaleBatchEnv | undefined): boolean {
+  const enabled = env?.VISIT_NOTE_POC_MAPPING_LLM_ENABLED ?? env?.CODE_LLM_ENABLED;
+  return Boolean(enabled && env?.LLM_PROVIDER === "bedrock");
+}
+
+async function invokeBedrock(input: {
+  env: FinaleBatchEnv;
+  prompt: string;
+}): Promise<{ content: string; invocationModelId: string | null }> {
+  const config = resolveBedrockConfig({
+    ...input.env,
+    CODE_LLM_ENABLED: true,
+    BEDROCK_MODEL_ID: input.env.VISIT_NOTE_POC_MAPPING_MODEL_ID ?? input.env.BEDROCK_MODEL_ID,
+  });
+  const client = getBedrockClient(config.region);
+  const { response, invocationModelId } = await sendBedrockConverseWithProfileFallback({
+    client,
+    config,
+    command: {
+      messages: [{
+        role: "user",
+        content: [{ text: input.prompt }],
+      }],
+      inferenceConfig: {
+        temperature: 0,
+        maxTokens: input.env.VISIT_NOTE_POC_MAPPING_MAX_TOKENS,
+      },
+    },
+  });
+  return {
+    content: extractConverseText(response),
+    invocationModelId,
+  };
+}
+
+export async function runVisitNotePocMappingLlm(input: {
+  visitNoteKey: string;
+  visitType: VisitNoteType;
+  status?: string | null;
+  lifecycleStatus?: string | null;
+  visitDate?: string | null;
+  facts: VisitNoteFact[];
+  pocTargets: VisitNotePocMappingPromptTarget[];
+  diagnosisContext?: string[] | null;
+  env?: FinaleBatchEnv;
+  invokeText?: VisitNotePocMappingLlmInvoke;
+}): Promise<VisitNotePocMappingLlmResult> {
+  if (input.pocTargets.length === 0 || (!input.invokeText && !isVisitNotePocMappingLlmEnabled(input.env))) {
+    return {
+      status: "disabled",
+      mappingResult: null,
+      warnings: [],
+      invocationModelId: null,
+      errorCategory: null,
+      promptTokenEstimate: 0,
+    };
+  }
+  const prompt = buildVisitNotePocMappingPrompt(input);
+  const promptTokenEstimate = Math.ceil(prompt.length / 4);
+  try {
+    const invoked = input.invokeText
+      ? { content: await input.invokeText(prompt), invocationModelId: "test-invoker" }
+      : await invokeBedrock({ env: input.env!, prompt });
+    const mappingResult = parseVisitNotePocMappingLlmJson(invoked.content, input.visitNoteKey);
+    return {
+      status: "success",
+      mappingResult: {
+        ...mappingResult,
+        mappingStatus: "success",
+        mappingSource: "llm",
+        modelId: invoked.invocationModelId,
+      },
+      warnings: [],
+      invocationModelId: invoked.invocationModelId,
+      errorCategory: null,
+      promptTokenEstimate,
+    };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    return {
+      status: "failed_deterministic_only",
+      mappingResult: null,
+      warnings: [`Visit Note POC mapping LLM failed; deterministic mapping was retained. ${sanitizeClinicalSnippet(message, 220)}`],
+      invocationModelId: null,
+      errorCategory: /JSON|alignmentStatus|matchStrength|rationale/i.test(message) ? "invalid_json" : "invocation_failed",
+      promptTokenEstimate,
+    };
+  }
 }
 
 export function buildVisitNotePocAlignmentPrompt(input: {

@@ -10,11 +10,16 @@ import type {
   VisitNoteQaReviewArtifact,
   VisitNotesDiscoveryArtifact,
 } from "@medical-ai-qa/shared-types";
+import type { FinaleBatchEnv } from "../config/env";
 import { buildVisitNoteCacheKey } from "../portal/services/visitNotesControlledCaptureService";
 import {
   determineVisitNoteCaptureEligibility,
 } from "./visitNoteNormalizationService";
-import { analyzeVisitNotePocAlignment } from "./visitNotePocAlignmentAgent";
+import {
+  analyzeVisitNotePocAlignment,
+  runVisitNotePocMappingLlm,
+  type VisitNotePocMappingLlmInvoke,
+} from "./visitNotePocAlignmentAgent";
 import { summarizeVisitNoteForReviewer } from "./visitNoteSummaryAgent";
 
 export const VISIT_NOTE_PROCESSING_MANIFEST_FILE_NAME = "visit-note-processing-manifest.json";
@@ -295,6 +300,8 @@ function buildVisitNotePocMappingResult(input: {
 
   return {
     visitNoteKey: input.row.visitNoteKey,
+    mappingStatus: input.row.captureEligibility === "active_monitoring" ? "deterministic_only" : "skipped",
+    mappingSource: input.row.captureEligibility === "active_monitoring" ? "deterministic" : "skipped",
     alignmentStatus,
     matchStrength: Math.max(input.alignment.confidence, ...input.pocProblemMatches.map((match) => match.confidence), 0),
     matchedPocItems: matchedTargets,
@@ -304,6 +311,62 @@ function buildVisitNotePocMappingResult(input: {
     contradictions: input.possibleContradictions,
     pocUpdateSignals: Array.from(new Set(pocUpdateSignals)),
   };
+}
+
+function buildPocMappingInputHash(input: {
+  row: VisitNotesDiscoveryArtifact["rows"][number];
+  facts: VisitNoteFact[];
+  targets: VisitNotePocTarget[];
+  planOfCareHash?: string | null;
+  oasisFactPackHash?: string | null;
+  manifestEntry?: VisitNoteProcessingManifest["visitNoteInputs"][number] | null;
+}): string {
+  return hashJson({
+    visitNoteKey: input.row.visitNoteKey,
+    rowTextHash: input.row.rowTextHash,
+    contentHash: input.manifestEntry?.contentHash ?? input.row.sourceUrlHash ?? input.row.portalDocumentId ?? input.row.visitNoteKey,
+    textHash: input.manifestEntry?.textHash ?? null,
+    facts: input.facts.map((fact) => ({
+      factId: fact.factId,
+      category: fact.category,
+      normalizedValue: fact.normalizedValue,
+      rawSnippet: fact.rawSnippet ?? null,
+    })),
+    pocTargets: input.targets,
+    planOfCareHash: input.planOfCareHash ?? null,
+    oasisFactPackHash: input.oasisFactPackHash ?? null,
+  });
+}
+
+function findReusablePocMappingResult(input: {
+  previousReview?: VisitNoteQaReviewArtifact | null;
+  visitNoteKey: string;
+  inputHash: string;
+}): VisitNotePocMappingResult | null {
+  const previous = input.previousReview?.noteSummaries
+    .find((summary) => summary.visitNoteKey === input.visitNoteKey)
+    ?.pocMappingResult;
+  if (
+    previous?.inputHash === input.inputHash &&
+    (previous.mappingSource === "llm" || previous.mappingSource === "cache") &&
+    (previous.mappingStatus === "success" || previous.mappingStatus === "reused")
+  ) {
+    return {
+      ...previous,
+      mappingStatus: "reused",
+      mappingSource: "cache",
+    };
+  }
+  return null;
+}
+
+function diagnosisContextFromPlanOfCare(planOfCare: PlanOfCareReviewDraftArtifact | null): string[] {
+  return [
+    ...(planOfCare?.diagnosisDrafts ?? []).map((draft) =>
+      `${draft.diagnosisKey}: ${draft.diagnosisLabel}${draft.clinicalDomain ? ` (${draft.clinicalDomain})` : ""}`),
+    ...(planOfCare?.carePlanProblemGroups ?? []).map((group) =>
+      `${group.groupKey}: ${group.problemTitle}${group.clinicalDomain ? ` (${group.clinicalDomain})` : ""}`),
+  ];
 }
 
 export function buildVisitNoteProcessingManifest(input: {
@@ -415,13 +478,20 @@ export function buildVisitNoteProcessingManifest(input: {
   };
 }
 
-export function buildVisitNoteQaReview(input: {
+export async function buildVisitNoteQaReview(input: {
   discovery: VisitNotesDiscoveryArtifact | null;
   factPack: VisitNoteFactPack | null;
   planOfCare: PlanOfCareReviewDraftArtifact | null;
   oasisClinicalFactPack: unknown;
+  planOfCareHash?: string | null;
+  oasisFactPackHash?: string | null;
+  manifest?: VisitNoteProcessingManifest | null;
+  previousReview?: VisitNoteQaReviewArtifact | null;
+  env?: FinaleBatchEnv;
+  invokePocMappingText?: VisitNotePocMappingLlmInvoke;
+  forceRerunVisitNotes?: boolean;
   generatedAt?: string;
-}): VisitNoteQaReviewArtifact {
+}): Promise<VisitNoteQaReviewArtifact> {
   const discovery = input.discovery;
   const factPack = input.factPack;
   if (!discovery) {
@@ -523,7 +593,11 @@ export function buildVisitNoteQaReview(input: {
     }
   }
 
-  const noteSummaries = discovery.rows.map((row) => {
+  const manifestByKey = new Map((input.manifest?.visitNoteInputs ?? []).map((entry) => [entry.visitNoteKey, entry]));
+  const diagnosisContext = diagnosisContextFromPlanOfCare(input.planOfCare);
+  const noteSummaries: VisitNoteQaReviewArtifact["noteSummaries"] = [];
+  const mappingWarnings: string[] = [];
+  for (const row of discovery.rows) {
     const rowFacts = factsForRow(factPack, row.visitNoteKey);
     const pocTargets = getPocTargetsForVisitType(input.planOfCare, row.normalizedVisitType);
     const alignedPocGoals = pocTargets
@@ -545,21 +619,71 @@ export function buildVisitNoteQaReview(input: {
       alignedPocGoals,
       pocEvidenceIds: pocTargets.flatMap((target) => target.evidenceIds),
     });
-    const pocMappingResult = buildVisitNotePocMappingResult({
+    const manifestEntry = manifestByKey.get(row.visitNoteKey);
+    const mappingInputHash = buildPocMappingInputHash({
       row,
       facts: rowFacts,
       targets: pocTargets,
-      alignment,
-      pocProblemMatches,
-      possibleContradictions,
+      planOfCareHash: input.planOfCareHash,
+      oasisFactPackHash: input.oasisFactPackHash,
+      manifestEntry,
     });
+    const deterministicMapping = {
+      ...buildVisitNotePocMappingResult({
+        row,
+        facts: rowFacts,
+        targets: pocTargets,
+        alignment,
+        pocProblemMatches,
+        possibleContradictions,
+      }),
+      inputHash: mappingInputHash,
+    };
+    let pocMappingResult: VisitNotePocMappingResult = deterministicMapping;
+    const reusable = row.captureEligibility === "active_monitoring" && !input.forceRerunVisitNotes
+      ? findReusablePocMappingResult({
+          previousReview: input.previousReview,
+          visitNoteKey: row.visitNoteKey,
+          inputHash: mappingInputHash,
+        })
+      : null;
+    if (reusable) {
+      pocMappingResult = reusable;
+    } else if (row.captureEligibility === "active_monitoring") {
+      const llmResult = await runVisitNotePocMappingLlm({
+        visitNoteKey: row.visitNoteKey,
+        visitType: row.normalizedVisitType,
+        status,
+        lifecycleStatus: row.lifecycleStatus ?? row.captureEligibility,
+        visitDate: row.visitDate ?? null,
+        facts: rowFacts,
+        pocTargets,
+        diagnosisContext,
+        env: input.env,
+        invokeText: input.invokePocMappingText,
+      });
+      if (llmResult.mappingResult) {
+        pocMappingResult = {
+          ...llmResult.mappingResult,
+          inputHash: mappingInputHash,
+        };
+      } else if (llmResult.status === "failed_deterministic_only") {
+        pocMappingResult = {
+          ...deterministicMapping,
+          mappingStatus: "degraded",
+          mappingSource: "deterministic_only",
+          errorReason: llmResult.warnings[0] ?? "Visit Note POC mapping LLM failed; deterministic mapping was retained.",
+        };
+        mappingWarnings.push(...llmResult.warnings);
+      }
+    }
     const summary = summarizeVisitNoteForReviewer({
       visitType: row.normalizedVisitType,
       facts: rowFacts,
       missingFields: [],
       possibleContradictions,
     });
-    return {
+    noteSummaries.push({
       visitNoteKey: row.visitNoteKey,
       visitType: row.normalizedVisitType,
       ...(row.visitDate ? { visitDate: row.visitDate } : {}),
@@ -580,8 +704,8 @@ export function buildVisitNoteQaReview(input: {
       pocMappingResult,
       pocProblemMatches,
       possibleContradictions,
-    };
-  });
+    });
+  }
 
   const contradictionCount = findings.filter((finding) => finding.category === "contradiction").length;
   const positiveProgressCount = findings.filter((finding) => finding.category === "positive_progress").length;
@@ -617,7 +741,7 @@ export function buildVisitNoteQaReview(input: {
       capturedVisitNotes: discovery.rows.filter((row) => row.captureStatus === "captured").length,
       reusedVisitNotes: discovery.rows.filter((row) => row.skipReason === "manifest_indicates_capture_extraction_analysis_current").length,
       failedVisitNotes: discovery.rows.filter((row) => row.captureStatus === "failed").length,
-      degradedVisitNotes: factPack?.warnings.length ?? 0,
+      degradedVisitNotes: (factPack?.warnings.length ?? 0) + mappingWarnings.length,
       cappedVisitNotes: discovery.rows.filter((row) => row.captureStatus === "capture_pending_due_to_config_limit").length,
       byVisitType: discovery.counts.byVisitType,
       byStatus: discovery.counts.byStatus,
@@ -632,7 +756,7 @@ export function buildVisitNoteQaReview(input: {
     visitTypeCounts: visitTypeStatusMatrix,
     findings,
     noteSummaries,
-    warnings: factPack?.warnings ?? [],
+    warnings: Array.from(new Set([...(factPack?.warnings ?? []), ...mappingWarnings])).sort(),
   };
 }
 

@@ -22,7 +22,7 @@ Production should leave `VISIT_NOTE_CAPTURE_MAX_NOTES` unset so all active notes
 
 ## POC Mapping
 
-Each captured active note now carries a POC mapping result in `visit-note-qa-review.json` under `noteSummaries[].pocMappingResult`:
+Each captured active note carries a POC mapping result in `visit-note-qa-review.json` under `noteSummaries[].pocMappingResult`:
 
 - matched POC problems, goals, and interventions
 - `matchStrength`
@@ -31,6 +31,13 @@ Each captured active note now carries a POC mapping result in `visit-note-qa-rev
 - missing documentation
 - contradictions
 - POC update signals
+- `mappingStatus`, `mappingSource`, `inputHash`, optional `modelId`, and optional `errorReason`
+
+When `VISIT_NOTE_POC_MAPPING_LLM_ENABLED=true` or `CODE_LLM_ENABLED=true` with `LLM_PROVIDER=bedrock`, active Visit Notes are sent to the Bedrock Visit Note -> POC mapper. The prompt includes compact Visit Note facts, discipline/type, row status/lifecycle, visit date, structured POC problems/goals/interventions, and diagnosis context already present in the POC draft. QA Complete notes do not invoke the mapper by default.
+
+The mapper must return JSON only and preserve POC `problemKey` values. It should use `insufficient_documentation` when the note does not prove a POC item was addressed and `contradiction` only for clear conflicts.
+
+If LLM mapping is disabled, unavailable, or returns invalid JSON, the patient run continues. The artifact keeps deterministic mapping with `mappingStatus: "deterministic_only"` or `mappingStatus: "degraded"` and records a warning/error reason. Successful LLM mappings are reused when the mapping `inputHash` is unchanged; that hash includes Visit Note row/content/text/fact inputs plus the POC and OASIS fact-pack hashes. A changed note, changed POC, changed OASIS context, or `--force-rerun-visit-notes` causes remapping.
 
 The dashboard/API expose active/finalized counts, row lifecycle, capture status, mapping status, matched POC items, and concise evidence rationale.
 
@@ -39,11 +46,11 @@ The dashboard/API expose active/finalized counts, row lifecycle, capture status,
 Run focused validation:
 
 ```powershell
-pnpm --filter @medical-ai-qa/finale-workbook-intake test -- visitNoteTypeNormalizationService visitNoteCaptureService visitNoteQaAnalysisService visitNotePocAlignmentAgent
-pnpm --filter @medical-ai-qa/api test -- dashboardRunViews
-pnpm --filter @medical-ai-qa/dashboard test -- VisitNotesReviewPanel
+pnpm --filter @medical-ai-qa/finale-workbook-intake exec vitest run src/tests/visitNoteTypeNormalizationService.test.ts src/tests/visitNoteCaptureService.test.ts src/tests/visitNoteQaAnalysisService.test.ts src/tests/visitNotePocAlignmentAgent.test.ts
+pnpm --filter @medical-ai-qa/api exec tsx --test src/tests/dashboardRunViews.test.ts
+pnpm --filter @medical-ai-qa/dashboard exec tsx --test components/VisitNotesReviewPanel.test.tsx
+pnpm --filter @medical-ai-qa/shared-types typecheck
 pnpm --filter @medical-ai-qa/finale-workbook-intake typecheck
 pnpm --filter @medical-ai-qa/api typecheck
-pnpm --filter @medical-ai-qa/dashboard typecheck
 pnpm --filter @medical-ai-qa/dashboard build
 ```
