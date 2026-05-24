@@ -65,12 +65,14 @@ const baseReview: VisitNotesReview = {
     captureStatus: "captured",
     analyzed: true,
     analysisStatus: "ready",
-    mappingStatus: "aligned",
+    mappingStatus: "deterministic_only",
     matchStrength: 0.82,
     summary: "Two visit-note facts extracted for physical therapy.",
     missingFields: [],
     alignedPocGoals: ["Improve safe transfers"],
     pocMappingResult: {
+      mappingStatus: "deterministic_only",
+      mappingSource: "deterministic",
       alignmentStatus: "aligned",
       matchStrength: 0.82,
       matchedPocItems: [{
@@ -117,6 +119,7 @@ describe("VisitNotesReviewPanel", () => {
     assert.match(html, /Skilled Nursing/);
     assert.match(html, /Physical Therapy/);
     assert.match(html, /Relevant to POC/);
+    assert.match(html, /Deterministic Only/);
     assert.match(html, /Improve safe transfers/);
     assert.match(html, /POC problems and interventions addressed/);
     assert.match(html, /Skilled PT to provide gait training/);

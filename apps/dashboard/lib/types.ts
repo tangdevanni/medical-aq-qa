@@ -687,6 +687,8 @@ export interface VisitNotesReview {
     missingFields: string[];
     alignedPocGoals: string[];
     pocMappingResult?: {
+      mappingStatus: string | null;
+      mappingSource: string | null;
       alignmentStatus: string;
       matchStrength: number;
       matchedPocItems: Array<{

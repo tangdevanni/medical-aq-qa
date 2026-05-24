@@ -389,6 +389,8 @@ type DashboardVisitNotesReview = {
     missingFields: string[];
     alignedPocGoals: string[];
     pocMappingResult?: {
+      mappingStatus: string | null;
+      mappingSource: string | null;
       alignmentStatus: string;
       matchStrength: number;
       matchedPocItems: Array<{
@@ -1052,12 +1054,16 @@ function deriveVisitNotesReview(artifactContents: KnownArtifactContents): Dashbo
       captureStatus: asString(note.captureStatus),
       analyzed: Boolean(note.analyzed),
       analysisStatus: asString(note.analysisStatus) ?? "skipped",
-      mappingStatus: asString(asRecord(note.pocMappingResult)?.alignmentStatus),
+      mappingStatus:
+        asString(asRecord(note.pocMappingResult)?.mappingStatus) ??
+        asString(asRecord(note.pocMappingResult)?.alignmentStatus),
       matchStrength: asNumber(asRecord(note.pocMappingResult)?.matchStrength),
       summary: asString(note.summary) ?? "",
       missingFields: asArray(note.missingFields).map(asString).filter((value): value is string => Boolean(value)),
       alignedPocGoals: asArray(note.alignedPocGoals).map(asString).filter((value): value is string => Boolean(value)),
       pocMappingResult: asRecord(note.pocMappingResult) ? {
+        mappingStatus: asString(asRecord(note.pocMappingResult)?.mappingStatus),
+        mappingSource: asString(asRecord(note.pocMappingResult)?.mappingSource),
         alignmentStatus: asString(asRecord(note.pocMappingResult)?.alignmentStatus) ?? "needs_review",
         matchStrength: asNumber(asRecord(note.pocMappingResult)?.matchStrength) ?? 0,
         matchedPocItems: asArray(asRecord(note.pocMappingResult)?.matchedPocItems).map(asRecord).filter((value): value is Record<string, unknown> => Boolean(value)).map((item) => ({

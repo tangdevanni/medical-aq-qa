@@ -970,7 +970,39 @@ describe("dashboardRunViews", () => {
             needsHumanReview: true,
             confidence: 0.88,
           }],
-          noteSummaries: [],
+          noteSummaries: [{
+            visitNoteKey: "note-1",
+            visitType: "physical_therapy",
+            visitDate: "2026-05-02",
+            status: "in_progress",
+            lifecycleStatus: "active_monitoring",
+            captureStatus: "captured",
+            analyzed: true,
+            analysisStatus: "ready",
+            summary: "PT note documents gait training.",
+            missingFields: [],
+            alignedPocGoals: ["Improve safe transfers"],
+            pocMappingResult: {
+              mappingStatus: "deterministic_only",
+              mappingSource: "deterministic",
+              alignmentStatus: "aligned",
+              matchStrength: 0.82,
+              matchedPocItems: [{
+                problemKey: "mobility",
+                problemTitle: "Mobility limitation",
+                goalTexts: ["Improve safe transfers"],
+                interventionTexts: ["Skilled PT gait training"],
+                evidenceIds: ["poc-goal-1"],
+              }],
+              visitNoteEvidence: ["visit-note-fact-1"],
+              rationale: "Visit-note facts support the mobility POC intervention.",
+              missingDocumentation: [],
+              contradictions: [],
+              pocUpdateSignals: [],
+            },
+            pocProblemMatches: [],
+            possibleContradictions: [],
+          }],
           warnings: [],
         },
       },
@@ -982,6 +1014,8 @@ describe("dashboardRunViews", () => {
     assert.equal(detail.visitNotesReview.qaCompleteFinalizedCount, 1);
     assert.equal(detail.visitNotesReview.capturedVisitNotes, 1);
     assert.equal(detail.visitNotesReview.contradictionCount, 1);
+    assert.equal(detail.visitNotesReview.noteSummaries[0]?.mappingStatus, "deterministic_only");
+    assert.equal(detail.visitNotesReview.noteSummaries[0]?.pocMappingResult?.matchedPocItems[0]?.problemKey, "mobility");
     assert.equal(detail.visitNotesReview.visitTypeCounts[0]?.visitType, "skilled_nursing");
     assert.equal(detail.visitNotesReview.findings[0]?.evidenceCount, 3);
   });
