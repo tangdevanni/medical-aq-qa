@@ -20,12 +20,15 @@ Set:
 
 Optional:
 
+- `API_AUTONOMOUS_MODE`
 - `DEFAULT_SUBSIDIARY_PORTAL_DASHBOARD_URL`
 - `DEFAULT_SUBSIDIARY_RERUN_ENABLED`
 - `DEFAULT_SUBSIDIARY_RERUN_INTERVAL_HOURS`
 - `DEFAULT_SUBSIDIARY_TIMEZONE`
 
 The local fallback is isolated to the portal credential provider. The active workflow does not read raw portal credentials directly from business logic.
+The API persists subsidiary records under `services/api/data/control-plane/subsidiaries` by default and seeds the known agency set on startup, so those files should be treated as runtime state rather than hand-edited source files.
+Recommended local setting: `API_AUTONOMOUS_MODE=manual_only`. That keeps all known agencies visible for manual refresh while preventing startup automation and timed reruns.
 
 ## AWS production
 
@@ -54,6 +57,7 @@ Inject the Secrets Manager value into the ECS container as:
 - `DEFAULT_SUBSIDIARY_PORTAL_CREDENTIALS_JSON`
 
 The API resolves the subsidiary record first, then reads the injected secret payload through the credential provider layer.
+In ECS, mount `API_STORAGE_ROOT=/data/control-plane` on durable storage such as EFS; do not rely on repo-local seeded files inside the image.
 
 ## Scheduler
 

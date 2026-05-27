@@ -63,8 +63,11 @@ API container:
 - `API_HOST=0.0.0.0`
 - `API_STORAGE_ROOT=/data/control-plane`
 - `API_LOG_LEVEL=info`
+- `API_AUTONOMOUS_MODE=full`
+- `API_ENABLE_VERIFICATION_ROUTES=false`
 - `API_CORS_ORIGIN=https://YOUR_ALB_DNS`
 - `OASIS_WRITE_ENABLED=false` for read-only QA deployment
+- `FINALE_PATIENT_CONCURRENCY=4` to run up to four isolated patient workers per batch
 - `AUTONOMOUS_AGENCY_IDS=aplus-home-health,active-home-health,avery-home-health,meadows-home-health,star-home-health`
 - `DEFAULT_SUBSIDIARY_RERUN_ENABLED=true`
 - `DEFAULT_SUBSIDIARY_RERUN_INTERVAL_HOURS=24`
@@ -72,12 +75,55 @@ API container:
 - `CODE_LLM_ENABLED=true`
 - `LLM_PROVIDER=bedrock`
 - `BEDROCK_REGION=<BEDROCK_REGION>`
-- `BEDROCK_MODEL_ID=<BEDROCK_MODEL_ID>`
+- `BEDROCK_MODEL_ID=amazon.nova-pro-v1:0`
 - `TEXTRACT_S3_REGION=<TEXTRACT_S3_REGION>`
 - `TEXTRACT_S3_BUCKET=<TEXTRACT_S3_BUCKET>`
 - `TEXTRACT_S3_PREFIX=finale-workbook-intake/textract`
 
 Store portal, Bedrock, Textract, and any other backend automation secrets in Secrets Manager and inject them into the API task definition. Dashboard users do not need those portal credentials.
+Nova Pro is the recommended default operational model for the current Bedrock-only intake pipeline. Referral proposal and referral QA may still fall back even on Pro until their prompt/parse hardening is completed.
+Before building the API image, generate the normalized POC runtime asset:
+
+```powershell
+pnpm --dir services/finale-workbook-intake poc:normalize-question-bank
+```
+
+The API Dockerfile now fails the build if `services/finale-workbook-intake/assets/poc-question-bank/poc-question-bank.normalized.v1.json` is missing.
+The API seeds subsidiary metadata into `API_STORAGE_ROOT` on startup, so the mounted volume is the runtime source of truth; the image should not be treated as the place where agency state lives.
+Keep `API_AUTONOMOUS_MODE` unset or explicitly `full` in deployed environments; `manual_only` is intended for local development and disables startup automation and timed reruns.
+`FINALE_PATIENT_CONCURRENCY` is consumed by the intake runner, not the dashboard. Start with `4` only if the task has enough headroom for four Playwright/browser sessions; if you see CPU saturation, memory pressure, or portal throttling, back it down to `2`.
+
+## Demo / Staging Mode
+
+Use the same API and dashboard images for a pre-production demo, but run the API in manual-only mode:
+
+- `API_AUTONOMOUS_MODE=manual_only`
+- `API_ENABLE_VERIFICATION_ROUTES=true`
+- `DEFAULT_SUBSIDIARY_RERUN_ENABLED=false`
+- `FINALE_PATIENT_CONCURRENCY=1`
+
+This keeps agency refreshes manual, reduces token burn, and gives you a stable demo path for:
+- OASIS gate behavior
+- `AI Plan of Care` rendering
+- Nova Pro patient artifacts and LLM audit verification
+
+For demo/staging, seed only a small known patient set or a single controlled manual refresh. Do not enable the full autonomous agency fleet until the demo is signed off.
+
+Run the same Playwright verification harness against staging by setting:
+
+- `PLAYWRIGHT_BASE_URL=https://YOUR_STAGING_DASHBOARD_DNS`
+- `PLAYWRIGHT_API_BASE_URL=https://YOUR_STAGING_API_DNS`
+- `PLAYWRIGHT_DASHBOARD_EMAIL=<qa-user-email>`
+- `PLAYWRIGHT_DASHBOARD_PASSWORD=<qa-user-password>`
+- `PLAYWRIGHT_VERIFICATION_MODE=staging`
+
+Then execute:
+
+```powershell
+pnpm verify:dashboard
+```
+
+The harness seeds a verification batch through `POST /api/testing/dashboard-verification/seed`, checks login, agency selection, patient queue rendering, `OASIS Gate`, and `AI Plan of Care`, then writes `artifacts/dashboard-verification/dashboard-verification-staging.json`.
 
 ## Autonomous Agency Loading
 
@@ -132,6 +178,12 @@ For hands-off production, keep scheduled reruns enabled and use manual all-agenc
 docker build -f services/api/Dockerfile -t medical-ai-qa-api:prod .
 docker build -f apps/dashboard/Dockerfile -t medical-ai-qa-dashboard:prod .
 ```
+
+Notes:
+
+- `.dockerignore` excludes local `.env.local` files and runtime control-plane data, so image builds should start from code plus package metadata only.
+- The dashboard image now uses Next.js standalone output, which keeps the runtime image smaller and avoids shipping the entire workspace into the serving container.
+- The API image now copies the Plan of Care question-bank assets into the runtime image; do not skip question-bank normalization before building.
 
 ## Push Images To ECR
 
@@ -210,17 +262,32 @@ aws ecs update-service --cluster medical-ai-qa --service medical-ai-qa-api --for
 aws ecs update-service --cluster medical-ai-qa --service medical-ai-qa-dashboard --force-new-deployment --region "$AWS_REGION"
 ```
 
+For a demo/staging API service, register a task definition variant with:
+
+```json
+{ "name": "API_AUTONOMOUS_MODE", "value": "manual_only" }
+{ "name": "DEFAULT_SUBSIDIARY_RERUN_ENABLED", "value": "false" }
+{ "name": "FINALE_PATIENT_CONCURRENCY", "value": "1" }
+```
+
+Keep production on `API_AUTONOMOUS_MODE=full` only after the demo is signed off.
+
 ## Smoke Test
 
 1. Open `https://YOUR_ALB_DNS/login`.
 2. Sign in with a dashboard QA account.
 3. Select an assigned agency.
 4. Confirm `/agency` loads the latest queue.
-5. Open a patient and confirm OASIS Snapshot, Compare All, Source Documents, and missing referral indicators render as expected.
+5. Open a patient and confirm OASIS Snapshot, Compare All, Source Documents, missing referral indicators, and the `AI Plan of Care` tab render as expected.
 6. Confirm a user cannot select an agency outside their `allowedAgencyIds`.
 7. If audit logging is enabled, confirm CloudWatch receives `login_succeeded`, `login_failed`, `agency_selected`, and `logout_succeeded` events.
 8. Confirm each agency has either an active refresh cycle or a clear error message on the agency page.
 9. Confirm CloudWatch API logs show scheduled initialization for all agencies in `AUTONOMOUS_AGENCY_IDS`.
+10. For demo/staging, run `pnpm verify:dashboard` and confirm the generated report shows:
+   - release gate passed
+   - Nova Pro configured
+   - no `skipped_missing_question_bank` status
+   - seeded `limited_preview`, `blocked_missing_evidence`, and `skipped_oasis_gate` states rendered as expected
 
 ## Operational Notes
 
