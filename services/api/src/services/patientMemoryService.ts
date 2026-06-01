@@ -292,7 +292,18 @@ export class PatientMemoryService {
       return createEmptyIndex(agencySlug, isoTimestamp());
     }
 
-    return patientMemoryIndexSchema.parse(await readJsonFile<PatientMemoryIndex>(filePath));
+    try {
+      return patientMemoryIndexSchema.parse(await readJsonFile<PatientMemoryIndex>(filePath));
+    } catch (error) {
+      const quarantinePath = `${filePath}.corrupt-${safeTimestamp(isoTimestamp())}`;
+      try {
+        await copyFile(filePath, quarantinePath);
+      } catch {
+        // Best effort only: the important behavior is to stop a corrupt index
+        // from blocking all patient processing for the agency.
+      }
+      return createEmptyIndex(agencySlug, isoTimestamp());
+    }
   }
 
   async writeIndex(index: PatientMemoryIndex): Promise<PatientMemoryIndex> {
