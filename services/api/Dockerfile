@@ -15,6 +15,7 @@ COPY services/finale-workbook-intake ./services/finale-workbook-intake
 COPY services/portal-worker ./services/portal-worker
 
 RUN pnpm install --frozen-lockfile
+RUN pnpm exec playwright install --with-deps chromium
 RUN pnpm --filter @medical-ai-qa/api... build
 
 EXPOSE 3000

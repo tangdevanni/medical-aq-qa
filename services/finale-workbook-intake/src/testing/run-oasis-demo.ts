@@ -8,6 +8,8 @@ function parseArgs(argv: string[]): {
   limit?: number;
   all: boolean;
   live: boolean;
+  debugOasisDomExtraction: boolean;
+  referralOnly: boolean;
 } {
   let outputDir: string | null = null;
   let workbookPath: string | undefined;
@@ -15,6 +17,8 @@ function parseArgs(argv: string[]): {
   let limit: number | undefined;
   let all = false;
   let live = false;
+  let debugOasisDomExtraction = false;
+  let referralOnly = false;
 
   for (let index = 0; index < argv.length; index += 1) {
     const value = argv[index];
@@ -62,6 +66,16 @@ function parseArgs(argv: string[]): {
       live = true;
       continue;
     }
+
+    if (value === "--debug-oasis-dom-extraction") {
+      debugOasisDomExtraction = true;
+      continue;
+    }
+
+    if (value === "--referral-only") {
+      referralOnly = true;
+      continue;
+    }
   }
 
   const defaultOutputDir = path.resolve(
@@ -78,11 +92,20 @@ function parseArgs(argv: string[]): {
     limit,
     all,
     live,
+    debugOasisDomExtraction,
+    referralOnly,
   };
 }
 
 async function main(): Promise<void> {
   const args = parseArgs(process.argv.slice(2));
+  if (args.debugOasisDomExtraction) {
+    process.env.PORTAL_DOM_EXTRACTION_ENABLED = "true";
+    process.env.OASIS_DOM_EXTRACTION_ENABLED = "true";
+    process.env.OCR_FALLBACK_ENABLED = process.env.OCR_FALLBACK_ENABLED ?? "true";
+    process.env.CODE_LLM_ENABLED = "false";
+    process.env.VISIT_NOTE_POC_MAPPING_LLM_ENABLED = "false";
+  }
   const result = await runOasisDemoHarness({
     outputDir: args.outputDir,
     workbookPath: args.workbookPath,
@@ -90,6 +113,7 @@ async function main(): Promise<void> {
     limit: args.limit,
     all: args.all,
     live: args.live,
+    referralOnly: args.referralOnly,
   });
 
   console.log(
@@ -100,6 +124,8 @@ async function main(): Promise<void> {
         demoSummaryJsonPath: result.demoSummaryJsonPath,
         demoSummaryMarkdownPath: result.demoSummaryMarkdownPath,
         liveMode: result.liveMode,
+        debugOasisDomExtraction: args.debugOasisDomExtraction,
+        referralOnly: args.referralOnly,
         selectionReason: result.selectionReason,
         selectedPatientCount: result.selectedPatientCount,
         availablePatientCount: result.availablePatientCount,

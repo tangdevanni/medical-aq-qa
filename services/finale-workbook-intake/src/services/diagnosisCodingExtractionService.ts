@@ -734,8 +734,16 @@ function normalizeReasonForAdmission(value: unknown): string | null {
   if (!normalized) {
     return null;
   }
+  const factPackPrimaryMatch = normalized.match(/\bprimary\s+(.+?)(?:\s+-\s+[A-Z][0-9][0-9A-Z](?:\.|\s)|$)/i);
+  const factPackPrimary = sanitizeFreeText(factPackPrimaryMatch?.[1]);
+  if (factPackPrimary && !isDiagnosisInstructionalNoise(factPackPrimary)) {
+    return factPackPrimary.slice(0, 180);
+  }
   if (isDiagnosisInstructionalNoise(normalized)) {
     return null;
+  }
+  if (/\b(?:fracture|fx|patella|hyponatremia|weakness|heart failure|diabetes|pneumonia|dysphagia)\b/i.test(normalized)) {
+    return normalized.slice(0, 180);
   }
   const reasonSignals = /\b(admit|admission|homebound|due to|because|referred for|reason)\b/i.test(normalized);
   if (!reasonSignals) {

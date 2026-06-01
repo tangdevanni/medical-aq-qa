@@ -54,9 +54,29 @@ describe("dashboard env", () => {
     });
 
     assert.equal(env.isProduction, true);
+    assert.equal(env.cookieSecure, true);
     assert.equal(env.sessionTtlSeconds, 12 * 60 * 60);
     assert.equal(env.qaUsers.length, 1);
     assert.equal(verifyQaUserPassword(env.qaUsers[0]!, "strong-password"), true);
+  });
+
+  it("allows insecure dashboard cookies when production is served over plain HTTP", () => {
+    const env = loadDashboardEnv({
+      NODE_ENV: "production",
+      NEXT_PUBLIC_API_BASE_URL: "http://dashboard.example.com",
+      DASHBOARD_COOKIE_SECURE: "false",
+      DASHBOARD_SESSION_SECRET: "0123456789abcdef0123456789abcdef",
+      DASHBOARD_QA_USERS_JSON: JSON.stringify([
+        {
+          email: "qa@example.com",
+          passwordHash: hashQaUserPassword("strong-password"),
+          name: "QA User",
+          allowedAgencyIds: ["star-home-health"],
+        },
+      ]),
+    });
+
+    assert.equal(env.cookieSecure, false);
   });
 
   it("enables auth audit logging when a CloudWatch log group is configured", () => {

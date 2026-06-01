@@ -1,3 +1,5 @@
+import { readFile } from "node:fs/promises";
+import path from "node:path";
 import type {
   AutomationStepLog,
   PatientEpisodeWorkItem,
@@ -7,7 +9,7 @@ import type { Logger } from "pino";
 import { createAutomationStepLog } from "../portal/utils/automationLog";
 import type { PatientPortalContext } from "../portal/context/patientPortalContext";
 import { evaluateDeterministicQa } from "../qa/deterministicQaEngine";
-import { buildOasisQaSummary } from "../services/oasisQaEvaluator";
+import { buildOasisQaSummary, type DomFirstQaEvidence } from "../services/oasisQaEvaluator";
 import { writeCodingInputFile } from "../services/codingInputExportService";
 import {
   buildExtractionStepLogs,
@@ -39,7 +41,7 @@ export async function runCodingWorkflowOrchestrator(
   const stepLogs: AutomationStepLog[] = [];
   const startedAt = new Date().toISOString();
   const updateCodingWorkflowRun = (input: {
-    status: "IN_PROGRESS" | "COMPLETED" | "BLOCKED" | "FAILED";
+    status: "IN_PROGRESS" | "COMPLETED" | "NEEDS_HUMAN_REVIEW" | "BLOCKED" | "FAILED";
     stepName: string;
     message: string;
     completedAt?: string | null;
@@ -211,6 +213,11 @@ export async function runCodingWorkflowOrchestrator(
       params.run.notes.push(`Diagnosis code candidates: ${codingContext.icd10Codes.join(", ")}`);
     }
 
+    const domFirstQaEvidence = await readDomFirstQaEvidence({
+      outputDir: params.outputDir,
+      patientId: params.workItem.id,
+    });
+
     const qa = evaluateDeterministicQa({
       workItem: params.workItem,
       matchResult: params.run.matchResult,
@@ -218,6 +225,7 @@ export async function runCodingWorkflowOrchestrator(
       processingStatus: "COMPLETE",
       extractedDocuments,
       documentInventory: params.run.documentInventory,
+      domFirstQaEvidence,
     });
 
     params.run.findings = qa.findings;
@@ -232,6 +240,7 @@ export async function runCodingWorkflowOrchestrator(
       processingStatus: params.run.processingStatus,
       extractedDocuments,
       documentInventory: params.run.documentInventory,
+      domFirstQaEvidence,
     });
     stepLogs.push({
       timestamp: new Date().toISOString(),
@@ -260,7 +269,9 @@ export async function runCodingWorkflowOrchestrator(
       status:
         params.run.processingStatus === "COMPLETE"
           ? "COMPLETED"
-          : params.run.processingStatus === "BLOCKED" || params.run.processingStatus === "NEEDS_HUMAN_REVIEW"
+          : params.run.processingStatus === "NEEDS_HUMAN_REVIEW"
+            ? "NEEDS_HUMAN_REVIEW"
+            : params.run.processingStatus === "BLOCKED"
             ? "BLOCKED"
             : "FAILED",
       stepName: params.run.executionStep,
@@ -298,6 +309,115 @@ export async function runCodingWorkflowOrchestrator(
     }, "coding workflow branch failed");
     throw error;
   }
+}
+
+async function readDomFirstQaEvidence(input: {
+  outputDir: string;
+  patientId: string;
+}): Promise<DomFirstQaEvidence> {
+  const patientDirectory = path.join(input.outputDir, "patients", input.patientId);
+  const [oasisDomState, planOfCareDraft, visitNotesDiscovery, visitNoteQaReview] = await Promise.all([
+    readJson(path.join(patientDirectory, "oasis-dom-extracted-state.json")),
+    readJson(path.join(patientDirectory, "plan-of-care-review-draft.json")),
+    readJson(path.join(patientDirectory, "visit-notes-discovery.json")),
+    readJson(path.join(patientDirectory, "visit-note-qa-review.json")),
+  ]);
+
+  const evidence: string[] = [];
+  const oasis = hasOasisDomEvidence(oasisDomState);
+  if (oasis) {
+    evidence.push("oasis-dom-extracted-state.json");
+  }
+
+  const poc = hasPlanOfCareEvidence(planOfCareDraft);
+  if (poc) {
+    evidence.push("plan-of-care-review-draft.json");
+  }
+
+  const visitNotes = hasVisitNotesDomEvidence(visitNotesDiscovery) || hasVisitNoteQaEvidence(visitNoteQaReview);
+  if (visitNotes) {
+    evidence.push(hasVisitNoteQaEvidence(visitNoteQaReview) ? "visit-note-qa-review.json" : "visit-notes-discovery.json");
+  }
+
+  return {
+    oasis,
+    poc,
+    visitNotes,
+    evidence,
+  };
+}
+
+async function readJson(filePath: string): Promise<unknown | null> {
+  try {
+    return JSON.parse(await readFile(filePath, "utf8"));
+  } catch {
+    return null;
+  }
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function numericValue(value: unknown): number {
+  return typeof value === "number" && Number.isFinite(value) ? value : 0;
+}
+
+function arrayLength(value: unknown): number {
+  return Array.isArray(value) ? value.length : 0;
+}
+
+function hasOasisDomEvidence(value: unknown): boolean {
+  if (!isRecord(value)) {
+    return false;
+  }
+  const sections = arrayLength(value.sections);
+  const coverage = isRecord(value.coverage) ? value.coverage : {};
+  return sections > 0 ||
+    numericValue(coverage.fieldCount) > 0 ||
+    numericValue(coverage.nonEmptyFieldCount) > 0 ||
+    numericValue(coverage.sectionCount) > 0;
+}
+
+function hasPlanOfCareEvidence(value: unknown): boolean {
+  if (!isRecord(value)) {
+    return false;
+  }
+  const groups = arrayLength(value.carePlanProblemGroups);
+  if (groups <= 0) {
+    return false;
+  }
+  const source = isRecord(value.pocSource) ? value.pocSource : {};
+  return source.sourceType === "oasis_portal" ||
+    value.sourcePriorityUsed === "oasis_snapshot" ||
+    value.sourcePriorityUsed === "generated_suggestion" ||
+    groups > 0;
+}
+
+function hasVisitNotesDomEvidence(value: unknown): boolean {
+  if (!isRecord(value)) {
+    return false;
+  }
+  const summary = isRecord(value.summary) ? value.summary : {};
+  const counts = isRecord(value.counts) ? value.counts : {};
+  return arrayLength(value.notes) > 0 ||
+    arrayLength(value.rows) > 0 ||
+    arrayLength(value.visitNotes) > 0 ||
+    numericValue(summary.total) > 0 ||
+    numericValue(summary.totalNotes) > 0 ||
+    numericValue(counts.total) > 0;
+}
+
+function hasVisitNoteQaEvidence(value: unknown): boolean {
+  if (!isRecord(value)) {
+    return false;
+  }
+  const summary = isRecord(value.summary) ? value.summary : {};
+  return arrayLength(value.noteReviews) > 0 ||
+    arrayLength(value.reviews) > 0 ||
+    numericValue(summary.total) > 0 ||
+    numericValue(summary.analyzed) > 0 ||
+    numericValue(summary.totalNotes) > 0;
 }
 
 function processingStatusForOutcome(run: PatientRun): PatientRun["processingStatus"] {

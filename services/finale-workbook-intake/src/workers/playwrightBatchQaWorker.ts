@@ -1,12 +1,18 @@
-import { mkdir } from "node:fs/promises";
+import { createHash } from "node:crypto";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
+import type { Locator, Page } from "@playwright/test";
 import type {
   ArtifactRecord,
   AutomationStepLog,
   DocumentInventoryItem,
+  OasisValidationResult,
   PatientEpisodeWorkItem,
   PatientMatchResult,
+  PortalDomExtractedState,
   SubsidiaryRuntimeConfig,
+  VisitNoteDiscoveryRow,
+  VisitNoteProcessingManifest,
 } from "@medical-ai-qa/shared-types";
 import type { Logger } from "pino";
 import type { OasisCalendarScopeResult } from "../qa/oasis/calendar/oasisCalendarTypes";
@@ -19,10 +25,30 @@ import { LoginPage } from "../portal/pages/LoginPage";
 import { PatientChartPage } from "../portal/pages/PatientChartPage";
 import { PatientSearchPage } from "../portal/pages/PatientSearchPage";
 import { createAutomationStepLog } from "../portal/utils/automationLog";
+import { gotoPortalPage } from "../portal/utils/portalNavigation";
+import { diagnosePortalNetwork } from "../portal/utils/portalNetworkDiagnostics";
 import type { ResolvedPatientPortalAccess } from "../portal/context/patientPortalContext";
 import type { PortalDebugConfig } from "../portal/utils/locatorResolution";
 import type { OasisLockStateSnapshot } from "../portal/utils/oasisLockStateDetector";
 import { capturePageDebugArtifacts } from "../portal/utils/pageDiagnostics";
+import { discoverVisitNotesFromPage } from "../portal/services/visitNotesDiscoveryService";
+import {
+  buildVisitNotesDiscoveryArtifact,
+  VISIT_NOTES_DISCOVERY_FILE_NAME,
+} from "../portal/services/visitNotesDiscoveryService";
+import {
+  isSafeVisitNoteOpenCandidate,
+  persistVisitNoteCaptureResult,
+} from "../portal/services/visitNoteCaptureService";
+import { planControlledVisitNoteCapture } from "../portal/services/visitNotesControlledCaptureService";
+import { extractOasisDomStateFromPage } from "../portal/domExtraction/oasisDomExtraction";
+import { extractVisitNoteDomStateFromCurrentPage } from "../portal/domExtraction/visitNotesDomExtraction";
+import { persistOasisDomAcquisitionArtifacts } from "../portal/domExtraction/oasisDomBridge";
+import {
+  mergeOasisDomAcquisitionState,
+  readOasisDomAcquisitionState,
+  writeOasisDomAcquisitionState,
+} from "../portal/domExtraction/oasisDomAcquisitionState";
 import type { OasisDiagnosisPageSnapshot } from "../portal/utils/oasisDiagnosisInspector";
 import { QaChartDiscoveryService } from "../qa/navigation/qaChartDiscoveryService";
 import type { PatientPortalContext } from "../portal/context/patientPortalContext";
@@ -40,6 +66,153 @@ import {
 import type { BillingPeriodCalendarSummary } from "../oasis/types/billingPeriodCalendarSummary";
 import { parseBillingPeriodCalendar } from "../oasis/calendar/billingPeriodCalendarParser";
 import type { OasisPrintSectionProfileKey } from "../oasis/print/oasisPrintedNoteProfiles";
+
+function hashString(value: string): string {
+  return createHash("sha256").update(value).digest("hex");
+}
+
+async function readJsonIfExists<T>(filePath: string): Promise<T | null> {
+  try {
+    return JSON.parse(await readFile(filePath, "utf8")) as T;
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "ENOENT") {
+      return null;
+    }
+    return null;
+  }
+}
+
+async function readFirstArtifactHash(directory: string, fileNames: string[]): Promise<string | undefined> {
+  for (const fileName of fileNames) {
+    const content = await readFile(path.join(directory, fileName), "utf8").catch(() => null);
+    if (content?.trim()) {
+      return hashString(content);
+    }
+  }
+  return undefined;
+}
+
+async function withTimeout<T>(promise: Promise<T>, timeoutMs: number, message: string): Promise<T> {
+  let timeout: NodeJS.Timeout | null = null;
+  const timeoutPromise = new Promise<never>((_, reject) => {
+    timeout = setTimeout(() => reject(new Error(message)), timeoutMs);
+  });
+  try {
+    return await Promise.race([promise, timeoutPromise]);
+  } finally {
+    if (timeout) {
+      clearTimeout(timeout);
+    }
+  }
+}
+
+async function firstSafeVisitNoteAction(row: Locator): Promise<Locator | null> {
+  const candidates = row.locator("a, button, [role='button'], [title], [aria-label]");
+  const count = Math.min(await candidates.count().catch(() => 0), 20);
+  for (let index = 0; index < count; index += 1) {
+    const candidate = candidates.nth(index);
+    const visible = await candidate.isVisible().catch(() => false);
+    if (!visible) {
+      continue;
+    }
+    const labelParts = await Promise.all([
+      candidate.innerText({ timeout: 500 }).catch(() => ""),
+      candidate.getAttribute("aria-label").catch(() => ""),
+      candidate.getAttribute("title").catch(() => ""),
+      candidate.getAttribute("href").catch(() => ""),
+    ]);
+    const label = labelParts.filter(Boolean).join(" ");
+    if (isSafeVisitNoteOpenCandidate(label)) {
+      return candidate;
+    }
+  }
+  return null;
+}
+
+async function captureVisitNoteRowReadOnly(input: {
+  page: Page;
+  row: VisitNoteDiscoveryRow;
+  patientArtifactsDirectory: string;
+  timeoutMs?: number;
+  useDomExtraction?: boolean;
+}): Promise<VisitNoteDiscoveryRow> {
+  return withTimeout((async () => {
+    const rowLocator = input.page.locator("table tbody tr, fin-datatable table tbody tr, .datatable-body-row, [role='row']");
+    const row = rowLocator.nth(input.row.rowIndex ?? 0);
+    const action = await firstSafeVisitNoteAction(row);
+    if (!action) {
+      await persistVisitNoteCaptureResult({
+        patientArtifactsDirectory: input.patientArtifactsDirectory,
+        row: input.row,
+        captureStrategy: "unavailable",
+        captureStatus: "failed",
+        failureReason: "no_safe_read_only_action_found",
+      });
+      return { ...input.row, captureStatus: "failed", skipReason: "no_safe_read_only_action_found" };
+    }
+
+    const beforeUrl = input.page.url();
+    const downloadPromise = input.page.waitForEvent("download", { timeout: 7_000 }).catch(() => null);
+    const popupPromise = input.page.waitForEvent("popup", { timeout: 7_000 }).catch(() => null);
+    await action.click({ timeout: 5_000 });
+    const [download, popup] = await Promise.all([downloadPromise, popupPromise]);
+    const targetPage = popup ?? input.page;
+    await targetPage.waitForLoadState("domcontentloaded", { timeout: 7_000 }).catch(() => undefined);
+    await targetPage.waitForTimeout(750).catch(() => undefined);
+
+    if (download) {
+      const noteDirectory = path.join(input.patientArtifactsDirectory, "documents", "visit-notes", input.row.visitNoteKey);
+      await mkdir(noteDirectory, { recursive: true });
+      const downloadPath = path.join(noteDirectory, `download${path.extname(download.suggestedFilename()) || ".bin"}`);
+      await download.saveAs(downloadPath);
+      const body = await readFile(downloadPath);
+      const isPdf = /\.pdf$/i.test(download.suggestedFilename());
+      await persistVisitNoteCaptureResult({
+        patientArtifactsDirectory: input.patientArtifactsDirectory,
+        row: input.row,
+        ...(isPdf ? { sourcePdf: body } : { sourceText: body.toString("utf8") }),
+        captureStrategy: isPdf ? "pdf_export" : "source_text",
+        captureStatus: "captured",
+        sourceUrl: beforeUrl,
+      });
+    } else {
+      const [sourceHtml, bodyText, domState] = await Promise.all([
+        targetPage.content().catch(() => ""),
+        targetPage.locator("body").innerText({ timeout: 5_000 }).catch(() => ""),
+        input.useDomExtraction === false
+          ? Promise.resolve(null)
+          : extractVisitNoteDomStateFromCurrentPage({ page: targetPage }).catch(() => null),
+      ]);
+      const sourceText = domState?.textDigest?.trim() || bodyText;
+      const persisted = await persistVisitNoteCaptureResult({
+        patientArtifactsDirectory: input.patientArtifactsDirectory,
+        row: input.row,
+        sourceHtml,
+        sourceText,
+        captureStrategy: sourceHtml ? "html_text" : "source_text",
+        captureStatus: sourceText.trim() || sourceHtml.trim() ? "captured" : "failed",
+        sourceUrl: targetPage.url(),
+        failureReason: sourceText.trim() || sourceHtml.trim() ? null : "empty_visit_note_viewer",
+      });
+      if (domState) {
+        await writeFile(
+          path.join(persisted.noteDirectory, "dom-extracted-state.json"),
+          JSON.stringify(domState, null, 2),
+          "utf8",
+        ).catch(() => undefined);
+      }
+    }
+
+    if (popup) {
+      await popup.close().catch(() => undefined);
+    } else if (input.page.url() !== beforeUrl) {
+      await input.page.goBack({ waitUntil: "domcontentloaded", timeout: 5_000 }).catch(() => undefined);
+    } else {
+      await input.page.keyboard.press("Escape").catch(() => undefined);
+    }
+    return { ...input.row, captureStatus: "captured" };
+  })(), input.timeoutMs ?? 45_000, "capture_timeout");
+}
 
 export interface BatchPortalAutomationClient {
   initialize(outputDir?: string): Promise<void>;
@@ -60,6 +233,8 @@ export interface BatchPortalAutomationClient {
       workflowPhase?: "full_discovery" | "file_uploads_only" | "oasis_diagnosis_only";
       oasisReadyDiagnosis?: OasisReadyDiagnosisDocument | null;
       oasisReadyDiagnosisPath?: string | null;
+      patientArtifactsDirectory?: string | null;
+      captureRelevantUploadLimit?: number;
     },
   ): Promise<{
     artifacts: ArtifactRecord[];
@@ -69,6 +244,46 @@ export interface BatchPortalAutomationClient {
     diagnosisPageSnapshot?: OasisDiagnosisPageSnapshot | null;
     calendarScope?: OasisCalendarScopeResult | null;
     calendarScopePath?: string | null;
+  }>;
+  debugFileUploadsDiscovery?(
+    workItem: PatientEpisodeWorkItem,
+    evidenceDir: string,
+    options: {
+      patientArtifactsDirectory: string;
+      captureRelevantUploadLimit?: number;
+      probeFileUploadActions?: boolean;
+      discoverFileUploadInteractions?: boolean;
+      probeFileUploadRowOpen?: boolean;
+    },
+  ): Promise<{
+    discoveryPath: string | null;
+    actionDiscoveryPath: string | null;
+    actionProbePath: string | null;
+    interactionDiscoveryPath: string | null;
+    interactionProbePath: string | null;
+    catalogPath: string;
+    artifactLineagePath: string;
+    summary: {
+      totalRows: number;
+      sourceContainerSelectorUsed: string | null;
+      paginationDetected: boolean;
+      virtualScrollDetected: boolean;
+      rowTypeCounts: Record<string, number>;
+      relevanceCounts: Record<string, number>;
+      eligibleForCapture: number;
+      capturedCount: number;
+      cacheHitCount: number;
+      skippedReasons: Record<string, number>;
+      safeActionRows: number;
+      detectedActionCount: number;
+      probeResultCounts: Record<string, number>;
+      capturePossibleCount: number;
+      interactionStrategyCounts: Record<string, number>;
+      interactionNetworkEndpointCount: number;
+      interactionProbeResultCounts: Record<string, number>;
+      rowSelectionExperimentCount: number;
+    };
+    stepLogs: AutomationStepLog[];
   }>;
   executeOasisDiagnosisActionPlan(
     workItem: PatientEpisodeWorkItem,
@@ -143,6 +358,52 @@ export interface BatchPortalAutomationClient {
     result: OasisPrintedNoteCaptureOpenResult;
     stepLogs: AutomationStepLog[];
   }>;
+  extractOasisDomForReview?(input: {
+    context: PatientPortalContext;
+    workItem: PatientEpisodeWorkItem;
+    outputDir: string;
+    thresholds?: {
+      minFieldCount?: number;
+      minNonEmptyFieldCount?: number;
+    };
+  }): Promise<{
+    state: PortalDomExtractedState;
+    acquisitionState: import("@medical-ai-qa/shared-types").OasisDomAcquisitionState;
+    domStatePath: string;
+    acquisitionStatePath: string;
+    bridgeTextPath: string;
+    comparisonPath: string;
+    recommendedDecision: string;
+    stepLogs: AutomationStepLog[];
+  }>;
+  validateOasisAssessmentForReview?(input: {
+    context: PatientPortalContext;
+    workItem: PatientEpisodeWorkItem;
+    evidenceDir: string;
+    assessmentType?: string;
+    oasisAssessmentStatus?: OasisAssessmentNoteOpenResult["oasisAssessmentStatus"];
+  }): Promise<{
+    result: OasisValidationResult;
+    stepLogs: AutomationStepLog[];
+  }>;
+  discoverVisitNotesForReview?(input: {
+    context: PatientPortalContext;
+    workItem: PatientEpisodeWorkItem;
+    patientArtifactsDirectory: string;
+    evidenceDir: string;
+    episode?: {
+      label?: string;
+      startDate?: string;
+      endDate?: string;
+    };
+    captureVisitNotesLimit?: number;
+    forceRerunVisitNotes?: boolean;
+    probeVisitNoteActions?: boolean;
+    debug?: boolean;
+  }): Promise<{
+    discoveryPath: string;
+    stepLogs: AutomationStepLog[];
+  }>;
   captureFailureArtifacts(workItemId: string, outputDir: string): Promise<{
     tracePath: string | null;
     screenshotPaths: string[];
@@ -178,14 +439,90 @@ export class PlaywrightBatchQaWorker implements BatchPortalAutomationClient {
       debugSelectors: env.PORTAL_DEBUG_SELECTORS ?? false,
       saveDebugHtml: env.PORTAL_SAVE_DEBUG_HTML ?? false,
       pauseOnFailure: env.PORTAL_PAUSE_ON_FAILURE ?? false,
-      stepTimeoutMs: env.PORTAL_STEP_TIMEOUT_MS,
+      stepTimeoutMs: env.PORTAL_ACTION_TIMEOUT_MS,
+      navigationTimeoutMs: env.PORTAL_NAVIGATION_TIMEOUT_MS,
+      navigationRetries: env.PORTAL_NAVIGATION_RETRIES,
       debugScreenshots: env.PORTAL_DEBUG_SCREENSHOTS ?? true,
       selectorRetryCount: env.PORTAL_SELECTOR_RETRY_COUNT,
     };
   }
 
+  private async ensurePatientChartContextForOasis(input: {
+    context: PatientPortalContext;
+    workItem?: PatientEpisodeWorkItem;
+    evidenceDir: string;
+    reason: string;
+  }): Promise<{
+    success: boolean;
+    stepLogs: AutomationStepLog[];
+  }> {
+    if (!this.session) {
+      throw new Error("Playwright batch worker was not initialized.");
+    }
+    const chartUrl = this.currentPatientChartUrl ?? input.context.chartUrl;
+    if (!chartUrl) {
+      return {
+        success: false,
+        stepLogs: [createAutomationStepLog({
+          step: "patient_chart_context_check",
+          message: "Cannot restore patient chart context because no chart URL is available.",
+          urlBefore: this.session.page.url(),
+          urlAfter: this.session.page.url(),
+          patientName: input.workItem?.patientIdentity.displayName,
+          missing: ["patient chart URL"],
+          evidence: [
+            `reason:${input.reason}`,
+            `patientKey:${input.workItem?.id ?? "unknown"}`,
+          ],
+          safeReadConfirmed: true,
+        })],
+      };
+    }
+
+    this.currentDebugDir = path.join(input.evidenceDir, "debug");
+    const patientChartPage = new PatientChartPage(this.session.page, {
+      logger: this.logger,
+      debugConfig: this.debugConfig,
+      debugDir: this.currentDebugDir,
+    });
+    const recovery = await patientChartPage.ensurePatientChartContextForOasis({
+      chartUrl,
+      reason: input.reason,
+      patientKey: input.workItem?.id ?? input.context.patientId ?? null,
+    });
+    return {
+      success: recovery.success,
+      stepLogs: recovery.stepLogs,
+    };
+  }
+
   async initialize(outputDir?: string): Promise<void> {
     this.batchOutputDir = outputDir ? path.resolve(outputDir) : null;
+    const networkDiagnostic = await diagnosePortalNetwork({
+      portalUrl: this.runtimeConfig.portalBaseUrl,
+      timeoutMs: Math.min(this.env.PORTAL_NAVIGATION_TIMEOUT_MS, 10_000),
+    });
+    this.logger.info(
+      {
+        subsidiaryId: this.runtimeConfig.subsidiaryId,
+        subsidiaryName: this.runtimeConfig.subsidiaryName,
+        portalUrl: networkDiagnostic.url,
+        portalHost: networkDiagnostic.host,
+        dnsResolved: networkDiagnostic.dnsResolved,
+        httpsReachable: networkDiagnostic.httpsReachable,
+        statusCode: networkDiagnostic.statusCode,
+        latencyMs: networkDiagnostic.latencyMs,
+        errorCategory: networkDiagnostic.errorCategory,
+      },
+      "completed pre-login Finale portal network diagnostic",
+    );
+
+    if (!networkDiagnostic.dnsResolved || !networkDiagnostic.httpsReachable) {
+      throw new Error(
+        `Portal startup failed before browser launch. stage=portal_navigation; errorCategory=${networkDiagnostic.errorCategory ?? "portal_network_unreachable"}; retryable=true; message=Finale portal network diagnostic failed for ${networkDiagnostic.url}.`,
+      );
+    }
+
     this.session = await createPortalSession(this.env);
     await this.session.context.tracing.start({
       screenshots: true,
@@ -232,6 +569,8 @@ export class PlaywrightBatchQaWorker implements BatchPortalAutomationClient {
           `saveDebugHtml=${this.debugConfig.saveDebugHtml}`,
           `pauseOnFailure=${this.debugConfig.pauseOnFailure}`,
           `stepTimeoutMs=${this.debugConfig.stepTimeoutMs}`,
+          `navigationTimeoutMs=${this.debugConfig.navigationTimeoutMs ?? "unset"}`,
+          `navigationRetries=${this.debugConfig.navigationRetries ?? "unset"}`,
           `selectorRetryCount=${this.debugConfig.selectorRetryCount}`,
           `configuredDashboardUrl=${this.runtimeConfig.portalDashboardUrl ?? "unset"}`,
           `dashboardResetUrl=${this.dashboardUrl ?? "unresolved"}`,
@@ -241,10 +580,81 @@ export class PlaywrightBatchQaWorker implements BatchPortalAutomationClient {
     ];
   }
 
+  private async ensureUsableSessionPage(
+    workItem: PatientEpisodeWorkItem,
+    reason: string,
+  ): Promise<AutomationStepLog[]> {
+    if (!this.session) {
+      throw new Error("Playwright batch worker was not initialized.");
+    }
+
+    if (!this.session.page.isClosed()) {
+      return [];
+    }
+
+    const urlBefore = this.session.page.url();
+    try {
+      const openPage = this.session.context.pages().find((candidate) => !candidate.isClosed());
+      this.session.page = openPage ?? await this.session.context.newPage();
+      this.logger.warn(
+        {
+          workItemId: workItem.id,
+          subsidiaryId: this.runtimeConfig.subsidiaryId,
+          recoveryReason: reason,
+          recoveredUrl: this.session.page.url(),
+        },
+        "recovered closed Playwright page before patient workflow",
+      );
+      return [
+        createAutomationStepLog({
+          step: "playwright_session_recovery",
+          message: "Recovered a closed portal page before continuing the patient workflow.",
+          patientName: workItem.patientIdentity.displayName,
+          urlBefore,
+          urlAfter: this.session.page.url(),
+          found: ["open browser context"],
+          evidence: [`recoveryReason=${reason}`],
+          safeReadConfirmed: true,
+        }),
+      ];
+    } catch (error) {
+      this.logger.warn(
+        {
+          workItemId: workItem.id,
+          subsidiaryId: this.runtimeConfig.subsidiaryId,
+          recoveryReason: reason,
+          errorMessage: error instanceof Error ? error.message : "Unknown page recovery error.",
+        },
+        "reinitializing Playwright session after closed page recovery failed",
+      );
+      await this.dispose().catch(() => undefined);
+      await this.initialize(this.batchOutputDir ?? undefined);
+      if (!this.session) {
+        throw new Error("Playwright session reinitialization did not produce a usable session.");
+      }
+      return [
+        createAutomationStepLog({
+          step: "playwright_session_recovery",
+          message: "Reinitialized the portal browser session after the previous page/context was closed.",
+          patientName: workItem.patientIdentity.displayName,
+          urlBefore,
+          urlAfter: this.session.page.url(),
+          found: ["new browser session"],
+          evidence: [`recoveryReason=${reason}`],
+          safeReadConfirmed: true,
+        }),
+      ];
+    }
+  }
+
   async resolvePatient(workItem: PatientEpisodeWorkItem, evidenceDir?: string): Promise<{
     matchResult: PatientMatchResult;
     stepLogs: AutomationStepLog[];
   }> {
+    if (!this.session) {
+      throw new Error("Playwright batch worker was not initialized.");
+    }
+    const recoveryStepLogs = await this.ensureUsableSessionPage(workItem, "before_patient_lookup");
     if (!this.session) {
       throw new Error("Playwright batch worker was not initialized.");
     }
@@ -270,7 +680,7 @@ export class PlaywrightBatchQaWorker implements BatchPortalAutomationClient {
       currentUrlBeforePatientLookup,
       initializationLogs,
     });
-    const orchestrationStepLogs: AutomationStepLog[] = [...bootstrap.stepLogs];
+    const orchestrationStepLogs: AutomationStepLog[] = [...recoveryStepLogs, ...bootstrap.stepLogs];
     let fallbackDashboardResetRequired = bootstrap.fallbackDashboardResetRequired;
     let patientLookupEntryContext = bootstrap.patientLookupEntryContext;
     const dashboardUrl = bootstrap.dashboardUrl;
@@ -428,6 +838,8 @@ export class PlaywrightBatchQaWorker implements BatchPortalAutomationClient {
       workflowPhase?: "full_discovery" | "file_uploads_only" | "oasis_diagnosis_only";
       oasisReadyDiagnosis?: OasisReadyDiagnosisDocument | null;
       oasisReadyDiagnosisPath?: string | null;
+      patientArtifactsDirectory?: string | null;
+      captureRelevantUploadLimit?: number;
     },
   ): Promise<{
     artifacts: ArtifactRecord[];
@@ -457,6 +869,74 @@ export class PlaywrightBatchQaWorker implements BatchPortalAutomationClient {
       patientChartUrl: this.currentPatientChartUrl,
       oasisReadyDiagnosis: options?.oasisReadyDiagnosis,
       oasisReadyDiagnosisPath: options?.oasisReadyDiagnosisPath,
+      patientId: workItem.id,
+      patientArtifactsDirectory: options?.patientArtifactsDirectory,
+      captureRelevantUploadLimit: options?.captureRelevantUploadLimit,
+    });
+  }
+
+  async debugFileUploadsDiscovery(
+    workItem: PatientEpisodeWorkItem,
+    evidenceDir: string,
+    options: {
+      patientArtifactsDirectory: string;
+      captureRelevantUploadLimit?: number;
+      probeFileUploadActions?: boolean;
+      discoverFileUploadInteractions?: boolean;
+      probeFileUploadRowOpen?: boolean;
+    },
+  ): Promise<{
+    discoveryPath: string | null;
+    actionDiscoveryPath: string | null;
+    actionProbePath: string | null;
+    interactionDiscoveryPath: string | null;
+    interactionProbePath: string | null;
+    catalogPath: string;
+    artifactLineagePath: string;
+    summary: {
+      totalRows: number;
+      sourceContainerSelectorUsed: string | null;
+      paginationDetected: boolean;
+      virtualScrollDetected: boolean;
+      rowTypeCounts: Record<string, number>;
+      relevanceCounts: Record<string, number>;
+      eligibleForCapture: number;
+      capturedCount: number;
+      cacheHitCount: number;
+      skippedReasons: Record<string, number>;
+      safeActionRows: number;
+      detectedActionCount: number;
+      probeResultCounts: Record<string, number>;
+      capturePossibleCount: number;
+      interactionStrategyCounts: Record<string, number>;
+      interactionNetworkEndpointCount: number;
+      interactionProbeResultCounts: Record<string, number>;
+      rowSelectionExperimentCount: number;
+    };
+    stepLogs: AutomationStepLog[];
+  }> {
+    if (!this.session) {
+      throw new Error("Playwright batch worker was not initialized.");
+    }
+    if (!this.currentPatientChartUrl) {
+      throw new Error("Patient chart URL is not available; resolve patient portal access before File Uploads debug discovery.");
+    }
+
+    this.currentDebugDir = path.join(evidenceDir, "debug");
+    const patientChartPage = new PatientChartPage(this.session.page, {
+      logger: this.logger,
+      debugConfig: this.debugConfig,
+      debugDir: this.currentDebugDir,
+    });
+    return (patientChartPage as any).debugFileUploadsDiscovery({
+      chartUrl: this.currentPatientChartUrl,
+      evidenceDirectory: evidenceDir,
+      patientArtifactsDirectory: options.patientArtifactsDirectory,
+      patientId: workItem.id,
+      captureRelevantUploadLimit: options.captureRelevantUploadLimit,
+      probeFileUploadActions: options.probeFileUploadActions,
+      discoverFileUploadInteractions: options.discoverFileUploadInteractions,
+      probeFileUploadRowOpen: options.probeFileUploadRowOpen,
     });
   }
 
@@ -539,6 +1019,7 @@ export class PlaywrightBatchQaWorker implements BatchPortalAutomationClient {
     });
     return patientChartPage.openOasisMenuForReview({
       chartUrl: this.currentPatientChartUrl ?? input.context.chartUrl,
+      patientKey: input.workItem.id,
     });
   }
 
@@ -564,6 +1045,7 @@ export class PlaywrightBatchQaWorker implements BatchPortalAutomationClient {
     return patientChartPage.openOasisAssessmentNoteForReview({
       chartUrl: this.currentPatientChartUrl ?? input.context.chartUrl,
       assessmentType: input.assessmentType,
+      patientKey: input.workItem.id,
     });
   }
 
@@ -592,9 +1074,347 @@ export class PlaywrightBatchQaWorker implements BatchPortalAutomationClient {
       chartUrl: this.currentPatientChartUrl ?? input.context.chartUrl,
       evidenceDir: input.evidenceDir,
       assessmentType: input.assessmentType,
+      patientKey: input.workItem.id,
       matchedAssessmentLabel: input.matchedAssessmentLabel,
       printProfileKey: input.printProfileKey,
     });
+  }
+
+  async extractOasisDomForReview(input: {
+    context: PatientPortalContext;
+    workItem: PatientEpisodeWorkItem;
+    outputDir: string;
+    thresholds?: {
+      minFieldCount?: number;
+      minNonEmptyFieldCount?: number;
+    };
+  }): Promise<{
+    state: PortalDomExtractedState;
+    acquisitionState: import("@medical-ai-qa/shared-types").OasisDomAcquisitionState;
+    domStatePath: string;
+    acquisitionStatePath: string;
+    bridgeTextPath: string;
+    comparisonPath: string;
+    recommendedDecision: string;
+    stepLogs: AutomationStepLog[];
+  }> {
+    if (!this.session) {
+      throw new Error("Playwright batch worker was not initialized.");
+    }
+    const extraction = await extractOasisDomStateFromPage({
+      page: this.session.page,
+      debugConfig: this.debugConfig,
+      thresholds: {
+        minFieldCount: input.thresholds?.minFieldCount,
+        minNonEmptyFieldCount: input.thresholds?.minNonEmptyFieldCount,
+      },
+    });
+    const patientArtifactsDirectory = path.join(input.outputDir, "patients", input.workItem.id);
+    const previousAcquisitionState = await readOasisDomAcquisitionState(patientArtifactsDirectory);
+    const acquisitionState = mergeOasisDomAcquisitionState(previousAcquisitionState, extraction.state, {
+      patientRunId: input.context.patientRunId,
+      patientId: input.workItem.id,
+      sourceKey: extraction.state.diagnostics.routePattern,
+      ocrFallbackEnabled: this.env.OCR_FALLBACK_ENABLED,
+      minFieldCount: input.thresholds?.minFieldCount,
+      minNonEmptyFieldCount: input.thresholds?.minNonEmptyFieldCount,
+    });
+    const persisted = await persistOasisDomAcquisitionArtifacts({
+      state: extraction.state,
+      patientArtifactsDirectory,
+      patientCase: input.context.patientRunId,
+    });
+    const acquisitionStatePath = await writeOasisDomAcquisitionState({
+      patientArtifactsDirectory,
+      state: acquisitionState,
+    });
+    const stepLogs = [
+      createAutomationStepLog({
+        step: "oasis_dom_extraction",
+        message: "Persisted read-only OASIS DOM extraction and incremental acquisition state artifacts.",
+        patientName: input.workItem.patientIdentity.displayName,
+        urlBefore: input.context.chartUrl,
+        urlAfter: this.session.page.url(),
+        found: [
+          `sectionCount=${extraction.state.coverage.sectionCount}`,
+          `fieldCount=${extraction.state.coverage.fieldCount}`,
+          `nonEmptyFieldCount=${extraction.state.coverage.nonEmptyFieldCount}`,
+          `tableCount=${extraction.state.coverage.tableCount}`,
+          `fallbackRecommended=${extraction.state.coverage.fallbackRecommended}`,
+          `acquisitionStatus=${acquisitionState.acquisitionStatus}`,
+          `overallContentHash=${acquisitionState.overallContentHash}`,
+          `recommendedDecision=${persisted.comparison.recommendedDecision}`,
+        ],
+        missing: acquisitionState.acquisitionStatus === "ready_for_qa" || acquisitionState.acquisitionStatus === "qa_completed"
+          ? []
+          : [
+              ...acquisitionState.missingRequiredSections.map((section) => `section:${section}`),
+              ...acquisitionState.readinessReasons,
+            ].slice(0, 12),
+        evidence: [
+          `domStatePath=${persisted.domStatePath}`,
+          `acquisitionStatePath=${acquisitionStatePath}`,
+          `bridgeTextPath=${persisted.bridgeTextPath}`,
+          `comparisonPath=${persisted.comparisonPath}`,
+          `optionLabels=${extraction.optionLabels.join(" | ") || "none"}`,
+          `skippedDeferredSections=${extraction.skippedDeferredSections.join(" | ") || "none"}`,
+          `changedFields=${acquisitionState.changedFields.length}`,
+          `regressedFields=${acquisitionState.regressedFields.length}`,
+          ...extraction.state.coverage.fallbackReasons.slice(0, 8),
+        ],
+        safeReadConfirmed: true,
+      }),
+    ];
+
+    return {
+      state: extraction.state,
+      acquisitionState,
+      domStatePath: persisted.domStatePath,
+      acquisitionStatePath,
+      bridgeTextPath: persisted.bridgeTextPath,
+      comparisonPath: persisted.comparisonPath,
+      recommendedDecision: persisted.comparison.recommendedDecision,
+      stepLogs,
+    };
+  }
+
+  async validateOasisAssessmentForReview(input: {
+    context: PatientPortalContext;
+    workItem: PatientEpisodeWorkItem;
+    evidenceDir: string;
+    assessmentType?: string;
+    oasisAssessmentStatus?: OasisAssessmentNoteOpenResult["oasisAssessmentStatus"];
+  }): Promise<{
+    result: OasisValidationResult;
+    stepLogs: AutomationStepLog[];
+  }> {
+    if (!this.session) {
+      throw new Error("Playwright batch worker was not initialized.");
+    }
+
+    this.currentDebugDir = path.join(input.evidenceDir, "debug");
+    const patientChartPage = new PatientChartPage(this.session.page, {
+      logger: this.logger,
+      debugConfig: this.debugConfig,
+      debugDir: this.currentDebugDir,
+    });
+    return (patientChartPage as any).validateOasisAssessmentForReview({
+      chartUrl: this.currentPatientChartUrl ?? input.context.chartUrl,
+      assessmentType: input.assessmentType,
+      patientKey: input.workItem.id,
+      oasisAssessmentStatus: input.oasisAssessmentStatus,
+    });
+  }
+
+  async discoverVisitNotesForReview(input: {
+    context: PatientPortalContext;
+    workItem: PatientEpisodeWorkItem;
+    patientArtifactsDirectory: string;
+    evidenceDir: string;
+    episode?: {
+      label?: string;
+      startDate?: string;
+      endDate?: string;
+    };
+    captureVisitNotesLimit?: number;
+    forceRerunVisitNotes?: boolean;
+    probeVisitNoteActions?: boolean;
+    debug?: boolean;
+  }): Promise<{
+    discoveryPath: string;
+    stepLogs: AutomationStepLog[];
+  }> {
+    if (!this.session) {
+      throw new Error("Playwright batch worker was not initialized.");
+    }
+
+    this.currentDebugDir = path.join(input.evidenceDir, "debug");
+    const discoveryRecovery = await this.ensurePatientChartContextForOasis({
+      context: input.context,
+      workItem: input.workItem,
+      evidenceDir: input.evidenceDir,
+      reason: "restore_patient_chart_before_visit_notes_discovery",
+    });
+    if (!discoveryRecovery.success) {
+      const artifact = buildVisitNotesDiscoveryArtifact({
+        patientKeyHash: input.workItem.id,
+        episode: input.episode,
+        pageUrl: this.session.page.url(),
+        rows: [],
+        warnings: [
+          "Visit Notes discovery skipped because patient chart context could not be restored.",
+        ],
+      });
+      const discoveryPath = path.join(input.patientArtifactsDirectory, VISIT_NOTES_DISCOVERY_FILE_NAME);
+      await mkdir(path.dirname(discoveryPath), { recursive: true });
+      await writeFile(discoveryPath, JSON.stringify(artifact, null, 2), "utf8");
+      return {
+        discoveryPath,
+        stepLogs: [
+          ...discoveryRecovery.stepLogs,
+          createAutomationStepLog({
+            step: "visit_notes_discovery",
+            message: "Skipped Visit Notes discovery because patient chart context recovery failed.",
+            patientName: input.workItem.patientIdentity.displayName,
+            urlBefore: input.context.chartUrl,
+            urlAfter: this.session.page.url(),
+            found: [`visitNotesDiscoveryPath=${discoveryPath}`],
+            missing: ["patient chart route", "Visit Notes rows"],
+            evidence: artifact.warnings,
+            safeReadConfirmed: true,
+          }),
+        ],
+      };
+    }
+
+    const visitNotesChartUrl = this.currentPatientChartUrl ?? input.context.chartUrl;
+    if (visitNotesChartUrl && this.session.page.url() !== visitNotesChartUrl) {
+      const urlBeforeRestore = this.session.page.url();
+      await this.session.page.goto(visitNotesChartUrl, { waitUntil: "domcontentloaded", timeout: 15_000 }).catch(() => undefined);
+      await this.session.page.waitForLoadState("networkidle", { timeout: 8_000 }).catch(() => undefined);
+      await this.session.page.waitForTimeout(750).catch(() => undefined);
+      discoveryRecovery.stepLogs.push(createAutomationStepLog({
+        step: "visit_notes_chart_context_restore",
+        message: "Restored the base patient chart route before Visit Notes sidebar discovery.",
+        patientName: input.workItem.patientIdentity.displayName,
+        urlBefore: urlBeforeRestore,
+        urlAfter: this.session.page.url(),
+        found: [`targetChartUrl=${visitNotesChartUrl}`],
+        evidence: ["visit_notes_sidebar_discovery_requires_base_patient_chart_context"],
+        safeReadConfirmed: true,
+      }));
+    }
+
+    const discovery = await discoverVisitNotesFromPage({
+      page: this.session.page,
+      patientKeyHash: input.workItem.id,
+      patientName: input.workItem.patientIdentity.displayName,
+      patientArtifactsDirectory: input.patientArtifactsDirectory,
+      episode: input.episode,
+      logger: this.logger,
+    });
+    const previousManifest = await readJsonIfExists<VisitNoteProcessingManifest>(
+      path.join(input.patientArtifactsDirectory, "visit-note-processing-manifest.json"),
+    );
+    const planOfCareHash = await readFirstArtifactHash(input.patientArtifactsDirectory, [
+      "plan-of-care-review-draft.json",
+      "generated-plan-of-care.json",
+    ]);
+    const oasisFactPackHash = await readFirstArtifactHash(input.patientArtifactsDirectory, [
+      "oasis-clinical-fact-pack.json",
+      "oasis-validation-result.json",
+    ]);
+    const capturePlan = planControlledVisitNoteCapture({
+      discovery: discovery.artifact,
+      captureVisitNotesLimit: input.captureVisitNotesLimit,
+      forceRerunVisitNotes: input.forceRerunVisitNotes,
+      previousManifest,
+      currentPlanOfCareHash: planOfCareHash,
+      currentOasisFactPackHash: oasisFactPackHash,
+    });
+    const capturedRows: VisitNoteDiscoveryRow[] = [];
+    const captureStepLogs: AutomationStepLog[] = [...discoveryRecovery.stepLogs];
+    for (const row of capturePlan.rows) {
+      const shouldCaptureRow =
+        row.captureEligibility === "active_monitoring" ||
+        row.captureEligibility === "finalized_no_active_monitoring";
+      if (row.captureStatus !== "not_attempted" || !shouldCaptureRow) {
+        if (row.captureStatus === "capture_pending_due_to_config_limit") {
+          captureStepLogs.push(createAutomationStepLog({
+            step: "visit_note_capture",
+            message: "Visit Note content capture remains pending because VISIT_NOTE_CAPTURE_MAX_NOTES capped this run.",
+            patientName: input.workItem.patientIdentity.displayName,
+            found: [
+              `visitNoteKey:${row.visitNoteKey}`,
+              `captureStatus:${row.captureStatus}`,
+            ],
+            evidence: [row.skipReason ?? "VISIT_NOTE_CAPTURE_MAX_NOTES reached"],
+            safeReadConfirmed: true,
+          }));
+        }
+        capturedRows.push(row);
+        continue;
+      }
+      this.logger.info({
+        patientRunId: input.workItem.id,
+        visitNoteKey: row.visitNoteKey,
+        visitType: row.normalizedVisitType,
+        visitStatus: row.normalizedStatus,
+        manifestDecision: "capture_needed",
+        captureStrategy: "read_only_row_action",
+      }, "capturing visit note content");
+      try {
+        const capturedRow = await captureVisitNoteRowReadOnly({
+          page: this.session.page,
+          row,
+          patientArtifactsDirectory: input.patientArtifactsDirectory,
+          timeoutMs: this.env.VISIT_NOTE_CAPTURE_TIMEOUT_MS,
+          useDomExtraction: this.env.VISIT_NOTES_DOM_EXTRACTION_ENABLED,
+        });
+        capturedRows.push(capturedRow);
+        captureStepLogs.push(createAutomationStepLog({
+          step: "visit_note_capture",
+          message: `Captured Visit Note content for ${row.normalizedVisitType}.`,
+          patientName: input.workItem.patientIdentity.displayName,
+          evidence: [
+            `visitNoteKey:${row.visitNoteKey}`,
+            `captureStatus:${capturedRow.captureStatus}`,
+          ],
+          safeReadConfirmed: true,
+        }));
+      } catch (error) {
+        const reason = error instanceof Error ? error.message : String(error);
+        await persistVisitNoteCaptureResult({
+          patientArtifactsDirectory: input.patientArtifactsDirectory,
+          row,
+          captureStrategy: "unavailable",
+          captureStatus: "failed",
+          failureReason: reason.slice(0, 180),
+        }).catch(() => undefined);
+        capturedRows.push({ ...row, captureStatus: "failed", skipReason: reason.slice(0, 180) });
+        captureStepLogs.push(createAutomationStepLog({
+          step: "visit_note_capture",
+          message: "Visit Note content capture failed without interrupting the patient run.",
+          patientName: input.workItem.patientIdentity.displayName,
+          evidence: [
+            `visitNoteKey:${row.visitNoteKey}`,
+            `reason:${reason.slice(0, 180)}`,
+          ],
+          safeReadConfirmed: true,
+        }));
+      }
+    }
+    const restoreAfterVisitNoteCaptures = await withTimeout(
+      this.ensurePatientChartContextForOasis({
+        context: input.context,
+        workItem: input.workItem,
+        evidenceDir: input.evidenceDir,
+        reason: "restore_patient_chart_after_visit_note_captures",
+      }),
+      Math.min(this.env.VISIT_NOTE_CAPTURE_TIMEOUT_MS, 15_000),
+      "visit_note_post_capture_restore_timeout",
+    ).catch((error) => ({
+      success: false,
+      stepLogs: [createAutomationStepLog({
+        step: "visit_note_post_capture_restore",
+        message: "Timed out restoring patient chart context after Visit Note captures; continuing the patient run.",
+        patientName: input.workItem.patientIdentity.displayName,
+        evidence: [error instanceof Error ? error.message : String(error)],
+        safeReadConfirmed: true,
+      })],
+    }));
+    captureStepLogs.push(...restoreAfterVisitNoteCaptures.stepLogs);
+
+    const updatedDiscovery = {
+      ...discovery.artifact,
+      rows: capturedRows,
+      warnings: [...discovery.artifact.warnings, ...capturePlan.warnings],
+    };
+    await writeFile(discovery.discoveryPath, JSON.stringify(updatedDiscovery, null, 2), "utf8");
+    return {
+      discoveryPath: discovery.discoveryPath,
+      stepLogs: [...discovery.stepLogs, ...captureStepLogs],
+    };
   }
 
   async selectEpisodeRangeForReview(input: {
@@ -611,7 +1431,13 @@ export class PlaywrightBatchQaWorker implements BatchPortalAutomationClient {
     }
 
     this.currentDebugDir = path.join(input.evidenceDir, "debug");
-    return selectEpisodeRange({
+    const recovery = await this.ensurePatientChartContextForOasis({
+      context: input.context,
+      workItem: input.workItem,
+      evidenceDir: input.evidenceDir,
+      reason: "restore_patient_chart_before_episode_selection",
+    });
+    const selection = await selectEpisodeRange({
       page: this.session.page,
       logger: this.logger,
       context: input.context,
@@ -619,6 +1445,10 @@ export class PlaywrightBatchQaWorker implements BatchPortalAutomationClient {
       debugConfig: this.debugConfig,
       target: input.target,
     });
+    return {
+      result: selection.result,
+      stepLogs: [...recovery.stepLogs, ...selection.stepLogs],
+    };
   }
 
   async extractBillingPeriodCalendarSummaryForReview(input: {
@@ -636,6 +1466,12 @@ export class PlaywrightBatchQaWorker implements BatchPortalAutomationClient {
     }
 
     this.currentDebugDir = path.join(input.evidenceDir, "debug");
+    const recovery = await this.ensurePatientChartContextForOasis({
+      context: input.context,
+      workItem: input.workItem,
+      evidenceDir: input.evidenceDir,
+      reason: "restore_patient_chart_before_billing_calendar",
+    });
     const parsed = await parseBillingPeriodCalendar({
       page: this.session.page,
       logger: this.logger,
@@ -656,7 +1492,7 @@ export class PlaywrightBatchQaWorker implements BatchPortalAutomationClient {
     return {
       result: parsed.summary,
       summaryPath: parsed.summaryPath,
-      stepLogs: parsed.stepLogs,
+      stepLogs: [...recovery.stepLogs, ...parsed.stepLogs],
     };
   }
 

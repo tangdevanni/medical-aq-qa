@@ -19,6 +19,13 @@ import { extractPocFields } from "./pocExtractor";
 import { extractTechnicalReview } from "./technicalReviewExtractor";
 import { extractVisitNoteFields } from "./visitNoteExtractor";
 
+export type DomFirstQaEvidence = {
+  oasis: boolean;
+  poc: boolean;
+  visitNotes: boolean;
+  evidence: string[];
+};
+
 const terminalPatientStatuses: PatientProcessingStatus[] = [
   "COMPLETE",
   "BLOCKED",
@@ -78,6 +85,14 @@ function mapStageStatusToChecklistStatus(status: StageStatus): QaChecklistStatus
     default:
       return "MISSING";
   }
+}
+
+function mapStageStatusToChecklistStatusWithDomEvidence(
+  status: StageStatus,
+  domEvidenceAvailable: boolean,
+): QaChecklistStatus {
+  const mapped = mapStageStatusToChecklistStatus(status);
+  return domEvidenceAvailable && mapped !== "PASS" ? "NEEDS_REVIEW" : mapped;
 }
 
 function getDocumentsByType(
@@ -236,20 +251,28 @@ function artifactOrDocumentItem(input: {
   key: string;
   label: string;
   documents: ExtractedDocument[];
+  domEvidenceAvailable?: boolean;
+  domEvidenceLabel?: string;
   notesWhenMissing: string;
 }): QaChecklistItem {
+  const domEvidenceAvailable = Boolean(input.domEvidenceAvailable);
   return createChecklistItem({
     key: input.key,
     label: input.label,
-    status: input.documents.length > 0 ? "PASS" : "MISSING",
+    status: input.documents.length > 0 || domEvidenceAvailable ? "PASS" : "MISSING",
     notes:
       input.documents.length > 0
         ? `${input.documents.length} supporting document(s) extracted.`
+        : domEvidenceAvailable
+          ? input.domEvidenceLabel ?? "DOM-first artifact evidence is available."
         : input.notesWhenMissing,
-    evidence: input.documents.slice(0, 3).map((document) =>
-      `${document.type} ${document.metadata.sourcePath ?? document.metadata.portalLabel ?? "content"}`
-        .trim(),
-    ),
+    evidence: [
+      ...input.documents.slice(0, 3).map((document) =>
+        `${document.type} ${document.metadata.sourcePath ?? document.metadata.portalLabel ?? "content"}`
+          .trim(),
+      ),
+      ...(domEvidenceAvailable ? [input.domEvidenceLabel ?? "DOM-first artifact evidence is available."] : []),
+    ],
   });
 }
 
@@ -258,19 +281,23 @@ function booleanExtractionItem(input: {
   label: string;
   present: boolean;
   documentsAvailable: boolean;
+  domReviewAvailable?: boolean;
+  domReviewEvidence?: string;
   evidence: string[];
   failNote: string;
 }): QaChecklistItem {
   return createChecklistItem({
     key: input.key,
     label: input.label,
-    status: input.present ? "PASS" : input.documentsAvailable ? "FAIL" : "MISSING",
+    status: input.present ? "PASS" : input.domReviewAvailable ? "NEEDS_REVIEW" : input.documentsAvailable ? "FAIL" : "MISSING",
     notes: input.present
       ? "Requirement confirmed from extracted document content."
+      : input.domReviewAvailable
+        ? "DOM-first QA evidence is available; detailed issue review is surfaced in the dashboard."
       : input.documentsAvailable
         ? input.failNote
         : "Supporting document content is not available.",
-    evidence: input.evidence,
+    evidence: [...input.evidence, ...(input.domReviewAvailable && input.domReviewEvidence ? [input.domReviewEvidence] : [])],
   });
 }
 
@@ -281,10 +308,15 @@ export function buildOasisQaSummary(input: {
   processingStatus: PatientProcessingStatus;
   extractedDocuments?: ExtractedDocument[];
   documentInventory?: DocumentInventoryItem[];
+  domFirstQaEvidence?: DomFirstQaEvidence;
 }): OasisQaSummary {
   const { workItem, matchResult, processingStatus } = input;
   const extractedDocuments = input.extractedDocuments ?? [];
   const documentInventory = input.documentInventory ?? [];
+  const domFirstQaEvidence = input.domFirstQaEvidence ?? { oasis: false, poc: false, visitNotes: false, evidence: [] };
+  const oasisDomEvidence = domFirstQaEvidence.oasis;
+  const pocDomEvidence = domFirstQaEvidence.poc;
+  const visitNotesDomEvidence = domFirstQaEvidence.visitNotes;
   const oasisDocuments = getDocumentsByType(extractedDocuments, "OASIS");
   const pocDocuments = getDocumentsByType(extractedDocuments, "POC");
   const visitNoteDocuments = getDocumentsByType(extractedDocuments, "VISIT_NOTE");
@@ -345,14 +377,19 @@ export function buildOasisQaSummary(input: {
     createChecklistItem({
       key: "coding_supported_by_oasis",
       label: "OASIS content is available to support coding review",
-      status: oasisDocuments.length > 0 ? "PASS" : "MISSING",
+      status: oasisDocuments.length > 0 || oasisDomEvidence ? "PASS" : "MISSING",
       notes:
         oasisDocuments.length > 0
           ? "OASIS content extracted for coding review support."
+          : oasisDomEvidence
+            ? "OASIS DOM evidence is available for coding review support."
           : "No OASIS content was extracted for coding validation.",
-      evidence: oasisDocuments.map((document) =>
-        `${document.type} ${document.metadata.sourcePath ?? document.metadata.portalLabel ?? "content"}`.trim(),
-      ),
+      evidence: [
+        ...oasisDocuments.map((document) =>
+          `${document.type} ${document.metadata.sourcePath ?? document.metadata.portalLabel ?? "content"}`.trim(),
+        ),
+        ...(oasisDomEvidence ? ["oasis-dom-extracted-state.json"] : []),
+      ],
     }),
   ]);
 
@@ -361,12 +398,14 @@ export function buildOasisQaSummary(input: {
       key: "oasis_document",
       label: "OASIS document content extracted",
       documents: oasisDocuments,
+      domEvidenceAvailable: oasisDomEvidence,
+      domEvidenceLabel: "oasis-dom-extracted-state.json",
       notesWhenMissing: "No OASIS document content was available for extraction.",
     }),
     createChecklistItem({
       key: "oasis_workbook_status",
       label: "OASIS QA completed in workbook",
-      status: mapStageStatusToChecklistStatus(workItem.oasisQaStatus),
+      status: mapStageStatusToChecklistStatusWithDomEvidence(workItem.oasisQaStatus, oasisDomEvidence),
       notes: `Workbook status: ${workItem.oasisQaStatus}`,
       evidence: [workItem.oasisQaStatus],
     }),
@@ -375,6 +414,8 @@ export function buildOasisQaSummary(input: {
       label: "Medical necessity is stated",
       present: oasisExtract.medicalNecessity,
       documentsAvailable: oasisDocuments.length > 0,
+      domReviewAvailable: oasisDomEvidence,
+      domReviewEvidence: "oasis-dom-extracted-state.json",
       evidence: oasisExtract.evidence.medicalNecessity.map((entry) =>
         `Found medical-necessity evidence: ${entry}`,
       ),
@@ -385,6 +426,8 @@ export function buildOasisQaSummary(input: {
       label: "Homebound reason is stated",
       present: oasisExtract.homeboundReason,
       documentsAvailable: oasisDocuments.length > 0,
+      domReviewAvailable: oasisDomEvidence,
+      domReviewEvidence: "oasis-dom-extracted-state.json",
       evidence: oasisExtract.evidence.homeboundReason.map((entry) =>
         `Found homebound evidence: ${entry}`,
       ),
@@ -395,6 +438,8 @@ export function buildOasisQaSummary(input: {
       label: "Health assessment is documented",
       present: oasisExtract.healthAssessment,
       documentsAvailable: oasisDocuments.length > 0,
+      domReviewAvailable: oasisDomEvidence,
+      domReviewEvidence: "oasis-dom-extracted-state.json",
       evidence: oasisExtract.evidence.healthAssessment.map((entry) =>
         `Found assessment evidence: ${entry}`,
       ),
@@ -405,6 +450,8 @@ export function buildOasisQaSummary(input: {
       label: "Skilled interventions during the OASIS visit are documented",
       present: oasisExtract.skilledInterventions,
       documentsAvailable: oasisDocuments.length > 0,
+      domReviewAvailable: oasisDomEvidence,
+      domReviewEvidence: "oasis-dom-extracted-state.json",
       evidence: oasisExtract.evidence.skilledInterventions.map((entry) =>
         `Found skilled-intervention evidence: ${entry}`,
       ),
@@ -417,12 +464,14 @@ export function buildOasisQaSummary(input: {
       key: "poc_document",
       label: "Plan of care content extracted",
       documents: pocDocuments,
+      domEvidenceAvailable: pocDomEvidence,
+      domEvidenceLabel: "plan-of-care-review-draft.json",
       notesWhenMissing: "No plan-of-care content was available for extraction.",
     }),
     createChecklistItem({
       key: "poc_workbook_status",
       label: "POC QA completed in workbook",
-      status: mapStageStatusToChecklistStatus(workItem.pocQaStatus),
+      status: mapStageStatusToChecklistStatusWithDomEvidence(workItem.pocQaStatus, pocDomEvidence),
       notes: `Workbook status: ${workItem.pocQaStatus}`,
       evidence: [workItem.pocQaStatus],
     }),
@@ -431,6 +480,8 @@ export function buildOasisQaSummary(input: {
       label: "Diagnoses or codes are present in the plan of care",
       present: pocExtract.diagnosesOrCodesPresent,
       documentsAvailable: pocDocuments.length > 0,
+      domReviewAvailable: pocDomEvidence,
+      domReviewEvidence: "plan-of-care-review-draft.json",
       evidence: pocExtract.evidence.diagnosesOrCodesPresent.map((entry) =>
         `Found diagnosis/code evidence: ${entry}`,
       ),
@@ -441,6 +492,8 @@ export function buildOasisQaSummary(input: {
       label: "Interventions, goals, and frequency are present in the plan of care",
       present: pocExtract.interventionsGoalsFrequencyPresent,
       documentsAvailable: pocDocuments.length > 0,
+      domReviewAvailable: pocDomEvidence,
+      domReviewEvidence: "plan-of-care-review-draft.json",
       evidence: pocExtract.evidence.interventionsGoalsFrequencyPresent.map((entry) =>
         `Found intervention/goal/frequency evidence: ${entry}`,
       ),
@@ -451,6 +504,8 @@ export function buildOasisQaSummary(input: {
       label: "Conditions or exacerbations are reflected in the plan of care",
       present: pocExtract.exacerbationsConditionsPresent,
       documentsAvailable: pocDocuments.length > 0,
+      domReviewAvailable: pocDomEvidence,
+      domReviewEvidence: "plan-of-care-review-draft.json",
       evidence: pocExtract.evidence.exacerbationsConditionsPresent.map((entry) =>
         `Found conditions/exacerbations evidence: ${entry}`,
       ),
@@ -463,12 +518,14 @@ export function buildOasisQaSummary(input: {
       key: "visit_notes_document",
       label: "Visit note content extracted",
       documents: visitNoteDocuments,
+      domEvidenceAvailable: visitNotesDomEvidence,
+      domEvidenceLabel: "visit-notes-discovery.json",
       notesWhenMissing: "No visit-note content was available for extraction.",
     }),
     createChecklistItem({
       key: "visit_notes_workbook_status",
       label: "Visit notes review completed in workbook",
-      status: mapStageStatusToChecklistStatus(workItem.visitNotesQaStatus),
+      status: mapStageStatusToChecklistStatusWithDomEvidence(workItem.visitNotesQaStatus, visitNotesDomEvidence),
       notes: `Workbook status: ${workItem.visitNotesQaStatus}`,
       evidence: [workItem.visitNotesQaStatus],
     }),
@@ -477,6 +534,8 @@ export function buildOasisQaSummary(input: {
       label: "Skilled need is clearly documented",
       present: visitNoteExtract.skilledNeed,
       documentsAvailable: visitNoteDocuments.length > 0,
+      domReviewAvailable: visitNotesDomEvidence,
+      domReviewEvidence: "visit-note-qa-review.json",
       evidence: visitNoteExtract.evidence.skilledNeed.map((entry) =>
         `Found skilled-need evidence: ${entry}`,
       ),
@@ -487,6 +546,8 @@ export function buildOasisQaSummary(input: {
       label: "Interventions performed are specific and detailed",
       present: visitNoteExtract.interventionDetail,
       documentsAvailable: visitNoteDocuments.length > 0,
+      domReviewAvailable: visitNotesDomEvidence,
+      domReviewEvidence: "visit-note-qa-review.json",
       evidence: visitNoteExtract.evidence.interventionDetail.map((entry) =>
         `Found intervention evidence: ${entry}`,
       ),
@@ -497,6 +558,8 @@ export function buildOasisQaSummary(input: {
       label: "Patient response to interventions is documented",
       present: visitNoteExtract.patientResponse,
       documentsAvailable: visitNoteDocuments.length > 0,
+      domReviewAvailable: visitNotesDomEvidence,
+      domReviewEvidence: "visit-note-qa-review.json",
       evidence: visitNoteExtract.evidence.patientResponse.map((entry) =>
         `Found patient-response evidence: ${entry}`,
       ),
@@ -507,6 +570,8 @@ export function buildOasisQaSummary(input: {
       label: "Progress toward goals is noted",
       present: visitNoteExtract.progressTowardGoals,
       documentsAvailable: visitNoteDocuments.length > 0,
+      domReviewAvailable: visitNotesDomEvidence,
+      domReviewEvidence: "visit-note-qa-review.json",
       evidence: visitNoteExtract.evidence.progressTowardGoals.map((entry) =>
         `Found progress evidence: ${entry}`,
       ),
@@ -517,6 +582,8 @@ export function buildOasisQaSummary(input: {
       label: "Vitals and focused assessment are documented",
       present: visitNoteExtract.vitals,
       documentsAvailable: visitNoteDocuments.length > 0,
+      domReviewAvailable: visitNotesDomEvidence,
+      domReviewEvidence: "visit-note-qa-review.json",
       evidence: visitNoteExtract.evidence.vitals.map((entry) =>
         `Found vitals evidence: ${entry}`,
       ),
@@ -527,6 +594,8 @@ export function buildOasisQaSummary(input: {
       label: "Medication review is documented",
       present: visitNoteExtract.medicationReview,
       documentsAvailable: visitNoteDocuments.length > 0,
+      domReviewAvailable: visitNotesDomEvidence,
+      domReviewEvidence: "visit-note-qa-review.json",
       evidence: visitNoteExtract.evidence.medicationReview.map((entry) =>
         `Found medication-review evidence: ${entry}`,
       ),
@@ -537,6 +606,8 @@ export function buildOasisQaSummary(input: {
       label: "Changes in condition are clearly reported and addressed",
       present: visitNoteExtract.conditionChanges,
       documentsAvailable: visitNoteDocuments.length > 0,
+      domReviewAvailable: visitNotesDomEvidence,
+      domReviewEvidence: "visit-note-qa-review.json",
       evidence: visitNoteExtract.evidence.conditionChanges.map((entry) =>
         `Found condition-change evidence: ${entry}`,
       ),
@@ -547,6 +618,8 @@ export function buildOasisQaSummary(input: {
       label: "Documentation supports billed services",
       present: visitNoteExtract.billedServicesSupport,
       documentsAvailable: visitNoteDocuments.length > 0,
+      domReviewAvailable: visitNotesDomEvidence,
+      domReviewEvidence: "visit-note-qa-review.json",
       evidence: visitNoteExtract.evidence.billedServicesSupport.map((entry) =>
         `Found billed-services support evidence: ${entry}`,
       ),
@@ -557,6 +630,8 @@ export function buildOasisQaSummary(input: {
       label: "Documentation remains consistent with OASIS and diagnoses",
       present: visitNoteExtract.consistencyWithDiagnoses,
       documentsAvailable: visitNoteDocuments.length > 0,
+      domReviewAvailable: visitNotesDomEvidence,
+      domReviewEvidence: "visit-note-qa-review.json",
       evidence: visitNoteExtract.evidence.consistencyWithDiagnoses.map((entry) =>
         `Found consistency evidence: ${entry}`,
       ),
@@ -584,7 +659,7 @@ export function buildOasisQaSummary(input: {
     createChecklistItem({
       key: "sn_visit_count",
       label: "SN visits were identified from visit-note content",
-      status: technicalExtract.snVisitCount > 0 ? "PASS" : visitNoteDocuments.length > 0 ? "FAIL" : "MISSING",
+      status: technicalExtract.snVisitCount > 0 ? "PASS" : visitNotesDomEvidence ? "NEEDS_REVIEW" : visitNoteDocuments.length > 0 ? "FAIL" : "MISSING",
       notes:
         technicalExtract.snVisitCount > 0
           ? `Detected ${technicalExtract.snVisitCount} SN visit reference(s).`
@@ -596,7 +671,7 @@ export function buildOasisQaSummary(input: {
     createChecklistItem({
       key: "discipline_detection",
       label: "Applicable disciplines were detected",
-      status: visitNoteDocuments.length > 0 ? "PASS" : "MISSING",
+      status: visitNoteDocuments.length > 0 || visitNotesDomEvidence ? "PASS" : "MISSING",
       notes:
         technicalExtract.disciplines.length > 0
           ? `Detected disciplines: ${technicalExtract.disciplines.join(", ")}`
@@ -698,6 +773,7 @@ export function evaluateOasisQa(input: {
   processingStatus: PatientProcessingStatus;
   extractedDocuments?: ExtractedDocument[];
   documentInventory?: DocumentInventoryItem[];
+  domFirstQaEvidence?: DomFirstQaEvidence;
 }) {
   const oasisQaSummary = buildOasisQaSummary(input);
   const qaOutcome = mapOverallStatusToQaOutcome(oasisQaSummary.overallStatus, input.matchResult);

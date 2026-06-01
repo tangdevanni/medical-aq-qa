@@ -6,7 +6,7 @@ import type {
   PatientProcessingStatus,
 } from "@medical-ai-qa/shared-types";
 import type { ExtractedDocument } from "../services/documentExtractionService";
-import { evaluateOasisQa } from "../services/oasisQaEvaluator";
+import { evaluateOasisQa, type DomFirstQaEvidence } from "../services/oasisQaEvaluator";
 
 export function evaluateDeterministicQa(input: {
   workItem: PatientEpisodeWorkItem;
@@ -15,6 +15,7 @@ export function evaluateDeterministicQa(input: {
   processingStatus: PatientProcessingStatus;
   extractedDocuments?: ExtractedDocument[];
   documentInventory?: DocumentInventoryItem[];
+  domFirstQaEvidence?: DomFirstQaEvidence;
 }) {
   return evaluateOasisQa(input);
 }

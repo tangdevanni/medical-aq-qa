@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { listBackendAgencies } from "../../lib/server/backendApi";
 import { requireDashboardSession } from "../../lib/auth/session";
+import { resolveDashboardRedirectLocation } from "../../lib/redirect";
 
 type SelectAgencyPageProps = {
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
@@ -27,7 +28,7 @@ export default async function SelectAgencyPage({ searchParams }: SelectAgencyPag
   const resolvedSearchParams = await searchParams;
   const changeAgencyRequested = resolvedSearchParams?.change === "1";
   if (session.selectedAgencyId && !changeAgencyRequested) {
-    redirect("/agency");
+    redirect(resolveDashboardRedirectLocation("/agency"));
   }
 
   const agencies = (await listBackendAgencies()).filter((agency) =>

@@ -6,9 +6,11 @@ import type {
   Agency,
   BatchManifest,
   BatchSummary,
+  ConciseQaIssue,
   DashboardPatientRecord,
   PatientDashboardState,
   ParserException,
+  PatientRunCacheSummary,
   PatientQueueArtifact,
   PatientEpisodeWorkItem,
   PatientMatchResult,
@@ -18,6 +20,7 @@ import type {
   SubsidiaryRecord,
   WorkbookSource,
 } from "@medical-ai-qa/shared-types";
+import { extractPortalPatientLookupContext } from "@medical-ai-qa/shared-types";
 import {
   buildOasisQaSummary,
   createBatchSummary,
@@ -37,13 +40,31 @@ import type { BatchRecord } from "../types/batchControlPlane";
 import type { ScheduledRunRecord } from "../types/scheduledRun";
 import { writeJsonFile } from "../utils/jsonFile";
 import { isWorkbookRotationDue } from "../utils/workbookRotation";
+import {
+  AmbiguousPatientMemoryIdentityError,
+  type PatientMemoryService,
+} from "./patientMemoryService";
 import type { SubsidiaryConfigService } from "./subsidiaryConfigService";
 import { toDashboardPatientSummary } from "../mappers/dashboardRunViews";
 
 const DEFAULT_RERUN_INTERVAL_HOURS = 24;
 const SCHEDULE_POLL_INTERVAL_MS = 60_000;
 const DEFAULT_REFRESH_TIMEZONE = "Asia/Manila";
-const DEFAULT_REFRESH_LOCAL_TIMES = ["15:00", "23:30"] as const;
+const DEFAULT_REFRESH_LOCAL_TIMES = ["20:30"] as const;
+const DASHBOARD_REVIEWER_STATUS_FILE_NAME = "dashboard-reviewer-statuses.json";
+
+type RunControlOptions = {
+  mode?: "delta" | "full";
+  reprojectOnly?: boolean;
+  forceStages?: Array<"referral" | "oasis" | "poc" | "visit_notes" | "dashboard">;
+};
+
+type BatchControlPlaneOptions = {
+  patientMemoryWriteEnabled?: boolean;
+  deltaReuseEnabled?: boolean;
+  autonomousMode?: "full" | "manual_only";
+  scheduleLocalTimes?: readonly string[];
+};
 
 function createBatchId(subsidiarySlug?: string): string {
   const slugPrefix = subsidiarySlug?.trim() ? `${subsidiarySlug.trim()}-` : "";
@@ -87,6 +108,590 @@ function batchBelongsToSubsidiary(
 ): boolean {
   const lookupKeys = getSubsidiaryLookupKeys(subsidiary);
   return lookupKeys.has(batch.subsidiary.id) || lookupKeys.has(batch.subsidiary.slug);
+}
+
+const ISSUE_SEVERITY_RANK: Record<ConciseQaIssue["severity"], number> = {
+  critical: 0,
+  high: 1,
+  medium: 2,
+  low: 3,
+};
+
+const CLINICALLY_IMPORTANT_OASIS_FIELD_PATTERN =
+  /\b(?:diagnos|m10|vital|temperature|pulse|blood pressure|respir|oxygen|o2|pain|medication|allerg|wound|incision|skin|fall|mahc|m1033|risk|orientation|mental|cognitive|appetite|nutrition|toilet|bathing|dressing|transfer|ambulat|mobility|gg0130|gg0170|plan of care|skilled|intervention|frequency|goal)\b/i;
+
+function asRecord(value: unknown): Record<string, unknown> | null {
+  return typeof value === "object" && value !== null && !Array.isArray(value)
+    ? (value as Record<string, unknown>)
+    : null;
+}
+
+function asArray(value: unknown): unknown[] {
+  return Array.isArray(value) ? value : [];
+}
+
+function asString(value: unknown): string | null {
+  return typeof value === "string" && value.trim() ? value.trim() : null;
+}
+
+function asNumber(value: unknown): number | null {
+  return typeof value === "number" && Number.isFinite(value) ? value : null;
+}
+
+function normalizeDashboardLabel(value: string | null | undefined): string {
+  const normalized = (value ?? "")
+    .replace(/[_:.-]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (!normalized) {
+    return "OASIS field";
+  }
+  return normalized
+    .replace(/\b\w/g, (character) => character.toUpperCase())
+    .replace(/\bOasis\b/g, "OASIS")
+    .replace(/\bPoc\b/g, "POC")
+    .replace(/\bSoc\b/g, "SOC")
+    .replace(/\bQa\b/g, "QA");
+}
+
+function clipIssueText(value: string | null | undefined, maxLength = 160): string | null {
+  const normalized = (value ?? "").replace(/\s+/g, " ").trim();
+  if (!normalized) {
+    return null;
+  }
+  return normalized.length > maxLength ? `${normalized.slice(0, maxLength - 1).trim()}...` : normalized;
+}
+
+function issueSort(left: ConciseQaIssue, right: ConciseQaIssue): number {
+  const severityDelta = ISSUE_SEVERITY_RANK[left.severity] - ISSUE_SEVERITY_RANK[right.severity];
+  if (severityDelta !== 0) {
+    return severityDelta;
+  }
+  return left.problemSummary.localeCompare(right.problemSummary);
+}
+
+function topIssue(issues: ConciseQaIssue[]): ConciseQaIssue | null {
+  return [...issues].sort(issueSort)[0] ?? null;
+}
+
+function parseDateOnly(value: string | null | undefined): Date | null {
+  if (!value) {
+    return null;
+  }
+  const parsed = Date.parse(value);
+  if (Number.isNaN(parsed)) {
+    return null;
+  }
+  const date = new Date(parsed);
+  date.setUTCHours(0, 0, 0, 0);
+  return date;
+}
+
+function deriveDaysSinceSoc(socDate: string | null | undefined, now = new Date()): number | null {
+  const start = parseDateOnly(socDate);
+  if (!start) {
+    return null;
+  }
+  const today = new Date(now);
+  today.setUTCHours(0, 0, 0, 0);
+  return Math.max(0, Math.floor((today.getTime() - start.getTime()) / 86_400_000));
+}
+
+function deriveOasisStage(input: {
+  queueStatus: string;
+  daysLeft: number | null;
+  hasOasisDom: boolean;
+  oasisQaIssueCount: number;
+  oasisValidatedForPlanOfCare: boolean;
+}): DashboardPatientRecord["oasisStage"] {
+  if (input.queueStatus !== "eligible") {
+    return input.queueStatus === "skipped_pending" ? "pending_patient" : "not_applicable";
+  }
+  if (input.oasisValidatedForPlanOfCare) {
+    return "validated";
+  }
+  if (!input.hasOasisDom && input.oasisQaIssueCount > 0) {
+    return "oasis_not_filled_out";
+  }
+  if (input.daysLeft !== null && input.daysLeft <= 15) {
+    return "assist_oasis_fill";
+  }
+  if (input.daysLeft !== null && input.daysLeft <= 30) {
+    return "scrape_and_prepare";
+  }
+  if (input.daysLeft !== null && input.daysLeft > 30) {
+    return "clinician_fill_later";
+  }
+  return input.oasisQaIssueCount > 0 ? "ready_for_review" : "not_applicable";
+}
+
+function deriveDashboardPipelineStage(input: {
+  queueStatus: string;
+  processingStatus: string | null;
+  missingReferralDocumentation: boolean;
+  planOfCareAvailable: boolean;
+  workItem: PatientEpisodeWorkItem | null;
+  oasisStage: DashboardPatientRecord["oasisStage"];
+}): DashboardPatientRecord["pipelineStage"] {
+  if (input.queueStatus === "skipped_pending" || !input.processingStatus || input.processingStatus === "PENDING") {
+    return "pending";
+  }
+
+  if (input.planOfCareAvailable || input.oasisStage === "validated") {
+    return "plan_of_care_visit_notes";
+  }
+
+  if (input.missingReferralDocumentation) {
+    return "documentation";
+  }
+
+  if (
+    input.oasisStage === "oasis_not_filled_out" ||
+    input.oasisStage === "scrape_and_prepare" ||
+    input.oasisStage === "assist_oasis_fill" ||
+    input.workItem?.oasisQaStatus !== "DONE"
+  ) {
+    return "oasis";
+  }
+
+  return "plan_of_care_visit_notes";
+}
+
+function buildIssue(input: {
+  domain: ConciseQaIssue["domain"];
+  section: string;
+  itemId?: string | null;
+  severity: ConciseQaIssue["severity"];
+  problemSummary: string;
+  recommendedFix: string;
+  evidenceSnippet?: string | null;
+  source: string;
+}): ConciseQaIssue {
+  const issueKey = [
+    input.domain,
+    input.section,
+    input.itemId ?? input.problemSummary,
+    input.problemSummary,
+  ].join(":").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+  return {
+    issueId: issueKey || `${input.domain}-issue`,
+    domain: input.domain,
+    section: input.section,
+    itemId: input.itemId ?? null,
+    severity: input.severity,
+    problemSummary: input.problemSummary,
+    recommendedFix: input.recommendedFix,
+    evidenceSnippet: clipIssueText(input.evidenceSnippet, 220),
+    source: input.source,
+  };
+}
+
+function valueLooksEmpty(value: unknown, normalizedValue: string | null): boolean {
+  if (typeof value === "boolean") {
+    return value === false;
+  }
+  const text = normalizedValue ?? (typeof value === "string" ? value : "");
+  return !text.trim() || /^(?:false|unchecked|undefined|null|not provided|n\/a|na|\[object object\])$/i.test(text.trim());
+}
+
+function deriveOasisDomIssues(input: {
+  oasisDomExtractedState: unknown | null;
+  oasisDomAcquisitionState: unknown | null;
+  oasisDomComparison: unknown | null;
+  oasisQaSummary: PatientDashboardState["oasisQaSummary"] | null | undefined;
+}): { issues: ConciseQaIssue[]; emptyOasisInputCount: number; mismatchCount: number; hasOasisDom: boolean } {
+  const issues: ConciseQaIssue[] = [];
+  const acquisition = asRecord(input.oasisDomAcquisitionState);
+  const domState = asRecord(input.oasisDomExtractedState);
+  const comparison = asRecord(input.oasisDomComparison);
+  const hasOasisDom = Boolean(acquisition || domState);
+
+  const missingSections = asArray(acquisition?.missingRequiredSections)
+    .map(asString)
+    .filter((value): value is string => value !== null);
+  for (const section of missingSections.slice(0, 4)) {
+    issues.push(buildIssue({
+      domain: "oasis",
+      section: normalizeDashboardLabel(section),
+      severity: "high",
+      problemSummary: `${normalizeDashboardLabel(section)} is missing`,
+      recommendedFix: `Open ${normalizeDashboardLabel(section)} and complete the required OASIS fields.`,
+      source: "oasis_dom_acquisition",
+    }));
+  }
+
+  const missingFields = asArray(acquisition?.missingRequiredFields)
+    .map(asString)
+    .filter((value): value is string => value !== null);
+  if (missingFields.length > 0) {
+    issues.push(buildIssue({
+      domain: "oasis",
+      section: "Required OASIS Fields",
+      severity: "high",
+      problemSummary: `${missingFields.length} required OASIS area${missingFields.length === 1 ? "" : "s"} missing`,
+      recommendedFix: `Complete ${missingFields.slice(0, 3).map(normalizeDashboardLabel).join(", ")}${missingFields.length > 3 ? " and remaining required areas" : ""}.`,
+      evidenceSnippet: missingFields.slice(0, 6).join("; "),
+      source: "oasis_dom_acquisition",
+    }));
+  }
+
+  const importantEmptyFields: Array<{ label: string; section: string; itemId: string | null }> = [];
+  for (const sectionValue of asArray(acquisition?.sections)) {
+    const section = asRecord(sectionValue);
+    const sectionLabel = normalizeDashboardLabel(asString(section?.title) ?? asString(section?.sectionKey));
+    for (const fieldValue of asArray(section?.fields)) {
+      const field = asRecord(fieldValue);
+      if (!field) {
+        continue;
+      }
+      const label = normalizeDashboardLabel(asString(field.label) ?? asString(field.fieldKey) ?? asString(field.oasisItemCode));
+      const itemId = asString(field.oasisItemCode) ?? asString(field.fieldKey);
+      const normalizedValue = asString(field.normalizedValue);
+      if (!CLINICALLY_IMPORTANT_OASIS_FIELD_PATTERN.test(`${label} ${itemId ?? ""}`)) {
+        continue;
+      }
+      if (asString(field.status) === "empty" || valueLooksEmpty(field.value, normalizedValue)) {
+        importantEmptyFields.push({ label, section: sectionLabel, itemId });
+      }
+    }
+  }
+
+  const fieldsBySection = new Map<string, Array<{ label: string; itemId: string | null }>>();
+  for (const field of importantEmptyFields) {
+    const bucket = fieldsBySection.get(field.section) ?? [];
+    bucket.push({ label: field.label, itemId: field.itemId });
+    fieldsBySection.set(field.section, bucket);
+  }
+  for (const [section, fields] of Array.from(fieldsBySection.entries()).slice(0, 5)) {
+    const firstLabels = fields.slice(0, 3).map((field) => field.label);
+    issues.push(buildIssue({
+      domain: "oasis",
+      section,
+      itemId: fields[0]?.itemId ?? null,
+      severity: fields.length >= 3 ? "high" : "medium",
+      problemSummary: `${fields.length} important ${section} field${fields.length === 1 ? "" : "s"} empty`,
+      recommendedFix: `Complete ${firstLabels.join(", ")}${fields.length > 3 ? " and related fields" : ""}.`,
+      evidenceSnippet: fields.map((field) => field.itemId ?? field.label).slice(0, 6).join("; "),
+      source: "oasis_dom_acquisition",
+    }));
+  }
+
+  const regressedFields = asArray(acquisition?.regressedFields)
+    .map(asString)
+    .filter((value): value is string => value !== null);
+  if (regressedFields.length > 0) {
+    issues.push(buildIssue({
+      domain: "oasis",
+      section: "OASIS Internal Consistency",
+      severity: "high",
+      problemSummary: `${regressedFields.length} OASIS field${regressedFields.length === 1 ? "" : "s"} lost a prior value`,
+      recommendedFix: "Review the changed OASIS fields and restore the clinically correct values.",
+      evidenceSnippet: regressedFields.slice(0, 5).join("; "),
+      source: "oasis_dom_acquisition",
+    }));
+  }
+
+  const recommendedDecision = asString(comparison?.recommendedDecision);
+  if (recommendedDecision && !/accept|no_change|unchanged/i.test(recommendedDecision)) {
+    issues.push(buildIssue({
+      domain: "oasis",
+      section: "OASIS Internal Consistency",
+      severity: "medium",
+      problemSummary: "OASIS DOM values changed since the prior QA input",
+      recommendedFix: "Review changed OASIS values before final QA.",
+      evidenceSnippet: recommendedDecision,
+      source: "oasis_dom_comparison",
+    }));
+  }
+
+  for (const section of input.oasisQaSummary?.sections ?? []) {
+    for (const item of section.items) {
+      if (item.status !== "FAIL" && item.status !== "MISSING") {
+        continue;
+      }
+      issues.push(buildIssue({
+        domain: "oasis",
+        section: section.label,
+        itemId: item.key,
+        severity: item.status === "FAIL" ? "high" : "medium",
+        problemSummary: item.label,
+        recommendedFix: item.notes ?? `Complete ${item.label.toLowerCase()}.`,
+        evidenceSnippet: item.evidence.slice(0, 2).join("; "),
+        source: "existing_oasis_qa_summary",
+      }));
+    }
+  }
+
+  const deduped = Array.from(new Map(issues.map((issue) => [issue.issueId, issue])).values()).sort(issueSort);
+  return {
+    issues: deduped.slice(0, 12),
+    emptyOasisInputCount: importantEmptyFields.length,
+    mismatchCount: regressedFields.length + (recommendedDecision && !/accept|no_change|unchanged/i.test(recommendedDecision) ? 1 : 0),
+    hasOasisDom,
+  };
+}
+
+function deriveVisitNoteIssues(input: {
+  visitNoteQaReview: unknown | null;
+  visitNotesDiscovery: unknown | null;
+  visitNoteProcessingManifest: unknown | null;
+}): {
+  issues: ConciseQaIssue[];
+  mismatchCount: number;
+  activeQaCount: number;
+  reviewStatus: DashboardPatientRecord["visitNoteReviewStatus"];
+  domStatus: string | null;
+} {
+  const review = asRecord(input.visitNoteQaReview);
+  const discovery = asRecord(input.visitNotesDiscovery);
+  const manifest = asRecord(input.visitNoteProcessingManifest);
+  const issues: ConciseQaIssue[] = [];
+
+  for (const findingValue of asArray(review?.findings)) {
+    const finding = asRecord(findingValue);
+    if (!finding) {
+      continue;
+    }
+    const title = asString(finding.title) ?? "Visit note issue";
+    issues.push(buildIssue({
+      domain: "visit_notes",
+      section: normalizeDashboardLabel(asString(finding.visitType) ?? asString(finding.category) ?? "Visit Notes"),
+      itemId: asString(finding.findingId) ?? asString(finding.visitNoteKey),
+      severity: asString(finding.severity) === "critical" || asString(finding.severity) === "high" ? "high" : "medium",
+      problemSummary: title,
+      recommendedFix:
+        asString(finding.suggestedReviewerAction) ??
+        "Update the visit note so it clearly documents the performed intervention and patient response.",
+      evidenceSnippet: asString(finding.description),
+      source: "visit_note_qa_review",
+    }));
+  }
+
+  for (const noteValue of asArray(review?.noteSummaries)) {
+    const note = asRecord(noteValue);
+    if (!note) {
+      continue;
+    }
+    const missingFields = asArray(note.missingFields).map(asString).filter((value): value is string => value !== null);
+    if (missingFields.length > 0) {
+      issues.push(buildIssue({
+        domain: "visit_notes",
+        section: normalizeDashboardLabel(asString(note.visitType) ?? "Visit Notes"),
+        itemId: asString(note.visitNoteKey),
+        severity: "medium",
+        problemSummary: `${missingFields.length} visit note detail${missingFields.length === 1 ? "" : "s"} missing`,
+        recommendedFix: `Add ${missingFields.slice(0, 3).map(normalizeDashboardLabel).join(", ")} to the note.`,
+        evidenceSnippet: asString(note.summary),
+        source: "visit_note_qa_review",
+      }));
+    }
+  }
+
+  const summary = asRecord(review?.summary);
+  const activeQaCount = asNumber(summary?.activeMonitoringCount) ?? 0;
+  const failed = asNumber(summary?.failedVisitNotes) ?? 0;
+  const degraded = asNumber(summary?.degradedVisitNotes) ?? 0;
+  const capped = asNumber(summary?.cappedVisitNotes) ?? 0;
+  if (failed + degraded + capped > 0) {
+    issues.push(buildIssue({
+      domain: "visit_notes",
+      section: "Visit Notes DOM Capture",
+      severity: failed > 0 ? "high" : "medium",
+      problemSummary: `${failed + degraded + capped} visit note capture issue${failed + degraded + capped === 1 ? "" : "s"}`,
+      recommendedFix: "Reopen the affected visit notes and confirm DOM capture completed.",
+      source: "visit_note_qa_review",
+    }));
+  }
+
+  const manifestInputs = asArray(manifest?.visitNoteInputs);
+  const domCapturedCount = manifestInputs.filter((entryValue) => {
+    const entry = asRecord(entryValue);
+    return /text_export|html_text|cache/i.test(asString(entry?.extractionSource) ?? "");
+  }).length;
+  const totalRows = asArray(discovery?.rows).length || manifestInputs.length;
+  const domStatus = totalRows > 0
+    ? `${domCapturedCount}/${totalRows} DOM/text captured`
+    : asString(review?.status) ?? null;
+  const incompleteNoteCount = asNumber(summary?.incompleteNoteCount) ?? 0;
+  const pocAlignmentIssueCount = asNumber(summary?.pocAlignmentIssueCount) ?? 0;
+  const contradictionCount = asNumber(summary?.contradictionCount) ?? 0;
+  const analyzedVisitNotes = asNumber(summary?.analyzedVisitNotes) ?? 0;
+  const reviewStatus: DashboardPatientRecord["visitNoteReviewStatus"] =
+    activeQaCount > 0
+      ? "new_visit_note_to_qa"
+      : failed + degraded + capped + incompleteNoteCount + pocAlignmentIssueCount + contradictionCount > 0
+        ? "needs_review"
+        : analyzedVisitNotes > 0
+          ? "reviewed"
+          : totalRows > 0
+            ? "not_started"
+            : "not_applicable";
+
+  const deduped = Array.from(new Map(issues.map((issue) => [issue.issueId, issue])).values()).sort(issueSort);
+  return {
+    issues: deduped.slice(0, 8),
+    mismatchCount: contradictionCount + pocAlignmentIssueCount + incompleteNoteCount,
+    activeQaCount,
+    reviewStatus,
+    domStatus,
+  };
+}
+
+function countReferralMedications(input: unknown | null): number {
+  const factPack = asRecord(input);
+  const facts = asArray(factPack?.facts);
+  if (facts.length > 0) {
+    return facts.filter((factValue) => /^(?:medication|allergy|allergies)$/i.test(asString(asRecord(factValue)?.category) ?? "")).length;
+  }
+  return asArray(factPack?.medications).length + asArray(factPack?.allergies).length;
+}
+
+function getReferralExtractionUsabilityStatus(artifactContents: {
+  qaDocumentSummary?: unknown | null;
+  patientQaReference?: unknown | null;
+}): string | null {
+  const qaDocumentSummary = asRecord(artifactContents.qaDocumentSummary);
+  const patientQaReference = asRecord(artifactContents.patientQaReference);
+  return asString(qaDocumentSummary?.extractionUsabilityStatus) ??
+    asString(patientQaReference?.extractionUsabilityStatus);
+}
+
+function canCountReferralStructuredFacts(artifactContents: {
+  qaDocumentSummary?: unknown | null;
+  patientQaReference?: unknown | null;
+}): boolean {
+  const status = getReferralExtractionUsabilityStatus(artifactContents);
+  return status === null || /^usable$/i.test(status);
+}
+
+type DashboardReviewerStatus = NonNullable<DashboardPatientRecord["reviewerStatus"]>;
+
+type DashboardReviewerStatusEntry = {
+  workItemId: string;
+  status: DashboardReviewerStatus;
+  updatedAt: string;
+  updatedBy: string | null;
+};
+
+type DashboardReviewCycleSignal = {
+  oasisInternalMismatchCount: number;
+  visitNoteMismatchCount: number;
+  visitNoteActiveQaCount: number;
+};
+
+function derivePortalExcludedQueueStatus(input: {
+  queueStatus: PatientQueueArtifact["entries"][number]["status"];
+  patientRun: BatchRecord["patientRuns"][number] | undefined;
+}): PatientQueueArtifact["entries"][number]["status"] {
+  if (input.queueStatus !== "eligible") {
+    return input.queueStatus;
+  }
+  if (input.patientRun?.executionStep !== "PATIENT_STATUS_EXCLUDED") {
+    return input.queueStatus;
+  }
+
+  const statusEvidence = [
+    input.patientRun.errorSummary,
+    input.patientRun.matchResult.portalDisplayName,
+    input.patientRun.matchResult.note,
+    ...input.patientRun.matchResult.candidateNames,
+  ].filter((value): value is string => Boolean(value));
+  const statusText = statusEvidence.join(" ");
+  if (/\bnon[-\s]?admit(?:ted)?\b/i.test(statusText)) {
+    return "skipped_non_admit";
+  }
+  if (/\bpending\b/i.test(statusText)) {
+    return "skipped_pending";
+  }
+
+  return input.queueStatus;
+}
+
+type DashboardReviewerStatusArtifact = {
+  schemaVersion: "dashboard-reviewer-statuses.v1";
+  generatedAt: string;
+  agencyId: string;
+  batchId: string;
+  statuses: Record<string, DashboardReviewerStatusEntry>;
+};
+
+function parseDashboardReviewerStatusArtifact(input: unknown): DashboardReviewerStatusArtifact | null {
+  const record = asRecord(input);
+  const statusesRecord = asRecord(record?.statuses);
+  if (!record || !statusesRecord) {
+    return null;
+  }
+  const statuses: Record<string, DashboardReviewerStatusEntry> = {};
+  for (const [workItemId, value] of Object.entries(statusesRecord)) {
+    const entry = asRecord(value);
+    const status = asString(entry?.status);
+    if (status !== "red" && status !== "yellow" && status !== "green") {
+      continue;
+    }
+    statuses[workItemId] = {
+      workItemId,
+      status,
+      updatedAt: asString(entry?.updatedAt) ?? new Date().toISOString(),
+      updatedBy: asString(entry?.updatedBy),
+    };
+  }
+  return {
+    schemaVersion: "dashboard-reviewer-statuses.v1",
+    generatedAt: asString(record.generatedAt) ?? new Date().toISOString(),
+    agencyId: asString(record.agencyId) ?? "",
+    batchId: asString(record.batchId) ?? "",
+    statuses,
+  };
+}
+
+function reviewerStatusPathForBatch(batch: BatchRecord): string {
+  return path.join(batch.storage.outputRoot, DASHBOARD_REVIEWER_STATUS_FILE_NAME);
+}
+
+function parseTimestampMillis(value: string | null | undefined): number | null {
+  if (!value) {
+    return null;
+  }
+  const timestamp = Date.parse(value);
+  return Number.isFinite(timestamp) ? timestamp : null;
+}
+
+function patientRunCycleTimestamp(patientRun: BatchRecord["patientRuns"][number] | undefined): string | null {
+  return patientRun?.lastUpdatedAt ?? patientRun?.completedAt ?? patientRun?.startedAt ?? null;
+}
+
+function hasCurrentCycleDiscrepancy(signal: DashboardReviewCycleSignal): boolean {
+  return signal.oasisInternalMismatchCount > 0 || signal.visitNoteMismatchCount > 0 || signal.visitNoteActiveQaCount > 0;
+}
+
+function deriveEffectiveDashboardReviewerStatus(input: {
+  workItemId: string;
+  reviewerStatus: DashboardReviewerStatusEntry | null;
+  patientRun: BatchRecord["patientRuns"][number] | undefined;
+  documentationSignal: DashboardReviewCycleSignal;
+}): DashboardReviewerStatusEntry | null {
+  if (!hasCurrentCycleDiscrepancy(input.documentationSignal)) {
+    return input.reviewerStatus;
+  }
+  if (input.reviewerStatus?.status === "red") {
+    return input.reviewerStatus;
+  }
+
+  const cycleTimestamp = patientRunCycleTimestamp(input.patientRun);
+  const cycleMillis = parseTimestampMillis(cycleTimestamp);
+  const reviewerMillis = parseTimestampMillis(input.reviewerStatus?.updatedAt);
+  const isStale = cycleMillis !== null && (reviewerMillis === null || reviewerMillis < cycleMillis);
+
+  if (!input.reviewerStatus || isStale) {
+    return {
+      workItemId: input.workItemId,
+      status: "red",
+      updatedAt: cycleTimestamp ?? new Date().toISOString(),
+      updatedBy: "System",
+    };
+  }
+
+  return input.reviewerStatus;
 }
 
 async function canReuseCompletedPatientRun(
@@ -201,20 +806,24 @@ function deriveBatchErrorSummary(batch: BatchRecord): string | null {
   );
 }
 
-function createBatchSchedule(now: string, subsidiary: SubsidiaryRecord): BatchRecord["schedule"] {
+function createBatchSchedule(
+  now: string,
+  subsidiary: SubsidiaryRecord,
+  localTimes: readonly string[] = DEFAULT_REFRESH_LOCAL_TIMES,
+): BatchRecord["schedule"] {
   return {
     scheduledRunId: null,
     active: subsidiary.rerunEnabled,
     rerunEnabled: subsidiary.rerunEnabled,
     intervalHours: subsidiary.rerunIntervalHours || DEFAULT_RERUN_INTERVAL_HOURS,
     timezone: subsidiary.timezone || DEFAULT_REFRESH_TIMEZONE,
-    localTimes: [...DEFAULT_REFRESH_LOCAL_TIMES],
+    localTimes: [...localTimes],
     lastRunAt: null,
     nextScheduledRunAt: subsidiary.rerunEnabled
       ? calculateNextScheduledRunAt(
           now,
           subsidiary.timezone || DEFAULT_REFRESH_TIMEZONE,
-          [...DEFAULT_REFRESH_LOCAL_TIMES],
+          [...localTimes],
           subsidiary.rerunIntervalHours || DEFAULT_RERUN_INTERVAL_HOURS,
         )
       : null,
@@ -355,6 +964,71 @@ type PatientArtifactOverlay = {
   modifiedAt: string;
 };
 
+type DashboardReadContext = {
+  batch: BatchRecord;
+  workItemsPromise: Promise<PatientEpisodeWorkItem[]> | null;
+  workItemsByIdPromise: Promise<Map<string, PatientEpisodeWorkItem>> | null;
+  patientRunsByWorkItemId: Map<string, BatchRecord["patientRuns"][number]>;
+  preferredOverlaysByPatientId: Map<string, Promise<PatientArtifactOverlay | null>>;
+  resolvedSummariesByWorkItemId: Map<string, Promise<BatchRecord["patientRuns"][number]>>;
+  patientRunDetailsByPath: Map<string, Promise<PatientRun>>;
+  jsonArtifactsByPath: Map<string, Promise<unknown | null>>;
+};
+
+type KnownPatientArtifacts = {
+  batch: BatchRecord;
+  summary: BatchRecord["patientRuns"][number];
+  detail: PatientRun | null;
+  workItem: PatientEpisodeWorkItem | null;
+  patientArtifactsDirectory: string;
+  artifactPaths: {
+    codingInput: string;
+    documentText: string;
+    qaPrefetch: string | null;
+    patientQaReference: string;
+    qaDocumentSummary: string;
+    fieldMapSnapshot: string;
+    printedNoteChartValues: string | null;
+    printedNoteReview: string | null;
+    oasisDomExtractedState?: string | null;
+    oasisDomAcquisitionState?: string | null;
+    oasisDomComparison?: string | null;
+    sourceClinicalFactPack?: string | null;
+    documentFactPack?: string | null;
+    oasisClinicalFactPack?: string | null;
+    referralExtractedFacts?: string | null;
+    planOfCareReviewDraft?: string | null;
+    generatedPlanOfCare?: string | null;
+    visitNotesDiscovery?: string | null;
+    visitNoteProcessingManifest?: string | null;
+    visitNoteQaReview?: string | null;
+    patientRunCacheSummary?: string | null;
+  };
+  artifactContents: {
+    codingInput: unknown | null;
+    documentText: unknown | null;
+    qaPrefetch: unknown | null;
+    patientQaReference: unknown | null;
+    qaDocumentSummary: unknown | null;
+    fieldMapSnapshot: unknown | null;
+    printedNoteChartValues: unknown | null;
+    printedNoteReview: unknown | null;
+    oasisDomExtractedState?: unknown | null;
+    oasisDomAcquisitionState?: unknown | null;
+    oasisDomComparison?: unknown | null;
+    sourceClinicalFactPack?: unknown | null;
+    documentFactPack?: unknown | null;
+    oasisClinicalFactPack?: unknown | null;
+    referralExtractedFacts?: unknown | null;
+    planOfCareReviewDraft?: unknown | null;
+    generatedPlanOfCare?: unknown | null;
+    visitNotesDiscovery?: unknown | null;
+    visitNoteProcessingManifest?: unknown | null;
+    visitNoteQaReview?: unknown | null;
+    patientRunCacheSummary?: unknown | null;
+  };
+};
+
 export class BatchControlPlaneService {
   private readonly activeBatchJobs = new Map<string, Promise<void>>();
   private rerunTimer: ReturnType<typeof setInterval> | null = null;
@@ -362,19 +1036,24 @@ export class BatchControlPlaneService {
   constructor(
     private readonly repository: FilesystemBatchRepository,
     private readonly scheduledRunRepository: FilesystemScheduledRunRepository,
+    private readonly patientMemoryService: PatientMemoryService,
     private readonly acquisitionService: WorkbookAcquisitionService,
     private readonly subsidiaryConfigService: SubsidiaryConfigService,
     private readonly logger: Logger,
+    private readonly options: BatchControlPlaneOptions = {},
   ) {}
 
   async initialize(): Promise<void> {
     await this.repository.ensureReady();
     await this.scheduledRunRepository.ensureReady();
+    await this.patientMemoryService.ensureReady();
     await this.subsidiaryConfigService.initialize();
     await this.reconcileInterruptedBatches();
-    await this.ensureAutonomousAgencyBatches();
-    this.ensureScheduler();
-    await this.triggerDueScheduledRuns();
+    if (this.options.autonomousMode !== "manual_only") {
+      await this.ensureAutonomousAgencyBatches();
+      this.ensureScheduler();
+      await this.triggerDueScheduledRuns();
+    }
   }
 
   async createBatchUpload(input: {
@@ -422,7 +1101,7 @@ export class BatchControlPlaneService {
       runMode: "read_only",
       billingPeriod: params.billingPeriod ?? null,
       status: "CREATED",
-      schedule: createBatchSchedule(now, subsidiary),
+      schedule: createBatchSchedule(now, subsidiary, this.options.scheduleLocalTimes ?? DEFAULT_REFRESH_LOCAL_TIMES),
       sourceWorkbook: {
         subsidiaryId: subsidiary.id,
         acquisitionProvider: params.providerId,
@@ -533,7 +1212,7 @@ export class BatchControlPlaneService {
     }));
   }
 
-  async triggerAgencyRefresh(agencyId: string): Promise<BatchRecord> {
+  async triggerAgencyRefresh(agencyId: string, options: RunControlOptions = {}): Promise<BatchRecord> {
     const subsidiary = await this.subsidiaryConfigService.getSubsidiaryConfig(agencyId);
     const batches = await this.repository.listBatches();
     const activeBatch = batches.find((batch) =>
@@ -554,7 +1233,7 @@ export class BatchControlPlaneService {
     });
 
     await this.parseBatch(batch.id);
-    const refreshedBatch = await this.startBatchRun(batch.id);
+    const refreshedBatch = await this.startBatchRun(batch.id, options);
     await this.removeSupersededAgencyBatches(refreshedBatch);
     return refreshedBatch;
   }
@@ -563,6 +1242,7 @@ export class BatchControlPlaneService {
     sourceBatchId: string;
     patientIds?: string[] | null;
     limit?: number | null;
+    seedFromMemory?: boolean;
   }): Promise<BatchRecord> {
     const sourceBatch = await this.mustGetBatch(input.sourceBatchId);
     if (this.activeBatchJobs.has(sourceBatch.id)) {
@@ -669,6 +1349,9 @@ export class BatchControlPlaneService {
 
     batch.patientRuns = selectedWorkItems.map((workItem) => createPendingPatientRunState(batch, workItem));
     await this.repository.saveBatch(batch);
+    if (this.options.deltaReuseEnabled && input.seedFromMemory !== false) {
+      await this.seedPatientMemoryForWorkItems(batch, selectedWorkItems, { overwrite: false });
+    }
     return batch;
   }
 
@@ -727,6 +1410,104 @@ export class BatchControlPlaneService {
 
   async getBatch(batchId: string): Promise<BatchRecord | null> {
     return this.repository.getBatch(batchId);
+  }
+
+  async migratePatientMemory(input: {
+    agencyId?: string | null;
+    dryRun?: boolean;
+    now?: Date;
+  } = {}): Promise<{
+    migrationId: string;
+    generatedAt: string;
+    agencyFilter: string | null;
+    scannedBatchCount: number;
+    promotedPatientCount: number;
+    skippedPatientCount: number;
+    failureCount: number;
+    failures: Array<{ batchId: string; workItemId: string; reason: string }>;
+    summaryPath: string | null;
+  }> {
+    if (this.options.patientMemoryWriteEnabled === false && input.dryRun !== true) {
+      throw new Error("Patient memory migration requires PATIENT_MEMORY_WRITE_ENABLED=true.");
+    }
+
+    const generatedAt = (input.now ?? new Date()).toISOString();
+    const migrationId = `patient-memory-migration-${generatedAt}`;
+    const batches = await this.repository.listBatches();
+    const agencyFilter = input.agencyId?.trim() || null;
+    const agencyRecord = agencyFilter
+      ? await this.subsidiaryConfigService.getSubsidiaryConfig(agencyFilter)
+      : null;
+    const filteredBatches = agencyRecord
+      ? batches.filter((batch) => batchBelongsToSubsidiary(batch, agencyRecord))
+      : batches;
+    const failures: Array<{ batchId: string; workItemId: string; reason: string }> = [];
+    let promotedPatientCount = 0;
+    let skippedPatientCount = 0;
+
+    for (const batch of filteredBatches) {
+      if (this.activeBatchJobs.has(batch.id)) {
+        skippedPatientCount += batch.patientRuns.length;
+        failures.push({
+          batchId: batch.id,
+          workItemId: "*",
+          reason: "batch_active",
+        });
+        continue;
+      }
+
+      const promotableRuns = [];
+      for (const patientRun of batch.patientRuns) {
+        const patientArtifactsDirectory = path.join(batch.storage.outputRoot, "patients", patientRun.workItemId);
+        if (!(await this.repository.fileExists(patientArtifactsDirectory))) {
+          skippedPatientCount += 1;
+          continue;
+        }
+        promotableRuns.push(patientRun);
+      }
+
+      if (input.dryRun === true) {
+        promotedPatientCount += promotableRuns.length;
+        continue;
+      }
+
+      const promotionFailures = await this.promoteBatchPatientsToMemory(batch);
+      promotedPatientCount += Math.max(0, promotableRuns.length - promotionFailures.length);
+      skippedPatientCount += batch.patientRuns.length - promotableRuns.length;
+      for (const workItemId of promotionFailures) {
+        failures.push({
+          batchId: batch.id,
+          workItemId,
+          reason: "promotion_failed",
+        });
+      }
+    }
+
+    const summary = {
+      schemaVersion: "patient-memory-migration-summary.v1",
+      migrationId,
+      generatedAt,
+      agencyFilter,
+      dryRun: input.dryRun === true,
+      scannedBatchCount: filteredBatches.length,
+      promotedPatientCount,
+      skippedPatientCount,
+      failureCount: failures.length,
+      failures,
+    };
+    const summaryPath =
+      filteredBatches[0] && input.dryRun !== true
+        ? await this.patientMemoryService.writeMigrationSummary(
+            filteredBatches[0].subsidiary.slug,
+            migrationId,
+            summary,
+          )
+        : null;
+
+    return {
+      ...summary,
+      summaryPath,
+    };
   }
 
   async parseBatch(batchId: string): Promise<BatchRecord> {
@@ -796,6 +1577,9 @@ export class BatchControlPlaneService {
         createPendingPatientRunState(batch, workItem),
       );
       await this.repository.saveBatch(batch);
+      if (this.options.deltaReuseEnabled) {
+        await this.seedPatientMemoryForWorkItems(batch, eligibleWorkItems, { overwrite: false });
+      }
 
       this.logger.info(
         {
@@ -816,7 +1600,7 @@ export class BatchControlPlaneService {
     }
   }
 
-  async startBatchRun(batchId: string): Promise<BatchRecord> {
+  async startBatchRun(batchId: string, options: RunControlOptions = {}): Promise<BatchRecord> {
     let batch = await this.mustGetBatch(batchId);
 
     if (this.activeBatchJobs.has(batchId)) {
@@ -829,13 +1613,32 @@ export class BatchControlPlaneService {
 
     const manifest = await this.repository.readManifest(batch);
     const workItems = filterEligibleWorkItems(await this.repository.readWorkItems(batch), manifest);
+    const deltaReuseEnabled = this.options.deltaReuseEnabled || options.reprojectOnly === true;
+    if (options.mode !== "full" && deltaReuseEnabled) {
+      await this.seedPatientMemoryForWorkItems(batch, workItems, { overwrite: false });
+    }
+
+    if (options.reprojectOnly) {
+      return this.reprojectBatchFromPatientMemory(batch, workItems);
+    }
+
     const plannedRuns = await Promise.all(
       workItems.map(async (workItem) => {
         const previous = batch.patientRuns.find((patientRun) => patientRun.workItemId === workItem.id);
-        const reuseExisting = await canReuseCompletedPatientRun(this.repository, previous);
+        const reuseBatchLocal =
+          options.mode !== "full" &&
+          this.options.deltaReuseEnabled === true &&
+          (await canReuseCompletedPatientRun(this.repository, previous));
+        const memoryBackedPatientRun =
+          !reuseBatchLocal && options.mode !== "full" && this.options.deltaReuseEnabled === true
+            ? await this.createMemoryBackedCompletedPatientRun(batch, workItem, previous)
+            : null;
+        const reuseExisting = reuseBatchLocal || memoryBackedPatientRun !== null;
         return {
           workItem,
-          patientRun: reuseExisting && previous ? previous : createPendingPatientRunState(batch, workItem, previous),
+          patientRun: reuseBatchLocal && previous
+            ? previous
+            : memoryBackedPatientRun ?? createPendingPatientRunState(batch, workItem, previous),
           reuseExisting,
         };
       }),
@@ -844,6 +1647,19 @@ export class BatchControlPlaneService {
     const workItemsToRun = plannedRuns
       .filter((plannedRun) => !plannedRun.reuseExisting)
       .map((plannedRun) => plannedRun.workItem);
+
+    this.logger.info(
+      {
+        batchId: batch.id,
+        subsidiaryId: batch.subsidiary.id,
+        mode: options.mode ?? "delta",
+        reprojectOnly: Boolean(options.reprojectOnly),
+        totalPatients: plannedRuns.length,
+        reusedPatients: plannedRuns.length - workItemsToRun.length,
+        patientsToProcess: workItemsToRun.length,
+      },
+      "batch delta run plan prepared",
+    );
 
     batch.patientRuns = plannedRuns.map((plannedRun) => plannedRun.patientRun);
     batch.status = "RUNNING";
@@ -954,9 +1770,10 @@ export class BatchControlPlaneService {
 
   async getPatientRuns(batchId: string): Promise<BatchRecord["patientRuns"]> {
     const batch = await this.mustGetBatch(batchId);
+    const context = this.createDashboardReadContext(batch);
     const patientRuns = await Promise.all(
       batch.patientRuns.map((patientRun) =>
-        this.resolvePreferredPatientRunSummary(batch, patientRun),
+        this.resolvePreferredPatientRunSummary(batch, patientRun, context),
       ),
     );
     return patientRuns.sort((left, right) => left.patientName.localeCompare(right.patientName));
@@ -999,7 +1816,80 @@ export class BatchControlPlaneService {
     };
   }
 
-  private async findPreferredPatientArtifactOverlay(
+  private createDashboardReadContext(batch: BatchRecord): DashboardReadContext {
+    return {
+      batch,
+      workItemsPromise: null,
+      workItemsByIdPromise: null,
+      patientRunsByWorkItemId: new Map(
+        batch.patientRuns.map((patientRun) => [patientRun.workItemId, patientRun]),
+      ),
+      preferredOverlaysByPatientId: new Map(),
+      resolvedSummariesByWorkItemId: new Map(),
+      patientRunDetailsByPath: new Map(),
+      jsonArtifactsByPath: new Map(),
+    };
+  }
+
+  private async getContextWorkItems(context: DashboardReadContext): Promise<PatientEpisodeWorkItem[]> {
+    context.workItemsPromise ??= this.repository.readWorkItems(context.batch);
+    return context.workItemsPromise;
+  }
+
+  private async getContextWorkItemsById(
+    context: DashboardReadContext,
+  ): Promise<Map<string, PatientEpisodeWorkItem>> {
+    context.workItemsByIdPromise ??= this.getContextWorkItems(context).then(
+      (workItems) => new Map(workItems.map((workItem) => [workItem.id, workItem])),
+    );
+    return context.workItemsByIdPromise;
+  }
+
+  private async getContextWorkItem(
+    context: DashboardReadContext,
+    patientId: string,
+  ): Promise<PatientEpisodeWorkItem | null> {
+    return (await this.getContextWorkItemsById(context)).get(patientId) ?? null;
+  }
+
+  private async readPatientRunWithContext(
+    context: DashboardReadContext | null,
+    bundlePath: string,
+  ): Promise<PatientRun> {
+    if (!context) {
+      return this.repository.readPatientRun(bundlePath);
+    }
+
+    const cacheKey = path.resolve(bundlePath);
+    let cached = context.patientRunDetailsByPath.get(cacheKey);
+    if (!cached) {
+      cached = this.repository.readPatientRun(bundlePath);
+      context.patientRunDetailsByPath.set(cacheKey, cached);
+    }
+    return cached;
+  }
+
+  private async readJsonIfExistsWithContext<T = unknown>(
+    context: DashboardReadContext | null,
+    filePath: string | null | undefined,
+  ): Promise<T | null> {
+    if (!filePath) {
+      return null;
+    }
+    if (!context) {
+      return this.repository.readJsonIfExists<T>(filePath);
+    }
+
+    const cacheKey = path.resolve(filePath);
+    let cached = context.jsonArtifactsByPath.get(cacheKey);
+    if (!cached) {
+      cached = this.repository.readJsonIfExists(filePath);
+      context.jsonArtifactsByPath.set(cacheKey, cached);
+    }
+    return (await cached) as T | null;
+  }
+
+  private async computePreferredPatientArtifactOverlay(
     batch: BatchRecord,
     patientId: string,
   ): Promise<PatientArtifactOverlay | null> {
@@ -1044,16 +1934,34 @@ export class BatchControlPlaneService {
     return candidates.sort((left, right) => right.modifiedAt.localeCompare(left.modifiedAt))[0] ?? null;
   }
 
-  private async resolvePreferredPatientRunSummary(
+  private async findPreferredPatientArtifactOverlay(
+    batch: BatchRecord,
+    patientId: string,
+    context: DashboardReadContext | null = null,
+  ): Promise<PatientArtifactOverlay | null> {
+    if (!context) {
+      return this.computePreferredPatientArtifactOverlay(batch, patientId);
+    }
+
+    let cached = context.preferredOverlaysByPatientId.get(patientId);
+    if (!cached) {
+      cached = this.computePreferredPatientArtifactOverlay(batch, patientId);
+      context.preferredOverlaysByPatientId.set(patientId, cached);
+    }
+    return cached;
+  }
+
+  private async computePreferredPatientRunSummary(
     batch: BatchRecord,
     summary: BatchRecord["patientRuns"][number],
+    context: DashboardReadContext | null,
   ): Promise<BatchRecord["patientRuns"][number]> {
-    const overlay = await this.findPreferredPatientArtifactOverlay(batch, summary.workItemId);
+    const overlay = await this.findPreferredPatientArtifactOverlay(batch, summary.workItemId, context);
     if (!overlay?.resultBundlePath) {
       return summary;
     }
 
-    const overlaidDetail = await this.repository.readPatientRun(overlay.resultBundlePath);
+    const overlaidDetail = await this.readPatientRunWithContext(context, overlay.resultBundlePath);
     const overlaidLogAvailable = overlay.logPath
       ? await this.repository.fileExists(overlay.logPath)
       : false;
@@ -1085,31 +1993,59 @@ export class BatchControlPlaneService {
     };
   }
 
-  async getBatchPatient(batchId: string, patientId: string): Promise<{
+  private async resolvePreferredPatientRunSummary(
+    batch: BatchRecord,
+    summary: BatchRecord["patientRuns"][number],
+    context: DashboardReadContext | null = null,
+  ): Promise<BatchRecord["patientRuns"][number]> {
+    if (!context) {
+      return this.computePreferredPatientRunSummary(batch, summary, null);
+    }
+
+    let cached = context.resolvedSummariesByWorkItemId.get(summary.workItemId);
+    if (!cached) {
+      cached = this.computePreferredPatientRunSummary(batch, summary, context);
+      context.resolvedSummariesByWorkItemId.set(summary.workItemId, cached);
+    }
+    return cached;
+  }
+
+  private async getBatchPatientFromContext(
+    context: DashboardReadContext,
+    patientId: string,
+  ): Promise<{
     batch: BatchRecord;
     summary: BatchRecord["patientRuns"][number];
     detail: PatientRun | null;
   } | null> {
-    const batch = await this.mustGetBatch(batchId);
-    const summary = batch.patientRuns.find((patientRun) => patientRun.workItemId === patientId);
+    const summary = context.patientRunsByWorkItemId.get(patientId);
     if (!summary) {
       return null;
     }
 
     let detail =
       summary.bundleAvailable && (await this.repository.fileExists(summary.resultBundlePath))
-        ? await this.repository.readPatientRun(summary.resultBundlePath)
+        ? await this.readPatientRunWithContext(context, summary.resultBundlePath)
         : null;
-    const resolvedSummary = await this.resolvePreferredPatientRunSummary(batch, summary);
+    const resolvedSummary = await this.resolvePreferredPatientRunSummary(context.batch, summary, context);
     if (resolvedSummary.resultBundlePath !== summary.resultBundlePath) {
-      detail = await this.repository.readPatientRun(resolvedSummary.resultBundlePath);
+      detail = await this.readPatientRunWithContext(context, resolvedSummary.resultBundlePath);
     }
 
     return {
-      batch,
+      batch: context.batch,
       summary: resolvedSummary,
       detail,
     };
+  }
+
+  async getBatchPatient(batchId: string, patientId: string): Promise<{
+    batch: BatchRecord;
+    summary: BatchRecord["patientRuns"][number];
+    detail: PatientRun | null;
+  } | null> {
+    const batch = await this.mustGetBatch(batchId);
+    return this.getBatchPatientFromContext(this.createDashboardReadContext(batch), patientId);
   }
 
   async getLatestPatientForSubsidiary(input: {
@@ -1231,15 +2167,14 @@ export class BatchControlPlaneService {
         return;
       }
 
-      const fileInfo = await this.repository.listFiles(path.dirname(filePath));
-      const matched = fileInfo.find((entry) => entry.path === filePath);
+      const fileStat = await stat(filePath);
       artifacts.push({
         kind,
         name: path.basename(filePath),
         path: filePath,
         exists: true,
-        modifiedAt: matched?.modifiedAt ?? null,
-        sizeBytes: matched?.sizeBytes ?? null,
+        modifiedAt: fileStat.isFile() ? fileStat.mtime.toISOString() : null,
+        sizeBytes: fileStat.isFile() ? fileStat.size : null,
       });
     };
 
@@ -1289,53 +2224,79 @@ export class BatchControlPlaneService {
     patientId: string,
   ): Promise<PatientEpisodeWorkItem | null> {
     const batch = await this.mustGetBatch(batchId);
-    const workItems = await this.repository.readWorkItems(batch);
-    return workItems.find((workItem) => workItem.id === patientId) ?? null;
+    return this.getContextWorkItem(this.createDashboardReadContext(batch), patientId);
   }
 
-  async getKnownPatientArtifacts(batchId: string, patientId: string): Promise<{
+  async getKnownPatientArtifacts(batchId: string, patientId: string): Promise<KnownPatientArtifacts | null> {
+    const batch = await this.mustGetBatch(batchId);
+    return this.getKnownPatientArtifactsFromContext(this.createDashboardReadContext(batch), patientId);
+  }
+
+  async getKnownPatientArtifactsForBatch(batchId: string): Promise<{
     batch: BatchRecord;
-    summary: BatchRecord["patientRuns"][number];
-    detail: PatientRun | null;
-    workItem: PatientEpisodeWorkItem | null;
-    patientArtifactsDirectory: string;
-    artifactPaths: {
-      codingInput: string;
-      documentText: string;
-      qaPrefetch: string | null;
-      patientQaReference: string;
-      qaDocumentSummary: string;
-      fieldMapSnapshot: string;
-      printedNoteChartValues: string | null;
-      printedNoteReview: string | null;
-    };
-    artifactContents: {
-      codingInput: unknown | null;
-      documentText: unknown | null;
-      qaPrefetch: unknown | null;
-      patientQaReference: unknown | null;
-      qaDocumentSummary: unknown | null;
-      fieldMapSnapshot: unknown | null;
-      printedNoteChartValues: unknown | null;
-      printedNoteReview: unknown | null;
-    };
+    patients: KnownPatientArtifacts[];
   } | null> {
-    const patient = await this.getBatchPatient(batchId, patientId);
+    const batch = await this.repository.getBatch(batchId);
+    if (!batch) {
+      return null;
+    }
+
+    const context = this.createDashboardReadContext(batch);
+    const resolvedSummaries = await Promise.all(
+      batch.patientRuns.map((patientRun) =>
+        this.resolvePreferredPatientRunSummary(batch, patientRun, context),
+      ),
+    );
+    const patients = await Promise.all(
+      resolvedSummaries
+        .sort((left, right) => left.patientName.localeCompare(right.patientName))
+        .map((patientRun) => this.getKnownPatientArtifactsFromContext(context, patientRun.workItemId)),
+    );
+
+    return {
+      batch,
+      patients: patients.filter((patient): patient is KnownPatientArtifacts => patient !== null),
+    };
+  }
+
+  private async getKnownPatientArtifactsFromContext(
+    context: DashboardReadContext,
+    patientId: string,
+  ): Promise<KnownPatientArtifacts | null> {
+    const patient = await this.getBatchPatientFromContext(context, patientId);
     if (!patient) {
       return null;
     }
 
-    const workItem = await this.getBatchWorkItem(batchId, patientId);
-    const overlay = await this.findPreferredPatientArtifactOverlay(patient.batch, patientId);
-    const patientArtifactsDirectory =
+    const workItem = await this.getContextWorkItem(context, patientId);
+    const overlay = await this.findPreferredPatientArtifactOverlay(patient.batch, patientId, context);
+    let patientArtifactsDirectory =
       overlay?.patientArtifactsDirectory ??
       path.join(patient.batch.storage.outputRoot, "patients", patientId);
-    const patientDashboardStatePath =
+    let patientDashboardStatePath =
       overlay?.patientDashboardStatePath ??
       path.join(patientArtifactsDirectory, "patient-dashboard-state.json");
-    const patientDashboardState = await this.repository.readJsonIfExists<PatientDashboardState>(
+    let patientDashboardState = await this.readJsonIfExistsWithContext<PatientDashboardState>(
+      context,
       patientDashboardStatePath,
     );
+
+    if (!patientDashboardState && workItem) {
+      const memoryDirectory = await this.findPatientMemoryCurrentDirectory(
+        patient.batch,
+        workItem,
+        patient.summary.matchResult,
+      );
+      if (memoryDirectory) {
+        patientArtifactsDirectory = memoryDirectory;
+        patientDashboardStatePath = path.join(patientArtifactsDirectory, "patient-dashboard-state.json");
+        patientDashboardState = await this.readJsonIfExistsWithContext<PatientDashboardState>(
+          context,
+          patientDashboardStatePath,
+        );
+      }
+    }
+
     if (patientDashboardState) {
       return {
         batch: patient.batch,
@@ -1356,6 +2317,19 @@ export class BatchControlPlaneService {
           printedNoteReview:
             patientDashboardState.artifactPaths.printedNoteReview ??
             path.join(patientArtifactsDirectory, "oasis-printed-note-review.json"),
+          oasisDomExtractedState: path.join(patientArtifactsDirectory, "oasis-dom-extracted-state.json"),
+          oasisDomAcquisitionState: path.join(patientArtifactsDirectory, "oasis-dom-acquisition-state.json"),
+          oasisDomComparison: path.join(patientArtifactsDirectory, "oasis-dom-vs-existing-extraction-comparison.json"),
+          sourceClinicalFactPack: path.join(patientArtifactsDirectory, "source-clinical-fact-pack.json"),
+          documentFactPack: path.join(patientArtifactsDirectory, "document-fact-pack.json"),
+          oasisClinicalFactPack: path.join(patientArtifactsDirectory, "oasis-clinical-fact-pack.json"),
+          referralExtractedFacts: path.join(patientArtifactsDirectory, "referral-document-processing", "extracted-facts.json"),
+          planOfCareReviewDraft: path.join(patientArtifactsDirectory, "plan-of-care-review-draft.json"),
+          generatedPlanOfCare: path.join(patientArtifactsDirectory, "generated-plan-of-care.json"),
+          visitNotesDiscovery: path.join(patientArtifactsDirectory, "visit-notes-discovery.json"),
+          visitNoteProcessingManifest: path.join(patientArtifactsDirectory, "visit-note-processing-manifest.json"),
+          visitNoteQaReview: path.join(patientArtifactsDirectory, "visit-note-qa-review.json"),
+          patientRunCacheSummary: path.join(patientArtifactsDirectory, "patient-run-cache-summary.json"),
         },
         artifactContents: {
           codingInput: patientDashboardState.artifactContents.codingInput ?? null,
@@ -1366,6 +2340,58 @@ export class BatchControlPlaneService {
           fieldMapSnapshot: patientDashboardState.artifactContents.fieldMapSnapshot ?? null,
           printedNoteChartValues: patientDashboardState.artifactContents.printedNoteChartValues ?? null,
           printedNoteReview: patientDashboardState.artifactContents.printedNoteReview ?? null,
+          oasisDomExtractedState: await this.readJsonIfExistsWithContext(
+            context,
+            path.join(patientArtifactsDirectory, "oasis-dom-extracted-state.json"),
+          ),
+          oasisDomAcquisitionState: await this.readJsonIfExistsWithContext(
+            context,
+            path.join(patientArtifactsDirectory, "oasis-dom-acquisition-state.json"),
+          ),
+          oasisDomComparison: await this.readJsonIfExistsWithContext(
+            context,
+            path.join(patientArtifactsDirectory, "oasis-dom-vs-existing-extraction-comparison.json"),
+          ),
+          sourceClinicalFactPack: await this.readJsonIfExistsWithContext(
+            context,
+            path.join(patientArtifactsDirectory, "source-clinical-fact-pack.json"),
+          ),
+          documentFactPack: await this.readJsonIfExistsWithContext(
+            context,
+            path.join(patientArtifactsDirectory, "document-fact-pack.json"),
+          ),
+          oasisClinicalFactPack: await this.readJsonIfExistsWithContext(
+            context,
+            path.join(patientArtifactsDirectory, "oasis-clinical-fact-pack.json"),
+          ),
+          referralExtractedFacts: await this.readJsonIfExistsWithContext(
+            context,
+            path.join(patientArtifactsDirectory, "referral-document-processing", "extracted-facts.json"),
+          ),
+          planOfCareReviewDraft: await this.readJsonIfExistsWithContext(
+            context,
+            path.join(patientArtifactsDirectory, "plan-of-care-review-draft.json"),
+          ),
+          generatedPlanOfCare: await this.readJsonIfExistsWithContext(
+            context,
+            path.join(patientArtifactsDirectory, "generated-plan-of-care.json"),
+          ),
+          visitNotesDiscovery: await this.readJsonIfExistsWithContext(
+            context,
+            path.join(patientArtifactsDirectory, "visit-notes-discovery.json"),
+          ),
+          visitNoteProcessingManifest: await this.readJsonIfExistsWithContext(
+            context,
+            path.join(patientArtifactsDirectory, "visit-note-processing-manifest.json"),
+          ),
+          visitNoteQaReview: await this.readJsonIfExistsWithContext(
+            context,
+            path.join(patientArtifactsDirectory, "visit-note-qa-review.json"),
+          ),
+          patientRunCacheSummary: await this.readJsonIfExistsWithContext(
+            context,
+            path.join(patientArtifactsDirectory, "patient-run-cache-summary.json"),
+          ),
         },
       };
     }
@@ -1428,6 +2454,19 @@ export class BatchControlPlaneService {
       ),
       printedNoteChartValues: path.join(patientArtifactsDirectory, "printed-note-chart-values.json"),
       printedNoteReview: path.join(patientArtifactsDirectory, "oasis-printed-note-review.json"),
+      oasisDomExtractedState: path.join(patientArtifactsDirectory, "oasis-dom-extracted-state.json"),
+      oasisDomAcquisitionState: path.join(patientArtifactsDirectory, "oasis-dom-acquisition-state.json"),
+      oasisDomComparison: path.join(patientArtifactsDirectory, "oasis-dom-vs-existing-extraction-comparison.json"),
+      sourceClinicalFactPack: path.join(patientArtifactsDirectory, "source-clinical-fact-pack.json"),
+      documentFactPack: path.join(patientArtifactsDirectory, "document-fact-pack.json"),
+      oasisClinicalFactPack: path.join(patientArtifactsDirectory, "oasis-clinical-fact-pack.json"),
+      referralExtractedFacts: path.join(patientArtifactsDirectory, "referral-document-processing", "extracted-facts.json"),
+      planOfCareReviewDraft: path.join(patientArtifactsDirectory, "plan-of-care-review-draft.json"),
+      generatedPlanOfCare: path.join(patientArtifactsDirectory, "generated-plan-of-care.json"),
+      visitNotesDiscovery: path.join(patientArtifactsDirectory, "visit-notes-discovery.json"),
+      visitNoteProcessingManifest: path.join(patientArtifactsDirectory, "visit-note-processing-manifest.json"),
+      visitNoteQaReview: path.join(patientArtifactsDirectory, "visit-note-qa-review.json"),
+      patientRunCacheSummary: path.join(patientArtifactsDirectory, "patient-run-cache-summary.json"),
     };
 
     return {
@@ -1438,20 +2477,33 @@ export class BatchControlPlaneService {
       patientArtifactsDirectory,
       artifactPaths,
       artifactContents: {
-        codingInput: await this.repository.readJsonIfExists(artifactPaths.codingInput),
-        documentText: await this.repository.readJsonIfExists(artifactPaths.documentText),
+        codingInput: await this.readJsonIfExistsWithContext(context, artifactPaths.codingInput),
+        documentText: await this.readJsonIfExistsWithContext(context, artifactPaths.documentText),
         qaPrefetch: artifactPaths.qaPrefetch
-          ? await this.repository.readJsonIfExists(artifactPaths.qaPrefetch)
+          ? await this.readJsonIfExistsWithContext(context, artifactPaths.qaPrefetch)
           : null,
-        patientQaReference: await this.repository.readJsonIfExists(artifactPaths.patientQaReference),
-        qaDocumentSummary: await this.repository.readJsonIfExists(artifactPaths.qaDocumentSummary),
-        fieldMapSnapshot: await this.repository.readJsonIfExists(artifactPaths.fieldMapSnapshot),
+        patientQaReference: await this.readJsonIfExistsWithContext(context, artifactPaths.patientQaReference),
+        qaDocumentSummary: await this.readJsonIfExistsWithContext(context, artifactPaths.qaDocumentSummary),
+        fieldMapSnapshot: await this.readJsonIfExistsWithContext(context, artifactPaths.fieldMapSnapshot),
         printedNoteChartValues: artifactPaths.printedNoteChartValues
-          ? await this.repository.readJsonIfExists(artifactPaths.printedNoteChartValues)
+          ? await this.readJsonIfExistsWithContext(context, artifactPaths.printedNoteChartValues)
           : null,
         printedNoteReview: artifactPaths.printedNoteReview
-          ? await this.repository.readJsonIfExists(artifactPaths.printedNoteReview)
+          ? await this.readJsonIfExistsWithContext(context, artifactPaths.printedNoteReview)
           : null,
+        oasisDomExtractedState: await this.readJsonIfExistsWithContext(context, artifactPaths.oasisDomExtractedState),
+        oasisDomAcquisitionState: await this.readJsonIfExistsWithContext(context, artifactPaths.oasisDomAcquisitionState),
+        oasisDomComparison: await this.readJsonIfExistsWithContext(context, artifactPaths.oasisDomComparison),
+        sourceClinicalFactPack: await this.readJsonIfExistsWithContext(context, artifactPaths.sourceClinicalFactPack),
+        documentFactPack: await this.readJsonIfExistsWithContext(context, artifactPaths.documentFactPack),
+        oasisClinicalFactPack: await this.readJsonIfExistsWithContext(context, artifactPaths.oasisClinicalFactPack),
+        referralExtractedFacts: await this.readJsonIfExistsWithContext(context, artifactPaths.referralExtractedFacts),
+        planOfCareReviewDraft: await this.readJsonIfExistsWithContext(context, artifactPaths.planOfCareReviewDraft),
+        generatedPlanOfCare: await this.readJsonIfExistsWithContext(context, artifactPaths.generatedPlanOfCare),
+        visitNotesDiscovery: await this.readJsonIfExistsWithContext(context, artifactPaths.visitNotesDiscovery),
+        visitNoteProcessingManifest: await this.readJsonIfExistsWithContext(context, artifactPaths.visitNoteProcessingManifest),
+        visitNoteQaReview: await this.readJsonIfExistsWithContext(context, artifactPaths.visitNoteQaReview),
+        patientRunCacheSummary: await this.readJsonIfExistsWithContext(context, artifactPaths.patientRunCacheSummary),
       },
     };
   }
@@ -1459,18 +2511,38 @@ export class BatchControlPlaneService {
   private async derivePatientDocumentationSignal(
     batch: BatchRecord,
     summary: BatchRecord["patientRuns"][number],
+    context: DashboardReadContext | null = null,
   ): Promise<{
     missingReferralDocumentation: boolean;
     missingReferralFieldCount: number;
+    daysLeftBeforeOasisDueDate: number | null;
+    daysSinceSoc: number | null;
+    pipelineStage: DashboardPatientRecord["pipelineStage"];
+    oasisStage: DashboardPatientRecord["oasisStage"];
+    primaryBlocker: string | null;
+    blockerReasons: string[];
+    oasisQaIssues: ConciseQaIssue[];
+    topOasisIssue: ConciseQaIssue | null;
+    oasisInternalMismatchCount: number;
+    emptyOasisInputCount: number;
+    visitNoteQaIssues: ConciseQaIssue[];
+    topVisitNoteIssue: ConciseQaIssue | null;
+    visitNoteMismatchCount: number;
+    visitNoteActiveQaCount: number;
+    visitNoteReviewStatus: DashboardPatientRecord["visitNoteReviewStatus"];
+    visitNotesDomStatus: string | null;
+    referralAvailable: boolean;
+    referralMedicationCount: number;
   }> {
-    const overlay = await this.findPreferredPatientArtifactOverlay(batch, summary.workItemId);
+    const overlay = await this.findPreferredPatientArtifactOverlay(batch, summary.workItemId, context);
     const patientArtifactsDirectory =
       overlay?.patientArtifactsDirectory ??
       path.join(batch.storage.outputRoot, "patients", summary.workItemId);
     const patientDashboardStatePath =
       overlay?.patientDashboardStatePath ??
       path.join(patientArtifactsDirectory, "patient-dashboard-state.json");
-    const patientDashboardState = await this.repository.readJsonIfExists<PatientDashboardState>(
+    const patientDashboardState = await this.readJsonIfExistsWithContext<PatientDashboardState>(
+      context,
       patientDashboardStatePath,
     );
 
@@ -1484,31 +2556,127 @@ export class BatchControlPlaneService {
           fieldMapSnapshot: patientDashboardState.artifactContents.fieldMapSnapshot ?? null,
           printedNoteChartValues: patientDashboardState.artifactContents.printedNoteChartValues ?? null,
           printedNoteReview: patientDashboardState.artifactContents.printedNoteReview ?? null,
+          oasisDomExtractedState: await this.readJsonIfExistsWithContext(
+            context,
+            path.join(patientArtifactsDirectory, "oasis-dom-extracted-state.json"),
+          ),
+          oasisDomAcquisitionState: await this.readJsonIfExistsWithContext(
+            context,
+            path.join(patientArtifactsDirectory, "oasis-dom-acquisition-state.json"),
+          ),
+          oasisDomComparison: await this.readJsonIfExistsWithContext(
+            context,
+            path.join(patientArtifactsDirectory, "oasis-dom-vs-existing-extraction-comparison.json"),
+          ),
+          visitNotesDiscovery: await this.readJsonIfExistsWithContext(
+            context,
+            path.join(patientArtifactsDirectory, "visit-notes-discovery.json"),
+          ),
+          visitNoteProcessingManifest: await this.readJsonIfExistsWithContext(
+            context,
+            path.join(patientArtifactsDirectory, "visit-note-processing-manifest.json"),
+          ),
+          visitNoteQaReview: await this.readJsonIfExistsWithContext(
+            context,
+            path.join(patientArtifactsDirectory, "visit-note-qa-review.json"),
+          ),
+          sourceClinicalFactPack: await this.readJsonIfExistsWithContext(
+            context,
+            path.join(patientArtifactsDirectory, "source-clinical-fact-pack.json"),
+          ),
+          referralExtractedFacts: await this.readJsonIfExistsWithContext(
+            context,
+            path.join(patientArtifactsDirectory, "referral-document-processing", "extracted-facts.json"),
+          ),
+          documentFactPack: await this.readJsonIfExistsWithContext(
+            context,
+            path.join(patientArtifactsDirectory, "document-fact-pack.json"),
+          ),
+          planOfCareReviewDraft: await this.readJsonIfExistsWithContext(
+            context,
+            path.join(patientArtifactsDirectory, "plan-of-care-review-draft.json"),
+          ),
+          generatedPlanOfCare: await this.readJsonIfExistsWithContext(
+            context,
+            path.join(patientArtifactsDirectory, "generated-plan-of-care.json"),
+          ),
         }
       : {
-          codingInput: await this.repository.readJsonIfExists(
+          codingInput: await this.readJsonIfExistsWithContext(
+            context,
             path.join(patientArtifactsDirectory, "coding-input.json"),
           ),
-          documentText: await this.repository.readJsonIfExists(
+          documentText: await this.readJsonIfExistsWithContext(
+            context,
             path.join(patientArtifactsDirectory, "document-text.json"),
           ),
-          qaPrefetch: await this.repository.readJsonIfExists(
+          qaPrefetch: await this.readJsonIfExistsWithContext(
+            context,
             path.join(patientArtifactsDirectory, "qa-prefetch-result.json"),
           ),
-          patientQaReference: await this.repository.readJsonIfExists(
+          patientQaReference: await this.readJsonIfExistsWithContext(
+            context,
             path.join(patientArtifactsDirectory, "referral-document-processing", "patient-qa-reference.json"),
           ),
-          qaDocumentSummary: await this.repository.readJsonIfExists(
+          qaDocumentSummary: await this.readJsonIfExistsWithContext(
+            context,
             path.join(patientArtifactsDirectory, "referral-document-processing", "qa-document-summary.json"),
           ),
-          fieldMapSnapshot: await this.repository.readJsonIfExists(
+          fieldMapSnapshot: await this.readJsonIfExistsWithContext(
+            context,
             path.join(patientArtifactsDirectory, "referral-document-processing", "field-map-snapshot.json"),
           ),
-          printedNoteChartValues: await this.repository.readJsonIfExists(
+          printedNoteChartValues: await this.readJsonIfExistsWithContext(
+            context,
             path.join(patientArtifactsDirectory, "printed-note-chart-values.json"),
           ),
-          printedNoteReview: await this.repository.readJsonIfExists(
+          printedNoteReview: await this.readJsonIfExistsWithContext(
+            context,
             path.join(patientArtifactsDirectory, "oasis-printed-note-review.json"),
+          ),
+          oasisDomExtractedState: await this.readJsonIfExistsWithContext(
+            context,
+            path.join(patientArtifactsDirectory, "oasis-dom-extracted-state.json"),
+          ),
+          oasisDomAcquisitionState: await this.readJsonIfExistsWithContext(
+            context,
+            path.join(patientArtifactsDirectory, "oasis-dom-acquisition-state.json"),
+          ),
+          oasisDomComparison: await this.readJsonIfExistsWithContext(
+            context,
+            path.join(patientArtifactsDirectory, "oasis-dom-vs-existing-extraction-comparison.json"),
+          ),
+          visitNotesDiscovery: await this.readJsonIfExistsWithContext(
+            context,
+            path.join(patientArtifactsDirectory, "visit-notes-discovery.json"),
+          ),
+          visitNoteProcessingManifest: await this.readJsonIfExistsWithContext(
+            context,
+            path.join(patientArtifactsDirectory, "visit-note-processing-manifest.json"),
+          ),
+          visitNoteQaReview: await this.readJsonIfExistsWithContext(
+            context,
+            path.join(patientArtifactsDirectory, "visit-note-qa-review.json"),
+          ),
+          sourceClinicalFactPack: await this.readJsonIfExistsWithContext(
+            context,
+            path.join(patientArtifactsDirectory, "source-clinical-fact-pack.json"),
+          ),
+          referralExtractedFacts: await this.readJsonIfExistsWithContext(
+            context,
+            path.join(patientArtifactsDirectory, "referral-document-processing", "extracted-facts.json"),
+          ),
+          documentFactPack: await this.readJsonIfExistsWithContext(
+            context,
+            path.join(patientArtifactsDirectory, "document-fact-pack.json"),
+          ),
+          planOfCareReviewDraft: await this.readJsonIfExistsWithContext(
+            context,
+            path.join(patientArtifactsDirectory, "plan-of-care-review-draft.json"),
+          ),
+          generatedPlanOfCare: await this.readJsonIfExistsWithContext(
+            context,
+            path.join(patientArtifactsDirectory, "generated-plan-of-care.json"),
           ),
         };
 
@@ -1519,12 +2687,78 @@ export class BatchControlPlaneService {
       artifactContents,
     });
     const referralCoverageAvailable = dashboardSummary.referralQa.referralDataAvailable;
+    const oasisTriage = deriveOasisDomIssues({
+      oasisDomExtractedState: artifactContents.oasisDomExtractedState,
+      oasisDomAcquisitionState: artifactContents.oasisDomAcquisitionState,
+      oasisDomComparison: artifactContents.oasisDomComparison,
+      oasisQaSummary: patientDashboardState?.oasisQaSummary ?? summary.oasisQaSummary,
+    });
+    const visitNoteTriage = deriveVisitNoteIssues({
+      visitNoteQaReview: artifactContents.visitNoteQaReview,
+      visitNotesDiscovery: artifactContents.visitNotesDiscovery,
+      visitNoteProcessingManifest: artifactContents.visitNoteProcessingManifest,
+    });
+    const portalLookupContext = extractPortalPatientLookupContext(summary.matchResult);
+    const daysLeftBeforeOasisDueDate =
+      portalLookupContext?.daysLeftBeforeOasisDueDate ??
+      dashboardSummary.daysLeftBeforeOasisDueDate ??
+      patientDashboardState?.workItem?.timingMetadata?.daysLeftBeforeOasisDueDate ??
+      patientDashboardState?.workItem?.timingMetadata?.daysLeft ??
+      summary.oasisQaSummary.daysLeft ??
+      null;
+    const daysSinceSoc =
+      portalLookupContext?.daysInEpisode ??
+      deriveDaysSinceSoc(
+        patientDashboardState?.workItem?.episodeContext.socDate ??
+        portalLookupContext?.socDate ??
+        dashboardSummary.referralQa.patientContext?.socDate ??
+        null,
+      );
+    const oasisStage = deriveOasisStage({
+      queueStatus: "eligible",
+      daysLeft: daysLeftBeforeOasisDueDate,
+      hasOasisDom: oasisTriage.hasOasisDom,
+      oasisQaIssueCount: oasisTriage.issues.length,
+      oasisValidatedForPlanOfCare: dashboardSummary.oasisValidatedForPlanOfCare,
+    });
+    const pipelineStage = deriveDashboardPipelineStage({
+      queueStatus: "eligible",
+      processingStatus: summary.processingStatus,
+      missingReferralDocumentation: !referralCoverageAvailable,
+      planOfCareAvailable: dashboardSummary.planOfCareReview.available,
+      workItem: patientDashboardState?.workItem ?? null,
+      oasisStage,
+    });
+    const allIssues = [...oasisTriage.issues, ...visitNoteTriage.issues].sort(issueSort);
+    const blockerReasons = allIssues.slice(0, 4).map((issue) => issue.problemSummary);
+    const primaryBlocker = blockerReasons[0] ?? null;
 
     return {
       missingReferralDocumentation: !referralCoverageAvailable,
       missingReferralFieldCount: referralCoverageAvailable
         ? 0
         : dashboardSummary.dashboardReview.missingInReferralCount,
+      daysLeftBeforeOasisDueDate,
+      daysSinceSoc,
+      pipelineStage,
+      oasisStage,
+      primaryBlocker,
+      blockerReasons,
+      oasisQaIssues: oasisTriage.issues,
+      topOasisIssue: topIssue(oasisTriage.issues),
+      oasisInternalMismatchCount: oasisTriage.mismatchCount,
+      emptyOasisInputCount: oasisTriage.emptyOasisInputCount,
+      visitNoteQaIssues: visitNoteTriage.issues,
+      topVisitNoteIssue: topIssue(visitNoteTriage.issues),
+      visitNoteMismatchCount: visitNoteTriage.mismatchCount,
+      visitNoteActiveQaCount: visitNoteTriage.activeQaCount,
+      visitNoteReviewStatus: visitNoteTriage.reviewStatus,
+      visitNotesDomStatus: visitNoteTriage.domStatus,
+      referralAvailable: referralCoverageAvailable,
+      referralMedicationCount: canCountReferralStructuredFacts(artifactContents)
+        ? countReferralMedications(artifactContents.sourceClinicalFactPack) ||
+          countReferralMedications(artifactContents.documentFactPack)
+        : 0,
     };
   }
 
@@ -1553,6 +2787,7 @@ export class BatchControlPlaneService {
     }
 
     const outputRoot = batch.storage.outputRoot;
+    const context = this.createDashboardReadContext(batch);
     const workbookSource = await this.repository.readJsonIfExists<WorkbookSource>(
       path.join(outputRoot, "workbook-source.json"),
     );
@@ -1562,22 +2797,63 @@ export class BatchControlPlaneService {
     const patientQueue = await this.repository.readJsonIfExists<PatientQueueArtifact>(
       path.join(outputRoot, "patient-queue.json"),
     );
+    const reviewerStatuses = parseDashboardReviewerStatusArtifact(
+      await this.repository.readJsonIfExists(reviewerStatusPathForBatch(batch)),
+    )?.statuses ?? {};
     const queueEntries = patientQueue?.entries ?? [];
     const resolvedPatientRuns = await Promise.all(
       batch.patientRuns.map((patientRun) =>
-        this.resolvePreferredPatientRunSummary(batch, patientRun),
+        this.resolvePreferredPatientRunSummary(batch, patientRun, context),
       ),
     );
+    const patientRunsByWorkItemId = new Map(
+      resolvedPatientRuns.map((patientRun) => [patientRun.workItemId, patientRun]),
+    );
     const patientRecords: DashboardPatientRecord[] = await Promise.all(queueEntries.map(async (queueEntry) => {
-      const patientRun = resolvedPatientRuns.find((candidate) => candidate.workItemId === queueEntry.workItemId);
+      const patientRun = patientRunsByWorkItemId.get(queueEntry.workItemId);
+      const portalLookupContext = extractPortalPatientLookupContext(patientRun?.matchResult);
+      const queueStatus = derivePortalExcludedQueueStatus({
+        queueStatus: queueEntry.status,
+        patientRun,
+      });
       const documentationSignal = patientRun
-        ? await this.derivePatientDocumentationSignal(batch, patientRun)
+        ? await this.derivePatientDocumentationSignal(batch, patientRun, context)
         : {
             missingReferralDocumentation: false,
             missingReferralFieldCount: 0,
+            daysLeftBeforeOasisDueDate: null,
+            daysSinceSoc: deriveDaysSinceSoc(queueEntry.socDate),
+            pipelineStage: queueStatus === "skipped_pending" ? "pending" as const : "documentation" as const,
+            oasisStage: queueStatus === "skipped_pending" ? "pending_patient" as const : "not_applicable" as const,
+            primaryBlocker: queueStatus === "skipped_pending" ? "Pending workbook status" : null,
+            blockerReasons: queueStatus === "skipped_pending" ? ["Pending workbook status"] : [],
+            oasisQaIssues: [],
+            topOasisIssue: null,
+            oasisInternalMismatchCount: 0,
+            emptyOasisInputCount: 0,
+            visitNoteQaIssues: [],
+            topVisitNoteIssue: null,
+            visitNoteMismatchCount: 0,
+            visitNoteActiveQaCount: 0,
+            visitNoteReviewStatus: "not_applicable" as const,
+            visitNotesDomStatus: null,
+            referralAvailable: false,
+            referralMedicationCount: 0,
           };
+      const reviewerStatus = reviewerStatuses[queueEntry.workItemId] ?? null;
+      const effectiveReviewerStatus = deriveEffectiveDashboardReviewerStatus({
+        workItemId: queueEntry.workItemId,
+        reviewerStatus,
+        patientRun,
+        documentationSignal,
+      });
+      const resolvedQueueEntry = {
+        ...queueEntry,
+        status: queueStatus,
+        socDate: queueEntry.socDate ?? portalLookupContext?.socDate ?? null,
+      };
       return {
-        queueEntry,
+        queueEntry: resolvedQueueEntry,
         runId: patientRun ? batch.id : null,
         patientId: patientRun?.workItemId ?? null,
         processingStatus: patientRun?.processingStatus ?? null,
@@ -1586,6 +2862,27 @@ export class BatchControlPlaneService {
         qaOutcome: patientRun?.qaOutcome ?? null,
         missingReferralDocumentation: documentationSignal.missingReferralDocumentation,
         missingReferralFieldCount: documentationSignal.missingReferralFieldCount,
+        daysLeftBeforeOasisDueDate: documentationSignal.daysLeftBeforeOasisDueDate,
+        daysSinceSoc: documentationSignal.daysSinceSoc,
+        pipelineStage: queueStatus === "skipped_pending" ? "pending" : documentationSignal.pipelineStage,
+        oasisStage: queueStatus === "skipped_pending" ? "pending_patient" : documentationSignal.oasisStage,
+        primaryBlocker: documentationSignal.primaryBlocker,
+        blockerReasons: documentationSignal.blockerReasons,
+        oasisQaIssues: documentationSignal.oasisQaIssues,
+        topOasisIssue: documentationSignal.topOasisIssue,
+        oasisInternalMismatchCount: documentationSignal.oasisInternalMismatchCount,
+        emptyOasisInputCount: documentationSignal.emptyOasisInputCount,
+        visitNoteQaIssues: documentationSignal.visitNoteQaIssues,
+        topVisitNoteIssue: documentationSignal.topVisitNoteIssue,
+        visitNoteMismatchCount: documentationSignal.visitNoteMismatchCount,
+        visitNoteActiveQaCount: documentationSignal.visitNoteActiveQaCount,
+        visitNoteReviewStatus: documentationSignal.visitNoteReviewStatus,
+        visitNotesDomStatus: documentationSignal.visitNotesDomStatus,
+        referralAvailable: documentationSignal.referralAvailable,
+        referralMedicationCount: documentationSignal.referralMedicationCount,
+        reviewerStatus: effectiveReviewerStatus?.status ?? null,
+        reviewerStatusUpdatedAt: effectiveReviewerStatus?.updatedAt ?? null,
+        reviewerStatusUpdatedBy: effectiveReviewerStatus?.updatedBy ?? null,
       };
     }));
     const resolvedWorkbookSource: WorkbookSource = workbookSource
@@ -1644,6 +2941,54 @@ export class BatchControlPlaneService {
       patientRecords,
       lastUpdatedAt: batch.updatedAt,
     };
+  }
+
+  async updateAgencyDashboardReviewerStatus(input: {
+    agencyId: string;
+    workItemId: string;
+    status: DashboardReviewerStatus;
+    updatedBy?: string | null;
+  }): Promise<DashboardReviewerStatusEntry> {
+    const agencyRecord = await this.subsidiaryConfigService.getSubsidiaryConfig(input.agencyId);
+    const batches = (await this.repository.listBatches())
+      .filter((batch) => batchBelongsToSubsidiary(batch, agencyRecord))
+      .sort((left, right) => right.createdAt.localeCompare(left.createdAt));
+    const batch = batches.find((candidate) => candidate.schedule.active) ?? batches[0] ?? null;
+    if (!batch) {
+      throw new Error(`No dashboard batch available for agency: ${input.agencyId}`);
+    }
+
+    const patientQueue = await this.repository.readJsonIfExists<PatientQueueArtifact>(
+      path.join(batch.storage.outputRoot, "patient-queue.json"),
+    );
+    const queueEntry = patientQueue?.entries.find((entry) => entry.workItemId === input.workItemId);
+    if (!queueEntry) {
+      throw new Error(`Patient is not in the active agency dashboard queue: ${input.workItemId}`);
+    }
+
+    const artifactPath = reviewerStatusPathForBatch(batch);
+    const now = new Date().toISOString();
+    const existing = parseDashboardReviewerStatusArtifact(
+      await this.repository.readJsonIfExists(artifactPath),
+    );
+    const entry: DashboardReviewerStatusEntry = {
+      workItemId: input.workItemId,
+      status: input.status,
+      updatedAt: now,
+      updatedBy: input.updatedBy?.trim() || null,
+    };
+    const artifact: DashboardReviewerStatusArtifact = {
+      schemaVersion: "dashboard-reviewer-statuses.v1",
+      generatedAt: now,
+      agencyId: agencyRecord.id,
+      batchId: batch.id,
+      statuses: {
+        ...(existing?.statuses ?? {}),
+        [input.workItemId]: entry,
+      },
+    };
+    await writeJsonFile(artifactPath, artifact);
+    return entry;
   }
 
   async retryPatientRun(runId: string): Promise<{
@@ -1733,6 +3078,275 @@ export class BatchControlPlaneService {
     }
   }
 
+  private async seedPatientMemoryForWorkItems(
+    batch: BatchRecord,
+    workItems: PatientEpisodeWorkItem[],
+    options: { overwrite: boolean },
+  ): Promise<void> {
+    for (const workItem of workItems) {
+      try {
+        const previous = batch.patientRuns.find((patientRun) => patientRun.workItemId === workItem.id);
+        const resolution = await this.patientMemoryService.resolvePatientMemory({
+          agencySlug: batch.subsidiary.slug,
+          workItem,
+          matchResult: previous?.matchResult ?? null,
+        });
+        if (!resolution.record.current) {
+          continue;
+        }
+
+        await this.patientMemoryService.seedPatientArtifacts({
+          agencySlug: batch.subsidiary.slug,
+          patientMemoryId: resolution.patientMemoryId,
+          targetPatientArtifactsDirectory: path.join(batch.storage.outputRoot, "patients", workItem.id),
+          overwrite: options.overwrite,
+        });
+      } catch (error) {
+        this.logger.warn(
+          {
+            batchId: batch.id,
+            workItemId: workItem.id,
+            errorMessage: error instanceof Error ? error.message : "Unknown patient memory seed error.",
+          },
+          "patient memory seed skipped",
+        );
+      }
+    }
+  }
+
+  private async createMemoryBackedCompletedPatientRun(
+    batch: BatchRecord,
+    workItem: PatientEpisodeWorkItem,
+    previous?: BatchRecord["patientRuns"][number],
+  ): Promise<BatchRecord["patientRuns"][number] | null> {
+    const patientDashboardStatePath = path.join(
+      batch.storage.outputRoot,
+      "patients",
+      workItem.id,
+      "patient-dashboard-state.json",
+    );
+    const patientDashboardState =
+      await this.repository.readJsonIfExists<PatientDashboardState>(patientDashboardStatePath);
+
+    if (!patientDashboardState || patientDashboardState.processingStatus !== "COMPLETE") {
+      return null;
+    }
+
+    const patientRunCacheSummary = await this.repository.readJsonIfExists<PatientRunCacheSummary>(
+      path.join(batch.storage.outputRoot, "patients", workItem.id, "patient-run-cache-summary.json"),
+    );
+    const now = new Date().toISOString();
+    const runId = createRunId(batch.id, workItem.id);
+    const fallbackResultBundlePath = path.join(batch.storage.patientResultsDirectory, `${workItem.id}.json`);
+    const resultBundlePath = patientDashboardState.resultBundlePath ?? fallbackResultBundlePath;
+    const bundleAvailable =
+      Boolean(patientDashboardState.resultBundlePath) &&
+      (await this.repository.fileExists(patientDashboardState.resultBundlePath as string));
+    const logAvailable =
+      Boolean(patientDashboardState.logPath) &&
+      (await this.repository.fileExists(patientDashboardState.logPath as string));
+
+    this.logger.info(
+      {
+        batchId: batch.id,
+        workItemId: workItem.id,
+        patientName: patientDashboardState.patientName || workItem.patientIdentity.displayName,
+        reusedFromPatientMemory: true,
+        priorRuntimeMs: patientRunCacheSummary?.totalRuntimeMs ?? null,
+        estimatedSavedTimeMs: patientRunCacheSummary?.totalRuntimeMs ?? null,
+        reuseSummary: patientRunCacheSummary?.reuseSummary ?? null,
+      },
+      "patient run skipped because completed memory-backed artifacts were reused",
+    );
+
+    return {
+      runId,
+      subsidiaryId: workItem.subsidiaryId ?? batch.subsidiary.id,
+      workItemId: workItem.id,
+      patientName: patientDashboardState.patientName || workItem.patientIdentity.displayName,
+      processingStatus: "COMPLETE",
+      executionStep: "COMPLETE",
+      progressPercent: 100,
+      startedAt: patientDashboardState.startedAt ?? patientDashboardState.generatedAt,
+      completedAt: patientDashboardState.completedAt ?? patientDashboardState.generatedAt,
+      lastUpdatedAt: now,
+      matchResult: patientDashboardState.matchResult,
+      qaOutcome: patientDashboardState.qaOutcome,
+      oasisQaSummary: patientDashboardState.oasisQaSummary,
+      artifactCount: patientDashboardState.artifactCount,
+      hasFindings: patientDashboardState.hasFindings,
+      bundleAvailable,
+      logPath: patientDashboardState.logPath,
+      logAvailable,
+      retryEligible: false,
+      errorSummary: patientDashboardState.errorSummary,
+      resultBundlePath,
+      evidenceDirectory: path.join(batch.storage.evidenceDirectory, workItem.id),
+      tracePath: null,
+      screenshotPaths: [],
+      downloadPaths: [],
+      workflowRuns: patientDashboardState.workflowRuns.length > 0
+        ? patientDashboardState.workflowRuns
+        : createDefaultWorkflowRuns(runId, now),
+      lastAttemptAt: patientDashboardState.completedAt ?? patientDashboardState.lastUpdatedAt,
+      attemptCount: Math.max(previous?.attemptCount ?? 0, 1),
+    };
+  }
+
+  private async findPatientMemoryCurrentDirectory(
+    batch: BatchRecord,
+    workItem: PatientEpisodeWorkItem,
+    matchResult: PatientMatchResult | null,
+  ): Promise<string | null> {
+    try {
+      const resolution = await this.patientMemoryService.resolvePatientMemory({
+        agencySlug: batch.subsidiary.slug,
+        workItem,
+        matchResult,
+      });
+      const dashboardArtifact =
+        resolution.record.current?.artifacts["patient-dashboard-state.json"] ??
+        resolution.index.records[resolution.patientMemoryId]?.current?.artifacts["patient-dashboard-state.json"] ??
+        null;
+      if (!dashboardArtifact || !(await this.repository.fileExists(dashboardArtifact.currentPath))) {
+        return null;
+      }
+
+      return path.dirname(dashboardArtifact.currentPath);
+    } catch (error) {
+      this.logger.warn(
+        {
+          batchId: batch.id,
+          workItemId: workItem.id,
+          errorMessage: error instanceof Error ? error.message : "Unknown patient memory lookup error.",
+        },
+        "patient memory dashboard fallback skipped",
+      );
+      return null;
+    }
+  }
+
+  private async reprojectBatchFromPatientMemory(
+    batch: BatchRecord,
+    workItems: PatientEpisodeWorkItem[],
+  ): Promise<BatchRecord> {
+    const now = new Date().toISOString();
+    batch.patientRuns = workItems.map((workItem) => {
+      const previous = batch.patientRuns.find((patientRun) => patientRun.workItemId === workItem.id);
+      return previous ?? createPendingPatientRunState(batch, workItem);
+    });
+    batch.status = "COMPLETED";
+    batch.updatedAt = now;
+    batch.run.requestedAt = batch.run.requestedAt ?? now;
+    batch.run.completedAt = now;
+    batch.run.patientRunCount = countProcessedPatientRuns(batch);
+    batch.run.lastError = deriveBatchErrorSummary(batch);
+    batch.schedule.lastRunAt = now;
+    batch.schedule.nextScheduledRunAt =
+      batch.schedule.active && batch.schedule.rerunEnabled
+        ? calculateNextScheduledRunAt(
+            now,
+            batch.schedule.timezone,
+            batch.schedule.localTimes,
+            batch.schedule.intervalHours,
+          )
+        : null;
+    await this.repository.saveBatch(batch);
+    await this.syncScheduledRunForBatch(batch);
+    this.logger.info(
+      {
+        batchId: batch.id,
+        subsidiaryId: batch.subsidiary.id,
+        workItems: workItems.length,
+      },
+      "batch dashboard reprojected from patient memory",
+    );
+    return batch;
+  }
+
+  private async promotePatientRunToMemory(batch: BatchRecord, patientRun: PatientRun): Promise<void> {
+    if (this.options.patientMemoryWriteEnabled === false) {
+      return;
+    }
+
+    if (!patientRun.completedAt || !patientRun.bundleAvailable) {
+      return;
+    }
+
+    const workItems = await this.repository.readWorkItems(batch);
+    const workItem = workItems.find((candidate) => candidate.id === patientRun.workItemId);
+    if (!workItem) {
+      return;
+    }
+
+    const patientArtifactsDirectory = path.join(batch.storage.outputRoot, "patients", patientRun.workItemId);
+    if (!(await this.repository.fileExists(patientArtifactsDirectory))) {
+      return;
+    }
+
+    const resolution = await this.patientMemoryService.resolvePatientMemory({
+      agencySlug: batch.subsidiary.slug,
+      workItem,
+      matchResult: patientRun.matchResult,
+    });
+    await this.patientMemoryService.promoteCurrentArtifacts({
+      agencySlug: batch.subsidiary.slug,
+      patientMemoryId: resolution.patientMemoryId,
+      sourcePatientArtifactsDirectory: patientArtifactsDirectory,
+      workItem,
+      matchResult: patientRun.matchResult,
+      batchId: batch.id,
+      runId: patientRun.runId,
+    });
+  }
+
+  private async promoteBatchPatientsToMemory(batch: BatchRecord): Promise<string[]> {
+    if (this.options.patientMemoryWriteEnabled === false) {
+      return ["patient-memory-write-disabled"];
+    }
+
+    const failures: string[] = [];
+    const workItems = await this.repository.readWorkItems(batch).catch(() => []);
+    for (const patientRun of batch.patientRuns) {
+      try {
+        const workItem = workItems.find((candidate) => candidate.id === patientRun.workItemId);
+        if (!workItem) {
+          continue;
+        }
+        const patientArtifactsDirectory = path.join(batch.storage.outputRoot, "patients", patientRun.workItemId);
+        if (!(await this.repository.fileExists(patientArtifactsDirectory))) {
+          continue;
+        }
+        const resolution = await this.patientMemoryService.resolvePatientMemory({
+          agencySlug: batch.subsidiary.slug,
+          workItem,
+          matchResult: patientRun.matchResult,
+        });
+        await this.patientMemoryService.promoteCurrentArtifacts({
+          agencySlug: batch.subsidiary.slug,
+          patientMemoryId: resolution.patientMemoryId,
+          sourcePatientArtifactsDirectory: patientArtifactsDirectory,
+          workItem,
+          matchResult: patientRun.matchResult,
+          batchId: batch.id,
+          runId: patientRun.runId,
+        });
+      } catch (error) {
+        failures.push(patientRun.workItemId);
+        this.logger.warn(
+          {
+            batchId: batch.id,
+            workItemId: patientRun.workItemId,
+            errorMessage: error instanceof Error ? error.message : "Unknown patient memory promotion error.",
+          },
+          "failed to promote patient artifacts before batch cleanup",
+        );
+      }
+    }
+
+    return failures;
+  }
+
   private async executeRetryWorkItems(
     batchId: string,
     workItems: PatientEpisodeWorkItem[],
@@ -1803,6 +3417,16 @@ export class BatchControlPlaneService {
     batch.run.patientRunCount = countProcessedPatientRuns(batch);
     batch.run.lastError = deriveBatchErrorSummary(batch);
     await this.repository.saveBatch(batch);
+    await this.promotePatientRunToMemory(batch, patientRun).catch((error: unknown) => {
+      this.logger.warn(
+        {
+          batchId,
+          workItemId: patientRun.workItemId,
+          errorMessage: error instanceof Error ? error.message : "Unknown patient memory promotion error.",
+        },
+        "patient memory promotion skipped",
+      );
+    });
   }
 
   private async finalizeBatchExecution(
@@ -2139,6 +3763,19 @@ export class BatchControlPlaneService {
         !batchBelongsToSubsidiary(batch, subsidiary) ||
         this.activeBatchJobs.has(batch.id)
       ) {
+        continue;
+      }
+
+      const promotionFailures = await this.promoteBatchPatientsToMemory(batch);
+      if (promotionFailures.length > 0) {
+        this.logger.warn(
+          {
+            batchId: batch.id,
+            subsidiaryId: batch.subsidiary.id,
+            failingWorkItemIds: promotionFailures,
+          },
+          "skipped superseded batch deletion because patient memory promotion failed",
+        );
         continue;
       }
 

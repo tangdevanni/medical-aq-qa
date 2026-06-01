@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import pino, { type Logger } from "pino";
@@ -14,7 +15,7 @@ import type {
   SubsidiaryRuntimeConfig,
   WorkflowDomain,
 } from "@medical-ai-qa/shared-types";
-import { loadEnv } from "../config/env";
+import { loadEnv, type FinaleBatchEnv } from "../config/env";
 import { resolvePortalRuntimeConfig } from "../config/portalRuntime";
 import { buildBatchSummary } from "../domain/batchSummary";
 import { executeSharedPortalAccessWorkflow } from "../portal/workflows/sharedPortalAccessWorkflow";
@@ -43,6 +44,11 @@ import { extractTechnicalReview } from "./technicalReviewExtractor";
 import { writePatientRunLog } from "./patientRunLogWriter";
 import { writePatientResultBundle } from "./patientResultBundleWriter";
 import { writePatientDashboardState } from "./patientDashboardStateWriter";
+import {
+  createPatientRunTimingTracker,
+  formatPatientRunTimingSummary,
+  writePatientRunCacheSummary,
+} from "./patientRunReuseSummaryService";
 import { intakeWorkbook } from "./workbookIntakeService";
 import { extractCurrentChartValuesFromPrintedNote } from "../oasis/print/printedNoteChartValueExtractionService";
 import type { OasisPrintedNoteReviewResult } from "../oasis/types/oasisPrintedNoteReview";
@@ -50,6 +56,7 @@ import { runReferralDocumentProcessingPipeline } from "../referralProcessing/pip
 import { runCodingWorkflowOrchestrator } from "../workflows/codingWorkflowOrchestrator";
 import { runQaWorkflowOrchestrator } from "../workflows/qaWorkflowOrchestrator";
 import { runSharedEvidenceWorkflow } from "../workflows/sharedEvidenceWorkflow";
+import { writePortalCarePlanDraftFromOasisDom } from "./portalCarePlanDraftService";
 import {
   buildWorkflowRun,
   createDefaultWorkflowRuns,
@@ -67,6 +74,7 @@ export interface RunFinaleBatchParams {
   outputDir?: string;
   parseOnly?: boolean;
   workflowDomains?: WorkflowDomain[];
+  stopAfterSharedEvidence?: boolean;
   logger?: Logger;
   portalClient?: BatchPortalAutomationClient;
 }
@@ -88,6 +96,7 @@ export interface ExecutePatientWorkItemsParams {
   workItems: PatientEpisodeWorkItem[];
   outputDir: string;
   workflowDomains?: WorkflowDomain[];
+  stopAfterSharedEvidence?: boolean;
   subsidiaryRuntimeConfig?: SubsidiaryRuntimeConfig;
   logger?: Logger;
   portalClient?: BatchPortalAutomationClient;
@@ -150,6 +159,265 @@ function createLogger(): Logger {
 function resolveWorkflowDomains(workflowDomains?: WorkflowDomain[]): WorkflowDomain[] {
   const normalized = workflowDomains?.filter((domain, index, values) => values.indexOf(domain) === index) ?? [];
   return normalized.length > 0 ? normalized : ["coding", "qa"];
+}
+
+function buildPlanOfCareInterventionDrafts(input: {
+  label: string;
+  code: string | null;
+  diagnosisKey: string;
+}): Array<{
+  selectedText: string;
+  rationale: string;
+  confidence: number;
+  evidenceFactIds: string[];
+  interventionScope: string;
+}> {
+  const normalized = `${input.code ?? ""} ${input.label}`.toLowerCase();
+  const evidenceFactIds = [`diagnosis:${input.diagnosisKey}`];
+  const makeIntervention = (
+    selectedText: string,
+    interventionScope: string,
+    confidence = 0.74,
+  ) => ({
+    selectedText,
+    rationale: "Generated from extracted diagnosis context after OASIS review.",
+    confidence,
+    evidenceFactIds,
+    interventionScope,
+  });
+
+  if (/\b(j1[2-8]|pneumonia|respiratory failure|hypoxia|copd|chronic obstructive)\b/i.test(normalized)) {
+    return [
+      makeIntervention(
+        "Skilled nurse to assess respiratory status each visit, including breath sounds, dyspnea, cough, oxygen saturation, and activity tolerance.",
+        "respiratory_assessment",
+      ),
+      makeIntervention(
+        "Teach patient and caregiver signs of respiratory decline and when to report increased shortness of breath, fever, productive cough, or oxygen desaturation.",
+        "respiratory_education",
+      ),
+      makeIntervention(
+        "Reinforce ordered medication, oxygen, breathing exercise, and energy-conservation instructions as applicable.",
+        "respiratory_self_management",
+      ),
+    ];
+  }
+
+  if (/\b(r13|dysphagia|swallow)\b/i.test(normalized)) {
+    return [
+      makeIntervention(
+        "Assess swallowing safety, diet tolerance, hydration, coughing or choking with intake, and aspiration-risk symptoms each visit.",
+        "swallowing_assessment",
+      ),
+      makeIntervention(
+        "Teach patient and caregiver aspiration precautions, ordered diet texture, safe positioning, and when to report swallowing changes.",
+        "swallowing_education",
+      ),
+    ];
+  }
+
+  if (/\b(g93|encephalopathy|confusion|cognitive|mental status)\b/i.test(normalized)) {
+    return [
+      makeIntervention(
+        "Assess mental status, orientation, safety awareness, and changes from baseline each visit.",
+        "neurological_assessment",
+      ),
+      makeIntervention(
+        "Teach caregiver to report acute confusion, decreased responsiveness, unsafe behavior, or other neurological changes.",
+        "neurological_education",
+      ),
+    ];
+  }
+
+  if (/\b(m62|r53|weakness|fall|z91\.81|mobility|gait)\b/i.test(normalized)) {
+    return [
+      makeIntervention(
+        "Assess strength, transfers, gait safety, assistive-device use, and fall-risk factors each visit.",
+        "mobility_assessment",
+      ),
+      makeIntervention(
+        "Teach fall-prevention measures, safe transfer technique, clear pathways, and proper use of ordered assistive devices.",
+        "fall_prevention_education",
+      ),
+    ];
+  }
+
+  if (/\b(i50|heart failure|chf|i11|hypertensive heart)\b/i.test(normalized)) {
+    return [
+      makeIntervention(
+        "Assess cardiopulmonary status, edema, weight trend, dyspnea, blood pressure, and medication response each visit.",
+        "cardiac_assessment",
+      ),
+      makeIntervention(
+        "Teach heart-failure zone guidance, low-sodium diet instructions as ordered, daily weight monitoring, and reportable symptoms.",
+        "cardiac_education",
+      ),
+    ];
+  }
+
+  if (/\b(e11|diabetes|diabetic)\b/i.test(normalized)) {
+    return [
+      makeIntervention(
+        "Assess blood-glucose monitoring, diet adherence, medication use, skin integrity, and symptoms of hypo- or hyperglycemia.",
+        "diabetes_assessment",
+      ),
+      makeIntervention(
+        "Teach diabetes self-management, glucose log review, foot care, medication adherence, and reportable blood-sugar parameters.",
+        "diabetes_education",
+      ),
+    ];
+  }
+
+  if (/\b(n18|kidney|renal|ckd)\b/i.test(normalized)) {
+    return [
+      makeIntervention(
+        "Assess fluid status, edema, blood pressure, medication adherence, and symptoms requiring provider notification.",
+        "renal_assessment",
+      ),
+      makeIntervention(
+        "Teach renal disease precautions, ordered diet or fluid instructions, medication safety, and follow-up lab/provider instructions.",
+        "renal_education",
+      ),
+    ];
+  }
+
+  if (/\b(d63|anemia)\b/i.test(normalized)) {
+    return [
+      makeIntervention(
+        "Assess fatigue, activity tolerance, dizziness, shortness of breath, and signs of worsening anemia each visit.",
+        "anemia_assessment",
+      ),
+      makeIntervention(
+        "Teach energy conservation, fall precautions related to weakness or dizziness, and reportable anemia symptoms.",
+        "anemia_education",
+      ),
+    ];
+  }
+
+  if (/\b(i48|atrial fibrillation|anticoag)\b/i.test(normalized)) {
+    return [
+      makeIntervention(
+        "Assess heart rate, rhythm-related symptoms, anticoagulant use if ordered, bleeding risk, and medication adherence each visit.",
+        "arrhythmia_assessment",
+      ),
+      makeIntervention(
+        "Teach bleeding precautions, medication adherence, and when to report palpitations, chest pain, dizziness, or bleeding.",
+        "arrhythmia_education",
+      ),
+    ];
+  }
+
+  return [
+    makeIntervention(
+      `Assess patient status related to ${input.label}, response to the current plan, medication adherence, and changes requiring provider notification.`,
+      "skilled_assessment",
+      0.7,
+    ),
+    makeIntervention(
+      `Teach patient and caregiver self-management for ${input.label}, including safety precautions, medication instructions, and reportable symptoms.`,
+      "patient_caregiver_education",
+      0.7,
+    ),
+  ];
+}
+
+async function writeDeterministicPlanOfCareReviewDraft(input: {
+  outputDir: string;
+  workItem: PatientEpisodeWorkItem;
+  codingContext: {
+    canonical: CanonicalDiagnosisExtraction;
+    llmUsed: boolean;
+    llmModel: string | null;
+    llmError: string | null;
+  };
+}): Promise<string | null> {
+  const diagnoses = input.codingContext.canonical.diagnosis_code_pairs
+    .filter((pair) => pair.diagnosis.trim().length > 0 || pair.code)
+    .slice(0, 8);
+  if (diagnoses.length === 0) {
+    return null;
+  }
+
+  const generatedAt = new Date().toISOString();
+  const sourceHash = createHash("sha256")
+    .update(JSON.stringify(diagnoses.map((pair) => ({ code: pair.code ?? null, diagnosis: pair.diagnosis.trim() }))))
+    .digest("hex")
+    .slice(0, 12);
+  const pocSource = {
+    sourceType: "generated_suggestion" as const,
+    sourceLabel: "Suggested" as const,
+    sourceHash,
+    capturedAt: generatedAt,
+  };
+  const diagnosisDrafts = diagnoses.map((pair, index) => {
+    const label = pair.diagnosis.trim() || pair.code || `Diagnosis ${index + 1}`;
+    const diagnosisKey = `${pair.code ?? label}-${index}`
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "");
+    return {
+      diagnosisKey,
+      diagnosisLabel: label,
+      icdCode: pair.code ?? undefined,
+      sourceType: pocSource.sourceType,
+      sourceLabel: pocSource.sourceLabel,
+      sourceHash: pocSource.sourceHash,
+      capturedAt: pocSource.capturedAt,
+      clinicalDomain: "general_skilled_need",
+      selectedCandidateDomain: "general_skilled_need",
+      domainMatchStatus: "weak_match",
+      domainWarnings: ["Review deterministic Plan of Care draft before use."],
+      problem: {
+        selectedText: `Skilled need related to ${label}`,
+        rationale: "Generated from extracted diagnosis context after OASIS review.",
+        confidence: 0.72,
+        evidenceFactIds: [`diagnosis:${diagnosisKey}`],
+      },
+      goal: {
+        selectedText: `Patient will demonstrate stable status and safe self-management for ${label}.`,
+        rationale: "General home health goal generated from diagnosis context.",
+        confidence: 0.7,
+        evidenceFactIds: [`diagnosis:${diagnosisKey}`],
+      },
+      interventions: buildPlanOfCareInterventionDrafts({
+        label,
+        code: pair.code ?? null,
+        diagnosisKey,
+      }),
+      needsHumanReview: true,
+      warnings: ["Review-only deterministic draft; not written to the portal."],
+    };
+  });
+
+  const artifact = {
+    schemaVersion: "plan-of-care-review-draft.v1",
+    generatedAt,
+    pocSource,
+    sourcePriorityUsed: "coding_input_fallback",
+    llmStatus: input.codingContext.llmUsed ? "success" : "disabled",
+    llmModelId: input.codingContext.llmModel,
+    llmErrorCategory: input.codingContext.llmError ? "coding_context_llm_error" : null,
+    promptDiagnosisCount: diagnoses.length,
+    llmTailoredDiagnosisCount: input.codingContext.llmUsed ? diagnoses.length : 0,
+    diagnosisDrafts,
+    summary: {
+      diagnosisCount: diagnoses.length,
+      draftedDiagnosisCount: diagnosisDrafts.length,
+      needsReviewCount: diagnosisDrafts.length,
+      lowConfidenceCount: diagnosisDrafts.length,
+      missingCandidateCount: 0,
+      sourcePriorityUsed: "coding_input_fallback",
+      llmStatus: input.codingContext.llmUsed ? "success" : "disabled",
+      promptDiagnosisCount: diagnoses.length,
+      llmTailoredDiagnosisCount: input.codingContext.llmUsed ? diagnoses.length : 0,
+      warnings: ["Review-only Plan of Care draft generated from diagnosis context."],
+    },
+    warnings: ["Review-only Plan of Care draft generated from diagnosis context."],
+  };
+  const artifactPath = path.join(input.outputDir, "patients", input.workItem.id, "plan-of-care-review-draft.json");
+  await mkdir(path.dirname(artifactPath), { recursive: true });
+  await writeFile(artifactPath, JSON.stringify(artifact, null, 2), "utf8");
+  return artifactPath;
 }
 
 function replaceRunOasisArtifactWithPrintedNoteReview(input: {
@@ -761,6 +1029,7 @@ async function emitPatientRunUpdate(
   run: PatientRun,
   outputDirectory: string,
   onPatientRunUpdate?: (patientRun: PatientRun) => Promise<void> | void,
+  env?: FinaleBatchEnv,
 ): Promise<void> {
   updatePatientRunDerivedFields(run);
   run.logPath = await writePatientRunLog(outputDirectory, run);
@@ -782,6 +1051,7 @@ async function emitPatientRunUpdate(
   await writePatientDashboardState({
     outputDirectory,
     run,
+    env,
   });
   if (onPatientRunUpdate) {
     await onPatientRunUpdate({
@@ -948,7 +1218,7 @@ export async function executePatientWorkItems(
       run.completedAt = new Date().toISOString();
       run.resultBundlePath = await writePatientResultBundle(params.outputDir, run);
       run.bundleAvailable = true;
-      await emitPatientRunUpdate(run, params.outputDir, params.onPatientRunUpdate);
+      await emitPatientRunUpdate(run, params.outputDir, params.onPatientRunUpdate, env);
       patientRuns.push(run);
     }
 
@@ -963,12 +1233,13 @@ export async function executePatientWorkItems(
         workItem,
       });
       let codingInputExportPath: string | null = null;
+      const timing = createPatientRunTimingTracker();
 
-      await emitPatientRunUpdate(run, params.outputDir, params.onPatientRunUpdate);
+      await emitPatientRunUpdate(run, params.outputDir, params.onPatientRunUpdate, env);
 
       try {
         const evidenceDir = path.join(params.outputDir, "evidence", workItem.id);
-        const sharedAccess = await executeSharedPortalAccessWorkflow({
+        const sharedAccess = await timing.time("portal_lookup", () => executeSharedPortalAccessWorkflow({
           batchId: params.batchId,
           patientRunId: run.runId,
           workflowDomains: selectedWorkflowDomains,
@@ -976,7 +1247,7 @@ export async function executePatientWorkItems(
           evidenceDir,
           portalClient,
           logger,
-        });
+        }));
         run.matchResult = sharedAccess.matchResult;
         appendAutomationLogs(run, ensureCanonicalAutomationLogs({
           workItem,
@@ -1032,14 +1303,14 @@ export async function executePatientWorkItems(
             processingStatus: run.processingStatus,
             documentInventory: run.documentInventory,
           });
-          await emitPatientRunUpdate(run, params.outputDir, params.onPatientRunUpdate);
+          await emitPatientRunUpdate(run, params.outputDir, params.onPatientRunUpdate, env);
           continue;
         }
         if (run.matchResult.status === "EXACT" && sharedAccess.portalContexts.length > 0) {
           const sharedEvidenceContext =
             sharedAccess.portalContexts.find((portalContext) => portalContext.workflowDomain === "coding") ??
             sharedAccess.portalContexts[0]!;
-          const sharedEvidenceResult = await runSharedEvidenceWorkflow({
+          const sharedEvidenceResult = await timing.time("shared_evidence", () => runSharedEvidenceWorkflow({
             context: sharedEvidenceContext,
             workItem,
             evidenceDir,
@@ -1047,7 +1318,7 @@ export async function executePatientWorkItems(
             env,
             logger,
             portalClient,
-          });
+          }));
           run.artifacts = sharedEvidenceResult.sharedEvidence.artifacts;
           setDocumentInventory(run, sharedEvidenceResult.sharedEvidence.documentInventory);
           appendAutomationLogs(run, sharedEvidenceResult.stepLogs);
@@ -1091,6 +1362,27 @@ export async function executePatientWorkItems(
             safeReadConfirmed: true,
           })]);
 
+          if (params.stopAfterSharedEvidence) {
+            run.qaOutcome = referralDocumentAvailable ? "NEEDS_MANUAL_QA" : "MISSING_DOCUMENTS";
+            run.processingStatus = referralDocumentAvailable ? "COMPLETE" : "BLOCKED";
+            run.executionStep = referralDocumentAvailable
+              ? "REFERRAL_DOCUMENT_ACQUIRED"
+              : "REFERRAL_DOCUMENT_REQUIRED";
+            run.progressPercent = 100;
+            run.errorSummary = referralDocumentAvailable
+              ? null
+              : "Referral/admission-order document text was not found in shared evidence.";
+            run.oasisQaSummary = buildOasisQaSummary({
+              workItem,
+              matchResult: run.matchResult,
+              artifacts: run.artifacts,
+              processingStatus: run.processingStatus,
+              documentInventory: run.documentInventory,
+            });
+            await emitPatientRunUpdate(run, params.outputDir, params.onPatientRunUpdate, env);
+            continue;
+          }
+
           if (!referralDocumentAvailable) {
             const timestamp = new Date().toISOString();
             const blockedMessage =
@@ -1129,13 +1421,13 @@ export async function executePatientWorkItems(
               processingStatus: run.processingStatus,
               documentInventory: run.documentInventory,
             });
-            await emitPatientRunUpdate(run, params.outputDir, params.onPatientRunUpdate);
+            await emitPatientRunUpdate(run, params.outputDir, params.onPatientRunUpdate, env);
             continue;
           }
 
           const qaPortalContext = sharedAccess.portalContexts.find((portalContext) => portalContext.workflowDomain === "qa");
           if (qaPortalContext) {
-            const qaResult = await runQaWorkflowOrchestrator({
+            const qaResult = await timing.time("oasis_dom_and_qa", () => runQaWorkflowOrchestrator({
               context: qaPortalContext,
               run,
               workItem,
@@ -1144,7 +1436,7 @@ export async function executePatientWorkItems(
               logger,
               portalClient,
               sharedEvidence: sharedEvidenceResult.sharedEvidence,
-            });
+            }));
             run.artifacts = replaceRunOasisArtifactWithPrintedNoteReview({
               artifacts: run.artifacts,
               printedNoteReview: qaResult.result.printedNoteReview,
@@ -1200,13 +1492,13 @@ export async function executePatientWorkItems(
               })]);
             }
 
-            const printedNoteChartValues = await extractCurrentChartValuesFromPrintedNote({
+            const printedNoteChartValues = await timing.time("printed_oasis_chart_values", () => extractCurrentChartValuesFromPrintedNote({
               env,
               logger,
               outputDir: params.outputDir,
               workItem,
               extractedTextPath: qaResult.result.printedNoteReview?.capture.extractedTextPath ?? null,
-            });
+            }));
             run.notes.push(
               printedNoteChartValues.artifactPath
                 ? `Printed-note chart values persisted: ${printedNoteChartValues.artifactPath}`
@@ -1249,7 +1541,7 @@ export async function executePatientWorkItems(
                   safeReadConfirmed: true,
                 })]);
               } else {
-              const refreshedReferralProcessing = await runReferralDocumentProcessingPipeline({
+              const refreshedReferralProcessing = await timing.time("referral_refresh", () => runReferralDocumentProcessingPipeline({
                 workItem,
                 outputDir: params.outputDir,
                 env,
@@ -1257,7 +1549,7 @@ export async function executePatientWorkItems(
                 extractedDocuments: referralDocumentsForRefresh,
                 currentChartValues: printedNoteChartValues.currentChartValues,
                 currentChartValueSource: printedNoteChartValues.currentChartValueSource ?? undefined,
-              });
+              }));
               appendAutomationLogs(run, refreshedReferralProcessing.stepLogs);
               if (refreshedReferralProcessing.result) {
                 sharedEvidenceResult.sharedEvidence.referralDocumentProcessing = refreshedReferralProcessing.result;
@@ -1271,11 +1563,74 @@ export async function executePatientWorkItems(
               }
               }
             }
+            const portalPlanOfCareDraftPath = await timing.time("plan_of_care", () => writePortalCarePlanDraftFromOasisDom({
+              outputDir: params.outputDir,
+              workItem,
+            }));
+            const planOfCareDraftPath = portalPlanOfCareDraftPath ?? await timing.time("plan_of_care", () => writeDeterministicPlanOfCareReviewDraft({
+              outputDir: params.outputDir,
+              workItem,
+              codingContext: sharedEvidenceResult.sharedEvidence.diagnosisCodingContext,
+            }));
+            if (planOfCareDraftPath) {
+              run.notes.push(
+                portalPlanOfCareDraftPath
+                  ? `Existing OASIS Plan of Care draft persisted from portal DOM: ${planOfCareDraftPath}`
+                  : `Plan of Care review draft persisted: ${planOfCareDraftPath}`,
+              );
+              appendAutomationLogs(run, [createAutomationStepLog({
+                step: "plan_of_care_review_draft",
+                message: portalPlanOfCareDraftPath
+                  ? "Captured existing OASIS Plan of Care from portal DOM; skipped generated Plan of Care draft."
+                  : "Generated a review-only Plan of Care draft from diagnosis context after OASIS review.",
+                patientName: run.patientName,
+                found: [planOfCareDraftPath],
+                evidence: [
+                  "review_only=true",
+                  portalPlanOfCareDraftPath ? "source=oasis_portal_care_plan" : "source=diagnosis_context",
+                ],
+                safeReadConfirmed: true,
+              })]);
+            }
+
+            if (env.VISIT_NOTES_DOM_EXTRACTION_ENABLED && typeof portalClient.discoverVisitNotesForReview === "function") {
+            try {
+              const visitNotesResult = await timing.time("visit_notes_dom_and_llm", () => portalClient.discoverVisitNotesForReview!({
+                context: qaPortalContext,
+                workItem,
+                patientArtifactsDirectory: path.join(params.outputDir, "patients", workItem.id),
+                evidenceDir,
+                episode: qaResult.result.episodeSelection.selectedRange
+                  ? {
+                      label: qaResult.result.episodeSelection.selectedRange.rawLabel,
+                      startDate: qaResult.result.episodeSelection.selectedRange.startDate ?? undefined,
+                      endDate: qaResult.result.episodeSelection.selectedRange.endDate ?? undefined,
+                    }
+                  : undefined,
+                captureVisitNotesLimit: env.VISIT_NOTE_CAPTURE_MAX_NOTES,
+                forceRerunVisitNotes: false,
+              }));
+              appendAutomationLogs(run, visitNotesResult.stepLogs);
+              run.notes.push(`Visit Notes DOM discovery persisted: ${visitNotesResult.discoveryPath}`);
+            } catch (error) {
+              const visitNotesError = error instanceof Error ? error.message : String(error);
+              appendAutomationLogs(run, [createAutomationStepLog({
+                step: "visit_notes_discovery",
+                message: "Visit Notes DOM discovery failed without interrupting the patient run.",
+                patientName: run.patientName,
+                found: [],
+                missing: ["visit-notes-discovery.json"],
+                evidence: [visitNotesError.slice(0, 240)],
+                safeReadConfirmed: true,
+              })]);
+              run.notes.push(`Visit Notes DOM discovery failed: ${visitNotesError}`);
+            }
+            }
           }
 
           const codingPortalContext = sharedAccess.portalContexts.find((portalContext) => portalContext.workflowDomain === "coding");
           if (codingPortalContext) {
-            const codingResult = await runCodingWorkflowOrchestrator({
+            const codingResult = await timing.time("coding_export", () => runCodingWorkflowOrchestrator({
               context: codingPortalContext,
               run,
               workItem,
@@ -1283,9 +1638,9 @@ export async function executePatientWorkItems(
               outputDir: params.outputDir,
               logger,
               emitRunUpdate: async () => {
-                await emitPatientRunUpdate(run, params.outputDir, params.onPatientRunUpdate);
+                await emitPatientRunUpdate(run, params.outputDir, params.onPatientRunUpdate, env);
               },
-            });
+            }));
             appendAutomationLogs(run, codingResult.stepLogs);
             const codingWorkflowRun = findWorkflowRun(run.workflowRuns, "coding");
             codingInputExportPath = codingWorkflowRun?.workflowResultPath ?? codingInputExportPath;
@@ -1330,7 +1685,7 @@ export async function executePatientWorkItems(
             documentInventory: run.documentInventory,
           });
           run.errorSummary = run.matchResult.note ?? `Patient lookup ended with status ${run.matchResult.status}.`;
-          await emitPatientRunUpdate(run, params.outputDir, params.onPatientRunUpdate);
+          await emitPatientRunUpdate(run, params.outputDir, params.onPatientRunUpdate, env);
         }
 
         if (
@@ -1459,6 +1814,39 @@ export async function executePatientWorkItems(
           }
         }
         run.completedAt = new Date().toISOString();
+        try {
+          const { filePath: cacheSummaryPath, summary: cacheSummary } = await writePatientRunCacheSummary({
+            outputDirectory: params.outputDir,
+            run,
+            stageTimings: timing.stageTimings,
+            startedAtMs: timing.startedAtMs,
+          });
+          run.notes.push(`${formatPatientRunTimingSummary(cacheSummary)}; cacheSummary=${cacheSummaryPath}`);
+          appendAutomationLogs(run, [createAutomationStepLog({
+            step: "incremental_reuse_summary",
+            message: formatPatientRunTimingSummary(cacheSummary),
+            patientName: run.patientName,
+            found: [
+              `cacheSummaryPath=${cacheSummaryPath}`,
+              `referral=${cacheSummary.reuseSummary.referral}`,
+              `visitNotesProcessed=${cacheSummary.visitNotes.processed}`,
+              `visitNotesReused=${cacheSummary.visitNotes.reused}`,
+            ],
+            evidence: timing.stageTimings.map((stage) => `${stage.stage}:${stage.durationMs}ms`),
+            safeReadConfirmed: true,
+          })]);
+        } catch (error) {
+          const cacheSummaryError = error instanceof Error ? error.message : String(error);
+          run.notes.push(`Incremental run cache summary failed: ${cacheSummaryError}`);
+          appendAutomationLogs(run, [createAutomationStepLog({
+            step: "incremental_reuse_summary",
+            message: "Incremental run cache summary failed.",
+            patientName: run.patientName,
+            missing: ["patient-run-cache-summary.json"],
+            evidence: [cacheSummaryError],
+            safeReadConfirmed: true,
+          })]);
+        }
         run.resultBundlePath = await writePatientResultBundle(params.outputDir, run);
         run.bundleAvailable = true;
         run.workflowRuns = run.workflowRuns.map((workflowRun) =>
@@ -1475,7 +1863,7 @@ export async function executePatientWorkItems(
             : workflowRun,
         );
         await writePatientResultBundle(params.outputDir, run);
-        await emitPatientRunUpdate(run, params.outputDir, params.onPatientRunUpdate);
+        await emitPatientRunUpdate(run, params.outputDir, params.onPatientRunUpdate, env);
         patientRuns.push(run);
       }
     }
@@ -1632,6 +2020,7 @@ export async function runFinaleBatch(
           subsidiaryRuntimeConfig: params.subsidiaryRuntimeConfig,
           logger,
           portalClient: params.portalClient,
+          stopAfterSharedEvidence: params.stopAfterSharedEvidence,
         })
       ),
     );

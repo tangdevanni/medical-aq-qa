@@ -42,6 +42,10 @@ type DiagnosisCandidate = {
   rank: number;
 };
 
+type ExpandedDiagnosisPair = CanonicalDiagnosisCodePair & {
+  rankOffset: number;
+};
+
 function normalizeWhitespace(value: string | null | undefined): string {
   return value?.replace(/\s+/g, " ").trim() ?? "";
 }
@@ -61,6 +65,8 @@ function normalizeIcdCode(value: string | null | undefined): string {
 function normalizeDiagnosisDescription(value: string | null | undefined): string {
   return sanitizeText(value)
     .replace(/\(\s*[A-TV-Z][0-9][0-9AB](?:\.[0-9A-TV-Z]{1,4})?\s*\)/gi, "")
+    .replace(/^diagnoses?\s*:\s*/i, "")
+    .replace(/^(?:primary|secondary|subsequent|admitting)\s+/i, "")
     .replace(/^[,;:\s]+|[,;:\s]+$/g, "")
     .replace(/\s+/g, " ");
 }
@@ -91,6 +97,48 @@ function inferEntryConfidence(input: {
   return input.extractionConfidence === "high" ? "medium" : input.extractionConfidence;
 }
 
+function expandFactPackDiagnosisList(pair: CanonicalDiagnosisCodePair): ExpandedDiagnosisPair[] {
+  const rawDiagnosis = sanitizeText(pair.diagnosis);
+  const listBody = rawDiagnosis
+    .replace(/^diagnoses?\s*:\s*/i, "")
+    .replace(/^\s*-\s*/, "")
+    .trim();
+
+  const looksLikeFactPackList =
+    /^diagnoses?\s*:/i.test(rawDiagnosis) ||
+    /\s+-\s+(?:primary|secondary|subsequent|admitting)\b/i.test(rawDiagnosis) ||
+    /\s+-\s+[A-TV-Z][0-9][0-9AB](?:\.[0-9A-TV-Z]{1,4})?\s+/i.test(rawDiagnosis);
+
+  if (!looksLikeFactPackList) {
+    return [{ ...pair, rankOffset: 0 }];
+  }
+
+  const parts = listBody
+    .split(/\s+-\s+/)
+    .map((part) => sanitizeText(part))
+    .filter(Boolean);
+
+  if (parts.length <= 1) {
+    return [{ ...pair, rankOffset: 0 }];
+  }
+
+  return parts.flatMap((part, index) => {
+    const withoutRank = part.replace(/^(?:primary|secondary|subsequent|admitting)\s+/i, "").trim();
+    const codeMatch = withoutRank.match(/^([A-TV-Z][0-9][0-9AB](?:\.[0-9A-TV-Z]{1,4})?)\s+(.+)$/i);
+    const code = normalizeIcdCode(codeMatch?.[1] ?? pair.code);
+    const diagnosis = normalizeDiagnosisDescription(codeMatch?.[2] ?? withoutRank);
+    if (!diagnosis) {
+      return [];
+    }
+    return [{
+      diagnosis,
+      code: code || null,
+      code_source: code ? pair.code_source ?? "fact_pack_list" : pair.code_source,
+      rankOffset: index,
+    }];
+  });
+}
+
 function buildDiagnosisCandidates(canonical: CanonicalDiagnosisExtraction): DiagnosisCandidate[] {
   const basePairs = canonical.diagnosis_code_pairs.length > 0
     ? canonical.diagnosis_code_pairs
@@ -102,19 +150,21 @@ function buildDiagnosisCandidates(canonical: CanonicalDiagnosisExtraction): Diag
 
   const candidates: DiagnosisCandidate[] = [];
   for (const [rank, pair] of basePairs.entries()) {
-    const description = normalizeDiagnosisDescription(pair.diagnosis);
-    if (!description) {
-      continue;
+    for (const expandedPair of expandFactPackDiagnosisList(pair)) {
+      const description = normalizeDiagnosisDescription(expandedPair.diagnosis);
+      if (!description) {
+        continue;
+      }
+      candidates.push({
+        code: normalizeIcdCode(expandedPair.code),
+        description,
+        confidence: inferEntryConfidence({
+          pair: expandedPair,
+          extractionConfidence: canonical.extraction_confidence,
+        }),
+        rank: rank * 100 + expandedPair.rankOffset,
+      });
     }
-    candidates.push({
-      code: normalizeIcdCode(pair.code),
-      description,
-      confidence: inferEntryConfidence({
-        pair,
-        extractionConfidence: canonical.extraction_confidence,
-      }),
-      rank,
-    });
   }
 
   const deduped = new Map<string, DiagnosisCandidate>();

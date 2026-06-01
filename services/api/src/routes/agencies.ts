@@ -6,6 +6,20 @@ const agencyParamsSchema = z.object({
   agencyId: z.string().min(1),
 });
 
+const reviewerStatusBodySchema = z.object({
+  workItemId: z.string().min(1),
+  status: z.enum(["red", "yellow", "green"]),
+  updatedBy: z.string().min(1).nullable().optional(),
+});
+
+const agencyRefreshBodySchema = z.object({
+  mode: z.enum(["delta", "full"]).default("delta"),
+  reprojectOnly: z.boolean().default(false),
+  forceStages: z
+    .array(z.enum(["referral", "oasis", "poc", "visit_notes", "dashboard"]))
+    .default([]),
+});
+
 async function getAgencyId(request: FastifyRequest): Promise<string> {
   return agencyParamsSchema.parse(request.params).agencyId;
 }
@@ -32,8 +46,9 @@ export async function registerAgencyRoutes(
 
   app.post("/api/agencies/:agencyId/refresh", async (request, reply) => {
     const agencyId = await getAgencyId(request);
+    const body = agencyRefreshBodySchema.parse(request.body ?? {});
     try {
-      const batch = await service.triggerAgencyRefresh(agencyId);
+      const batch = await service.triggerAgencyRefresh(agencyId, body);
       return {
         agencyId,
         batchId: batch.id,
@@ -47,6 +62,23 @@ export async function registerAgencyRoutes(
       return {
         message,
       };
+    }
+  });
+
+  app.post("/api/agencies/:agencyId/dashboard/reviewer-status", async (request, reply) => {
+    const agencyId = await getAgencyId(request);
+    const body = reviewerStatusBodySchema.parse(request.body ?? {});
+    try {
+      return await service.updateAgencyDashboardReviewerStatus({
+        agencyId,
+        workItemId: body.workItemId,
+        status: body.status,
+        updatedBy: body.updatedBy ?? null,
+      });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Unable to update dashboard reviewer status.";
+      reply.code(message.includes("not found") || message.includes("not in the active") ? 404 : 500);
+      return { message };
     }
   });
 }

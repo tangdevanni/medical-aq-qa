@@ -80,6 +80,22 @@ export function triggerBackendAgencyRefresh(agencyId: string): Promise<{
   return postBackendJson(`/agencies/${encodeURIComponent(agencyId)}/refresh`);
 }
 
+export function updateBackendAgencyReviewerStatus(
+  agencyId: string,
+  input: {
+    workItemId: string;
+    status: "red" | "yellow" | "green";
+    updatedBy?: string | null;
+  },
+): Promise<{
+  workItemId: string;
+  status: "red" | "yellow" | "green";
+  updatedAt: string;
+  updatedBy: string | null;
+}> {
+  return postBackendJson(`/agencies/${encodeURIComponent(agencyId)}/dashboard/reviewer-status`, input);
+}
+
 export function createBackendRunSample(
   runId: string,
   input: {

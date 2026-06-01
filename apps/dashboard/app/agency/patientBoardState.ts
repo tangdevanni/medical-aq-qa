@@ -13,6 +13,9 @@ export function queueStatusBadgeClass(status: QueueEntryStatus): string {
   if (status === "skipped_pending") {
     return "badge warning";
   }
+  if (status === "skipped_non_admit") {
+    return "badge";
+  }
   if (status === "excluded_other") {
     return "badge danger";
   }

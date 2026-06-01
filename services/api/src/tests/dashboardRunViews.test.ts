@@ -1,7 +1,11 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 import type { BatchRecord } from "../types/batchControlPlane";
-import type { PatientEpisodeWorkItem, PatientQaReference } from "@medical-ai-qa/shared-types";
+import type {
+  ClinicalComparisonRow,
+  PatientEpisodeWorkItem,
+  PatientQaReference,
+} from "@medical-ai-qa/shared-types";
 import { toDashboardPatientDetail, toDashboardPatientSummary } from "../mappers/dashboardRunViews";
 
 const batch: BatchRecord = {
@@ -22,7 +26,7 @@ const batch: BatchRecord = {
     rerunEnabled: true,
     intervalHours: 24,
     timezone: "Asia/Manila",
-    localTimes: ["15:00", "23:30"],
+    localTimes: ["20:30"],
     lastRunAt: "2026-04-06T20:05:00.000Z",
     nextScheduledRunAt: "2026-04-07T20:05:00.000Z",
   },
@@ -315,6 +319,20 @@ const patientViewInput = {
       ],
     },
     documentText: null,
+    documentFactPack: {
+      factPack: {
+        diagnoses: [
+          {
+            code: "J18.9",
+            description: "PNEUMONIA, UNSPECIFIED ORGANISM",
+          },
+          {
+            code: "J96.01",
+            description: "ACUTE RESPIRATORY FAILURE WITH HYPOXIA",
+          },
+        ],
+      },
+    },
     fieldMapSnapshot: {
       generatedAt: "2026-04-11T00:00:00.000Z",
       fields: [
@@ -468,10 +486,1315 @@ const patientViewInput = {
         },
       ],
     },
+    llmUsageAudit: {
+      configuredModelId: "amazon.nova-pro-v1:0",
+      stages: [
+        {
+          stage: "diagnosis_coding_extraction",
+          status: "passed",
+          llmAttempted: true,
+          llmSucceeded: true,
+          invocationModelId: "amazon.nova-pro-v1:0",
+          summary: "Diagnosis extraction succeeded.",
+        },
+        {
+          stage: "printed_note_chart_value_extraction",
+          status: "passed",
+          llmAttempted: true,
+          llmSucceeded: true,
+          invocationModelId: "amazon.nova-pro-v1:0",
+          summary: "Printed-note extraction succeeded.",
+        },
+        {
+          stage: "referral_field_proposals",
+          status: "fallback",
+          llmAttempted: true,
+          llmSucceeded: false,
+          summary: "Referral proposal used deterministic fallback.",
+          warnings: ["Deterministic referral facts extraction was used."],
+        },
+        {
+          stage: "referral_qa_insights",
+          status: "fallback",
+          llmAttempted: true,
+          llmSucceeded: false,
+          summary: "Referral QA insights used deterministic fallback.",
+          warnings: ["Deterministic referral QA insights fallback was used."],
+        },
+        {
+          stage: "plan_of_care_generation",
+          status: "fallback",
+          llmAttempted: true,
+          llmSucceeded: true,
+          invocationModelId: "amazon.nova-pro-v1:0",
+          summary: "POC generation finished with status limited_preview.",
+        },
+      ],
+    },
+    oasisValidation: {
+      status: "validated_with_gaps",
+      validatedAt: "2026-04-11T00:05:00.000Z",
+      validateSelectorUsed: "button:has-text('Validate - ALL')",
+      currentUrl: "https://demo.portal/provider/branch/client/PT-1/oasis",
+      missingFieldCount: 2,
+      missingFields: [
+        {
+          fieldId: "m1730",
+          label: "Depression Screening",
+          section: "Cognitive / Emotional Status",
+          mItem: "M1730",
+          message: "Required before validation can complete.",
+          selectorUsed: "#m1730",
+        },
+        {
+          fieldId: "m1033",
+          label: "Risk For Hospitalization",
+          section: "Risk Factors",
+          mItem: "M1033",
+          message: "Please complete this field.",
+          selectorUsed: "#m1033",
+        },
+      ],
+      rawMessages: ["Please complete required OASIS fields before validating."],
+      warnings: [],
+    },
+    referralOasisConsistency: {
+      status: "contradictions_found",
+      generatedAt: "2026-04-11T00:04:00.000Z",
+      findingCount: 1,
+      blockingFindingCount: 1,
+      findings: [
+        {
+          id: "cognition-1",
+          category: "cognition",
+          label: "Referral cognitive concerns are not reflected consistently in OASIS.",
+          confidence: "high",
+          referralEvidence: "Referral notes Alzheimer’s disease with memory decline.",
+          oasisEvidence: "OASIS documents the patient as alert and oriented without cognitive concern.",
+          reviewerExplanation:
+            "Referral documents indicate Alzheimer’s disease, but the captured OASIS evidence presents a materially inconsistent mental-status picture.",
+          blocksPlanOfCare: true,
+        },
+      ],
+      warnings: [],
+    },
+    oasisGate: {
+      evaluatedAt: "2026-04-11T00:06:00.000Z",
+      status: "failed_both",
+      blockedFromPlanOfCare: true,
+      missingFieldCount: 2,
+      contradictionCount: 1,
+      topReasons: [
+        "M1730 Depression Screening",
+        "M1033 Risk For Hospitalization",
+        "Referral cognitive concerns are not reflected consistently in OASIS.",
+      ],
+      planOfCareAttempted: false,
+      planOfCareAttemptSkippedReason:
+        "OASIS gate failed, so Plan of Care review was not attempted.",
+    },
+    generatedPlanOfCare: {
+      status: "skipped_oasis_gate",
+      generatedAt: "2026-04-11T00:06:30.000Z",
+      questionBankVersion: null,
+      reviewRequired: true,
+      generationMode: "generate_once_then_freeze",
+      sourceSummary: {
+        oasisValidationTimestamp: "2026-04-11T00:05:00.000Z",
+        oasisGateTimestamp: "2026-04-11T00:06:00.000Z",
+        keyClinicalSignals: [],
+      },
+      problems: [],
+      warnings: [
+        "OASIS gate failed, so Plan of Care review was not attempted.",
+      ],
+      diagnostics: {
+        llmUsed: false,
+        modelId: null,
+        retrievedProblemCount: 0,
+        promptCharacterEstimate: 0,
+      },
+    },
+    clinicalContradictionAnalysis: null,
+    artifactLineage: null,
   },
 };
 
+const actionableClinicalContradictionAnalysis = {
+  schemaVersion: "clinical-contradiction-analysis.v1",
+  generatedAt: "2026-04-11T00:07:00.000Z",
+  sourceFactPackHash: "source-hash",
+  oasisFactPackHash: "oasis-hash",
+  llmStatus: "disabled",
+  deterministicFindingCount: 1,
+  llmFindingCount: 0,
+  findingCount: 2,
+  highSeverityCount: 1,
+  needsReviewCount: 1,
+  reviewerVisibleCount: 1,
+  suppressedCount: 1,
+  priorityCounts: {
+    critical: 0,
+    high: 1,
+    medium: 0,
+    low: 1,
+    informational: 0,
+  },
+  categoryCounts: {
+    cognitive_status: 1,
+    medication: 1,
+  },
+  verdictCounts: {
+    match: 0,
+    contradiction: 1,
+    missing_in_oasis: 1,
+    missing_in_source: 0,
+    newer_source_conflict: 0,
+    newer_oasis_conflict: 0,
+    resolved_condition: 0,
+    uncertain: 0,
+  },
+  reviewerQueueInterpretation: "actionable_discrepancies_detected",
+  summary: {
+    totalFindings: 2,
+    reviewerVisibleCount: 1,
+    suppressedCount: 1,
+    highPriorityCount: 1,
+    mediumPriorityCount: 0,
+    informationalCount: 0,
+    topCategories: ["cognitive_status"],
+    topVerdicts: ["contradiction"],
+    llmStatus: "disabled",
+  },
+  reviewerQueue: [{
+    findingId: "finding-cognition",
+    category: "cognitive_status",
+    title: "Cognitive status conflicts with OASIS orientation",
+    verdict: "contradiction",
+    severity: "high",
+    confidence: 0.88,
+    needsHumanReview: true,
+    reviewerVisible: true,
+    priority: "high",
+    evidenceStrength: "strong",
+    comparisonStrictness: "strict",
+    suppressionReason: "none",
+    sourceFacts: [{
+      factId: "src-cog",
+      category: "cognitive_status",
+      label: "Cognitive status",
+      normalizedValue: "dementia with confusion",
+      polarity: "present",
+      clinicalStatus: "active",
+      confidence: 0.9,
+      sourceType: "referral",
+    }],
+    oasisFacts: [{
+      factId: "oas-alert",
+      category: "orientation",
+      label: "Orientation",
+      normalizedValue: "alert and oriented",
+      polarity: "present",
+      clinicalStatus: "active",
+      confidence: 0.9,
+      sourceType: "oasis",
+    }],
+    sourceSummary: "Source indicates cognitive impairment.",
+    oasisSummary: "OASIS indicates alert and oriented status.",
+    rationale: "The normalized facts directly conflict.",
+    dateAssessment: {
+      sourceDate: "2026-04-10",
+      oasisDate: "2026-04-09",
+      newerSide: "source",
+      recencyImpact: "medium",
+    },
+    evidence: [{
+      factId: "src-cog",
+      artifactPath: "source-clinical-fact-pack.json",
+      snippet: "Cognitive impairment documented.",
+    }],
+    llmUsed: false,
+    deterministicRuleIds: ["deterministic.cognition_impairment_vs_oasis_intact"],
+  }],
+  findings: [
+    {
+      findingId: "finding-cognition",
+      category: "cognitive_status",
+      title: "Cognitive status conflicts with OASIS orientation",
+      verdict: "contradiction",
+      severity: "high",
+      confidence: 0.88,
+      needsHumanReview: true,
+      reviewerVisible: true,
+      priority: "high",
+      evidenceStrength: "strong",
+      comparisonStrictness: "strict",
+      suppressionReason: "none",
+      sourceFacts: [],
+      oasisFacts: [],
+      sourceSummary: "Source indicates cognitive impairment.",
+      oasisSummary: "OASIS indicates alert and oriented status.",
+      rationale: "The normalized facts directly conflict.",
+      evidence: [],
+      llmUsed: false,
+      deterministicRuleIds: [],
+    },
+    {
+      findingId: "finding-suppressed",
+      category: "medication",
+      title: "Weak medication mention suppressed",
+      verdict: "missing_in_oasis",
+      severity: "low",
+      confidence: 0.56,
+      needsHumanReview: false,
+      reviewerVisible: false,
+      priority: "low",
+      evidenceStrength: "weak",
+      comparisonStrictness: "balanced",
+      suppressionReason: "low_confidence_source_fact",
+      sourceFacts: [],
+      oasisFacts: [],
+      sourceSummary: "Weak medication mention.",
+      oasisSummary: "No matching OASIS medication.",
+      rationale: "Weak source fact.",
+      evidence: [],
+      llmUsed: false,
+      deterministicRuleIds: [],
+    },
+  ],
+  warnings: [],
+};
+
+const clinicalLineage = {
+  sourceFactCount: 177,
+  oasisFactCount: 72,
+  clinicalContradictionAnalysisHash: "eb3122dc0000",
+  sourceFactPackHash: "source-hash",
+  oasisFactPackHash: "oasis-hash",
+  contradictionSuppressionReasonCounts: {
+    low_confidence_source_fact: 1,
+    none: 1,
+  },
+};
+
+const planOfCareReviewDraft = {
+  schemaVersion: "plan-of-care-review-draft.v1",
+  generatedAt: "2026-04-11T00:08:00.000Z",
+  llmStatus: "disabled",
+  llmErrorCategory: null,
+  promptDiagnosisCount: 0,
+  promptTokenEstimate: 0,
+  llmTailoredDiagnosisCount: 0,
+  diagnosisSourcePath: "plan-of-care-diagnosis-source.json",
+  candidatesPath: "plan-of-care-candidates.json",
+  summary: {
+    diagnosisCount: 1,
+    draftedDiagnosisCount: 1,
+    needsReviewCount: 0,
+    lowConfidenceCount: 0,
+    missingCandidateCount: 0,
+    sourcePriorityUsed: "oasis_fact_pack",
+    warnings: [],
+    llmErrorCategory: null,
+    promptDiagnosisCount: 0,
+    promptTokenEstimate: 0,
+    llmTailoredDiagnosisCount: 0,
+  },
+  diagnosisDrafts: [{
+    diagnosisKey: "diagnosis:pneumonia:j18.9",
+    diagnosisLabel: "Pneumonia",
+    icdCode: "J18.9",
+    problem: {
+      selectedText: "Respiratory status requires skilled assessment and monitoring.",
+      bankEntryId: "problem-respiratory-monitoring",
+      rationale: "Selected from the care-plan bank based on the OASIS diagnosis.",
+      confidence: 0.84,
+      evidenceFactIds: ["oasis-dx-1"],
+    },
+    goal: {
+      selectedText: "Patient will maintain stable respiratory status during the episode.",
+      bankEntryId: "goal-respiratory-stability",
+      measurableTarget: "No acute respiratory decline through the review period.",
+      rationale: "Selected from the care-plan bank based on documented OASIS evidence.",
+      confidence: 0.82,
+      evidenceFactIds: ["oasis-dx-1"],
+    },
+    interventions: [{
+      selectedText: "Assess respiratory status and report worsening symptoms.",
+      bankEntryId: "intervention-respiratory-assess",
+      tailoredInstruction: "Review-only suggestion grounded in OASIS facts.",
+      rationale: "Selected from the retrieved care-plan candidates.",
+      confidence: 0.8,
+      evidenceFactIds: ["oasis-dx-1", "oasis-resp-1"],
+    }],
+    needsHumanReview: false,
+    warnings: [],
+  }],
+  warnings: [],
+};
+
+const oasisDomAcquisitionQaCompleted = {
+  artifactType: "oasis_dom_acquisition_state",
+  acquisitionStatus: "qa_completed",
+  missingRequiredSections: [],
+  missingRequiredFields: [],
+  readinessReasons: ["ready_for_qa"],
+};
+
+const nonBlockingOasisGate = {
+  ...patientViewInput.artifactContents.oasisGate,
+  status: "passed",
+  blockedFromPlanOfCare: false,
+  missingFieldCount: 0,
+  contradictionCount: 0,
+  topReasons: [],
+  planOfCareAttempted: true,
+  planOfCareAttemptSkippedReason: null,
+};
+
 describe("dashboardRunViews", () => {
+  it("loads Plan of Care review draft into patient detail payload", () => {
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        oasisDomAcquisitionState: oasisDomAcquisitionQaCompleted,
+        oasisGate: nonBlockingOasisGate,
+        planOfCareReviewDraft,
+      },
+    });
+
+    assert.equal(detail.oasisValidatedForPlanOfCare, true);
+    assert.equal(detail.planOfCareReview.available, true);
+    assert.equal(detail.planOfCareReview.status, "deterministic_candidate_draft");
+    assert.equal(detail.planOfCareReview.sourcePriorityUsed, "oasis_fact_pack");
+    assert.equal(detail.planOfCareReview.sourceType, "generated_suggestion");
+    assert.equal(detail.planOfCareReview.sourceLabel, "Suggested");
+    assert.equal(detail.planOfCareReview.diagnosisCount, 1);
+    assert.equal(detail.planOfCareReview.draftedDiagnosisCount, 1);
+    assert.equal(detail.planOfCareReview.needsReviewCount, 0);
+    assert.equal(detail.planOfCareReview.llmStatus, "disabled");
+    assert.equal(detail.planOfCareReview.llmTailoredDiagnosisCount, 0);
+    assert.equal(detail.planOfCareReview.promptDiagnosisCount, 0);
+    assert.equal(detail.planOfCareReview.draftItems[0]?.diagnosisLabel, "Pneumonia");
+    assert.equal(detail.planOfCareReview.draftItems[0]?.icdCode, "J18.9");
+    assert.equal(detail.planOfCareReview.draftItems[0]?.sourceLabel, "Suggested");
+    assert.equal(detail.planOfCareReview.draftItems[0]?.evidenceFactCount, 2);
+  });
+
+  it("prefers portal OASIS Plan of Care groups over generated source labeling", () => {
+    const portalPlanOfCareReviewDraft = {
+      ...planOfCareReviewDraft,
+      sourcePriorityUsed: "oasis_snapshot",
+      pocSource: {
+        sourceType: "oasis_portal",
+        sourceLabel: "From OASIS",
+        sourceHash: "portal-poc-hash",
+        capturedAt: "2026-05-30T00:00:00.000Z",
+      },
+      diagnosisDrafts: [],
+      carePlanProblemGroups: [{
+        groupKey: "pt-balance-training-1",
+        sourceType: "oasis_portal",
+        sourceLabel: "From OASIS",
+        sourceHash: "portal-poc-hash",
+        capturedAt: "2026-05-30T00:00:00.000Z",
+        problemTitle: "PT Balance Training",
+        problemStatement: "High fall risk with functional mobility.",
+        relatedDiagnoses: [],
+        goals: [{
+          text: "Improve TUG score to 12 seconds or better.",
+          evidenceFactIds: ["portal-care-plan:1"],
+          confidence: 0.92,
+          needsHumanReview: false,
+        }],
+        interventions: [{
+          text: "Standing balance exercises with narrow and wide BOS.",
+          rationale: "Existing portal OASIS Plan of Care intervention.",
+          evidenceFactIds: ["portal-care-plan:1"],
+          confidence: 0.92,
+          needsHumanReview: false,
+          llmGenerated: false,
+        }],
+        evidenceFactIds: ["portal-care-plan:1"],
+        confidence: 0.92,
+        needsHumanReview: false,
+        warnings: [],
+      }],
+      summary: {
+        ...planOfCareReviewDraft.summary,
+        diagnosisCount: 0,
+        draftedDiagnosisCount: 1,
+        carePlanProblemGroupCount: 1,
+        sourcePriorityUsed: "oasis_snapshot",
+      },
+    };
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        planOfCareReviewDraft: portalPlanOfCareReviewDraft,
+      },
+    });
+
+    assert.equal(detail.planOfCareReview.available, true);
+    assert.equal(detail.planOfCareReview.sourceType, "oasis_portal");
+    assert.equal(detail.planOfCareReview.sourceLabel, "From OASIS");
+    assert.equal(detail.planOfCareReview.sourceHash, "portal-poc-hash");
+    assert.equal(detail.planOfCareReview.draftItems.length, 0);
+    assert.equal(detail.planOfCareReview.carePlanProblemGroups[0]?.sourceLabel, "From OASIS");
+  });
+
+  it("derives OASIS validation for Plan of Care from completed DOM QA when the gate is open", () => {
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        oasisDomAcquisitionState: oasisDomAcquisitionQaCompleted,
+        oasisGate: nonBlockingOasisGate,
+      },
+    });
+
+    assert.equal(detail.oasisValidatedForPlanOfCare, true);
+  });
+
+  it("gates Plan of Care review until OASIS is validated for generation", () => {
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        planOfCareReviewDraft,
+      },
+    });
+
+    assert.equal(detail.oasisValidatedForPlanOfCare, false);
+    assert.equal(detail.planOfCareReview.available, false);
+    assert.match(detail.planOfCareReview.warnings.join(" "), /OASIS is validated/);
+  });
+
+  it("gates Visit Notes review until Plan of Care review is available", () => {
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        oasisDomAcquisitionState: oasisDomAcquisitionQaCompleted,
+        oasisGate: nonBlockingOasisGate,
+        visitNoteQaReview: {
+          schemaVersion: "visit-note-qa-review.v1",
+          generatedAt: "2026-05-07T00:00:00.000Z",
+          status: "ready",
+          summary: {
+            totalVisitNotes: 1,
+            analyzedVisitNotes: 1,
+            skippedVisitNotes: 0,
+            byVisitType: {},
+            byStatus: {},
+            actionableFindingCount: 0,
+            contradictionCount: 0,
+            pocAlignmentIssueCount: 0,
+            incompleteNoteCount: 0,
+          },
+          visitTypeCounts: [],
+          findings: [],
+          noteSummaries: [],
+          warnings: [],
+        },
+      },
+    });
+
+    assert.equal(detail.oasisValidatedForPlanOfCare, true);
+    assert.equal(detail.planOfCareReview.available, false);
+    assert.equal(detail.visitNotesReview.available, false);
+    assert.equal(detail.visitNotesReview.status, "discovery_not_run");
+    assert.match(detail.visitNotesReview.warnings.join(" "), /Plan of Care/);
+  });
+
+  it("suppresses non-clinical Plan of Care diagnosis draft items in patient detail payload", () => {
+    const pollutedDraft = {
+      ...planOfCareReviewDraft,
+      summary: {
+        ...planOfCareReviewDraft.summary,
+        diagnosisCount: 3,
+        draftedDiagnosisCount: 3,
+        needsReviewCount: 2,
+        missingCandidateCount: 2,
+      },
+      diagnosisDrafts: [
+        {
+          ...planOfCareReviewDraft.diagnosisDrafts[0],
+          diagnosisKey: "debug-row-heuristics",
+          diagnosisLabel: "Fallback to row text heuristics only when direct control selectors are absent.",
+          icdCode: null,
+        },
+        {
+          ...planOfCareReviewDraft.diagnosisDrafts[0],
+          diagnosisKey: "debug-row-classification",
+          diagnosisLabel: "Rows are classified as existing diagnoses vs empty editable slots vs empty readonly slots before action planning.",
+          icdCode: null,
+        },
+        {
+          ...planOfCareReviewDraft.diagnosisDrafts[0],
+          diagnosisKey: "valid-pneumonia",
+          diagnosisLabel: "Pneumonia",
+          icdCode: "J18.9",
+        },
+      ],
+      warnings: [
+        "Skipped suspicious diagnosis candidate: Fallback to row text heuristics only when direct control selectors are absent.",
+        "Diagnosis label exists without ICD code: true",
+        "Filtered diagnosis-like noise: Active Diagnoses",
+        "Diagnosis 7a030a98a98ca9f6 has no selected intervention.",
+        "No candidate bank entries found for diagnosis 7a030a98a98ca9f6.",
+        "Reviewer should confirm OASIS diagnosis source completeness.",
+      ],
+    };
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        oasisDomAcquisitionState: oasisDomAcquisitionQaCompleted,
+        oasisGate: nonBlockingOasisGate,
+        planOfCareReviewDraft: pollutedDraft,
+      },
+    });
+
+    assert.equal(detail.planOfCareReview.diagnosisCount, 1);
+    assert.equal(detail.planOfCareReview.draftedDiagnosisCount, 1);
+    assert.equal(detail.planOfCareReview.draftItems.length, 1);
+    assert.equal(detail.planOfCareReview.draftItems[0]?.diagnosisLabel, "Pneumonia");
+    assert.match(detail.planOfCareReview.warnings.join(" "), /Suppressed 2 non-clinical/);
+    assert.match(detail.planOfCareReview.warnings.join(" "), /confirm OASIS diagnosis source completeness/);
+    assert.doesNotMatch(
+      JSON.stringify(detail.planOfCareReview),
+      /Fallback to row text heuristics|Rows are classified|empty editable slots|without ICD code: true|Active Diagnoses|7a030a98a98ca9f6/,
+    );
+  });
+
+  it("loads Visit Notes review into patient detail payload", () => {
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        oasisDomAcquisitionState: oasisDomAcquisitionQaCompleted,
+        oasisGate: nonBlockingOasisGate,
+        planOfCareReviewDraft,
+        visitNoteQaReview: {
+          schemaVersion: "visit-note-qa-review.v1",
+          generatedAt: "2026-05-07T00:00:00.000Z",
+          status: "ready",
+          summary: {
+            totalVisitNotes: 3,
+            eligibleVisitNotes: 1,
+            analyzedVisitNotes: 2,
+            skippedVisitNotes: 1,
+            missedVisitNotes: 0,
+            notStartedVisitNotes: 1,
+            activeMonitoringCount: 1,
+            qaCompleteFinalizedCount: 1,
+            inProgressCount: 1,
+            submittedCount: 0,
+            qaPendingCount: 0,
+            signedCount: 0,
+            capturedVisitNotes: 1,
+            reusedVisitNotes: 1,
+            failedVisitNotes: 0,
+            degradedVisitNotes: 0,
+            cappedVisitNotes: 0,
+            byVisitType: { skilled_nursing: 1, physical_therapy: 2 },
+            byStatus: { qa_completed: 2, not_started: 1 },
+            actionableFindingCount: 1,
+            contradictionCount: 1,
+            pocAlignmentIssueCount: 0,
+            incompleteNoteCount: 0,
+          },
+          visitTypeCounts: [
+            { visitType: "skilled_nursing", count: 1, statuses: { qa_completed: 1 } },
+            { visitType: "physical_therapy", count: 2, statuses: { qa_completed: 1, not_started: 1 } },
+          ],
+          findings: [{
+            findingId: "finding-1",
+            visitNoteKey: "note-1",
+            visitType: "physical_therapy",
+            visitDate: "2026-05-02",
+            severity: "high",
+            category: "contradiction",
+            title: "Visit note mobility conflicts with OASIS/POC mobility limitation",
+            description: "Visit note suggests independent ambulation while OASIS limits mobility.",
+            visitNoteEvidence: ["visit-note-fact-1"],
+            pocEvidence: ["poc-goal-1"],
+            oasisEvidence: ["oasis-mobility-1"],
+            suggestedReviewerAction: "Confirm interval improvement before accepting the note.",
+            needsHumanReview: true,
+            confidence: 0.88,
+          }],
+          noteSummaries: [{
+            visitNoteKey: "note-1",
+            visitType: "physical_therapy",
+            visitDate: "2026-05-02",
+            status: "in_progress",
+            lifecycleStatus: "active_monitoring",
+            captureStatus: "captured",
+            analyzed: true,
+            analysisStatus: "ready",
+            summary: "PT note documents gait training.",
+            missingFields: [],
+            alignedPocGoals: ["Improve safe transfers"],
+            pocMappingResult: {
+              mappingStatus: "deterministic_only",
+              mappingSource: "deterministic",
+              alignmentStatus: "aligned",
+              matchStrength: 0.82,
+              matchedPocItems: [{
+                problemKey: "mobility",
+                problemTitle: "Mobility limitation",
+                goalTexts: ["Improve safe transfers"],
+                interventionTexts: ["Skilled PT gait training"],
+                evidenceIds: ["poc-goal-1"],
+              }],
+              visitNoteEvidence: ["visit-note-fact-1"],
+              rationale: "Visit-note facts support the mobility POC intervention.",
+              missingDocumentation: [],
+              contradictions: [],
+              pocUpdateSignals: [],
+            },
+            pocProblemMatches: [],
+            possibleContradictions: [],
+          }],
+          warnings: [],
+        },
+      },
+    });
+
+    assert.equal(detail.visitNotesReview.available, true);
+    assert.equal(detail.visitNotesReview.totalVisitNotes, 3);
+    assert.equal(detail.visitNotesReview.activeMonitoringCount, 1);
+    assert.equal(detail.visitNotesReview.qaCompleteFinalizedCount, 1);
+    assert.equal(detail.visitNotesReview.capturedVisitNotes, 1);
+    assert.equal(detail.visitNotesReview.contradictionCount, 1);
+    assert.equal(detail.visitNotesReview.noteSummaries[0]?.mappingStatus, "deterministic_only");
+    assert.equal(detail.visitNotesReview.noteSummaries[0]?.pocMappingResult?.matchedPocItems[0]?.problemKey, "mobility");
+    assert.equal(detail.visitNotesReview.visitTypeCounts[0]?.visitType, "skilled_nursing");
+    assert.equal(detail.visitNotesReview.findings[0]?.evidenceCount, 3);
+  });
+
+  it("distinguishes missing Visit Notes discovery from ordinary pending zero-count QA", () => {
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        oasisDomAcquisitionState: oasisDomAcquisitionQaCompleted,
+        oasisGate: nonBlockingOasisGate,
+        planOfCareReviewDraft,
+        visitNotesDiscovery: null,
+        visitNoteQaReview: {
+          schemaVersion: "visit-note-qa-review.v1",
+          generatedAt: "2026-05-07T00:00:00.000Z",
+          status: "pending",
+          summary: {
+            totalVisitNotes: 0,
+            analyzedVisitNotes: 0,
+            skippedVisitNotes: 0,
+            byVisitType: {},
+            byStatus: {},
+            actionableFindingCount: 0,
+            contradictionCount: 0,
+            pocAlignmentIssueCount: 0,
+            incompleteNoteCount: 0,
+          },
+          visitTypeCounts: [],
+          findings: [],
+          noteSummaries: [],
+          warnings: [],
+        },
+      },
+    });
+
+    assert.equal(detail.visitNotesReview.status, "discovery_missing");
+    assert.match(detail.visitNotesReview.warnings.join(" "), /discovery artifact is missing/);
+  });
+
+  it("does not render fact-pack metadata strings as diagnosis names", () => {
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        codingInput: null,
+        documentFactPack: null,
+        printedNoteChartValues: null,
+        qaPrefetch: null,
+        referralDiagnosisExtraction: null,
+        oasisDiagnosisExtraction: null,
+        sourceClinicalFactPack: {
+          schemaVersion: "clinical-fact-pack.v1",
+          facts: [
+            {
+              factId: "source-noise-1",
+              category: "diagnosis",
+              label: "Diagnosis Candidates",
+              normalizedValue: "active_diagnoses; diagnosis_candidates; needs_coding_review; high; low",
+              sourceType: "referral",
+              evidence: [{ artifactPath: "source-clinical-fact-pack.json" }],
+              confidence: 0.86,
+            },
+          ],
+        },
+        oasisClinicalFactPack: {
+          schemaVersion: "clinical-fact-pack.v1",
+          facts: [
+            {
+              factId: "oasis-noise-1",
+              category: "diagnosis",
+              label: "Diagnosis Supporting Evidence",
+              normalizedValue: "diagnosis_supporting_evidence",
+              sourceType: "oasis",
+              evidence: [{ artifactPath: "oasis-clinical-fact-pack.json" }],
+              confidence: 0.86,
+            },
+          ],
+        },
+      },
+    });
+
+    assert.equal(detail.referralDiagnosisSummary.diagnosisSource, "no_usable_referral_diagnosis_fact");
+    assert.equal(detail.oasisDiagnosisSummary.diagnosisSource, "no_usable_oasis_diagnosis_fact");
+    assert.equal(detail.referralDiagnosisSummary.primaryDiagnosis, null);
+    assert.equal(detail.oasisDiagnosisSummary.primaryDiagnosis, null);
+    assert.doesNotMatch(JSON.stringify(detail), /active_diagnoses|diagnosis_candidates|needs_coding_review/);
+  });
+
+  it("loads OASIS and referral documentation review summaries into patient detail payload", () => {
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        documentCatalog: {
+          schemaVersion: "document-catalog.v1",
+          documentCount: 2,
+          documents: [{ documentKey: "doc-referral" }, { documentKey: "doc-upload" }],
+        },
+        documentText: {
+          schemaVersion: "document-text.v1",
+          documents: [{ documentKey: "doc-referral" }],
+        },
+        oasisClinicalFactPack: {
+          schemaVersion: "clinical-fact-pack.v1",
+          facts: [
+            {
+              factId: "oasis-dx-1",
+              category: "diagnosis",
+              label: "Primary diagnosis",
+              normalizedValue: "pneumonia unspecified organism",
+              sourceType: "oasis",
+              evidence: [{ artifactPath: "oasis-clinical-fact-pack.json" }],
+              confidence: 0.9,
+            },
+            {
+              factId: "oasis-icd-1",
+              category: "icd_code",
+              label: "Primary diagnosis ICD",
+              normalizedValue: "J18.9",
+              sourceType: "oasis",
+              evidence: [{ artifactPath: "oasis-clinical-fact-pack.json" }],
+              confidence: 0.9,
+            },
+            {
+              factId: "oasis-resp-1",
+              category: "respiratory",
+              label: "Respiratory status",
+              normalizedValue: "respiratory monitoring indicated",
+              sourceType: "oasis",
+              evidence: [{ artifactPath: "oasis-printed-note-review.json" }],
+              confidence: 0.78,
+            },
+          ],
+        },
+        oasisDiagnosisExtraction: {
+          schemaVersion: "oasis-diagnosis-extraction.v1",
+          diagnosisCount: 2,
+          primaryDiagnosisCount: 1,
+          secondaryDiagnosisCount: 1,
+          diagnoses: [
+            {
+              label: "Pneumonia, unspecified organism",
+              icdCode: "J18.9",
+              rank: 1,
+              isPrimary: true,
+              sourceArtifactPath: "oasis-diagnosis-extraction.json",
+              sourceSection: "oasis_pdf_diagnosis_table",
+              confidence: 0.9,
+            },
+            {
+              label: "Heart failure, unspecified",
+              icdCode: "I50.9",
+              rank: 2,
+              isPrimary: false,
+              sourceArtifactPath: "oasis-diagnosis-extraction.json",
+              sourceSection: "oasis_pdf_diagnosis_table",
+              confidence: 0.9,
+            },
+          ],
+        },
+        sourceClinicalFactPack: {
+          schemaVersion: "clinical-fact-pack.v1",
+          facts: [
+            {
+              factId: "source-dx-1",
+              category: "diagnosis",
+              label: "Source diagnosis",
+              normalizedValue: "pneumonia unspecified organism",
+              sourceType: "referral",
+              evidence: [{ artifactPath: "referral-document-processing/extracted-facts.json" }],
+              confidence: 0.84,
+            },
+            {
+              factId: "source-skill-1",
+              category: "skilled_need",
+              label: "Skilled need",
+              normalizedValue: "skilled nursing monitoring",
+              sourceType: "referral",
+              evidence: [{ artifactPath: "source-clinical-fact-pack.json" }],
+              confidence: 0.8,
+            },
+          ],
+        },
+        referralDiagnosisExtraction: {
+          schemaVersion: "referral-diagnosis-extraction.v1",
+          diagnosisCount: 2,
+          primaryDiagnosisCount: 1,
+          secondaryDiagnosisCount: 1,
+          diagnoses: [
+            {
+              label: "Pneumonia, unspecified organism",
+              icdCode: "J18.9",
+              rank: 1,
+              isPrimary: true,
+              sourceArtifactPath: "referral-diagnosis-extraction.json",
+              sourceSection: "referral_diagnosis_table",
+              confidence: 0.9,
+            },
+            {
+              label: "Difficulty walking",
+              icdCode: "R26.2",
+              rank: 2,
+              isPrimary: false,
+              sourceArtifactPath: "referral-diagnosis-extraction.json",
+              sourceSection: "referral_diagnosis_table",
+              confidence: 0.9,
+            },
+          ],
+        },
+        diagnosisReconciliation: {
+          schemaVersion: "diagnosis-reconciliation.v1",
+          referralDiagnosisCount: 2,
+          oasisDiagnosisCount: 2,
+          matchedCount: 1,
+          missingInOasisCount: 1,
+          missingInReferralCount: 1,
+          codeMismatchCount: 0,
+          labelMismatchCount: 0,
+          rankMismatchCount: 0,
+          rows: [],
+          warnings: [],
+        },
+        oasisExtractionCoverageReport: {
+          schemaVersion: "oasis-extraction-coverage-report.v1",
+          summary: {
+            coveredCount: 2,
+            partialCount: 1,
+            missingCount: 0,
+            unknownCount: 0,
+          },
+        },
+      },
+    });
+
+    assert.equal(detail.oasisDocumentationReview.available, true);
+    assert.equal(detail.oasisDocumentationReview.factCount, 3);
+    assert.equal(detail.oasisDocumentationReview.diagnosisCount, 2);
+    assert.equal(detail.oasisDocumentationReview.icdCodeCount, 2);
+    assert.equal(detail.oasisDocumentationReview.factCategories.includes("respiratory"), true);
+    assert.equal(
+      detail.oasisDocumentationReview.artifactPaths.includes("oasis-clinical-fact-pack.json"),
+      true,
+    );
+    assert.equal(
+      detail.oasisDocumentationReview.artifactPaths.includes("oasis-extraction-coverage-report.json"),
+      true,
+    );
+    assert.equal(
+      detail.oasisDocumentationReview.artifactPaths.includes("oasis-diagnosis-extraction.json"),
+      true,
+    );
+    assert.equal(detail.oasisDocumentationReview.note, null);
+    assert.equal(detail.referralDocumentationReview.available, true);
+    assert.equal(detail.referralDocumentationReview.factCount, 2);
+    assert.equal(detail.referralDocumentationReview.diagnosisCount, 2);
+    assert.equal(detail.referralDocumentationReview.icdCodeCount, 2);
+    assert.equal(
+      detail.referralDocumentationReview.artifactPaths.includes("source-clinical-fact-pack.json"),
+      true,
+    );
+    assert.equal(
+      detail.referralDocumentationReview.artifactPaths.includes("document-catalog.json"),
+      true,
+    );
+    assert.equal(
+      detail.referralDocumentationReview.artifactPaths.includes("referral-diagnosis-extraction.json"),
+      true,
+    );
+    assert.equal(detail.diagnosisReconciliationReview.available, true);
+    assert.equal(detail.diagnosisReconciliationReview.oasisDiagnosisCount, 2);
+    assert.equal(detail.diagnosisReconciliationReview.referralDiagnosisCount, 2);
+    assert.equal(detail.diagnosisReconciliationReview.matchedCount, 1);
+    assert.equal(detail.diagnosisReconciliationReview.missingInOasisCount, 1);
+    assert.equal(detail.diagnosisReconciliationReview.missingInReferralCount, 1);
+    assert.equal(detail.oasisDiagnosisSummary.otherDiagnoses[0]?.code, "I50.9");
+    assert.equal(detail.referralDiagnosisSummary.otherDiagnoses[0]?.code, "R26.2");
+  });
+
+  it("exposes all OASIS diagnosis extraction entries in patient detail payload", () => {
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        oasisDiagnosisExtraction: {
+          schemaVersion: "oasis-diagnosis-extraction.v1",
+          diagnosisCount: 4,
+          primaryDiagnosisCount: 1,
+          secondaryDiagnosisCount: 3,
+          diagnoses: [
+            {
+              label: "Encounter for other orthopedic aftercare",
+              icdCode: "Z47.89",
+              normalizedIcd10Code: "Z47.89",
+              rank: 1,
+              role: "primary",
+              slotLabel: "PRIMARY DIAGNOSIS",
+              onsetDate: "05/12/2026",
+              group: "MS_REHAB",
+              isPrimary: true,
+              sourceSection: "oasis_pdf_diagnosis_table",
+              confidence: 0.9,
+            },
+            {
+              label: "Lumbago with sciatica, right side",
+              icdCode: "M54.41",
+              normalizedIcd10Code: "M54.41",
+              rank: 2,
+              role: "secondary",
+              slotLabel: "OTHER DIAGNOSIS - 1",
+              onsetDate: "05/12/2026",
+              group: "No_group",
+              isPrimary: false,
+              sourceSection: "oasis_pdf_diagnosis_table",
+              confidence: 0.9,
+            },
+            {
+              label: "Essential (primary) hypertension",
+              icdCode: "I10",
+              normalizedIcd10Code: "I10",
+              rank: 3,
+              role: "secondary",
+              slotLabel: "OTHER DIAGNOSIS - 2",
+              onsetDate: "05/12/2026",
+              group: "No_group",
+              isPrimary: false,
+              sourceSection: "oasis_pdf_diagnosis_table",
+              confidence: 0.9,
+            },
+            {
+              label: "Anxiety disorder, unspecified",
+              icdCode: "F41.9",
+              normalizedIcd10Code: "F41.9",
+              rank: 4,
+              role: "secondary",
+              slotLabel: "OTHER DIAGNOSIS - 3",
+              onsetDate: "05/12/2026",
+              group: "Behavioral_5",
+              isPrimary: false,
+              sourceSection: "oasis_pdf_diagnosis_table",
+              confidence: 0.9,
+            },
+          ],
+        },
+      },
+    });
+
+    assert.equal(detail.oasisDiagnosisSummary.primaryDiagnosis?.code, "Z47.89");
+    assert.deepEqual(
+      detail.oasisDiagnosisSummary.otherDiagnoses.map((diagnosis) => diagnosis.code),
+      ["M54.41", "I10", "F41.9"],
+    );
+    assert.equal(detail.oasisDiagnosisSummary.otherDiagnoses[0]?.group, "No_group");
+    assert.equal(detail.oasisDiagnosisSummary.otherDiagnoses[1]?.onsetDate, "05/12/2026");
+  });
+
+  it("keeps Visit Notes and OASIS document text out of referral documentation review counts", () => {
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        documentCatalog: {
+          documentCount: 3,
+          documents: [
+            { normalizedType: "referral", displayName: "Referral Packet.pdf" },
+            { normalizedType: "visit_note", displayName: "SN Visit Note" },
+            { normalizedType: "oasis", displayName: "OASIS Assessment" },
+          ],
+        },
+        documentText: {
+          documents: [
+            {
+              type: "ORDER",
+              portalLabel: "Referral Packet.pdf",
+              sourcePath: "patient/documents/uploads/referral/source.pdf",
+              text: "Patient requires skilled nursing.",
+            },
+            {
+              type: "VISIT_NOTE",
+              portalLabel: "SN Visit Note",
+              sourcePath: "patient/documents/visit-notes/sn/source.txt",
+              text: "Visit note documents wound care.",
+            },
+            {
+              type: "OASIS",
+              portalLabel: "OASIS Assessment",
+              sourcePath: "patient/documents/uploads/oasis/source.pdf",
+              text: "OASIS documents page false false false.",
+            },
+          ],
+        },
+        sourceClinicalFactPack: {
+          schemaVersion: "clinical-fact-pack.v1",
+          facts: [
+            {
+              factId: "source-skill-1",
+              category: "skilled_need",
+              label: "Skilled need",
+              normalizedValue: "skilled nursing",
+              sourceType: "referral",
+              evidence: [{ artifactPath: "source-clinical-fact-pack.json" }],
+              confidence: 0.8,
+            },
+            {
+              factId: "visit-note-1",
+              category: "wound",
+              label: "Wound",
+              normalizedValue: "visit note wound care",
+              sourceType: "visit_note",
+              evidence: [{ artifactPath: "visit-note-fact-pack.json" }],
+              confidence: 0.8,
+            },
+            {
+              factId: "oasis-1",
+              category: "fall_risk",
+              label: "Fall risk",
+              normalizedValue: "oasis fall risk",
+              sourceType: "oasis",
+              evidence: [{ artifactPath: "oasis-clinical-fact-pack.json" }],
+              confidence: 0.8,
+            },
+          ],
+        },
+      },
+    });
+
+    const summaryByLabel = new Map(detail.referralDocumentationReview.summaryItems.map((item) => [item.label, item.value]));
+    assert.equal(summaryByLabel.get("Catalog Documents"), "1");
+    assert.equal(summaryByLabel.get("Document Text Entries"), "1");
+    assert.equal(detail.referralDocumentationReview.factCount, 1);
+    assert.deepEqual(detail.referralDocumentationReview.factCategories, ["skilled_need"]);
+  });
+
+  it("falls back to clinical fact packs for diagnosis summaries when extraction artifacts are unavailable", () => {
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        codingInput: {},
+        documentFactPack: null,
+        printedNoteChartValues: { currentChartValues: {} },
+        qaPrefetch: {
+          ...patientViewInput.artifactContents.qaPrefetch,
+          diagnosisRoute: { found: true, visibleDiagnoses: [] },
+        },
+        referralDiagnosisExtraction: null,
+        oasisDiagnosisExtraction: null,
+        sourceClinicalFactPack: {
+          facts: [
+            {
+              category: "diagnosis",
+              normalizedValue: "Pneumonia, unspecified organism",
+              sourceType: "referral",
+              confidence: 0.91,
+            },
+            {
+              category: "icd_code",
+              normalizedValue: "J18.9",
+              sourceType: "referral",
+              confidence: 0.91,
+            },
+          ],
+        },
+        oasisClinicalFactPack: {
+          facts: [
+            {
+              category: "diagnosis",
+              normalizedValue: "Heart failure, unspecified",
+              sourceType: "oasis",
+              confidence: 0.84,
+            },
+            {
+              category: "icd_code",
+              normalizedValue: "I50.9",
+              sourceType: "oasis",
+              confidence: 0.84,
+            },
+          ],
+        },
+      },
+    });
+
+    assert.equal(detail.referralDiagnosisSummary.primaryDiagnosis?.code, "J18.9");
+    assert.equal(detail.referralDiagnosisSummary.primaryDiagnosis?.description, "Pneumonia, unspecified organism");
+    assert.equal(detail.referralDiagnosisSummary.diagnosisSource, "source_clinical_fact_pack");
+    assert.equal(detail.oasisDiagnosisSummary.primaryDiagnosis?.code, "I50.9");
+    assert.equal(detail.oasisDiagnosisSummary.primaryDiagnosis?.description, "Heart failure, unspecified");
+    assert.equal(detail.oasisDiagnosisSummary.diagnosisSource, "oasis_clinical_fact_pack");
+    assert.equal(detail.diagnosisComparisonStatus, "conflict");
+  });
+
+  it("does not render portal page-state diagnostics as referral clinical evidence", () => {
+    const badPortalText = "OASIS documents page false false false false false false 0 none 0 high:0 medium:0 low:0 false false true false true https://app.finalehealth.com/patient/documents /data/control-plane/batches/x";
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        clinicalComparisonRows: [{
+          fieldKey: "allergy_list",
+          category: "Medication & Allergies",
+          referralValue: badPortalText,
+          oasisValue: null,
+          verdict: "missing_in_oasis",
+          confidence: 0.82,
+          severity: "medium",
+          rationale: badPortalText,
+          referralEvidence: [{
+            artifact: "source-clinical-fact-pack.json",
+            sourceType: "SOURCE_FACT_PACK",
+            sourceLabel: "medication fact-pack evidence",
+            snippet: badPortalText,
+            confidence: 0.78,
+          }],
+          oasisEvidence: [],
+          needsReview: true,
+          sources: {
+            referralArtifacts: ["source-clinical-fact-pack.json"],
+            oasisArtifacts: [],
+          },
+        }],
+        comparisonRowsStatus: "ready",
+      },
+    });
+
+    const row = detail.dashboardState.rows[0];
+    assert.ok(row);
+    assert.equal(row.displayReferralValue, "No reliable referral value extracted");
+    assert.equal(row.referralSnippet, null);
+    assert.equal(row.evidence.length, 0);
+    assert.equal(row.shortReason, "Comparison row requires reviewer confirmation.");
+  });
+
+  it("loads clinical contradiction analysis into patient detail review payload", () => {
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        clinicalContradictionAnalysis: actionableClinicalContradictionAnalysis,
+        artifactLineage: clinicalLineage,
+      },
+    });
+
+    assert.equal(detail.clinicalDiscrepancyReview.available, true);
+    assert.equal(
+      detail.clinicalDiscrepancyReview.reviewerQueueInterpretation,
+      "actionable_discrepancies_detected",
+    );
+    assert.equal(detail.clinicalDiscrepancyReview.totalFindings, 2);
+    assert.equal(detail.clinicalDiscrepancyReview.reviewerVisibleCount, 1);
+    assert.equal(detail.clinicalDiscrepancyReview.suppressedCount, 1);
+    assert.equal(detail.clinicalDiscrepancyReview.reviewerQueueCount, 1);
+    assert.equal(detail.clinicalDiscrepancyReview.highPriorityCount, 1);
+    assert.equal(detail.clinicalDiscrepancyReview.sourceFactCount, 177);
+    assert.equal(detail.clinicalDiscrepancyReview.oasisFactCount, 72);
+    assert.equal(detail.clinicalDiscrepancyReview.clinicalContradictionAnalysisHash, "eb3122dc0000");
+    assert.equal(detail.clinicalDiscrepancyReview.reviewerQueue[0]?.priority, "high");
+    assert.equal(detail.clinicalDiscrepancyReview.reviewerQueue[0]?.sourceFactIds[0], "src-cog");
+  });
+
+  it("handles missing clinical contradiction artifact for older runs", () => {
+    const detail = toDashboardPatientDetail(patientViewInput);
+
+    assert.equal(detail.clinicalDiscrepancyReview.available, false);
+    assert.equal(detail.clinicalDiscrepancyReview.reviewerQueueInterpretation, "not_available");
+    assert.deepEqual(detail.clinicalDiscrepancyReview.reviewerQueue, []);
+  });
+
+  it("preserves empty reviewer queue as no-actionable clinical discrepancy state", () => {
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        clinicalContradictionAnalysis: {
+          ...actionableClinicalContradictionAnalysis,
+          findingCount: 67,
+          reviewerVisibleCount: 0,
+          suppressedCount: 67,
+          reviewerQueueInterpretation: "no_actionable_discrepancies_detected",
+          reviewerQueue: [],
+          summary: {
+            ...actionableClinicalContradictionAnalysis.summary,
+            totalFindings: 67,
+            reviewerVisibleCount: 0,
+            suppressedCount: 67,
+            highPriorityCount: 0,
+          },
+        },
+        artifactLineage: clinicalLineage,
+      },
+    });
+
+    assert.equal(
+      detail.clinicalDiscrepancyReview.reviewerQueueInterpretation,
+      "no_actionable_discrepancies_detected",
+    );
+    assert.equal(detail.clinicalDiscrepancyReview.reviewerQueueCount, 0);
+    assert.equal(detail.clinicalDiscrepancyReview.totalFindings, 67);
+    assert.equal(detail.clinicalDiscrepancyReview.suppressedCount, 67);
+  });
+
+  it("does not include suppressed contradiction findings in reviewer queue", () => {
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        clinicalContradictionAnalysis: actionableClinicalContradictionAnalysis,
+        artifactLineage: clinicalLineage,
+      },
+    });
+
+    assert.equal(detail.clinicalDiscrepancyReview.reviewerQueue.length, 1);
+    assert.equal(
+      detail.clinicalDiscrepancyReview.reviewerQueue.some((finding) =>
+        finding.findingId === "finding-suppressed"),
+      false,
+    );
+    assert.deepEqual(detail.clinicalDiscrepancyReview.topSuppressionReasons, [
+      "low_confidence_source_fact",
+      "none",
+    ]);
+  });
+
   it("omits lock and write-era fields from dashboard patient summary", () => {
     const summary = toDashboardPatientSummary(patientViewInput);
 
@@ -486,6 +1809,12 @@ describe("dashboardRunViews", () => {
       description: "PNEUMONIA, UNSPECIFIED ORGANISM",
       confidence: "high",
     });
+    assert.equal(summary.diagnosisSource, "coding_input");
+    assert.equal(summary.diagnosisComparisonStatus, "partial_overlap");
+    assert.equal(summary.referralDiagnosisSummary.diagnosisSource, "coding_input");
+    assert.equal(summary.referralDiagnosisSummary.primaryDiagnosis?.code, "J18.9");
+    assert.equal(summary.oasisDiagnosisSummary.diagnosisSource, "qa_visible_diagnoses");
+    assert.equal(summary.oasisDiagnosisSummary.primaryDiagnosis?.code, "J18.9");
     assert.equal(summary.subsidiaryId, "default");
     assert.equal(summary.subsidiaryName, "Default Subsidiary");
     assert.equal(summary.otherDiagnoses.length, 1);
@@ -509,6 +1838,18 @@ describe("dashboardRunViews", () => {
     assert.equal(summary.qaPrefetch?.printedNoteIncompleteSectionCount, 1);
     assert.equal(summary.qaPrefetch?.printedNotePrintButtonDetected, true);
     assert.equal(summary.qaPrefetch?.printedNoteTextLength, 8120);
+    assert.equal(summary.oasisValidation?.status, "validated_with_gaps");
+    assert.equal(summary.oasisValidation?.missingFieldCount, 2);
+    assert.equal(summary.referralOasisConsistency?.blockingFindingCount, 1);
+    assert.equal(summary.oasisGate?.status, "failed_both");
+    assert.equal(summary.oasisGate?.blockedFromPlanOfCare, true);
+    assert.equal(summary.generatedPlanOfCare?.status, "skipped_oasis_gate");
+    assert.equal(summary.generatedPlanOfCareStatus, "skipped_oasis_gate");
+    assert.equal(summary.reviewerDiagnostics?.diagnosisExtraction.status, "llm_succeeded");
+    assert.equal(summary.reviewerDiagnostics?.diagnosisExtraction.modelId, "amazon.nova-pro-v1:0");
+    assert.equal(summary.reviewerDiagnostics?.referralProposal.status, "fallback_used");
+    assert.equal(summary.reviewerDiagnostics?.referralQaInsights.status, "fallback_used");
+    assert.equal(summary.reviewerDiagnostics?.planOfCareGeneration.status, "llm_succeeded");
     assert.equal(summary.referralQa.referralDataAvailable, true);
     assert.equal(summary.referralQa.extractionUsabilityStatus, "usable");
     assert.equal(summary.referralQa.discrepancyRating, "yellow");
@@ -522,6 +1863,177 @@ describe("dashboardRunViews", () => {
     assert.equal(summary.referralQa.sourceHighlights.length > 0, true);
     assert.equal(summary.referralQa.draftNarratives.length > 0, true);
     assert.equal(summary.referralQa.consistencyChecks[0]?.id, "respiratory-vs-m1400");
+  });
+
+  it("does not display Plan of Care narrative text as a referral diagnosis", () => {
+    const summary = toDashboardPatientSummary({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        codingInput: null,
+        documentFactPack: {
+          factPack: {
+            diagnoses: [
+              {
+                description:
+                  "Plan of care diagnosis list includes and . Goals and interventions reviewed. Visit frequency is SN 2W4.",
+                source: "document_fact_pack",
+              },
+              {
+                code: "J18.9",
+                description: "PNEUMONIA, UNSPECIFIED ORGANISM",
+              },
+            ],
+          },
+        },
+      },
+    });
+
+    assert.equal(summary.referralDiagnosisSummary.diagnosisSource, "document_fact_pack");
+    assert.equal(summary.referralDiagnosisSummary.primaryDiagnosis?.code, "J18.9");
+    assert.doesNotMatch(
+      summary.referralDiagnosisSummary.primaryDiagnosis?.description ?? "",
+      /plan of care diagnosis list|visit frequency/i,
+    );
+  });
+
+  it("suppresses referral diagnosis and medication facts when referral extraction is rejected", () => {
+    const rejectedPatientQaReference: PatientQaReference = {
+      ...patientQaReference,
+      fieldRegistry: [
+        ...patientQaReference.fieldRegistry,
+        {
+          fieldKey: "primary_diagnosis",
+          label: "Primary Diagnosis",
+          groupKey: "diagnosis_and_coding",
+          sectionKey: "active_diagnoses",
+          oasisItemId: "M1021",
+          fieldType: "diagnosis_row",
+          controlType: "table",
+          qaPriority: "critical",
+          dashboardVisibility: "default",
+          reviewMode: "coding_review_required",
+          canInferFromReferral: true,
+          compareAgainstChart: true,
+          requiresHumanReview: true,
+          requiresCodingTeamReview: true,
+          narrativeField: false,
+          medicationField: false,
+          diagnosisField: true,
+          lowValueAdminField: false,
+          supportedEvidenceSources: ["referral_document"],
+          notes: null,
+        },
+      ],
+      referralDashboardSections: [
+        ...patientQaReference.referralDashboardSections,
+        {
+          sectionKey: "active_diagnoses",
+          label: "Active Diagnoses",
+          dashboardOrder: 2,
+          printVisibility: "visible",
+          fieldKeys: ["primary_diagnosis"],
+          textSpans: [],
+        },
+      ],
+      comparisonResults: {
+        ...patientQaReference.comparisonResults,
+        primary_diagnosis: {
+          fieldKey: "primary_diagnosis",
+          label: "Primary Diagnosis",
+          groupKey: "diagnosis_and_coding",
+          qaPriority: "critical",
+          currentChartValue: null,
+          documentSupportedValue: "Z69 lm UUgkk( A--M nomcOP 4HKr/ 3pQ,9 w051UW auUcm ZDbJHd",
+          comparisonStatus: "missing_in_chart",
+          workflowState: "needs_coding_review",
+          recommendedAction: "escalate_to_coding",
+          sourceEvidence: [],
+          requiresHumanReview: true,
+        },
+      },
+      qaReviewQueue: [
+        ...patientQaReference.qaReviewQueue,
+        {
+          fieldKey: "primary_diagnosis",
+          groupKey: "diagnosis_and_coding",
+          sectionKey: "active_diagnoses",
+          qaPriority: "critical",
+          comparisonStatus: "missing_in_chart",
+          workflowState: "needs_coding_review",
+          recommendedAction: "escalate_to_coding",
+        },
+      ],
+    };
+
+    const summary = toDashboardPatientSummary({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        qaDocumentSummary: {
+          extractionUsabilityStatus: "rejected",
+          warnings: ["Extraction quality rejected: pdf_structure_text, ocr_retry_recommended"],
+        },
+        referralExtractedFacts: {
+          diagnosis_candidates: [
+            {
+              code: "Z69",
+              description: "lm UUgkk( A--M nomcOP 4HKr/ 3pQ,9 w051UW auUcm ZDbJHd",
+              is_primary_candidate: true,
+            },
+          ],
+        },
+        codingInput: {
+          primaryDiagnosis: {
+            code: "Z69",
+            description: "lm UUgkk( A--M nomcOP 4HKr/ 3pQ,9 w051UW auUcm ZDbJHd",
+          },
+        },
+        documentFactPack: {
+          factPack: {
+            diagnoses: [
+              {
+                code: "Z69",
+                description: "lm UUgkk( A--M nomcOP 4HKr/ 3pQ,9 w051UW auUcm ZDbJHd",
+              },
+            ],
+            medications: [
+              {
+                name: "Tzvndtttl Pgtl Vw Ry Z0 Oltuuuvv Raa1Jc11Q Paqal Zaiaai",
+                dose: "3g",
+              },
+            ],
+          },
+        },
+        sourceClinicalFactPack: {
+          facts: [
+            { category: "diagnosis", normalizedValue: "lm UUgkk( A--M nomcOP" },
+          ],
+        },
+        patientQaReference: rejectedPatientQaReference,
+      },
+    });
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        qaDocumentSummary: {
+          extractionUsabilityStatus: "rejected",
+          warnings: ["Extraction quality rejected: pdf_structure_text, ocr_retry_recommended"],
+        },
+        patientQaReference: rejectedPatientQaReference,
+      },
+    });
+
+    assert.equal(summary.referralDiagnosisSummary.primaryDiagnosis, null);
+    assert.equal(summary.referralDiagnosisSummary.otherDiagnoses.length, 0);
+    assert.equal(summary.referralDiagnosisSummary.diagnosisSource, null);
+    assert.equal(summary.referralMedicationSummary, null);
+    assert.notEqual(summary.oasisDiagnosisSummary.primaryDiagnosis, null);
+    assert.equal(
+      detail.dashboardState.rows.find((row) => row.fieldKey === "primary_diagnosis")?.displayReferralValue,
+      "No reliable referral value extracted",
+    );
   });
 
   it("returns patient detail as diagnosis reference data plus minimal workbook context", () => {
@@ -548,6 +2060,9 @@ describe("dashboardRunViews", () => {
     assert.equal(detail.qaPrefetch?.printedNoteReviewSource, "printed_note_ocr");
     assert.equal(detail.qaPrefetch?.printedNoteSections.length, 2);
     assert.equal(detail.qaPrefetch?.printedNoteSections[1]?.label, "Care Plan");
+    assert.equal(detail.oasisValidation?.missingFields[0]?.mItem, "M1730");
+    assert.equal(detail.referralOasisConsistency?.findings[0]?.category, "cognition");
+    assert.equal(detail.oasisGate?.planOfCareAttempted, false);
     assert.equal(detail.referralPatientContext?.referralDate, "02/17/2026");
     assert.equal(detail.referralSections.length, 1);
     assert.equal(detail.referralSections[0]?.fields[0]?.comparisonStatus, "supported_by_referral");
@@ -557,11 +2072,18 @@ describe("dashboardRunViews", () => {
     assert.equal(detail.dashboardState.rows[0]?.comparisonResult, "uncertain");
     assert.equal(detail.dashboardState.rows[0]?.backendComparisonStatus, "supported_by_referral");
     assert.equal(detail.dashboardState.rows[0]?.currentChartValueSource, "printed_note_ocr");
+    assert.equal(detail.dashboardState.rows[0]?.oasisEvidenceMode, "printed_note_ocr");
+    assert.equal(detail.dashboardState.rows[0]?.oasisEvidenceLabel, "OCR field value");
+    assert.equal(detail.dashboardState.rows[0]?.qaResultLabel, "Check source documents");
+    assert.equal(detail.dashboardState.rows[0]?.qaActionLabel, "Check source documents");
+    assert.equal(detail.dashboardState.rows[0]?.referralComparisonOrigin, "referral_qa_fallback");
     assert.equal(
       detail.dashboardState.rows[0]?.valuePresence.hasPrintedNoteChartValue,
       true,
     );
     assert.equal(detail.dashboardState.visibilitySummary.hiddenRows, 0);
+    assert.equal(detail.dashboardState.sourceCoverage.fieldLevelValueCount, 1);
+    assert.equal(detail.dashboardState.sourceCoverage.sectionEvidenceFallbackRowCount, 0);
     assert.equal(detail.dashboardReview.openRowCount, 1);
     assert.equal(
       detail.referralSections[0]?.fields[0]?.recommendation.label,
@@ -777,6 +2299,252 @@ describe("dashboardRunViews", () => {
     );
   });
 
+  it("falls back to printed-note diagnoses when coding input is missing", () => {
+    const summary = toDashboardPatientSummary({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        codingInput: null,
+        printedNoteChartValues: {
+          currentChartValues: {
+            primary_diagnosis: "R13.10 - Dysphagia, unspecified",
+            secondary_diagnoses: [
+              "I50.9 - Heart failure, unspecified",
+              "E03.9 - Hypothyroidism, unspecified",
+            ],
+          },
+        },
+      },
+    });
+
+    assert.equal(summary.diagnosisSource, "document_fact_pack");
+    assert.equal(summary.primaryDiagnosis?.code, "J18.9");
+    assert.equal(summary.referralDiagnosisSummary.primaryDiagnosis?.code, "J18.9");
+    assert.equal(summary.oasisDiagnosisSummary.primaryDiagnosis?.code, "R13.10");
+    assert.equal(summary.diagnosisComparisonStatus, "conflict");
+  });
+
+  it("falls back to document fact pack diagnoses when coding and printed-note diagnoses are missing", () => {
+    const summary = toDashboardPatientSummary({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        codingInput: null,
+        printedNoteChartValues: {
+          currentChartValues: {},
+        },
+        documentFactPack: {
+          factPack: {
+            diagnoses: [
+              {
+                code: "G93.41",
+                description: "METABOLIC ENCEPHALOPATHY",
+              },
+              {
+                code: "R26.2",
+                description: "DIFFICULTY WALKING",
+              },
+            ],
+          },
+        },
+      },
+    });
+
+    assert.equal(summary.diagnosisSource, "document_fact_pack");
+    assert.equal(summary.primaryDiagnosis?.code, "G93.41");
+    assert.equal(summary.otherDiagnoses[0]?.code, "R26.2");
+    assert.equal(summary.referralDiagnosisSummary.primaryDiagnosis?.code, "G93.41");
+    assert.equal(summary.oasisDiagnosisSummary.primaryDiagnosis?.code, "J18.9");
+    assert.equal(summary.diagnosisComparisonStatus, "conflict");
+  });
+
+  it("filters obvious non-diagnosis printed-note values and keeps referral diagnoses primary", () => {
+    const summary = toDashboardPatientSummary({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        codingInput: null,
+        printedNoteChartValues: {
+          currentChartValues: {
+            primary_diagnosis: "Patient lives in congregate situation",
+          },
+        },
+        documentFactPack: {
+          factPack: {
+            diagnoses: [
+              {
+                code: "J18.9",
+                description: "PNEUMONIA, UNSPECIFIED ORGANISM",
+              },
+            ],
+          },
+        },
+      },
+    });
+
+    assert.equal(summary.primaryDiagnosis?.code, "J18.9");
+    assert.equal(summary.referralDiagnosisSummary.primaryDiagnosis?.code, "J18.9");
+    assert.equal(summary.oasisDiagnosisSummary.primaryDiagnosis?.code, "J18.9");
+    assert.equal(summary.diagnosisComparisonStatus, "aligned");
+  });
+
+  it("suppresses noisy printed-note primary diagnosis values in the comparison workspace", () => {
+    const diagnosisReference: PatientQaReference = {
+      ...patientQaReference,
+      fieldRegistry: [
+        ...patientQaReference.fieldRegistry,
+        {
+          fieldKey: "primary_diagnosis",
+          label: "Primary Diagnosis",
+          groupKey: "diagnosis_and_coding",
+          sectionKey: "active_diagnoses",
+          oasisItemId: "M1021",
+          fieldType: "diagnosis_row",
+          controlType: "table",
+          qaPriority: "critical",
+          dashboardVisibility: "default",
+          reviewMode: "coding_review_required",
+          canInferFromReferral: true,
+          compareAgainstChart: true,
+          requiresHumanReview: true,
+          requiresCodingTeamReview: true,
+          narrativeField: false,
+          medicationField: false,
+          diagnosisField: true,
+          lowValueAdminField: false,
+          supportedEvidenceSources: ["referral_document"],
+          notes: null,
+        },
+      ],
+      referralDashboardSections: [
+        ...patientQaReference.referralDashboardSections,
+        {
+          sectionKey: "active_diagnoses",
+          label: "Active Diagnoses",
+          dashboardOrder: 2,
+          printVisibility: "visible",
+          fieldKeys: ["primary_diagnosis"],
+          textSpans: [
+            {
+              text: "J18.9 PNEUMONIA, UNSPECIFIED ORGANISM",
+              sourceSectionNames: ["Diagnosis"],
+              relatedFieldKeys: ["primary_diagnosis"],
+              lineReferences: [],
+            },
+          ],
+        },
+      ],
+      comparisonResults: {
+        ...patientQaReference.comparisonResults,
+        primary_diagnosis: {
+          fieldKey: "primary_diagnosis",
+          label: "Primary Diagnosis",
+          groupKey: "diagnosis_and_coding",
+          qaPriority: "critical",
+          currentChartValue: "Patient lives in congregate situation",
+          documentSupportedValue: null,
+          comparisonStatus: "supported_by_referral",
+          workflowState: "needs_coding_review",
+          recommendedAction: "escalate_to_coding",
+          sourceEvidence: [
+            {
+              sourceType: "REFERRAL_DIAGNOSIS",
+              sourceLabel: "Referral diagnosis list",
+              textSpan: "J18.9 PNEUMONIA, UNSPECIFIED ORGANISM",
+              confidence: 0.96,
+            },
+          ],
+          requiresHumanReview: true,
+        },
+      },
+      qaReviewQueue: [
+        ...patientQaReference.qaReviewQueue,
+        {
+          fieldKey: "primary_diagnosis",
+          groupKey: "diagnosis_and_coding",
+          sectionKey: "active_diagnoses",
+          qaPriority: "critical",
+          comparisonStatus: "needs_coding_review",
+          workflowState: "needs_coding_review",
+          recommendedAction: "escalate_to_coding",
+        },
+      ],
+    };
+
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        patientQaReference: diagnosisReference,
+        codingInput: null,
+        printedNoteChartValues: {
+          currentChartValues: {
+            primary_diagnosis: "Patient lives in congregate situation",
+          },
+        },
+        printedNoteReview: {
+          reviewSource: "printed_note_ocr",
+          sections: [
+            {
+              key: "diagnosis",
+              label: "Diagnosis",
+              status: "COMPLETED",
+              filledFieldCount: 5,
+              missingFieldCount: 0,
+              evidence: [
+                "Primary Diagnosis J18.9 PNEUMONIA, UNSPECIFIED ORGANISM",
+              ],
+            },
+          ],
+        },
+        documentFactPack: {
+          factPack: {
+            diagnoses: [
+              {
+                code: "J18.9",
+                description: "PNEUMONIA, UNSPECIFIED ORGANISM",
+              },
+            ],
+          },
+        },
+      },
+    });
+
+    const primaryDiagnosisRow = detail.dashboardState.rows.find(
+      (row) => row.fieldKey === "primary_diagnosis",
+    );
+
+    assert.ok(primaryDiagnosisRow);
+    assert.match(primaryDiagnosisRow.displayReferralValue, /J18\.9/i);
+    assert.match(primaryDiagnosisRow.displayPortalValue, /Printed OASIS review captured Diagnosis section evidence/i);
+    assert.equal(primaryDiagnosisRow.currentChartValue, null);
+  });
+
+  it("returns clinician-friendly referral summary fields while preserving technical warnings", () => {
+    const summary = toDashboardPatientSummary({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        qaDocumentSummary: {
+          extractionUsabilityStatus: "incomplete",
+          normalizedSectionCount: 1,
+          llmProposalCount: 6,
+          warnings: [
+            "Deterministic referral facts extraction was used.",
+            "LLM disabled or unavailable; deterministic referral proposal fallback was used.",
+          ],
+        },
+      },
+    });
+
+    assert.equal(summary.referralQa.summaryHeadline, "Referral extraction incomplete");
+    assert.match(summary.referralQa.summaryDetail, /structured extraction is incomplete or unreliable/i);
+    assert.deepEqual(summary.referralQa.displayWarnings, [
+      "Review referral follow-up items before treating the comparison as complete.",
+    ]);
+    assert.equal(summary.referralQa.warnings.length, 2);
+  });
+
   it("prefers refreshed printed-note values over stale printed-note snapshot values", () => {
     const detail = toDashboardPatientDetail({
       ...patientViewInput,
@@ -884,15 +2652,21 @@ describe("dashboardRunViews", () => {
 
     assert.equal(
       detail.dashboardState.rows[0]?.displayPortalValue,
-      "Printed OASIS review found Primary Reason / Medical Necessity (completed; 4 captured, 0 missing).",
+      "Printed OASIS review captured Primary Reason / Medical Necessity section evidence (completed; 4 captured).",
     );
-    assert.equal(detail.dashboardState.rows[0]?.currentChartValueSourceLabel, "Printed note review");
+    assert.equal(detail.dashboardState.rows[0]?.currentChartValueSourceLabel, "OASIS section evidence only");
+    assert.equal(
+      detail.dashboardState.rows[0]?.oasisEvidenceMode,
+      "printed_note_review_section_fallback",
+    );
+    assert.equal(detail.dashboardState.rows[0]?.oasisEvidenceLabel, "OASIS section evidence only");
     assert.equal(
       detail.dashboardState.rows[0]?.portalSnippet,
       "Primary Reason for Home Health/Medical Necessity (POC Element): Skilled nursing for medication management and wound care.",
     );
     assert.equal(detail.dashboardState.rows[0]?.comparisonResult, "uncertain");
     assert.equal(detail.dashboardState.rows[0]?.reviewStatus, "Needs Source Review");
+    assert.equal(detail.dashboardState.rows[0]?.qaResultLabel, "Check source documents");
   });
 
   it("surfaces OASIS capture skip reasons instead of generic missing-chart messaging", () => {
@@ -931,20 +2705,21 @@ describe("dashboardRunViews", () => {
 
     assert.equal(detail.dashboardState.rows[0]?.comparisonResult, "uncertain");
     assert.equal(detail.dashboardState.rows[0]?.currentChartValueSource, "oasis_capture_skipped");
-    assert.equal(detail.dashboardState.rows[0]?.currentChartValueSourceLabel, "OASIS capture skipped");
+    assert.equal(detail.dashboardState.rows[0]?.currentChartValueSourceLabel, "OASIS not captured");
     assert.equal(
       detail.dashboardState.rows[0]?.displayPortalValue,
-      "Skip downstream OASIS capture because the assessment page shows locked.",
+      "Skip subsequent OASIS capture because the assessment page shows locked.",
     );
     assert.equal(
       detail.dashboardState.rows[0]?.shortReason,
-      "Skip downstream OASIS capture because the assessment page shows locked.",
+      "Skip subsequent OASIS capture because the assessment page shows locked.",
     );
     assert.deepEqual(detail.dashboardState.rows[0]?.sourceArtifacts.includes("qa-prefetch-result.json"), true);
     assert.deepEqual(
       detail.dashboardState.rows[0]?.strictnessFlags.includes("oasis_capture_skipped_by_assessment_status"),
       true,
     );
+    assert.equal(detail.dashboardState.rows[0]?.qaResultLabel, "Check source documents");
   });
 
   it("tracks meaningful rows that are hidden because the backend marked them resolved", () => {
@@ -1051,6 +2826,8 @@ describe("dashboardRunViews", () => {
     assert.equal(detail.dashboardState.rows.length, 1);
     assert.equal(detail.dashboardState.rows[0]?.comparisonResult, "missing_in_referral");
     assert.equal(detail.dashboardState.rows[0]?.reviewStatus, "Missing Referral Documentation");
+    assert.equal(detail.dashboardState.rows[0]?.qaResultLabel, "Referral support missing");
+    assert.equal(detail.dashboardState.rows[0]?.qaActionLabel, "Request referral support");
     assert.equal(detail.dashboardState.rows[0]?.shownByDefault, true);
     assert.equal(detail.dashboardReview.missingInReferralCount, 1);
     assert.equal(detail.dashboardReview.openRowCount, 1);
@@ -1102,5 +2879,140 @@ describe("dashboardRunViews", () => {
     assert.equal(detail.dashboardState.rows[0]?.visibilityDecision, "show");
     assert.equal(detail.dashboardState.visibilitySummary.hiddenRows, 0);
     assert.equal(detail.dashboardReview.missingInReferralCount, 1);
+  });
+
+  it("uses clinical-comparison-rows.json as the only dashboard row source", () => {
+    const clinicalComparisonRows: ClinicalComparisonRow[] = [{
+      fieldKey: "primary_reason_for_home_health_medical_necessity",
+      category: "Patient Summary & Clinical Narrative",
+      referralValue: "Canonical referral value",
+      oasisValue: "Canonical OASIS value",
+      verdict: "mismatch",
+      confidence: 0.91,
+      severity: "high",
+      rationale: "Canonical row should win over referral sections and field-map values.",
+      referralEvidence: [{
+        artifact: "patient-qa-reference.json",
+        sourceType: "REFERRAL_ORDER",
+        sourceLabel: "Referral Order",
+        snippet: "Canonical referral value",
+        confidence: 0.91,
+      }],
+      oasisEvidence: [{
+        artifact: "printed-note-chart-values.json",
+        sourceType: "PRINTED_NOTE_OCR",
+        sourceLabel: "Printed note chart values",
+        snippet: "Canonical OASIS value",
+        confidence: null,
+      }],
+      needsReview: true,
+      sources: {
+        referralArtifacts: ["patient-qa-reference.json"],
+        oasisArtifacts: ["printed-note-chart-values.json"],
+      },
+    }];
+
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        clinicalComparisonRows,
+        fieldMapSnapshot: {
+          fields: [{
+            key: "primary_reason_for_home_health_medical_necessity",
+            currentChartValue: "Field map value that must not drive the row",
+            currentChartValueSource: "chart_read",
+            populatedInChart: true,
+          }],
+        },
+        printedNoteChartValues: {
+          currentChartValues: {
+            primary_reason_for_home_health_medical_necessity:
+              "Printed note value that must not be re-derived by the API",
+          },
+        },
+      },
+    });
+
+    assert.equal(detail.dashboardState.rows.length, 1);
+    assert.equal(detail.dashboardState.rows[0]?.displayReferralValue, "Canonical referral value");
+    assert.equal(detail.dashboardState.rows[0]?.displayPortalValue, "Canonical OASIS value");
+    assert.equal(detail.dashboardState.rows[0]?.comparisonResult, "mismatch");
+    assert.deepEqual(detail.dashboardState.rows[0]?.sourceArtifacts, [
+      "patient-qa-reference.json",
+      "printed-note-chart-values.json",
+    ]);
+    assert.equal(detail.dashboardState.comparisonRowsStatus, "ready");
+    assert.equal(detail.dashboardState.comparisonRowsRowCount, 1);
+  });
+
+  it("uses canonical row evidence as display fallback when explicit values are absent", () => {
+    const clinicalComparisonRows: ClinicalComparisonRow[] = [{
+      fieldKey: "primary_reason_for_home_health_medical_necessity",
+      category: "Patient Summary & Clinical Narrative",
+      referralValue: null,
+      oasisValue: null,
+      verdict: "mismatch",
+      confidence: 0.88,
+      severity: "high",
+      rationale: "Evidence exists even though row values were not promoted.",
+      referralEvidence: [{
+        artifact: "source-clinical-fact-pack.json",
+        sourceType: "REFERRAL_FACT_PACK",
+        sourceLabel: "Referral fact pack",
+        snippet: "Referral documents skilled nursing for medication management.",
+        confidence: 0.88,
+      }],
+      oasisEvidence: [{
+        artifact: "oasis-clinical-fact-pack.json",
+        sourceType: "OASIS_FACT_PACK",
+        sourceLabel: "OASIS fact pack",
+        snippet: "OASIS documents skilled need for medication education.",
+        confidence: 0.82,
+      }],
+      needsReview: true,
+      sources: {
+        referralArtifacts: ["source-clinical-fact-pack.json"],
+        oasisArtifacts: ["oasis-clinical-fact-pack.json"],
+      },
+    }];
+
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        clinicalComparisonRows,
+      },
+    });
+
+    assert.equal(
+      detail.dashboardState.rows[0]?.displayReferralValue,
+      "Referral documents skilled nursing for medication management.",
+    );
+    assert.equal(
+      detail.dashboardState.rows[0]?.displayPortalValue,
+      "OASIS documents skilled need for medication education.",
+    );
+    assert.equal(detail.dashboardState.rows[0]?.valuePresence.hasDocumentValue, true);
+    assert.equal(detail.dashboardState.rows[0]?.valuePresence.hasChartValue, true);
+    assert.equal(detail.dashboardState.rows[0]?.oasisEvidenceMode, "oasis_fact_pack");
+  });
+
+  it("does not treat pending empty canonical rows as final comparison data", () => {
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        clinicalComparisonRows: [],
+        comparisonRowsStatus: "pending",
+        comparisonRowsReason: "referral artifacts not finalized",
+        comparisonRowsRowCount: 0,
+      },
+    });
+
+    assert.equal(detail.dashboardState.comparisonRowsStatus, "pending");
+    assert.equal(detail.dashboardState.comparisonRowsReason, "referral artifacts not finalized");
+    assert.equal(detail.dashboardState.comparisonRowsRowCount, 0);
+    assert.equal(detail.dashboardState.rows.length, 0);
   });
 });

@@ -35,7 +35,7 @@ export const batchRecordSchema = z.object({
     rerunEnabled: z.boolean(),
     intervalHours: z.number().int().positive(),
     timezone: z.string().min(1).default("Asia/Manila"),
-    localTimes: z.array(z.string().min(1)).default(["15:00", "23:30"]),
+    localTimes: z.array(z.string().min(1)).default(["20:30"]),
     lastRunAt: z.string().min(1).nullable(),
     nextScheduledRunAt: z.string().min(1).nullable(),
   }).default({
@@ -44,7 +44,7 @@ export const batchRecordSchema = z.object({
     rerunEnabled: true,
     intervalHours: 24,
     timezone: "Asia/Manila",
-    localTimes: ["15:00", "23:30"],
+    localTimes: ["20:30"],
     lastRunAt: null,
     nextScheduledRunAt: null,
   }),

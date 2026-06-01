@@ -80,8 +80,15 @@ export function evaluateDocumentExtractionQuality(input: {
   const likelyCorruptedEncoding = CORRUPTED_ENCODING_PATTERNS.some((pattern) => pattern.test(flattenedText));
   const likelyRawPdfStructureText = input.fileType === "pdf" && input.extraction.rawExtractedTextSource === "dom" &&
     domAnalysis.rawPdfStructureDetected;
+  const scannedPdfOcrQualityFailed =
+    input.fileType === "pdf" &&
+    input.extraction.pdfType === "scanned_image_pdf" &&
+    input.extraction.rawExtractedTextSource === "ocr" &&
+    flattenedText.length > 0 &&
+    (!containsClinicalVocabulary || !containsDatePatterns || likelyCorruptedEncoding);
   const likelyRequiresOcrRetry =
     (input.fileType === "pdf" && input.extraction.pdfType === "scanned_image_pdf" && flattenedText.length < 300) ||
+    scannedPdfOcrQualityFailed ||
     ((input.fileType === "jpg" || input.fileType === "jpeg" || input.fileType === "png") && flattenedText.length < 200) ||
     likelyRawPdfStructureText;
 

@@ -1,4 +1,4 @@
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, utimes, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { mkdtempSync, rmSync } from "node:fs";
@@ -17,13 +17,16 @@ import { FilesystemBatchRepository } from "../repositories/filesystemBatchReposi
 import { FilesystemScheduledRunRepository } from "../repositories/filesystemScheduledRunRepository";
 import { FilesystemSubsidiaryRepository } from "../repositories/filesystemSubsidiaryRepository";
 import { BatchControlPlaneService } from "../services/batchControlPlaneService";
+import { PatientMemoryService } from "../services/patientMemoryService";
 import { PortalCredentialProvider } from "../services/portalCredentialProvider";
 import { SubsidiaryConfigService } from "../services/subsidiaryConfigService";
+import type { BatchRecord } from "../types/batchControlPlane";
 
 function createServiceFixture() {
   const storageRoot = mkdtempSync(path.join(os.tmpdir(), "medical-ai-qa-api-"));
   const repository = new FilesystemBatchRepository(storageRoot);
   const scheduledRunRepository = new FilesystemScheduledRunRepository(storageRoot);
+  const patientMemoryService = new PatientMemoryService(storageRoot);
   const subsidiaryRepository = new FilesystemSubsidiaryRepository(storageRoot);
   const logger = pino({ enabled: false });
   const env = loadEnv({
@@ -92,9 +95,11 @@ function createServiceFixture() {
 
   return {
     repository,
+    patientMemoryService,
     service: new BatchControlPlaneService(
       repository,
       scheduledRunRepository,
+      patientMemoryService,
       acquisitionService,
       subsidiaryConfigService,
       logger,
@@ -304,6 +309,7 @@ describe("BatchControlPlaneService scheduler metadata", () => {
         ],
       };
 
+      await mkdir(batch.storage.outputRoot, { recursive: true });
       await writeFile(
         path.join(batch.storage.outputRoot, "patient-queue.json"),
         JSON.stringify(queueArtifact, null, 2),
@@ -363,6 +369,168 @@ describe("BatchControlPlaneService scheduler metadata", () => {
       assert.equal(snapshot.patientRecords.length, 1);
       assert.equal(snapshot.patientRecords[0]?.runId, batch.id);
       assert.equal(snapshot.patientRecords[0]?.patientId, "patient-1");
+
+      const status = await fixture.service.updateAgencyDashboardReviewerStatus({
+        agencyId: "default",
+        workItemId: "patient-1",
+        status: "yellow",
+        updatedBy: "QA Reviewer",
+      });
+      const updatedSnapshot = await fixture.service.getAgencyDashboardSnapshot("default");
+
+      assert.equal(status.status, "yellow");
+      assert.equal(updatedSnapshot.patientRecords[0]?.reviewerStatus, "yellow");
+      assert.equal(updatedSnapshot.patientRecords[0]?.reviewerStatusUpdatedBy, "QA Reviewer");
+    } finally {
+      fixture.cleanup();
+    }
+  });
+
+  it("marks stale reviewer status as needs review when a newer cycle has discrepancies", async () => {
+    const fixture = createServiceFixture();
+
+    try {
+      await fixture.service.initialize();
+      const batch = await fixture.service.createBatchUpload({
+        fileName: "reference-workbook.xlsx",
+        fileBuffer: Buffer.from("workbook"),
+        billingPeriod: "2026-04",
+      });
+
+      const queueArtifact: PatientQueueArtifact = {
+        generatedAt: "2026-04-15T06:00:00.000Z",
+        agencyId: "default",
+        batchId: batch.id,
+        reviewWindowId: "default-2026-04-15",
+        summary: {
+          total: 1,
+          eligible: 1,
+          skippedNonAdmit: 0,
+          skippedPending: 0,
+          excludedOther: 0,
+        },
+        entries: [
+          {
+            id: "default-2026-04-15:patient-1",
+            agencyId: "default",
+            batchId: batch.id,
+            workItemId: "patient-1",
+            patientName: "Test Patient",
+            reviewWindowId: "default-2026-04-15",
+            workflowTypes: ["SOC"],
+            status: "eligible",
+            eligibility: {
+              eligible: true,
+              reason: null,
+              rationale: "Eligible for autonomous QA evaluation.",
+              matchedSignals: [],
+            },
+            episodeDate: "2026-04-15",
+            socDate: null,
+            billingPeriod: "2026-04",
+            sourceSheets: ["OASIS Tracking Report"],
+            sourceRowNumbers: [2],
+            notes: [],
+            createdAt: "2026-04-15T06:00:00.000Z",
+          },
+        ],
+      };
+
+      const patientArtifactsDirectory = path.join(batch.storage.outputRoot, "patients", "patient-1");
+      await mkdir(patientArtifactsDirectory, { recursive: true });
+      await writeFile(
+        path.join(batch.storage.outputRoot, "patient-queue.json"),
+        JSON.stringify(queueArtifact, null, 2),
+      );
+      await writeFile(
+        path.join(patientArtifactsDirectory, "oasis-dom-vs-existing-extraction-comparison.json"),
+        JSON.stringify({ recommendedDecision: "review_required" }, null, 2),
+      );
+      await writeFile(
+        path.join(batch.storage.outputRoot, "dashboard-reviewer-statuses.json"),
+        JSON.stringify(
+          {
+            schemaVersion: "dashboard-reviewer-statuses.v1",
+            generatedAt: "2026-04-15T06:04:00.000Z",
+            agencyId: "default",
+            batchId: batch.id,
+            statuses: {
+              "patient-1": {
+                workItemId: "patient-1",
+                status: "green",
+                updatedAt: "2026-04-15T06:04:00.000Z",
+                updatedBy: "QA Reviewer",
+              },
+            },
+          },
+          null,
+          2,
+        ),
+      );
+
+      batch.patientRuns = [
+        {
+          runId: `${batch.id}-patient-1`,
+          subsidiaryId: "default",
+          workItemId: "patient-1",
+          patientName: "Test Patient",
+          processingStatus: "COMPLETE",
+          executionStep: "COMPLETE",
+          progressPercent: 100,
+          startedAt: "2026-04-15T06:00:00.000Z",
+          completedAt: "2026-04-15T06:05:00.000Z",
+          lastUpdatedAt: "2026-04-15T06:05:00.000Z",
+          matchResult: {
+            status: "EXACT",
+            searchQuery: "Test Patient",
+            portalPatientId: null,
+            portalDisplayName: "Test Patient",
+            candidateNames: ["Test Patient"],
+            note: null,
+          },
+          qaOutcome: "READY_FOR_BILLING_PREP",
+          oasisQaSummary: {
+            overallStatus: "READY_FOR_BILLING",
+            urgency: "ON_TRACK",
+            daysInPeriod: 30,
+            daysLeft: 10,
+            sections: [],
+            blockers: [],
+          },
+          artifactCount: 0,
+          hasFindings: false,
+          bundleAvailable: false,
+          logPath: null,
+          logAvailable: false,
+          retryEligible: false,
+          errorSummary: null,
+          resultBundlePath: path.join(batch.storage.patientResultsDirectory, "patient-1.json"),
+          evidenceDirectory: path.join(batch.storage.evidenceDirectory, "patient-1"),
+          tracePath: null,
+          screenshotPaths: [],
+          downloadPaths: [],
+          workflowRuns: [],
+          lastAttemptAt: "2026-04-15T06:05:00.000Z",
+          attemptCount: 1,
+        },
+      ];
+
+      await fixture.repository.saveBatch(batch);
+
+      const staleSnapshot = await fixture.service.getAgencyDashboardSnapshot("default");
+      assert.equal(staleSnapshot.patientRecords[0]?.reviewerStatus, "red");
+      assert.equal(staleSnapshot.patientRecords[0]?.reviewerStatusUpdatedBy, "System");
+
+      await fixture.service.updateAgencyDashboardReviewerStatus({
+        agencyId: "default",
+        workItemId: "patient-1",
+        status: "green",
+        updatedBy: "QA Reviewer",
+      });
+
+      const reviewedSnapshot = await fixture.service.getAgencyDashboardSnapshot("default");
+      assert.equal(reviewedSnapshot.patientRecords[0]?.reviewerStatus, "green");
+      assert.equal(reviewedSnapshot.patientRecords[0]?.reviewerStatusUpdatedBy, "QA Reviewer");
     } finally {
       fixture.cleanup();
     }
@@ -528,7 +696,7 @@ describe("BatchControlPlaneService scheduler metadata", () => {
           rerunEnabled: true,
           intervalHours: 24,
           timezone: "Asia/Manila",
-          localTimes: ["15:00", "23:30"],
+          localTimes: ["20:30"],
           lastRunAt: null,
           nextScheduledRunAt: null,
         },
@@ -620,6 +788,269 @@ describe("BatchControlPlaneService scheduler metadata", () => {
         knownArtifacts.artifactContents.printedNoteReview,
         dashboardState.artifactContents.printedNoteReview,
       );
+
+      const memoryBatchId = "batch-memory-fallback";
+      const memoryStorage = fixture.repository.createBatchPaths(memoryBatchId, "reference-workbook.xlsx");
+      const memoryWorkItemsPath = path.join(memoryStorage.outputRoot, "work-items.json");
+      const memorySourceDirectory = path.join(storage.outputRoot, "memory-source", "patient-1");
+      const memoryDashboardState: PatientDashboardState = {
+        ...dashboardState,
+        batchId: "prior-batch",
+        runId: "prior-batch-patient-1",
+        artifactContents: {
+          ...dashboardState.artifactContents,
+          codingInput: {
+            primaryDiagnosis: {
+              code: "M62.81",
+              description: "Muscle weakness",
+            },
+          },
+        },
+      };
+      const memoryResolution = await fixture.patientMemoryService.resolvePatientMemory({
+        agencySlug: "default",
+        workItem,
+        matchResult: dashboardState.matchResult,
+      });
+      await mkdir(memorySourceDirectory, { recursive: true });
+      await writeFile(
+        path.join(memorySourceDirectory, "patient-dashboard-state.json"),
+        JSON.stringify(memoryDashboardState, null, 2),
+      );
+      await fixture.patientMemoryService.promoteCurrentArtifacts({
+        agencySlug: "default",
+        patientMemoryId: memoryResolution.patientMemoryId,
+        sourcePatientArtifactsDirectory: memorySourceDirectory,
+        workItem,
+        matchResult: dashboardState.matchResult,
+        batchId: "prior-batch",
+        runId: "prior-batch-patient-1",
+        artifactRelativePaths: ["patient-dashboard-state.json"],
+      });
+
+      const memoryBackedBatch = {
+        ...batch,
+        id: memoryBatchId,
+        storage: {
+          ...batch.storage,
+          batchRoot: memoryStorage.batchRoot,
+          outputRoot: memoryStorage.outputRoot,
+          workItemsPath: memoryWorkItemsPath,
+          patientResultsDirectory: memoryStorage.patientResultsDirectory,
+          evidenceDirectory: memoryStorage.evidenceDirectory,
+        },
+        patientRuns: [
+          {
+            ...batch.patientRuns[0]!,
+            runId: `${memoryBatchId}-patient-1`,
+            resultBundlePath: path.join(memoryStorage.patientResultsDirectory, "patient-1.json"),
+            evidenceDirectory: path.join(memoryStorage.evidenceDirectory, "patient-1"),
+          },
+        ],
+      };
+      await mkdir(memoryStorage.outputRoot, { recursive: true });
+      await writeFile(memoryWorkItemsPath, JSON.stringify([workItem], null, 2));
+      await fixture.repository.saveBatch(memoryBackedBatch);
+
+      const memoryKnownArtifacts = await fixture.service.getKnownPatientArtifacts(memoryBatchId, "patient-1");
+
+      assert.ok(memoryKnownArtifacts);
+      assert.equal(
+        memoryKnownArtifacts.artifactContents.codingInput &&
+          (memoryKnownArtifacts.artifactContents.codingInput as { primaryDiagnosis?: { code?: string } })
+            .primaryDiagnosis?.code,
+        "M62.81",
+      );
+    } finally {
+      fixture.cleanup();
+    }
+  });
+
+  it("loads work items once when assembling known artifacts for a batch", async () => {
+    const fixture = createServiceFixture();
+
+    try {
+      await fixture.service.initialize();
+
+      const batchId = "batch-known-artifacts-context";
+      const storage = fixture.repository.createBatchPaths(batchId, "reference-workbook.xlsx");
+      const workItemsPath = path.join(storage.outputRoot, "work-items.json");
+      const now = "2026-04-15T06:05:00.000Z";
+      const createWorkItem = (id: string, displayName: string): PatientEpisodeWorkItem => ({
+        id,
+        subsidiaryId: "default",
+        patientIdentity: {
+          displayName,
+          normalizedName: displayName.toUpperCase(),
+          medicareNumber: null,
+        },
+        episodeContext: {
+          episodeDate: "2026-04-15",
+          socDate: "2026-04-01",
+          episodePeriod: "2026-04",
+          billingPeriod: "2026-04",
+          payer: null,
+          assignedStaff: null,
+          clinician: null,
+          qaSpecialist: null,
+          rfa: null,
+        },
+        workflowTypes: ["SOC"],
+        sourceSheets: ["OASIS Tracking Report"],
+        timingMetadata: {
+          trackingDays: 30,
+          daysInPeriod: 30,
+          daysLeft: 10,
+          daysLeftBeforeOasisDueDate: 7,
+          rawTrackingValues: ["30"],
+          rawDaysInPeriodValues: ["30"],
+          rawDaysLeftValues: ["10"],
+        },
+        codingReviewStatus: "NOT_STARTED",
+        oasisQaStatus: "NOT_STARTED",
+        pocQaStatus: "NOT_STARTED",
+        visitNotesQaStatus: "NOT_STARTED",
+        billingPrepStatus: "NOT_STARTED",
+        sourceRemarks: [],
+        sourceRowReferences: [],
+        sourceValues: [],
+        importWarnings: [],
+      });
+      const workItems = [
+        createWorkItem("patient-z", "Zulu Patient"),
+        createWorkItem("patient-a", "Alpha Patient"),
+      ];
+      const createPatientRun = (workItem: PatientEpisodeWorkItem): BatchRecord["patientRuns"][number] => ({
+        runId: `${batchId}-${workItem.id}`,
+        subsidiaryId: "default",
+        workItemId: workItem.id,
+        patientName: workItem.patientIdentity.displayName,
+        processingStatus: "COMPLETE",
+        executionStep: "COMPLETE",
+        progressPercent: 100,
+        startedAt: now,
+        completedAt: now,
+        lastUpdatedAt: now,
+        matchResult: {
+          status: "EXACT",
+          searchQuery: workItem.patientIdentity.displayName,
+          portalPatientId: null,
+          portalDisplayName: workItem.patientIdentity.displayName,
+          candidateNames: [workItem.patientIdentity.displayName],
+          note: null,
+        },
+        qaOutcome: "READY_FOR_BILLING_PREP",
+        oasisQaSummary: {
+          overallStatus: "READY_FOR_BILLING",
+          urgency: "ON_TRACK",
+          daysInPeriod: 30,
+          daysLeft: 10,
+          sections: [],
+          blockers: [],
+        },
+        artifactCount: 0,
+        hasFindings: false,
+        bundleAvailable: false,
+        logPath: null,
+        logAvailable: false,
+        retryEligible: false,
+        errorSummary: null,
+        resultBundlePath: path.join(storage.patientResultsDirectory, `${workItem.id}.json`),
+        evidenceDirectory: path.join(storage.evidenceDirectory, workItem.id),
+        tracePath: null,
+        screenshotPaths: [],
+        downloadPaths: [],
+        workflowRuns: [],
+        lastAttemptAt: now,
+        attemptCount: 1,
+      });
+      const batch: BatchRecord = {
+        id: batchId,
+        subsidiary: {
+          id: "default",
+          slug: "default",
+          name: "Default Subsidiary",
+        },
+        createdAt: now,
+        updatedAt: now,
+        runMode: "read_only",
+        billingPeriod: "2026-04",
+        status: "COMPLETED",
+        schedule: {
+          scheduledRunId: null,
+          active: true,
+          rerunEnabled: true,
+          intervalHours: 24,
+          timezone: "Asia/Manila",
+          localTimes: ["20:30"],
+          lastRunAt: null,
+          nextScheduledRunAt: null,
+        },
+        sourceWorkbook: {
+          subsidiaryId: "default",
+          acquisitionProvider: "MANUAL_UPLOAD",
+          acquisitionStatus: "ACQUIRED",
+          acquisitionReference: null,
+          acquisitionNotes: [],
+          acquisitionMetadata: null,
+          originalFileName: "reference-workbook.xlsx",
+          storedPath: storage.sourceWorkbookPath,
+          uploadedAt: now,
+          verification: null,
+        },
+        storage: {
+          batchRoot: storage.batchRoot,
+          outputRoot: storage.outputRoot,
+          manifestPath: null,
+          workItemsPath,
+          parserExceptionsPath: null,
+          batchSummaryPath: null,
+          patientResultsDirectory: storage.patientResultsDirectory,
+          evidenceDirectory: storage.evidenceDirectory,
+        },
+        parse: {
+          requestedAt: null,
+          completedAt: null,
+          workItemCount: workItems.length,
+          eligibleWorkItemCount: workItems.length,
+          parserExceptionCount: 0,
+          sourceDetections: [],
+          sheetSummaries: [],
+          lastError: null,
+        },
+        run: {
+          requestedAt: null,
+          completedAt: null,
+          patientRunCount: workItems.length,
+          lastError: null,
+        },
+        patientRuns: workItems.map(createPatientRun),
+      };
+      let readWorkItemsCount = 0;
+      const originalReadWorkItems = fixture.repository.readWorkItems.bind(fixture.repository);
+      fixture.repository.readWorkItems = async (...args) => {
+        readWorkItemsCount += 1;
+        return originalReadWorkItems(...args);
+      };
+
+      await mkdir(storage.outputRoot, { recursive: true });
+      await writeFile(workItemsPath, JSON.stringify(workItems, null, 2));
+      await fixture.repository.saveBatch(batch);
+
+      const knownArtifacts = await fixture.service.getKnownPatientArtifactsForBatch(batchId);
+
+      assert.ok(knownArtifacts);
+      assert.equal(readWorkItemsCount, 1);
+      assert.deepEqual(
+        knownArtifacts.patients.map((patient) => patient.workItem?.id),
+        ["patient-a", "patient-z"],
+      );
+      assert.deepEqual(
+        knownArtifacts.patients.map((patient) => patient.summary.patientName),
+        ["Alpha Patient", "Zulu Patient"],
+      );
+      assert.equal(knownArtifacts.patients[0]?.artifactContents.codingInput, null);
+      assert.equal(knownArtifacts.patients[0]?.artifactContents.patientQaReference, null);
     } finally {
       fixture.cleanup();
     }
@@ -914,7 +1345,7 @@ describe("BatchControlPlaneService scheduler metadata", () => {
           rerunEnabled: true,
           intervalHours: 24,
           timezone: "Asia/Manila",
-          localTimes: ["15:00", "23:30"],
+          localTimes: ["20:30"],
           lastRunAt: null,
           nextScheduledRunAt: null,
         },
@@ -1043,11 +1474,14 @@ describe("BatchControlPlaneService scheduler metadata", () => {
         ),
       );
       await writeFile(verificationLogPath, JSON.stringify({ runId: verificationDashboardState.runId }, null, 2));
+      const canonicalModifiedAt = new Date("2026-04-21T20:00:00.000Z");
+      const verificationModifiedAt = new Date("2026-04-21T20:25:00.000Z");
+      await utimes(canonicalDashboardStatePath, canonicalModifiedAt, canonicalModifiedAt);
+      await utimes(verificationDashboardStatePath, verificationModifiedAt, verificationModifiedAt);
       await fixture.repository.saveBatch(batch);
 
       const knownArtifacts = await fixture.service.getKnownPatientArtifacts(batchId, "patient-1");
       const patientRuns = await fixture.service.getPatientRuns(batchId);
-      const snapshot = await fixture.service.getAgencyDashboardSnapshot("default");
 
       assert.ok(knownArtifacts);
       assert.equal(knownArtifacts.patientArtifactsDirectory, verificationArtifactsDirectory);
@@ -1067,8 +1501,6 @@ describe("BatchControlPlaneService scheduler metadata", () => {
       );
       assert.equal(patientRuns[0]?.runId, verificationDashboardState.runId);
       assert.equal(patientRuns[0]?.processingStatus, "COMPLETE");
-      assert.equal(snapshot.patientRecords[0]?.processingStatus, "COMPLETE");
-      assert.equal(snapshot.patientRecords[0]?.errorSummary, null);
     } finally {
       fixture.cleanup();
     }
@@ -1126,6 +1558,7 @@ describe("BatchControlPlaneService scheduler metadata", () => {
       const olderResultBundlePath = path.join(olderStorage.patientResultsDirectory, "patient-1.json");
 
       await mkdir(path.dirname(olderResultBundlePath), { recursive: true });
+      await mkdir(newerStorage.outputRoot, { recursive: true });
       await writeFile(
         path.join(olderStorage.outputRoot, "work-items.json"),
         JSON.stringify([workItem], null, 2),
@@ -1205,7 +1638,7 @@ describe("BatchControlPlaneService scheduler metadata", () => {
           rerunEnabled: true,
           intervalHours: 24,
           timezone: "Asia/Manila",
-          localTimes: ["15:00", "23:30"],
+          localTimes: ["20:30"],
           lastRunAt: null,
           nextScheduledRunAt: null,
         },
@@ -1313,7 +1746,7 @@ describe("BatchControlPlaneService scheduler metadata", () => {
           rerunEnabled: true,
           intervalHours: 24,
           timezone: "Asia/Manila",
-          localTimes: ["15:00", "23:30"],
+          localTimes: ["20:30"],
           lastRunAt: null,
           nextScheduledRunAt: null,
         },
@@ -1484,6 +1917,7 @@ describe("BatchControlPlaneService scheduler metadata", () => {
       };
 
       await mkdir(path.dirname(storage.sourceWorkbookPath), { recursive: true });
+      await mkdir(storage.outputRoot, { recursive: true });
       await writeFile(storage.sourceWorkbookPath, "sample workbook");
       await writeFile(manifestPath, JSON.stringify(manifest, null, 2));
       await writeFile(workItemsPath, JSON.stringify(workItems, null, 2));
@@ -1507,7 +1941,7 @@ describe("BatchControlPlaneService scheduler metadata", () => {
           rerunEnabled: true,
           intervalHours: 24,
           timezone: "Asia/Manila",
-          localTimes: ["15:00", "23:30"],
+          localTimes: ["20:30"],
           lastRunAt: null,
           nextScheduledRunAt: null,
         },

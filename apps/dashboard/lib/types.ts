@@ -1,7 +1,45 @@
 export interface DiagnosisEntry {
   code: string | null;
+  normalizedIcd10Code?: string | null;
   description: string | null;
   confidence: string | null;
+  rank?: number | null;
+  role?: string | null;
+  slotLabel?: string | null;
+  onsetDate?: string | null;
+  group?: string | null;
+  source?: string | null;
+  status?: string | null;
+}
+
+export type DiagnosisComparisonStatus =
+  | "aligned"
+  | "partial_overlap"
+  | "conflict"
+  | "missing_referral"
+  | "missing_oasis"
+  | "unavailable";
+
+export interface DiagnosisSummaryBlock {
+  primaryDiagnosis: DiagnosisEntry | null;
+  otherDiagnoses: DiagnosisEntry[];
+  diagnosisSource: string | null;
+}
+
+export interface MedicationEntry {
+  name: string;
+  dose: string | null;
+  route: string | null;
+  classification: string | null;
+  startDate: string | null;
+  status: string | null;
+  source: string | null;
+}
+
+export interface MedicationSummaryBlock {
+  medications: MedicationEntry[];
+  allergies: string[];
+  medicationSource: string | null;
 }
 
 export type ReferralDiscrepancyRating = "green" | "yellow" | "red";
@@ -127,6 +165,9 @@ export interface ReferralQaSummary {
   referralDataAvailable: boolean;
   extractionUsabilityStatus: string;
   qaStatus: string;
+  summaryHeadline: string;
+  summaryDetail: string;
+  displayWarnings: string[];
   discrepancyRating: ReferralDiscrepancyRating;
   discrepancyCounts: {
     total: number;
@@ -214,6 +255,510 @@ export interface QaPrefetchSummary {
   }>;
 }
 
+export interface OasisValidationMissingField {
+  fieldId: string | null;
+  label: string;
+  section: string | null;
+  mItem: string | null;
+  message: string | null;
+  selectorUsed: string | null;
+}
+
+export interface OasisValidationSummary {
+  status: string;
+  validatedAt: string;
+  validateSelectorUsed: string | null;
+  currentUrl: string | null;
+  missingFieldCount: number;
+  missingFields: OasisValidationMissingField[];
+  rawMessages: string[];
+  warnings: string[];
+}
+
+export interface ReferralOasisConsistencyFinding {
+  id: string;
+  category: string;
+  label: string;
+  confidence: string;
+  referralEvidence: string;
+  oasisEvidence: string;
+  reviewerExplanation: string;
+  blocksPlanOfCare: boolean;
+}
+
+export interface ReferralOasisConsistencySummary {
+  status: string;
+  generatedAt: string;
+  findingCount: number;
+  blockingFindingCount: number;
+  findings: ReferralOasisConsistencyFinding[];
+  warnings: string[];
+}
+
+export interface OasisGateSummary {
+  evaluatedAt: string;
+  status: string;
+  blockedFromPlanOfCare: boolean;
+  missingFieldCount: number;
+  contradictionCount: number;
+  topReasons: string[];
+  planOfCareAttempted: boolean;
+  planOfCareAttemptSkippedReason: string | null;
+}
+
+export interface GeneratedPlanOfCareProblem {
+  problem: string;
+  domain: string | null;
+  planSummary: string;
+  clinicalRationale: string;
+  evidence: string[];
+  evidenceIds: string[];
+  goals: string[];
+  interventions: string[];
+  interventionEvidence: Array<{
+    intervention: string;
+    evidenceIds: string[];
+  }>;
+  questionBankMatches: string[];
+  candidateProblemLabels: string[];
+}
+
+export interface GeneratedPlanOfCareReadableSection {
+  heading: string;
+  body: string;
+  bullets: string[];
+}
+
+export interface GeneratedPlanOfCarePreviewItem {
+  label: string;
+  text: string;
+}
+
+export interface GeneratedPlanOfCarePreviewSection {
+  heading: string;
+  body: string;
+  items: GeneratedPlanOfCarePreviewItem[];
+}
+
+export interface GeneratedPlanOfCareEvidenceSnippet {
+  id: string;
+  category: string;
+  label: string;
+  text: string;
+  sourceLabel: string | null;
+  sourceType: string | null;
+}
+
+export interface GeneratedPlanOfCareValidationFinding {
+  severity: "warning" | "error";
+  category: string;
+  message: string;
+  affectedProblem: string | null;
+  affectedIntervention: string | null;
+  action: "pruned" | "retained" | "added" | "blocked";
+}
+
+export interface GeneratedPlanOfCareDraft {
+  status: string;
+  finalPreviewStatus: string;
+  generatedAt: string;
+  questionBankVersion: string | null;
+  reviewRequired: boolean;
+  generationMode: string;
+  sourceSummary: {
+    oasisValidationTimestamp: string | null;
+    oasisGateTimestamp: string | null;
+    keyClinicalSignals: string[];
+  };
+  stageStatus: Record<string, { state: string; note: string | null }>;
+  validationFindings: GeneratedPlanOfCareValidationFinding[];
+  evidenceMap: {
+    diagnoses: GeneratedPlanOfCareEvidenceSnippet[];
+    medications: GeneratedPlanOfCareEvidenceSnippet[];
+    woundFacts: GeneratedPlanOfCareEvidenceSnippet[];
+    respiratoryFacts: GeneratedPlanOfCareEvidenceSnippet[];
+    mobilityFacts: GeneratedPlanOfCareEvidenceSnippet[];
+    cognitionFacts: GeneratedPlanOfCareEvidenceSnippet[];
+    dysphagiaNutritionFacts: GeneratedPlanOfCareEvidenceSnippet[];
+    cardiacFacts: GeneratedPlanOfCareEvidenceSnippet[];
+    oasisChartFacts: GeneratedPlanOfCareEvidenceSnippet[];
+    referralSkilledNeedFacts: GeneratedPlanOfCareEvidenceSnippet[];
+  };
+  consolidatedProblems: Array<{
+    problem: string;
+    domain: string;
+    rationale: string;
+    candidateProblemLabels: string[];
+    supportingEvidenceIds: string[];
+  }>;
+  pocPreview: {
+    title: string;
+    patientSummary: string;
+    sections: GeneratedPlanOfCarePreviewSection[];
+    clinicalCautions: string[];
+  };
+  readablePlan: {
+    title: string;
+    summary: string;
+    sections: GeneratedPlanOfCareReadableSection[];
+  } | null;
+  problems: GeneratedPlanOfCareProblem[];
+  warnings: string[];
+  diagnostics: {
+    llmUsed: boolean;
+    modelId: string | null;
+    retrievedProblemCount: number;
+    promptCharacterEstimate: number;
+  };
+}
+
+export type OasisEvidenceMode =
+  | "chart_read"
+  | "printed_note_ocr"
+  | "oasis_fact_pack"
+  | "printed_note_review_section_fallback"
+  | "unavailable";
+
+export type ReferralComparisonOrigin =
+  | "llm_referral_proposal"
+  | "deterministic_referral_fallback"
+  | "referral_qa_fallback"
+  | "unavailable";
+
+export interface ReviewerLlmStageSummary {
+  stageKey: string;
+  label: string;
+  status: "llm_succeeded" | "fallback_used" | "not_attempted" | "validation_downgraded";
+  statusLabel: string;
+  llmUsed: boolean;
+  fallbackUsed: boolean;
+  validationDowngraded: boolean;
+  modelId: string | null;
+  note: string | null;
+}
+
+export interface ReviewerLlmDiagnosticsSummary {
+  diagnosisExtraction: ReviewerLlmStageSummary;
+  printedNoteExtraction: ReviewerLlmStageSummary;
+  referralProposal: ReviewerLlmStageSummary;
+  referralQaInsights: ReviewerLlmStageSummary;
+  planOfCareGeneration: ReviewerLlmStageSummary;
+}
+
+export type ClinicalDiscrepancyInterpretation =
+  | "not_available"
+  | "no_actionable_discrepancies_detected"
+  | "actionable_discrepancies_detected"
+  | "insufficient_evidence"
+  | "analysis_degraded";
+
+export interface ClinicalDiscrepancyFinding {
+  findingId: string;
+  category: string;
+  title: string;
+  verdict: string;
+  priority: string;
+  severity: string;
+  confidence: number;
+  needsHumanReview: boolean;
+  sourceSummary: string;
+  oasisSummary: string;
+  rationale: string;
+  dateAssessment: {
+    sourceDate?: string;
+    oasisDate?: string;
+    newerSide?: "source" | "oasis" | "unknown";
+    recencyImpact: "none" | "low" | "medium" | "high";
+  } | null;
+  evidenceCount: number;
+  sourceFactIds: string[];
+  oasisFactIds: string[];
+}
+
+export interface ClinicalDiscrepancyReview {
+  available: boolean;
+  reviewerQueueInterpretation: ClinicalDiscrepancyInterpretation;
+  llmStatus: string | null;
+  generatedAt: string | null;
+  totalFindings: number;
+  reviewerVisibleCount: number;
+  suppressedCount: number;
+  reviewerQueueCount: number;
+  highPriorityCount: number;
+  mediumPriorityCount: number;
+  highSeverityCount: number;
+  needsReviewCount: number;
+  sourceFactCount: number | null;
+  oasisFactCount: number | null;
+  clinicalContradictionAnalysisHash: string | null;
+  sourceFactPackHash: string | null;
+  oasisFactPackHash: string | null;
+  topCategories: string[];
+  topVerdicts: string[];
+  topSuppressionReasons: string[];
+  reviewerQueue: ClinicalDiscrepancyFinding[];
+}
+
+export interface DocumentationReview {
+  available: boolean;
+  status: string | null;
+  artifactPaths: string[];
+  summaryItems: Array<{ label: string; value: string }>;
+  factCount: number;
+  factCategories: string[];
+  diagnosisCount: number;
+  icdCodeCount: number;
+  warningCount: number;
+  warnings: string[];
+  note: string | null;
+}
+
+export interface DiagnosisReconciliationReview {
+  available: boolean;
+  referralDiagnosisCount: number;
+  oasisDiagnosisCount: number;
+  matchedCount: number;
+  missingInOasisCount: number;
+  missingInReferralCount: number;
+  codeMismatchCount: number;
+  labelMismatchCount: number;
+  rankMismatchCount: number;
+  warningCount: number;
+  warnings: string[];
+}
+
+export type PlanOfCareReviewStatus =
+  | "unavailable"
+  | "no_oasis_diagnoses"
+  | "deterministic_candidate_draft"
+  | "llm_tailored_draft"
+  | "degraded_needs_review";
+
+export interface PlanOfCareReviewItem {
+  diagnosisKey: string;
+  diagnosisLabel: string;
+  icdCode: string | null;
+  sourceType?: string | null;
+  sourceLabel?: string | null;
+  sourceHash?: string | null;
+  capturedAt?: string | null;
+  clinicalDomain: string | null;
+  selectedCandidateDomain: string | null;
+  domainMatchStatus: string | null;
+  domainWarnings: string[];
+  exclusionReason: string | null;
+  unsupportedClaimDetected: boolean;
+  unsupportedClaimType: string | null;
+  unsupportedClaimText: string | null;
+  evidenceRequired: string[];
+  candidateRejectedReason: string | null;
+  problemText: string;
+  goalText: string;
+  interventions: Array<{
+    text: string;
+    tailoredInstruction: string | null;
+    confidence: number;
+    evidenceFactIds: string[];
+  }>;
+  confidence: number;
+  needsHumanReview: boolean;
+  warningCount: number;
+  evidenceFactCount: number;
+}
+
+export interface PlanOfCareGlobalIntervention {
+  title: string;
+  text: string;
+  evidenceFactIds: string[];
+  confidence: number;
+  sourceDiagnosisKeys: string[];
+}
+
+export interface PlanOfCareProblemGroup {
+  groupKey: string;
+  sourceType?: string | null;
+  sourceLabel?: string | null;
+  sourceHash?: string | null;
+  capturedAt?: string | null;
+  clinicalDomain: string | null;
+  domainMatchStatus: string | null;
+  domainWarnings: string[];
+  problemTitle: string;
+  relatedDiagnoses: Array<{
+    diagnosisKey: string | null;
+    label: string;
+    icdCode: string | null;
+  }>;
+  problemStatement: string;
+  goals: Array<{
+    text: string;
+    measurableTarget: string | null;
+    evidenceFactIds: string[];
+    confidence: number;
+    needsHumanReview: boolean;
+  }>;
+  interventions: Array<{
+    text: string;
+    rationale: string;
+    evidenceFactIds: string[];
+    confidence: number;
+    needsHumanReview: boolean;
+    bankEntryId: string | null;
+    bankText: string | null;
+    llmGenerated: boolean;
+  }>;
+  evidenceFactIds: string[];
+  confidence: number;
+  needsHumanReview: boolean;
+  warnings: string[];
+}
+
+export interface PlanOfCareReview {
+  available: boolean;
+  status: PlanOfCareReviewStatus;
+  generatedAt: string | null;
+  diagnosisCount: number;
+  draftedDiagnosisCount: number;
+  needsReviewCount: number;
+  lowConfidenceCount: number;
+  missingCandidateCount: number;
+  sourcePriorityUsed: string | null;
+  sourceType?: string | null;
+  sourceLabel?: string | null;
+  sourceHash?: string | null;
+  capturedAt?: string | null;
+  llmStatus: string | null;
+  llmErrorCategory?: string | null;
+  promptDiagnosisCount?: number;
+  promptTokenEstimate?: number;
+  llmTailoredDiagnosisCount?: number;
+  warnings: string[];
+  globalInterventions?: PlanOfCareGlobalIntervention[];
+  carePlanProblemGroups?: PlanOfCareProblemGroup[];
+  draftItems: PlanOfCareReviewItem[];
+}
+
+export interface VisitNotesReview {
+  available: boolean;
+  status:
+    | "ready"
+    | "partial"
+    | "pending"
+    | "degraded"
+    | "discovery_missing"
+    | "discovery_not_run"
+    | "no_eligible_notes"
+    | "capture_pending_due_to_config_limit"
+    | "capture_failed";
+  generatedAt: string | null;
+  totalVisitNotes: number;
+  eligibleVisitNotes: number;
+  analyzedVisitNotes: number;
+  skippedVisitNotes: number;
+  missedVisitNotes: number;
+  notStartedVisitNotes: number;
+  activeMonitoringCount: number;
+  qaCompleteFinalizedCount: number;
+  inProgressCount: number;
+  submittedCount: number;
+  qaPendingCount: number;
+  signedCount: number;
+  capturedVisitNotes: number;
+  reusedVisitNotes: number;
+  failedVisitNotes: number;
+  degradedVisitNotes: number;
+  cappedVisitNotes: number;
+  actionableFindingCount: number;
+  contradictionCount: number;
+  positiveProgressCount: number;
+  possibleUpdateNeededCount: number;
+  pocAlignmentIssueCount: number;
+  incompleteNoteCount: number;
+  byVisitType: Record<string, number>;
+  byStatus: Record<string, number>;
+  visitTypeCounts: Array<{
+    visitType: string;
+    count: number;
+    statuses: Record<string, number>;
+  }>;
+  visitTypeStatusMatrix: Array<{
+    visitType: string;
+    count: number;
+    statuses: Record<string, number>;
+  }>;
+  findings: Array<{
+    findingId: string;
+    visitNoteKey: string;
+    visitType: string;
+    visitDate: string | null;
+    severity: string;
+    category: string;
+    title: string;
+    description: string;
+    suggestedReviewerAction: string;
+    needsHumanReview: boolean;
+    confidence: number;
+    evidenceCount: number;
+  }>;
+  noteSummaries: Array<{
+    visitNoteKey: string;
+    visitType: string;
+    visitDate: string | null;
+    status: string;
+    lifecycleStatus: string | null;
+    captureStatus: string | null;
+    analyzed: boolean;
+    analysisStatus: string;
+    mappingStatus: string | null;
+    matchStrength: number | null;
+    summary: string;
+    missingFields: string[];
+    textInputSuggestions: Array<{
+      suggestionId: string;
+      visitNoteKey: string;
+      fieldKey: string | null;
+      fieldLabel: string;
+      sectionLabel: string | null;
+      currentValue: string | null;
+      reason: string;
+      relatedPocProblemTitle: string | null;
+      suggestedInput: string;
+      sourceFactIds: string[];
+      confidence: number;
+    }>;
+    alignedPocGoals: string[];
+    pocMappingResult?: {
+      mappingStatus: string | null;
+      mappingSource: string | null;
+      alignmentStatus: string;
+      matchStrength: number;
+      matchedPocItems: Array<{
+        problemKey: string;
+        problemTitle: string;
+        goalTexts: string[];
+        interventionTexts: string[];
+        evidenceIds: string[];
+      }>;
+      visitNoteEvidence: string[];
+      rationale: string;
+      missingDocumentation: string[];
+      contradictions: string[];
+      pocUpdateSignals: string[];
+    };
+    pocProblemMatches: Array<{
+      problemKey: string;
+      problemTitle: string;
+      problemStatement: string | null;
+      interventionTexts: string[];
+      matchedFactIds: string[];
+      confidence: number;
+      rationale: string;
+    }>;
+    possibleContradictions: string[];
+  }>;
+  warnings: string[];
+}
+
 export type PatientDashboardDisplayStatus =
   | "match"
   | "equivalent_match"
@@ -250,10 +795,16 @@ export interface PatientDashboardFieldRow {
   normalizedChartValue: string | null;
   currentChartValueSource: string;
   currentChartValueSourceLabel: string;
+  oasisEvidenceMode: OasisEvidenceMode;
+  oasisEvidenceLabel: string;
   displayReferralValue: string;
   displayPortalValue: string;
   shortReason: string;
   reviewStatus: string;
+  qaResultLabel: string;
+  qaActionLabel: string;
+  referralComparisonOrigin: ReferralComparisonOrigin;
+  referralComparisonOriginLabel: string;
   confidence: "high" | "medium" | "low" | "uncertain";
   sourceSupportStrength: "strong" | "moderate" | "weak" | "none";
   mappingStrength: "strong" | "moderate" | "weak";
@@ -293,11 +844,16 @@ export interface PatientDashboardVisibilitySummary {
 
 export interface PatientDashboardDetailState {
   rows: PatientDashboardFieldRow[];
+  comparisonRowsStatus?: "pending" | "ready";
+  comparisonRowsReason?: string | null;
+  comparisonRowsRowCount?: number;
   visibilitySummary: PatientDashboardVisibilitySummary;
   sourceCoverage: {
     printedNoteReviewSource: string | null;
     printedNoteCompletedSectionCount: number;
     printedNoteChartValueCount: number;
+    fieldLevelValueCount: number;
+    sectionEvidenceFallbackRowCount: number;
   };
 }
 
@@ -314,6 +870,13 @@ export interface PatientDashboardReviewSummary {
   resolvedCount: number;
   highPriorityOpenCount: number;
   potentiallyTooStrictCount: number;
+}
+
+export interface PatientChangeSummary {
+  hasNewInformation: boolean;
+  comparedToGeneratedAt: string | null;
+  detectedAt: string;
+  reasons: string[];
 }
 
 export interface PatientSummary {
@@ -339,6 +902,12 @@ export interface PatientSummary {
   daysLeftBeforeOasisDueDate: number | null;
   primaryDiagnosis: DiagnosisEntry | null;
   otherDiagnoses: DiagnosisEntry[];
+  diagnosisSource: string | null;
+  referralDiagnosisSummary: DiagnosisSummaryBlock;
+  oasisDiagnosisSummary: DiagnosisSummaryBlock;
+  diagnosisComparisonStatus: DiagnosisComparisonStatus;
+  referralMedicationSummary: MedicationSummaryBlock | null;
+  oasisMedicationSummary: MedicationSummaryBlock | null;
   runMode: "read_only";
   rerunEnabled: boolean;
   lastRunAt: string | null;
@@ -346,8 +915,22 @@ export interface PatientSummary {
   codingWorkflow: WorkflowTrackSummary | null;
   qaWorkflow: WorkflowTrackSummary | null;
   qaPrefetch: QaPrefetchSummary | null;
+  oasisValidation: OasisValidationSummary | null;
+  referralOasisConsistency: ReferralOasisConsistencySummary | null;
+  oasisGate: OasisGateSummary | null;
+  oasisValidatedForPlanOfCare: boolean;
+  generatedPlanOfCare: GeneratedPlanOfCareDraft | null;
+  generatedPlanOfCareStatus: string;
+  planOfCareReview: PlanOfCareReview;
+  visitNotesReview: VisitNotesReview;
+  oasisDocumentationReview: DocumentationReview;
+  referralDocumentationReview: DocumentationReview;
+  diagnosisReconciliationReview: DiagnosisReconciliationReview;
+  reviewerDiagnostics: ReviewerLlmDiagnosticsSummary | null;
+  clinicalDiscrepancyReview: ClinicalDiscrepancyReview;
   referralQa: ReferralQaSummary;
   dashboardReview: PatientDashboardReviewSummary;
+  changeSummary: PatientChangeSummary | null;
 }
 
 export interface RunListItem {
@@ -454,6 +1037,12 @@ export interface PatientStatusResponse {
   batchStatusSummary: string;
   primaryDiagnosis: DiagnosisEntry | null;
   otherDiagnoses: DiagnosisEntry[];
+  diagnosisSource: string | null;
+  referralDiagnosisSummary: DiagnosisSummaryBlock;
+  oasisDiagnosisSummary: DiagnosisSummaryBlock;
+  diagnosisComparisonStatus: DiagnosisComparisonStatus;
+  referralMedicationSummary: MedicationSummaryBlock | null;
+  oasisMedicationSummary: MedicationSummaryBlock | null;
   runMode: "read_only";
   rerunEnabled: boolean;
   lastRunAt: string | null;
@@ -462,5 +1051,11 @@ export interface PatientStatusResponse {
   codingWorkflow: WorkflowTrackSummary | null;
   qaWorkflow: WorkflowTrackSummary | null;
   qaPrefetch: QaPrefetchSummary | null;
+  oasisValidation: OasisValidationSummary | null;
+  referralOasisConsistency: ReferralOasisConsistencySummary | null;
+  oasisGate: OasisGateSummary | null;
+  generatedPlanOfCare: GeneratedPlanOfCareDraft | null;
+  generatedPlanOfCareStatus: string;
+  reviewerDiagnostics: ReviewerLlmDiagnosticsSummary | null;
   referralQa: ReferralQaSummary;
 }

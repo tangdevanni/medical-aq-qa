@@ -1,5 +1,6 @@
 import { getDashboardSession } from "../../lib/auth/session";
 import { loadDashboardEnv } from "../../lib/env";
+import { resolveDashboardRedirectLocation } from "../../lib/redirect";
 import { redirect } from "next/navigation";
 
 type LoginPageProps = {
@@ -16,10 +17,10 @@ function getErrorMessage(errorValue: string | string[] | undefined): string | nu
 export default async function LoginPage({ searchParams }: LoginPageProps) {
   const session = await getDashboardSession();
   if (session?.selectedAgencyId) {
-    redirect("/agency");
+    redirect(resolveDashboardRedirectLocation("/agency"));
   }
   if (session) {
-    redirect("/select-agency");
+    redirect(resolveDashboardRedirectLocation("/select-agency"));
   }
 
   const resolvedSearchParams = await searchParams;

@@ -11,6 +11,8 @@ export interface PortalDebugConfig {
   saveDebugHtml: boolean;
   pauseOnFailure: boolean;
   stepTimeoutMs: number;
+  navigationTimeoutMs?: number;
+  navigationRetries?: number;
   debugScreenshots: boolean;
   selectorRetryCount: number;
 }

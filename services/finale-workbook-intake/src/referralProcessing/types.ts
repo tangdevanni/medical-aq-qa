@@ -348,6 +348,7 @@ export interface ReferralDocumentProcessingArtifacts {
   fieldComparisonPath: string;
   patientQaReferencePath: string;
   qaDocumentSummaryPath: string;
+  reviewOnlyOasisSuggestionsMetadataPath: string;
 }
 
 export interface ReferralDocumentProcessingResult {

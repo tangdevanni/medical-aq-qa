@@ -7,6 +7,7 @@ import type {
   ReferralFactCategory,
 } from "./types";
 import { normalizeIcd10Code } from "../services/documentTextAnalysis";
+import { isClearlyNotDiagnosisDescription } from "../services/diagnosisTextGuard";
 
 function normalizeWhitespace(value: string | null | undefined): string {
   return value?.replace(/\s+/g, " ").trim() ?? "";
@@ -334,7 +335,11 @@ function extractDiagnosisCandidates(text: string): ReferralDiagnosisCandidate[] 
       const normalizedDescription = normalizeWhitespace(description)
         .replace(/\s+\d(?:\s+\d){3,}\b.*$/i, "")
         .replace(/\s+\^.*$/i, "")
+        .replace(/^[\s):-]+/, "")
         .trim();
+      if (isClearlyNotDiagnosisDescription(normalizedDescription)) {
+        continue;
+      }
       const key = `${icd10Code}:${description}`.toUpperCase();
       if (seen.has(key)) {
         continue;

@@ -1,4 +1,5 @@
 import { mkdir, readdir, readFile, stat, writeFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
 import path from "node:path";
 import type { PatientEpisodeWorkItem } from "@medical-ai-qa/shared-types";
 import type { Logger } from "pino";
@@ -41,6 +42,164 @@ function normalizeDocumentText(value: string | null | undefined): string {
     .replace(/[ \t]+/g, " ")
     .replace(/\n{3,}/g, "\n\n")
     .trim() ?? "";
+}
+
+function hashReferralSuggestionInputs(input: {
+  sourceMeta: SourceDocumentArtifact;
+  extractionResult: SourceDocumentExtractionResult;
+  extractedText: string;
+  normalizedSections: ReferralDocumentProcessingResult["normalizedSections"];
+  extractedFacts: ReferralDocumentProcessingResult["extractedFacts"];
+}): string {
+  return createHash("sha256")
+    .update(JSON.stringify({
+      sourceMeta: input.sourceMeta,
+      extractionResult: input.extractionResult,
+      extractedText: normalizeDocumentText(input.extractedText),
+      normalizedSections: input.normalizedSections,
+      extractedFacts: input.extractedFacts,
+    }))
+    .digest("hex");
+}
+
+function hashStableJson(value: unknown): string {
+  return createHash("sha256").update(JSON.stringify(value ?? null)).digest("hex");
+}
+
+function buildReferralUploadFingerprint(input: {
+  sourceMeta: SourceDocumentArtifact;
+  extractedText: string;
+}): string {
+  return hashStableJson({
+    selectedDocumentId: input.sourceMeta.selectedDocumentId,
+    sourceDocuments: input.sourceMeta.sourceDocuments.map((document) => ({
+      documentId: document.documentId,
+      sourceLabel: document.sourceLabel,
+      sourceType: document.sourceType,
+      acquisitionMethod: document.acquisitionMethod,
+      localFilePath: document.localFilePath,
+      fileSizeBytes: document.fileSizeBytes,
+      extractedTextLength: document.extractedTextLength,
+      effectiveTextSource: document.effectiveTextSource,
+      selectionStatus: document.selectionStatus,
+    })),
+    extractedTextHash: hashStableJson(normalizeDocumentText(input.extractedText)),
+  });
+}
+
+function buildReferralProcessingInputFingerprint(input: {
+  sourceMeta: SourceDocumentArtifact;
+  extractionResult: SourceDocumentExtractionResult;
+  extractedText: string;
+  fieldMapSnapshot: ReferralDocumentProcessingResult["fieldMapSnapshot"];
+}): string {
+  return hashStableJson({
+    uploadFingerprint: buildReferralUploadFingerprint({
+      sourceMeta: input.sourceMeta,
+      extractedText: input.extractedText,
+    }),
+    extractionUsabilityStatus: input.extractionResult.extractionQuality.usabilityStatus,
+    extractionMethod: input.extractionResult.extractionMethod,
+    currentChartValues: input.fieldMapSnapshot.fields.map((field) => ({
+      key: field.key,
+      currentChartValue: field.currentChartValue,
+      currentChartValueSource: field.currentChartValueSource,
+      populatedInChart: field.populatedInChart,
+    })),
+  });
+}
+
+async function readJsonIfExists<T>(filePath: string): Promise<T | null> {
+  try {
+    return JSON.parse(await readFile(filePath, "utf8")) as T;
+  } catch {
+    return null;
+  }
+}
+
+type ReferralReuseMetadata = {
+  schemaVersion: "referral-reuse-metadata.v1";
+  generatedAt: string;
+  referralUploadFingerprint: string;
+  processingInputFingerprint: string;
+  reusedFromPreviousRun: boolean;
+};
+
+async function loadReusableReferralArtifacts(input: {
+  artifactDirectory: string;
+  processingInputFingerprint: string;
+}): Promise<ReferralDocumentProcessingResult | null> {
+  const metadata = await readJsonIfExists<ReferralReuseMetadata>(
+    path.join(input.artifactDirectory, "referral-reuse-metadata.json"),
+  );
+  if (metadata?.processingInputFingerprint !== input.processingInputFingerprint) {
+    return null;
+  }
+
+  const [
+    sourceMeta,
+    extractionResult,
+    extractedText,
+    normalizedSections,
+    extractedFacts,
+    fieldMapSnapshot,
+    llmProposal,
+    fieldComparisons,
+    patientQaReference,
+    qaDocumentSummary,
+  ] = await Promise.all([
+    readJsonIfExists<SourceDocumentArtifact>(path.join(input.artifactDirectory, "source-meta.json")),
+    readJsonIfExists<SourceDocumentExtractionResult>(path.join(input.artifactDirectory, "extraction-result.json")),
+    readFile(path.join(input.artifactDirectory, "extracted-text.txt"), "utf8").catch(() => null),
+    readJsonIfExists<ReferralDocumentProcessingResult["normalizedSections"]>(path.join(input.artifactDirectory, "normalized-sections.json")),
+    readJsonIfExists<ReferralDocumentProcessingResult["extractedFacts"]>(path.join(input.artifactDirectory, "extracted-facts.json")),
+    readJsonIfExists<ReferralDocumentProcessingResult["fieldMapSnapshot"]>(path.join(input.artifactDirectory, "field-map-snapshot.json")),
+    readJsonIfExists<ReferralDocumentProcessingResult["llmProposal"]>(path.join(input.artifactDirectory, "llm-proposal.json")),
+    readJsonIfExists<ReferralDocumentProcessingResult["fieldComparisons"]>(path.join(input.artifactDirectory, "field-comparison.json")),
+    readJsonIfExists<ReferralDocumentProcessingResult["patientQaReference"]>(path.join(input.artifactDirectory, "patient-qa-reference.json")),
+    readJsonIfExists<QaDocumentSummary>(path.join(input.artifactDirectory, "qa-document-summary.json")),
+  ]);
+
+  if (
+    !sourceMeta ||
+    !extractionResult ||
+    extractedText === null ||
+    !normalizedSections ||
+    !extractedFacts ||
+    !fieldMapSnapshot ||
+    !llmProposal ||
+    !fieldComparisons ||
+    !patientQaReference ||
+    !qaDocumentSummary
+  ) {
+    return null;
+  }
+
+  return {
+    sourceMeta,
+    extractionResult,
+    normalizedSections,
+    extractedFacts,
+    fieldMapSnapshot,
+    llmProposal,
+    fieldComparisons,
+    patientQaReference,
+    qaDocumentSummary,
+    artifacts: {
+      artifactDirectory: input.artifactDirectory,
+      sourceMetaPath: path.join(input.artifactDirectory, "source-meta.json"),
+      extractionResultPath: path.join(input.artifactDirectory, "extraction-result.json"),
+      extractedTextPath: path.join(input.artifactDirectory, "extracted-text.txt"),
+      normalizedSectionsPath: path.join(input.artifactDirectory, "normalized-sections.json"),
+      extractedFactsPath: path.join(input.artifactDirectory, "extracted-facts.json"),
+      fieldMapSnapshotPath: path.join(input.artifactDirectory, "field-map-snapshot.json"),
+      llmProposalPath: path.join(input.artifactDirectory, "llm-proposal.json"),
+      fieldComparisonPath: path.join(input.artifactDirectory, "field-comparison.json"),
+      patientQaReferencePath: path.join(input.artifactDirectory, "patient-qa-reference.json"),
+      qaDocumentSummaryPath: path.join(input.artifactDirectory, "qa-document-summary.json"),
+      reviewOnlyOasisSuggestionsMetadataPath: path.join(input.artifactDirectory, "review-only-oasis-suggestions-metadata.json"),
+    },
+  };
 }
 
 function slugify(value: string): string {
@@ -243,10 +402,42 @@ type CandidateEvaluation = {
   extractionQuality: ReturnType<typeof evaluateDocumentExtractionQuality>;
 };
 
-async function selectPrimarySourceDocument(input: {
+function resolveReferralExtractionText(input: {
+  localExtraction: Awaited<ReturnType<typeof extractTextFromLocalFile>> | null;
+  fallbackText: string;
+  fileType: SourceDocumentReference["fileType"];
+}): string {
+  const localText = normalizeDocumentText(input.localExtraction?.text);
+  if (localText) {
+    return localText;
+  }
+
+  const fallbackText = normalizeDocumentText(input.fallbackText);
+  if (!fallbackText) {
+    return "";
+  }
+
+  const fallbackQuality = evaluateDocumentExtractionQuality({
+    text: fallbackText,
+    extraction: {
+      pdfType: input.localExtraction?.pdfType ?? null,
+      rawExtractedTextSource: "dom",
+      domExtractionRejectedReasons: input.localExtraction?.domExtractionRejectedReasons ?? [],
+    },
+    fileType: input.fileType,
+  });
+
+  if (fallbackQuality.usabilityStatus === "usable") {
+    return fallbackText;
+  }
+
+  return "";
+}
+
+async function evaluateSourceDocuments(input: {
   references: SourceDocumentReference[];
   extractedDocuments: ExtractedDocument[];
-}): Promise<CandidateEvaluation | null> {
+}): Promise<CandidateEvaluation[]> {
   const evaluations: CandidateEvaluation[] = [];
 
   for (const reference of input.references) {
@@ -264,7 +455,11 @@ async function selectPrimarySourceDocument(input: {
       }
     }
 
-    const extractedText = normalizeDocumentText(localExtraction?.text) || normalizeDocumentText(fallbackText);
+    const extractedText = resolveReferralExtractionText({
+      localExtraction,
+      fallbackText,
+      fileType: reference.fileType,
+    });
     const extractionQuality = evaluateDocumentExtractionQuality({
       text: extractedText,
       extraction: {
@@ -307,7 +502,34 @@ async function selectPrimarySourceDocument(input: {
     right.reference.extractedTextLength - left.reference.extractedTextLength
   );
 
+  return ordered;
+}
+
+async function selectPrimarySourceDocument(input: {
+  references: SourceDocumentReference[];
+  extractedDocuments: ExtractedDocument[];
+}): Promise<CandidateEvaluation | null> {
+  const ordered = await evaluateSourceDocuments(input);
   return ordered[0] ?? null;
+}
+
+function buildCombinedReferralText(candidates: CandidateEvaluation[]): string {
+  return normalizeDocumentText(
+    candidates
+      .map((candidate, index) => {
+        const label = normalizeWhitespace(candidate.reference.sourceLabel);
+        const documentText = normalizeDocumentText(candidate.extractedText);
+        if (!documentText) {
+          return "";
+        }
+        return [
+          `REFERRAL SOURCE ${index + 1}: ${label || candidate.reference.documentId}`,
+          documentText,
+        ].join("\n");
+      })
+      .filter(Boolean)
+      .join("\n\n"),
+  );
 }
 
 function buildExtractionResult(input: {
@@ -315,10 +537,17 @@ function buildExtractionResult(input: {
   localExtraction: Awaited<ReturnType<typeof extractTextFromLocalFile>> | null;
   fallbackText: string;
 }): SourceDocumentExtractionResult {
-  const extractedText = normalizeDocumentText(input.localExtraction?.text) || normalizeDocumentText(input.fallbackText);
   const fileType = input.sourceReference?.fileType ?? "unknown";
+  const attemptedText =
+    normalizeDocumentText(input.localExtraction?.text) ||
+    normalizeDocumentText(input.fallbackText);
+  const extractedText = resolveReferralExtractionText({
+    localExtraction: input.localExtraction,
+    fallbackText: input.fallbackText,
+    fileType,
+  });
   const extractionQuality = evaluateDocumentExtractionQuality({
-    text: extractedText,
+    text: extractedText || attemptedText,
     extraction: {
       pdfType: input.localExtraction?.pdfType ?? null,
       rawExtractedTextSource: input.localExtraction?.rawExtractedTextSource ?? "dom",
@@ -330,15 +559,32 @@ function buildExtractionResult(input: {
   if (!extractedText) {
     failureReasons.push("No extracted text was produced from the selected referral source.");
   }
+  if (extractionQuality.usabilityStatus === "needs_ocr_retry") {
+    failureReasons.push("OCR retry required before referral facts can be promoted.");
+  }
   if (extractionQuality.usabilityStatus === "rejected") {
     failureReasons.push(`Extraction quality rejected: ${extractionQuality.rejectedReasons.join(", ")}`);
+  }
+  if (input.localExtraction?.ocrUsed) {
+    failureReasons.push(
+      [
+        `ocrUsed=${input.localExtraction.ocrUsed}`,
+        `ocrSuccess=${input.localExtraction.ocrSuccess}`,
+        `ocrMode=${input.localExtraction.ocrMode ?? "unknown"}`,
+        `ocrTextLength=${input.localExtraction.ocrTextLength}`,
+        input.localExtraction.ocrError ? `ocrError=${input.localExtraction.ocrError}` : null,
+        input.localExtraction.ocrErrorCategory ? `ocrErrorCategory=${input.localExtraction.ocrErrorCategory}` : null,
+      ].filter(Boolean).join("; "),
+    );
   }
 
   return {
     documentId: input.sourceReference?.documentId ?? "unselected",
     localFilePath: input.sourceReference?.localFilePath ?? null,
     fileType,
-    extractionMethod: input.localExtraction
+    extractionMethod: !extractedText
+      ? "failed"
+      : input.localExtraction
       ? input.localExtraction.effectiveTextSource === "ocr_text"
         ? fileType === "pdf"
           ? "ocr_text"
@@ -428,6 +674,7 @@ async function persistArtifacts(input: {
   fieldComparisons: ReferralDocumentProcessingResult["fieldComparisons"];
   patientQaReference: ReferralDocumentProcessingResult["patientQaReference"];
   qaDocumentSummary: QaDocumentSummary;
+  reuseMetadata: ReferralReuseMetadata;
 }): Promise<ReferralDocumentProcessingArtifacts> {
   await mkdir(input.artifactDirectory, { recursive: true });
 
@@ -441,6 +688,25 @@ async function persistArtifacts(input: {
   const fieldComparisonPath = path.join(input.artifactDirectory, "field-comparison.json");
   const patientQaReferencePath = path.join(input.artifactDirectory, "patient-qa-reference.json");
   const qaDocumentSummaryPath = path.join(input.artifactDirectory, "qa-document-summary.json");
+  const reviewOnlyOasisSuggestionsMetadataPath = path.join(
+    input.artifactDirectory,
+    "review-only-oasis-suggestions-metadata.json",
+  );
+  const referralReuseMetadataPath = path.join(input.artifactDirectory, "referral-reuse-metadata.json");
+  const referralDocumentationFingerprint = hashReferralSuggestionInputs({
+    sourceMeta: input.sourceMeta,
+    extractionResult: input.extractionResult,
+    extractedText: input.extractedText,
+    normalizedSections: input.normalizedSections,
+    extractedFacts: input.extractedFacts,
+  });
+  const reviewOnlyOasisSuggestionsMetadata = {
+    schemaVersion: "review-only-oasis-suggestions-metadata.v1",
+    generatedAt: new Date().toISOString(),
+    referralDocumentationFingerprint,
+    suggestionPolicy: "review_only",
+    regenerationRule: "regenerate_when_referral_documentation_fingerprint_changes",
+  };
 
   await Promise.all([
     writeFile(sourceMetaPath, JSON.stringify(input.sourceMeta, null, 2), "utf8"),
@@ -453,6 +719,8 @@ async function persistArtifacts(input: {
     writeFile(fieldComparisonPath, JSON.stringify(input.fieldComparisons, null, 2), "utf8"),
     writeFile(patientQaReferencePath, JSON.stringify(input.patientQaReference, null, 2), "utf8"),
     writeFile(qaDocumentSummaryPath, JSON.stringify(input.qaDocumentSummary, null, 2), "utf8"),
+    writeFile(reviewOnlyOasisSuggestionsMetadataPath, JSON.stringify(reviewOnlyOasisSuggestionsMetadata, null, 2), "utf8"),
+    writeFile(referralReuseMetadataPath, JSON.stringify(input.reuseMetadata, null, 2), "utf8"),
   ]);
 
   return {
@@ -467,6 +735,7 @@ async function persistArtifacts(input: {
     fieldComparisonPath,
     patientQaReferencePath,
     qaDocumentSummaryPath,
+    reviewOnlyOasisSuggestionsMetadataPath,
   };
 }
 
@@ -489,33 +758,60 @@ export async function runReferralDocumentProcessingPipeline(input: {
     patientName: input.workItem.patientIdentity.displayName,
     outputDir: input.outputDir,
   });
-  const selectedCandidate = await selectPrimarySourceDocument({
+  const evaluatedCandidates = await evaluateSourceDocuments({
     references: sourceDocuments,
     extractedDocuments: input.extractedDocuments,
   });
+  const usableCandidates = evaluatedCandidates.filter(
+    (candidate) =>
+      candidate.extractionQuality.usabilityStatus === "usable" &&
+      normalizeDocumentText(candidate.extractedText).length > 0,
+  );
+  const selectedCandidates = usableCandidates.length > 0
+    ? usableCandidates
+    : evaluatedCandidates.slice(0, 1);
+  const selectedCandidate = selectedCandidates[0] ?? null;
   const selectedSource = selectedCandidate?.reference ?? null;
+  const selectedDocumentIds = new Set(selectedCandidates.map((candidate) => candidate.reference.documentId));
+  const selectedDocumentId = selectedCandidates.length > 1
+    ? `combined:${selectedCandidates.map((candidate) => candidate.reference.documentId).join(",")}`
+    : selectedSource?.documentId ?? null;
   const sourceMeta: SourceDocumentArtifact = {
     patientId: input.workItem.id,
-    selectedDocumentId: selectedSource?.documentId ?? null,
+    selectedDocumentId,
     sourceDocuments: sourceDocuments.map((sourceDocument) => ({
       ...sourceDocument,
-      selectionStatus: sourceDocument.documentId === selectedSource?.documentId ? "selected" : sourceDocument.selectionStatus,
-      selectedReason: sourceDocument.documentId === selectedSource?.documentId
-        ? "highest-ranked referral/admission-order source with local file preference"
+      selectionStatus: selectedDocumentIds.has(sourceDocument.documentId)
+        ? "selected"
+        : evaluatedCandidates.find((candidate) => candidate.reference.documentId === sourceDocument.documentId)
+          ?.extractionQuality.usabilityStatus === "rejected"
+          ? "rejected"
+          : sourceDocument.selectionStatus,
+      selectedReason: selectedDocumentIds.has(sourceDocument.documentId)
+        ? "usable referral source included in combined referral processing"
         : sourceDocument.selectedReason,
+      rejectedReasons:
+        evaluatedCandidates.find((candidate) => candidate.reference.documentId === sourceDocument.documentId)
+          ?.extractionQuality.rejectedReasons ?? sourceDocument.rejectedReasons,
     })),
-    warnings: selectedSource ? [] : ["No referral/admission-order source document was available for processing."],
+    warnings: selectedSource
+      ? evaluatedCandidates
+        .filter((candidate) => candidate.extractionQuality.usabilityStatus !== "usable")
+        .map((candidate) =>
+          `${candidate.reference.sourceLabel}: ${candidate.extractionQuality.usabilityStatus} (${candidate.extractionQuality.rejectedReasons.join(", ") || "no usable text"})`,
+        )
+      : ["No referral/admission-order source document was available for processing."],
     generatedAt: new Date().toISOString(),
   };
   stepLogs.push(createAutomationStepLog({
     step: "source_document_identified",
     message: selectedSource
-      ? "Identified referral/admission-order source document candidates and selected the best source for processing."
+      ? `Identified referral/admission-order source document candidates and selected ${selectedCandidates.length} usable source document(s) for combined processing.`
       : "No referral/admission-order source document could be identified for processing.",
     patientName,
     found: sourceDocuments.map((document) => `${document.documentId}:${document.sourceType}:${document.localFilePath ?? "in_memory"}`),
     missing: selectedSource ? [] : ["referral/admission-order source document"],
-    evidence: selectedSource ? [`selectedDocumentId=${selectedSource.documentId}`] : [],
+    evidence: selectedDocumentId ? [`selectedDocumentId=${selectedDocumentId}`] : [],
     safeReadConfirmed: true,
   }));
 
@@ -583,6 +879,18 @@ export async function runReferralDocumentProcessingPipeline(input: {
       fieldComparisons,
       patientQaReference,
       qaDocumentSummary,
+      reuseMetadata: {
+        schemaVersion: "referral-reuse-metadata.v1",
+        generatedAt: new Date().toISOString(),
+        referralUploadFingerprint: buildReferralUploadFingerprint({ sourceMeta, extractedText: "" }),
+        processingInputFingerprint: buildReferralProcessingInputFingerprint({
+          sourceMeta,
+          extractionResult,
+          extractedText: "",
+          fieldMapSnapshot,
+        }),
+        reusedFromPreviousRun: false,
+      },
     });
     return {
       result: {
@@ -639,7 +947,43 @@ export async function runReferralDocumentProcessingPipeline(input: {
     localExtraction,
     fallbackText,
   });
-  const extractedText = normalizeDocumentText(localExtraction?.text) || normalizeDocumentText(fallbackText);
+  const combinedReferralText = buildCombinedReferralText(usableCandidates);
+  const selectedExtractionText = resolveReferralExtractionText({
+    localExtraction,
+    fallbackText,
+    fileType: selectedSource.fileType,
+  });
+  const extractedText = combinedReferralText || selectedExtractionText;
+  const combinedExtractionQuality = evaluateDocumentExtractionQuality({
+    text: extractedText || normalizeDocumentText(localExtraction?.text) || normalizeDocumentText(fallbackText),
+    extraction: {
+      pdfType: extractionResult.pdfType,
+      rawExtractedTextSource: extractionResult.rawExtractedTextSource === "ocr" ||
+        extractionResult.rawExtractedTextSource === "hybrid"
+        ? extractionResult.rawExtractedTextSource
+        : "dom",
+      domExtractionRejectedReasons: extractionResult.domExtractionRejectedReasons,
+    },
+    fileType: extractionResult.fileType,
+  });
+  extractionResult.documentId = selectedDocumentId ?? extractionResult.documentId;
+  extractionResult.extractionQuality = combinedExtractionQuality;
+  extractionResult.extractionSuccess = combinedExtractionQuality.usabilityStatus === "usable";
+  extractionResult.warnings = [
+    ...extractionResult.warnings,
+    ...(selectedCandidates.length > 1 ? [`Combined ${selectedCandidates.length} usable referral source documents.`] : []),
+  ];
+  const extractedTextUsableForReferralFacts = combinedExtractionQuality.usabilityStatus === "usable";
+  const referralProcessingText = extractedTextUsableForReferralFacts ? extractedText : "";
+  const referralProcessingDocuments = extractedTextUsableForReferralFacts
+    ? selectedCandidates
+      .map((candidate) =>
+        candidate.reference.sourceIndex >= 0
+          ? input.extractedDocuments[candidate.reference.sourceIndex] ?? null
+          : null,
+      )
+      .filter((document): document is ExtractedDocument => document !== null)
+    : [];
   stepLogs.push(createAutomationStepLog({
     step: "document_extraction_completed",
     message: extractionResult.extractionSuccess
@@ -650,6 +994,7 @@ export async function runReferralDocumentProcessingPipeline(input: {
       `extractionMethod=${extractionResult.extractionMethod}`,
       `effectiveTextSource=${extractionResult.effectiveTextSource ?? "none"}`,
       `textLength=${extractedText.length}`,
+      `selectedSourceCount=${selectedCandidates.length}`,
     ],
     missing: extractionResult.extractionSuccess ? [] : ["usable extracted text"],
     evidence: extractionResult.failureReasons,
@@ -670,12 +1015,20 @@ export async function runReferralDocumentProcessingPipeline(input: {
     safeReadConfirmed: true,
   }));
 
-  const normalizedSections = normalizeReferralSections(extractedText);
+  const normalizedSections = extractedTextUsableForReferralFacts
+    ? normalizeReferralSections(extractedText)
+    : [];
+  const normalizedReferralSections = extractedTextUsableForReferralFacts
+    ? normalizedSections
+    : [];
   stepLogs.push(createAutomationStepLog({
     step: "referral_sections_normalized",
-    message: `Normalized referral text into ${normalizedSections.length} semantic sections.`,
+    message: extractedTextUsableForReferralFacts
+      ? `Normalized referral text into ${normalizedReferralSections.length} semantic sections.`
+      : "Skipped referral section normalization because extraction quality was not usable.",
     patientName,
-    found: normalizedSections.map((section) => `${section.sectionName}:${section.confidence}`),
+    found: normalizedReferralSections.map((section) => `${section.sectionName}:${section.confidence}`),
+    missing: extractedTextUsableForReferralFacts ? [] : extractionResult.extractionQuality.rejectedReasons,
     safeReadConfirmed: true,
   }));
 
@@ -686,10 +1039,55 @@ export async function runReferralDocumentProcessingPipeline(input: {
       currentChartValueSource: input.currentChartValueSource,
     }),
   });
+  const referralUploadFingerprint = buildReferralUploadFingerprint({
+    sourceMeta,
+    extractedText: referralProcessingText,
+  });
+  const processingInputFingerprint = buildReferralProcessingInputFingerprint({
+    sourceMeta,
+    extractionResult,
+    extractedText: referralProcessingText,
+    fieldMapSnapshot,
+  });
+  const reusableReferralArtifacts = await loadReusableReferralArtifacts({
+    artifactDirectory,
+    processingInputFingerprint,
+  });
+  if (reusableReferralArtifacts) {
+    await writeFile(
+      path.join(artifactDirectory, "referral-reuse-metadata.json"),
+      JSON.stringify({
+        schemaVersion: "referral-reuse-metadata.v1",
+        generatedAt: new Date().toISOString(),
+        referralUploadFingerprint,
+        processingInputFingerprint,
+        reusedFromPreviousRun: true,
+      } satisfies ReferralReuseMetadata, null, 2),
+      "utf8",
+    );
+    stepLogs.push(createAutomationStepLog({
+      step: "referral_processing_reused",
+      message: "Reused referral facts, comparison rows, and LLM outputs because referral source and chart snapshot fingerprints were unchanged.",
+      patientName,
+      found: [
+        `referralUploadFingerprint=${referralUploadFingerprint}`,
+        `processingInputFingerprint=${processingInputFingerprint}`,
+      ],
+      evidence: [
+        `artifactDirectory=${artifactDirectory}`,
+        "ocr_llm_skipped=true",
+      ],
+      safeReadConfirmed: true,
+    }));
+    return {
+      result: reusableReferralArtifacts,
+      stepLogs,
+    };
+  }
   const extractedFacts = extractReferralFacts({
     fieldMapSnapshot,
-    sections: normalizedSections,
-    sourceText: extractedText,
+    sections: normalizedReferralSections,
+    sourceText: referralProcessingText,
   });
   stepLogs.push(createAutomationStepLog({
     step: "chart_snapshot_created",
@@ -725,8 +1123,8 @@ export async function runReferralDocumentProcessingPipeline(input: {
     env: input.env,
     fieldMapSnapshot,
     extractedFacts,
-    sourceText: extractedText,
-    extractedDocuments: input.extractedDocuments,
+    sourceText: referralProcessingText,
+    extractedDocuments: referralProcessingDocuments,
   });
   stepLogs.push(createAutomationStepLog({
     step: "llm_field_proposal_completed",
@@ -766,8 +1164,8 @@ export async function runReferralDocumentProcessingPipeline(input: {
     fieldMapSnapshot,
     llmProposal,
     fieldComparisons,
-    normalizedSections,
-    sourceText: extractedText,
+    normalizedSections: normalizedReferralSections,
+    sourceText: referralProcessingText,
   });
 
   stepLogs.push(createAutomationStepLog({
@@ -786,8 +1184,8 @@ export async function runReferralDocumentProcessingPipeline(input: {
   const patientQaReference = buildPatientQaReference({
     workItem: input.workItem,
     sourceMeta,
-    extractedText,
-    normalizedSections,
+    extractedText: referralProcessingText,
+    normalizedSections: normalizedReferralSections,
     fieldMapSnapshot,
     llmProposal,
     fieldComparisons,
@@ -795,13 +1193,14 @@ export async function runReferralDocumentProcessingPipeline(input: {
   });
 
   const qaDocumentSummary = buildQaDocumentSummary({
-    selectedDocumentId: selectedSource.documentId,
+    selectedDocumentId,
     extractionResult,
-    normalizedSectionCount: normalizedSections.length,
+    normalizedSectionCount: normalizedReferralSections.length,
     llmProposalCount: llmProposal.proposed_field_values.length,
     fieldComparisons,
     warnings: [
       ...sourceMeta.warnings,
+      ...extractionResult.failureReasons,
       ...extractionResult.warnings,
       ...llmProposal.warnings,
     ],
@@ -814,23 +1213,30 @@ export async function runReferralDocumentProcessingPipeline(input: {
       ...extractionResult,
       extractedTextPath: path.join(artifactDirectory, "extracted-text.txt"),
     },
-    extractedText,
-    normalizedSections,
+    extractedText: referralProcessingText,
+    normalizedSections: normalizedReferralSections,
     extractedFacts,
     fieldMapSnapshot,
     llmProposal,
     fieldComparisons,
     patientQaReference,
     qaDocumentSummary,
+    reuseMetadata: {
+      schemaVersion: "referral-reuse-metadata.v1",
+      generatedAt: new Date().toISOString(),
+      referralUploadFingerprint,
+      processingInputFingerprint,
+      reusedFromPreviousRun: false,
+    },
   });
 
   input.logger.info({
     patientId: input.workItem.id,
     patientName,
-    selectedDocumentId: selectedSource.documentId,
+    selectedDocumentId,
     artifactDirectory,
     extractionUsabilityStatus: qaDocumentSummary.extractionUsabilityStatus,
-    normalizedSectionCount: qaDocumentSummary.normalizedSectionCount,
+      normalizedSectionCount: qaDocumentSummary.normalizedSectionCount,
     extractedFactCount: extractedFacts.facts.length,
     llmProposalCount: qaDocumentSummary.llmProposalCount,
   }, "referral document processing pipeline completed");
@@ -849,6 +1255,7 @@ export async function runReferralDocumentProcessingPipeline(input: {
       artifacts.fieldComparisonPath,
       artifacts.patientQaReferencePath,
       artifacts.qaDocumentSummaryPath,
+      artifacts.reviewOnlyOasisSuggestionsMetadataPath,
     ],
     safeReadConfirmed: true,
   }));
@@ -860,7 +1267,7 @@ export async function runReferralDocumentProcessingPipeline(input: {
         ...extractionResult,
         extractedTextPath: artifacts.extractedTextPath,
       },
-      normalizedSections,
+      normalizedSections: normalizedReferralSections,
       extractedFacts,
       fieldMapSnapshot,
       llmProposal,

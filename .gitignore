@@ -32,7 +32,13 @@ bin/
 node_modules/
 dist/
 .turbo/
+.corepack/
+.pnpm-cache/
+.pnpm-home/
+.pnpm-state/
 .pnpm-store/
+.pnpm-global/
+.pnpm-global-bin/
 pnpm-lock.yaml
 
 ### Environment ###
@@ -46,3 +52,40 @@ test-results/
 
 ### Logs ###
 *.log
+
+### Local scratch / generated audit artifacts ###
+.tmp*
+/.tmp/
+/.tmp-*/
+/Microsoft/
+/.runtime/
+/.sandbox-home/
+/batch-detail.json
+/patient-detail.json
+/batch-planning-search.txt
+/source-limit-search.txt
+
+### Next.js / TypeScript ###
+.next/
+.next-dev/
+*.tsbuildinfo
+
+### Local artifact outputs ###
+/artifacts/tmp/
+/artifacts/dashboard-verification/
+/artifacts/playwright-christine-review/
+/services/finale-workbook-intake/artifacts/tmp/
+/services/finale-workbook-intake/artifacts/artifact-quality-summary-work/
+/services/finale-workbook-intake/artifacts/test/
+/services/finale-workbook-intake/artifacts/demo/oasis-qa-demo-*/
+/.auth/
+/services/api/.auth/
+
+### Runtime Control Plane Data ###
+data/control-plane/subsidiaries/
+data/control-plane/batches/
+data/control-plane/scheduled-runs/
+services/api/data/control-plane/subsidiaries/
+services/api/data/control-plane/batches/*
+!services/api/data/control-plane/batches/README.md
+services/api/data/control-plane/scheduled-runs/

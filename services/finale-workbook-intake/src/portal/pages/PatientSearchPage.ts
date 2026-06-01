@@ -172,6 +172,40 @@ interface SearchResultsSnapshot {
   resultLocators?: Locator[];
 }
 
+function getCandidatePortalLifecycleStatus(
+  candidate: SearchResultCandidate,
+): "active" | "discharged" | "non_admit" | "pending" | null {
+  const text = normalizeWhitespace(`${candidate.label} ${candidate.rowText}`);
+  if (/\bnon[-\s]?admit\b/i.test(text)) {
+    return "non_admit";
+  }
+  if (/\bpending\b/i.test(text)) {
+    return "pending";
+  }
+  if (/\bdischarged\b|\bDC:\s*\d{1,2}\/\d{1,2}\/\d{4}\b/i.test(text)) {
+    return "discharged";
+  }
+  if (/\bactive\b/i.test(text)) {
+    return "active";
+  }
+  return null;
+}
+
+function selectUniqueActiveCandidate(candidates: SearchResultCandidate[]): SearchResultCandidate | null {
+  const activeCandidates = candidates.filter((candidate) => getCandidatePortalLifecycleStatus(candidate) === "active");
+  if (activeCandidates.length !== 1) {
+    return null;
+  }
+
+  const nonActiveCandidates = candidates.filter((candidate) => candidate !== activeCandidates[0]);
+  const allOthersAreInactive = nonActiveCandidates.every((candidate) => {
+    const status = getCandidatePortalLifecycleStatus(candidate);
+    return status === "discharged" || status === "non_admit" || status === "pending";
+  });
+
+  return allOthersAreInactive ? activeCandidates[0]! : null;
+}
+
 interface GlobalSearchLaunchResult {
   ready: boolean;
   searchQuery: string;
@@ -678,6 +712,24 @@ export class PatientSearchPage {
     }
 
     if (matchedExactCandidates.length > 1) {
+      const activeCandidate = selectUniqueActiveCandidate(matchedExactCandidates);
+      if (activeCandidate) {
+        return this.completeResolvedPatientMatch({
+          candidate: {
+            ...activeCandidate,
+            reasons: [
+              ...activeCandidate.reasons,
+              "selected unique Active patient from duplicate exact-name search results",
+            ],
+          },
+          candidateNames,
+          normalizedSearchName,
+          expectedDisplayName,
+          stepLogs,
+          workItem,
+        });
+      }
+
       return this.buildAmbiguousSearchResult({
         workItem,
         searchQuery: normalizedSearchName,

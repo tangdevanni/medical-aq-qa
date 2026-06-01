@@ -1261,6 +1261,7 @@ function assertDemoExpectations(input: {
   expectedPatientRunCount: number;
   expectedSafetyMode: PortalSafetyConfig["safetyMode"];
   dangerousWriteAttemptBlocked: boolean;
+  referralOnly?: boolean;
 }): void {
   const { result, patientRun, expectedPatientRunCount } = input;
   const stepOrder = patientRun.automationStepLogs.map((log) => log.step);
@@ -1269,7 +1270,6 @@ function assertDemoExpectations(input: {
     "login",
     "patient_search",
     "chart_open",
-    "oasis_printed_note_review",
   ];
   const qaSummaryLogs = patientRun.automationStepLogs.filter((log) => log.step === "qa_summary");
   const finalQaSummaryLog = qaSummaryLogs.at(-1);
@@ -1303,11 +1303,15 @@ function assertDemoExpectations(input: {
     },
     {
       label: "oasis_print_capture",
-      candidates: ["oasis_print_capture"],
+      candidates: ["oasis_print_capture", "oasis_dom_extraction"],
     },
     {
       label: "oasis_printed_note_review",
-      candidates: ["oasis_printed_note_review"],
+      candidates: [
+        "oasis_printed_note_review",
+        "oasis_dom_acquisition_qa_completed",
+        "oasis_qa_skipped_dom_acquisition_unchanged",
+      ],
     },
   ];
 
@@ -1328,7 +1332,19 @@ function assertDemoExpectations(input: {
     assert.ok(stepNames.has(requiredStep), `automationStepLogs missing required step '${requiredStep}'.`);
   }
 
-  if (patientRun.matchResult.status === "EXACT") {
+  if (input.referralOnly) {
+    assert.ok(
+      stepNames.has("shared_evidence_discovery_complete"),
+      "referral-only run must complete shared evidence discovery.",
+    );
+    assert.ok(
+      stepNames.has("referral_document_check"),
+      "referral-only run must record referral document availability.",
+    );
+    return;
+  }
+
+  if (patientRun.matchResult.status === "EXACT" && !input.referralOnly) {
     console.info("pipeline restored to baseline path", {
       patientSearchEmitted: stepNames.has("patient_search"),
       chartOpenEmitted: stepNames.has("chart_open"),
@@ -1382,6 +1398,7 @@ export async function runOasisDemoHarness(input: {
   limit?: number;
   all?: boolean;
   live?: boolean;
+  referralOnly?: boolean;
 }): Promise<OasisDemoHarnessResult> {
   const outputDir = path.resolve(input.outputDir);
   const workbookPath = resolveWorkbookPath(input.workbookPath);
@@ -1417,8 +1434,8 @@ export async function runOasisDemoHarness(input: {
     parserExceptions: intake.parserExceptions,
     workbookPath,
     outputDir: runOutputDir,
-    workflowDomains: ["qa"],
     portalClient,
+    stopAfterSharedEvidence: input.referralOnly,
   });
   const patientRun = result.patientRuns[0];
 
@@ -1435,6 +1452,7 @@ export async function runOasisDemoHarness(input: {
     expectedPatientRunCount: selection.selectedWorkItems.length,
     expectedSafetyMode: DEMO_READ_ONLY_SAFETY.safetyMode,
     dangerousWriteAttemptBlocked,
+    referralOnly: input.referralOnly,
   });
 
   const demoSummary = buildDemoSummary({

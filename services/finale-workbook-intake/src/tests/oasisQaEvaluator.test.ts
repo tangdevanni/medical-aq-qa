@@ -145,4 +145,43 @@ describe("evaluateOasisQa", () => {
     expect(result.qaOutcome).toBe("PORTAL_NOT_FOUND");
     expect(result.findings.some((finding) => finding.outcome === "PORTAL_NOT_FOUND")).toBe(true);
   });
+
+  it("uses DOM-first artifacts as review evidence instead of blocking for missing legacy documents", () => {
+    const matchResult: PatientMatchResult = {
+      status: "EXACT",
+      searchQuery: "Jane Doe",
+      portalPatientId: "PT-1",
+      portalDisplayName: "Jane Doe",
+      candidateNames: ["Jane Doe"],
+      note: null,
+    };
+
+    const result = evaluateOasisQa({
+      workItem: createWorkItem(),
+      matchResult,
+      artifacts: [],
+      processingStatus: "COMPLETE",
+      extractedDocuments: [],
+      domFirstQaEvidence: {
+        oasis: true,
+        poc: true,
+        visitNotes: true,
+        evidence: [
+          "oasis-dom-extracted-state.json",
+          "plan-of-care-review-draft.json",
+          "visit-note-qa-review.json",
+        ],
+      },
+    });
+
+    expect(result.qaOutcome).toBe("NEEDS_MANUAL_QA");
+    expect(result.oasisQaSummary.overallStatus).toBe("NEEDS_QA");
+    expect(result.oasisQaSummary.blockers).not.toContain("OASIS document content extracted");
+    expect(result.oasisQaSummary.blockers).not.toContain("Plan of care content extracted");
+    expect(result.oasisQaSummary.blockers).not.toContain("Visit note content extracted");
+    expect(result.oasisQaSummary.blockers).toHaveLength(0);
+    expect(result.oasisQaSummary.sections.find((section) => section.key === "oasis")?.status).toBe("NEEDS_REVIEW");
+    expect(result.oasisQaSummary.sections.find((section) => section.key === "poc")?.status).toBe("NEEDS_REVIEW");
+    expect(result.oasisQaSummary.sections.find((section) => section.key === "visit_notes")?.status).toBe("NEEDS_REVIEW");
+  });
 });

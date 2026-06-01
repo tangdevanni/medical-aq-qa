@@ -1,4 +1,3 @@
-import { NextResponse } from "next/server";
 import {
   loadDashboardEnv,
   verifyQaUserPassword,
@@ -6,12 +5,9 @@ import {
 } from "../../../lib/env";
 import { recordLoginFailure, recordLoginSuccess } from "../../../lib/auth/audit";
 import { setDashboardSession } from "../../../lib/auth/session";
+import { redirectToSameOrigin } from "../../../lib/redirect";
 
 const INVALID_CREDENTIALS_REDIRECT = "/login?error=invalid_credentials";
-
-function redirectSeeOther(request: Request, path: string): NextResponse {
-  return NextResponse.redirect(new URL(path, request.url), 303);
-}
 
 export async function POST(request: Request) {
   const formData = await request.formData();
@@ -20,7 +16,7 @@ export async function POST(request: Request) {
 
   if (!email || !password) {
     await recordLoginFailure(request, email || null, "missing_credentials");
-    return redirectSeeOther(request, INVALID_CREDENTIALS_REDIRECT);
+    return redirectToSameOrigin(INVALID_CREDENTIALS_REDIRECT);
   }
 
   const env = loadDashboardEnv();
@@ -32,10 +28,10 @@ export async function POST(request: Request) {
 
   if (!user) {
     await recordLoginFailure(request, email, "invalid_credentials");
-    return redirectSeeOther(request, INVALID_CREDENTIALS_REDIRECT);
+    return redirectToSameOrigin(INVALID_CREDENTIALS_REDIRECT);
   }
 
   const session = await setDashboardSession({ user });
   await recordLoginSuccess(request, session);
-  return redirectSeeOther(request, "/select-agency");
+  return redirectToSameOrigin("/select-agency");
 }

@@ -105,6 +105,33 @@ describe("extractReferralFacts", () => {
     expect(byKey.get("caregiver_phone")?.value).toBe("4807035881");
   });
 
+  it("does not extract allergy phrases as diagnosis candidates when they follow an ICD code", () => {
+    const sourceText = [
+      "Active Diagnoses",
+      "Z47.89) No known drug allergies",
+      "Z47.89) History of arthroplasty of left knee",
+      "Allergies: No known drug allergies",
+    ].join("\n");
+
+    const fieldMapSnapshot = buildFieldMapSnapshot({
+      chartSnapshotValues: createInitialChartSnapshotValues({ workItem: buildWorkItem() }),
+    });
+
+    const facts = extractReferralFacts({
+      fieldMapSnapshot,
+      sections: normalizeReferralSections(sourceText),
+      sourceText,
+    });
+
+    expect(facts.diagnosis_candidates).toEqual([
+      expect.objectContaining({
+        icd10_code: "Z47.89",
+        description: "History of arthroplasty of left knee",
+      }),
+    ]);
+    expect(facts.diagnosis_candidates.some((candidate) => /allerg/i.test(candidate.description))).toBe(false);
+  });
+
   it("trims discharge operations text and extracts functional limits from long matched spans", () => {
     const longDiagnosisLine = [
       "DIAGNOSIS INFORMATION",

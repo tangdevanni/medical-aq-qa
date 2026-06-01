@@ -869,7 +869,11 @@ function isLegacySelectionBlindTextractPayload(payload: Record<string, unknown>)
 }
 
 function shouldFallbackToAsyncTextract(ocrError: string): boolean {
-  return TEXTRACT_UNSUPPORTED_SYNC_PDF_ERROR.test(ocrError);
+  return (
+    TEXTRACT_UNSUPPORTED_SYNC_PDF_ERROR.test(ocrError) ||
+    /unknownerror/i.test(ocrError) ||
+    /request entity too large|document too large|file size|bytes.*limit/i.test(ocrError)
+  );
 }
 
 function classifyOcrError(input: {
@@ -947,6 +951,9 @@ async function readExistingOcrArtifacts(input: {
         ? combinedBlockText
         : extractedText;
     const ocrSuccess = Boolean(ocrPayload.ocrSuccess) && repairedText.length > 0;
+    if (!ocrSuccess) {
+      return null;
+    }
     if (repairedText && repairedText !== extractedText) {
       await writeFile(extractedTextPath, `${repairedText}\n`, "utf8").catch(() => undefined);
     }
@@ -1730,6 +1737,31 @@ export async function extractTextFromLocalFile(
     });
   }
 
+  if (extension === ".jpg" || extension === ".jpeg" || extension === ".png") {
+    const ocrResult = await runTextractOcr({
+      filePath: operationalFilePath,
+      buffer,
+      pdfType: "scanned_image_pdf",
+      fallbackText: "",
+    });
+    const extractedTextPath = path.join(path.dirname(operationalFilePath), "extracted-text.txt");
+    await writeFile(extractedTextPath, `${ocrResult.text}\n`, "utf8").catch(() => undefined);
+
+    return createExtractedTextReadResult({
+      ...(ocrResult ?? {}),
+      text: ocrResult.text,
+      pdfType: null,
+      effectiveTextSource: ocrResult.ocrSuccess ? "ocr_text" : "viewer_text_fallback",
+      rawExtractedTextSource: ocrResult.ocrSuccess ? "ocr" : "dom",
+      textSelectionReason: ocrResult.ocrSuccess
+        ? "image_textract_ocr_text_selected"
+        : "image_textract_ocr_failed",
+      domExtractionRejectedReasons: ocrResult.ocrSuccess ? [] : ["image_ocr_failed"],
+      ocrUsed: true,
+      extractionPolicyMode: policyDecision?.mode ?? null,
+    });
+  }
+
   const text = extractPrintableText(buffer);
   const analysis = analyzeDocumentText(text);
   return createExtractedTextReadResult({
@@ -1761,6 +1793,21 @@ function buildFallbackText(artifact: ArtifactRecord): string {
 function readStringField(value: string | null | undefined): string | null {
   const normalized = normalizeWhitespace(value ?? "");
   return normalized || null;
+}
+
+function readJsonArrayField(value: string | null | undefined): Array<Record<string, unknown>> {
+  const normalized = value?.trim();
+  if (!normalized) {
+    return [];
+  }
+  try {
+    const parsed = JSON.parse(normalized);
+    return Array.isArray(parsed)
+      ? parsed.filter((entry): entry is Record<string, unknown> => Boolean(entry) && typeof entry === "object")
+      : [];
+  } catch {
+    return [];
+  }
 }
 
 function readStringListField(value: string | null | undefined): string[] {
@@ -1818,8 +1865,122 @@ export async function extractDocumentsFromArtifacts(
   artifacts: ArtifactRecord[],
 ): Promise<ExtractedDocument[]> {
   const extracted: ExtractedDocument[] = [];
+  const processedArtifactKeys = new Set<string>();
+  const emittedDocumentKeys = new Set<string>();
+
+  const normalizeIdentityPart = (value: string | null | undefined): string =>
+    normalizeWhitespace(value ?? "").toLowerCase();
+
+  const buildArtifactProcessingKey = (artifact: ArtifactRecord): string => {
+    const extractedTextPath = readStringField(artifact.extractedFields?.extractedTextPath);
+    const admissionSourcePdfPath = readStringField(artifact.extractedFields?.admissionOrderSourcePdfPath);
+    const admissionPrintedPdfPath = readStringField(artifact.extractedFields?.admissionOrderPrintedPdfPath);
+    const sourceMetaPath = readStringField(artifact.extractedFields?.sourceMetaPath) ??
+      readStringField(artifact.extractedFields?.admissionOrderSourceMetaPath);
+    return [
+      artifact.artifactType,
+      normalizeIdentityPart(artifact.portalLabel),
+      normalizeIdentityPart(artifact.downloadPath),
+      normalizeIdentityPart(extractedTextPath),
+      normalizeIdentityPart(admissionSourcePdfPath),
+      normalizeIdentityPart(admissionPrintedPdfPath),
+      normalizeIdentityPart(sourceMetaPath),
+    ].join("|");
+  };
+
+  const pushUniqueDocument = (document: ExtractedDocument | null): void => {
+    if (!document) {
+      return;
+    }
+    const sourcePath = normalizeIdentityPart(document.metadata.sourcePath);
+    const textHash = createHash("sha256").update(document.text).digest("hex");
+    const sourceKey = sourcePath
+      ? `${document.type}|source:${sourcePath}`
+      : `${document.type}|text:${textHash}`;
+    const contentKey = `${document.type}|content:${textHash}`;
+    if (emittedDocumentKeys.has(sourceKey) || emittedDocumentKeys.has(contentKey)) {
+      return;
+    }
+    emittedDocumentKeys.add(sourceKey);
+    emittedDocumentKeys.add(contentKey);
+    extracted.push(document);
+  };
 
   for (const artifact of artifacts) {
+    const artifactProcessingKey = buildArtifactProcessingKey(artifact);
+    if (processedArtifactKeys.has(artifactProcessingKey)) {
+      continue;
+    }
+    processedArtifactKeys.add(artifactProcessingKey);
+
+    const allReferralSourceDocuments = readJsonArrayField(
+      artifact.extractedFields?.allReferralSourceDocuments,
+    );
+    for (const [sourceIndex, sourceDocument] of allReferralSourceDocuments.entries()) {
+      const sourcePath = readStringField(
+        typeof sourceDocument.sourcePath === "string" ? sourceDocument.sourcePath : null,
+      );
+      const extractedTextPath = readStringField(
+        typeof sourceDocument.extractedTextPath === "string" ? sourceDocument.extractedTextPath : null,
+      );
+      const sourceLabel = readStringField(
+        typeof sourceDocument.sourceLabel === "string" ? sourceDocument.sourceLabel : null,
+      ) ?? `Referral source ${sourceIndex + 1}`;
+      const readPath = sourcePath ?? extractedTextPath;
+      if (!readPath) {
+        continue;
+      }
+
+      let sourceReadResult: LocalFileTextExtractionResult | null = null;
+      let sourceText = "";
+      try {
+        await access(readPath);
+        sourceReadResult = await extractTextFromLocalFile(readPath);
+        sourceText = sourceReadResult.text;
+      } catch {
+        sourceText = "";
+      }
+      if (!sourceText) {
+        continue;
+      }
+
+      pushUniqueDocument(buildExtractedDocument({
+        type: "ORDER",
+        text: sourceText,
+        metadata: {
+          artifactType: artifact.artifactType,
+          source: sourcePath ? "download" : "artifact_fallback",
+          sourcePath: readPath,
+          effectiveTextSource: sourceReadResult?.effectiveTextSource ?? "viewer_text_fallback",
+          extractionPolicyMode: sourceReadResult?.extractionPolicyMode ?? null,
+          rawExtractedTextSource: sourceReadResult?.rawExtractedTextSource ?? "dom",
+          textSelectionReason: sourceReadResult?.textSelectionReason ?? "all_referral_source_document_text",
+          domExtractionRejectedReasons: sourceReadResult?.domExtractionRejectedReasons ?? [],
+          pdfType: sourceReadResult?.pdfType ?? null,
+          ocrUsed: sourceReadResult?.ocrUsed ?? false,
+          ocrProvider: sourceReadResult?.ocrProvider ?? null,
+          ocrTextLength: sourceReadResult?.ocrTextLength ?? 0,
+          ocrSuccess: sourceReadResult?.ocrSuccess ?? false,
+          ocrResultPath: sourceReadResult?.ocrResultPath ?? null,
+          ocrError: sourceReadResult?.ocrError ?? null,
+          ocrErrorCategory: sourceReadResult?.ocrErrorCategory ?? null,
+          ocrMode: sourceReadResult?.ocrMode ?? null,
+          configuredAwsRegion: sourceReadResult?.configuredAwsRegion ?? null,
+          resolvedBucketRegion: sourceReadResult?.resolvedBucketRegion ?? null,
+          textractRegion: sourceReadResult?.textractRegion ?? null,
+          regionMatch: sourceReadResult?.regionMatch ?? null,
+          regionOverrideUsed: sourceReadResult?.regionOverrideUsed ?? null,
+          s3UploadSucceeded: sourceReadResult?.s3UploadSucceeded ?? null,
+          s3UploadError: sourceReadResult?.s3UploadError ?? null,
+          textractStartSucceeded: sourceReadResult?.textractStartSucceeded ?? null,
+          textractStartError: sourceReadResult?.textractStartError ?? null,
+          portalLabel: sourceLabel,
+          discoveredAt: artifact.discoveredAt,
+          inventoryItem: null,
+        },
+      }));
+    }
+
     let text = "";
     let source: "download" | "artifact_fallback" = "artifact_fallback";
     let effectiveTextSource: EffectiveTextSource = "viewer_text_fallback";
@@ -1896,9 +2057,7 @@ export async function extractDocumentsFromArtifacts(
         inventoryItem: null,
       },
     });
-    if (baseDocument) {
-      extracted.push(baseDocument);
-    }
+    pushUniqueDocument(baseDocument);
 
     const admissionOrderTextExcerpt = readStringField(
       artifact.extractedFields?.admissionOrderTextExcerpt,
@@ -2002,9 +2161,7 @@ export async function extractDocumentsFromArtifacts(
         ),
       },
     });
-    if (admissionDocument) {
-      extracted.push(admissionDocument);
-    }
+    pushUniqueDocument(admissionDocument);
   }
 
   return extracted;

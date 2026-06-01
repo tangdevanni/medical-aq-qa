@@ -14,6 +14,7 @@ import { registerAgencyRoutes } from "./routes/agencies";
 import { registerBatchRoutes } from "./routes/batches";
 import { registerPatientRunRoutes } from "./routes/patientRuns";
 import { BatchControlPlaneService } from "./services/batchControlPlaneService";
+import { PatientMemoryService } from "./services/patientMemoryService";
 import { PortalCredentialProvider } from "./services/portalCredentialProvider";
 import { SubsidiaryConfigService } from "./services/subsidiaryConfigService";
 
@@ -40,6 +41,7 @@ export async function createApp() {
 
   const repository = new FilesystemBatchRepository(env.API_STORAGE_ROOT);
   const scheduledRunRepository = new FilesystemScheduledRunRepository(env.API_STORAGE_ROOT);
+  const patientMemoryService = new PatientMemoryService(env.API_STORAGE_ROOT);
   const subsidiaryRepository = new FilesystemSubsidiaryRepository(env.API_STORAGE_ROOT);
   const credentialProvider = new PortalCredentialProvider(env, logger);
   const subsidiaryConfigService = new SubsidiaryConfigService(
@@ -59,9 +61,16 @@ export async function createApp() {
   const batchService = new BatchControlPlaneService(
     repository,
     scheduledRunRepository,
+    patientMemoryService,
     acquisitionService,
     subsidiaryConfigService,
     logger,
+    {
+      patientMemoryWriteEnabled: env.PATIENT_MEMORY_WRITE_ENABLED,
+      deltaReuseEnabled: env.DELTA_REUSE_ENABLED,
+      autonomousMode: env.API_AUTONOMOUS_MODE,
+      scheduleLocalTimes: env.DEFAULT_SUBSIDIARY_RERUN_LOCAL_TIMES,
+    },
   );
   await batchService.initialize();
 

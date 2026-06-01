@@ -1,6 +1,8 @@
 import { basename, join } from "node:path";
 import { mkdir, writeFile } from "node:fs/promises";
 import type { ExtractedDocument } from "./documentExtractionService";
+import { getClinicalTextQualityReason } from "./clinicalTextQualityService";
+import { isClearlyNotDiagnosisDescription } from "./diagnosisTextGuard";
 
 export interface FactSnippet {
   field: string;
@@ -67,12 +69,15 @@ type DocumentLine = {
 const MAX_SNIPPET_LENGTH = 220;
 const MAX_FACTS_PER_SECTION = 12;
 const ICD_CODE_PATTERN = /\b([A-TV-Z][0-9][0-9A-Z](?:\.[0-9A-Z]{1,4})?)\b/g;
+const ICD_CODE_TOKEN_PATTERN = /^[A-TV-Z][0-9][0-9A-Z](?:\.[0-9A-Z]{1,4})?$/i;
 const MEDICATION_DOSE_PATTERN =
   /\b\d+(?:\.\d+)?\s*(?:mg|mcg|g|units?|ml|mL|tablet(?:s)?|tab(?:s)?|capsule(?:s)?|cap(?:s)?|drops?)\b/i;
 const MEDICATION_ROUTE_PATTERN =
   /\b(po|iv|im|sq|subq|subcutaneous|topical|inhalation|neb|nasal|ophthalmic|otic|pr|sl|patch)\b/i;
 const MEDICATION_FREQUENCY_PATTERN =
   /\b(?:daily|bid|tid|qid|qhs|qam|qpm|every\s+\d+\s*(?:hours?|days?)|weekly|twice daily|three times daily|as needed|prn)\b/i;
+const KNOWN_MEDICATION_PATTERN =
+  /\b(?:insulin|warfarin|metformin|lasix|furosemide|lisinopril|aspirin|acetaminophen|eliquis|apixaban|toprol|metoprolol|omeprazole|losartan|atorvastatin|januvia|solifenacin|gabapentin|amlodipine|levothyroxine|fluoxetine|oxycodone|torsemide|potassium|klor-con)\b/i;
 const ASSESSMENT_PATTERN =
   /\b(?:score|total|pain\s*(?:scale)?|phq-?9|braden|morse|fall risk|blood pressure|bp|pulse|respiratory rate|temperature|spo2|oxygen saturation)\b/i;
 const HOMEBOUND_PATTERN =
@@ -85,6 +90,10 @@ const ALLERGY_PATTERN = /\b(?:allerg(?:y|ies)|nkda|nka)\b/i;
 const DIAGNOSIS_PATTERN = /\b(?:primary diagnosis|secondary diagnosis|other diagnos(?:is|es)|active diagnosis|diagnosis(?:es)?|icd)\b/i;
 const UNCAT_CLINICAL_PATTERN =
   /\b(?:pain|wound|edema|oxygen|sob|shortness of breath|caregiver|fall|vitals?|blood pressure|weight|diet|bowel|urinary|catheter)\b/i;
+const CLINICAL_DESCRIPTION_PATTERN =
+  /\b(?:fracture|heart|failure|diabetes|mellitus|hypertension|disease|dysphagia|weakness|pain|pneumonia|aftercare|unspecified|history|fall|atrial|fibrillation|hyperlipidemia|gastro|reflux|hypothyroidism|depression|kidney|anemia|respiratory|organism|wound|infection|surgery|joint|homebound|skilled|therapy|medication|allerg)\b/i;
+const READABLE_CONTEXT_PATTERN =
+  /\b(?:patient|with|without|history|current|use|long|term|acute|chronic|right|left|lower|upper|aftercare|encounter|following|status|post|due|from|for|and|the|not|known|oral|tablet|capsule|daily|twice|once|start|new|old)\b/i;
 const BOILERPLATE_PATTERNS: RegExp[] = [
   /\bautomatic zoom\b/i,
   /\bactual size\b/i,
@@ -158,7 +167,73 @@ function shouldDropLine(line: string): boolean {
   if (/^[\W_]+$/.test(normalized)) {
     return true;
   }
+  const qualityReason = getClinicalTextQualityReason(normalized);
+  if (
+    qualityReason === "pdf_binary_or_metadata_text" ||
+    qualityReason === "selector_or_debug_text" ||
+    qualityReason === "ocr_gibberish"
+  ) {
+    return true;
+  }
   return BOILERPLATE_PATTERNS.some((pattern) => pattern.test(normalized));
+}
+
+function isDocumentTextUnusable(document: ExtractedDocument): boolean {
+  const qualityReason = getClinicalTextQualityReason(document.text);
+  if (
+    qualityReason === "pdf_binary_or_metadata_text" ||
+    qualityReason === "selector_or_debug_text" ||
+    qualityReason === "ocr_gibberish"
+  ) {
+    return true;
+  }
+
+  return document.metadata.pdfType === "scanned_image_pdf" &&
+    document.metadata.ocrUsed === true &&
+    document.metadata.ocrSuccess !== true &&
+    document.metadata.rawExtractedTextSource !== "ocr";
+}
+
+function isLikelyGibberishFactText(value: string): boolean {
+  const normalized = normalizeWhitespace(value);
+  if (!normalized || CLINICAL_DESCRIPTION_PATTERN.test(normalized)) {
+    return false;
+  }
+
+  const letters = normalized.match(/[A-Za-z]/g)?.length ?? 0;
+  const vowels = normalized.match(/[AEIOUaeiou]/g)?.length ?? 0;
+  const symbols = normalized.match(/[^A-Za-z0-9\s.,;:()/-]/g)?.length ?? 0;
+  const words = normalized
+    .split(/\s+/)
+    .filter((token) => /[A-Za-z]/.test(token));
+  const vowelPoorWords = words.filter((token) => token.length >= 4 && !/[AEIOUaeiou]/.test(token));
+  const mixedAlphaNumericWords = words.filter((token) =>
+    token.length >= 4 &&
+    /[A-Za-z]/.test(token) &&
+    /\d/.test(token) &&
+    !ICD_CODE_TOKEN_PATTERN.test(token));
+  const symbolHeavyWords = words.filter((token) =>
+    token.length >= 4 &&
+    /[_;:()/,-]/.test(token) &&
+    !ICD_CODE_TOKEN_PATTERN.test(token));
+  const oddCaseWords = words.filter((token) =>
+    token.length >= 6 &&
+    /[a-z][A-Z]|[A-Z]{2,}[a-z]{2,}/.test(token));
+  const noisyWords = new Set([
+    ...vowelPoorWords,
+    ...mixedAlphaNumericWords,
+    ...symbolHeavyWords,
+    ...oddCaseWords,
+  ]);
+  const readableWords = words.filter((token) => READABLE_CONTEXT_PATTERN.test(token));
+
+  return symbols / Math.max(1, normalized.length) > 0.12 ||
+    (letters >= 14 && vowels / Math.max(1, letters) < 0.22) ||
+    vowelPoorWords.length >= Math.max(2, Math.ceil(words.length / 3)) ||
+    mixedAlphaNumericWords.length >= 2 ||
+    (words.length >= 5 && readableWords.length === 0 && noisyWords.size >= 2) ||
+    (words.length >= 5 && noisyWords.size >= Math.max(3, Math.ceil(words.length * 0.4))) ||
+    (normalized.length >= 80 && readableWords.length === 0 && noisyWords.size >= 2);
 }
 
 function splitLongLine(line: string): string[] {
@@ -176,6 +251,10 @@ function buildDocumentLines(extractedDocuments: ExtractedDocument[]): DocumentLi
   const lines: DocumentLine[] = [];
 
   for (const document of extractedDocuments) {
+    if (isDocumentTextUnusable(document)) {
+      continue;
+    }
+
     const source = buildSourceLabel(document);
     const normalizedText = normalizeMultilineText(document.text);
     const rawLines = normalizedText
@@ -219,11 +298,17 @@ function buildSnippet(field: string, line: DocumentLine): FactSnippet {
 function cleanDiagnosisDescription(line: string): string {
   return normalizeWhitespace(
     line
-      .replace(/\b(?:primary diagnosis|secondary diagnosis(?:es)?|other diagnoses?|active diagnoses?|diagnoses?|icd(?:-10)?(?: code)?s?)\b[:\-]?/gi, "")
+      .replace(/\b(?:admitting diagnosis|primary diagnosis|secondary diagnosis(?:es)?|other diagnoses?|active diagnoses?|diagnoses?|icd(?:-10)?(?: code)?s?)\b[:\-]?/gi, "")
       .replace(ICD_CODE_PATTERN, " ")
       .replace(/\b(?:dx|codes?)\b[:\-]?/gi, " ")
+      .replace(/^[\s):-]+/, "")
       .replace(/\s+/g, " "),
   );
+}
+
+function isNonClinicalDiagnosisReference(value: string): boolean {
+  return isClearlyNotDiagnosisDescription(value) ||
+    /diagnosis and treatment records|substance abuse diagnosis|disclos(?:e|ure) information|workers comp|ordering (?:md|npi)|date of birth/i.test(value);
 }
 
 function extractDiagnosisFacts(lines: DocumentLine[], extractedDocuments: ExtractedDocument[]): DiagnosisFact[] {
@@ -238,13 +323,19 @@ function extractDiagnosisFacts(lines: DocumentLine[], extractedDocuments: Extrac
     }
 
     const rank: DiagnosisFact["rank"] =
-      /\bprimary diagnosis\b/i.test(line.text)
+      /\b(?:admitting diagnosis|reason for admission|primary diagnosis)\b/i.test(line.text)
         ? "primary"
         : /\b(?:secondary diagnosis|other diagnoses?)\b/i.test(line.text)
           ? "secondary"
           : undefined;
 
     const description = cleanDiagnosisDescription(line.text);
+    if (description && isNonClinicalDiagnosisReference(description)) {
+      continue;
+    }
+    if (description && isLikelyGibberishFactText(description)) {
+      continue;
+    }
     if (codes.length === 0 && description) {
       const key = `${rank ?? "unknown"}|${description.toLowerCase()}`;
       if (!seen.has(key)) {
@@ -275,29 +366,13 @@ function extractDiagnosisFacts(lines: DocumentLine[], extractedDocuments: Extrac
     }
   }
 
-  for (const document of extractedDocuments) {
-    const possibleCodes = Array.isArray(document.metadata.possibleIcd10Codes)
-      ? document.metadata.possibleIcd10Codes.map((entry) => normalizeWhitespace(String(entry)))
-      : [];
-    const source = buildSourceLabel(document);
-    for (const code of possibleCodes) {
-      if (!code) {
-        continue;
-      }
-      const key = `${code}|metadata`;
-      if (seen.has(key)) {
-        continue;
-      }
-      seen.add(key);
-      facts.push({
-        code,
-        description: "Diagnosis code candidate from extracted document metadata",
-        source,
-      });
-    }
-  }
-
-  return facts.slice(0, MAX_FACTS_PER_SECTION);
+  return facts
+    .sort((left, right) => {
+      const rankScore = (rank: DiagnosisFact["rank"]) =>
+        rank === "primary" ? 0 : rank === "secondary" ? 1 : 2;
+      return rankScore(left.rank) - rankScore(right.rank);
+    })
+    .slice(0, MAX_FACTS_PER_SECTION);
 }
 
 function parseMedicationLine(line: DocumentLine): MedicationFact | null {
@@ -305,11 +380,15 @@ function parseMedicationLine(line: DocumentLine): MedicationFact | null {
   if (!normalized) {
     return null;
   }
+  if (/\b(?:disease process|regime and diet|keeps all in original bottle|med box|has a schedule|therapeutic exercise|ther act direct|following instruction|dispense\s+\d+|possible\.?\s+patients requiring)\b/i.test(normalized)) {
+    return null;
+  }
 
+  const knownMedicationMatch = normalized.match(KNOWN_MEDICATION_PATTERN)?.[0];
   const medicationCue =
-    /\bmedications?\b/i.test(normalized) ||
     MEDICATION_DOSE_PATTERN.test(normalized) ||
-    /\b(?:tab|tablet|capsule|insulin|warfarin|metformin|lasix|furosemide|lisinopril|aspirin|acetaminophen)\b/i.test(normalized);
+    /\b(?:tab|tablet|capsule)\b/i.test(normalized) ||
+    Boolean(knownMedicationMatch);
   if (!medicationCue) {
     return null;
   }
@@ -325,7 +404,10 @@ function parseMedicationLine(line: DocumentLine): MedicationFact | null {
   const dose = cleaned.match(MEDICATION_DOSE_PATTERN)?.[0];
   const route = cleaned.match(MEDICATION_ROUTE_PATTERN)?.[0];
   const frequency = cleaned.match(MEDICATION_FREQUENCY_PATTERN)?.[0];
-  const name = normalizeWhitespace(
+  if (/\blab(?:oratory)? results?\b/i.test(line.source ?? "") && !dose && !route && !frequency) {
+    return null;
+  }
+  const parsedName = normalizeWhitespace(
     cleaned
       .replace(MEDICATION_DOSE_PATTERN, " ")
       .replace(MEDICATION_ROUTE_PATTERN, " ")
@@ -333,8 +415,17 @@ function parseMedicationLine(line: DocumentLine): MedicationFact | null {
       .replace(/\b(?:take|give|apply|inject)\b/gi, " ")
       .replace(/\s+/g, " "),
   );
+  const name = !dose && knownMedicationMatch
+    ? knownMedicationMatch
+    : parsedName;
 
   if (!name || name.length < 2) {
+    return null;
+  }
+  if (!knownMedicationMatch && name.split(/\s+/).filter(Boolean).length > 8) {
+    return null;
+  }
+  if (isLikelyGibberishFactText(name)) {
     return null;
   }
 

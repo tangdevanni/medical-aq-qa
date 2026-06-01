@@ -57,4 +57,40 @@ describe("buildOasisReadyDiagnosisDocument", () => {
       },
     ]);
   });
+
+  it("splits packed fact-pack diagnosis summaries into clean primary and subsequent diagnoses", () => {
+    const canonical: CanonicalDiagnosisExtraction = {
+      reason_for_admission: "L PATELLA FX",
+      diagnosis_phrases: [],
+      diagnosis_code_pairs: [
+        {
+          diagnosis: "Diagnoses: - primary L PATELLA FX - E87.1 Hyponatremia I : Hypo-osmolality",
+          code: null,
+          code_source: null,
+        },
+      ],
+      icd10_codes_found_verbatim: ["E87.1"],
+      ordered_services: ["SN", "PT"],
+      clinical_summary: "Read-only diagnosis extraction summary.",
+      source_quotes: [],
+      uncertain_items: [],
+      document_type: "ORDER",
+      extraction_confidence: "medium",
+    };
+
+    const document = buildOasisReadyDiagnosisDocument(canonical);
+
+    expect(document.primaryDiagnosis).toMatchObject({
+      code: "",
+      description: "L PATELLA FX",
+      confidence: "medium",
+    });
+    expect(document.otherDiagnoses).toEqual([
+      {
+        code: "E87.1",
+        description: "Hyponatremia I : Hypo-osmolality",
+        confidence: "high",
+      },
+    ]);
+  });
 });

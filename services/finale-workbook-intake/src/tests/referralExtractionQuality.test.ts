@@ -99,4 +99,21 @@ describe("evaluateDocumentExtractionQuality", () => {
     expect(result.rejectedReasons).toContain("pdf_structure_text");
     expect(result.usabilityStatus).toBe("needs_ocr_retry");
   });
+
+  it("routes low-quality scanned PDF OCR toward OCR retry instead of rejected fallback", () => {
+    const result = evaluateDocumentExtractionQuality({
+      text: "Z69 lm UUgkk A--M nomcOP 4HKr 3pQ 9 w051UW auUcm ZDbJHd vmgcisme Z u2",
+      extraction: {
+        pdfType: "scanned_image_pdf",
+        rawExtractedTextSource: "ocr",
+        domExtractionRejectedReasons: [],
+      },
+      fileType: "pdf",
+    });
+
+    expect(result.likelyUsableForLlm).toBe(false);
+    expect(result.likelyRequiresOcrRetry).toBe(true);
+    expect(result.rejectedReasons).toContain("ocr_retry_recommended");
+    expect(result.usabilityStatus).toBe("needs_ocr_retry");
+  });
 });

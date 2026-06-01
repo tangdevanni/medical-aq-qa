@@ -28,6 +28,15 @@ const latestPatientQuerySchema = z.object({
 const sampleBatchBodySchema = z.object({
   limit: z.number().int().positive().max(50).optional(),
   patientIds: z.array(z.string().min(1)).max(50).optional(),
+  mode: z.enum(["delta", "full"]).default("delta"),
+  reprojectOnly: z.boolean().default(false),
+  forceStages: z.array(z.enum(["referral", "oasis", "poc", "visit_notes", "dashboard"])).default([]),
+});
+
+const runControlBodySchema = z.object({
+  mode: z.enum(["delta", "full"]).default("delta"),
+  reprojectOnly: z.boolean().default(false),
+  forceStages: z.array(z.enum(["referral", "oasis", "poc", "visit_notes", "dashboard"])).default([]),
 });
 
 async function getBatchId(request: FastifyRequest): Promise<string> {
@@ -109,19 +118,14 @@ async function buildDashboardRunDetail(
   service: BatchControlPlaneService,
   batchId: string,
 ) {
-  const batch = await service.getBatch(batchId);
-  if (!batch) {
+  const knownArtifacts = await service.getKnownPatientArtifactsForBatch(batchId);
+  if (!knownArtifacts) {
     return null;
   }
 
-  const patientViews = await Promise.all(
-    batch.patientRuns.map((patientRun) => buildDashboardPatientView(service, batchId, patientRun.workItemId)),
-  );
-
   return toDashboardRunDetail({
-    batch,
-    patients: patientViews
-      .filter((patient): patient is NonNullable<typeof patient> => patient !== null)
+    batch: knownArtifacts.batch,
+    patients: knownArtifacts.patients
       .map((patient) => toDashboardPatientSummary(patient)),
   });
 }
@@ -166,7 +170,8 @@ export async function registerBatchRoutes(
 
   app.post("/api/batches/:id/run", async (request, reply) => {
     const batchId = await getBatchId(request);
-    await service.startBatchRun(batchId);
+    const body = runControlBodySchema.parse((request.body ?? {}) as unknown);
+    await service.startBatchRun(batchId, body);
     reply.code(202);
     return buildDashboardRunDetail(service, batchId);
   });
@@ -243,13 +248,11 @@ export async function registerBatchRoutes(
 
   app.get("/api/batches/:id/patient-runs", async (request) => {
     const batchId = await getBatchId(request);
-    const patientViews = await Promise.all(
-      (await service.getPatientRuns(batchId)).map((patientRun) =>
-        buildDashboardPatientView(service, batchId, patientRun.workItemId),
-      ),
-    );
-    return patientViews
-      .filter((patient): patient is NonNullable<typeof patient> => patient !== null)
+    const knownArtifacts = await service.getKnownPatientArtifactsForBatch(batchId);
+    if (!knownArtifacts) {
+      throw new Error(`Batch not found: ${batchId}`);
+    }
+    return knownArtifacts.patients
       .map((patient) => toDashboardPatientSummary(patient));
   });
 
@@ -352,7 +355,8 @@ export async function registerBatchRoutes(
 
   app.post("/api/runs/:id/start", async (request, reply) => {
     const batchId = await getBatchId(request);
-    await service.startBatchRun(batchId);
+    const body = runControlBodySchema.parse((request.body ?? {}) as unknown);
+    await service.startBatchRun(batchId, body);
     reply.code(202);
     return buildDashboardRunDetail(service, batchId);
   });
@@ -364,8 +368,9 @@ export async function registerBatchRoutes(
       sourceBatchId: batchId,
       limit: body.limit,
       patientIds: body.patientIds,
+      seedFromMemory: body.mode !== "full",
     });
-    await service.startBatchRun(sampleBatch.id);
+    await service.startBatchRun(sampleBatch.id, body);
     reply.code(202);
     return buildDashboardRunDetail(service, sampleBatch.id);
   });

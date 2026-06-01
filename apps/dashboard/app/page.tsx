@@ -1,15 +1,16 @@
 import { redirect } from "next/navigation";
 import { getDashboardSession } from "../lib/auth/session";
+import { resolveDashboardRedirectLocation } from "../lib/redirect";
 
 export default async function HomePage() {
   const session = await getDashboardSession();
   if (!session) {
-    redirect("/login");
+    redirect(resolveDashboardRedirectLocation("/login"));
   }
 
   if (!session.selectedAgencyId) {
-    redirect("/select-agency");
+    redirect(resolveDashboardRedirectLocation("/select-agency"));
   }
 
-  redirect("/agency");
+  redirect(resolveDashboardRedirectLocation("/agency"));
 }

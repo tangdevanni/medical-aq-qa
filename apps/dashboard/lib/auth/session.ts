@@ -2,6 +2,7 @@ import { createHmac, randomUUID, timingSafeEqual } from "node:crypto";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { loadDashboardEnv, type DashboardQaUser } from "../env";
+import { resolveDashboardRedirectLocation } from "../redirect";
 
 const SESSION_COOKIE_NAME = "medical_ai_qa_session";
 const LEGACY_AGENCY_ID_MAP: Record<string, string> = {
@@ -155,7 +156,7 @@ function getCookieOptions(env: ReturnType<typeof loadDashboardEnv>, expiresAt: D
   return {
     httpOnly: true,
     sameSite: "lax" as const,
-    secure: env.isProduction,
+    secure: env.cookieSecure,
     path: "/",
     priority: "high" as const,
     maxAge: env.sessionTtlSeconds,
@@ -233,7 +234,7 @@ export async function getDashboardSession(): Promise<DashboardSession | null> {
 export async function requireDashboardSession(): Promise<DashboardSession> {
   const session = await getDashboardSession();
   if (!session) {
-    redirect("/login");
+    redirect(resolveDashboardRedirectLocation("/login"));
   }
   return session;
 }
@@ -241,7 +242,7 @@ export async function requireDashboardSession(): Promise<DashboardSession> {
 export async function requireSelectedAgencySession(): Promise<DashboardSession> {
   const session = await requireDashboardSession();
   if (!session.selectedAgencyId) {
-    redirect("/select-agency");
+    redirect(resolveDashboardRedirectLocation("/select-agency"));
   }
   return session;
 }

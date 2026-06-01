@@ -8,6 +8,7 @@ export const workflowRunStatusSchema = z.enum([
   "NOT_STARTED",
   "IN_PROGRESS",
   "COMPLETED",
+  "NEEDS_HUMAN_REVIEW",
   "BLOCKED",
   "FAILED",
   "PLACEHOLDER",

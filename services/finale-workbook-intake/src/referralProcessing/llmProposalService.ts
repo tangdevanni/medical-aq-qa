@@ -16,6 +16,7 @@ import {
   buildDocumentFactPack,
   type DocumentFactPack,
 } from "../services/documentFactPackBuilder";
+import { isClearlyNotDiagnosisDescription } from "../services/diagnosisTextGuard";
 import type { ExtractedDocument } from "../services/documentExtractionService";
 import type {
   FieldMapSnapshot,
@@ -708,6 +709,7 @@ function sanitizeDiagnosisCandidate(candidate: ReferralDiagnosisCandidate): Refe
   if (
     !description ||
     description.length > 180 ||
+    isClearlyNotDiagnosisDescription(description) ||
     /\bFax Server\b/i.test(description) ||
     /\bPAGE\s+\d+\/\d+\b/i.test(description) ||
     sourceSpans.length === 0

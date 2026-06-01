@@ -80,6 +80,9 @@ const envSchema = z.object({
     .optional()
     .transform((value) => value !== "false"),
   PORTAL_STEP_TIMEOUT_MS: z.coerce.number().int().positive().optional().default(6_000),
+  PORTAL_ACTION_TIMEOUT_MS: z.coerce.number().int().positive().optional().default(30_000),
+  PORTAL_NAVIGATION_TIMEOUT_MS: z.coerce.number().int().positive().optional().default(45_000),
+  PORTAL_NAVIGATION_RETRIES: z.coerce.number().int().min(1).max(5).optional().default(3),
   PORTAL_WORKBOOK_DOWNLOAD_TIMEOUT_MS: z.coerce.number().int().positive().optional().default(30_000),
   PORTAL_WORKBOOK_MIN_BYTES: z.coerce.number().int().positive().optional().default(1_024),
   PORTAL_SELECTOR_RETRY_COUNT: z.coerce.number().int().min(1).max(5).optional().default(2),
@@ -87,6 +90,36 @@ const envSchema = z.object({
     .enum(["true", "false"])
     .optional()
     .transform((value) => value !== "false"),
+  PORTAL_DOM_EXTRACTION_ENABLED: z
+    .enum(["true", "false"])
+    .optional()
+    .default("false")
+    .transform((value) => value === "true"),
+  OASIS_DOM_EXTRACTION_ENABLED: z
+    .enum(["true", "false"])
+    .optional()
+    .default("false")
+    .transform((value) => value === "true"),
+  VISIT_NOTES_DOM_EXTRACTION_ENABLED: z
+    .enum(["true", "false"])
+    .optional()
+    .default("true")
+    .transform((value) => value === "true"),
+  OCR_FALLBACK_ENABLED: z
+    .enum(["true", "false"])
+    .optional()
+    .default("true")
+    .transform((value) => value !== "false"),
+  DOM_EXTRACTION_MIN_FIELD_COUNT: z.coerce.number().int().min(0).optional().default(10),
+  DOM_EXTRACTION_MIN_NONEMPTY_FIELD_COUNT: z.coerce.number().int().min(0).optional().default(3),
+  VISIT_NOTE_CAPTURE_TIMEOUT_MS: z.coerce.number().int().positive().optional().default(120_000),
+  VISIT_NOTE_CAPTURE_MAX_NOTES: z.coerce.number().int().positive().optional().default(10),
+  VISIT_NOTE_POC_MAPPING_LLM_ENABLED: z
+    .enum(["true", "false"])
+    .optional()
+    .transform((value) => value === undefined ? undefined : value === "true"),
+  VISIT_NOTE_POC_MAPPING_MODEL_ID: z.string().min(1).optional(),
+  VISIT_NOTE_POC_MAPPING_MAX_TOKENS: z.coerce.number().int().min(512).max(8_000).optional().default(2_500),
   OASIS_WRITE_ENABLED: z
     .enum(["true", "false"])
     .optional()

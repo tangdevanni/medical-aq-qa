@@ -43,11 +43,18 @@ function parseArgs(argv: string[]): {
   agencyIds: string[];
   pollIntervalMs: number;
   timeoutMs: number;
+  mode: "delta" | "full";
+  reprojectOnly: boolean;
+  forceStages: Array<"referral" | "oasis" | "poc" | "visit_notes" | "dashboard">;
 } {
   const explicitAgencyIds: string[] = [];
   let runAll = false;
   let pollIntervalMs = DEFAULT_POLL_INTERVAL_MS;
   let timeoutMs = DEFAULT_TIMEOUT_MS;
+  let mode: "delta" | "full" = "delta";
+  let reprojectOnly = false;
+  const forceStages: Array<"referral" | "oasis" | "poc" | "visit_notes" | "dashboard"> = [];
+  const validForceStages = new Set(["referral", "oasis", "poc", "visit_notes", "dashboard"]);
 
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
@@ -57,6 +64,36 @@ function parseArgs(argv: string[]): {
 
     if (arg === "--all") {
       runAll = true;
+      continue;
+    }
+
+    if (arg === "--mode") {
+      const nextValue = argv[index + 1];
+      if (nextValue !== "delta" && nextValue !== "full") {
+        throw new Error("Missing or invalid value for --mode. Expected delta or full.");
+      }
+      mode = nextValue;
+      index += 1;
+      continue;
+    }
+
+    if (arg === "--reproject-only") {
+      reprojectOnly = true;
+      continue;
+    }
+
+    if (arg === "--force-stage") {
+      const nextValue = argv[index + 1];
+      if (!nextValue) {
+        throw new Error("Missing value for --force-stage.");
+      }
+      for (const forceStage of nextValue.split(",").map((value) => value.trim()).filter(Boolean)) {
+        if (!validForceStages.has(forceStage)) {
+          throw new Error(`Invalid --force-stage value: ${forceStage}`);
+        }
+        forceStages.push(forceStage as (typeof forceStages)[number]);
+      }
+      index += 1;
       continue;
     }
 
@@ -99,6 +136,9 @@ function parseArgs(argv: string[]): {
     agencyIds,
     pollIntervalMs,
     timeoutMs,
+    mode,
+    reprojectOnly,
+    forceStages,
   };
 }
 
@@ -113,7 +153,7 @@ async function mustParseJson<T>(payload: string, context: string): Promise<T> {
 }
 
 async function main(): Promise<void> {
-  const { agencyIds, pollIntervalMs, timeoutMs } = parseArgs(process.argv.slice(2));
+  const { agencyIds, pollIntervalMs, timeoutMs, mode, reprojectOnly, forceStages } = parseArgs(process.argv.slice(2));
   const app = await createApp();
 
   try {
@@ -133,6 +173,14 @@ async function main(): Promise<void> {
       const refreshResponse = await app.inject({
         method: "POST",
         url: `/api/agencies/${encodeURIComponent(agencyId)}/refresh`,
+        headers: {
+          "content-type": "application/json",
+        },
+        payload: {
+          mode,
+          reprojectOnly,
+          forceStages,
+        },
       });
 
       const refreshBody = refreshResponse.body.length > 0

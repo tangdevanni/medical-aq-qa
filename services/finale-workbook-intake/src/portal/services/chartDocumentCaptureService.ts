@@ -230,6 +230,11 @@ const FILE_UPLOADS_DOCUMENT_ANCHOR_SELECTORS: PortalSelectorCandidate[] = [
     description: "File Uploads document row click targets",
   },
   {
+    strategy: "text",
+    value: /\.(?:pdf|docx?|txt|rtf|png|jpe?g|tiff?)\b/i,
+    description: "File Uploads file entries by visible file extension text",
+  },
+  {
     strategy: "css",
     selector: "a:has-text('root/Referral'), a:has-text('Referral'), [role='button']:has-text('Referral'), [role='treeitem']:has-text('Referral')",
     description: "File Uploads referral click targets outside table rows",
@@ -274,6 +279,11 @@ const REFERRAL_FOLDER_SELECTORS: PortalSelectorCandidate[] = [
   },
   {
     strategy: "css",
+    selector: "a:has-text('Referral Files'), button:has-text('Referral Files'), [role='button']:has-text('Referral Files'), .folder-label:has-text('Referral Files')",
+    description: "File Uploads Referral Files folder target",
+  },
+  {
+    strategy: "css",
     selector: "a:has-text('Intake/Referral'), button:has-text('Intake/Referral'), [role='button']:has-text('Intake/Referral')",
     description: "File Uploads Intake/Referral folder target",
   },
@@ -291,6 +301,11 @@ const REFERRAL_FOLDER_SELECTORS: PortalSelectorCandidate[] = [
     strategy: "text",
     value: /^Referral$/i,
     description: "File Uploads Referral folder exact label",
+  },
+  {
+    strategy: "text",
+    value: /^Referral Files$/i,
+    description: "File Uploads Referral Files exact label",
   },
   {
     strategy: "text",
@@ -412,6 +427,18 @@ export function isFileUploadsAccessLabel(value: string | null | undefined): bool
 
 export function isReferralDocumentsFolderLabel(value: string | null | undefined): boolean {
   return REFERRAL_FOLDER_LABEL_PATTERN.test(normalizeWhitespace(value));
+}
+
+export function isFileUploadFolderLabel(value: string | null | undefined): boolean {
+  const normalized = normalizeUploadFileNameForMatch(value);
+  return [
+    "admission 02 27 2026",
+    "admission info",
+    "admission packets",
+    "referral",
+    "referral files",
+    "progress notes",
+  ].includes(normalized) || (/\b(?:referral|admission|progress)\b/.test(normalized) && !/\.(?:pdf|docx?|txt|rtf|png|jpe?g|tiff?)\b/i.test(normalized));
 }
 
 function isPatientSpecificFileUploadsUrl(value: string | null | undefined): boolean {
@@ -863,6 +890,41 @@ export async function captureChartDocument(
     };
   };
 
+  const clickVisibleUploadFolder = async (
+    state: Awaited<ReturnType<typeof verifyFileUploadsContent>>,
+    stepPrefix: string,
+  ): Promise<Awaited<ReturnType<typeof verifyFileUploadsContent>>> => {
+    const candidateLabels = state.folderLabels
+      .filter((label) => isFileUploadFolderLabel(label))
+      .sort((left, right) => {
+        const leftScore = scoreReferralOrAdmissionUploadLabel(left);
+        const rightScore = scoreReferralOrAdmissionUploadLabel(right);
+        return rightScore - leftScore || left.localeCompare(right);
+      });
+    for (const label of candidateLabels) {
+      const folderLabel = params.page
+        .locator("app-client-file-upload .folder-label, .folder-item .folder-label, .folder-label")
+        .filter({ hasText: label })
+        .first();
+      if (await folderLabel.count().catch(() => 0) === 0 || !(await folderLabel.isVisible().catch(() => false))) {
+        continue;
+      }
+      const folderRow = folderLabel.locator("xpath=ancestor::*[contains(@class,'folder-item')][1]").first();
+      const folderRowCount = await folderRow.count().catch(() => 0);
+      await clickReadOnlyTarget({
+        locator: folderRowCount > 0 ? folderRow : folderLabel,
+        page: params.page,
+        debugConfig: params.debugConfig,
+      });
+      evidence.push(`File Uploads folder drilled into: ${label}`);
+      const nextState = await verifyFileUploadsContent(`${stepPrefix}_${slugify(label) || "folder"}`, 5, 350);
+      evidence.push(...nextState.markerResolution.attempts.map(selectorAttemptToEvidence));
+      evidence.push(...nextState.anchorResolution.attempts.map(selectorAttemptToEvidence));
+      return nextState;
+    }
+    return state;
+  };
+
   let fileUploadsState = await verifyFileUploadsContent("file_uploads_page", 5, 350);
   evidence.push(...fileUploadsState.markerResolution.attempts.map(selectorAttemptToEvidence));
   evidence.push(...fileUploadsState.anchorResolution.attempts.map(selectorAttemptToEvidence));
@@ -892,17 +954,35 @@ export async function captureChartDocument(
   }
 
   const visibleReferralFileCandidate = fileUploadsState.fileLabels
+    .filter((label) => !isFileUploadFolderLabel(label))
     .map((label) => ({
       label,
       score: scoreReferralOrAdmissionUploadLabel(label),
     }))
     .filter((entry) => entry.score > 0)
     .sort((left, right) => right.score - left.score || left.label.localeCompare(right.label))[0] ?? null;
+  const visibleReferralAnchorCandidate = (
+    await Promise.all(
+      fileUploadsState.anchorLocators.slice(0, 80).map(async (anchor) => {
+        if (!(await anchor.isVisible().catch(() => false))) {
+          return null;
+        }
+        const label = normalizeWhitespace(await anchor.textContent().catch(() => null));
+        if (!label || isFileUploadFolderLabel(label)) {
+          return null;
+        }
+        const score = scoreReferralOrAdmissionUploadLabel(label);
+        return score > 0 ? { label, score } : null;
+      }),
+    )
+  )
+    .filter((entry): entry is { label: string; score: number } => Boolean(entry))
+    .sort((left, right) => right.score - left.score || left.label.localeCompare(right.label))[0] ?? null;
 
-  if (fileUploadsState.fileLabels.length > 0) {
-    referralFileLabel = visibleReferralFileCandidate?.label ?? fileUploadsState.fileLabels[0] ?? null;
+  if (visibleReferralFileCandidate || visibleReferralAnchorCandidate) {
+    referralFileLabel = visibleReferralFileCandidate?.label ?? visibleReferralAnchorCandidate?.label ?? fileUploadsState.fileLabels[0] ?? null;
     evidence.push(
-      `File rows are already visible; folder click is not required. selectedReferralFileLabel=${referralFileLabel ?? "none"} candidateScore=${visibleReferralFileCandidate?.score ?? 0}`,
+      `File rows are already visible; folder click is not required. selectedReferralFileLabel=${referralFileLabel ?? "none"} candidateScore=${visibleReferralFileCandidate?.score ?? visibleReferralAnchorCandidate?.score ?? 0}`,
     );
   } else {
     const referralFolderResolution = await resolveFirstVisibleLocator({
@@ -929,7 +1009,8 @@ export async function captureChartDocument(
         looksLikeRootIntakeReferralFolder ||
         looksLikeGenericReferralFolder ||
         looksLikeReferralFilesFolder ||
-        (isReferralDocumentsFolderLabel(referralFolderLabel) && !looksLikeFile);
+        (isReferralDocumentsFolderLabel(referralFolderLabel) && !looksLikeFile) ||
+        isFileUploadFolderLabel(referralFolderLabel);
 
       if (referralFolderIsFolder) {
         const referralFolderClickTarget = referralFolderResolution.locator
@@ -948,6 +1029,12 @@ export async function captureChartDocument(
         fileUploadsState = await verifyFileUploadsContent("file_uploads_page_after_referral_folder_click", 4, 300);
         evidence.push(...fileUploadsState.markerResolution.attempts.map(selectorAttemptToEvidence));
         evidence.push(...fileUploadsState.anchorResolution.attempts.map(selectorAttemptToEvidence));
+        if (
+          fileUploadsState.fileLabels.filter((label) => !isFileUploadFolderLabel(label)).length === 0 &&
+          fileUploadsState.folderLabels.length > 0
+        ) {
+          fileUploadsState = await clickVisibleUploadFolder(fileUploadsState, "file_uploads_page_after_referral_folder_drilldown");
+        }
       } else {
         referralFileLabel = referralFolderLabel;
         referralFolderSelected = false;
@@ -965,6 +1052,7 @@ export async function captureChartDocument(
   fileUploadsPageComponentDetected = fileUploadsState.pageComponentDetected;
   if (!referralFileLabel && fileUploadsState.fileLabels.length > 0) {
     referralFileLabel = fileUploadsState.fileLabels
+      .filter((label) => !isFileUploadFolderLabel(label))
       .map((label) => ({
         label,
         score: scoreReferralOrAdmissionUploadLabel(label),
@@ -1078,6 +1166,9 @@ export async function captureChartDocument(
       scoreReferralOrAdmissionUploadLabel(rowText),
     );
     if (sourceDocumentScore <= 0) {
+      continue;
+    }
+    if (isFileUploadFolderLabel(anchorText) || isFileUploadFolderLabel(rowText)) {
       continue;
     }
     if (

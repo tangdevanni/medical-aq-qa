@@ -6,7 +6,6 @@ import { type MutableRefObject, type ReactNode, type RefObject, useEffect, useRe
 import { getPatient } from "../../../../../lib/api";
 import {
   buildComparisonWorkspaceModel,
-  filterComparisonRows,
   getConfidenceLabel,
   getMappingStrengthLabel,
   getResultBadgeClass,
@@ -20,17 +19,19 @@ import {
 import { formatTimestamp } from "../../../../../lib/qa";
 import type {
   DiagnosisEntry,
+  DiagnosisSummaryBlock,
+  MedicationEntry,
+  MedicationSummaryBlock,
   PatientDetail,
   QaPrefetchSummary,
 } from "../../../../../lib/types";
 
 type WorkspaceTab =
-  | "oasis_snapshot"
-  | "compare_all"
-  | "clinical_sections"
-  | "coding_sensitive"
-  | "uncertain"
-  | "source_documents";
+  | "referral_vs_oasis"
+  | "referral_documents"
+  | "oasis"
+  | "plan_of_care"
+  | "visit_notes";
 
 function hasReferralCoverage(patient: PatientDetail): boolean {
   return patient.referralQa.referralDataAvailable;
@@ -69,6 +70,9 @@ const PORTAL_VALUE_PLACEHOLDERS = new Set([
   "chart value is blank",
   "printed note ocr did not capture a value",
   "no reliable chart value extracted",
+  "no reliable referral value extracted",
+  "no explicit primary diagnosis identified in the text",
+  "no explicit other diagnoses identified in the text",
 ]);
 
 function formatDiagnosisEntry(entry: DiagnosisEntry | null): string {
@@ -79,53 +83,10 @@ function formatDiagnosisEntry(entry: DiagnosisEntry | null): string {
   const description = entry.description?.trim() ?? "";
   const code = entry.code?.trim() ?? "";
   if (description && code) {
-    return `${description} (${code})`;
+    return `${code} - ${description}`;
   }
 
   return description || code || "Not available";
-}
-
-function DiagnosisSummaryPanel({ patient }: { patient: PatientDetail }) {
-  const diagnosisEntries: Array<{ label: string; value: string }> = [
-    {
-      label: "Primary Diagnosis",
-      value: formatDiagnosisEntry(patient.primaryDiagnosis),
-    },
-    {
-      label: "Secondary Diagnoses",
-      value:
-        patient.otherDiagnoses.length > 0
-          ? patient.otherDiagnoses.map((entry) => formatDiagnosisEntry(entry)).join("; ")
-          : "Not available",
-    },
-  ];
-  const diagnosisCount =
-    (patient.primaryDiagnosis ? 1 : 0) + patient.otherDiagnoses.length;
-
-  return (
-    <section className="panel stack">
-      <div className="panel-header-inline">
-        <div>
-          <h2>Diagnosis Summary</h2>
-          <p className="page-subtitle">
-            This mirrors the coding input used by the dashboard so the patient page shows the same diagnosis codes visible in the queue.
-          </p>
-        </div>
-        <span className={`badge${diagnosisCount > 0 ? " success" : " warning"}`}>
-          {diagnosisCount > 0 ? `${diagnosisCount} diagnosis${diagnosisCount === 1 ? "" : "es"}` : "No diagnoses"}
-        </span>
-      </div>
-
-      <div className="workspace-summary-grid">
-        {diagnosisEntries.map((entry) => (
-          <div className="workspace-summary-item" key={entry.label}>
-            <span className="workspace-summary-label">{entry.label}</span>
-            <strong>{entry.value}</strong>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
 }
 
 function BillingPeriodCardsPanel({ prefetch }: { prefetch: QaPrefetchSummary | null }) {
@@ -323,7 +284,11 @@ function DocumentationCoveragePanel({
 }
 
 function hasVisiblePortalValue(value: string | null | undefined): boolean {
-  return typeof value === "string" && value.trim().length > 0;
+  if (typeof value !== "string") {
+    return false;
+  }
+  const trimmed = value.trim();
+  return trimmed.length > 0 && !PORTAL_VALUE_PLACEHOLDERS.has(normalizeLabelForComparison(trimmed));
 }
 
 function hasUsableOasisValue(comparison: FieldComparison): boolean {
@@ -344,21 +309,432 @@ function hasUsableOasisValue(comparison: FieldComparison): boolean {
   );
 }
 
+function hasReferralSuggestionValue(comparison: FieldComparison): boolean {
+  return hasVisiblePortalValue(comparison.displayReferralValue) &&
+    (
+      comparison.comparisonResult === "missing_in_portal" ||
+      comparison.comparisonResult === "coding_review" ||
+      !hasUsableOasisValue(comparison)
+    );
+}
+
+function dedupeDisplayValues(values: string[]): string[] {
+  const seen = new Set<string>();
+  const deduped: string[] = [];
+  for (const value of values) {
+    const trimmed = value.trim();
+    const key = normalizeLabelForComparison(trimmed);
+    if (!trimmed || seen.has(key)) {
+      continue;
+    }
+    seen.add(key);
+    deduped.push(trimmed);
+  }
+  return deduped;
+}
+
+type ClinicalListItem = {
+  label: string;
+  meta?: string | null;
+};
+
+function toDiagnosisListItem(entry: DiagnosisEntry | null): ClinicalListItem | null {
+  if (!entry) {
+    return null;
+  }
+  const label = formatDiagnosisEntry(entry);
+  if (label === "Not available" || PORTAL_VALUE_PLACEHOLDERS.has(normalizeLabelForComparison(label))) {
+    return null;
+  }
+  return {
+    label,
+    meta: entry.onsetDate ? `Onset: ${entry.onsetDate}` : null,
+  };
+}
+
+function buildDiagnosisListFromBlock(block: DiagnosisSummaryBlock): {
+  primary: ClinicalListItem | null;
+  subsequent: ClinicalListItem[];
+} {
+  return {
+    primary: toDiagnosisListItem(block.primaryDiagnosis),
+    subsequent: block.otherDiagnoses
+      .map((entry) => toDiagnosisListItem(entry))
+      .filter((entry): entry is ClinicalListItem => entry !== null),
+  };
+}
+
+function buildDiagnosisListFromRows(rows: FieldComparison[], side: "referral" | "oasis"): {
+  primary: ClinicalListItem | null;
+  subsequent: ClinicalListItem[];
+} {
+  const values = dedupeDisplayValues(buildActiveDiagnosisDisplayRows(rows)
+    .filter((row) => !normalizeLabelForComparison(row.fieldLabel).includes("onset date"))
+    .map((row) => side === "referral" ? row.displayReferralValue : row.displayPortalValue)
+    .filter((value) => hasVisiblePortalValue(value)));
+  const items = values.map((value) => ({ label: value }));
+  return {
+    primary: items[0] ?? null,
+    subsequent: items.slice(1),
+  };
+}
+
+function getDiagnosisList(
+  patient: PatientDetail,
+  block: DiagnosisSummaryBlock,
+  rows: FieldComparison[],
+  side: "referral" | "oasis",
+): {
+  primary: ClinicalListItem | null;
+  subsequent: ClinicalListItem[];
+} {
+  const fromBlock = buildDiagnosisListFromBlock(block);
+  if (fromBlock.primary || fromBlock.subsequent.length > 0) {
+    return fromBlock;
+  }
+  if (side === "oasis") {
+    return fromBlock;
+  }
+  if (!hasUsableReferralCoverage(patient)) {
+    return fromBlock;
+  }
+  return buildDiagnosisListFromRows(rows, side);
+}
+
+function toMedicationListItems(summary: MedicationSummaryBlock | null): ClinicalListItem[] {
+  if (!summary) {
+    return [];
+  }
+  const medicationItems = summary.medications.map((entry: MedicationEntry) => {
+    const metaParts = [
+      entry.dose,
+      entry.route,
+      entry.classification,
+      entry.startDate ? `Start: ${entry.startDate}` : null,
+      entry.status,
+    ].filter((part): part is string => Boolean(part));
+    return {
+      label: entry.name,
+      meta: metaParts.length > 0 ? metaParts.join(" | ") : null,
+    };
+  });
+  const allergyItems = summary.allergies.map((allergy) => ({
+    label: `Allergy: ${allergy}`,
+    meta: null,
+  }));
+  return [...medicationItems, ...allergyItems];
+}
+
+function ClinicalListSection({
+  title,
+  items,
+}: {
+  title: string;
+  items: ClinicalListItem[];
+}) {
+  return (
+    <div className="clinical-list-section">
+      <span className="workspace-summary-label">{title}</span>
+      {items.length > 0 ? (
+        <div className="clinical-value-list">
+          {items.map((item, index) => (
+            <div className="clinical-value-row" key={`${item.label}-${index}`}>
+              <span className="clinical-value-index">{index + 1}</span>
+              <div className="clinical-value-body">
+                <strong>{item.label}</strong>
+                {item.meta ? <span>{item.meta}</span> : null}
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="clinical-empty">Not available</div>
+      )}
+    </div>
+  );
+}
+
+function ClinicalSourceCard({
+  title,
+  count,
+  countLabel,
+  countPluralLabel,
+  primary,
+  primaryTitle = "Primary Diagnosis",
+  subsequent,
+  subsequentTitle,
+  compact = false,
+}: {
+  title: string;
+  count: number;
+  countLabel: string;
+  countPluralLabel?: string;
+  primary: ClinicalListItem | null;
+  primaryTitle?: string | null;
+  subsequent: ClinicalListItem[];
+  subsequentTitle: string;
+  compact?: boolean;
+}) {
+  return (
+    <section className={`clinical-source-card${compact ? " compact" : ""}`}>
+      <div className="clinical-source-card-header">
+        <div>
+          <h2>{title}</h2>
+        </div>
+        <span className={`badge${count > 0 ? " success" : ""}`}>
+          {count} {count === 1 ? countLabel : (countPluralLabel ?? `${countLabel}s`)}
+        </span>
+      </div>
+
+      {primaryTitle ? (
+        <ClinicalListSection
+          items={primary ? [primary] : []}
+          title={primaryTitle}
+        />
+      ) : null}
+      <ClinicalListSection
+        items={subsequent}
+        title={subsequentTitle}
+      />
+    </section>
+  );
+}
+
+function DiagnosisComparisonPanel({
+  patient,
+  rows,
+}: {
+  patient: PatientDetail;
+  rows: FieldComparison[];
+}) {
+  const referralDiagnoses = getDiagnosisList(patient, patient.referralDiagnosisSummary, rows, "referral");
+  const oasisDiagnoses = getDiagnosisList(patient, patient.oasisDiagnosisSummary, rows, "oasis");
+  const diagnosisRows = buildActiveDiagnosisDisplayRows(rows)
+    .filter((row) => hasUsableOasisValue(row) || hasVisiblePortalValue(row.displayReferralValue));
+  const referralCount = (referralDiagnoses.primary ? 1 : 0) + referralDiagnoses.subsequent.length;
+  const oasisCount = (oasisDiagnoses.primary ? 1 : 0) + oasisDiagnoses.subsequent.length;
+
+  return (
+    <div className="clinical-comparison-grid" aria-label="Referral diagnosis versus OASIS diagnosis">
+      <ClinicalSourceCard
+        count={referralCount}
+        countLabel="diagnosis"
+        countPluralLabel="diagnoses"
+        primary={referralDiagnoses.primary}
+        subsequent={referralDiagnoses.subsequent}
+        subsequentTitle="Subsequent Diagnoses"
+        title="Referral Diagnosis"
+      />
+      <ClinicalSourceCard
+        count={oasisCount}
+        countLabel="diagnosis"
+        countPluralLabel="diagnoses"
+        primary={oasisDiagnoses.primary}
+        subsequent={oasisDiagnoses.subsequent}
+        subsequentTitle="Subsequent Diagnoses"
+        title="OASIS Diagnosis"
+      />
+      {diagnosisRows.length === 0 ? (
+        <div className="clinical-empty wide">No active diagnosis comparison rows were produced for this patient.</div>
+      ) : null}
+    </div>
+  );
+}
+
+function MedicationComparisonPanel({
+  patient,
+  rows,
+}: {
+  patient: PatientDetail;
+  rows: FieldComparison[];
+}) {
+  const medicationRows = rows.filter(
+    (row) => hasUsableOasisValue(row) || hasVisiblePortalValue(row.displayReferralValue),
+  );
+  const referralMedicationItemsFromRows = dedupeDisplayValues(medicationRows
+    .map((row) => row.displayReferralValue)
+    .filter((value) => hasVisiblePortalValue(value)))
+    .map((value) => ({ label: value }));
+  const oasisMedicationItemsFromRows = dedupeDisplayValues(medicationRows
+    .map((row) => row.displayPortalValue)
+    .filter((value) => hasVisiblePortalValue(value)))
+    .map((value) => ({ label: value }));
+  const referralMedicationItems = toMedicationListItems(patient.referralMedicationSummary);
+  const oasisMedicationItems = toMedicationListItems(patient.oasisMedicationSummary);
+  const visibleReferralItems = referralMedicationItems.length > 0
+    ? referralMedicationItems
+    : hasUsableReferralCoverage(patient)
+      ? referralMedicationItemsFromRows
+      : [];
+  const visibleOasisItems = oasisMedicationItems.length > 0 ? oasisMedicationItems : oasisMedicationItemsFromRows;
+
+  return (
+    <div className="clinical-comparison-grid medication-comparison-grid" aria-label="Referral medication versus OASIS medication">
+      <ClinicalSourceCard
+        compact
+        count={visibleReferralItems.length}
+        countLabel="item"
+        primary={null}
+        primaryTitle={null}
+        subsequent={visibleReferralItems}
+        subsequentTitle="Medications / Allergies"
+        title="Referral Medication"
+      />
+      <ClinicalSourceCard
+        compact
+        count={visibleOasisItems.length}
+        countLabel="item"
+        primary={null}
+        primaryTitle={null}
+        subsequent={visibleOasisItems}
+        subsequentTitle="Medications / Allergies"
+        title="OASIS Medication"
+      />
+    </div>
+  );
+}
+
+function ReferralCompletionSuggestionsPanel({
+  rows,
+  suggestionsEligible,
+}: {
+  rows: FieldComparison[];
+  suggestionsEligible: boolean;
+}) {
+  const suggestionRows = rows
+    .filter(hasReferralSuggestionValue)
+    .sort((left, right) => left.fieldLabel.localeCompare(right.fieldLabel))
+    .slice(0, 12);
+
+  return (
+    <section className="panel stack">
+      <div className="panel-header-inline">
+        <div>
+          <h2>Review-Only OASIS Suggestions</h2>
+        </div>
+        {suggestionsEligible ? (
+          <span className="badge success">
+            {suggestionRows.length} suggestion{suggestionRows.length === 1 ? "" : "s"}
+          </span>
+        ) : null}
+      </div>
+
+      {suggestionsEligible && suggestionRows.length > 0 ? (
+        <div className="section-field-list">
+          {suggestionRows.map((row) => (
+            <article className="flagged-field-row" key={`suggestion-${row.fieldKey}`}>
+              <div className="flagged-field-header">
+                <div>
+                  <strong>{row.fieldLabel}</strong>
+                  <div className="flagged-field-rationale">
+                    {[row.oasisItemId, row.sectionLabel].filter(Boolean).join(" | ") || "OASIS field"}
+                  </div>
+                </div>
+                <span className="badge warning">Review only</span>
+              </div>
+              <div className="comparison-value-grid">
+                <div className="field-debug-meta">
+                  <div className="comparison-value-label">Suggested value</div>
+                  <div className="comparison-value-text">{row.displayReferralValue}</div>
+                </div>
+                <div className="field-debug-meta">
+                  <div className="comparison-value-label">Current OASIS value</div>
+                  <div className="comparison-value-text">{row.displayPortalValue}</div>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      ) : null}
+    </section>
+  );
+}
+
+function ReferralVsOasisTab({
+  patient,
+  diagnosisRows,
+  medicationRows,
+}: {
+  patient: PatientDetail;
+  diagnosisRows: FieldComparison[];
+  medicationRows: FieldComparison[];
+}) {
+  return (
+    <div className="workspace-section-stack">
+      <DiagnosisComparisonPanel patient={patient} rows={diagnosisRows} />
+      <MedicationComparisonPanel patient={patient} rows={medicationRows} />
+    </div>
+  );
+}
+
+function isIcdCodeValue(value: string | null | undefined): boolean {
+  return typeof value === "string" && /^[A-TV-Z][0-9][0-9A-Z](?:\.[0-9A-Z]{1,4})?$/i.test(value.trim());
+}
+
+function isActiveDiagnosisDescriptionRow(row: FieldComparison): boolean {
+  const label = normalizeLabelForComparison(row.fieldLabel);
+  const value = row.displayPortalValue.trim();
+  return row.sectionKey.startsWith("active_diagnoses") &&
+    hasVisiblePortalValue(value) &&
+    !isIcdCodeValue(value) &&
+    value.length > 0 &&
+    !label.includes("onset date") &&
+    !label.includes("icd 10 code");
+}
+
+function buildActiveDiagnosisDisplayRows(rows: FieldComparison[]): FieldComparison[] {
+  const codeRows = rows.filter((row) => isIcdCodeValue(row.displayPortalValue));
+  const descriptions = rows
+    .filter(isActiveDiagnosisDescriptionRow)
+    .map((row) => row.displayPortalValue.trim());
+
+  if (codeRows.length === 0 || descriptions.length === 0) {
+    return rows;
+  }
+
+  const codeDisplayByFieldKey = new Map<string, string>();
+  codeRows.forEach((row, index) => {
+    const code = row.displayPortalValue.trim();
+    const description = descriptions[index];
+    if (description) {
+      codeDisplayByFieldKey.set(row.fieldKey, `${code} - ${description}`);
+    }
+  });
+
+  return rows
+    .filter((row) => !isActiveDiagnosisDescriptionRow(row))
+    .map((row) => {
+      const displayPortalValue = codeDisplayByFieldKey.get(row.fieldKey);
+      return displayPortalValue
+        ? {
+            ...row,
+            displayPortalValue,
+            comparisonDisplayValue: [row.displayReferralValue, displayPortalValue].join(" | "),
+          }
+        : row;
+    });
+}
+
+function buildOasisSnapshotSections(workspace: ComparisonWorkspaceModel): Array<ComparisonSectionSummary & { rows: FieldComparison[] }> {
+  return workspace.sections
+    .map((section) => {
+      const rows = section.rows.filter((row) => hasUsableOasisValue(row));
+      return {
+        ...section,
+        rows: section.sectionKey.startsWith("active_diagnoses") ? buildActiveDiagnosisDisplayRows(rows) : rows,
+      };
+    })
+    .filter((section) => section.rows.length > 0);
+}
+
 function OasisSnapshotPanel({
   patient,
   workspace,
-  onInspect,
 }: {
   patient: PatientDetail;
   workspace: ComparisonWorkspaceModel;
-  onInspect: (fieldKey: string) => void;
 }) {
-  const sectionEntries = workspace.sections
-    .map((section) => ({
-      ...section,
-      rows: section.rows.filter((row) => hasUsableOasisValue(row)),
-    }))
-    .filter((section) => section.rows.length > 0);
+  const sectionEntries = buildOasisSnapshotSections(workspace);
   const totalCapturedFields = sectionEntries.reduce((sum, section) => sum + section.rows.length, 0);
   const referralMissing = !hasReferralCoverage(patient);
   const oasisCaptureSkipReason =
@@ -372,7 +748,7 @@ function OasisSnapshotPanel({
         <div>
           <h2>OASIS Snapshot</h2>
           <p className="page-subtitle">
-            This is the readable OASIS view for QA. It shows what the chart currently says first, then the referral comparison can be used to confirm or flag discrepancies.
+            This is the readable OASIS view for QA. Referral comparison is limited to the diagnosis panel above.
           </p>
         </div>
         <div className="badge-row">
@@ -403,12 +779,6 @@ function OasisSnapshotPanel({
                 </div>
                 <div className="comparison-section-counts">
                   <span className="badge success">{section.rows.length} captured</span>
-                  {section.missingInReferralCount > 0 ? (
-                    <span className="badge warning">{section.missingInReferralCount} missing referral</span>
-                  ) : null}
-                  {section.mismatchCount > 0 ? (
-                    <span className="badge danger">{section.mismatchCount} mismatch</span>
-                  ) : null}
                 </div>
               </div>
               <div className="section-queue-body">
@@ -422,24 +792,12 @@ function OasisSnapshotPanel({
                             {row.portalValueSourceLabel} | {row.reviewStatus}
                           </div>
                         </div>
-                        <button
-                          className="button secondary compact"
-                          onClick={() => onInspect(row.fieldKey)}
-                          type="button"
-                        >
-                          Inspect
-                        </button>
+                        <span className="badge success">Captured</span>
                       </div>
                       <div className="field-debug-meta">
                         <div className="comparison-value-label">OASIS says</div>
                         <div className="comparison-value-text">{row.displayPortalValue}</div>
                       </div>
-                      {hasReferralCoverage(patient) ? (
-                        <div className="field-debug-meta">
-                          <div className="comparison-value-label">Referral check</div>
-                          <div className="comparison-value-text">{row.displayReferralValue}</div>
-                        </div>
-                      ) : null}
                     </article>
                   ))}
                 </div>
@@ -458,6 +816,470 @@ function OasisSnapshotPanel({
   );
 }
 
+function OasisInternalChecksPanel({ patient }: { patient: PatientDetail }) {
+  const missingFields = patient.oasisValidation?.missingFields.slice(0, 12) ?? [];
+  const internalReasons = patient.oasisGate?.topReasons.slice(0, 8) ?? [];
+  const daysLeft = patient.daysLeftBeforeOasisDueDate;
+  const aiAssistEligible = typeof daysLeft === "number" && daysLeft <= 15;
+
+  return (
+    <section className="panel stack">
+      <div className="panel-header-inline">
+        <div>
+          <h2>Internal OASIS Checks</h2>
+        </div>
+        <div className="badge-row">
+          {patient.oasisValidation ? (
+            <span className={patient.oasisValidation.missingFieldCount > 0 ? "badge warning" : "badge success"}>
+              {patient.oasisValidation.missingFieldCount} missing field{patient.oasisValidation.missingFieldCount === 1 ? "" : "s"}
+            </span>
+          ) : null}
+          {patient.oasisGate ? (
+            <span className={patient.oasisGate.contradictionCount > 0 ? "badge danger" : "badge success"}>
+              {patient.oasisGate.contradictionCount} contradiction{patient.oasisGate.contradictionCount === 1 ? "" : "s"}
+            </span>
+          ) : null}
+          {aiAssistEligible ? <span className="badge warning">AI assist window</span> : null}
+        </div>
+      </div>
+
+      {aiAssistEligible ? (
+        <section className="panel global-trust-banner">
+          <span className="badge warning">Day 15+</span>
+          <div>
+            OASIS is inside the assist window. Missing input suggestions should be generated for reviewer approval only; referral evidence remains limited to diagnosis comparison.
+          </div>
+        </section>
+      ) : null}
+
+      {missingFields.length > 0 ? (
+        <div className="section-field-list">
+          {missingFields.map((field) => (
+            <article className="flagged-field-row" key={`${field.fieldId ?? field.label}-${field.mItem ?? ""}`}>
+              <div className="flagged-field-header">
+                <div>
+                  <strong>{field.label}</strong>
+                  <div className="flagged-field-rationale">
+                    {[field.mItem, field.section].filter(Boolean).join(" | ") || "Required OASIS field"}
+                  </div>
+                </div>
+                <span className="badge warning">Missing</span>
+              </div>
+              <div className="muted">{field.message ?? "Enter the clinically appropriate OASIS value."}</div>
+            </article>
+          ))}
+        </div>
+      ) : null}
+
+      {internalReasons.length > 0 ? (
+        <div className="checklist compact-checklist">
+          {internalReasons.map((reason) => (
+            <div key={reason}>{reason}</div>
+          ))}
+        </div>
+      ) : null}
+
+    </section>
+  );
+}
+
+function ReferralDocumentsTab({
+  patient,
+  diagnosisRows,
+  medicationRows,
+}: {
+  patient: PatientDetail;
+  diagnosisRows: FieldComparison[];
+  medicationRows: FieldComparison[];
+}) {
+  const daysLeft = patient.daysLeftBeforeOasisDueDate;
+  const suggestionsEligible =
+    !patient.oasisValidatedForPlanOfCare &&
+    typeof daysLeft === "number" &&
+    daysLeft <= 15 &&
+    patient.referralQa.referralDataAvailable;
+  const referralComparisonRows = [...diagnosisRows, ...medicationRows];
+
+  return (
+    <div className="workspace-section-stack">
+      <ReferralCompletionSuggestionsPanel
+        suggestionsEligible={suggestionsEligible}
+        rows={referralComparisonRows}
+      />
+    </div>
+  );
+}
+
+function cleanPlanOfCareDisplayText(value: string | null | undefined): string {
+  return (value ?? "")
+    .replace(/\s+/g, " ")
+    .replace(/\(s\)\s*/gi, "")
+    .replace(/\b(?:Add Goal|Delete Problem|Add Intervention|Delete Intervention|Add Progress)\b/gi, "")
+    .replace(/\bTarget:\s*\d+\s*Week\(s\)/gi, "")
+    .replace(/\bTerm:\s*(?:Short|Long)-term/gi, "")
+    .replace(/\bStatus:\s*(?:Unmet|Met)/gi, "")
+    .replace(/\bUnmet on:\s*(?:No Data|[\d/-]+)/gi, "")
+    .replace(/\bOnset:\s*\d{1,2}\/\d{1,2}\/\d{4}\b/gi, "")
+    .replace(/\bSource:\s*\d{1,2}\/\d{1,2}\/\d{4}\s*-\s*\d{1,2}\/\d{1,2}\/\d{4}\b/gi, "")
+    .replace(/\bSource:\s*\d{1,2}\/\d{1,2}\/\d{4}\b/gi, "")
+    .replace(/\bNo Data\b/gi, "")
+    .replace(/\s+([.,])/g, "$1")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+}
+
+function isPortalMetadataOnlyPocRow(title: string, problemText: string): boolean {
+  const cleanTitle = cleanPlanOfCareDisplayText(title);
+  const rawTitle = title.trim();
+  const rawProblem = problemText.trim();
+
+  return (
+    /^Onset:/i.test(rawTitle) ||
+    /^Source:/i.test(rawTitle) ||
+    cleanTitle.length === 0 ||
+    /^Onset:/i.test(rawProblem) ||
+    /^Source:/i.test(rawProblem)
+  );
+}
+
+function PlanOfCareGenerationTab({ patient }: { patient: PatientDetail }) {
+  const validationStatus = patient.oasisValidation?.status ?? "dom_qa_complete";
+  const oasisValidated = patient.oasisValidatedForPlanOfCare;
+  const review = patient.planOfCareReview;
+  const carePlanGroups = (review.carePlanProblemGroups ?? []).slice(0, 20);
+  const draftItems = review.draftItems.slice(0, 10);
+  const rows = (carePlanGroups.length > 0
+    ? carePlanGroups.map((group) => ({
+        key: group.groupKey,
+        title: cleanPlanOfCareDisplayText(group.problemTitle),
+        problemText: cleanPlanOfCareDisplayText(group.problemStatement),
+        goals: group.goals.map((goal) => cleanPlanOfCareDisplayText(goal.text)).filter(Boolean),
+        interventions: Array.from(new Set(group.interventions
+          .map((intervention) => cleanPlanOfCareDisplayText(intervention.text))
+          .filter(Boolean))),
+        sourceLabel: group.sourceLabel ?? review.sourceLabel ?? "From OASIS",
+        needsHumanReview: group.needsHumanReview,
+        warnings: [] as string[],
+      }))
+    : draftItems.map((item) => ({
+        key: item.diagnosisKey,
+        title: cleanPlanOfCareDisplayText(item.icdCode ? `${item.diagnosisLabel} (${item.icdCode})` : item.diagnosisLabel),
+        problemText: cleanPlanOfCareDisplayText(item.problemText),
+        goals: item.goalText ? [cleanPlanOfCareDisplayText(item.goalText)].filter(Boolean) : [],
+        interventions: item.interventions
+          .map((intervention) => cleanPlanOfCareDisplayText(intervention.tailoredInstruction || intervention.text))
+          .filter(Boolean),
+        sourceLabel: item.sourceLabel ?? review.sourceLabel ?? "Suggested",
+        needsHumanReview: item.needsHumanReview,
+        warnings: [] as string[],
+      }))).filter((row) =>
+        row.title &&
+        !isPortalMetadataOnlyPocRow(row.title, row.problemText) &&
+        (row.problemText || row.goals.length > 0 || row.interventions.length > 0)
+      );
+
+  return (
+    <section className="panel stack">
+      <div className="panel-header-inline">
+        <div>
+          <h2>Plan of Care</h2>
+        </div>
+        <div className="badge-row">
+          <span className={oasisValidated ? "badge success" : "badge warning"}>
+            {oasisValidated ? "OASIS validated" : `OASIS ${formatStatusLabel(validationStatus)}`}
+          </span>
+          {review.sourceLabel ? (
+            <span className={review.sourceLabel === "From OASIS" ? "badge success" : "badge warning"}>
+              {review.sourceLabel}
+            </span>
+          ) : null}
+          <span className={review.available ? "badge success" : "badge"}>
+            {formatStatusLabel(review.status)}
+          </span>
+        </div>
+      </div>
+
+      {!oasisValidated && review.sourceType !== "oasis_portal" ? (
+        <section className="panel global-trust-banner">
+          <span className="badge warning">Waiting</span>
+          <div>Plan of Care generation should remain gated until OASIS validation has passed.</div>
+        </section>
+      ) : null}
+
+      {rows.length > 0 ? (
+        <div className="section-field-list">
+          {rows.map((row, index) => (
+            <details className="flagged-field-row" key={row.key} open={index === 0}>
+              <summary className="flagged-field-header">
+                <div>
+                  <strong>{row.title}</strong>
+                </div>
+              </summary>
+              <div className="comparison-value-grid">
+                <div className="field-debug-meta">
+                  <div className="comparison-value-label">Problem</div>
+                  <div className="comparison-value-text">
+                    {row.problemText || "No problem captured"}
+                  </div>
+                </div>
+                <div className="field-debug-meta">
+                  <div className="comparison-value-label">Goal</div>
+                  <div className="comparison-value-text">
+                    {row.goals[0] ?? "No goal captured"}
+                  </div>
+                </div>
+              </div>
+              {row.interventions.length > 0 ? (
+                <div className="field-debug-meta">
+                  <div className="comparison-value-label">
+                    Intervention{row.interventions.length === 1 ? "" : "s"}
+                  </div>
+                  <ul className="poc-intervention-list">
+                    {row.interventions.map((intervention, interventionIndex) => (
+                      <li className="comparison-value-text" key={`${row.key}-intervention-${interventionIndex}`}>
+                        {intervention}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
+            </details>
+          ))}
+        </div>
+      ) : (
+        <div className="muted">No Plan of Care draft items are available yet.</div>
+      )}
+    </section>
+  );
+}
+
+type VisitNoteSummary = PatientDetail["visitNotesReview"]["noteSummaries"][number];
+
+function sortVisitNoteSummaries(left: VisitNoteSummary, right: VisitNoteSummary): number {
+  const leftActive = left.lifecycleStatus === "active_monitoring" ? 0 : 1;
+  const rightActive = right.lifecycleStatus === "active_monitoring" ? 0 : 1;
+  if (leftActive !== rightActive) {
+    return leftActive - rightActive;
+  }
+
+  const leftFailed = left.captureStatus === "failed" || left.analysisStatus === "failed" ? 0 : 1;
+  const rightFailed = right.captureStatus === "failed" || right.analysisStatus === "failed" ? 0 : 1;
+  if (leftFailed !== rightFailed) {
+    return leftFailed - rightFailed;
+  }
+
+  return (right.visitDate ?? "").localeCompare(left.visitDate ?? "");
+}
+
+function formatVisitNotePocTargets(mapping: VisitNoteSummary["pocMappingResult"]): string {
+  const titles = Array.from(new Set((mapping?.matchedPocItems ?? [])
+    .map((item) => item.problemTitle)
+    .filter((title): title is string => Boolean(title && title.trim()))));
+  return titles.slice(0, 3).join(", ");
+}
+
+function formatVisitNoteSuggestionLocation(
+  suggestion: VisitNoteSummary["textInputSuggestions"][number],
+): string {
+  const sectionLabel = suggestion.sectionLabel?.trim();
+  if (!sectionLabel || sectionLabel.length > 80 || /\bVisit Date:|Uploaded Note|Staff:|YOUNG,/i.test(sectionLabel)) {
+    return suggestion.fieldLabel;
+  }
+  return `${sectionLabel} - ${suggestion.fieldLabel}`;
+}
+
+function formatVisitNoteMissingFields(values: string[] | undefined): string {
+  const labels = Array.from(new Set((values ?? [])
+    .map((value) => value.replace(/\s+is blank\.?$/i, "").trim())
+    .filter(Boolean)));
+  if (labels.length === 0) {
+    return "";
+  }
+  return `Complete blank fields: ${labels.slice(0, 4).join(", ")}.`;
+}
+
+function getVisitNoteProblemAndFix(summary: VisitNoteSummary): { problem: string; fix: string } {
+  const mapping = summary.pocMappingResult;
+  const relatedPoc = formatVisitNotePocTargets(mapping);
+  const relatedText = relatedPoc ? ` for ${relatedPoc}` : "";
+  const missingFields = formatVisitNoteMissingFields(mapping?.missingDocumentation);
+
+  if (summary.captureStatus === "failed" || summary.analysisStatus === "failed") {
+    return {
+      problem: "Visit Note DOM capture did not complete.",
+      fix: "Reopen the note and rerun DOM capture so it can be checked against the Plan of Care.",
+    };
+  }
+
+  if (summary.analyzed && mapping?.alignmentStatus === "contradiction") {
+    return {
+      problem: `Discrepancy with Plan of Care${relatedText}.`,
+      fix: mapping.contradictions?.length
+        ? mapping.contradictions.slice(0, 3).join(" ")
+        : "Review the conflicting Visit Note and Plan of Care statements.",
+    };
+  }
+
+  if (summary.analyzed && mapping?.alignmentStatus === "not_aligned") {
+    return {
+      problem: "No related Plan of Care diagnosis was identified from the Visit Note.",
+      fix: "Review the diagnosis, visit narrative, and treatment text before sign-off.",
+    };
+  }
+
+  if (summary.analyzed && mapping?.alignmentStatus === "partially_aligned") {
+    return {
+      problem: `Visit Note is related${relatedText}, but incomplete items remain.`,
+      fix: missingFields || "Review only the unmatched or unclear Visit Note text against the Plan of Care.",
+    };
+  }
+
+  if (summary.analyzed && mapping?.alignmentStatus === "insufficient_documentation") {
+    return {
+      problem: relatedPoc
+        ? `Incomplete Visit Note${relatedText}.`
+        : "Visit Note does not identify a related Plan of Care diagnosis.",
+      fix: missingFields || "Complete the diagnosis, narrative, or plan fields needed for QA sign-off.",
+    };
+  }
+
+  if (summary.analyzed && mapping?.alignmentStatus === "needs_review") {
+    return {
+      problem: relatedPoc
+        ? `Review Visit Note relationship${relatedText}.`
+        : "Visit Note needs QA review before sign-off.",
+      fix: missingFields || "Confirm the related diagnosis and resolve any direct POC discrepancy.",
+    };
+  }
+
+  if (summary.analyzed && mapping?.alignmentStatus === "aligned") {
+    return {
+      problem: relatedPoc
+        ? `Related diagnosis: ${relatedPoc}.`
+        : "Visit Note has no detected Plan of Care discrepancy.",
+      fix: "No discrepancy found.",
+    };
+  }
+
+  if (summary.lifecycleStatus === "active_monitoring") {
+    return {
+      problem: "Active Visit Note still needs DOM capture and POC alignment review.",
+      fix: "Capture the note through DOM and compare it with the Plan of Care interventions.",
+    };
+  }
+
+  if (summary.status === "not_started") {
+    return {
+      problem: "Visit Note has not started.",
+      fix: "No action until the note is started.",
+    };
+  }
+
+  return {
+    problem: "Visit Note is outside the active review queue.",
+    fix: "No action unless QA reopens it for review.",
+  };
+}
+
+function VisitNotesTab({ patient }: { patient: PatientDetail }) {
+  const review = patient.visitNotesReview;
+  const summaries = [...review.noteSummaries].sort(sortVisitNoteSummaries);
+  const reviewSummaries = summaries.filter((summary) =>
+    summary.lifecycleStatus === "active_monitoring" || summary.lifecycleStatus === "finalized_no_active_monitoring"
+  );
+  const visibleSummaries = reviewSummaries.length > 0 ? reviewSummaries : summaries.slice(0, 8);
+  const attentionCount = visibleSummaries.filter((summary) =>
+    summary.captureStatus === "failed" ||
+    summary.analysisStatus === "failed" ||
+    ["contradiction", "not_aligned", "insufficient_documentation", "partially_aligned", "needs_review"].includes(summary.pocMappingResult?.alignmentStatus ?? "")
+  ).length;
+
+  return (
+    <section className="panel stack">
+      <div className="panel-header-inline">
+        <div>
+          <h2>Visit Notes</h2>
+        </div>
+        <div className="badge-row">
+          <span className={review.available ? "badge success" : "badge warning"}>
+            {formatStatusLabel(review.status)}
+          </span>
+          <span className={attentionCount > 0 ? "badge warning" : "badge success"}>
+            {attentionCount} need attention
+          </span>
+        </div>
+      </div>
+
+      {review.visitTypeCounts.length > 0 ? (
+        <div className="visit-note-type-table" aria-label="Visit note status breakdown">
+          <div className="visit-note-type-row visit-note-type-header">
+            <span>Visit Type</span>
+            <span>Count</span>
+            <span>Status Breakdown</span>
+          </div>
+          {review.visitTypeCounts.map((entry) => (
+            <div className="visit-note-type-row" key={entry.visitType}>
+              <span>{formatStatusLabel(entry.visitType)}</span>
+              <strong>{entry.count}</strong>
+              <span>
+                {Object.entries(entry.statuses)
+                  .map(([status, count]) => `${formatStatusLabel(status)} ${count}`)
+                  .join(" | ")}
+              </span>
+            </div>
+          ))}
+        </div>
+      ) : null}
+
+      {visibleSummaries.length > 0 ? (
+        <div className="section-field-list">
+          {visibleSummaries.map((summary) => {
+            const triage = getVisitNoteProblemAndFix(summary);
+            return (
+              <details className="flagged-field-row visit-note-detail-card" key={summary.visitNoteKey}>
+                <summary className="flagged-field-header">
+                  <div>
+                    <strong>{formatStatusLabel(summary.visitType)}</strong>
+                  </div>
+                  <div className="badge-row">
+                    {summary.lifecycleStatus === "active_monitoring" ? (
+                      <span className="badge danger">New QA</span>
+                    ) : null}
+                  </div>
+                </summary>
+                <div className="visit-note-detail-body">
+                  <div className="field-debug-meta">
+                    <div className="comparison-value-label">Problem</div>
+                    <div className="comparison-value-text">{triage.problem}</div>
+                  </div>
+                  {summary.textInputSuggestions.length > 0 ? (
+                    <div className="field-debug-meta visit-note-suggestion-list">
+                      <div className="comparison-value-label">Suggested Text Input</div>
+                      <div className="poc-intervention-list">
+                        {summary.textInputSuggestions.map((suggestion) => (
+                          <div className="comparison-value-text" key={suggestion.suggestionId}>
+                            <strong>{formatVisitNoteSuggestionLocation(suggestion)}</strong>
+                            {suggestion.currentValue ? (
+                              <div className="muted">Current: {suggestion.currentValue}</div>
+                            ) : null}
+                            <div>{suggestion.suggestedInput}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ) : null}
+                </div>
+              </details>
+            );
+          })}
+        </div>
+      ) : (
+        <div className="muted">No Visit Note review is available yet.</div>
+      )}
+    </section>
+  );
+}
+
 function shouldShowReviewStatus(comparison: FieldComparison): boolean {
   return normalizeLabelForComparison(comparison.reviewStatus)
     !== normalizeLabelForComparison(getResultLabel(comparison.comparisonResult));
@@ -467,22 +1289,7 @@ function PatientCompareHeader({ workspace }: { workspace: ComparisonWorkspaceMod
   return (
     <section className="workspace-header panel compare-header">
       <div>
-        <div className="workspace-eyebrow">OASIS and Referral QA Workspace</div>
         <h1 className="page-title">{workspace.header.patientName}</h1>
-        <div className="workspace-context-row">
-          <span>Subsidiary: {workspace.header.subsidiaryName}</span>
-          <span>Last refresh: {workspace.header.lastRefreshLabel}</span>
-        </div>
-      </div>
-      <div className="workspace-header-metrics">
-        <div className="workspace-header-metric">
-          <span className="metric-label">OASIS Timing</span>
-          <strong>{workspace.header.daysLeftLabel}</strong>
-        </div>
-        <div className="workspace-header-metric workspace-header-metric-wide">
-          <span className="metric-label">Overall Review Verdict</span>
-          <strong>{workspace.header.overallReviewVerdict}</strong>
-        </div>
       </div>
     </section>
   );
@@ -661,7 +1468,6 @@ function ComparisonRow({
         <div className="comparison-value-block">
           <div className="comparison-value-label">OASIS / Chart Snapshot</div>
           <div className="comparison-value-text">{comparison.displayPortalValue}</div>
-          <div className="muted">Source: {comparison.portalValueSourceLabel}</div>
         </div>
 
         <div className="comparison-status-block">
@@ -1080,17 +1886,8 @@ export default function PatientDetailPage() {
 
   const [patient, setPatient] = useState<PatientDetail | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<WorkspaceTab>("oasis_snapshot");
-  const [searchTerm, setSearchTerm] = useState("");
-  const [sectionFilter, setSectionFilter] = useState("");
-  const [resultFilter, setResultFilter] = useState<CompareFilterValue>("open");
-  const [showMatches, setShowMatches] = useState(false);
-  const [selectedFieldKey, setSelectedFieldKey] = useState<string | null>(null);
-
-  function handleInspect(fieldKey: string): void {
-    setSelectedFieldKey(fieldKey);
-    setActiveTab("source_documents");
-  }
+  const [activeTab, setActiveTab] = useState<WorkspaceTab>("referral_vs_oasis");
+  const autoSelectedPatientRef = useRef<string | null>(null);
 
   useEffect(() => {
     let active = true;
@@ -1135,64 +1932,39 @@ export default function PatientDetailPage() {
       return;
     }
 
-    if (!hasReferralCoverage(patient)) {
-      setActiveTab((currentTab) =>
-        currentTab === "compare_all" ? "oasis_snapshot" : currentTab,
-      );
+    const loadedPatientKey = `${patient.batchId}:${patient.workItemId}`;
+    if (autoSelectedPatientRef.current === loadedPatientKey) {
+      return;
     }
+    autoSelectedPatientRef.current = loadedPatientKey;
+
+    setActiveTab("referral_vs_oasis");
   }, [patient]);
 
   const workspace = patient ? buildComparisonWorkspaceModel(patient) : null;
-  const compareAllRows = workspace
-    ? filterComparisonRows(workspace.comparisons, {
-        searchTerm,
-        sectionFilter,
-        resultFilter,
-        showMatches,
-      })
+  const diagnosisRows = workspace
+    ? workspace.comparisons.filter((row) => row.sectionKey.startsWith("active_diagnoses"))
     : [];
-  const clinicalRows = compareAllRows.filter((row) => !row.isCodingSensitive);
-  const codingRows = workspace
-    ? filterComparisonRows(
-        workspace.comparisons.filter((row) => row.isCodingSensitive),
-        { searchTerm, sectionFilter, resultFilter: showMatches ? "all" : "open", showMatches },
-      )
+  const medicationRows = workspace
+    ? workspace.comparisons.filter((row) => row.sectionKey.startsWith("medication_allergies"))
     : [];
-  const uncertainRows = workspace
-    ? filterComparisonRows(
-        workspace.comparisons.filter((row) => row.comparisonResult === "uncertain"),
-        { searchTerm, sectionFilter, resultFilter: "all", showMatches: true },
-      )
-    : [];
-  const sourceRows = workspace
-    ? filterComparisonRows(workspace.comparisons, {
-        searchTerm,
-        sectionFilter,
-        resultFilter: "all",
-        showMatches: true,
-      })
-    : [];
-  const sectionRows = workspace
-    ? workspace.sections
-        .filter((section) => section.sectionKey !== "active_diagnoses")
-        .map((section) => ({
-          section,
-          rows: clinicalRows.filter((row) => row.sectionKey === section.sectionKey),
-        }))
-        .filter((entry) => entry.rows.length > 0)
-    : [];
+  const planOfCareCount = patient
+    ? patient.planOfCareReview.draftItems.length + (patient.planOfCareReview.carePlanProblemGroups ?? []).length
+    : 0;
+  const visitNoteCount = patient?.visitNotesReview.noteSummaries.length
+    ?? patient?.visitNotesReview.visitTypeCounts.reduce((total, entry) => total + entry.count, 0)
+    ?? 0;
   const tabs: Array<{ key: WorkspaceTab; label: string; count?: number }> = workspace
     ? [
+        { key: "referral_vs_oasis", label: "Referral vs OASIS" },
+        { key: "referral_documents", label: "Referral Documents" },
         {
-          key: "oasis_snapshot",
-          label: "OASIS Snapshot",
-          count: workspace.comparisons.filter((row) => hasUsableOasisValue(row)).length,
+          key: "oasis",
+          label: "OASIS",
+          count: (patient?.oasisValidation?.missingFieldCount ?? 0) + (patient?.oasisGate?.contradictionCount ?? 0),
         },
-        { key: "compare_all", label: "Compare All", count: compareAllRows.length },
-        { key: "clinical_sections", label: "Clinical Sections", count: sectionRows.length },
-        { key: "coding_sensitive", label: "Coding-Sensitive", count: codingRows.length },
-        { key: "uncertain", label: "Uncertain / Needs Review", count: uncertainRows.length },
-        { key: "source_documents", label: "Source Documents", count: sourceRows.length },
+        { key: "plan_of_care", label: "Plan of Care", count: planOfCareCount },
+        { key: "visit_notes", label: "Visit Notes", count: visitNoteCount },
       ]
     : [];
 
@@ -1201,10 +1973,6 @@ export default function PatientDetailPage() {
       <div className="page-header">
         <div>
           <Link className="link" href="/agency">Back to agency overview</Link>
-          <p className="eyebrow">OASIS and Referral QA Workspace</p>
-          <p className="page-subtitle">
-            Open the patient, review the extracted OASIS details, compare them against referral support when available, and work mismatches from the top down.
-          </p>
         </div>
         <div className="actions">
           <Link className="button secondary" href="/select-agency?change=1">
@@ -1224,16 +1992,6 @@ export default function PatientDetailPage() {
       {patient && workspace ? (
         <>
           <PatientCompareHeader workspace={workspace} />
-          {workspace.globalTrustWarning ? (
-            <section className="panel global-trust-banner">
-              <span className="badge warning">Needs Review</span>
-              <div>{workspace.globalTrustWarning}</div>
-            </section>
-          ) : null}
-          <ComparisonSummaryBar workspace={workspace} />
-          <DiagnosisSummaryPanel patient={patient} />
-          <DocumentationCoveragePanel patient={patient} workspace={workspace} />
-          <BillingPeriodCardsPanel prefetch={patient.qaPrefetch} />
 
           <div aria-label="Patient review tabs" className="workspace-tab-bar" role="tablist">
             {tabs.map((tab) => (
@@ -1251,65 +2009,25 @@ export default function PatientDetailPage() {
             ))}
           </div>
 
-          {activeTab !== "oasis_snapshot" && activeTab !== "coding_sensitive" && activeTab !== "uncertain" ? (
-            <CompareFilterBar
-              onResultFilterChange={setResultFilter}
-              onSearchTermChange={setSearchTerm}
-              onSectionFilterChange={setSectionFilter}
-              onShowMatchesChange={setShowMatches}
-              resultFilter={resultFilter}
-              searchTerm={searchTerm}
-              sectionFilter={sectionFilter}
-              showMatches={showMatches}
-              visibleCount={activeTab === "compare_all" ? compareAllRows.length : activeTab === "clinical_sections" ? clinicalRows.length : sourceRows.length}
-              workspace={workspace}
+          {activeTab === "referral_vs_oasis" ? (
+            <ReferralVsOasisTab
+              diagnosisRows={diagnosisRows}
+              medicationRows={medicationRows}
+              patient={patient}
             />
           ) : null}
 
-          {activeTab === "oasis_snapshot" ? (
-            <OasisSnapshotPanel onInspect={handleInspect} patient={patient} workspace={workspace} />
-          ) : null}
-
-          {activeTab === "compare_all" ? (
-            <section className="panel stack">
-              <div className="panel-header-inline">
-                <div>
-                  <h2>Compare All</h2>
-                  <p className="page-subtitle">
-                    {hasReferralCoverage(patient)
-                      ? "This work queue compares referral support against the captured OASIS values and keeps OASIS-backed rows visible while follow-up is still needed."
-                      : "Referral documentation is missing, so this queue mainly shows where OASIS-backed values exist without referral support. Use OASIS Snapshot as the primary chart view."}
-                  </p>
-                </div>
-                <span className="badge">{compareAllRows.length}</span>
-              </div>
-              {compareAllRows.length > 0 ? (
-                <div className="comparison-list">
-                  {compareAllRows.map((comparison) => (
-                    <ComparisonRow comparison={comparison} key={comparison.fieldKey} onInspect={handleInspect} />
-                  ))}
-                </div>
-              ) : <div className="muted">No rows match the current filters.</div>}
-            </section>
-          ) : null}
-
-          {activeTab === "clinical_sections" ? (
-            <div className="workspace-section-stack">
-              {sectionRows.length > 0 ? sectionRows.map((entry) => (
-                <ComparisonSectionAccordion key={entry.section.sectionKey} onInspect={handleInspect} rows={entry.rows} section={entry.section} />
-              )) : <div className="panel muted">No section rows match the current filters.</div>}
-            </div>
-          ) : null}
-
-          {activeTab === "coding_sensitive" ? <CodingSensitivePanel onInspect={handleInspect} rows={codingRows} /> : null}
-          {activeTab === "uncertain" ? <UncertainReviewPanel onInspect={handleInspect} rows={uncertainRows} /> : null}
-          {activeTab === "source_documents" ? (
-            <SourceDocumentsWorkspace
-              onSelectField={setSelectedFieldKey}
-              rows={sourceRows}
-              selectedFieldKey={selectedFieldKey}
+          {activeTab === "referral_documents" ? (
+            <ReferralDocumentsTab
+              diagnosisRows={diagnosisRows}
+              medicationRows={medicationRows}
+              patient={patient}
             />
           ) : null}
+
+          {activeTab === "oasis" ? <OasisInternalChecksPanel patient={patient} /> : null}
+          {activeTab === "plan_of_care" ? <PlanOfCareGenerationTab patient={patient} /> : null}
+          {activeTab === "visit_notes" ? <VisitNotesTab patient={patient} /> : null}
         </>
       ) : null}
     </main>

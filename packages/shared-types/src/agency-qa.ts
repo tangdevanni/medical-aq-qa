@@ -2,6 +2,7 @@ import { z } from "zod";
 import { workflowTypeSchema } from "./patient-episode-work-item";
 import { subsidiaryStatusSchema } from "./subsidiary";
 import { qaOutcomeSchema } from "./batch-pipeline";
+import { conciseQaIssueSchema } from "./qa-triage";
 
 export const agencySchema = z.object({
   id: z.string().min(1),
@@ -172,6 +173,53 @@ export const dashboardPatientRecordSchema = z.object({
   qaOutcome: qaOutcomeSchema.nullable().default(null),
   missingReferralDocumentation: z.boolean().default(false),
   missingReferralFieldCount: z.number().int().nonnegative().default(0),
+  daysLeftBeforeOasisDueDate: z.number().int().nullable().default(null),
+  daysSinceSoc: z.number().int().nonnegative().nullable().default(null),
+  pipelineStage: z
+    .enum([
+      "pending",
+      "documentation",
+      "oasis",
+      "plan_of_care_visit_notes",
+    ])
+    .default("pending"),
+  oasisStage: z
+    .enum([
+      "pending_patient",
+      "oasis_not_filled_out",
+      "clinician_fill_later",
+      "scrape_and_prepare",
+      "assist_oasis_fill",
+      "validated",
+      "ready_for_review",
+      "not_applicable",
+    ])
+    .default("not_applicable"),
+  primaryBlocker: z.string().min(1).nullable().default(null),
+  blockerReasons: z.array(z.string().min(1)).default([]),
+  oasisQaIssues: z.array(conciseQaIssueSchema).default([]),
+  topOasisIssue: conciseQaIssueSchema.nullable().default(null),
+  oasisInternalMismatchCount: z.number().int().nonnegative().default(0),
+  emptyOasisInputCount: z.number().int().nonnegative().default(0),
+  visitNoteQaIssues: z.array(conciseQaIssueSchema).default([]),
+  topVisitNoteIssue: conciseQaIssueSchema.nullable().default(null),
+  visitNoteMismatchCount: z.number().int().nonnegative().default(0),
+  visitNoteActiveQaCount: z.number().int().nonnegative().default(0),
+  visitNoteReviewStatus: z
+    .enum([
+      "not_started",
+      "new_visit_note_to_qa",
+      "needs_review",
+      "reviewed",
+      "not_applicable",
+    ])
+    .default("not_applicable"),
+  visitNotesDomStatus: z.string().min(1).nullable().default(null),
+  referralAvailable: z.boolean().default(false),
+  referralMedicationCount: z.number().int().nonnegative().default(0),
+  reviewerStatus: z.enum(["red", "yellow", "green"]).nullable().default(null),
+  reviewerStatusUpdatedAt: z.string().min(1).nullable().default(null),
+  reviewerStatusUpdatedBy: z.string().min(1).nullable().default(null),
 });
 
 export type DashboardPatientRecord = z.infer<typeof dashboardPatientRecordSchema>;

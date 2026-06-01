@@ -47,6 +47,10 @@ import {
   type OasisDiagnosisPageSnapshot,
 } from "../utils/oasisDiagnosisInspector";
 import {
+  gotoPortalPage,
+  sanitizePortalUrl,
+} from "../utils/portalNavigation";
+import {
   isOasisDiagnosisRowActionable,
   isOasisDiagnosisRowInteractable,
   type OasisDiagnosisRowCandidate,
@@ -394,6 +398,11 @@ const REFERRAL_FOLDER_SELECTORS: PortalSelectorCandidate[] = [
     description: "File Uploads Referral folder target",
   },
   {
+    strategy: "css",
+    selector: "a:has-text('Referral Files'), button:has-text('Referral Files'), [role='button']:has-text('Referral Files'), .folder-label:has-text('Referral Files')",
+    description: "File Uploads Referral Files folder target",
+  },
+  {
     strategy: "text",
     value: /root\s*\/\s*referral/i,
     description: "File Uploads root/Referral folder text marker",
@@ -402,6 +411,11 @@ const REFERRAL_FOLDER_SELECTORS: PortalSelectorCandidate[] = [
     strategy: "text",
     value: /^Referral$/i,
     description: "File Uploads Referral folder exact label",
+  },
+  {
+    strategy: "text",
+    value: /^Referral Files$/i,
+    description: "File Uploads Referral Files exact label",
   },
 ];
 const SOC_DOC_UPLOADS_TRIGGER_SELECTORS: PortalSelectorCandidate[] = [
@@ -615,6 +629,18 @@ function scoreReferralOrAdmissionUploadLabel(value: string | null | undefined): 
     score += 10;
   }
   return score;
+}
+
+function isFileUploadFolderLabel(value: string | null | undefined): boolean {
+  const normalized = normalizeUploadFileNameForMatch(value);
+  return [
+    "admission 02 27 2026",
+    "admission info",
+    "admission packets",
+    "referral",
+    "referral files",
+    "progress notes",
+  ].includes(normalized) || (/\b(?:referral|admission|progress)\b/.test(normalized) && !/\.(?:pdf|docx?|txt|rtf|png|jpe?g|tiff?)\b/i.test(normalized));
 }
 
 function isPatientSpecificFileUploadsUrl(value: string | null | undefined): boolean {
@@ -1648,10 +1674,113 @@ export class PatientChartPage {
     };
   }
 
+  async ensurePatientChartContextForOasis(input: {
+    chartUrl: string;
+    reason: string;
+    patientKey?: string | null;
+  }): Promise<{
+    success: boolean;
+    stepLogs: AutomationStepLog[];
+  }> {
+    const urlBefore = this.page.url();
+    const chartUrl = input.chartUrl;
+
+    try {
+      await gotoPortalPage({
+        page: this.page,
+        url: chartUrl,
+        step: "patient_chart_context_restore_for_oasis",
+        logger: this.options.logger,
+        debugConfig: this.options.debugConfig,
+      });
+      await waitForPortalPageSettled(this.page, this.options.debugConfig);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      return {
+        success: false,
+        stepLogs: [
+          createAutomationStepLog({
+            step: "patient_chart_context_restore_for_oasis",
+            message: "Could not restore the patient chart before OASIS review.",
+            urlBefore,
+            urlAfter: this.page.url(),
+            found: [],
+            missing: ["patient chart route"],
+            evidence: [
+              `reason:${input.reason}`,
+              `patientKey:${input.patientKey ?? "unknown"}`,
+              `targetUrl:${sanitizePortalUrl(chartUrl)}`,
+              message,
+            ],
+            safeReadConfirmed: true,
+          }),
+        ],
+      };
+    }
+
+    const currentUrl = this.page.url();
+    const markerResolution = await resolveFirstVisibleLocator({
+      page: this.page,
+      candidates: [
+        {
+          strategy: "text",
+          value: /Documents/i,
+          description: "patient chart Documents navigation marker",
+        },
+        {
+          strategy: "text",
+          value: /OASIS/i,
+          description: "patient chart OASIS navigation marker",
+        },
+        {
+          strategy: "css",
+          selector: "app-calendar, app-private-documents, fin-sidebar-menu-root, fin-sidebar-menu",
+          description: "patient chart application shell marker",
+        },
+      ],
+      step: "patient_chart_context_restore_for_oasis_marker",
+      logger: this.options.logger,
+      debugConfig: this.options.debugConfig,
+      settle: async () => waitForPortalPageSettled(this.page, this.options.debugConfig, 200),
+    });
+    const routeLooksLikeChart = /\/client\//i.test(currentUrl);
+    const success = routeLooksLikeChart || Boolean(markerResolution.locator);
+
+    return {
+      success,
+      stepLogs: [
+        createAutomationStepLog({
+          step: "patient_chart_context_restore_for_oasis",
+          message: success
+            ? "Restored patient chart context before OASIS review."
+            : "Patient chart context restore completed, but chart markers were not confirmed.",
+          urlBefore,
+          urlAfter: currentUrl,
+          selectorUsed: markerResolution.matchedCandidate?.description ?? null,
+          found: [
+            `routeLooksLikeChart:${routeLooksLikeChart}`,
+            markerResolution.matchedCandidate?.description ?? "",
+          ].filter(Boolean),
+          missing: success ? [] : ["patient chart marker"],
+          evidence: [
+            `reason:${input.reason}`,
+            `patientKey:${input.patientKey ?? "unknown"}`,
+            `targetUrl:${sanitizePortalUrl(chartUrl)}`,
+            ...markerResolution.attempts.map(selectorAttemptToEvidence),
+          ],
+          safeReadConfirmed: true,
+        }),
+      ],
+    };
+  }
+
   async discoverArtifacts(
     outputDirectory: string,
     options: {
       workflowPhase?: "full_discovery" | "file_uploads_only" | "oasis_diagnosis_only";
+      patientId?: string | null;
+      patientArtifactsDirectory?: string | null;
+      captureRelevantUploadLimit?: number;
       patientChartUrl?: string | null;
       oasisReadyDiagnosis?: OasisReadyDiagnosisDocument | null;
       oasisReadyDiagnosisPath?: string | null;
@@ -1997,6 +2126,7 @@ export class PatientChartPage {
 
   async openOasisMenuForReview(input: {
     chartUrl: string;
+    patientKey?: string | null;
   }): Promise<{
     result: OasisMenuOpenResult;
     stepLogs: AutomationStepLog[];
@@ -2023,6 +2153,7 @@ export class PatientChartPage {
   async openOasisAssessmentNoteForReview(input: {
     chartUrl: string;
     assessmentType: string;
+    patientKey?: string | null;
   }): Promise<{
     result: OasisAssessmentNoteOpenResult;
     stepLogs: AutomationStepLog[];
@@ -2127,6 +2258,7 @@ export class PatientChartPage {
     assessmentType: string;
     matchedAssessmentLabel?: string | null;
     printProfileKey?: OasisPrintSectionProfileKey | null;
+    patientKey?: string | null;
   }): Promise<{
     result: OasisPrintedNoteCaptureOpenResult;
     stepLogs: AutomationStepLog[];
@@ -4907,7 +5039,11 @@ export class PatientChartPage {
         const looksLikeRootReferralFolder = /ROOT\s*\/\s*REFERRAL/.test(normalizedReferralLabel);
         const looksLikeGenericReferralFolder = /\bREFERRAL\b/.test(normalizedReferralLabel) && !looksLikeFile;
         const looksLikeReferralFilesFolder = /REFERRAL\s+FILES/.test(normalizedReferralLabel) && !looksLikeFile;
-        const referralFolderIsFolder = looksLikeRootReferralFolder || looksLikeGenericReferralFolder || looksLikeReferralFilesFolder;
+        const referralFolderIsFolder =
+          looksLikeRootReferralFolder ||
+          looksLikeGenericReferralFolder ||
+          looksLikeReferralFilesFolder ||
+          isFileUploadFolderLabel(referralFolderLabel);
 
         if (referralFolderIsFolder) {
           const referralFolderClickTarget = referralFolderResolution.locator
@@ -4943,6 +5079,7 @@ export class PatientChartPage {
     fileUploadsPageComponentDetected = fileUploadsState.pageComponentDetected;
     if (!referralFileLabel && fileUploadsState.fileLabels.length > 0) {
       referralFileLabel = fileUploadsState.fileLabels
+        .filter((label) => !isFileUploadFolderLabel(label))
         .map((label) => ({
           label,
           score: scoreReferralOrAdmissionUploadLabel(label),
@@ -5057,6 +5194,9 @@ export class PatientChartPage {
         scoreReferralOrAdmissionUploadLabel(rowText),
       );
       if (sourceDocumentScore <= 0) {
+        continue;
+      }
+      if (isFileUploadFolderLabel(anchorText) || isFileUploadFolderLabel(rowText)) {
         continue;
       }
       // Ignore broad container text that matches many unrelated menu labels.

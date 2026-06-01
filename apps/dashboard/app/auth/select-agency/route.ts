@@ -1,19 +1,19 @@
-import { NextResponse } from "next/server";
 import { recordAgencySelection } from "../../../lib/auth/audit";
 import { updateSelectedAgencyInSession } from "../../../lib/auth/session";
+import { redirectToSameOrigin } from "../../../lib/redirect";
 
 export async function POST(request: Request) {
   const formData = await request.formData();
   const agencyId = String(formData.get("agencyId") ?? "").trim();
   if (!agencyId) {
-    return NextResponse.redirect(new URL("/select-agency?error=agency_required", request.url), 303);
+    return redirectToSameOrigin("/select-agency?error=agency_required");
   }
 
   try {
     const session = await updateSelectedAgencyInSession(agencyId);
     await recordAgencySelection(request, session, agencyId);
-    return NextResponse.redirect(new URL("/agency", request.url), 303);
+    return redirectToSameOrigin("/agency");
   } catch {
-    return NextResponse.redirect(new URL("/select-agency?error=agency_not_allowed", request.url), 303);
+    return redirectToSameOrigin("/select-agency?error=agency_not_allowed");
   }
 }

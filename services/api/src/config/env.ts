@@ -45,6 +45,22 @@ function loadApiEnvFiles(): void {
 
 loadApiEnvFiles();
 
+function parseLocalTimes(value: string): string[] {
+  const localTimes = value
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
+  if (localTimes.length === 0) {
+    throw new Error("DEFAULT_SUBSIDIARY_RERUN_LOCAL_TIMES must include at least one HH:mm value.");
+  }
+  for (const localTime of localTimes) {
+    if (!/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(localTime)) {
+      throw new Error(`Invalid rerun local time: ${localTime}. Expected HH:mm.`);
+    }
+  }
+  return localTimes;
+}
+
 const envSchema = z.object({
   API_PORT: z.coerce.number().int().positive().default(3000),
   API_HOST: z.string().min(1).default("0.0.0.0"),
@@ -53,6 +69,15 @@ const envSchema = z.object({
     .enum(["fatal", "error", "warn", "info", "debug", "trace", "silent"])
     .default("info"),
   API_CORS_ORIGIN: z.string().min(1).default("*"),
+  API_AUTONOMOUS_MODE: z.enum(["full", "manual_only"]).default("full"),
+  PATIENT_MEMORY_WRITE_ENABLED: z
+    .enum(["true", "false"])
+    .default("true")
+    .transform((value) => value === "true"),
+  DELTA_REUSE_ENABLED: z
+    .enum(["true", "false"])
+    .default("false")
+    .transform((value) => value === "true"),
   SUBSIDIARY_CONFIG_MODE: z
     .enum(["local_env", "aws_secrets_manager"])
     .default("local_env"),
@@ -78,6 +103,7 @@ const envSchema = z.object({
     .default("true")
     .transform((value) => value === "true"),
   DEFAULT_SUBSIDIARY_RERUN_INTERVAL_HOURS: z.coerce.number().int().positive().default(24),
+  DEFAULT_SUBSIDIARY_RERUN_LOCAL_TIMES: z.string().default("20:30").transform(parseLocalTimes),
   PORTAL_BASE_URL: z.string().url().optional(),
   PORTAL_DASHBOARD_URL: z.string().url().optional(),
   PORTAL_USERNAME: z.string().min(1).optional(),

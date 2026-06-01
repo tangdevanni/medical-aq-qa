@@ -45,12 +45,14 @@ export type DashboardEnv = {
   DASHBOARD_QA_USERS_JSON: string;
   DASHBOARD_SESSION_TTL_HOURS: number;
   DASHBOARD_ALLOW_PLAINTEXT_PASSWORDS: string;
+  DASHBOARD_COOKIE_SECURE: string;
   DASHBOARD_AUTH_AUDIT_LOG_GROUP: string;
   DASHBOARD_AUTH_AUDIT_AWS_REGION: string;
   DASHBOARD_AUTH_AUDIT_STREAM_PREFIX: string;
   qaUsers: DashboardQaUser[];
   isProduction: boolean;
   allowPlaintextPasswords: boolean;
+  cookieSecure: boolean;
   sessionTtlSeconds: number;
   authAuditEnabled: boolean;
   authAuditRegion: string | null;
@@ -186,6 +188,7 @@ export function loadDashboardEnv(
   const DASHBOARD_QA_USERS_JSON = source.DASHBOARD_QA_USERS_JSON || DEFAULT_DASHBOARD_QA_USERS_JSON;
   const DASHBOARD_SESSION_TTL_HOURS = parsePositiveInteger(source.DASHBOARD_SESSION_TTL_HOURS, 12);
   const DASHBOARD_ALLOW_PLAINTEXT_PASSWORDS = source.DASHBOARD_ALLOW_PLAINTEXT_PASSWORDS || "false";
+  const DASHBOARD_COOKIE_SECURE = source.DASHBOARD_COOKIE_SECURE || (NODE_ENV === "production" ? "true" : "false");
   const DASHBOARD_AUTH_AUDIT_LOG_GROUP = source.DASHBOARD_AUTH_AUDIT_LOG_GROUP?.trim() || "";
   const DASHBOARD_AUTH_AUDIT_AWS_REGION =
     source.DASHBOARD_AUTH_AUDIT_AWS_REGION?.trim() ||
@@ -195,6 +198,7 @@ export function loadDashboardEnv(
   const DASHBOARD_AUTH_AUDIT_STREAM_PREFIX =
     source.DASHBOARD_AUTH_AUDIT_STREAM_PREFIX?.trim() || "dashboard-auth";
   const allowPlaintextPasswords = parseBooleanEnv(DASHBOARD_ALLOW_PLAINTEXT_PASSWORDS, false);
+  const cookieSecure = parseBooleanEnv(DASHBOARD_COOKIE_SECURE, NODE_ENV === "production");
   const isProduction = NODE_ENV === "production";
   const usingFallbackSessionSecret = source.DASHBOARD_SESSION_SECRET === undefined;
   const usingFallbackQaUsers = source.DASHBOARD_QA_USERS_JSON === undefined;
@@ -239,12 +243,14 @@ export function loadDashboardEnv(
     DASHBOARD_QA_USERS_JSON,
     DASHBOARD_SESSION_TTL_HOURS,
     DASHBOARD_ALLOW_PLAINTEXT_PASSWORDS,
+    DASHBOARD_COOKIE_SECURE,
     DASHBOARD_AUTH_AUDIT_LOG_GROUP,
     DASHBOARD_AUTH_AUDIT_AWS_REGION,
     DASHBOARD_AUTH_AUDIT_STREAM_PREFIX,
     qaUsers,
     isProduction,
     allowPlaintextPasswords,
+    cookieSecure,
     sessionTtlSeconds: DASHBOARD_SESSION_TTL_HOURS * 60 * 60,
     authAuditEnabled,
     authAuditRegion: authAuditEnabled ? DASHBOARD_AUTH_AUDIT_AWS_REGION : null,
