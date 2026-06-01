@@ -19,6 +19,8 @@ services/finale-workbook-intake/*.xlsx
 **/node_modules
 **/dist
 **/artifacts
+!services/finale-workbook-intake/src/artifacts
+!services/finale-workbook-intake/src/artifacts/**
 **/data/control-plane
 **/.env
 **/.env.local

@@ -3564,14 +3564,30 @@ export class BatchControlPlaneService {
   private async triggerDueScheduledRuns(): Promise<void> {
     const now = Date.now();
     const nowIso = new Date(now).toISOString();
-    const schedules = await this.scheduledRunRepository.listScheduledRuns();
+    if (this.activeBatchJobs.size > 0) {
+      this.logger.info(
+        {
+          activeBatchIds: [...this.activeBatchJobs.keys()],
+        },
+        "scheduled batch rerun deferred because another batch is active",
+      );
+      return;
+    }
+
+    const schedules = (await this.scheduledRunRepository.listScheduledRuns()).sort((left, right) => {
+      const leftTime = left.nextScheduledRunAt ? Date.parse(left.nextScheduledRunAt) : Number.POSITIVE_INFINITY;
+      const rightTime = right.nextScheduledRunAt ? Date.parse(right.nextScheduledRunAt) : Number.POSITIVE_INFINITY;
+      if (leftTime !== rightTime) {
+        return leftTime - rightTime;
+      }
+      return left.subsidiaryId.localeCompare(right.subsidiaryId);
+    });
 
     for (const schedule of schedules) {
       if (
         !schedule.active ||
         !schedule.rerunEnabled ||
         !schedule.nextScheduledRunAt ||
-        this.activeBatchJobs.has(schedule.batchId) ||
         Date.parse(schedule.nextScheduledRunAt) > now
       ) {
         continue;
@@ -3626,6 +3642,24 @@ export class BatchControlPlaneService {
           "scheduled batch rerun started",
         );
         await this.startBatchRun(batch.id);
+        if (this.activeBatchJobs.size > 0) {
+          this.logger.info(
+            {
+              batchId: batch.id,
+              subsidiaryId: batch.subsidiary.id,
+              deferredDueScheduleCount: schedules.filter(
+                (candidate) =>
+                  candidate.id !== schedule.id &&
+                  candidate.active &&
+                  candidate.rerunEnabled &&
+                  candidate.nextScheduledRunAt &&
+                  Date.parse(candidate.nextScheduledRunAt) <= now,
+              ).length,
+            },
+            "scheduled batch rerun single-flight gate engaged",
+          );
+          return;
+        }
       } catch (error) {
         await this.markScheduledRefreshFailure(batch, error, nowIso);
         this.logger.error(
