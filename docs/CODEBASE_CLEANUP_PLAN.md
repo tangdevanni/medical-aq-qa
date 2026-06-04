@@ -27,8 +27,8 @@ No files were deleted during this audit.
 | `services/finale-workbook-intake/assets/poc-question-bank/**` | source/test data asset | Must keep. Do not gitignore. |
 | `data/control-plane/**`, `services/api/data/control-plane/**` | runtime control-plane data | Already gitignored except README. Safe to delete only as an operator reset action. |
 | `.auth/`, `services/api/.auth/` | local auth/session state | Should be gitignored. Safe to delete locally when resetting auth state. |
-| `deploy/aws/ecs/*.json` | source deployment templates | Source file. Must keep. |
-| `api-task-def.json`, `dashboard-taskdef-new.json` | ambiguous root deployment/debug files | Classify as debug artifact unless promoted to `deploy/aws/ecs`. Do not delete without owner confirmation. |
+| `deploy/aws/**/*.json`, `deploy/aws/**/*.txt` | generated deployment/task-definition dumps | Keep ignored unless converted into a sanitized template with no account-specific values or secrets. |
+| `api-task-def.json`, `dashboard-taskdef-new.json` | root deployment/debug dump | Keep ignored. Do not commit production task definition dumps. |
 | `awsreadme.md` | ambiguous local docs | Must keep until reviewed; consider moving content into `docs/runbooks/` if still relevant. |
 | `Microsoft/` | local tool/cache directory | Should be gitignored. Safe to delete locally if no tool is running from it. |
 
@@ -52,6 +52,8 @@ Not ignored:
 - curated demo fixtures under `services/finale-workbook-intake/artifacts/demo/llm-christine-2026-04-20/**` and `_coding-input-smoke/**`
 
 ## Artifact Source-Control Policy
+
+See `docs/runbooks/repo-hygiene-clean-main.md` for the current clean-main policy and validation commands.
 
 - Source-controlled demo artifacts must be named fixtures with an active reader or script reference.
 - Timestamped run output such as `oasis-qa-demo-2026-*` is generated output. Keep it local, ignored, and regenerable.

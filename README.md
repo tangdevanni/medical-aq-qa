@@ -33,6 +33,7 @@ pnpm dev:portal-worker
 - The portal worker is scaffolded for a login flow and should be extended with per-portal selectors and post-login assertions.
 - The orchestrator currently uses a local dispatch stub. Replace it with queue or RPC integration when the service boundaries are finalized.
 - An unrelated legacy Java file remains under `src/Main.java` and was left untouched.
+- Keep `main` source-only. Before committing, follow `docs/runbooks/repo-hygiene-clean-main.md` to avoid re-adding runtime artifacts, patient data, auth state, environment files, deployment dumps, or generated build output.
 
 
 # 1. Executive Summary
