@@ -409,6 +409,49 @@ export async function extractPortalDomStateFromPage(
       });
     }
 
+    const richTextSelector = [
+      "[contenteditable='true']",
+      "[role='textbox']",
+      "[aria-multiline='true']",
+      ".ql-editor",
+      ".ProseMirror",
+    ].join(",");
+    for (const element of Array.from(documentRef.querySelectorAll(richTextSelector)) as any[]) {
+      if (!isVisible(element)) {
+        continue;
+      }
+      if (element.closest("input, textarea, select, ng-select")) {
+        continue;
+      }
+      const value = normalize(textOf(element));
+      if (!value) {
+        continue;
+      }
+      const key = fieldKey(element);
+      const itemCode = oasisItemCodeFor(element);
+      const heading = nearestHeading(element);
+      const label = normalize([
+        heading,
+        element.getAttribute("aria-label"),
+        associatedLabel(element),
+        previousLabelText(element),
+      ].filter(Boolean).join(" - "));
+      if (isSensitiveKey([key, label].join(" "))) {
+        continue;
+      }
+      fields.push({
+        section: sectionFor(element),
+        itemCode,
+        label: label || heading || key || "Rich text",
+        key: itemCode ?? key ?? label,
+        inputType: "richtext",
+        value,
+        sourceKind: "textarea",
+        confidence: label || key ? "high" : "medium",
+        evidenceText: evidenceNear(element),
+      });
+    }
+
     for (const ngSelect of Array.from(documentRef.querySelectorAll("ng-select, fin-select ng-select")) as any[]) {
       if (!isVisible(ngSelect)) {
         continue;
@@ -444,8 +487,8 @@ export async function extractPortalDomStateFromPage(
         .map(textOf)
         .filter(Boolean);
       const rows = (Array.from(table.querySelectorAll("tbody tr, tr")) as any[]).slice(headers.length > 0 ? 0 : 1, 80).map((row) =>
-        (Array.from(row.querySelectorAll("td, th")) as any[]).map(textOf).filter(Boolean),
-      ).filter((row) => row.length > 0);
+        (Array.from(row.querySelectorAll("td, th")) as any[]).map(textOf),
+      ).filter((row) => row.some(Boolean));
       return {
         section: sectionFor(table),
         title: normalize(table.getAttribute("aria-label") || textOf(table.closest("section, article, div")?.querySelector("h1,h2,h3,h4,h5,h6"))),
@@ -454,7 +497,7 @@ export async function extractPortalDomStateFromPage(
       };
     }).filter((table) => table.headers.length > 0 || table.rows.length > 0);
 
-    const visibleLines = (Array.from(documentRef.body.querySelectorAll("h1,h2,h3,h4,h5,h6,p,li,dt,dd,label,span,strong,td,th")) as any[])
+    const visibleLines = (Array.from(documentRef.body.querySelectorAll(`h1,h2,h3,h4,h5,h6,p,li,dt,dd,label,span,strong,td,th,${richTextSelector}`)) as any[])
       .filter(isVisible)
       .map(textOf)
       .filter((text) =>

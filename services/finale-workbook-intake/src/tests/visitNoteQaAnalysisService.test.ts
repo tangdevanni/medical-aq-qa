@@ -286,8 +286,8 @@ describe("visit note QA review", () => {
           factId: "visit-note-thin-plan-next",
           visitNoteKey: notes.rows[0]!.visitNoteKey,
           category: "thin_text_field",
-          normalizedValue: "Continue PT.",
-          rawSnippet: "Continue PT.",
+          normalizedValue: "PT 75 ft FWW vc/tc.",
+          rawSnippet: "PT 75 ft FWW vc/tc.",
           confidence: 0.9,
           fieldKey: "planForNextVisitComment",
           fieldLabel: "Plan for Next Visit",
@@ -302,7 +302,7 @@ describe("visit note QA review", () => {
           factId: "visit-note-fact-mobility",
           visitNoteKey: notes.rows[0]!.visitNoteKey,
           category: "mobility",
-          normalizedValue: "gait training performed with walker and verbal cues",
+          normalizedValue: "gait training performed 75 ft with FWW and vc/tc for pacing, stability, encouragement, and safety",
           confidence: 0.88,
           source: {
             visitType: "physical_therapy",
@@ -312,7 +312,8 @@ describe("visit note QA review", () => {
       ],
       warnings: [],
     };
-    let suggestionPrompt = "";
+    const suggestionPrompts: string[] = [];
+    let suggestionInvocationCount = 0;
     const review = await buildVisitNoteQaReview({
       discovery: notes,
       factPack,
@@ -337,24 +338,88 @@ describe("visit note QA review", () => {
         pocUpdateSignals: [],
       }),
       invokeTextInputSuggestionText: async (prompt) => {
-        suggestionPrompt = prompt;
+        suggestionPrompts.push(prompt);
+        suggestionInvocationCount += 1;
         return JSON.stringify({
           suggestions: [{
             suggestionId: `visit-note-suggestion:${notes.rows[0]!.visitNoteKey}:planForNextVisitComment`,
-            suggestedInput:
-              "Next visit, continue skilled PT for weakness and safe mobility. Reassess gait with the walker and how the patient responds to verbal cues. Review transfer safety and fall prevention during activity. Update the plan if tolerance changes or new safety concerns come up.",
+            suggestedInput: suggestionInvocationCount === 1
+              ? "Next visit, continue skilled PT for weakness and safe mobility. Reassess gait with the walker and how the patient responds to cueing. Review transfer safety and fall prevention during activity. Update the plan if tolerance changes or new safety concerns come up."
+              : "PT 75 ft FWW vc/tc.",
           }],
         });
       },
     });
 
-    expect(suggestionPrompt).toContain("FIELDS_NEEDING_SUGGESTIONS");
-    expect(suggestionPrompt).toContain("3-5 complete sentences");
+    expect(suggestionPrompts[0]).toContain("FIELDS_NEEDING_SUGGESTIONS");
+    expect(suggestionPrompts[0]).toContain("1-5 complete sentences");
+    expect(suggestionPrompts[0]).toContain("detailsToPreserve");
+    expect(suggestionPrompts[0]).toContain("sourceTexts");
+    expect(suggestionPrompts[0]).toContain("75 ft");
+    expect(suggestionInvocationCount).toBe(2);
     const suggestion = review.noteSummaries[0]?.textInputSuggestions[0];
     expect(suggestion?.fieldLabel).toBe("Plan for Next Visit");
     expect(suggestion?.reason).toBe("too_short");
-    expect(suggestion?.suggestedInput).toContain("continue skilled PT");
-    expect(suggestion?.suggestedInput.split(/[.!?]+/).filter((part) => part.trim()).length).toBe(4);
+    expect(suggestion?.suggestedInput).toContain("75 ft");
+    expect(suggestion?.suggestedInput).toContain("FWW");
+    expect(suggestion?.suggestedInput).toContain("vc/tc");
+    expect(suggestion?.suggestedInput.split(/[.!?]+/).filter((part) => part.trim()).length).toBe(1);
+    expect(review.noteSummaries[0]?.completionStatus).toBe("incomplete");
+    expect(review.noteSummaries[0]?.missingFields).toEqual(["Plan for Next Visit"]);
+    expect(review.noteSummaries[0]?.completionReasons).toContain("Plan for Next Visit needs more detail.");
+    expect(review.summary.incompleteNoteCount).toBe(1);
+  });
+
+  it("marks active Visit Notes incomplete when required text inputs are blank", async () => {
+    const notes = discovery([{ key: "note-1", type: "Visit Note-PT", status: "Submitted" }]);
+    const factPack: VisitNoteFactPack = {
+      schemaVersion: "visit-note-fact-pack.v1",
+      generatedAt: "2026-05-07T00:00:00.000Z",
+      factCount: 2,
+      categories: ["incomplete_field", "mobility"],
+      facts: [
+        {
+          factId: "visit-note-blank-narrative",
+          visitNoteKey: notes.rows[0]!.visitNoteKey,
+          category: "incomplete_field",
+          normalizedValue: "Visit Narrative is blank.",
+          confidence: 0.91,
+          fieldKey: "visitNarrativeComment",
+          fieldLabel: "Visit Narrative",
+          sectionLabel: "Narrative",
+          inputType: "textarea",
+          source: {
+            visitType: "physical_therapy",
+            documentType: "Visit Note-PT",
+          },
+        },
+        {
+          factId: "visit-note-fact-mobility",
+          visitNoteKey: notes.rows[0]!.visitNoteKey,
+          category: "mobility",
+          normalizedValue: "gait training performed with walker and safety cueing",
+          confidence: 0.82,
+          source: {
+            visitType: "physical_therapy",
+            documentType: "Visit Note-PT",
+          },
+        },
+      ],
+      warnings: [],
+    };
+
+    const review = await buildVisitNoteQaReview({
+      discovery: notes,
+      factPack,
+      planOfCare: minimalPlanOfCare(),
+      oasisClinicalFactPack: { facts: [] },
+    });
+
+    expect(review.noteSummaries[0]?.completionStatus).toBe("incomplete");
+    expect(review.noteSummaries[0]?.missingFields).toEqual(["Visit Narrative"]);
+    expect(review.noteSummaries[0]?.textInputSuggestions).toHaveLength(0);
+    expect(review.noteSummaries[0]?.pocMappingResult?.missingDocumentation).toContain("Visit Narrative is blank.");
+    expect(review.summary.incompleteNoteCount).toBe(1);
   });
 
   it("degrades to deterministic mapping when LLM returns invalid JSON", async () => {

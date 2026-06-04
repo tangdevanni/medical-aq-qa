@@ -1374,6 +1374,29 @@ async function runTextractOcr(input: {
   pdfType: PdfTextKind;
   fallbackText: string;
 }): Promise<ExtractedTextReadResult> {
+  const env = loadEnv();
+  if (!env.OCR_ENABLED) {
+    return createExtractedTextReadResult({
+      text: input.fallbackText,
+      pdfType: input.pdfType,
+      effectiveTextSource: resolveEffectiveTextSource({
+        pdfType: input.pdfType,
+        ocrSuccess: false,
+        ocrUsed: false,
+      }),
+      rawExtractedTextSource: "dom",
+      textSelectionReason: "ocr_disabled_by_config_using_fallback",
+      domExtractionRejectedReasons: ["ocr_disabled_by_config"],
+      ocrUsed: false,
+      ocrProvider: null,
+      ocrTextLength: 0,
+      ocrSuccess: false,
+      ocrResultPath: null,
+      ocrError: "OCR is disabled by OCR_ENABLED=false.",
+      ocrMode: null,
+      ocrErrorCategory: "ocrConfigurationMissing",
+    });
+  }
   const ocrResultPath = path.join(path.dirname(input.filePath), "ocr-result.json");
   const extractedTextPath = path.join(path.dirname(input.filePath), "extracted-text.txt");
   const existingArtifacts = await readExistingOcrArtifacts(input);
@@ -1744,20 +1767,37 @@ export async function extractTextFromLocalFile(
       pdfType: "scanned_image_pdf",
       fallbackText: "",
     });
-    const extractedTextPath = path.join(path.dirname(operationalFilePath), "extracted-text.txt");
-    await writeFile(extractedTextPath, `${ocrResult.text}\n`, "utf8").catch(() => undefined);
+    const ocrDisabled = ocrResult.textSelectionReason === "ocr_disabled_by_config_using_fallback";
+    if (!ocrDisabled) {
+      const extractedTextPath = path.join(path.dirname(operationalFilePath), "extracted-text.txt");
+      await writeFile(extractedTextPath, `${ocrResult.text}\n`, "utf8").catch(() => undefined);
+    }
 
     return createExtractedTextReadResult({
       ...(ocrResult ?? {}),
       text: ocrResult.text,
       pdfType: null,
-      effectiveTextSource: ocrResult.ocrSuccess ? "ocr_text" : "viewer_text_fallback",
-      rawExtractedTextSource: ocrResult.ocrSuccess ? "ocr" : "dom",
-      textSelectionReason: ocrResult.ocrSuccess
+      effectiveTextSource: ocrDisabled
+        ? ocrResult.effectiveTextSource
+        : ocrResult.ocrSuccess
+          ? "ocr_text"
+          : "viewer_text_fallback",
+      rawExtractedTextSource: ocrDisabled
+        ? ocrResult.rawExtractedTextSource
+        : ocrResult.ocrSuccess
+          ? "ocr"
+          : "dom",
+      textSelectionReason: ocrDisabled
+        ? ocrResult.textSelectionReason
+        : ocrResult.ocrSuccess
         ? "image_textract_ocr_text_selected"
         : "image_textract_ocr_failed",
-      domExtractionRejectedReasons: ocrResult.ocrSuccess ? [] : ["image_ocr_failed"],
-      ocrUsed: true,
+      domExtractionRejectedReasons: ocrDisabled
+        ? ocrResult.domExtractionRejectedReasons
+        : ocrResult.ocrSuccess
+          ? []
+          : ["image_ocr_failed"],
+      ocrUsed: ocrResult.ocrUsed,
       extractionPolicyMode: policyDecision?.mode ?? null,
     });
   }

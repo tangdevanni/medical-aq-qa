@@ -53,6 +53,7 @@ import { intakeWorkbook } from "./workbookIntakeService";
 import { extractCurrentChartValuesFromPrintedNote } from "../oasis/print/printedNoteChartValueExtractionService";
 import type { OasisPrintedNoteReviewResult } from "../oasis/types/oasisPrintedNoteReview";
 import { runReferralDocumentProcessingPipeline } from "../referralProcessing/pipeline";
+import { filterArtifactsForNonReferralTextExtraction } from "../referralProcessing/sourceDocumentHandoff";
 import { runCodingWorkflowOrchestrator } from "../workflows/codingWorkflowOrchestrator";
 import { runQaWorkflowOrchestrator } from "../workflows/qaWorkflowOrchestrator";
 import { runSharedEvidenceWorkflow } from "../workflows/sharedEvidenceWorkflow";
@@ -479,7 +480,9 @@ async function refreshSharedEvidenceDocumentText(input: {
   extractedDocuments: ExtractedDocument[];
   documentTextExportPath: string;
 }> {
-  const refreshedDocuments = await extractDocumentsFromArtifacts(input.artifacts);
+  const refreshedDocuments = await extractDocumentsFromArtifacts(
+    filterArtifactsForNonReferralTextExtraction(input.artifacts),
+  );
   const extractedDocuments = mergeSharedEvidenceDocuments({
     previousDocuments: input.previousDocuments,
     refreshedDocuments,
@@ -1342,18 +1345,21 @@ export async function executePatientWorkItems(
             documentInventory: sharedEvidenceResult.sharedEvidence.documentInventory,
             extractedDocuments: sharedEvidenceResult.sharedEvidence.extractedDocuments,
           });
+          const missingReferralDocumentReviewMessage = referralDocumentAvailable
+            ? null
+            : "Referral/admission-order document text was not found in shared evidence; continuing OASIS, Plan of Care, and Visit Notes capture for reviewer visibility.";
           appendAutomationLogs(run, [createAutomationStepLog({
             step: "referral_document_check",
             message: referralDocumentAvailable
               ? "Referral/admission-order evidence was found in shared chart documents."
-              : "Referral/admission-order evidence was not found; downstream QA and coding workflows will be skipped for this patient.",
+              : "Referral/admission-order evidence was not found; downstream OASIS, Plan of Care, and Visit Notes capture will continue for reviewer visibility.",
             patientName: run.patientName,
             found: [
               `artifactOrderCount:${sharedEvidenceResult.sharedEvidence.artifacts.filter((artifact) => artifact.artifactType === "PHYSICIAN_ORDERS").length}`,
               `inventoryOrderCount:${sharedEvidenceResult.sharedEvidence.documentInventory.filter((item) => item.normalizedType === "ORDER").length}`,
               `extractedOrderCount:${sharedEvidenceResult.sharedEvidence.extractedDocuments.filter((document) => document.type === "ORDER" && document.text.trim().length > 0).length}`,
             ],
-            missing: referralDocumentAvailable ? [] : ["Referral/admission-order document text"],
+            missing: referralDocumentAvailable ? [] : ["Referral/admission-order source document"],
             evidence: sharedEvidenceResult.sharedEvidence.extractedDocuments
               .filter((document) => document.type === "ORDER")
               .slice(0, 4)
@@ -1362,21 +1368,53 @@ export async function executePatientWorkItems(
             safeReadConfirmed: true,
           })]);
 
+          const referralDirectDocumentNeedsReview =
+            sharedEvidenceResult.sharedEvidence.referralDocumentProcessing?.extractionResult.extractionSuccess === false;
+          if (referralDirectDocumentNeedsReview) {
+            const reviewMessage =
+              "Referral direct-document LLM extraction did not produce source-backed clinical facts; patient requires human review.";
+            run.qaOutcome = "NEEDS_MANUAL_QA";
+            run.processingStatus = "NEEDS_HUMAN_REVIEW";
+            run.executionStep = "REFERRAL_DIRECT_DOCUMENT_REVIEW";
+            run.errorSummary = reviewMessage;
+            run.notes.push(reviewMessage);
+            appendAutomationLogs(run, [createAutomationStepLog({
+              step: "referral_direct_document_review_required",
+              message: reviewMessage,
+              patientName: run.patientName,
+              found: [
+                sharedEvidenceResult.sharedEvidence.referralDocumentProcessing?.artifacts.qaDocumentSummaryPath ??
+                  "referral-direct-document-review",
+              ],
+              missing: ["source-backed direct-document referral facts"],
+              evidence: sharedEvidenceResult.sharedEvidence.referralDocumentProcessing?.qaDocumentSummary.warnings.slice(0, 8) ?? [],
+              safeReadConfirmed: true,
+            })]);
+          }
+
           if (params.stopAfterSharedEvidence) {
             run.qaOutcome = referralDocumentAvailable ? "NEEDS_MANUAL_QA" : "MISSING_DOCUMENTS";
-            run.processingStatus = referralDocumentAvailable ? "COMPLETE" : "BLOCKED";
+            run.processingStatus = referralDirectDocumentNeedsReview
+              ? "NEEDS_HUMAN_REVIEW"
+              : referralDocumentAvailable
+                ? "COMPLETE"
+                : "BLOCKED";
             run.executionStep = referralDocumentAvailable
-              ? "REFERRAL_DOCUMENT_ACQUIRED"
+              ? referralDirectDocumentNeedsReview
+                ? "REFERRAL_DIRECT_DOCUMENT_REVIEW"
+                : "REFERRAL_DOCUMENT_ACQUIRED"
               : "REFERRAL_DOCUMENT_REQUIRED";
             run.progressPercent = 100;
             run.errorSummary = referralDocumentAvailable
-              ? null
+              ? referralDirectDocumentNeedsReview
+                ? run.errorSummary
+                : null
               : "Referral/admission-order document text was not found in shared evidence.";
-            run.oasisQaSummary = buildOasisQaSummary({
-              workItem,
-              matchResult: run.matchResult,
-              artifacts: run.artifacts,
-              processingStatus: run.processingStatus,
+              run.oasisQaSummary = buildOasisQaSummary({
+                workItem,
+                matchResult: run.matchResult,
+                artifacts: run.artifacts,
+                processingStatus: run.processingStatus,
               documentInventory: run.documentInventory,
             });
             await emitPatientRunUpdate(run, params.outputDir, params.onPatientRunUpdate, env);
@@ -1384,45 +1422,20 @@ export async function executePatientWorkItems(
           }
 
           if (!referralDocumentAvailable) {
-            const timestamp = new Date().toISOString();
-            const blockedMessage =
-              "Referral/admission-order document text was not found in shared evidence; skipping this patient and continuing to the next.";
-            run.qaOutcome = "MISSING_DOCUMENTS";
-            run.processingStatus = processingStatusForOutcome(run);
-            run.executionStep = "REFERRAL_DOCUMENT_REQUIRED";
-            run.progressPercent = 100;
-            run.errorSummary = blockedMessage;
-            run.notes.push(blockedMessage);
-            run.workflowRuns = selectedWorkflowDomains.reduce(
-              (workflowRuns, workflowDomain) =>
-                upsertWorkflowRun(
-                  workflowRuns,
-                  buildWorkflowRun({
-                    patientRunId: run.runId,
-                    workflowDomain,
-                    status: "BLOCKED",
-                    stepName: "REFERRAL_DOCUMENT_REQUIRED",
-                    message: blockedMessage,
-                    chartUrl:
-                      sharedAccess.portalContexts.find((portalContext) => portalContext.workflowDomain === workflowDomain)?.chartUrl ??
-                      sharedAccess.portalContexts[0]?.chartUrl ??
-                      null,
-                    timestamp,
-                    startedAt: timestamp,
-                    completedAt: timestamp,
-                  }),
-                ),
-              run.workflowRuns,
-            );
-            run.oasisQaSummary = buildOasisQaSummary({
-              workItem,
-              matchResult: run.matchResult,
-              artifacts: run.artifacts,
-              processingStatus: run.processingStatus,
-              documentInventory: run.documentInventory,
-            });
-            await emitPatientRunUpdate(run, params.outputDir, params.onPatientRunUpdate, env);
-            continue;
+            run.notes.push(missingReferralDocumentReviewMessage!);
+            appendAutomationLogs(run, [createAutomationStepLog({
+              step: "referral_document_review_required",
+              message: missingReferralDocumentReviewMessage!,
+              patientName: run.patientName,
+              found: [],
+              missing: ["Referral/admission-order source document"],
+              evidence: sharedEvidenceResult.sharedEvidence.extractedDocuments
+                .filter((document) => document.type === "ORDER")
+                .slice(0, 4)
+                .map((document) =>
+                  `${document.metadata.portalLabel ?? "ORDER"}:${document.metadata.sourcePath ?? "in_memory"}:${document.text.slice(0, 180)}`),
+              safeReadConfirmed: true,
+            })]);
           }
 
           const qaPortalContext = sharedAccess.portalContexts.find((portalContext) => portalContext.workflowDomain === "qa");
@@ -1445,122 +1458,125 @@ export async function executePatientWorkItems(
             appendAutomationLogs(run, qaResult.stepLogs);
             run.notes.push(`QA prefetch result persisted: ${qaResult.workflowResultPath}`);
 
-            try {
-              const refreshedSharedEvidence = await refreshSharedEvidenceDocumentText({
-                batchId: qaPortalContext.batchId,
-                workItem,
-                outputDir: params.outputDir,
-                artifacts: run.artifacts,
-                previousDocuments: sharedEvidenceResult.sharedEvidence.extractedDocuments,
-              });
-              sharedEvidenceResult.sharedEvidence.extractedDocuments = refreshedSharedEvidence.extractedDocuments;
-              sharedEvidenceResult.sharedEvidence.documentTextExportPath =
-                refreshedSharedEvidence.documentTextExportPath;
-              sharedEvidenceResult.sharedEvidence.documentTextExportError = null;
-              run.notes.push(
-                `Document text refreshed after printed OASIS review: ${refreshedSharedEvidence.documentTextExportPath}`,
-              );
-              appendAutomationLogs(run, [createAutomationStepLog({
-                step: "document_text_refresh_after_qa",
-                message: "Refreshed document-text.json after the QA printed-note review replaced the shared OASIS artifact.",
-                patientName: run.patientName,
-                found: [
-                  `documentTextPath=${refreshedSharedEvidence.documentTextExportPath}`,
-                  `documentCount=${refreshedSharedEvidence.extractedDocuments.length}`,
-                  `oasisDocumentCount=${refreshedSharedEvidence.extractedDocuments.filter((document) => document.type === "OASIS").length}`,
-                  `orderDocumentCount=${refreshedSharedEvidence.extractedDocuments.filter((document) => document.type === "ORDER").length}`,
-                ],
-                missing: [],
-                evidence: refreshedSharedEvidence.extractedDocuments
-                  .slice(0, 4)
-                  .map((document, index) =>
-                    `[${index}] ${document.type}:${document.metadata.sourcePath ?? document.metadata.portalLabel ?? "in_memory"}:${document.metadata.textLength ?? document.text.length}`),
-                safeReadConfirmed: true,
-              })]);
-            } catch (error) {
-              const refreshError = error instanceof Error ? error.message : String(error);
-              sharedEvidenceResult.sharedEvidence.documentTextExportError = refreshError;
-              run.notes.push(`Document text refresh after printed OASIS review failed: ${refreshError}`);
-              appendAutomationLogs(run, [createAutomationStepLog({
-                step: "document_text_refresh_after_qa",
-                message: "Refreshing document-text.json after QA failed; continuing with the earlier shared-evidence export.",
-                patientName: run.patientName,
-                found: [],
-                missing: ["refreshed document-text.json after QA"],
-                evidence: [refreshError],
-                safeReadConfirmed: true,
-              })]);
-            }
-
-            const printedNoteChartValues = await timing.time("printed_oasis_chart_values", () => extractCurrentChartValuesFromPrintedNote({
-              env,
-              logger,
-              outputDir: params.outputDir,
-              workItem,
-              extractedTextPath: qaResult.result.printedNoteReview?.capture.extractedTextPath ?? null,
-            }));
-            run.notes.push(
-              printedNoteChartValues.artifactPath
-                ? `Printed-note chart values persisted: ${printedNoteChartValues.artifactPath}`
-                : "Printed-note chart values were not extracted.",
-            );
-            appendAutomationLogs(run, [createAutomationStepLog({
-              step: "printed_note_chart_values",
-              message:
-                printedNoteChartValues.extractedFieldCount > 0
-                  ? `Extracted ${printedNoteChartValues.extractedFieldCount} current chart value(s) from printed OASIS note text.`
-                  : "Printed OASIS note text did not yield usable chart field values.",
-              patientName: run.patientName,
-              found: [
-                `fieldCount=${printedNoteChartValues.extractedFieldCount}`,
-                `artifactPath=${printedNoteChartValues.artifactPath ?? "none"}`,
-                `invocationModelId=${printedNoteChartValues.invocationModelId ?? "none"}`,
-              ],
-              missing: printedNoteChartValues.extractedFieldCount > 0 ? [] : ["usable chart field values from printed OASIS note"],
-              evidence: printedNoteChartValues.warnings.slice(0, 8),
-              safeReadConfirmed: true,
-            })]);
-
-            if (printedNoteChartValues.extractedFieldCount > 0) {
-              const referralDocumentsForRefresh = sharedEvidenceResult.sharedEvidence.extractedDocuments
-                .filter((document) => document.type === "ORDER");
-              if (referralDocumentsForRefresh.length === 0) {
+            const printedNoteReview = qaResult.result.printedNoteReview;
+            if (printedNoteReview) {
+              try {
+                const refreshedSharedEvidence = await refreshSharedEvidenceDocumentText({
+                  batchId: qaPortalContext.batchId,
+                  workItem,
+                  outputDir: params.outputDir,
+                  artifacts: run.artifacts,
+                  previousDocuments: sharedEvidenceResult.sharedEvidence.extractedDocuments,
+                });
+                sharedEvidenceResult.sharedEvidence.extractedDocuments = refreshedSharedEvidence.extractedDocuments;
+                sharedEvidenceResult.sharedEvidence.documentTextExportPath =
+                  refreshedSharedEvidence.documentTextExportPath;
+                sharedEvidenceResult.sharedEvidence.documentTextExportError = null;
                 run.notes.push(
-                  "Skipped referral comparison refresh after printed OASIS note because no referral/admission-order documents remained in shared evidence.",
+                  `Document text refreshed after printed OASIS review: ${refreshedSharedEvidence.documentTextExportPath}`,
                 );
                 appendAutomationLogs(run, [createAutomationStepLog({
-                  step: "referral_refresh_after_printed_note",
-                  message:
-                    "Skipped referral comparison refresh after printed OASIS note because no referral/admission-order documents were available to refresh against.",
+                  step: "document_text_refresh_after_qa",
+                  message: "Refreshed document-text.json after the QA printed-note review replaced the shared OASIS artifact.",
                   patientName: run.patientName,
                   found: [
-                    `printedNoteFieldCount=${printedNoteChartValues.extractedFieldCount}`,
+                    `documentTextPath=${refreshedSharedEvidence.documentTextExportPath}`,
+                    `documentCount=${refreshedSharedEvidence.extractedDocuments.length}`,
+                    `oasisDocumentCount=${refreshedSharedEvidence.extractedDocuments.filter((document) => document.type === "OASIS").length}`,
+                    `orderDocumentCount=${refreshedSharedEvidence.extractedDocuments.filter((document) => document.type === "ORDER").length}`,
                   ],
-                  missing: ["referral/admission-order document"],
-                  evidence: [],
+                  missing: [],
+                  evidence: refreshedSharedEvidence.extractedDocuments
+                    .slice(0, 4)
+                    .map((document, index) =>
+                      `[${index}] ${document.type}:${document.metadata.sourcePath ?? document.metadata.portalLabel ?? "in_memory"}:${document.metadata.textLength ?? document.text.length}`),
                   safeReadConfirmed: true,
                 })]);
-              } else {
-              const refreshedReferralProcessing = await timing.time("referral_refresh", () => runReferralDocumentProcessingPipeline({
-                workItem,
-                outputDir: params.outputDir,
+              } catch (error) {
+                const refreshError = error instanceof Error ? error.message : String(error);
+                sharedEvidenceResult.sharedEvidence.documentTextExportError = refreshError;
+                run.notes.push(`Document text refresh after printed OASIS review failed: ${refreshError}`);
+                appendAutomationLogs(run, [createAutomationStepLog({
+                  step: "document_text_refresh_after_qa",
+                  message: "Refreshing document-text.json after QA failed; continuing with the earlier shared-evidence export.",
+                  patientName: run.patientName,
+                  found: [],
+                  missing: ["refreshed document-text.json after QA"],
+                  evidence: [refreshError],
+                  safeReadConfirmed: true,
+                })]);
+              }
+
+              const printedNoteChartValues = await timing.time("printed_oasis_chart_values", () => extractCurrentChartValuesFromPrintedNote({
                 env,
                 logger,
-                extractedDocuments: referralDocumentsForRefresh,
-                currentChartValues: printedNoteChartValues.currentChartValues,
-                currentChartValueSource: printedNoteChartValues.currentChartValueSource ?? undefined,
+                outputDir: params.outputDir,
+                workItem,
+                extractedTextPath: printedNoteReview.capture.extractedTextPath,
               }));
-              appendAutomationLogs(run, refreshedReferralProcessing.stepLogs);
-              if (refreshedReferralProcessing.result) {
-                sharedEvidenceResult.sharedEvidence.referralDocumentProcessing = refreshedReferralProcessing.result;
-                sharedEvidenceResult.sharedEvidence.referralDocumentSummaryPath =
-                  refreshedReferralProcessing.result.artifacts.qaDocumentSummaryPath ?? null;
-                run.notes.push(
-                  `Referral comparison refreshed from printed OASIS note: ${refreshedReferralProcessing.result.artifacts.qaDocumentSummaryPath ?? "artifacts updated"}`,
-                );
-              } else {
-                run.notes.push("Referral comparison refresh from printed OASIS note did not produce updated artifacts.");
-              }
+              run.notes.push(
+                printedNoteChartValues.artifactPath
+                  ? `Printed-note chart values persisted: ${printedNoteChartValues.artifactPath}`
+                  : "Printed-note chart values were not extracted.",
+              );
+              appendAutomationLogs(run, [createAutomationStepLog({
+                step: "printed_note_chart_values",
+                message:
+                  printedNoteChartValues.extractedFieldCount > 0
+                    ? `Extracted ${printedNoteChartValues.extractedFieldCount} current chart value(s) from printed OASIS note text.`
+                    : "Printed OASIS note text did not yield usable chart field values.",
+                patientName: run.patientName,
+                found: [
+                  `fieldCount=${printedNoteChartValues.extractedFieldCount}`,
+                  `artifactPath=${printedNoteChartValues.artifactPath ?? "none"}`,
+                  `invocationModelId=${printedNoteChartValues.invocationModelId ?? "none"}`,
+                ],
+                missing: printedNoteChartValues.extractedFieldCount > 0 ? [] : ["usable chart field values from printed OASIS note"],
+                evidence: printedNoteChartValues.warnings.slice(0, 8),
+                safeReadConfirmed: true,
+              })]);
+
+              if (printedNoteChartValues.extractedFieldCount > 0) {
+                const referralSourceDocumentsForRefresh = sharedEvidenceResult.sharedEvidence.referralSourceDocuments;
+                if (referralSourceDocumentsForRefresh.length === 0) {
+                  run.notes.push(
+                    "Skipped referral comparison refresh after printed OASIS note because no captured referral/admission-order source files remained in shared evidence.",
+                  );
+                  appendAutomationLogs(run, [createAutomationStepLog({
+                    step: "referral_refresh_after_printed_note",
+                    message:
+                      "Skipped referral comparison refresh after printed OASIS note because no captured referral/admission-order source files were available to refresh against.",
+                    patientName: run.patientName,
+                    found: [
+                      `printedNoteFieldCount=${printedNoteChartValues.extractedFieldCount}`,
+                    ],
+                    missing: ["captured referral/admission-order source file"],
+                    evidence: [],
+                    safeReadConfirmed: true,
+                  })]);
+                } else {
+                  const refreshedReferralProcessing = await timing.time("referral_refresh", () => runReferralDocumentProcessingPipeline({
+                    workItem,
+                    outputDir: params.outputDir,
+                    env,
+                    logger,
+                    extractedDocuments: [],
+                    sourceDocuments: referralSourceDocumentsForRefresh,
+                    currentChartValues: printedNoteChartValues.currentChartValues,
+                    currentChartValueSource: printedNoteChartValues.currentChartValueSource ?? undefined,
+                  }));
+                  appendAutomationLogs(run, refreshedReferralProcessing.stepLogs);
+                  if (refreshedReferralProcessing.result) {
+                    sharedEvidenceResult.sharedEvidence.referralDocumentProcessing = refreshedReferralProcessing.result;
+                    sharedEvidenceResult.sharedEvidence.referralDocumentSummaryPath =
+                      refreshedReferralProcessing.result.artifacts.qaDocumentSummaryPath ?? null;
+                    run.notes.push(
+                      `Referral comparison refreshed from printed OASIS note: ${refreshedReferralProcessing.result.artifacts.qaDocumentSummaryPath ?? "artifacts updated"}`,
+                    );
+                  } else {
+                    run.notes.push("Referral comparison refresh from printed OASIS note did not produce updated artifacts.");
+                  }
+                }
               }
             }
             const portalPlanOfCareDraftPath = await timing.time("plan_of_care", () => writePortalCarePlanDraftFromOasisDom({
@@ -1645,6 +1661,18 @@ export async function executePatientWorkItems(
             const codingWorkflowRun = findWorkflowRun(run.workflowRuns, "coding");
             codingInputExportPath = codingWorkflowRun?.workflowResultPath ?? codingInputExportPath;
           }
+
+          if (
+            missingReferralDocumentReviewMessage &&
+            run.processingStatus !== "FAILED" &&
+            run.processingStatus !== "BLOCKED"
+          ) {
+            run.qaOutcome = "NEEDS_MANUAL_QA";
+            run.processingStatus = "NEEDS_HUMAN_REVIEW";
+            run.executionStep = "REFERRAL_DOCUMENT_REQUIRED_REVIEW";
+            run.progressPercent = 100;
+            run.errorSummary = missingReferralDocumentReviewMessage;
+          }
         } else {
           run.processingStatus = "RUNNING_QA";
           run.executionStep = "RUNNING_QA";
@@ -1692,7 +1720,8 @@ export async function executePatientWorkItems(
           !selectedWorkflowDomains.includes("coding") &&
           run.matchResult.status === "EXACT" &&
           run.processingStatus !== "BLOCKED" &&
-          run.processingStatus !== "FAILED"
+          run.processingStatus !== "FAILED" &&
+          run.processingStatus !== "NEEDS_HUMAN_REVIEW"
         ) {
           run.processingStatus = "COMPLETE";
           run.executionStep = "OASIS_QA_ENTRY_COMPLETE";
@@ -1835,6 +1864,7 @@ export async function executePatientWorkItems(
             evidence: timing.stageTimings.map((stage) => `${stage.stage}:${stage.durationMs}ms`),
             safeReadConfirmed: true,
           })]);
+
         } catch (error) {
           const cacheSummaryError = error instanceof Error ? error.message : String(error);
           run.notes.push(`Incremental run cache summary failed: ${cacheSummaryError}`);

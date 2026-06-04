@@ -58,6 +58,8 @@ type KnownArtifactContents = {
   referralOasisConsistency?: unknown | null;
   oasisGate?: unknown | null;
   generatedPlanOfCare?: unknown | null;
+  oasisDomSectionProcessingManifest?: unknown | null;
+  oasisDomSectionOutputs?: unknown | null;
   patientRunCacheSummary?: unknown | null;
 };
 
@@ -95,7 +97,6 @@ type DashboardDiagnosisSource =
   | "no_usable_referral_diagnosis_fact"
   | "no_usable_oasis_diagnosis_fact"
   | "insufficient_structured_diagnosis_evidence"
-  | "printed_note_chart_values"
   | "qa_visible_diagnoses";
 
 type DashboardDiagnosisComparisonStatus =
@@ -136,18 +137,24 @@ type DashboardMedicationEntry = {
   source: string | null;
 };
 
+type DashboardAllergyEntry = {
+  name: string;
+  reaction: string | null;
+  startDate: string | null;
+  status: string | null;
+  source: string | null;
+};
+
 type DashboardMedicationSummary = {
   medications: DashboardMedicationEntry[];
-  allergies: string[];
-  medicationSource: "document_fact_pack" | "portal_dom_state" | null;
+  allergies: DashboardAllergyEntry[];
+  medicationSource: "direct_document_referral" | "document_fact_pack" | "portal_dom_state" | null;
 };
 
 type DashboardOasisEvidenceMode =
   | "chart_read"
   | "portal_dom_state"
-  | "printed_note_ocr"
   | "oasis_fact_pack"
-  | "printed_note_review_section_fallback"
   | "unavailable";
 
 type DashboardReferralComparisonOrigin =
@@ -450,6 +457,8 @@ type DashboardVisitNotesReview = {
     captureStatus: string | null;
     analyzed: boolean;
     analysisStatus: string;
+    completionStatus: string;
+    completionReasons: string[];
     mappingStatus: string | null;
     matchStrength: number | null;
     summary: string;
@@ -755,17 +764,13 @@ function deriveOasisDocumentationReview(artifactContents: KnownArtifactContents)
   const qaPrefetch = asRecord(artifactContents.qaPrefetch);
   const assessmentNote = asRecord(qaPrefetch?.assessmentNote);
   const diagnosisRoute = asRecord(qaPrefetch?.diagnosisRoute);
-  const printedNoteReview = asRecord(artifactContents.printedNoteReview);
   const oasisDomState = asRecord(artifactContents.oasisDomExtractedState);
   const oasisDomCoverage = asRecord(oasisDomState?.coverage);
   const oasisDomDiagnostics = asRecord(oasisDomState?.diagnostics);
   const oasisDomSections = getOasisDomSections(artifactContents);
   const oasisDomFields = getMeaningfulOasisDomFields(artifactContents);
-  const printedSections = asArray(printedNoteReview?.sections)
-    .map(asRecord)
-    .filter((section): section is Record<string, unknown> => Boolean(section));
-  const printedNoteChartValues = asRecord(artifactContents.printedNoteChartValues);
-  const currentChartValues = asRecord(printedNoteChartValues?.currentChartValues) ?? printedNoteChartValues;
+  const sectionOutputs = asRecord(artifactContents.oasisDomSectionOutputs);
+  const sectionOutputSummary = asRecord(sectionOutputs?.summary);
   const oasisFactPack = asRecord(artifactContents.oasisClinicalFactPack);
   const oasisDiagnosisExtraction = asRecord(artifactContents.oasisDiagnosisExtraction);
   const extractedDiagnoses = asArray(oasisDiagnosisExtraction?.diagnoses);
@@ -780,24 +785,23 @@ function deriveOasisDocumentationReview(artifactContents: KnownArtifactContents)
     : facts.filter((fact) => asString(fact?.category) === "icd_code").length;
   const warnings = [
     ...asArray(qaPrefetch?.warnings).map(asString).filter((value): value is string => Boolean(value)).slice(0, 4),
-    ...asArray(printedNoteReview?.warnings).map(asString).filter((value): value is string => Boolean(value)).slice(0, 4),
   ];
   const episodeSelection = asRecord(qaPrefetch?.episodeSelection);
   const selectedEpisodeRange = asRecord(episodeSelection?.selectedRange);
   const selectedEpisode = asString(selectedEpisodeRange?.rawLabel) ??
     asString(asRecord(qaPrefetch?.billingCalendarSummary)?.selectedEpisodeRange);
   return {
-    available: Boolean(qaPrefetch || printedNoteReview || facts.length > 0 || oasisDomState),
+    available: Boolean(qaPrefetch || facts.length > 0 || oasisDomState),
     status: oasisDomState
       ? (asString(oasisDomCoverage?.confidence) ?? "dom_state_primary")
-      : asString(printedNoteReview?.overallStatus) ?? asString(qaPrefetch?.status),
+      : asString(qaPrefetch?.status),
     artifactPaths: [
       ...(qaPrefetch ? ["qa-prefetch-result.json"] : []),
       ...(oasisDomState ? ["oasis-dom-extracted-state.json"] : []),
       ...(artifactContents.oasisDomAcquisitionState ? ["oasis-dom-acquisition-state.json"] : []),
       ...(artifactContents.oasisDomComparison ? ["oasis-dom-vs-existing-extraction-comparison.json"] : []),
-      ...(printedNoteReview ? ["oasis-printed-note-review.json"] : []),
-      ...(printedNoteChartValues ? ["printed-note-chart-values.json"] : []),
+      ...(artifactContents.oasisDomSectionProcessingManifest ? ["oasis-dom-section-processing-manifest.json"] : []),
+      ...(artifactContents.oasisDomSectionOutputs ? ["oasis-dom-section-outputs.json"] : []),
       ...(oasisDiagnosisExtraction ? ["oasis-diagnosis-extraction.json"] : []),
       ...(oasisFactPack ? ["oasis-clinical-fact-pack.json"] : []),
       ...(artifactContents.oasisExtractionCoverageReport ? ["oasis-extraction-coverage-report.json"] : []),
@@ -805,11 +809,18 @@ function deriveOasisDocumentationReview(artifactContents: KnownArtifactContents)
     summaryItems: [
       { label: "Assessment", value: asString(assessmentNote?.matchedAssessmentLabel) ?? asString(assessmentNote?.assessmentType) ?? "Not available" },
       { label: "Selected Episode", value: selectedEpisode ?? "Not available" },
-      { label: oasisDomState ? "DOM Sections" : "Printed Sections", value: String((asNumber(oasisDomCoverage?.sectionCount) ?? oasisDomSections.length) || printedSections.length) },
+      { label: "DOM Sections", value: String(asNumber(oasisDomCoverage?.sectionCount) ?? oasisDomSections.length) },
       { label: "Completed Sections", value: String(oasisDomState
         ? oasisDomSections.filter((section) => !/^failed|degraded$/i.test(section.status)).length
-        : printedSections.filter((section) => /^completed$/i.test(asString(section?.status) ?? "")).length) },
-      { label: "Field Values Captured", value: String(oasisDomFields.length || Object.keys(currentChartValues ?? {}).length) },
+        : 0) },
+      { label: "Field Values Captured", value: String(oasisDomFields.length) },
+      ...(sectionOutputs
+        ? [
+            { label: "Section Outputs", value: String(asNumber(sectionOutputSummary?.totalSections) ?? asArray(sectionOutputs.sections).length) },
+            { label: "Section LLM Processed", value: String(asNumber(sectionOutputSummary?.processedSections) ?? 0) },
+            { label: "Section Outputs Reused", value: String(asNumber(sectionOutputSummary?.reusedSections) ?? 0) },
+          ]
+        : []),
       { label: "Visible OASIS Diagnoses", value: String(diagnosisCount || asArray(diagnosisRoute?.visibleDiagnoses).length || asArray(assessmentNote?.visibleDiagnoses).length) },
       ...(oasisDomState
         ? [
@@ -1255,12 +1266,34 @@ function deriveVisitNotesReview(
       captureStatus: asString(note.captureStatus),
       analyzed: Boolean(note.analyzed),
       analysisStatus: asString(note.analysisStatus) ?? "skipped",
+      completionStatus: asString(note.completionStatus) ??
+        (asString(note.captureStatus) === "failed" || asString(note.analysisStatus) === "failed"
+          ? "capture_needed"
+          : (
+            asArray(note.missingFields).length > 0 ||
+            asArray(note.textInputSuggestions).length > 0 ||
+            asArray(asRecord(note.pocMappingResult)?.missingDocumentation)
+              .map(asString)
+              .some((value) => /\b(?:blank|needs more detail|too short|not descriptive)\b/i.test(value ?? ""))
+          )
+            ? "incomplete"
+            : Boolean(note.analyzed)
+              ? "complete"
+              : "unknown"),
+      completionReasons: asArray(note.completionReasons).map(asString).filter((value): value is string => Boolean(value)),
       mappingStatus:
         asString(asRecord(note.pocMappingResult)?.mappingStatus) ??
         asString(asRecord(note.pocMappingResult)?.alignmentStatus),
       matchStrength: asNumber(asRecord(note.pocMappingResult)?.matchStrength),
       summary: asString(note.summary) ?? "",
-      missingFields: asArray(note.missingFields).map(asString).filter((value): value is string => Boolean(value)),
+      missingFields: Array.from(new Set([
+        ...asArray(note.missingFields).map(asString).filter((value): value is string => Boolean(value)),
+        ...asArray(asRecord(note.pocMappingResult)?.missingDocumentation)
+          .map(asString)
+          .filter((value): value is string => Boolean(value && /\b(?:blank|needs more detail|too short|not descriptive)\b/i.test(value)))
+          .map((value) => value.replace(/\s+(?:is blank|needs more detail)\.?$/i, "").trim())
+          .filter(Boolean),
+      ])),
       textInputSuggestions: asArray(note.textInputSuggestions).map(asRecord).filter((value): value is Record<string, unknown> => Boolean(value)).map((suggestion) => ({
         suggestionId: asString(suggestion.suggestionId) ?? "visit-note-suggestion",
         visitNoteKey: asString(suggestion.visitNoteKey) ?? asString(note.visitNoteKey) ?? "",
@@ -1706,19 +1739,6 @@ function diagnosisSummaryEntries(summary: DashboardDiagnosisSummary | null): Das
   ];
 }
 
-function derivePrintedNoteDiagnosisSummary(input: PatientViewInput) {
-  const printedNoteChartValues = asRecord(input.artifactContents.printedNoteChartValues);
-  const currentChartValues =
-    asRecord(printedNoteChartValues?.currentChartValues) ?? printedNoteChartValues;
-  return createDiagnosisSummary(
-    normalizeDiagnosisList([
-      currentChartValues?.primary_diagnosis,
-      ...asArray(currentChartValues?.secondary_diagnoses),
-    ]),
-    "printed_note_chart_values",
-  );
-}
-
 function deriveFactPackDiagnosisSummary(input: PatientViewInput) {
   const documentFactPack = asRecord(input.artifactContents.documentFactPack);
   const factPack = asRecord(documentFactPack?.factPack) ?? documentFactPack;
@@ -1972,9 +1992,9 @@ function deriveOasisDiagnosisSummary(input: PatientViewInput): DashboardDiagnosi
     return extractedDiagnosisSummary;
   }
 
-  const printedNoteDiagnosisSummary = derivePrintedNoteDiagnosisSummary(input);
-  if (printedNoteDiagnosisSummary) {
-    return printedNoteDiagnosisSummary;
+  const domDiagnosisSummary = deriveOasisDomDiagnosisSummary(input);
+  if (domDiagnosisSummary) {
+    return domDiagnosisSummary;
   }
 
   const qaVisibleDiagnosisSummary = deriveQaVisibleDiagnosisSummary(input);
@@ -1982,8 +2002,7 @@ function deriveOasisDiagnosisSummary(input: PatientViewInput): DashboardDiagnosi
     return qaVisibleDiagnosisSummary;
   }
 
-  return deriveOasisDomDiagnosisSummary(input) ??
-    deriveClinicalFactPackDiagnosisSummary(input.artifactContents.oasisClinicalFactPack, "oasis_clinical_fact_pack");
+  return deriveClinicalFactPackDiagnosisSummary(input.artifactContents.oasisClinicalFactPack, "oasis_clinical_fact_pack");
 }
 
 function diagnosisEntryKey(entry: DashboardDiagnosisEntry): string {
@@ -2049,6 +2068,7 @@ function formatMedicationName(value: string): string {
     .replace(/\bMl\b/g, "mL")
     .replace(/\bMg\b/g, "mg")
     .replace(/\bGm\b/g, "GM")
+    .replace(/\bHcl\b/g, "HCl")
     .replace(/\s+/g, " ")
     .trim();
 }
@@ -2074,6 +2094,50 @@ function formatMedicationDose(value: string | null): string | null {
     .trim();
 }
 
+const KNOWN_MEDICATION_NAME_PATTERN =
+  /\b(?:insulin|warfarin|metformin|lasix|furosemide|lisinopril|aspirin|acetaminophen|eliquis|apixaban|toprol|metoprolol|omeprazole|losartan|atorvastatin|januvia|solifenacin|gabapentin|amlodipine|levothyroxine|fluoxetine|oxycodone|torsemide|potassium|klor-con|kenalog|triamcinolone|tramadol|ondansetron|bupropion)\b/i;
+
+function isLikelyMedicationFragmentName(value: string): boolean {
+  const normalized = value
+    .replace(/[^\p{L}\p{N}\s]/gu, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .toLowerCase();
+  if (!normalized) {
+    return true;
+  }
+  if (/^(?:left|right|bilateral|upper|lower|anterior|posterior|medial|lateral)$/.test(normalized)) {
+    return true;
+  }
+  if (/^(?:tablet|tab|capsule|cap|pill|mg capsule|mcg capsule|capsule by|tablet by|by mouth|oral)$/.test(normalized)) {
+    return true;
+  }
+  const words = normalized.split(/\s+/).filter(Boolean);
+  const genericWords = new Set(["mg", "mcg", "g", "ml", "tablet", "tab", "capsule", "cap", "pill", "by", "mouth", "oral"]);
+  return words.length > 0 && words.every((word) => genericWords.has(word));
+}
+
+function normalizeMedicationNameForDisplay(value: string): string | null {
+  const dateStripped = value
+    .replace(/\b\d{1,2}\/\d{1,2}\/\d{2,4}\b/g, " ")
+    .replace(/\bHCI\b/g, "HCl")
+    .replace(/\s+/g, " ")
+    .trim();
+  const knownMedicationMatch = dateStripped.match(KNOWN_MEDICATION_NAME_PATTERN)?.[0] ?? null;
+  const trimmed = dateStripped.replace(/\s*[-–—]\s*$/g, "").trim();
+  const shouldUseKnownMedicationName = Boolean(
+    knownMedicationMatch &&
+    /\b(?:injection|joint|tendon|bursa|trochanteric|cmc|hand)\b/i.test(trimmed),
+  );
+  const normalized = shouldUseKnownMedicationName
+    ? knownMedicationMatch!
+    : trimmed;
+  if (isLikelyMedicationFragmentName(normalized)) {
+    return null;
+  }
+  return normalized;
+}
+
 function createMedicationEntry(input: {
   name: unknown;
   dose?: unknown;
@@ -2084,19 +2148,20 @@ function createMedicationEntry(input: {
   source?: unknown;
 }): DashboardMedicationEntry | null {
   const name = cleanMedicationText(input.name);
+  const normalizedName = name ? normalizeMedicationNameForDisplay(name) : null;
   if (
-    !name ||
-    /^order summary\b/i.test(name) ||
-    /^treat as indicated\b/i.test(name) ||
-    /^by mouth\b/i.test(name) ||
-    /\bby mouth one time\b/i.test(name) ||
-    /^\([^)]*(?:potassium|potass)/i.test(name)
+    !normalizedName ||
+    /^order summary\b/i.test(normalizedName) ||
+    /^treat as indicated\b/i.test(normalizedName) ||
+    /^by mouth\b/i.test(normalizedName) ||
+    /\bby mouth one time\b/i.test(normalizedName) ||
+    /^\([^)]*(?:potassium|potass)/i.test(normalizedName)
   ) {
     return null;
   }
 
   return {
-    name: formatMedicationName(name),
+    name: formatMedicationName(normalizedName),
     dose: formatMedicationDose(cleanMedicationText(input.dose)),
     route: cleanMedicationText(input.route),
     classification: cleanMedicationText(input.classification),
@@ -2128,17 +2193,55 @@ function dedupeMedicationEntries(entries: Array<DashboardMedicationEntry | null>
   return deduped;
 }
 
+function createAllergyEntry(input: {
+  name: unknown;
+  reaction?: unknown;
+  startDate?: unknown;
+  status?: unknown;
+  source?: unknown;
+}): DashboardAllergyEntry | null {
+  const name = cleanMedicationText(input.name);
+  if (!name || name === "/" || /^and intolerances\b/i.test(name)) {
+    return null;
+  }
+  return {
+    name: /^no known$/i.test(name) ? "None known" : name,
+    reaction: cleanMedicationText(input.reaction),
+    startDate: cleanMedicationText(input.startDate),
+    status: cleanMedicationText(input.status),
+    source: cleanMedicationText(input.source),
+  };
+}
+
+function dedupeAllergyEntries(entries: Array<DashboardAllergyEntry | null>): DashboardAllergyEntry[] {
+  const seen = new Set<string>();
+  const deduped: DashboardAllergyEntry[] = [];
+  for (const entry of entries) {
+    if (!entry) {
+      continue;
+    }
+    const key = [
+      entry.name,
+      entry.reaction ?? "",
+      entry.startDate ?? "",
+      entry.status ?? "",
+    ].join("|").toLowerCase();
+    if (seen.has(key)) {
+      continue;
+    }
+    seen.add(key);
+    deduped.push(entry);
+  }
+  return deduped;
+}
+
 function createMedicationSummary(input: {
   medications: Array<DashboardMedicationEntry | null>;
-  allergies: Array<string | null>;
+  allergies: Array<DashboardAllergyEntry | null>;
   medicationSource: DashboardMedicationSummary["medicationSource"];
 }): DashboardMedicationSummary | null {
   const medications = dedupeMedicationEntries(input.medications);
-  const allergies = Array.from(new Set(input.allergies
-    .map((value) => cleanMedicationText(value))
-    .filter((value): value is string => Boolean(value))
-    .map((value) => /^no known$/i.test(value) ? "None known" : value)
-    .filter((value) => value !== "/" && !/^and intolerances\b/i.test(value))));
+  const allergies = dedupeAllergyEntries(input.allergies);
   if (medications.length === 0 && allergies.length === 0) {
     return null;
   }
@@ -2149,34 +2252,105 @@ function createMedicationSummary(input: {
   };
 }
 
+function arrayOrSingle(value: unknown): unknown[] {
+  if (Array.isArray(value)) {
+    return value;
+  }
+  if (value === null || value === undefined || value === "") {
+    return [];
+  }
+  return [value];
+}
+
+function createReferralMedicationEntry(value: unknown, fallbackSource: string): DashboardMedicationEntry | null {
+  const record = asRecord(value);
+  if (!record) {
+    return createMedicationEntry({ name: value, source: fallbackSource });
+  }
+  return createMedicationEntry({
+    name: record.name ?? record.medication ?? record.label,
+    dose: record.dose ?? record.strength,
+    route: record.route,
+    classification: record.classification ?? record.indication,
+    startDate: record.startDate ?? record.start_date,
+    status: record.status,
+    source: record.source ?? fallbackSource,
+  });
+}
+
+function createReferralAllergyEntry(value: unknown, fallbackSource: string): DashboardAllergyEntry | null {
+  const record = asRecord(value);
+  if (!record) {
+    return createAllergyEntry({ name: value, source: fallbackSource });
+  }
+  return createAllergyEntry({
+    name: record.name ?? record.allergen ?? record.allergy ?? record.label,
+    reaction: record.reaction,
+    startDate: record.startDate ?? record.start_date ?? record.onsetDate ?? record.onset_date,
+    status: record.status,
+    source: record.source ?? fallbackSource,
+  });
+}
+
+function deriveReferralDirectMedicationSummary(input: PatientViewInput): DashboardMedicationSummary | null {
+  const extractedFacts = asRecord(input.artifactContents.referralExtractedFacts);
+  const facts = asArray(extractedFacts?.facts)
+    .map(asRecord)
+    .filter((fact): fact is Record<string, unknown> => Boolean(fact));
+  const medicationValues = facts
+    .filter((fact) => asString(fact.fact_key) === "medication_list")
+    .flatMap((fact) => arrayOrSingle(fact.value));
+  const allergyValues = facts
+    .filter((fact) => asString(fact.fact_key) === "allergy_list")
+    .flatMap((fact) => arrayOrSingle(fact.value));
+
+  return createMedicationSummary({
+    medications: medicationValues.map((value) => createReferralMedicationEntry(value, "Direct-document referral")),
+    allergies: allergyValues.map((value) => createReferralAllergyEntry(value, "Direct-document referral")),
+    medicationSource: "direct_document_referral",
+  });
+}
+
 function deriveReferralMedicationSummary(input: PatientViewInput): DashboardMedicationSummary | null {
   if (!canUseReferralStructuredFacts(input.artifactContents)) {
     return null;
   }
 
+  const directMedicationSummary = deriveReferralDirectMedicationSummary(input);
+  if (directMedicationSummary) {
+    return directMedicationSummary;
+  }
+
   const documentFactPack = asRecord(input.artifactContents.documentFactPack);
   const factPack = asRecord(documentFactPack?.factPack) ?? documentFactPack;
-  const medications = asArray(factPack?.medications).map((value) => {
-    const record = asRecord(value);
-    if (!record) {
-      return createMedicationEntry({ name: value });
-    }
-    return createMedicationEntry({
-      name: record.name ?? record.medication ?? record.label,
-      dose: record.dose ?? record.strength,
-      route: record.route,
-      classification: record.classification ?? record.indication,
-      startDate: record.startDate ?? record.start_date,
-      status: record.status,
-      source: record.source,
-    });
-  });
-  const allergies = asArray(factPack?.allergies).map((value) => cleanMedicationText(value));
+  const medications = asArray(factPack?.medications)
+    .map((value) => createReferralMedicationEntry(value, "Referral document"));
+  const allergies = asArray(factPack?.allergies)
+    .map((value) => createReferralAllergyEntry(value, "Referral document"));
   return createMedicationSummary({
     medications,
     allergies,
     medicationSource: "document_fact_pack",
   });
+}
+
+function normalizeMedicationHeader(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function findMedicationColumnIndex(headers: string[], predicate: (header: string) => boolean): number {
+  return headers.findIndex((header) => predicate(normalizeMedicationHeader(header)));
+}
+
+function isMedicationHeaderEcho(value: string, header: string | undefined): boolean {
+  const normalizedValue = normalizeMedicationHeader(value);
+  const normalizedHeader = normalizeMedicationHeader(header ?? "");
+  return normalizedValue === "medication" ||
+    (normalizedHeader.length > 0 && normalizedValue === normalizedHeader);
 }
 
 function deriveOasisMedicationSummary(input: PatientViewInput): DashboardMedicationSummary | null {
@@ -2195,27 +2369,35 @@ function deriveOasisMedicationSummary(input: PatientViewInput): DashboardMedicat
   );
 
   const medications: Array<DashboardMedicationEntry | null> = [];
-  const allergies: Array<string | null> = [];
+  const allergies: Array<DashboardAllergyEntry | null> = [];
 
   for (const section of medicationSections) {
     for (const tableValue of asArray(section.tables)) {
       const table = asRecord(tableValue);
       const headers = asArray(table?.headers).map((header) => cleanMedicationText(header) ?? "");
       const rows = asArray(table?.rows).map((row) => asArray(row).map((cell) => cleanMedicationText(cell) ?? ""));
-      const normalizedHeaders = headers.map((header) => header.toLowerCase());
-      const medicationIndex = normalizedHeaders.findIndex((header) => header === "medication");
-      const allergyNameIndex = normalizedHeaders.findIndex((header) => header === "name");
-      const reactionIndex = normalizedHeaders.findIndex((header) => header === "reaction");
+      const medicationIndex = findMedicationColumnIndex(headers, (header) =>
+        header === "medication" ||
+        header === "medication name" ||
+        header === "drug" ||
+        header === "drug name");
+      const allergyNameIndex = findMedicationColumnIndex(headers, (header) => header === "name" || header === "allergen");
+      const reactionIndex = findMedicationColumnIndex(headers, (header) => header === "reaction");
 
       if (medicationIndex >= 0) {
-        const startDateIndex = normalizedHeaders.findIndex((header) => header.includes("start date"));
-        const doseIndex = normalizedHeaders.findIndex((header) => header.includes("strength") || header.includes("dosage") || header.includes("dose"));
-        const routeIndex = normalizedHeaders.findIndex((header) => header === "route");
-        const classificationIndex = normalizedHeaders.findIndex((header) => header.includes("classification") || header.includes("indication"));
-        const statusIndex = normalizedHeaders.findIndex((header) => header === "status");
+        const startDateIndex = findMedicationColumnIndex(headers, (header) => header.includes("start date"));
+        const doseIndex = findMedicationColumnIndex(headers, (header) =>
+          header.includes("strength") ||
+          header.includes("dosage") ||
+          header.includes("dose"));
+        const routeIndex = findMedicationColumnIndex(headers, (header) => header === "route");
+        const classificationIndex = findMedicationColumnIndex(headers, (header) =>
+          header.includes("classification") ||
+          header.includes("indication"));
+        const statusIndex = findMedicationColumnIndex(headers, (header) => header === "status");
         for (const row of rows) {
           const medicationName = row[medicationIndex];
-          if (!medicationName || medicationName.toLowerCase() === "medication") {
+          if (!medicationName || isMedicationHeaderEcho(medicationName, headers[medicationIndex])) {
             continue;
           }
           medications.push(createMedicationEntry({
@@ -2231,13 +2413,24 @@ function deriveOasisMedicationSummary(input: PatientViewInput): DashboardMedicat
       }
 
       if (allergyNameIndex >= 0) {
+        const allergyStartDateIndex = findMedicationColumnIndex(headers, (header) =>
+          header.includes("start date") ||
+          header.includes("onset date") ||
+          header === "date");
+        const allergyStatusIndex = findMedicationColumnIndex(headers, (header) => header === "status");
         for (const row of rows) {
           const name = row[allergyNameIndex];
           if (!name || name.toLowerCase() === "name") {
             continue;
           }
           const reaction = reactionIndex >= 0 ? row[reactionIndex] : null;
-          allergies.push(reaction ? `${name} - ${reaction}` : name);
+          allergies.push(createAllergyEntry({
+            name,
+            reaction,
+            startDate: allergyStartDateIndex >= 0 ? row[allergyStartDateIndex] : null,
+            status: allergyStatusIndex >= 0 ? row[allergyStatusIndex] : null,
+            source: "OASIS DOM allergy table",
+          }));
         }
       }
     }
@@ -2287,12 +2480,8 @@ function getDashboardOasisEvidenceLabel(mode: DashboardOasisEvidenceMode): strin
       return "Field value";
     case "portal_dom_state":
       return "DOM field value";
-    case "printed_note_ocr":
-      return "OCR field value";
     case "oasis_fact_pack":
       return "OASIS fact-pack evidence";
-    case "printed_note_review_section_fallback":
-      return "OASIS section evidence only";
     default:
       return "Not captured";
   }
@@ -2406,7 +2595,13 @@ function buildDashboardStateFromClinicalRows(input: {
     const metadata = fieldMetadata.get(row.fieldKey);
     const displayStatus = clinicalVerdictToDashboardResult(row.verdict);
     const explicitReferralValue = sanitizeDashboardClinicalValue(row.referralValue);
-    const explicitOasisValue = sanitizeDashboardClinicalValue(row.oasisValue);
+    const activeOasisArtifacts = row.sources.oasisArtifacts.filter(
+      (artifact) => !isLegacyPrintedNoteArtifactName(artifact),
+    );
+    const oasisSourceIsLegacyOnly = row.sources.oasisArtifacts.length > 0 && activeOasisArtifacts.length === 0;
+    const explicitOasisValue = oasisSourceIsLegacyOnly
+      ? null
+      : sanitizeDashboardClinicalValue(row.oasisValue);
     const referralEvidence = row.referralEvidence
       .map((entry, index) => ({
         entry,
@@ -2415,6 +2610,7 @@ function buildDashboardStateFromClinicalRows(input: {
       }))
       .filter((entry): entry is typeof entry & { snippet: string } => entry.snippet !== null);
     const oasisEvidence = row.oasisEvidence
+      .filter((entry) => !isLegacyPrintedNoteArtifactName(entry.artifact))
       .map((entry, index) => ({
         entry,
         index,
@@ -2426,25 +2622,25 @@ function buildDashboardStateFromClinicalRows(input: {
     const hasDocumentValue = hasMeaningfulValue(referralValue);
     const hasChartValue = hasMeaningfulValue(oasisValue);
     const sourceArtifacts = Array.from(
-      new Set([...row.sources.referralArtifacts, ...row.sources.oasisArtifacts]),
+      new Set([...row.sources.referralArtifacts, ...activeOasisArtifacts]),
     );
     const currentChartValueSource = hasChartValue
-      ? row.sources.oasisArtifacts.includes("printed-note-chart-values.json")
-        ? "printed_note_ocr"
-        : row.sources.oasisArtifacts.includes("field-map-snapshot.json")
+      ? activeOasisArtifacts.includes("field-map-snapshot.json")
           ? "chart_read"
-          : row.sources.oasisArtifacts.includes("oasis-clinical-fact-pack.json") || oasisEvidence.length > 0
-            ? "oasis_fact_pack"
-            : "unavailable"
+          : activeOasisArtifacts.includes("oasis-dom-extracted-state.json")
+            ? "portal_dom_state"
+            : activeOasisArtifacts.includes("oasis-clinical-fact-pack.json") || oasisEvidence.length > 0
+              ? "oasis_fact_pack"
+              : "unavailable"
       : "unavailable";
     const oasisEvidenceMode: DashboardOasisEvidenceMode =
-      currentChartValueSource === "printed_note_ocr"
-        ? "printed_note_ocr"
-        : currentChartValueSource === "chart_read"
+      currentChartValueSource === "chart_read"
           ? "chart_read"
-          : currentChartValueSource === "oasis_fact_pack"
-            ? "oasis_fact_pack"
-            : "unavailable";
+          : currentChartValueSource === "portal_dom_state"
+            ? "portal_dom_state"
+            : currentChartValueSource === "oasis_fact_pack"
+              ? "oasis_fact_pack"
+              : "unavailable";
     const visibilityDecision: DashboardVisibilityDecision = row.needsReview
       ? "show"
       : "hidden_match";
@@ -2528,7 +2724,7 @@ function buildDashboardStateFromClinicalRows(input: {
       valuePresence: {
         hasDocumentValue,
         hasChartValue,
-        hasPrintedNoteChartValue: row.sources.oasisArtifacts.includes("printed-note-chart-values.json"),
+        hasPrintedNoteChartValue: false,
         printedNoteSectionKey: null,
         printedNoteSectionStatus: null,
         printedNoteReviewSource: null,
@@ -2558,11 +2754,11 @@ function buildDashboardStateFromClinicalRows(input: {
     sourceCoverage: {
       printedNoteReviewSource: null,
       printedNoteCompletedSectionCount: 0,
-      printedNoteChartValueCount: rows.filter((row) => row.valuePresence.hasPrintedNoteChartValue).length,
+      printedNoteChartValueCount: 0,
       fieldLevelValueCount: rows.filter(
         (row) =>
           row.oasisEvidenceMode === "chart_read" ||
-          row.oasisEvidenceMode === "printed_note_ocr" ||
+          row.oasisEvidenceMode === "portal_dom_state" ||
           row.oasisEvidenceMode === "oasis_fact_pack",
       ).length,
       sectionEvidenceFallbackRowCount: 0,
@@ -2823,36 +3019,6 @@ function deriveQaPrefetchSummary(input: PatientViewInput) {
   const outsideRange = asRecord(periods?.outsideRange);
   const first30WorkbookColumns = asRecord(first30Days?.workbookColumns);
   const second30WorkbookColumns = asRecord(second30Days?.workbookColumns);
-  const printedNoteReview = asRecord(qaPrefetch.printedNoteReview);
-  const printedNoteCapture = asRecord(printedNoteReview?.capture);
-  const printedNoteSections = asArray(printedNoteReview?.sections)
-    .map((sectionValue) => {
-      const section = asRecord(sectionValue);
-      if (!section) {
-        return null;
-      }
-
-      const key = asString(section.key);
-      const label = asString(section.label);
-      const status = asString(section.status);
-      if (!key || !label || !status) {
-        return null;
-      }
-
-      return {
-        key,
-        label,
-        status,
-        filledFieldCount:
-          typeof section.filledFieldCount === "number" ? section.filledFieldCount : 0,
-        missingFieldCount:
-          typeof section.missingFieldCount === "number" ? section.missingFieldCount : 0,
-      };
-    })
-    .filter((section): section is NonNullable<typeof section> => section !== null);
-  const printedNoteCompletedSectionCount = printedNoteSections.filter((section) => section.status === "COMPLETED").length;
-  const printedNoteIncompleteSectionCount = printedNoteSections.filter((section) => section.status !== "COMPLETED").length;
-
   return {
     status: asString(qaPrefetch.status) ?? "UNKNOWN",
     selectedRouteSummary: asString(qaPrefetch.selectedRouteSummary),
@@ -2894,22 +3060,18 @@ function deriveQaPrefetchSummary(input: PatientViewInput) {
       ptOtSt: asString(second30WorkbookColumns?.ptOtSt) ?? "NA",
       hhaMsw: asString(second30WorkbookColumns?.hhaMsw) ?? "NA",
     },
-    printedNoteStatus: asString(printedNoteReview?.overallStatus),
-    printedNoteAssessmentType: asString(printedNoteReview?.assessmentType),
-    printedNoteReviewSource: asString(printedNoteReview?.reviewSource),
-    printedNoteWarningCount:
-      typeof printedNoteReview?.warningCount === "number"
-        ? printedNoteReview.warningCount
-        : asArray(printedNoteReview?.warnings).length,
-    printedNoteTopWarning: asString(printedNoteReview?.topWarning),
-    printedNoteCompletedSectionCount,
-    printedNoteIncompleteSectionCount,
-    printedNotePrintButtonDetected: Boolean(printedNoteCapture?.printButtonDetected),
-    printedNotePrintClickSucceeded: Boolean(printedNoteCapture?.printClickSucceeded),
-    printedNoteExtractionMethod: asString(printedNoteCapture?.extractionMethod),
-    printedNoteTextLength:
-      typeof printedNoteCapture?.textLength === "number" ? printedNoteCapture.textLength : 0,
-    printedNoteSections,
+    printedNoteStatus: null,
+    printedNoteAssessmentType: null,
+    printedNoteReviewSource: null,
+    printedNoteWarningCount: 0,
+    printedNoteTopWarning: null,
+    printedNoteCompletedSectionCount: 0,
+    printedNoteIncompleteSectionCount: 0,
+    printedNotePrintButtonDetected: false,
+    printedNotePrintClickSucceeded: false,
+    printedNoteExtractionMethod: null,
+    printedNoteTextLength: 0,
+    printedNoteSections: [],
   };
 }
 
@@ -3491,8 +3653,6 @@ function deriveRecommendationConfidenceLabel(sourceEvidence: Array<{ confidence?
 function deriveFieldSnapshotLookup(input: PatientViewInput) {
   const fieldMapSnapshot = asRecord(input.artifactContents.fieldMapSnapshot);
   const snapshotFields = asArray(fieldMapSnapshot?.fields);
-  const printedNoteChartValuesRecord = asRecord(input.artifactContents.printedNoteChartValues);
-  const printedNoteChartValues = asRecord(printedNoteChartValuesRecord?.currentChartValues) ?? {};
   const snapshotByFieldKey = new Map<
     string,
     {
@@ -3509,35 +3669,23 @@ function deriveFieldSnapshotLookup(input: PatientViewInput) {
       continue;
     }
 
-    const currentChartValue = sanitizeDiagnosisFieldValue(
+    const rawChartValueSource = asString(snapshotField?.currentChartValueSource);
+    const legacyPrintedNoteSource = isLegacyPrintedNoteValueSource(rawChartValueSource);
+    const currentChartValue = legacyPrintedNoteSource ? null : sanitizeDiagnosisFieldValue(
       fieldKey,
       snapshotField?.currentChartValue ?? null,
     );
     snapshotByFieldKey.set(fieldKey, {
       currentChartValue,
-      currentChartValueSource: asString(snapshotField?.currentChartValueSource) ?? "unavailable",
+      currentChartValueSource: legacyPrintedNoteSource
+        ? "unavailable"
+        : rawChartValueSource ?? "unavailable",
       populatedInChart:
-        typeof snapshotField?.populatedInChart === "boolean"
+        legacyPrintedNoteSource
+          ? false
+          : typeof snapshotField?.populatedInChart === "boolean"
           ? snapshotField.populatedInChart && hasMeaningfulValue(currentChartValue)
           : hasMeaningfulValue(currentChartValue),
-    });
-  }
-
-  for (const [fieldKey, recoveredChartValue] of Object.entries(printedNoteChartValues)) {
-    const sanitizedRecoveredChartValue = sanitizeDiagnosisFieldValue(fieldKey, recoveredChartValue);
-    if (!hasMeaningfulValue(sanitizedRecoveredChartValue)) {
-      continue;
-    }
-
-    const existingSnapshot = snapshotByFieldKey.get(fieldKey);
-    if (existingSnapshot?.currentChartValueSource === "chart_read") {
-      continue;
-    }
-
-    snapshotByFieldKey.set(fieldKey, {
-      currentChartValue: sanitizedRecoveredChartValue,
-      currentChartValueSource: "printed_note_ocr",
-      populatedInChart: true,
     });
   }
 
@@ -4695,18 +4843,20 @@ function normalizeDashboardSnippetText(value: string): string {
   return value.replace(/\s+/g, " ").trim();
 }
 
+function isLegacyPrintedNoteArtifactName(value: string | null | undefined): boolean {
+  return value === "printed-note-chart-values.json" || value === "oasis-printed-note-review.json";
+}
+
+function isLegacyPrintedNoteValueSource(value: string | null | undefined): boolean {
+  return value === "printed_note_ocr" || value === "printed_note_review";
+}
+
 function getDashboardPortalValueSourceLabel(source: string): string {
   if (source === "chart_read") {
     return "Field value";
   }
   if (source === "portal_dom_state" || source === "dom_state_primary") {
     return "DOM field value";
-  }
-  if (source === "printed_note_ocr") {
-    return "OCR field value";
-  }
-  if (source === "printed_note_review") {
-    return "OASIS section evidence only";
   }
   if (source === "oasis_fact_pack") {
     return "OASIS fact-pack evidence";
@@ -4814,90 +4964,6 @@ function getDashboardMappingStrength(input: {
   return "weak";
 }
 
-function getPrintedNoteSectionCandidates(fieldKey: string, sectionKey: string): string[] {
-  const directMappings: Record<string, string[]> = {
-    patient_name: ["administrative_information"],
-    dob: ["administrative_information"],
-    soc_date: ["administrative_information"],
-    caregiver_name: ["administrative_information"],
-    caregiver_relationship: ["administrative_information"],
-    caregiver_phone: ["administrative_information"],
-    primary_reason_for_home_health_medical_necessity: ["primary_reason_medical_necessity"],
-    pain_assessment_narrative: ["pain_assessment"],
-    code_status: ["other_supplementals", "care_plan"],
-    mahc10_fall_risk: ["other_supplementals", "musculoskeletal_functional_status"],
-    norton_scale: ["integumentary"],
-    gg_self_care: ["musculoskeletal_functional_status"],
-    gg_mobility: ["musculoskeletal_functional_status"],
-    neurological_status: ["neurological"],
-    eyes_ears_status: ["eyes_ears"],
-    cardiovascular_status: ["cardiovascular"],
-    respiratory_status: ["respiratory"],
-    gastrointestinal_status: ["gastrointestinal"],
-    genitourinary_status: ["genitourinary"],
-  };
-
-  if (directMappings[fieldKey]) {
-    return directMappings[fieldKey]!;
-  }
-
-  switch (sectionKey) {
-    case "administrative_information":
-      return ["administrative_information"];
-    case "patient_summary_and_clinical_narrative":
-      return ["primary_reason_medical_necessity", "care_plan"];
-    case "functional_assessment_self_care":
-    case "functional_assessment_mobility_and_musculoskeletal":
-    case "plan_of_care_and_physical_therapy_evaluation":
-    case "care_plan_problems_goals_interventions":
-      return ["musculoskeletal_functional_status", "care_plan"];
-    case "neurological_head_mood_eyes_ears":
-      return ["neurological", "eyes_ears", "emotional"];
-    case "cardiopulmonary_chest_thorax":
-      return ["cardiovascular", "respiratory"];
-    case "gastrointestinal_and_genitourinary_assessment":
-      return ["gastrointestinal", "genitourinary"];
-    case "integumentary_skin_and_wound":
-      return ["integumentary"];
-    case "safety_and_risk_assessment":
-      return ["other_supplementals", "integumentary", "musculoskeletal_functional_status"];
-    case "active_diagnoses":
-      return ["diagnosis"];
-    default:
-      return [];
-  }
-}
-
-function hasPrintedNoteSectionEvidence(input: {
-  status: string;
-  filledFieldCount: number;
-  evidence: string[];
-}): boolean {
-  return (
-    input.status === "COMPLETED" ||
-    input.filledFieldCount > 0 ||
-    input.evidence.some((entry) => normalizeDashboardSnippetText(entry).length > 0)
-  );
-}
-
-function buildPrintedNoteSectionPortalValue(input: {
-  label: string;
-  status: string;
-  filledFieldCount: number;
-  missingFieldCount: number;
-}): string {
-  const coverageSummary =
-    input.filledFieldCount > 0 && input.missingFieldCount > 0
-      ? `${input.filledFieldCount} captured, ${input.missingFieldCount} follow-up item(s)`
-      : input.filledFieldCount > 0
-        ? `${input.filledFieldCount} captured`
-        : input.missingFieldCount > 0
-          ? `${input.missingFieldCount} follow-up item(s)`
-          : "section evidence captured";
-
-  return `Printed OASIS review captured ${input.label} section evidence (${input.status.toLowerCase()}; ${coverageSummary}).`;
-}
-
 function normalizeDashboardKey(value: string): string {
   return value
     .replace(/([a-z])([A-Z])/g, "$1_$2")
@@ -4969,6 +5035,77 @@ function getOasisDomSections(artifactContents: KnownArtifactContents): Array<{
       section !== null);
 }
 
+function isPlanOfCareDomSection(sectionKey: string, sectionTitle: string): boolean {
+  return sectionKey === "plan_of_care" || /\b(plan of care|careplan|goal|intervention|physical therapy evaluation)\b/i.test(sectionTitle);
+}
+
+function confidenceNumberToDomLabel(value: number | null): "high" | "medium" | "low" {
+  if (value !== null && value >= 0.9) {
+    return "high";
+  }
+  if (value !== null && value >= 0.7) {
+    return "medium";
+  }
+  return "low";
+}
+
+function getProcessedOasisDomSectionRows(artifactContents: KnownArtifactContents): Array<{
+  sectionTitle: string;
+  sectionKey: string;
+  field: Record<string, unknown>;
+  value: string;
+  label: string;
+}> {
+  const outputs = asRecord(artifactContents.oasisDomSectionOutputs);
+  const sections = asArray(outputs?.sections).map(asRecord).filter((section): section is Record<string, unknown> => Boolean(section));
+  const rows: Array<{
+    sectionTitle: string;
+    sectionKey: string;
+    field: Record<string, unknown>;
+    value: string;
+    label: string;
+  }> = [];
+  const seen = new Set<string>();
+
+  for (const section of sections) {
+    const sectionKey = asString(section.sectionKey) ?? "oasis_dom";
+    const sectionTitle = asString(section.label) ?? asString(section.sectionTitle) ?? toTitleCaseFromKey(sectionKey);
+    if (isPlanOfCareDomSection(sectionKey, sectionTitle)) {
+      continue;
+    }
+    for (const rowValue of asArray(section.rows)) {
+      const row = asRecord(rowValue);
+      const label = asString(row?.label);
+      const value = asString(row?.value);
+      if (!row || !label || !value) {
+        continue;
+      }
+      const key = `${sectionKey}|${label}|${value}`.toLowerCase();
+      if (seen.has(key)) {
+        continue;
+      }
+      seen.add(key);
+      const confidence = asNumber(row.confidence);
+      rows.push({
+        sectionTitle,
+        sectionKey,
+        label,
+        value,
+        field: {
+          label,
+          value,
+          itemCode: asString(row.sourceItemCode) ?? undefined,
+          sourceKind: asString(row.sourceKind) ?? "llm_summary",
+          confidence: confidenceNumberToDomLabel(confidence),
+          evidenceText: asString(row.meta) ?? asString(row.sourceSectionTitle) ?? value,
+        },
+      });
+    }
+  }
+
+  return rows;
+}
+
 function getMeaningfulOasisDomFields(artifactContents: KnownArtifactContents): Array<{
   sectionTitle: string;
   sectionKey: string;
@@ -4983,9 +5120,16 @@ function getMeaningfulOasisDomFields(artifactContents: KnownArtifactContents): A
     value: string;
     label: string;
   }> = [];
+  const processedRows = getProcessedOasisDomSectionRows(artifactContents);
+  if (processedRows.length > 0) {
+    return processedRows;
+  }
   const seen = new Set<string>();
   for (const section of getOasisDomSections(artifactContents)) {
     const sectionKey = normalizeDashboardKey(section.title) || "oasis_dom";
+    if (isPlanOfCareDomSection(sectionKey, section.title)) {
+      continue;
+    }
     for (const field of section.fields) {
       const value = formatDomFieldValue(field);
       if (!value || /^(?:0|false|unchecked|not selected)$/i.test(value)) {
@@ -5041,50 +5185,8 @@ function derivePatientDashboardState(input: {
     });
   }
 
-  const printedNoteReview =
-    asRecord(input.artifactContents.printedNoteReview) ??
-    asRecord(asRecord(input.artifactContents.qaPrefetch)?.printedNoteReview);
-  const printedNoteSections = new Map(
-    asArray(printedNoteReview?.sections)
-      .map((value) => {
-        const section = asRecord(value);
-        const key = asString(section?.key);
-        const label = asString(section?.label);
-        const status = asString(section?.status);
-        if (!key || !label || !status) {
-          return null;
-        }
-
-        return [
-          key,
-          {
-            key,
-            label,
-            status,
-            filledFieldCount: typeof section?.filledFieldCount === "number" ? section.filledFieldCount : 0,
-            missingFieldCount: typeof section?.missingFieldCount === "number" ? section.missingFieldCount : 0,
-            evidence: asArray(section?.evidence)
-              .map((value) => asString(value))
-              .filter((value): value is string => value !== null),
-          },
-        ] as const;
-      })
-      .filter((entry): entry is readonly [string, {
-        key: string;
-        label: string;
-        status: string;
-        filledFieldCount: number;
-        missingFieldCount: number;
-        evidence: string[];
-      }] => entry !== null),
-  );
-  const printedNoteChartValuesRecord = asRecord(input.artifactContents.printedNoteChartValues);
-  const printedNoteChartValues = asRecord(printedNoteChartValuesRecord?.currentChartValues) ?? {};
   const oasisDomState = asRecord(input.artifactContents.oasisDomExtractedState);
-  const printedNoteReviewSource =
-    asString(printedNoteReview?.reviewSource) ??
-    input.qaPrefetch?.printedNoteReviewSource ??
-    (oasisDomState ? "dom_state_primary" : null);
+  const printedNoteReviewSource = oasisDomState ? "dom_state_primary" : null;
   const qaDocumentSummary = asRecord(input.artifactContents.qaDocumentSummary);
   const reviewerDiagnostics = deriveReviewerLlmDiagnosticsSummary(input.artifactContents);
   const referralComparisonOrigin = deriveReferralComparisonOrigin({
@@ -5098,22 +5200,17 @@ function derivePatientDashboardState(input: {
 
   const referralRows = input.referralQa.sections.flatMap((section) =>
     section.fields.map((field) => {
-      const recoveredChartValue = sanitizeDiagnosisFieldValue(
-        field.fieldKey,
-        printedNoteChartValues[field.fieldKey],
-      );
+      const legacyFieldChartSource = isLegacyPrintedNoteValueSource(field.currentChartValueSource);
+      const fieldChartValue = legacyFieldChartSource
+        ? null
+        : sanitizeDiagnosisFieldValue(field.fieldKey, field.currentChartValue);
+      const fieldPopulatedInChart = legacyFieldChartSource ? false : field.populatedInChart;
       const currentChartValue =
-        hasMeaningfulValue(sanitizeDiagnosisFieldValue(field.fieldKey, field.currentChartValue))
-          ? sanitizeDiagnosisFieldValue(field.fieldKey, field.currentChartValue)
-          : hasMeaningfulValue(recoveredChartValue)
-            ? recoveredChartValue
-            : sanitizeDiagnosisFieldValue(field.fieldKey, field.currentChartValue);
+        hasMeaningfulValue(fieldChartValue) ? fieldChartValue : null;
       const currentChartValueSource =
-        hasMeaningfulValue(field.currentChartValue)
-          ? field.currentChartValueSource
-          : hasMeaningfulValue(recoveredChartValue)
-            ? "printed_note_ocr"
-            : field.currentChartValueSource || "unavailable";
+        hasMeaningfulValue(currentChartValue)
+          ? field.currentChartValueSource || "chart_read"
+          : "unavailable";
       const documentValue = field.documentSupportedValue;
       const documentValueText = stringifyDashboardValue(documentValue).trim() || null;
       const chartValueText = stringifyDashboardValue(currentChartValue).trim() || null;
@@ -5125,47 +5222,22 @@ function derivePatientDashboardState(input: {
         : null;
       const hasDocumentValue = documentValueText !== null;
       const hasChartValue = chartValueText !== null;
-      const printedNoteSectionCandidates = getPrintedNoteSectionCandidates(field.fieldKey, field.sectionKey);
-      const matchedPrintedNoteSections = printedNoteSectionCandidates
-        .map((sectionKey) => printedNoteSections.get(sectionKey) ?? null)
-        .filter((sectionValue): sectionValue is NonNullable<typeof sectionValue> => sectionValue !== null);
-      const bestPrintedNoteSection =
-        matchedPrintedNoteSections.find((sectionValue) => sectionValue.status === "COMPLETED") ??
-        matchedPrintedNoteSections[0] ??
-        null;
-      const printedNoteSectionEvidenceAvailable =
-        bestPrintedNoteSection !== null && hasPrintedNoteSectionEvidence(bestPrintedNoteSection);
-      const printedNoteSectionSnippet =
-        bestPrintedNoteSection?.evidence.find((entry) => normalizeDashboardSnippetText(entry).length > 0) ??
-        null;
-      const printedNoteSectionPortalValue =
-        !chartValueText && printedNoteSectionEvidenceAvailable && bestPrintedNoteSection
-          ? buildPrintedNoteSectionPortalValue(bestPrintedNoteSection)
-          : null;
-      const hasPortalEvidence = hasChartValue || printedNoteSectionEvidenceAvailable;
+      const hasPortalEvidence = hasChartValue;
       const assessmentCaptureSkipped = Boolean(oasisCaptureSkippedReason) && !hasPortalEvidence;
       const oasisEvidenceMode: DashboardOasisEvidenceMode = chartValueText
-        ? currentChartValueSource === "printed_note_ocr"
-          ? "printed_note_ocr"
+        ? currentChartValueSource === "portal_dom_state"
+          ? "portal_dom_state"
           : "chart_read"
-        : printedNoteSectionEvidenceAvailable
-          ? "printed_note_review_section_fallback"
-          : "unavailable";
+        : "unavailable";
       const effectiveChartValueSource =
         hasChartValue
           ? currentChartValueSource
-          : printedNoteSectionEvidenceAvailable
-            ? "printed_note_review"
-            : assessmentCaptureSkipped
+          : assessmentCaptureSkipped
               ? "oasis_capture_skipped"
             : currentChartValueSource;
       const sourceArtifacts = [
         "patient-qa-reference.json",
-        ...(hasMeaningfulValue(field.currentChartValue) ? ["field-map-snapshot.json"] : []),
-        ...(hasMeaningfulValue(recoveredChartValue) || currentChartValueSource === "printed_note_ocr"
-          ? ["printed-note-chart-values.json"]
-          : []),
-        ...(bestPrintedNoteSection ? ["oasis-printed-note-review.json"] : []),
+        ...(hasChartValue ? ["field-map-snapshot.json"] : []),
         ...(input.artifactContents.llmUsageAudit ? ["llm-usage-audit.json"] : []),
         ...(assessmentCaptureSkipped ? ["qa-prefetch-result.json"] : []),
       ];
@@ -5243,12 +5315,6 @@ function derivePatientDashboardState(input: {
           ? ["hidden_with_meaningful_value"]
           : []),
         ...(visibilityDecision === "hidden_match" ? ["hidden_match_by_default"] : []),
-        ...(hasMeaningfulValue(recoveredChartValue) && !hasMeaningfulValue(field.currentChartValue)
-          ? ["chart_value_recovered_from_printed_note_artifact"]
-          : []),
-        ...(bestPrintedNoteSection?.status === "COMPLETED" && !hasChartValue
-          ? ["printed_note_review_completed_but_chart_value_missing"]
-          : []),
         ...(comparisonSignals.has("supported_by_referral") && !hasChartValue
           ? ["referral_support_without_chart_snapshot"]
           : []),
@@ -5280,13 +5346,10 @@ function derivePatientDashboardState(input: {
         displayReferralValue: documentValueText ?? "No reliable referral value extracted",
         displayPortalValue:
           chartValueText ??
-          printedNoteSectionPortalValue ??
           (assessmentCaptureSkipped
             ? oasisCaptureSkippedReason
             : null) ??
-          (effectiveChartValueSource === "printed_note_ocr"
-            ? "Printed note OCR did not capture a value"
-            : field.populatedInChart
+          (fieldPopulatedInChart
               ? "Chart value is blank"
               : "No chart data captured"),
         comparisonResult: displayStatus,
@@ -5324,7 +5387,7 @@ function derivePatientDashboardState(input: {
         sourceSupportStrength,
         mappingStrength,
         referralSnippet: asString(field.sourceEvidence[0]?.textSpan) ?? documentValueText,
-        portalSnippet: chartValueText ?? printedNoteSectionSnippet ?? oasisCaptureSkippedReason,
+        portalSnippet: chartValueText ?? oasisCaptureSkippedReason,
         evidence: field.sourceEvidence.map((entry, index) => ({
           id: `${field.fieldKey}:${index}`,
           sourceType: entry.sourceType,
@@ -5352,9 +5415,9 @@ function derivePatientDashboardState(input: {
         valuePresence: {
           hasDocumentValue,
           hasChartValue,
-          hasPrintedNoteChartValue: hasMeaningfulValue(recoveredChartValue),
-          printedNoteSectionKey: bestPrintedNoteSection?.key ?? null,
-          printedNoteSectionStatus: bestPrintedNoteSection?.status ?? null,
+          hasPrintedNoteChartValue: false,
+          printedNoteSectionKey: null,
+          printedNoteSectionStatus: null,
           printedNoteReviewSource,
         },
       };
@@ -5366,6 +5429,9 @@ function derivePatientDashboardState(input: {
       .map((row) => `${row.sectionKey}|${row.fieldLabel}`.toLowerCase()),
   );
   const domRows = getMeaningfulOasisDomFields(input.artifactContents).map((entry, index) => {
+    const domSourceArtifact = input.artifactContents.oasisDomSectionOutputs
+      ? "oasis-dom-section-outputs.json"
+      : "oasis-dom-extracted-state.json";
     const fieldKeyBase =
       normalizeDashboardKey(asString(entry.field.itemCode) ?? asString(entry.field.key) ?? entry.label) ||
       `dom_field_${index + 1}`;
@@ -5396,7 +5462,9 @@ function derivePatientDashboardState(input: {
       displayReferralValue: "No reliable referral value extracted",
       displayPortalValue: entry.value,
       comparisonResult: "missing_in_referral" as DashboardComparisonResult,
-      shortReason: "DOM extraction captured this OASIS chart value; referral support was not matched.",
+      shortReason: input.artifactContents.oasisDomSectionOutputs
+        ? "Section-scoped DOM processing captured this OASIS value; referral support was not matched."
+        : "DOM extraction captured this OASIS chart value; referral support was not matched.",
       reviewStatus: "Missing Referral Documentation",
       qaResultLabel: getDashboardQaResultLabel("missing_in_referral"),
       qaActionLabel: getDashboardQaActionLabel("missing_in_referral"),
@@ -5420,7 +5488,7 @@ function derivePatientDashboardState(input: {
         ? "A dashboard field already surfaced this DOM OASIS value."
         : "DOM extraction surfaced this OASIS value for QA review.",
       strictnessFlags: ["dom_oasis_value"],
-      sourceArtifacts: ["oasis-dom-extracted-state.json"],
+      sourceArtifacts: [domSourceArtifact],
       valuePresence: {
         hasDocumentValue: false,
         hasChartValue: true,
@@ -5458,16 +5526,14 @@ function derivePatientDashboardState(input: {
     },
     sourceCoverage: {
       printedNoteReviewSource,
-      printedNoteCompletedSectionCount: Array.from(printedNoteSections.values()).filter(
-        (sectionValue) => sectionValue.status === "COMPLETED",
-      ).length || getOasisDomSections(input.artifactContents).filter((section) => !/^failed|degraded$/i.test(section.status)).length,
-      printedNoteChartValueCount: Object.keys(printedNoteChartValues).length || getMeaningfulOasisDomFields(input.artifactContents).length,
+      printedNoteCompletedSectionCount: getOasisDomSections(input.artifactContents).filter(
+        (section) => !/^failed|degraded$/i.test(section.status),
+      ).length,
+      printedNoteChartValueCount: getMeaningfulOasisDomFields(input.artifactContents).length,
       fieldLevelValueCount: rows.filter(
-        (row) => row.oasisEvidenceMode === "chart_read" || row.oasisEvidenceMode === "printed_note_ocr" || row.oasisEvidenceMode === "portal_dom_state",
+        (row) => row.oasisEvidenceMode === "chart_read" || row.oasisEvidenceMode === "portal_dom_state",
       ).length,
-      sectionEvidenceFallbackRowCount: rows.filter(
-        (row) => row.oasisEvidenceMode === "printed_note_review_section_fallback",
-      ).length,
+      sectionEvidenceFallbackRowCount: 0,
     },
   };
 }

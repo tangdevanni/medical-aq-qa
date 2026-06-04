@@ -1,9 +1,9 @@
-import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { access, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 import type { ArtifactRecord } from "@medical-ai-qa/shared-types";
-import { extractDocumentsFromArtifacts } from "../services/documentExtractionService";
+import { extractDocumentsFromArtifacts, extractTextFromLocalFile } from "../services/documentExtractionService";
 
 function buildArtifact(overrides: Partial<ArtifactRecord>): ArtifactRecord {
   return {
@@ -20,7 +20,30 @@ function buildArtifact(overrides: Partial<ArtifactRecord>): ArtifactRecord {
 }
 
 describe("extractDocumentsFromArtifacts", () => {
-  it("prefers OCR artifacts for scanned-image PDFs and extracts normalized ICD-10 codes", async () => {
+  it("does not invoke OCR for image files when OCR is disabled", async () => {
+    const tempDir = await mkdtemp(path.join(os.tmpdir(), "ocr-disabled-image-"));
+
+    try {
+      const imagePath = path.join(tempDir, "source.png");
+      await writeFile(imagePath, Buffer.from([0x89, 0x50, 0x4e, 0x47]));
+
+      const result = await extractTextFromLocalFile(imagePath);
+
+      expect(result.text).toBe("");
+      expect(result.ocrUsed).toBe(false);
+      expect(result.ocrSuccess).toBe(false);
+      expect(result.ocrResultPath).toBeNull();
+      expect(result.ocrError).toBe("OCR is disabled by OCR_ENABLED=false.");
+      expect(result.textSelectionReason).toBe("ocr_disabled_by_config_using_fallback");
+      await expect(access(path.join(tempDir, "ocr-result.json"))).rejects.toMatchObject({
+        code: "ENOENT",
+      });
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
+  });
+
+  it("ignores persisted OCR artifacts for scanned-image PDFs when OCR is disabled", async () => {
     const tempDir = await mkdtemp(path.join(os.tmpdir(), "ocr-doc-"));
 
     try {
@@ -79,27 +102,7 @@ describe("extractDocumentsFromArtifacts", () => {
         }),
       ]);
 
-      const orderDocument = documents.find((document) => document.type === "ORDER");
-      expect(orderDocument).toBeDefined();
-      expect(orderDocument?.metadata.rawExtractedTextSource).toBe("ocr");
-      expect(orderDocument?.metadata.textSelectionReason).toBe("preferred_ocr_for_scanned_image_pdf");
-      expect(orderDocument?.metadata.possibleIcd10Codes).toEqual(expect.arrayContaining([
-        "J18.9",
-        "J96.01",
-        "R13.12",
-        "I48.20",
-        "I50.33",
-        "G93.41",
-        "I87.313",
-        "R41.841",
-        "M62.81",
-        "R26.2",
-        "E03.9",
-        "F32.A",
-        "I11.0",
-        "K92.1",
-        "N17.9",
-      ]));
+      expect(documents.some((document) => document.type === "ORDER")).toBe(false);
     } finally {
       await rm(tempDir, { recursive: true, force: true });
     }
@@ -140,7 +143,7 @@ describe("extractDocumentsFromArtifacts", () => {
     }
   });
 
-  it("repairs stale extracted-text artifacts from saved Textract blocks", async () => {
+  it("does not repair stale extracted-text artifacts from saved Textract blocks when OCR is disabled", async () => {
     const tempDir = await mkdtemp(path.join(os.tmpdir(), "ocr-doc-repair-"));
 
     try {
@@ -192,19 +195,14 @@ describe("extractDocumentsFromArtifacts", () => {
         }),
       ]);
 
-      const orderDocument = documents.find((document) => document.type === "ORDER");
-      expect(orderDocument).toBeDefined();
-      expect(orderDocument?.text).toContain("Reason for referral: skilled nursing for CHF management.");
-      expect(orderDocument?.text).toContain("\nPrimary diagnosis I50.9");
-      expect(orderDocument?.metadata.rawExtractedTextSource).toBe("ocr");
-      expect(orderDocument?.metadata.textSelectionReason).toBe("preferred_ocr_for_scanned_image_pdf");
-      await expect(readFile(extractedTextPath, "utf8")).resolves.toContain("Primary diagnosis I50.9");
+      expect(documents.some((document) => document.type === "ORDER")).toBe(false);
+      await expect(readFile(extractedTextPath, "utf8")).resolves.not.toContain("Primary diagnosis I50.9");
     } finally {
       await rm(tempDir, { recursive: true, force: true });
     }
   });
 
-  it("appends persisted selected checkbox options into repaired OCR text", async () => {
+  it("does not append persisted OCR selected checkbox options when OCR is disabled", async () => {
     const tempDir = await mkdtemp(path.join(os.tmpdir(), "ocr-doc-selected-options-"));
 
     try {
@@ -266,10 +264,10 @@ describe("extractDocumentsFromArtifacts", () => {
 
       const oasisDocument = documents.find((document) => document.type === "OASIS");
       expect(oasisDocument).toBeDefined();
-      expect(oasisDocument?.text).toContain("SELECTED CHECKBOX / RADIO OPTIONS:");
-      expect(oasisDocument?.text).toContain("[SELECTED][page 1] A. White");
-      expect(oasisDocument?.text).toContain("[SELECTED][page 1] 0. No");
-      await expect(readFile(extractedTextPath, "utf8")).resolves.toContain("[SELECTED][page 1] A. White");
+      expect(oasisDocument?.text).not.toContain("SELECTED CHECKBOX / RADIO OPTIONS:");
+      expect(oasisDocument?.text).not.toContain("[SELECTED][page 1] A. White");
+      expect(oasisDocument?.metadata.ocrUsed).toBe(false);
+      await expect(readFile(extractedTextPath, "utf8")).resolves.not.toContain("[SELECTED][page 1] A. White");
     } finally {
       await rm(tempDir, { recursive: true, force: true });
     }
@@ -343,7 +341,7 @@ describe("extractDocumentsFromArtifacts", () => {
     }
   });
 
-  it("uses a persisted ocr_required policy to bypass native-first selection", async () => {
+  it("does not let a persisted ocr_required policy bypass the OCR kill switch", async () => {
     const tempDir = await mkdtemp(path.join(os.tmpdir(), "ocr-policy-doc-"));
 
     try {
@@ -404,10 +402,12 @@ describe("extractDocumentsFromArtifacts", () => {
 
       const orderDocument = documents.find((document) => document.type === "ORDER");
       expect(orderDocument).toBeDefined();
-      expect(orderDocument?.text).toContain("Reason for referral: skilled nursing for CHF management.");
-      expect(orderDocument?.metadata.textSelectionReason).toContain("policy_ocr_required_direct_ocr");
+      expect(orderDocument?.text).not.toContain("Reason for referral: skilled nursing for CHF management.");
+      expect(orderDocument?.text).toContain(nativePdfText);
+      expect(orderDocument?.metadata.textSelectionReason).toContain("policy_ocr_required_fallback_to_dom");
       expect(orderDocument?.metadata.extractionPolicyMode).toBe("ocr_required");
-      expect(orderDocument?.metadata.rawExtractedTextSource).toBe("ocr");
+      expect(orderDocument?.metadata.rawExtractedTextSource).toBe("dom");
+      expect(orderDocument?.metadata.ocrUsed).toBe(false);
     } finally {
       await rm(tempDir, { recursive: true, force: true });
     }

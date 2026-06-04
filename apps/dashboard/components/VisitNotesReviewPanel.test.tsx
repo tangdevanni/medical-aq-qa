@@ -65,6 +65,8 @@ const baseReview: VisitNotesReview = {
     captureStatus: "captured",
     analyzed: true,
     analysisStatus: "ready",
+    completionStatus: "complete",
+    completionReasons: [],
     mappingStatus: "deterministic_only",
     matchStrength: 0.82,
     summary: "Two visit-note facts extracted for physical therapy.",
@@ -119,11 +121,10 @@ describe("VisitNotesReviewPanel", () => {
     assert.match(html, /Not Started/);
     assert.match(html, /Skilled Nursing/);
     assert.match(html, /Physical Therapy/);
-    assert.match(html, /Relevant to POC/);
-    assert.match(html, /Deterministic Only/);
+    assert.match(html, /Visit date: 05\/02\/2026/);
+    assert.match(html, /New QA/);
     assert.match(html, /Improve safe transfers/);
-    assert.match(html, /POC problems and interventions addressed/);
-    assert.match(html, /Skilled PT to provide gait training/);
+    assert.match(html, /Matched Plan of Care goals/);
     assert.doesNotMatch(html, /Confirm interval improvement/);
   });
 

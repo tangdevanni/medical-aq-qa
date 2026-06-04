@@ -1111,6 +1111,7 @@ function buildFactPackPromptText(factPack: DocumentFactPack): string {
         medication.dose ?? "",
         medication.route ?? "",
         medication.frequency ?? "",
+        medication.startDate ? `Start: ${medication.startDate}` : "",
       ].filter(Boolean).join(" "),
     ),
   );

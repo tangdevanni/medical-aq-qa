@@ -3,12 +3,16 @@ import { copyFile, readFile } from "node:fs/promises";
 import path from "node:path";
 import type { ArtifactRecord, PatientRun } from "@medical-ai-qa/shared-types";
 import { loadEnv } from "../config/env";
-import { extractDocumentsFromArtifacts, type ExtractedDocument } from "../services/documentExtractionService";
+import { extractDocumentsFromArtifacts } from "../services/documentExtractionService";
 import { writeDocumentTextFile } from "../services/documentTextExportService";
 import { buildDocumentFactPack, writeDocumentFactPackFile } from "../services/documentFactPackBuilder";
 import { extractDiagnosisCodingContext } from "../services/diagnosisCodingExtractionService";
 import { writeCodingInputFile } from "../services/codingInputExportService";
 import { runReferralDocumentProcessingPipeline } from "../referralProcessing/pipeline";
+import {
+  collectReferralSourceDocumentsFromArtifacts,
+  filterArtifactsForNonReferralTextExtraction,
+} from "../referralProcessing/sourceDocumentHandoff";
 import { writePatientDashboardState } from "../services/patientDashboardStateWriter";
 
 const DEFAULT_BATCH_PATH = "C:/dev/medical-aq-qa-dom-first/services/api/data/control-plane/batches/star-home-health/b5/batch.json";
@@ -67,8 +71,8 @@ async function main() {
     ...process.env,
     CODE_LLM_ENABLED: process.env.CODE_LLM_ENABLED ?? "true",
   });
-  const extractedDocuments = await extractDocumentsFromArtifacts([artifact]);
-  const orderDocuments: ExtractedDocument[] = extractedDocuments.filter((document) => document.type === "ORDER");
+  const referralSourceDocuments = collectReferralSourceDocumentsFromArtifacts([artifact]);
+  const extractedDocuments = await extractDocumentsFromArtifacts(filterArtifactsForNonReferralTextExtraction([artifact]));
 
   await writeDocumentTextFile({
     outputDirectory: outputDir,
@@ -93,13 +97,14 @@ async function main() {
     batchId: batch.id,
     canonical: diagnosisContext.canonical,
   });
-  if (orderDocuments.length > 0) {
+  if (referralSourceDocuments.length > 0) {
     await runReferralDocumentProcessingPipeline({
       workItem: run.workItemSnapshot,
       outputDir,
       env,
       logger: console as never,
-      extractedDocuments: orderDocuments,
+      extractedDocuments: [],
+      sourceDocuments: referralSourceDocuments,
     });
   }
 
@@ -138,7 +143,7 @@ async function main() {
     patientName,
     manifestPath,
     extractedDocumentCount: extractedDocuments.length,
-    orderDocumentCount: orderDocuments.length,
+    referralSourceDocumentCount: referralSourceDocuments.length,
     diagnosisCount: factPack.diagnoses.length,
     medicationCount: factPack.medications.length,
   }, null, 2));

@@ -386,6 +386,127 @@ describe("BatchControlPlaneService scheduler metadata", () => {
     }
   });
 
+  it("projects portal status-only exclusions into agency dashboard queue entries and summary", async () => {
+    const fixture = createServiceFixture();
+
+    try {
+      await fixture.service.initialize();
+      const batch = await fixture.service.createBatchUpload({
+        fileName: "reference-workbook.xlsx",
+        fileBuffer: Buffer.from("workbook"),
+        billingPeriod: "2026-04",
+      });
+
+      const queueArtifact: PatientQueueArtifact = {
+        generatedAt: "2026-04-15T06:00:00.000Z",
+        agencyId: "default",
+        batchId: batch.id,
+        reviewWindowId: "default-2026-04-15",
+        summary: {
+          total: 1,
+          eligible: 1,
+          skippedNonAdmit: 0,
+          skippedPending: 0,
+          excludedOther: 0,
+        },
+        entries: [
+          {
+            id: "default-2026-04-15:patient-pending",
+            agencyId: "default",
+            batchId: batch.id,
+            workItemId: "patient-pending",
+            patientName: "Pending Patient",
+            reviewWindowId: "default-2026-04-15",
+            workflowTypes: ["SOC"],
+            status: "eligible",
+            eligibility: {
+              eligible: true,
+              reason: null,
+              rationale: "Eligible for autonomous QA evaluation.",
+              matchedSignals: [],
+            },
+            episodeDate: "2026-04-15",
+            socDate: null,
+            billingPeriod: "2026-04",
+            sourceSheets: ["OASIS Tracking Report"],
+            sourceRowNumbers: [2],
+            notes: [],
+            createdAt: "2026-04-15T06:00:00.000Z",
+          },
+        ],
+      };
+
+      await mkdir(batch.storage.outputRoot, { recursive: true });
+      await writeFile(
+        path.join(batch.storage.outputRoot, "patient-queue.json"),
+        JSON.stringify(queueArtifact, null, 2),
+      );
+
+      batch.patientRuns = [
+        {
+          runId: `${batch.id}-patient-pending`,
+          subsidiaryId: "default",
+          workItemId: "patient-pending",
+          patientName: "Pending Patient",
+          processingStatus: "BLOCKED",
+          executionStep: "PATIENT_STATUS_EXCLUDED",
+          progressPercent: 100,
+          startedAt: "2026-04-15T06:00:00.000Z",
+          completedAt: "2026-04-15T06:01:00.000Z",
+          lastUpdatedAt: "2026-04-15T06:01:00.000Z",
+          matchResult: {
+            status: "EXACT",
+            searchQuery: "Pending Patient",
+            portalPatientId: "PT-PENDING",
+            portalDisplayName: "Pending Patient - Pending",
+            candidateNames: ["Pending Patient"],
+            note: "Portal patient status 'Pending' excludes this patient from clinical processing.",
+          },
+          qaOutcome: "MISSING_DOCUMENTS",
+          oasisQaSummary: {
+            overallStatus: "BLOCKED",
+            urgency: "ON_TRACK",
+            daysInPeriod: 30,
+            daysLeft: 10,
+            sections: [],
+            blockers: ["Pending workbook status"],
+          },
+          artifactCount: 0,
+          hasFindings: false,
+          bundleAvailable: false,
+          logPath: null,
+          logAvailable: false,
+          retryEligible: false,
+          errorSummary: "Portal patient status 'Pending' excludes this patient from clinical processing.",
+          resultBundlePath: path.join(batch.storage.patientResultsDirectory, "patient-pending.json"),
+          evidenceDirectory: path.join(batch.storage.evidenceDirectory, "patient-pending"),
+          tracePath: null,
+          screenshotPaths: [],
+          downloadPaths: [],
+          workflowRuns: [],
+          lastAttemptAt: "2026-04-15T06:01:00.000Z",
+          attemptCount: 1,
+        },
+      ];
+
+      await fixture.repository.saveBatch(batch);
+
+      const snapshot = await fixture.service.getAgencyDashboardSnapshot("default");
+
+      assert.equal(snapshot.queueEntries[0]?.status, "skipped_pending");
+      assert.equal(snapshot.queueEntries[0]?.eligibility.eligible, false);
+      assert.equal(snapshot.queueEntries[0]?.eligibility.reason, "pending");
+      assert.equal(snapshot.refreshCycle?.queueSummary.total, 1);
+      assert.equal(snapshot.refreshCycle?.queueSummary.eligible, 0);
+      assert.equal(snapshot.refreshCycle?.queueSummary.skippedPending, 1);
+      assert.equal(snapshot.patientRecords[0]?.queueEntry.status, "skipped_pending");
+      assert.equal(snapshot.patientRecords[0]?.pipelineStage, "pending");
+      assert.equal(snapshot.patientRecords[0]?.oasisStage, "pending_patient");
+    } finally {
+      fixture.cleanup();
+    }
+  });
+
   it("marks stale reviewer status as needs review when a newer cycle has discrepancies", async () => {
     const fixture = createServiceFixture();
 
@@ -784,10 +905,8 @@ describe("BatchControlPlaneService scheduler metadata", () => {
       assert.deepEqual(knownArtifacts.artifactContents.codingInput, dashboardState.artifactContents.codingInput);
       assert.deepEqual(knownArtifacts.artifactContents.patientQaReference, dashboardState.artifactContents.patientQaReference);
       assert.equal(knownArtifacts.artifactPaths.codingInput, dashboardState.artifactPaths.codingInput);
-      assert.deepEqual(
-        knownArtifacts.artifactContents.printedNoteReview,
-        dashboardState.artifactContents.printedNoteReview,
-      );
+      assert.equal(knownArtifacts.artifactContents.printedNoteReview, null);
+      assert.equal(knownArtifacts.artifactPaths.printedNoteReview, dashboardState.artifactPaths.printedNoteReview);
 
       const memoryBatchId = "batch-memory-fallback";
       const memoryStorage = fixture.repository.createBatchPaths(memoryBatchId, "reference-workbook.xlsx");
@@ -1495,9 +1614,10 @@ describe("BatchControlPlaneService scheduler metadata", () => {
         knownArtifacts.artifactContents.documentText,
         verificationDashboardState.artifactContents.documentText,
       );
-      assert.deepEqual(
-        knownArtifacts.artifactContents.printedNoteChartValues,
-        verificationDashboardState.artifactContents.printedNoteChartValues,
+      assert.equal(knownArtifacts.artifactContents.printedNoteChartValues, null);
+      assert.equal(
+        knownArtifacts.artifactPaths.printedNoteChartValues,
+        verificationDashboardState.artifactPaths.printedNoteChartValues,
       );
       assert.equal(patientRuns[0]?.runId, verificationDashboardState.runId);
       assert.equal(patientRuns[0]?.processingStatus, "COMPLETE");

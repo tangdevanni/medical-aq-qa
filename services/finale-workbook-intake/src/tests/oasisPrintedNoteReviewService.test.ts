@@ -112,6 +112,7 @@ describe("capturePrintedOasisNoteReview", () => {
             },
           ],
           extractedArtifactPaths: [],
+          referralSourceDocuments: [],
           diagnosisCodingContext: {
             sourceDocumentCount: 0,
             sourceCharacterCount: 0,

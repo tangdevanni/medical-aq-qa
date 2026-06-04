@@ -28,7 +28,7 @@ import { summarizeVisitNoteForReviewer } from "./visitNoteSummaryAgent";
 
 export const VISIT_NOTE_PROCESSING_MANIFEST_FILE_NAME = "visit-note-processing-manifest.json";
 export const VISIT_NOTE_QA_REVIEW_FILE_NAME = "visit-note-qa-review.json";
-const VISIT_NOTE_POC_MAPPING_LOGIC_VERSION = "diagnosis-discrepancy-v4";
+const VISIT_NOTE_POC_MAPPING_LOGIC_VERSION = "diagnosis-discrepancy-v5-detail-preserving";
 
 function shouldReviewVisitNote(row: { captureEligibility?: string | null }): boolean {
   return row.captureEligibility === "active_monitoring" || row.captureEligibility === "finalized_no_active_monitoring";
@@ -267,6 +267,129 @@ function buildPocProblemMatches(input: {
     .slice(0, 5);
 }
 
+function isNoisyBlankVisitNoteField(fact: VisitNoteFact): boolean {
+  const fieldText = `${fact.fieldLabel ?? ""} ${fact.fieldKey ?? ""}`.toLowerCase();
+  return /\b(discharge plan.*others?|others?\s*\(specify\)|teaching\/training of|type of intervention)\b/.test(fieldText);
+}
+
+function isCompletionGapFact(fact: VisitNoteFact): boolean {
+  return (
+    fact.category === "incomplete_field" ||
+    fact.category === "thin_text_field"
+  ) && !(fact.category === "incomplete_field" && isNoisyBlankVisitNoteField(fact));
+}
+
+function cleanVisitNoteFieldLabel(input: { fieldKey?: string | null; fieldLabel: string }): string {
+  const key = input.fieldKey?.toLowerCase() ?? "";
+  const label = input.fieldLabel.replace(/\s+/g, " ").trim();
+  const comparable = `${key} ${label}`.toLowerCase();
+  if (/fmbedmob/i.test(input.fieldKey ?? "")) {
+    return /training/i.test(comparable) ? "Bed Mobility Training" : "Bed Mobility Response";
+  }
+  if (/fmtransfer/i.test(input.fieldKey ?? "")) {
+    return /training/i.test(comparable) ? "Transfer Training" : "Transfer Response";
+  }
+  if (/fmgait/i.test(input.fieldKey ?? "")) {
+    return /training/i.test(comparable) ? "Gait Training" : "Gait Response";
+  }
+  if (/fmwheelchair/i.test(input.fieldKey ?? "")) {
+    return "Wheelchair Mobility Response";
+  }
+  if (key === "planfornextvisitcomment" || /\bplan for next visit|follow-up assessments for the next visit\b/.test(comparable)) {
+    return "Plan for Next Visit";
+  }
+  if (key === "visitnarrativecomment" || /\bvisit narrative|summarize key findings\b/.test(comparable)) {
+    return "Visit Narrative";
+  }
+  if (key === "ptsubjectiveinfo" || /\bsubjective information\b/.test(comparable)) {
+    return "Subjective Information";
+  }
+  if (key === "patientptdiagnosis" || /\bpt diagnosis\b/.test(comparable)) {
+    return "PT Diagnosis";
+  }
+  if (/\bother homebound reason\b/.test(comparable)) {
+    return "Other Homebound Reason";
+  }
+  if (/\bimpact of intervention/.test(comparable)) {
+    return "Patient Response to Intervention";
+  }
+  if (/\btraining\/intervention\b/.test(comparable)) {
+    return "Training/Intervention";
+  }
+  if (/\bprovide further information\b/.test(comparable)) {
+    return "Additional Clinical Detail";
+  }
+  if (/\bidentified strengths and supports\b/.test(comparable)) {
+    return "Strengths and Supports";
+  }
+  return label.replace(/\s*:\s*$/g, "");
+}
+
+function getCompletionGapFieldLabel(fact: VisitNoteFact): string {
+  const rawFieldLabel =
+    (fact.fieldLabel ??
+    fact.normalizedValue.replace(/\s+is blank\.?$/i, "").trim()) ||
+    "Visit Note text field";
+  return cleanVisitNoteFieldLabel({
+    fieldKey: fact.fieldKey ?? null,
+    fieldLabel: rawFieldLabel,
+  });
+}
+
+function collectVisitNoteMissingFields(facts: VisitNoteFact[]): string[] {
+  const byField = new Map<string, string>();
+  for (const fact of facts.filter(isCompletionGapFact)) {
+    const key = fact.fieldKey ?? fact.fieldLabel ?? fact.factId;
+    if (!byField.has(key)) {
+      byField.set(key, getCompletionGapFieldLabel(fact));
+    }
+  }
+  return Array.from(new Set(byField.values())).filter(Boolean);
+}
+
+function collectVisitNoteCompletionReasons(input: {
+  row: VisitNotesDiscoveryArtifact["rows"][number];
+  facts: VisitNoteFact[];
+  manifestEntry?: VisitNoteProcessingManifest["visitNoteInputs"][number] | null;
+}): string[] {
+  const reasons: string[] = [];
+  if (shouldReviewVisitNote(input.row) && (input.row.captureStatus === "failed" || input.manifestEntry?.extractionStatus === "failed")) {
+    reasons.push("Visit Note text capture is empty or unusable.");
+  }
+  for (const fact of input.facts.filter(isCompletionGapFact)) {
+    const label = getCompletionGapFieldLabel(fact);
+    reasons.push(fact.category === "incomplete_field" ? `${label} is blank.` : `${label} needs more detail.`);
+  }
+  return Array.from(new Set(reasons));
+}
+
+function deriveVisitNoteCompletionStatus(input: {
+  row: VisitNotesDiscoveryArtifact["rows"][number];
+  facts: VisitNoteFact[];
+  missingFields: string[];
+  manifestEntry?: VisitNoteProcessingManifest["visitNoteInputs"][number] | null;
+}): NonNullable<VisitNoteQaReviewArtifact["noteSummaries"][number]["completionStatus"]> {
+  if (input.row.normalizedStatus === "not_started" || input.row.normalizedStatus === "missed_visit" || input.row.normalizedStatus === "cancelled") {
+    return "unknown";
+  }
+  if (!shouldReviewVisitNote(input.row)) {
+    return "unknown";
+  }
+  if (input.row.captureStatus === "failed" || input.manifestEntry?.extractionStatus === "failed") {
+    return "capture_needed";
+  }
+  if (input.missingFields.length > 0) {
+    return "incomplete";
+  }
+  if (input.facts.length > 0) {
+    return "complete";
+  }
+  if (input.row.captureStatus === "capture_pending_due_to_config_limit") {
+    return "unknown";
+  }
+  return "capture_needed";
+}
+
 function buildTextInputSuggestionCandidates(input: {
   row: VisitNotesDiscoveryArtifact["rows"][number];
   facts: VisitNoteFact[];
@@ -274,15 +397,11 @@ function buildTextInputSuggestionCandidates(input: {
   pocProblemMatches: VisitNoteQaReviewArtifact["noteSummaries"][number]["pocProblemMatches"];
 }): VisitNoteTextInputSuggestionCandidate[] {
   const suggestionFacts = input.facts.filter((fact) =>
-    fact.category === "incomplete_field" || fact.category === "thin_text_field",
+    fact.category === "thin_text_field" &&
+    fact.normalizedValue.split(/\s+/).filter(Boolean).length > 0,
   );
   const byField = new Map<string, VisitNoteFact>();
   for (const fact of suggestionFacts) {
-    const fieldText = `${fact.fieldLabel ?? ""} ${fact.fieldKey ?? ""}`.toLowerCase();
-    const isBlank = fact.category === "incomplete_field";
-    if (isBlank && /\b(discharge plan.*others?|others?\s*\(specify\)|teaching\/training of|type of intervention)\b/.test(fieldText)) {
-      continue;
-    }
     const fieldKey = fact.fieldKey ?? fact.fieldLabel ?? fact.factId;
     if (!byField.has(fieldKey)) {
       byField.set(fieldKey, fact);
@@ -306,62 +425,9 @@ function buildTextInputSuggestionCandidates(input: {
     return 3;
   }
 
-  function cleanFieldLabel(input: { fieldKey?: string | null; fieldLabel: string }): string {
-    const key = input.fieldKey?.toLowerCase() ?? "";
-    const label = input.fieldLabel.replace(/\s+/g, " ").trim();
-    const comparable = `${key} ${label}`.toLowerCase();
-    if (/fmbedmob/i.test(input.fieldKey ?? "")) {
-      return /training/i.test(comparable) ? "Bed Mobility Training" : "Bed Mobility Response";
-    }
-    if (/fmtransfer/i.test(input.fieldKey ?? "")) {
-      return /training/i.test(comparable) ? "Transfer Training" : "Transfer Response";
-    }
-    if (/fmgait/i.test(input.fieldKey ?? "")) {
-      return /training/i.test(comparable) ? "Gait Training" : "Gait Response";
-    }
-    if (/fmwheelchair/i.test(input.fieldKey ?? "")) {
-      return "Wheelchair Mobility Response";
-    }
-    if (key === "planfornextvisitcomment" || /\bplan for next visit|follow-up assessments for the next visit\b/.test(comparable)) {
-      return "Plan for Next Visit";
-    }
-    if (key === "visitnarrativecomment" || /\bvisit narrative|summarize key findings\b/.test(comparable)) {
-      return "Visit Narrative";
-    }
-    if (key === "ptsubjectiveinfo" || /\bsubjective information\b/.test(comparable)) {
-      return "Subjective Information";
-    }
-    if (key === "patientptdiagnosis" || /\bpt diagnosis\b/.test(comparable)) {
-      return "PT Diagnosis";
-    }
-    if (/\bother homebound reason\b/.test(comparable)) {
-      return "Other Homebound Reason";
-    }
-    if (/\bimpact of intervention/.test(comparable)) {
-      return "Patient Response to Intervention";
-    }
-    if (/\btraining\/intervention\b/.test(comparable)) {
-      return "Training/Intervention";
-    }
-    if (/\bprovide further information\b/.test(comparable)) {
-      return "Additional Clinical Detail";
-    }
-    if (/\bidentified strengths and supports\b/.test(comparable)) {
-      return "Strengths and Supports";
-    }
-    return label.replace(/\s*:\s*$/g, "");
-  }
-
   return Array.from(byField.values())
     .map((fact, index) => {
-      const rawFieldLabel =
-        (fact.fieldLabel ??
-        fact.normalizedValue.replace(/\s+is blank\.?$/i, "").trim()) ||
-        "Visit Note text field";
-      const fieldLabel = cleanFieldLabel({
-        fieldKey: fact.fieldKey ?? null,
-        fieldLabel: rawFieldLabel,
-      });
+      const fieldLabel = getCompletionGapFieldLabel(fact);
       const reason: VisitNoteTextInputSuggestion["reason"] =
         fact.category === "incomplete_field"
           ? "blank"
@@ -413,8 +479,12 @@ function buildVisitNotePocMappingResult(input: {
       };
     });
   const incompleteFieldMessages = input.facts
-    .filter((fact) => fact.category === "incomplete_field")
-    .map((fact) => fact.normalizedValue);
+    .filter(isCompletionGapFact)
+    .map((fact) =>
+      fact.category === "incomplete_field"
+        ? `${getCompletionGapFieldLabel(fact)} is blank.`
+        : `${getCompletionGapFieldLabel(fact)} needs more detail.`,
+    );
   const missingDocumentation: string[] = [...incompleteFieldMessages];
   const reviewable = shouldReviewVisitNote(input.row);
   if (reviewable && input.facts.length === 0) {
@@ -790,6 +860,18 @@ export async function buildVisitNoteQaReview(input: {
       pocEvidenceIds: pocTargets.flatMap((target) => target.evidenceIds),
     });
     const manifestEntry = manifestByKey.get(row.visitNoteKey);
+    const missingFields = collectVisitNoteMissingFields(rowFacts);
+    const completionReasons = collectVisitNoteCompletionReasons({
+      row,
+      facts: rowFacts,
+      manifestEntry,
+    });
+    const completionStatus = deriveVisitNoteCompletionStatus({
+      row,
+      facts: rowFacts,
+      missingFields,
+      manifestEntry,
+    });
     const mappingInputHash = buildPocMappingInputHash({
       row,
       facts: rowFacts,
@@ -881,7 +963,7 @@ export async function buildVisitNoteQaReview(input: {
     const summary = summarizeVisitNoteForReviewer({
       visitType: row.normalizedVisitType,
       facts: rowFacts,
-      missingFields: [],
+      missingFields,
       possibleContradictions,
     });
     noteSummaries.push({
@@ -899,8 +981,10 @@ export async function buildVisitNoteQaReview(input: {
           : !shouldReviewVisitNote(row) || row.captureStatus === "skipped"
             ? "skipped" as const
             : "failed" as const,
+      completionStatus,
+      completionReasons,
       summary: summary.summary,
-      missingFields: [],
+      missingFields,
       textInputSuggestions,
       alignedPocGoals,
       pocMappingResult,
@@ -913,7 +997,10 @@ export async function buildVisitNoteQaReview(input: {
   const positiveProgressCount = findings.filter((finding) => finding.category === "positive_progress").length;
   const possibleUpdateNeededCount = findings.filter((finding) => finding.category === "possible_update_needed").length;
   const pocAlignmentIssueCount = findings.filter((finding) => finding.category === "poc_alignment").length;
-  const incompleteNoteCount = noteSummaries.filter((summary) => summary.textInputSuggestions.length > 0).length;
+  const incompleteNoteCount = noteSummaries.filter((summary) =>
+    summary.completionStatus === "incomplete" ||
+    summary.completionStatus === "capture_needed"
+  ).length;
   const analyzedVisitNotes = noteSummaries.filter((summary) => summary.analyzed).length;
   const visitTypeStatusMatrix = Object.entries(effectiveDiscovery.counts.byVisitType)
     .filter(([, count]) => count > 0)

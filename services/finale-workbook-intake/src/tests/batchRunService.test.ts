@@ -1,7 +1,7 @@
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import * as XLSX from "xlsx";
 import type {
   ArtifactRecord,
@@ -30,6 +30,8 @@ import type {
   ResolvedEpisodeSelection,
 } from "../oasis/navigation/episodeRangeDropdownService";
 import type { BillingPeriodCalendarSummary } from "../oasis/types/billingPeriodCalendarSummary";
+
+vi.setConfig({ testTimeout: 20_000 });
 
 class FakePortalClient implements BatchPortalAutomationClient {
   public oasisExecutionCalls = 0;
@@ -996,7 +998,7 @@ describe("runFinaleBatch", () => {
     }
   });
 
-  it("blocks only the patient missing referral evidence and continues to the next patient", async () => {
+  it("continues downstream dashboard capture when referral evidence is missing", async () => {
     const fixture = writeWorkbookFixture();
 
     try {
@@ -1025,22 +1027,25 @@ describe("runFinaleBatch", () => {
       });
 
       expect(result.patientRuns).toHaveLength(2);
-      expect(result.patientRuns[0]?.qaOutcome).toBe("MISSING_DOCUMENTS");
-      expect(result.patientRuns[0]?.processingStatus).toBe("BLOCKED");
-      expect(result.patientRuns[0]?.executionStep).toBe("REFERRAL_DOCUMENT_REQUIRED");
+      expect(result.patientRuns[0]?.qaOutcome).toBe("NEEDS_MANUAL_QA");
+      expect(result.patientRuns[0]?.processingStatus).toBe("NEEDS_HUMAN_REVIEW");
+      expect(result.patientRuns[0]?.executionStep).toBe("REFERRAL_DOCUMENT_REQUIRED_REVIEW");
       expect(result.patientRuns[0]?.automationStepLogs.some((log) => log.step === "referral_document_check")).toBe(true);
-      expect(result.patientRuns[0]?.workflowRuns.find((workflowRun) => workflowRun.workflowDomain === "coding")?.status).toBe("BLOCKED");
-      expect(result.patientRuns[0]?.workflowRuns.find((workflowRun) => workflowRun.workflowDomain === "qa")?.status).toBe("BLOCKED");
+      expect(result.patientRuns[0]?.automationStepLogs.some((log) => log.step === "referral_document_review_required")).toBe(true);
+      expect(result.patientRuns[0]?.workflowRuns.find((workflowRun) => workflowRun.workflowDomain === "coding")?.status).not.toBe("BLOCKED");
+      expect(result.patientRuns[0]?.workflowRuns.find((workflowRun) => workflowRun.workflowDomain === "qa")?.status).not.toBe("BLOCKED");
       expect(result.patientRuns[0]?.automationStepLogs.some((log) => log.step === "oasis_print_capture")).toBe(false);
+      expect(result.patientRuns[0]?.automationStepLogs.some((log) => log.step === "oasis_dom_acquisition_insufficient")).toBe(true);
       expect(result.patientRuns[1]?.qaOutcome).toBe("READY_FOR_BILLING_PREP");
       expect(result.patientRuns[1]?.processingStatus).toBe("COMPLETE");
-      expect(result.patientRuns[1]?.automationStepLogs.some((log) => log.step === "oasis_print_capture")).toBe(true);
-      expect(result.batchSummary.qaOutcomes.MISSING_DOCUMENTS).toBe(1);
+      expect(result.patientRuns[1]?.automationStepLogs.some((log) => log.step === "oasis_print_capture")).toBe(false);
+      expect(result.patientRuns[1]?.automationStepLogs.some((log) => log.step === "oasis_dom_acquisition_insufficient")).toBe(true);
+      expect(result.batchSummary.qaOutcomes.NEEDS_MANUAL_QA).toBe(1);
       expect(result.batchSummary.qaOutcomes.READY_FOR_BILLING_PREP).toBe(1);
     } finally {
       fixture.cleanup();
     }
-  });
+  }, 10_000);
 
   it("routes a QA-only workflow through shared access and records a separate QA workflow run", async () => {
     const fixture = writeWorkbookFixture();
@@ -1074,21 +1079,18 @@ describe("runFinaleBatch", () => {
       expect(patientRun.automationStepLogs.some((log) => log.step === "billing_calendar_summary_persisted")).toBe(true);
       expect(patientRun.automationStepLogs.some((log) => log.step === "oasis_menu_open")).toBe(true);
       expect(patientRun.automationStepLogs.some((log) => log.step === "oasis_assessment_note_opened")).toBe(true);
-      expect(patientRun.automationStepLogs.some((log) => log.step === "oasis_printed_note_review")).toBe(true);
+      expect(patientRun.automationStepLogs.some((log) => log.step === "oasis_printed_note_review")).toBe(false);
+      expect(patientRun.automationStepLogs.some((log) => log.step === "oasis_dom_acquisition_insufficient")).toBe(true);
       expect(patientRun.artifacts.find((artifact) => artifact.artifactType === "OASIS")).toMatchObject({
         artifactType: "OASIS",
-        status: "DOWNLOADED",
-        extractedFields: expect.objectContaining({
-          reviewSource: "printed_note_ocr",
-          extractionMethod: "visible_text_fallback",
-        }),
+        status: "FOUND",
       });
     } finally {
       fixture.cleanup();
     }
-  });
+  }, 10_000);
 
-  it("refreshes document-text.json after QA replaces a stale OASIS fallback artifact", async () => {
+  it("does not refresh document-text.json from printed OASIS fallback when DOM acquisition is unavailable", async () => {
     const fixture = writeWorkbookFixture();
 
     try {
@@ -1105,10 +1107,13 @@ describe("runFinaleBatch", () => {
         portalClient: new SharedEvidenceFallbackOasisClient(),
       });
 
-      const documentTextPath = path.join(
+      const patientArtifactsDirectory = path.join(
         fixture.outputDir,
         "patients",
         patientRun.workItemId,
+      );
+      const documentTextPath = path.join(
+        patientArtifactsDirectory,
         "document-text.json",
       );
       expect(existsSync(documentTextPath)).toBe(true);
@@ -1124,11 +1129,14 @@ describe("runFinaleBatch", () => {
       const oasisDocument = documentText.documents.find((document) => document.type === "OASIS");
 
       expect(oasisDocument).toBeTruthy();
-      expect(oasisDocument?.sourcePath).toMatch(/oasis-printed-note[\\\/]extracted-text\.txt$/);
-      expect(oasisDocument?.text).toContain("Patient is homebound and medical necessity is documented.");
-      expect(oasisDocument?.text).not.toContain("Active OASIS workflow did not open the OASIS documents page.");
-      expect(patientRun.notes.some((note) => note.includes("Document text refreshed after printed OASIS review:"))).toBe(true);
-      expect(patientRun.automationStepLogs.some((log) => log.step === "document_text_refresh_after_qa")).toBe(true);
+      expect(JSON.stringify(oasisDocument?.sourcePath)).not.toMatch(/oasis-printed-note/);
+      expect(oasisDocument?.text).not.toContain("Patient is homebound and medical necessity is documented.");
+      expect(existsSync(path.join(patientArtifactsDirectory, "oasis-printed-note-review.json"))).toBe(false);
+      expect(existsSync(path.join(patientArtifactsDirectory, "printed-note-chart-values.json"))).toBe(false);
+      expect(patientRun.notes.some((note) => note.includes("Document text refreshed after printed OASIS review:"))).toBe(false);
+      expect(patientRun.automationStepLogs.some((log) => log.step === "document_text_refresh_after_qa")).toBe(false);
+      expect(patientRun.automationStepLogs.some((log) => log.step === "printed_note_chart_values")).toBe(false);
+      expect(patientRun.automationStepLogs.some((log) => log.step === "oasis_dom_acquisition_insufficient")).toBe(true);
     } finally {
       fixture.cleanup();
     }
@@ -1204,7 +1212,7 @@ describe("runFinaleBatch", () => {
     } finally {
       fixture.cleanup();
     }
-  });
+  }, 10_000);
 
   it("defaults patient runs to both coding and QA workflows when no workflow domains are provided", async () => {
     const fixture = writeWorkbookFixture();

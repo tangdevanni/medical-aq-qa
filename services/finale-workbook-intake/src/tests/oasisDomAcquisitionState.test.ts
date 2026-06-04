@@ -224,16 +224,16 @@ describe("OASIS DOM acquisition state", () => {
     expect(merged.acquisitionStatus).toBe("ready_for_qa");
   });
 
-  it("low DOM coverage routes to OCR fallback or insufficient evidence", () => {
+  it("low DOM coverage routes to insufficient evidence without OCR fallback", () => {
     const lowCoverage = state({
       sections: [section("Administrative Information", [])],
       fallbackRecommended: true,
       fallbackReasons: ["no_structured_fields_or_tables"],
     });
-    const withFallback = mergeOasisDomAcquisitionState(null, lowCoverage, { ocrFallbackEnabled: true });
+    const withLegacyFallbackFlag = mergeOasisDomAcquisitionState(null, lowCoverage, { ocrFallbackEnabled: true });
     const withoutFallback = mergeOasisDomAcquisitionState(null, lowCoverage, { ocrFallbackEnabled: false });
 
-    expect(withFallback.acquisitionStatus).toBe("fallback_to_ocr_required");
+    expect(withLegacyFallbackFlag.acquisitionStatus).toBe("insufficient_evidence");
     expect(withoutFallback.acquisitionStatus).toBe("insufficient_evidence");
   });
 

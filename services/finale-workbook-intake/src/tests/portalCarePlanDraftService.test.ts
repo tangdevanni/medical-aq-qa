@@ -143,6 +143,62 @@ describe("portal care plan draft service", () => {
     expect(draft?.carePlanProblemGroups?.[0]?.needsHumanReview).toBe(true);
   });
 
+  it("extracts goals from alternate portal goal headers", () => {
+    const base = stateWithCarePlan();
+    const table = base.sections[0]!.tables[0]!;
+    table.headers = [
+      "#",
+      "Problem Statement",
+      "Patient Goal",
+      "Plan Intervention",
+      "Target Completion",
+      "Term",
+      "Status",
+      "Onset",
+      "Source",
+    ];
+    table.rows = [[
+      "1",
+      "PT Balance Training - Patient needs supervision for safe transfers.",
+      "Patient Goal: transfer safely with FWW and caregiver supervision.",
+      "Skilled PT transfer training and caregiver safety instruction.",
+      "",
+      "",
+      "",
+      "",
+      "",
+    ]];
+
+    const draft = buildPortalCarePlanDraftFromOasisDomState({ state: base });
+
+    expect(draft?.carePlanProblemGroups?.[0]?.goals[0]?.text).toContain("transfer safely with FWW");
+    expect(draft?.carePlanProblemGroups?.[0]?.interventions[0]?.text).toContain("caregiver safety instruction");
+    expect(draft?.carePlanProblemGroups?.[0]?.needsHumanReview).toBe(false);
+  });
+
+  it("uses source-backed care plan goal fields when the table goal cell is blank", () => {
+    const base = stateWithCarePlan();
+    const section = base.sections[0]!;
+    const table = section.tables[0]!;
+    table.rows[0]![2] = "";
+    section.fields = [{
+      section: "New Identified Problem(s) Care Plan",
+      label: "Care Plan Goal",
+      key: "care_plan_problem_1_goal",
+      value: "Improve TUG score to 12 seconds or better to improve fall safety.",
+      sourceKind: "visibleText",
+      confidence: "high",
+      evidenceText: "Goal Improve TUG score to 12 seconds or better to improve fall safety.",
+    }];
+
+    const draft = buildPortalCarePlanDraftFromOasisDomState({ state: base });
+
+    expect(draft?.carePlanProblemGroups?.[0]?.goals[0]?.text).toBe(
+      "Improve TUG score to 12 seconds or better to improve fall safety.",
+    );
+    expect(draft?.carePlanProblemGroups?.[0]?.needsHumanReview).toBe(false);
+  });
+
   it("keeps previous portal POC as Needs Review when latest DOM no longer has usable rows", async () => {
     const outputDir = await mkdtemp(path.join(tmpdir(), "portal-poc-disappeared-"));
     const workItem = {

@@ -18,6 +18,7 @@ import {
 } from "../../../../../lib/patientComparison";
 import { formatTimestamp } from "../../../../../lib/qa";
 import type {
+  AllergyEntry,
   DiagnosisEntry,
   DiagnosisSummaryBlock,
   MedicationEntry,
@@ -288,7 +289,16 @@ function hasVisiblePortalValue(value: string | null | undefined): boolean {
     return false;
   }
   const trimmed = value.trim();
-  return trimmed.length > 0 && !PORTAL_VALUE_PLACEHOLDERS.has(normalizeLabelForComparison(trimmed));
+  return trimmed.length > 0 &&
+    !PORTAL_VALUE_PLACEHOLDERS.has(normalizeLabelForComparison(trimmed)) &&
+    !isOasisSectionEvidenceFallback(trimmed);
+}
+
+function isOasisSectionEvidenceFallback(value: string | null | undefined): boolean {
+  if (!value) {
+    return false;
+  }
+  return /^printed oasis review captured .+ section evidence\b/i.test(value.trim());
 }
 
 function hasUsableOasisValue(comparison: FieldComparison): boolean {
@@ -379,6 +389,61 @@ function buildDiagnosisListFromRows(rows: FieldComparison[], side: "referral" | 
   };
 }
 
+function formatReferralDiagnosisSpan(value: string): string | null {
+  const cleaned = value.replace(/\s+/g, " ").trim();
+  if (!cleaned || /\binstructions?:/i.test(cleaned) || /^[A-Z]?\d{6,}$/.test(cleaned)) {
+    return null;
+  }
+
+  const indicationMatch = cleaned.match(/^Indication:\s*(.+?)(?:"|\s+-\s+Z|\s+Z[0-9]|$)/i);
+  if (indicationMatch?.[1]) {
+    return indicationMatch[1].replace(/\s+-\s*$/, "").trim();
+  }
+
+  const parentheticalCodeMatch = cleaned.match(/\b([A-TV-Z][0-9][0-9A-Z](?:\.[0-9A-Z]{1,4})?)\b\)?/i);
+  if (!parentheticalCodeMatch) {
+    return cleaned;
+  }
+  const code = parentheticalCodeMatch[1].toUpperCase();
+  const description = cleaned
+    .replace(new RegExp(`\\(?\\b${code.replace(".", "\\.")}\\b\\)?`, "i"), "")
+    .replace(/^[\s:)-]+|[\s:)-]+$/g, "")
+    .trim();
+  return description ? `${code} - ${description}` : code;
+}
+
+function buildReferralDiagnosisListFromSections(patient: PatientDetail): {
+  primary: ClinicalListItem | null;
+  subsequent: ClinicalListItem[];
+} {
+  const diagnosisSection = patient.referralSections.find((section) =>
+    section.sectionKey === "active_diagnoses" ||
+    normalizeLabelForComparison(section.label).includes("diagnos")
+  );
+  const spans = diagnosisSection?.textSpans ?? [];
+  const spanTexts = spans
+    .map((span) => span.text)
+    .filter((text): text is string => Boolean(text?.trim()));
+  const hasShoulderContext = spanTexts.some((text) => /\bright\b/i.test(text) && /\bshoulder\b/i.test(text));
+  const items = dedupeDisplayValues(
+    spanTexts
+      .filter((text) => !(hasShoulderContext && /\bleft\s+knee\b/i.test(text)))
+      .map((text) => formatReferralDiagnosisSpan(text))
+      .filter((text): text is string => Boolean(text && hasVisiblePortalValue(text))),
+  ).map((label) => ({ label }));
+
+  const indicationIndex = items.findIndex((item) => /\bpost-op\b|\bpostoperative\b|\bsurgery\b/i.test(item.label));
+  const primary = indicationIndex >= 0 ? items[indicationIndex] : (items[0] ?? null);
+  const subsequent = items.filter((_, index) => index !== (indicationIndex >= 0 ? indicationIndex : 0));
+  return { primary, subsequent };
+}
+
+function diagnosisListHasDescriptions(list: { primary: ClinicalListItem | null; subsequent: ClinicalListItem[] }): boolean {
+  return [list.primary, ...list.subsequent]
+    .filter((item): item is ClinicalListItem => item !== null)
+    .some((item) => !isIcdCodeValue(item.label));
+}
+
 function getDiagnosisList(
   patient: PatientDetail,
   block: DiagnosisSummaryBlock,
@@ -388,7 +453,20 @@ function getDiagnosisList(
   primary: ClinicalListItem | null;
   subsequent: ClinicalListItem[];
 } {
+  if (side === "referral") {
+    const fromSections = buildReferralDiagnosisListFromSections(patient);
+    if (fromSections.primary || fromSections.subsequent.length > 0) {
+      return fromSections;
+    }
+  }
+  const fromRows = buildDiagnosisListFromRows(rows, side);
   const fromBlock = buildDiagnosisListFromBlock(block);
+  if (
+    (fromRows.primary || fromRows.subsequent.length > 0) &&
+    (side === "referral" || !diagnosisListHasDescriptions(fromBlock))
+  ) {
+    return fromRows;
+  }
   if (fromBlock.primary || fromBlock.subsequent.length > 0) {
     return fromBlock;
   }
@@ -398,12 +476,12 @@ function getDiagnosisList(
   if (!hasUsableReferralCoverage(patient)) {
     return fromBlock;
   }
-  return buildDiagnosisListFromRows(rows, side);
+  return fromRows;
 }
 
-function toMedicationListItems(summary: MedicationSummaryBlock | null): ClinicalListItem[] {
+function toMedicationListItems(summary: MedicationSummaryBlock | null, includeEmptyAllergy = true): ClinicalListItem[] {
   if (!summary) {
-    return [];
+    return includeEmptyAllergy ? [{ label: "Allergy: Not documented", meta: null }] : [];
   }
   const medicationItems = summary.medications.map((entry: MedicationEntry) => {
     const metaParts = [
@@ -418,11 +496,48 @@ function toMedicationListItems(summary: MedicationSummaryBlock | null): Clinical
       meta: metaParts.length > 0 ? metaParts.join(" | ") : null,
     };
   });
-  const allergyItems = summary.allergies.map((allergy) => ({
-    label: `Allergy: ${allergy}`,
-    meta: null,
-  }));
+  const allergyItems = summary.allergies.length > 0
+    ? summary.allergies.map((allergy) => {
+        if (typeof allergy === "string") {
+          return {
+            label: `Allergy: ${allergy}`,
+            meta: null,
+          };
+        }
+        const entry = allergy as AllergyEntry;
+        const metaParts = [
+          entry.reaction ? `Reaction: ${entry.reaction}` : null,
+          entry.startDate ? `Start: ${entry.startDate}` : null,
+          entry.status,
+        ].filter((part): part is string => Boolean(part));
+        return {
+          label: `Allergy: ${entry.name}`,
+          meta: metaParts.length > 0 ? metaParts.join(" | ") : null,
+        };
+      })
+    : includeEmptyAllergy
+      ? [{ label: "Allergy: Not documented", meta: null }]
+      : [];
   return [...medicationItems, ...allergyItems];
+}
+
+function splitDisplayListValue(value: string): string[] {
+  return value
+    .split(/\s*;\s*/)
+    .map((entry) => entry.trim())
+    .filter((entry) => hasVisiblePortalValue(entry));
+}
+
+function buildMedicationItemsFromRows(rows: FieldComparison[], side: "referral" | "oasis"): ClinicalListItem[] {
+  return rows.flatMap((row) => {
+    const value = side === "referral" ? row.displayReferralValue : row.displayPortalValue;
+    const values = splitDisplayListValue(value);
+    const isAllergyRow = /\ballerg/i.test(row.fieldLabel);
+    return values.map((entry) => ({
+      label: isAllergyRow && !/^allerg/i.test(entry) ? `Allergy: ${entry}` : entry,
+      meta: null,
+    }));
+  });
 }
 
 function ClinicalListSection({
@@ -551,22 +666,20 @@ function MedicationComparisonPanel({
   const medicationRows = rows.filter(
     (row) => hasUsableOasisValue(row) || hasVisiblePortalValue(row.displayReferralValue),
   );
-  const referralMedicationItemsFromRows = dedupeDisplayValues(medicationRows
-    .map((row) => row.displayReferralValue)
-    .filter((value) => hasVisiblePortalValue(value)))
-    .map((value) => ({ label: value }));
-  const oasisMedicationItemsFromRows = dedupeDisplayValues(medicationRows
-    .map((row) => row.displayPortalValue)
-    .filter((value) => hasVisiblePortalValue(value)))
-    .map((value) => ({ label: value }));
-  const referralMedicationItems = toMedicationListItems(patient.referralMedicationSummary);
-  const oasisMedicationItems = toMedicationListItems(patient.oasisMedicationSummary);
+  const referralMedicationItemsFromRows = buildMedicationItemsFromRows(medicationRows, "referral");
+  const oasisMedicationItemsFromRows = buildMedicationItemsFromRows(medicationRows, "oasis");
+  const referralMedicationItems = toMedicationListItems(patient.referralMedicationSummary, true);
+  const oasisMedicationItems = toMedicationListItems(patient.oasisMedicationSummary, false);
   const visibleReferralItems = referralMedicationItems.length > 0
     ? referralMedicationItems
     : hasUsableReferralCoverage(patient)
       ? referralMedicationItemsFromRows
       : [];
-  const visibleOasisItems = oasisMedicationItems.length > 0 ? oasisMedicationItems : oasisMedicationItemsFromRows;
+  const visibleOasisItems = oasisMedicationItems.length > 0
+    ? oasisMedicationItems
+    : oasisMedicationItemsFromRows.length > 0
+      ? oasisMedicationItemsFromRows
+      : [{ label: "Allergy: Not documented", meta: null }];
 
   return (
     <div className="clinical-comparison-grid medication-comparison-grid" aria-label="Referral medication versus OASIS medication">
@@ -650,19 +763,489 @@ function ReferralCompletionSuggestionsPanel({
   );
 }
 
-function ReferralVsOasisTab({
-  patient,
-  diagnosisRows,
-  medicationRows,
+type ReferralOasisGroupKey =
+  | "diagnoses"
+  | "medications_allergies"
+  | "safety_social"
+  | "functional_therapy"
+  | "body_systems"
+  | "dates_admin";
+
+const REFERRAL_OASIS_GROUPS: Array<{ key: ReferralOasisGroupKey; label: string }> = [
+  { key: "diagnoses", label: "Diagnoses" },
+  { key: "medications_allergies", label: "Medications & Allergies" },
+  { key: "safety_social", label: "Safety / Social Support" },
+  { key: "functional_therapy", label: "Functional / Therapy" },
+  { key: "body_systems", label: "Body Systems" },
+  { key: "dates_admin", label: "Dates / Admin" },
+];
+
+const REQUIRED_REFERRAL_OASIS_GROUPS = new Set<ReferralOasisGroupKey>([
+  "diagnoses",
+  "medications_allergies",
+]);
+
+type PrintedNoteSectionSummary = QaPrefetchSummary["printedNoteSections"][number];
+
+type ReferralOasisDisplayItem = {
+  label: string;
+  value: string;
+  meta?: string | null;
+};
+
+type ReferralOasisCategoryModel = {
+  key: ReferralOasisGroupKey;
+  label: string;
+  referralItems: ReferralOasisDisplayItem[];
+  oasisItems: ReferralOasisDisplayItem[];
+};
+
+const SECTION_EVIDENCE_PREVIEW_LIMIT = 320;
+
+function isPlanOfCareCategoryText(value: string): boolean {
+  return /\b(plan of care|care plan|goal|goals|intervention|interventions|coordination|next visit)\b/i.test(value);
+}
+
+function getReferralOasisGroup(row: FieldComparison): ReferralOasisGroupKey | null {
+  if (row.sectionKey === "diagnoses") {
+    return "diagnoses";
+  }
+  if (row.sectionKey === "medications_allergies") {
+    return "medications_allergies";
+  }
+  if (row.sectionKey === "safety_social_support") {
+    return "safety_social";
+  }
+  if (row.sectionKey === "functional_therapy") {
+    return "functional_therapy";
+  }
+  if (row.sectionKey === "body_systems") {
+    return "body_systems";
+  }
+  if (row.sectionKey === "dates_admin") {
+    return "dates_admin";
+  }
+
+  const text = `${row.sectionKey} ${row.sourceSectionLabel} ${row.fieldKey} ${row.fieldLabel}`.toLowerCase();
+  if (row.sectionKey.startsWith("active_diagnoses") || /\bdiagnos|icd|onset\b/.test(text)) {
+    return "diagnoses";
+  }
+  if (row.sectionKey.startsWith("medication_allergies") || /\bmedication|allerg|injectable|o0110|high-risk\b/.test(text)) {
+    return "medications_allergies";
+  }
+  if (
+    /\bliving|caregiver|emergency|contact|supervision|safety|risk|fall|homebound|transport|code status|directive|hospitalization|alone|support\b/.test(text)
+  ) {
+    return "safety_social";
+  }
+  if (/\bfunctional|mobility|self care|therapy|pt\b|ot\b|discipline|frequency|gg0100|gg0130|gg0170|prior function/.test(text)) {
+    return "functional_therapy";
+  }
+  if (isPlanOfCareCategoryText(text)) {
+    return null;
+  }
+  if (/\bneurolog|cardio|respiratory|gastro|genitourinary|integumentary|wound|pain|endocrine|diabetic|eyes|ears|mood|behavioral\b/.test(text)) {
+    return "body_systems";
+  }
+  if (/\bdate|soc|start of care|referral|dob|address|phone|physician|provider|language|admin/.test(text)) {
+    return "dates_admin";
+  }
+  return "body_systems";
+}
+
+function getPrintedNoteSectionReferralOasisGroup(section: PrintedNoteSectionSummary): ReferralOasisGroupKey | null {
+  const key = normalizeLabelForComparison(section.key);
+  const label = normalizeLabelForComparison(section.label);
+  const text = `${key} ${label}`;
+  if (isPlanOfCareCategoryText(text)) {
+    return null;
+  }
+  if (text.includes("diagnos")) {
+    return "diagnoses";
+  }
+  if (text.includes("medication") || text.includes("allerg")) {
+    return "medications_allergies";
+  }
+  if (text.includes("administrative") || /\badmin|soc|date|provider|identity\b/.test(text)) {
+    return "dates_admin";
+  }
+  if (text.includes("musculoskeletal") || text.includes("functional") || text.includes("therapy") || text.includes("mobility")) {
+    return "functional_therapy";
+  }
+  if (text.includes("primary reason") || text.includes("medical necessity") || /\bsafety|risk|support|homebound|caregiver|emergency|living\b/.test(text)) {
+    return "safety_social";
+  }
+  return "body_systems";
+}
+
+function hasReferralBackedComparisonValue(row: FieldComparison): boolean {
+  return row.valuePresence?.hasDocumentValue === true || hasVisiblePortalValue(row.displayReferralValue);
+}
+
+function isOasisItemIdPlaceholder(value: string | null | undefined, row: FieldComparison): boolean {
+  if (!value || !row.oasisItemId) {
+    return false;
+  }
+  return normalizeLabelForComparison(value) === normalizeLabelForComparison(row.oasisItemId);
+}
+
+function compactDisplayText(value: string): string {
+  return value.replace(/\s+/g, " ").trim();
+}
+
+function truncateDisplayText(value: string, maxLength = SECTION_EVIDENCE_PREVIEW_LIMIT): string {
+  const compacted = compactDisplayText(value);
+  return compacted.length > maxLength ? `${compacted.slice(0, maxLength - 1).trim()}...` : compacted;
+}
+
+function buildStructuredItemMeta(row: FieldComparison, side: "referral" | "oasis"): string | null {
+  const parts = [
+    side === "oasis" && row.oasisItemId && !isOasisItemIdPlaceholder(row.oasisItemId, row)
+      ? row.oasisItemId
+      : null,
+    row.sectionLabel && normalizeLabelForComparison(row.sectionLabel) !== normalizeLabelForComparison(row.fieldLabel)
+      ? row.sectionLabel
+      : null,
+  ].filter((part): part is string => Boolean(part?.trim()));
+
+  return parts.length > 0 ? parts.slice(0, 2).join(" | ") : null;
+}
+
+function dedupeReferralOasisItems(items: ReferralOasisDisplayItem[]): ReferralOasisDisplayItem[] {
+  const seen = new Set<string>();
+  const deduped: ReferralOasisDisplayItem[] = [];
+  for (const item of items) {
+    const key = `${normalizeLabelForComparison(item.label)}|${normalizeLabelForComparison(item.value)}`;
+    if (seen.has(key)) {
+      continue;
+    }
+    seen.add(key);
+    deduped.push(item);
+  }
+  return deduped;
+}
+
+function buildDisplayItemsFromRows(rows: FieldComparison[], side: "referral" | "oasis"): ReferralOasisDisplayItem[] {
+  const items = rows.flatMap((row) => {
+    const value = side === "referral" ? row.displayReferralValue : row.displayPortalValue;
+    const hasValue = side === "referral"
+      ? hasReferralBackedComparisonValue(row) && hasVisiblePortalValue(value)
+      : hasUsableOasisValue(row) && hasVisiblePortalValue(value);
+
+    if (!hasValue || isOasisItemIdPlaceholder(value, row)) {
+      return [];
+    }
+
+    return splitDisplayListValue(value)
+      .filter((entry) => !isOasisItemIdPlaceholder(entry, row))
+      .map((entry) => ({
+        label: row.fieldLabel,
+        value: entry,
+        meta: buildStructuredItemMeta(row, side),
+      }));
+  });
+
+  return dedupeReferralOasisItems(items);
+}
+
+function cleanDiagnosisDescription(value: string | null | undefined, code: string): string | null {
+  const cleaned = compactDisplayText(value ?? "")
+    .replace(new RegExp(`^${code.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\s*(?:-|:|\\))?\\s*`, "i"), "")
+    .replace(/^ICD-?10 Code\s*/i, "")
+    .trim();
+  if (!cleaned || isIcdCodeValue(cleaned) || /^diagnoses?$/i.test(cleaned) || /^active diagnoses$/i.test(cleaned)) {
+    return null;
+  }
+  return cleaned;
+}
+
+function diagnosisCodeFromValue(value: string): string | null {
+  const direct = value.trim();
+  if (isIcdCodeValue(direct)) {
+    return direct.toUpperCase();
+  }
+  const match = direct.match(/\b([A-TV-Z][0-9][0-9A-Z](?:\.[0-9A-Z]{1,4})?)\b/i);
+  return match ? match[1].toUpperCase() : null;
+}
+
+function getDiagnosisSideValue(row: FieldComparison, side: "referral" | "oasis"): string {
+  return side === "referral" ? row.displayReferralValue : row.displayPortalValue;
+}
+
+function getDiagnosisSideSnippet(row: FieldComparison, side: "referral" | "oasis"): string | null | undefined {
+  return side === "referral" ? row.referralSnippet : row.portalSnippet;
+}
+
+function getStructuredDiagnosisItems(value: unknown): ReferralOasisDisplayItem[] {
+  const values = Array.isArray(value) ? value : [value];
+  return values.flatMap((entry): ReferralOasisDisplayItem[] => {
+    if (!entry || typeof entry !== "object" || Array.isArray(entry)) {
+      return [];
+    }
+    const record = entry as Record<string, unknown>;
+    const rawCode = typeof record.code === "string"
+      ? record.code
+      : typeof record.icd10_code === "string"
+        ? record.icd10_code
+        : null;
+    const code = rawCode ? diagnosisCodeFromValue(rawCode) : null;
+    const description = typeof record.description === "string" ? compactDisplayText(record.description) : "";
+    if (!code && !description) {
+      return [];
+    }
+    return [{
+      label: code && description ? `${code} - ${description}` : code ?? description,
+      value: "Diagnosis",
+      meta: typeof record.role === "string" ? formatStatusLabel(record.role) : null,
+    }];
+  });
+}
+
+function buildDiagnosisDisplayItemsFromRows(rows: FieldComparison[], side: "referral" | "oasis"): ReferralOasisDisplayItem[] {
+  const valueRows = rows.filter((row) => {
+    const value = getDiagnosisSideValue(row, side);
+    return side === "referral"
+      ? hasReferralBackedComparisonValue(row) && hasVisiblePortalValue(value)
+      : hasUsableOasisValue(row) && hasVisiblePortalValue(value);
+  });
+  if (side === "referral") {
+    const structuredItems = valueRows.flatMap((row) => {
+      if (row.fieldKey === "diagnosis_candidates" || row.fieldKey === "diagnosis_supporting_evidence") {
+        return [];
+      }
+      return getStructuredDiagnosisItems(row.documentSupportedValue);
+    });
+    if (structuredItems.length > 0) {
+      return dedupeReferralOasisItems(structuredItems);
+    }
+  }
+  const onsetValues = valueRows
+    .filter((row) => normalizeLabelForComparison(row.fieldLabel).includes("onset"))
+    .map((row) => compactDisplayText(getDiagnosisSideValue(row, side)))
+    .filter(Boolean);
+  const diagnosisRows = valueRows.filter((row) => {
+    const value = getDiagnosisSideValue(row, side);
+    return !normalizeLabelForComparison(row.fieldLabel).includes("onset") &&
+      (isIcdCodeValue(value) || /\bdiagnos|icd\b/.test(normalizeLabelForComparison(row.fieldLabel)));
+  });
+
+  if (diagnosisRows.length === 0) {
+    return buildDisplayItemsFromRows(rows, side);
+  }
+
+  const items = diagnosisRows.flatMap((row, index): ReferralOasisDisplayItem[] => {
+    const value = compactDisplayText(getDiagnosisSideValue(row, side));
+    const code = diagnosisCodeFromValue(value);
+    if (!code) {
+      return [];
+    }
+    const description = cleanDiagnosisDescription(getDiagnosisSideSnippet(row, side), code) ??
+      cleanDiagnosisDescription(value, code);
+    const onsetDate = onsetValues[index] ?? onsetValues[0] ?? null;
+    return [{
+      label: description ? `${code} - ${description}` : code,
+      value: onsetDate ? `Onset: ${onsetDate}` : "Diagnosis",
+      meta: row.oasisItemId && side === "oasis" ? row.oasisItemId : null,
+    }];
+  });
+
+  return dedupeReferralOasisItems(items);
+}
+
+function formatPrintedNoteCoverage(section: PrintedNoteSectionSummary): string {
+  if (section.filledFieldCount > 0 && section.missingFieldCount > 0) {
+    return `${section.filledFieldCount} captured, ${section.missingFieldCount} follow-up`;
+  }
+  if (section.filledFieldCount > 0) {
+    return `${section.filledFieldCount} captured`;
+  }
+  if (section.missingFieldCount > 0) {
+    return `${section.missingFieldCount} follow-up`;
+  }
+  return "Section captured";
+}
+
+function buildPrintedNoteSectionItems(
+  sections: PrintedNoteSectionSummary[],
+  groupKey: ReferralOasisGroupKey,
+): ReferralOasisDisplayItem[] {
+  const items = sections.flatMap((section) => {
+    if (getPrintedNoteSectionReferralOasisGroup(section) !== groupKey) {
+      return [];
+    }
+
+    const evidence = (section.evidence ?? [])
+      .map((entry) => truncateDisplayText(entry))
+      .filter((entry) => entry.length > 0)
+      .slice(0, 2);
+    const meta = `${section.label} | ${formatStatusLabel(section.status)}`;
+
+    if (evidence.length > 0) {
+      return evidence.map((entry) => ({
+        label: "OASIS section evidence",
+        value: entry,
+        meta,
+      }));
+    }
+
+    return [{
+      label: "OASIS section evidence",
+      value: formatPrintedNoteCoverage(section),
+      meta,
+    }];
+  });
+
+  return dedupeReferralOasisItems(items);
+}
+
+function buildReferralOasisCategoryModel(
+  group: { key: ReferralOasisGroupKey; label: string },
+  rows: FieldComparison[],
+): ReferralOasisCategoryModel {
+  const structuredOasisItems = group.key === "diagnoses"
+    ? buildDiagnosisDisplayItemsFromRows(rows, "oasis")
+    : buildDisplayItemsFromRows(rows, "oasis");
+  const referralItems = group.key === "diagnoses"
+    ? buildDiagnosisDisplayItemsFromRows(rows, "referral")
+    : buildDisplayItemsFromRows(rows, "referral");
+  return {
+    key: group.key,
+    label: group.label,
+    referralItems,
+    oasisItems: structuredOasisItems,
+  };
+}
+
+function CategorySourceCard({
+  title,
+  items,
+  emptyText,
 }: {
-  patient: PatientDetail;
-  diagnosisRows: FieldComparison[];
-  medicationRows: FieldComparison[];
+  title: string;
+  items: ReferralOasisDisplayItem[];
+  emptyText: string;
 }) {
   return (
+    <section className="clinical-source-card compact">
+      <div className="clinical-source-card-header">
+        <h2>{title}</h2>
+        <span className={`badge${items.length > 0 ? " success" : ""}`}>
+          {items.length} item{items.length === 1 ? "" : "s"}
+        </span>
+      </div>
+      {items.length > 0 ? (
+        <div className="clinical-value-list">
+          {items.map((item, index) => (
+            <div className="clinical-value-row" key={`${item.label}-${item.value}-${index}`}>
+              <span className="clinical-value-index">{index + 1}</span>
+              <div className="clinical-value-body">
+                <strong>{item.label}</strong>
+                <span className="clinical-value-text">{item.value}</span>
+                {item.meta ? <span>{item.meta}</span> : null}
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="clinical-empty">{emptyText}</div>
+      )}
+    </section>
+  );
+}
+
+function CategoryComparisonCards({ model }: { model: ReferralOasisCategoryModel }) {
+  return (
+    <div className="clinical-comparison-grid" aria-label={`${model.label} referral versus OASIS`}>
+      <CategorySourceCard
+        emptyText="No referral support captured"
+        items={model.referralItems}
+        title="Referral"
+      />
+      <CategorySourceCard
+        emptyText="No OASIS data captured"
+        items={model.oasisItems}
+        title="OASIS"
+      />
+    </div>
+  );
+}
+
+function ReferralVsOasisTab({
+  workspace,
+}: {
+  workspace: ComparisonWorkspaceModel;
+}) {
+  const rowsByGroup = REFERRAL_OASIS_GROUPS.reduce((map, group) => {
+    map.set(group.key, [] as FieldComparison[]);
+    return map;
+  }, new Map<ReferralOasisGroupKey, FieldComparison[]>());
+  for (const row of workspace.comparisons) {
+    const groupKey = getReferralOasisGroup(row);
+    if (!groupKey) {
+      continue;
+    }
+    rowsByGroup.get(groupKey)?.push(row);
+  }
+  const categoryModels = new Map(
+    REFERRAL_OASIS_GROUPS.map((group) => [
+      group.key,
+      buildReferralOasisCategoryModel(group, rowsByGroup.get(group.key) ?? []),
+    ] as const),
+  );
+  const visibleGroups = REFERRAL_OASIS_GROUPS.filter(
+    (group) => {
+      const model = categoryModels.get(group.key);
+      return REQUIRED_REFERRAL_OASIS_GROUPS.has(group.key) ||
+        Boolean(model && (model.referralItems.length > 0 || model.oasisItems.length > 0));
+    },
+  );
+  const [activeGroup, setActiveGroup] = useState<ReferralOasisGroupKey>(() => visibleGroups[0]?.key ?? "diagnoses");
+  const selectedGroup = visibleGroups.some((group) => group.key === activeGroup)
+    ? activeGroup
+    : visibleGroups[0]?.key ?? "diagnoses";
+  const activeModel = categoryModels.get(selectedGroup) ?? {
+    key: selectedGroup,
+    label: visibleGroups.find((group) => group.key === selectedGroup)?.label ?? "Diagnoses",
+    referralItems: [],
+    oasisItems: [],
+  };
+  const selectedGroupLabel = visibleGroups.find((group) => group.key === selectedGroup)?.label ?? "Diagnoses";
+
+  useEffect(() => {
+    if (selectedGroup !== activeGroup) {
+      setActiveGroup(selectedGroup);
+    }
+  }, [activeGroup, selectedGroup]);
+
+  return (
     <div className="workspace-section-stack">
-      <DiagnosisComparisonPanel patient={patient} rows={diagnosisRows} />
-      <MedicationComparisonPanel patient={patient} rows={medicationRows} />
+      <div aria-label="Referral versus OASIS comparison groups" className="referral-oasis-category-nav" role="tablist">
+        {visibleGroups.map((group) => {
+          const model = categoryModels.get(group.key);
+          const displayCount = (model?.referralItems.length ?? 0) + (model?.oasisItems.length ?? 0);
+          return (
+            <button
+              aria-selected={selectedGroup === group.key}
+              className={`referral-oasis-category-tab${selectedGroup === group.key ? " active" : ""}`}
+              key={group.key}
+              onClick={() => setActiveGroup(group.key)}
+              role="tab"
+              type="button"
+            >
+              <span>{group.label}</span>
+              <span className="badge">{displayCount}</span>
+            </button>
+          );
+        })}
+      </div>
+
+      <section className="panel stack">
+        <div className="panel-header-inline">
+          <h2>{selectedGroupLabel}</h2>
+        </div>
+
+        <CategoryComparisonCards model={activeModel} />
+      </section>
     </div>
   );
 }
@@ -1078,6 +1661,20 @@ function formatVisitNotePocTargets(mapping: VisitNoteSummary["pocMappingResult"]
   return titles.slice(0, 3).join(", ");
 }
 
+function formatVisitNoteDate(value: string | null | undefined): string | null {
+  if (!value) {
+    return null;
+  }
+
+  const trimmed = value.trim();
+  const isoDate = /^(\d{4})-(\d{2})-(\d{2})/.exec(trimmed);
+  if (isoDate) {
+    return `${isoDate[2]}/${isoDate[3]}/${isoDate[1]}`;
+  }
+
+  return trimmed;
+}
+
 function formatVisitNoteSuggestionLocation(
   suggestion: VisitNoteSummary["textInputSuggestions"][number],
 ): string {
@@ -1090,21 +1687,33 @@ function formatVisitNoteSuggestionLocation(
 
 function formatVisitNoteMissingFields(values: string[] | undefined): string {
   const labels = Array.from(new Set((values ?? [])
-    .map((value) => value.replace(/\s+is blank\.?$/i, "").trim())
+    .map((value) => value.replace(/\s+(?:is blank|needs more detail)\.?$/i, "").trim())
     .filter(Boolean)));
   if (labels.length === 0) {
     return "";
   }
-  return `Complete blank fields: ${labels.slice(0, 4).join(", ")}.`;
+  return `Missing or weak fields: ${labels.slice(0, 4).join(", ")}.`;
+}
+
+function getVisitNoteCompletionBadge(summary: VisitNoteSummary): { label: string; className: string } | null {
+  if (summary.completionStatus === "capture_needed") {
+    return { label: "Capture needed", className: "badge danger" };
+  }
+  if (summary.completionStatus === "incomplete" || summary.missingFields.length > 0) {
+    return { label: "Incomplete", className: "badge warning" };
+  }
+  return null;
 }
 
 function getVisitNoteProblemAndFix(summary: VisitNoteSummary): { problem: string; fix: string } {
   const mapping = summary.pocMappingResult;
   const relatedPoc = formatVisitNotePocTargets(mapping);
   const relatedText = relatedPoc ? ` for ${relatedPoc}` : "";
-  const missingFields = formatVisitNoteMissingFields(mapping?.missingDocumentation);
+  const missingFields = formatVisitNoteMissingFields(
+    summary.missingFields.length > 0 ? summary.missingFields : mapping?.missingDocumentation,
+  );
 
-  if (summary.captureStatus === "failed" || summary.analysisStatus === "failed") {
+  if (summary.completionStatus === "capture_needed" || summary.captureStatus === "failed" || summary.analysisStatus === "failed") {
     return {
       problem: "Visit Note DOM capture did not complete.",
       fix: "Reopen the note and rerun DOM capture so it can be checked against the Plan of Care.",
@@ -1131,6 +1740,13 @@ function getVisitNoteProblemAndFix(summary: VisitNoteSummary): { problem: string
     return {
       problem: `Visit Note is related${relatedText}, but incomplete items remain.`,
       fix: missingFields || "Review only the unmatched or unclear Visit Note text against the Plan of Care.",
+    };
+  }
+
+  if (summary.completionStatus === "incomplete") {
+    return {
+      problem: `Visit Note is incomplete${relatedText}.`,
+      fix: missingFields || "Complete the missing or weak Visit Note text fields before QA sign-off.",
     };
   }
 
@@ -1191,6 +1807,8 @@ function VisitNotesTab({ patient }: { patient: PatientDetail }) {
   const attentionCount = visibleSummaries.filter((summary) =>
     summary.captureStatus === "failed" ||
     summary.analysisStatus === "failed" ||
+    summary.completionStatus === "capture_needed" ||
+    summary.completionStatus === "incomplete" ||
     ["contradiction", "not_aligned", "insufficient_documentation", "partially_aligned", "needs_review"].includes(summary.pocMappingResult?.alignmentStatus ?? "")
   ).length;
 
@@ -1235,15 +1853,22 @@ function VisitNotesTab({ patient }: { patient: PatientDetail }) {
         <div className="section-field-list">
           {visibleSummaries.map((summary) => {
             const triage = getVisitNoteProblemAndFix(summary);
+            const visitDate = formatVisitNoteDate(summary.visitDate);
+            const completionBadge = getVisitNoteCompletionBadge(summary);
+            const missingFields = formatVisitNoteMissingFields(summary.missingFields);
             return (
               <details className="flagged-field-row visit-note-detail-card" key={summary.visitNoteKey}>
                 <summary className="flagged-field-header">
                   <div>
                     <strong>{formatStatusLabel(summary.visitType)}</strong>
+                    {visitDate ? <div className="muted">Visit date: {visitDate}</div> : null}
                   </div>
                   <div className="badge-row">
                     {summary.lifecycleStatus === "active_monitoring" ? (
                       <span className="badge danger">New QA</span>
+                    ) : null}
+                    {completionBadge ? (
+                      <span className={completionBadge.className}>{completionBadge.label}</span>
                     ) : null}
                   </div>
                 </summary>
@@ -1252,6 +1877,14 @@ function VisitNotesTab({ patient }: { patient: PatientDetail }) {
                     <div className="comparison-value-label">Problem</div>
                     <div className="comparison-value-text">{triage.problem}</div>
                   </div>
+                  {missingFields || summary.completionReasons.length > 0 ? (
+                    <div className="field-debug-meta">
+                      <div className="comparison-value-label">Completion</div>
+                      <div className="comparison-value-text">
+                        {missingFields || summary.completionReasons.slice(0, 3).join(" ")}
+                      </div>
+                    </div>
+                  ) : null}
                   {summary.textInputSuggestions.length > 0 ? (
                     <div className="field-debug-meta visit-note-suggestion-list">
                       <div className="comparison-value-label">Suggested Text Input</div>
@@ -1443,13 +2076,17 @@ function ComparisonRow({
   comparison,
   onInspect,
   isSelected,
+  presentation = "full",
 }: {
   comparison: FieldComparison;
   onInspect?: (fieldKey: string) => void;
   isSelected?: boolean;
+  presentation?: "full" | "clinical";
 }) {
+  const showDiagnosticDetails = presentation === "full";
+  const showSourceSnippet = showDiagnosticDetails && comparison.evidence.length > 0;
   return (
-    <article className={`comparison-row${isSelected ? " selected" : ""}`}>
+    <article className={`comparison-row${isSelected ? " selected" : ""}${presentation === "clinical" ? " clinical" : ""}`}>
       <div className="comparison-row-main">
         <div className="comparison-field-block">
           <div className="comparison-field-label">{comparison.fieldLabel}</div>
@@ -1470,31 +2107,39 @@ function ComparisonRow({
           <div className="comparison-value-text">{comparison.displayPortalValue}</div>
         </div>
 
-        <div className="comparison-status-block">
-          <span className={getResultBadgeClass(comparison.comparisonResult)}>{getResultLabel(comparison.comparisonResult)}</span>
-          {shouldShowReviewStatus(comparison) ? <span className="badge">{comparison.reviewStatus}</span> : null}
-          <span className="badge">{getConfidenceLabel(comparison.confidence)}</span>
-          {comparison.isFormattingOnlyDifference ? <span className="badge success">Formatting only</span> : null}
-          {comparison.isFieldLeakSuspected ? <span className="badge warning">Possible field leak</span> : null}
-        </div>
+        {showDiagnosticDetails ? (
+          <div className="comparison-status-block">
+            <span className={getResultBadgeClass(comparison.comparisonResult)}>{getResultLabel(comparison.comparisonResult)}</span>
+            {shouldShowReviewStatus(comparison) ? <span className="badge">{comparison.reviewStatus}</span> : null}
+            <span className="badge">{getConfidenceLabel(comparison.confidence)}</span>
+            {comparison.isFormattingOnlyDifference ? <span className="badge success">Formatting only</span> : null}
+            {comparison.isFieldLeakSuspected ? <span className="badge warning">Possible field leak</span> : null}
+          </div>
+        ) : null}
       </div>
 
-      <div className="comparison-row-footer">
-        <div className="comparison-row-reason">{comparison.shortReason}</div>
+      {showDiagnosticDetails || showSourceSnippet || onInspect ? (
+        <div className="comparison-row-footer">
+          {showDiagnosticDetails ? <div className="comparison-row-reason">{comparison.shortReason}</div> : null}
         <div className="comparison-row-actions">
-          <span className="badge">{getSourceSupportLabel(comparison.sourceSupportStrength)}</span>
-          <span className="badge">{getMappingStrengthLabel(comparison.mappingStrength)}</span>
-          {comparison.visibilityDecision && comparison.visibilityDecision !== "show" ? (
-            <span className="badge">{formatStatusLabel(comparison.visibilityDecision)}</span>
+          {showDiagnosticDetails ? (
+            <>
+              <span className="badge">{getSourceSupportLabel(comparison.sourceSupportStrength)}</span>
+              <span className="badge">{getMappingStrengthLabel(comparison.mappingStrength)}</span>
+              {comparison.visibilityDecision && comparison.visibilityDecision !== "show" ? (
+                <span className="badge">{formatStatusLabel(comparison.visibilityDecision)}</span>
+              ) : null}
+            </>
           ) : null}
-          <DocumentSnippetPopover comparison={comparison} />
+          {showSourceSnippet ? <DocumentSnippetPopover comparison={comparison} /> : null}
           {onInspect ? (
             <button className="button secondary compact" onClick={() => onInspect(comparison.fieldKey)} type="button">
               Inspect
             </button>
           ) : null}
         </div>
-      </div>
+        </div>
+      ) : null}
     </article>
   );
 }
@@ -2011,9 +2656,7 @@ export default function PatientDetailPage() {
 
           {activeTab === "referral_vs_oasis" ? (
             <ReferralVsOasisTab
-              diagnosisRows={diagnosisRows}
-              medicationRows={medicationRows}
-              patient={patient}
+              workspace={workspace}
             />
           ) : null}
 

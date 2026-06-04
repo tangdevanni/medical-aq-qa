@@ -5,12 +5,16 @@ import path from "node:path";
 import { loadEnv } from "../config/env";
 import { createPortalSession } from "../browser/context";
 import { LoginPage } from "../portal/pages/LoginPage";
-import { extractDocumentsFromArtifacts, type ExtractedDocument } from "../services/documentExtractionService";
+import { extractDocumentsFromArtifacts } from "../services/documentExtractionService";
 import { writeDocumentTextFile } from "../services/documentTextExportService";
 import { buildDocumentFactPack, writeDocumentFactPackFile } from "../services/documentFactPackBuilder";
 import { extractDiagnosisCodingContext } from "../services/diagnosisCodingExtractionService";
 import { writeCodingInputFile } from "../services/codingInputExportService";
 import { runReferralDocumentProcessingPipeline } from "../referralProcessing/pipeline";
+import {
+  collectReferralSourceDocumentsFromArtifacts,
+  filterArtifactsForNonReferralTextExtraction,
+} from "../referralProcessing/sourceDocumentHandoff";
 import { writePatientDashboardState } from "../services/patientDashboardStateWriter";
 import type { ArtifactRecord, PatientRun } from "@medical-ai-qa/shared-types";
 
@@ -341,8 +345,8 @@ async function main() {
       notes: [`allReferralUploadManifest:${manifestPath}`],
     };
 
-    const extractedDocuments = await extractDocumentsFromArtifacts([artifact]);
-    const orderDocuments: ExtractedDocument[] = extractedDocuments.filter((document) => document.type === "ORDER");
+    const referralSourceDocuments = collectReferralSourceDocumentsFromArtifacts([artifact]);
+    const extractedDocuments = await extractDocumentsFromArtifacts(filterArtifactsForNonReferralTextExtraction([artifact]));
     await writeFile(path.join(patientDirectory, "document-inventory.json"), JSON.stringify({
       schemaVersion: "1",
       generatedAt: new Date().toISOString(),
@@ -383,13 +387,14 @@ async function main() {
       batchId: batch.id,
       canonical: diagnosisContext.canonical,
     });
-    if (orderDocuments.length > 0) {
+    if (referralSourceDocuments.length > 0) {
       await runReferralDocumentProcessingPipeline({
         workItem: run.workItemSnapshot,
         outputDir,
         env,
         logger: console as never,
-        extractedDocuments: orderDocuments,
+        extractedDocuments: [],
+        sourceDocuments: referralSourceDocuments,
       });
     }
 
@@ -431,7 +436,7 @@ async function main() {
       uploadCount: labels.length,
       capturedCount: captured.filter((item) => item.status === "captured" || item.status === "viewer_text_only").length,
       extractedDocumentCount: extractedDocuments.length,
-      orderDocumentCount: orderDocuments.length,
+      referralSourceDocumentCount: referralSourceDocuments.length,
       referralFactCount: factPack.stats.rawCharacters,
     }, null, 2));
   } finally {

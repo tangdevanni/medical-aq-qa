@@ -447,6 +447,7 @@ const patientViewInput = {
             status: "COMPLETED",
             filledFieldCount: 4,
             missingFieldCount: 0,
+            evidence: ["Administrative Information: SOC 03/01/2026."],
           },
           {
             key: "care_plan",
@@ -1832,12 +1833,12 @@ describe("dashboardRunViews", () => {
     assert.equal(summary.qaPrefetch?.second30TotalCards, 2);
     assert.equal(summary.qaPrefetch?.first30WorkbookColumns.sn, "SN - 1");
     assert.equal(summary.qaPrefetch?.second30WorkbookColumns.ptOtSt, "PT - 1");
-    assert.equal(summary.qaPrefetch?.printedNoteStatus, "PARTIAL");
-    assert.equal(summary.qaPrefetch?.printedNoteAssessmentType, "SOC");
-    assert.equal(summary.qaPrefetch?.printedNoteCompletedSectionCount, 1);
-    assert.equal(summary.qaPrefetch?.printedNoteIncompleteSectionCount, 1);
-    assert.equal(summary.qaPrefetch?.printedNotePrintButtonDetected, true);
-    assert.equal(summary.qaPrefetch?.printedNoteTextLength, 8120);
+    assert.equal(summary.qaPrefetch?.printedNoteStatus, null);
+    assert.equal(summary.qaPrefetch?.printedNoteAssessmentType, null);
+    assert.equal(summary.qaPrefetch?.printedNoteCompletedSectionCount, 0);
+    assert.equal(summary.qaPrefetch?.printedNoteIncompleteSectionCount, 0);
+    assert.equal(summary.qaPrefetch?.printedNotePrintButtonDetected, false);
+    assert.equal(summary.qaPrefetch?.printedNoteTextLength, 0);
     assert.equal(summary.oasisValidation?.status, "validated_with_gaps");
     assert.equal(summary.oasisValidation?.missingFieldCount, 2);
     assert.equal(summary.referralOasisConsistency?.blockingFindingCount, 1);
@@ -1854,12 +1855,12 @@ describe("dashboardRunViews", () => {
     assert.equal(summary.referralQa.extractionUsabilityStatus, "usable");
     assert.equal(summary.referralQa.discrepancyRating, "yellow");
     assert.equal(summary.referralQa.discrepancyCounts.total, 1);
-    assert.equal(summary.dashboardReview.severity, "yellow");
+    assert.equal(summary.dashboardReview.severity, "red");
     assert.equal(summary.dashboardReview.openRowCount, 1);
     assert.equal(summary.dashboardReview.highPriorityOpenCount, 1);
     assert.equal(summary.dashboardReview.resolvedCount, 0);
     assert.equal(summary.referralQa.sections.length, 1);
-    assert.equal(summary.referralQa.preAuditFindings.length, 0);
+    assert.equal(summary.referralQa.preAuditFindings.length, 1);
     assert.equal(summary.referralQa.sourceHighlights.length > 0, true);
     assert.equal(summary.referralQa.draftNarratives.length > 0, true);
     assert.equal(summary.referralQa.consistencyChecks[0]?.id, "respiratory-vs-m1400");
@@ -2036,6 +2037,321 @@ describe("dashboardRunViews", () => {
     );
   });
 
+  it("keeps OASIS medication table values aligned when optional cells are blank", () => {
+    const summary = toDashboardPatientSummary({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        oasisDomExtractedState: {
+          sections: [{
+            title: "Medication & Allergies (Injectable Medications)",
+            fields: [],
+            tables: [{
+              headers: ["Medication Name", "Strength / Dose", "Route", "Classification", "Start Date", "Status"],
+              rows: [
+                ["Medication Name", "Strength / Dose", "Route", "Classification", "Start Date", "Status"],
+                ["Metformin", "500 mg", "", "Antidiabetic", "05/01/2026", "Active"],
+                ["Furosemide", "", "Oral", "Diuretic", "", "Active"],
+              ],
+            }],
+          }],
+        },
+      },
+    });
+
+    assert.deepEqual(summary.oasisMedicationSummary?.medications.map((entry) => ({
+      name: entry.name,
+      dose: entry.dose,
+      route: entry.route,
+      classification: entry.classification,
+      startDate: entry.startDate,
+      status: entry.status,
+    })), [
+      {
+        name: "Metformin",
+        dose: "500 mg",
+        route: null,
+        classification: "Antidiabetic",
+        startDate: "05/01/2026",
+        status: "Active",
+      },
+      {
+        name: "Furosemide",
+        dose: null,
+        route: "Oral",
+        classification: "Diuretic",
+        startDate: null,
+        status: "Active",
+      },
+    ]);
+  });
+
+  it("uses OASIS DOM section outputs for comparison fallback rows without leaking Plan of Care", () => {
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        fieldMapSnapshot: {
+          generatedAt: "2026-04-11T00:00:00.000Z",
+          fields: [],
+        },
+        oasisDomExtractedState: {
+          sections: [{
+            title: "Safety Risk Assessment",
+            status: "success",
+            fields: [{
+              label: "Living Situation",
+              key: "living_situation",
+              value: "Raw DOM value that should be secondary",
+              sourceKind: "input",
+              confidence: "high",
+            }],
+            tables: [],
+          }],
+          coverage: {
+            sectionCount: 1,
+            fieldCount: 1,
+            nonEmptyFieldCount: 1,
+            tableCount: 0,
+            confidence: "high",
+            fallbackRecommended: false,
+            fallbackReasons: [],
+          },
+          diagnostics: {
+            inputSource: "dom_state_primary",
+            ocrUsed: false,
+            pdfCaptureUsed: false,
+          },
+          contentHash: "dom-hash",
+        },
+        oasisDomSectionOutputs: {
+          schemaVersion: "oasis-dom-section-outputs.v1",
+          sections: [
+            {
+              sectionKey: "safety_social_support",
+              label: "Safety / Social Support",
+              rows: [{
+                label: "Living Situation",
+                value: "Lives alone",
+                meta: null,
+                sourceKind: "structured_value",
+                confidence: 0.94,
+                sourceSectionTitle: "Safety Risk Assessment",
+                sourceItemCode: null,
+              }],
+            },
+            {
+              sectionKey: "plan_of_care",
+              label: "Plan of Care",
+              rows: [{
+                label: "Goal",
+                value: "Improve TUG score to 12 seconds.",
+                meta: null,
+                sourceKind: "structured_value",
+                confidence: 0.94,
+                sourceSectionTitle: "Plan of Care",
+                sourceItemCode: null,
+              }],
+            },
+          ],
+          summary: {
+            totalSections: 2,
+            processedSections: 1,
+            reusedSections: 1,
+          },
+        },
+      },
+    });
+
+    const rowValues = detail.dashboardState.rows.map((row) => row.displayPortalValue);
+    assert.ok(rowValues.includes("Lives alone"));
+    assert.ok(!rowValues.includes("Raw DOM value that should be secondary"));
+    assert.ok(!rowValues.includes("Improve TUG score to 12 seconds."));
+    assert.ok(
+      detail.dashboardState.rows.some((row) => row.sourceArtifacts.includes("oasis-dom-section-outputs.json")),
+    );
+  });
+
+  it("renders OASIS allergy status and explicit start dates from DOM allergy tables", () => {
+    const summary = toDashboardPatientSummary({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        oasisDomExtractedState: {
+          sections: [{
+            title: "Medication & Allergies",
+            fields: [],
+            tables: [{
+              headers: ["Name", "Reaction", "Start Date", "Status"],
+              rows: [
+                ["Name", "Reaction", "Start Date", "Status"],
+                ["Penicillin", "Rash", "05/01/2026", "Active"],
+              ],
+            }],
+          }],
+        },
+      },
+    });
+
+    assert.deepEqual(summary.oasisMedicationSummary?.allergies, [{
+      name: "Penicillin",
+      reaction: "Rash",
+      startDate: "05/01/2026",
+      status: "Active",
+      source: "OASIS DOM allergy table",
+    }]);
+  });
+
+  it("does not render referral medication extraction fragments as medication names", () => {
+    const summary = toDashboardPatientSummary({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        documentFactPack: {
+          factPack: {
+            medications: [
+              { name: "Left", dose: "40 mg" },
+              { name: "Tendon And Trochanteric Bursa Kenalog", dose: "40 mg" },
+              { name: "Tablet" },
+              { name: "mg Capsule" },
+              { name: "Capsule By" },
+              { name: "Oxycodone -", dose: "10 mg" },
+              { name: "Ondansetron HCI 09/19/2021", dose: "4 mg" },
+            ],
+            allergies: ["No known drug"],
+          },
+        },
+      },
+    });
+
+    assert.deepEqual(summary.referralMedicationSummary?.medications.map((entry) => ({
+      name: entry.name,
+      dose: entry.dose,
+    })), [
+      { name: "Kenalog", dose: "40 mg" },
+      { name: "Oxycodone", dose: "10 mg" },
+      { name: "Ondansetron HCl", dose: "4 mg" },
+    ]);
+    assert.deepEqual(summary.referralMedicationSummary?.allergies, [{
+      name: "No known drug",
+      reaction: null,
+      startDate: null,
+      status: null,
+      source: "Referral document",
+    }]);
+  });
+
+  it("prefers direct-document referral medication and allergy facts over legacy document fact packs", () => {
+    const summary = toDashboardPatientSummary({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        referralExtractedFacts: {
+          facts: [
+            {
+              fact_key: "medication_list",
+              value: [{
+                name: "Acetaminophen",
+                dose: "500 mg",
+                route: "PO",
+                start_date: "05/02/2026",
+                status: "Active",
+              }],
+              evidence_spans: ["Acetaminophen 500 mg PO start date 05/02/2026"],
+            },
+            {
+              fact_key: "allergy_list",
+              value: [{
+                name: "No known allergies",
+                status: "Active",
+              }],
+              evidence_spans: ["Allergies: No known allergies"],
+            },
+          ],
+        },
+        documentFactPack: {
+          factPack: {
+            medications: [{ name: "Legacy OCR Med", dose: "1 mg" }],
+            allergies: ["Legacy OCR Allergy"],
+          },
+        },
+      },
+    });
+
+    assert.equal(summary.referralMedicationSummary?.medicationSource, "direct_document_referral");
+    assert.deepEqual(summary.referralMedicationSummary?.medications.map((entry) => ({
+      name: entry.name,
+      dose: entry.dose,
+      route: entry.route,
+      startDate: entry.startDate,
+      status: entry.status,
+      source: entry.source,
+    })), [{
+      name: "Acetaminophen",
+      dose: "500 mg",
+      route: "PO",
+      startDate: "05/02/2026",
+      status: "Active",
+      source: "Direct-document referral",
+    }]);
+    assert.deepEqual(summary.referralMedicationSummary?.allergies, [{
+      name: "No known allergies",
+      reaction: null,
+      startDate: null,
+      status: "Active",
+      source: "Direct-document referral",
+    }]);
+  });
+
+  it("renders referral medication and allergy start dates from document fact packs", () => {
+    const summary = toDashboardPatientSummary({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        documentFactPack: {
+          factPack: {
+            medications: [
+              {
+                name: "Eliquis",
+                dose: "2.5 mg",
+                route: "PO",
+                frequency: "twice daily",
+                startDate: "01/24/2026",
+              },
+            ],
+            allergies: [{
+              name: "Penicillin",
+              reaction: "Rash",
+              startDate: "01/20/2026",
+              status: "Active",
+            }],
+          },
+        },
+      },
+    });
+
+    assert.deepEqual(summary.referralMedicationSummary?.medications.map((entry) => ({
+      name: entry.name,
+      dose: entry.dose,
+      route: entry.route,
+      startDate: entry.startDate,
+    })), [
+      {
+        name: "Eliquis",
+        dose: "2.5 mg",
+        route: "PO",
+        startDate: "01/24/2026",
+      },
+    ]);
+    assert.deepEqual(summary.referralMedicationSummary?.allergies, [{
+      name: "Penicillin",
+      reaction: "Rash",
+      startDate: "01/20/2026",
+      status: "Active",
+      source: "Referral document",
+    }]);
+  });
+
   it("returns patient detail as diagnosis reference data plus minimal workbook context", () => {
     const detail = toDashboardPatientDetail(patientViewInput);
 
@@ -2057,32 +2373,31 @@ describe("dashboardRunViews", () => {
     assert.equal(detail.qaPrefetch?.outsideRangeTotalCards, 1);
     assert.equal(detail.qaPrefetch?.first30WorkbookColumns.sn, "SN - 1");
     assert.equal(detail.qaPrefetch?.second30WorkbookColumns.ptOtSt, "PT - 1");
-    assert.equal(detail.qaPrefetch?.printedNoteReviewSource, "printed_note_ocr");
-    assert.equal(detail.qaPrefetch?.printedNoteSections.length, 2);
-    assert.equal(detail.qaPrefetch?.printedNoteSections[1]?.label, "Care Plan");
+    assert.equal(detail.qaPrefetch?.printedNoteReviewSource, null);
+    assert.equal(detail.qaPrefetch?.printedNoteSections.length, 0);
     assert.equal(detail.oasisValidation?.missingFields[0]?.mItem, "M1730");
     assert.equal(detail.referralOasisConsistency?.findings[0]?.category, "cognition");
     assert.equal(detail.oasisGate?.planOfCareAttempted, false);
     assert.equal(detail.referralPatientContext?.referralDate, "02/17/2026");
     assert.equal(detail.referralSections.length, 1);
     assert.equal(detail.referralSections[0]?.fields[0]?.comparisonStatus, "supported_by_referral");
-    assert.equal(detail.referralSections[0]?.fields[0]?.currentChartValueSource, "printed_note_ocr");
-    assert.equal(detail.referralSections[0]?.fields[0]?.populatedInChart, true);
+    assert.equal(detail.referralSections[0]?.fields[0]?.currentChartValueSource, "unavailable");
+    assert.equal(detail.referralSections[0]?.fields[0]?.populatedInChart, false);
     assert.equal(detail.dashboardState.rows.length, 1);
-    assert.equal(detail.dashboardState.rows[0]?.comparisonResult, "uncertain");
+    assert.equal(detail.dashboardState.rows[0]?.comparisonResult, "missing_in_portal");
     assert.equal(detail.dashboardState.rows[0]?.backendComparisonStatus, "supported_by_referral");
-    assert.equal(detail.dashboardState.rows[0]?.currentChartValueSource, "printed_note_ocr");
-    assert.equal(detail.dashboardState.rows[0]?.oasisEvidenceMode, "printed_note_ocr");
-    assert.equal(detail.dashboardState.rows[0]?.oasisEvidenceLabel, "OCR field value");
-    assert.equal(detail.dashboardState.rows[0]?.qaResultLabel, "Check source documents");
-    assert.equal(detail.dashboardState.rows[0]?.qaActionLabel, "Check source documents");
+    assert.equal(detail.dashboardState.rows[0]?.currentChartValueSource, "unavailable");
+    assert.equal(detail.dashboardState.rows[0]?.oasisEvidenceMode, "unavailable");
+    assert.equal(detail.dashboardState.rows[0]?.oasisEvidenceLabel, "Not captured");
+    assert.equal(detail.dashboardState.rows[0]?.qaResultLabel, "OASIS not captured");
+    assert.equal(detail.dashboardState.rows[0]?.qaActionLabel, "Check OASIS source");
     assert.equal(detail.dashboardState.rows[0]?.referralComparisonOrigin, "referral_qa_fallback");
     assert.equal(
       detail.dashboardState.rows[0]?.valuePresence.hasPrintedNoteChartValue,
-      true,
+      false,
     );
     assert.equal(detail.dashboardState.visibilitySummary.hiddenRows, 0);
-    assert.equal(detail.dashboardState.sourceCoverage.fieldLevelValueCount, 1);
+    assert.equal(detail.dashboardState.sourceCoverage.fieldLevelValueCount, 0);
     assert.equal(detail.dashboardState.sourceCoverage.sectionEvidenceFallbackRowCount, 0);
     assert.equal(detail.dashboardReview.openRowCount, 1);
     assert.equal(
@@ -2299,7 +2614,7 @@ describe("dashboardRunViews", () => {
     );
   });
 
-  it("falls back to printed-note diagnoses when coding input is missing", () => {
+  it("ignores printed-note diagnoses when coding input is missing", () => {
     const summary = toDashboardPatientSummary({
       ...patientViewInput,
       artifactContents: {
@@ -2320,8 +2635,9 @@ describe("dashboardRunViews", () => {
     assert.equal(summary.diagnosisSource, "document_fact_pack");
     assert.equal(summary.primaryDiagnosis?.code, "J18.9");
     assert.equal(summary.referralDiagnosisSummary.primaryDiagnosis?.code, "J18.9");
-    assert.equal(summary.oasisDiagnosisSummary.primaryDiagnosis?.code, "R13.10");
-    assert.equal(summary.diagnosisComparisonStatus, "conflict");
+    assert.equal(summary.oasisDiagnosisSummary.primaryDiagnosis?.code, "J18.9");
+    assert.notEqual(summary.oasisDiagnosisSummary.primaryDiagnosis?.code, "R13.10");
+    assert.equal(summary.diagnosisComparisonStatus, "partial_overlap");
   });
 
   it("falls back to document fact pack diagnoses when coding and printed-note diagnoses are missing", () => {
@@ -2388,7 +2704,7 @@ describe("dashboardRunViews", () => {
     assert.equal(summary.diagnosisComparisonStatus, "aligned");
   });
 
-  it("suppresses noisy printed-note primary diagnosis values in the comparison workspace", () => {
+  it("ignores noisy printed-note primary diagnosis values in the comparison workspace", () => {
     const diagnosisReference: PatientQaReference = {
       ...patientQaReference,
       fieldRegistry: [
@@ -2516,7 +2832,8 @@ describe("dashboardRunViews", () => {
 
     assert.ok(primaryDiagnosisRow);
     assert.match(primaryDiagnosisRow.displayReferralValue, /J18\.9/i);
-    assert.match(primaryDiagnosisRow.displayPortalValue, /Printed OASIS review captured Diagnosis section evidence/i);
+    assert.equal(primaryDiagnosisRow.displayPortalValue, "No chart data captured");
+    assert.equal(primaryDiagnosisRow.oasisEvidenceMode, "unavailable");
     assert.equal(primaryDiagnosisRow.currentChartValue, null);
   });
 
@@ -2545,7 +2862,7 @@ describe("dashboardRunViews", () => {
     assert.equal(summary.referralQa.warnings.length, 2);
   });
 
-  it("prefers refreshed printed-note values over stale printed-note snapshot values", () => {
+  it("ignores refreshed printed-note values and stale printed-note snapshot values", () => {
     const detail = toDashboardPatientDetail({
       ...patientViewInput,
       artifactContents: {
@@ -2572,14 +2889,15 @@ describe("dashboardRunViews", () => {
 
     assert.equal(
       detail.referralSections[0]?.fields[0]?.currentChartValue,
-      "Refreshed printed-note value from the latest OCR artifact.",
+      null,
     );
-    assert.equal(detail.referralSections[0]?.fields[0]?.currentChartValueSource, "printed_note_ocr");
+    assert.equal(detail.referralSections[0]?.fields[0]?.currentChartValueSource, "unavailable");
     assert.equal(
       detail.dashboardState.rows[0]?.currentChartValue,
-      "Refreshed printed-note value from the latest OCR artifact.",
+      null,
     );
-    assert.equal(detail.dashboardState.rows[0]?.currentChartValueSource, "printed_note_ocr");
+    assert.equal(detail.dashboardState.rows[0]?.currentChartValueSource, "unavailable");
+    assert.equal(detail.dashboardState.rows[0]?.valuePresence.hasPrintedNoteChartValue, false);
   });
 
   it("does not override a real chart read with printed-note recovery values", () => {
@@ -2613,7 +2931,7 @@ describe("dashboardRunViews", () => {
     assert.equal(detail.dashboardState.rows[0]?.currentChartValueSource, "chart_read");
   });
 
-  it("falls back to printed-note review evidence when structured chart values are missing", () => {
+  it("ignores printed-note review evidence when structured chart values are missing", () => {
     const detail = toDashboardPatientDetail({
       ...patientViewInput,
       artifactContents: {
@@ -2652,21 +2970,21 @@ describe("dashboardRunViews", () => {
 
     assert.equal(
       detail.dashboardState.rows[0]?.displayPortalValue,
-      "Printed OASIS review captured Primary Reason / Medical Necessity section evidence (completed; 4 captured).",
+      "No chart data captured",
     );
-    assert.equal(detail.dashboardState.rows[0]?.currentChartValueSourceLabel, "OASIS section evidence only");
+    assert.equal(detail.dashboardState.rows[0]?.currentChartValueSourceLabel, "Not captured");
     assert.equal(
       detail.dashboardState.rows[0]?.oasisEvidenceMode,
-      "printed_note_review_section_fallback",
+      "unavailable",
     );
-    assert.equal(detail.dashboardState.rows[0]?.oasisEvidenceLabel, "OASIS section evidence only");
+    assert.equal(detail.dashboardState.rows[0]?.oasisEvidenceLabel, "Not captured");
     assert.equal(
       detail.dashboardState.rows[0]?.portalSnippet,
-      "Primary Reason for Home Health/Medical Necessity (POC Element): Skilled nursing for medication management and wound care.",
+      null,
     );
-    assert.equal(detail.dashboardState.rows[0]?.comparisonResult, "uncertain");
-    assert.equal(detail.dashboardState.rows[0]?.reviewStatus, "Needs Source Review");
-    assert.equal(detail.dashboardState.rows[0]?.qaResultLabel, "Check source documents");
+    assert.equal(detail.dashboardState.rows[0]?.comparisonResult, "missing_in_portal");
+    assert.equal(detail.dashboardState.rows[0]?.reviewStatus, "Missing in Chart Snapshot");
+    assert.equal(detail.dashboardState.rows[0]?.qaResultLabel, "OASIS not captured");
   });
 
   it("surfaces OASIS capture skip reasons instead of generic missing-chart messaging", () => {
@@ -2899,16 +3217,16 @@ describe("dashboardRunViews", () => {
         confidence: 0.91,
       }],
       oasisEvidence: [{
-        artifact: "printed-note-chart-values.json",
-        sourceType: "PRINTED_NOTE_OCR",
-        sourceLabel: "Printed note chart values",
+        artifact: "oasis-dom-extracted-state.json",
+        sourceType: "OASIS_DOM_STATE",
+        sourceLabel: "OASIS DOM state",
         snippet: "Canonical OASIS value",
         confidence: null,
       }],
       needsReview: true,
       sources: {
         referralArtifacts: ["patient-qa-reference.json"],
-        oasisArtifacts: ["printed-note-chart-values.json"],
+        oasisArtifacts: ["oasis-dom-extracted-state.json"],
       },
     }];
 
@@ -2940,10 +3258,58 @@ describe("dashboardRunViews", () => {
     assert.equal(detail.dashboardState.rows[0]?.comparisonResult, "mismatch");
     assert.deepEqual(detail.dashboardState.rows[0]?.sourceArtifacts, [
       "patient-qa-reference.json",
-      "printed-note-chart-values.json",
+      "oasis-dom-extracted-state.json",
     ]);
+    assert.equal(detail.dashboardState.rows[0]?.oasisEvidenceMode, "portal_dom_state");
     assert.equal(detail.dashboardState.comparisonRowsStatus, "ready");
     assert.equal(detail.dashboardState.comparisonRowsRowCount, 1);
+  });
+
+  it("ignores OCR-only canonical OASIS comparison row values", () => {
+    const clinicalComparisonRows: ClinicalComparisonRow[] = [{
+      fieldKey: "primary_reason_for_home_health_medical_necessity",
+      category: "Patient Summary & Clinical Narrative",
+      referralValue: "Canonical referral value",
+      oasisValue: "Historical OCR OASIS value",
+      verdict: "mismatch",
+      confidence: 0.91,
+      severity: "high",
+      rationale: "Historical printed-note values must not power current dashboard output.",
+      referralEvidence: [{
+        artifact: "patient-qa-reference.json",
+        sourceType: "REFERRAL_ORDER",
+        sourceLabel: "Referral Order",
+        snippet: "Canonical referral value",
+        confidence: 0.91,
+      }],
+      oasisEvidence: [{
+        artifact: "printed-note-chart-values.json",
+        sourceType: "PRINTED_NOTE_OCR",
+        sourceLabel: "Printed note chart values",
+        snippet: "Historical OCR OASIS value",
+        confidence: null,
+      }],
+      needsReview: true,
+      sources: {
+        referralArtifacts: ["patient-qa-reference.json"],
+        oasisArtifacts: ["printed-note-chart-values.json"],
+      },
+    }];
+
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        clinicalComparisonRows,
+      },
+    });
+
+    assert.equal(detail.dashboardState.rows.length, 1);
+    assert.equal(detail.dashboardState.rows[0]?.displayReferralValue, "Canonical referral value");
+    assert.equal(detail.dashboardState.rows[0]?.displayPortalValue, "No chart data captured");
+    assert.equal(detail.dashboardState.rows[0]?.currentChartValue, null);
+    assert.equal(detail.dashboardState.rows[0]?.oasisEvidenceMode, "unavailable");
+    assert.deepEqual(detail.dashboardState.rows[0]?.sourceArtifacts, ["patient-qa-reference.json"]);
   });
 
   it("uses canonical row evidence as display fallback when explicit values are absent", () => {

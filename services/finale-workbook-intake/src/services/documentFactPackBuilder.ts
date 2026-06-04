@@ -2,7 +2,10 @@ import { basename, join } from "node:path";
 import { mkdir, writeFile } from "node:fs/promises";
 import type { ExtractedDocument } from "./documentExtractionService";
 import { getClinicalTextQualityReason } from "./clinicalTextQualityService";
-import { isClearlyNotDiagnosisDescription } from "./diagnosisTextGuard";
+import {
+  isClearlyNotDiagnosisDescription,
+  isSuspiciousIcdDescriptionPair,
+} from "./diagnosisTextGuard";
 
 export interface FactSnippet {
   field: string;
@@ -24,6 +27,7 @@ export interface MedicationFact {
   dose?: string;
   route?: string;
   frequency?: string;
+  startDate?: string;
   source?: string;
   page?: number;
 }
@@ -76,8 +80,13 @@ const MEDICATION_ROUTE_PATTERN =
   /\b(po|iv|im|sq|subq|subcutaneous|topical|inhalation|neb|nasal|ophthalmic|otic|pr|sl|patch)\b/i;
 const MEDICATION_FREQUENCY_PATTERN =
   /\b(?:daily|bid|tid|qid|qhs|qam|qpm|every\s+\d+\s*(?:hours?|days?)|weekly|twice daily|three times daily|as needed|prn)\b/i;
+const MEDICATION_DATE_VALUE_PATTERN = String.raw`(?:\d{1,2}[/-]\d{1,2}[/-]\d{2,4}|\d{4}[/-]\d{1,2}[/-]\d{1,2})`;
+const MEDICATION_START_DATE_PATTERN = new RegExp(
+  String.raw`\b(?:date\s+started|start(?:ed)?(?:\s+date)?|effective(?:\s+date)?)\b(?!\s+of\s+care)\s*[:#-]?\s*(${MEDICATION_DATE_VALUE_PATTERN})`,
+  "i",
+);
 const KNOWN_MEDICATION_PATTERN =
-  /\b(?:insulin|warfarin|metformin|lasix|furosemide|lisinopril|aspirin|acetaminophen|eliquis|apixaban|toprol|metoprolol|omeprazole|losartan|atorvastatin|januvia|solifenacin|gabapentin|amlodipine|levothyroxine|fluoxetine|oxycodone|torsemide|potassium|klor-con)\b/i;
+  /\b(?:insulin|warfarin|metformin|lasix|furosemide|lisinopril|aspirin|acetaminophen|eliquis|apixaban|toprol|metoprolol|omeprazole|losartan|atorvastatin|januvia|solifenacin|gabapentin|amlodipine|levothyroxine|fluoxetine|oxycodone|torsemide|potassium|klor-con|kenalog|triamcinolone|tramadol|ondansetron|bupropion)\b/i;
 const ASSESSMENT_PATTERN =
   /\b(?:score|total|pain\s*(?:scale)?|phq-?9|braden|morse|fall risk|blood pressure|bp|pulse|respiratory rate|temperature|spo2|oxygen saturation)\b/i;
 const HOMEBOUND_PATTERN =
@@ -300,6 +309,7 @@ function cleanDiagnosisDescription(line: string): string {
     line
       .replace(/\b(?:admitting diagnosis|primary diagnosis|secondary diagnosis(?:es)?|other diagnoses?|active diagnoses?|diagnoses?|icd(?:-10)?(?: code)?s?)\b[:\-]?/gi, "")
       .replace(ICD_CODE_PATTERN, " ")
+      .replace(/\(\s*\)/g, " ")
       .replace(/\b(?:dx|codes?)\b[:\-]?/gi, " ")
       .replace(/^[\s):-]+/, "")
       .replace(/\s+/g, " "),
@@ -308,7 +318,7 @@ function cleanDiagnosisDescription(line: string): string {
 
 function isNonClinicalDiagnosisReference(value: string): boolean {
   return isClearlyNotDiagnosisDescription(value) ||
-    /diagnosis and treatment records|substance abuse diagnosis|disclos(?:e|ure) information|workers comp|ordering (?:md|npi)|date of birth/i.test(value);
+    /diagnosis and treatment records|substance abuse diagnosis|disclos(?:e|ure) information|workers comp|ordering (?:md|npi)|date of birth|^instructions?:/i.test(value);
 }
 
 function extractDiagnosisFacts(lines: DocumentLine[], extractedDocuments: ExtractedDocument[]): DiagnosisFact[] {
@@ -351,6 +361,9 @@ function extractDiagnosisFacts(lines: DocumentLine[], extractedDocuments: Extrac
     }
 
     for (const code of codes) {
+      if (isSuspiciousIcdDescriptionPair({ icd10Code: code, description })) {
+        continue;
+      }
       const key = `${code}|${description.toLowerCase()}|${rank ?? "unknown"}`;
       if (seen.has(key)) {
         continue;
@@ -387,7 +400,6 @@ function parseMedicationLine(line: DocumentLine): MedicationFact | null {
   const knownMedicationMatch = normalized.match(KNOWN_MEDICATION_PATTERN)?.[0];
   const medicationCue =
     MEDICATION_DOSE_PATTERN.test(normalized) ||
-    /\b(?:tab|tablet|capsule)\b/i.test(normalized) ||
     Boolean(knownMedicationMatch);
   if (!medicationCue) {
     return null;
@@ -404,22 +416,34 @@ function parseMedicationLine(line: DocumentLine): MedicationFact | null {
   const dose = cleaned.match(MEDICATION_DOSE_PATTERN)?.[0];
   const route = cleaned.match(MEDICATION_ROUTE_PATTERN)?.[0];
   const frequency = cleaned.match(MEDICATION_FREQUENCY_PATTERN)?.[0];
+  const startDate = cleaned.match(MEDICATION_START_DATE_PATTERN)?.[1];
   if (/\blab(?:oratory)? results?\b/i.test(line.source ?? "") && !dose && !route && !frequency) {
     return null;
   }
   const parsedName = normalizeWhitespace(
     cleaned
+      .replace(MEDICATION_START_DATE_PATTERN, " ")
+      .replace(/\b\d{1,2}\/\d{1,2}\/\d{2,4}\b/g, " ")
+      .replace(/\b\d{4}[/-]\d{1,2}[/-]\d{1,2}\b/g, " ")
+      .replace(/\bHCI\b/g, "HCl")
       .replace(MEDICATION_DOSE_PATTERN, " ")
       .replace(MEDICATION_ROUTE_PATTERN, " ")
       .replace(MEDICATION_FREQUENCY_PATTERN, " ")
       .replace(/\b(?:take|give|apply|inject)\b/gi, " ")
       .replace(/\s+/g, " "),
   );
-  const name = !dose && knownMedicationMatch
+  const shouldUseKnownMedicationName = Boolean(
+    knownMedicationMatch &&
+    /\b(?:injection|joint|tendon|bursa|trochanteric|cmc|hand)\b/i.test(parsedName),
+  );
+  const name = (shouldUseKnownMedicationName || (!dose && knownMedicationMatch)
     ? knownMedicationMatch
-    : parsedName;
+    : parsedName)?.replace(/\s*[-–—]\s*$/g, "").trim();
 
   if (!name || name.length < 2) {
+    return null;
+  }
+  if (isLikelyMedicationFragmentName(name)) {
     return null;
   }
   if (!knownMedicationMatch && name.split(/\s+/).filter(Boolean).length > 8) {
@@ -434,14 +458,35 @@ function parseMedicationLine(line: DocumentLine): MedicationFact | null {
     dose: dose ? normalizeWhitespace(dose) : undefined,
     route: route ? normalizeWhitespace(route) : undefined,
     frequency: frequency ? normalizeWhitespace(frequency) : undefined,
+    startDate: startDate ? normalizeWhitespace(startDate) : undefined,
     source: line.source,
     page: line.page,
   };
 }
 
+function isLikelyMedicationFragmentName(value: string): boolean {
+  const normalized = value
+    .replace(/[^A-Za-z0-9\s]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .toLowerCase();
+  if (!normalized) {
+    return true;
+  }
+  if (/^(?:left|right|bilateral|upper|lower|anterior|posterior|medial|lateral)$/.test(normalized)) {
+    return true;
+  }
+  if (/^(?:tablet|tab|capsule|cap|pill|mg capsule|mcg capsule|capsule by|tablet by|by mouth|oral)$/.test(normalized)) {
+    return true;
+  }
+  const genericWords = new Set(["mg", "mcg", "g", "ml", "tablet", "tab", "capsule", "cap", "pill", "by", "mouth", "oral"]);
+  const words = normalized.split(/\s+/).filter(Boolean);
+  return words.length > 0 && words.every((word) => genericWords.has(word));
+}
+
 function extractMedicationFacts(lines: DocumentLine[]): MedicationFact[] {
   const facts: MedicationFact[] = [];
-  const seen = new Set<string>();
+  const seen = new Map<string, MedicationFact>();
 
   for (const line of lines) {
     const medication = parseMedicationLine(line);
@@ -454,10 +499,14 @@ function extractMedicationFacts(lines: DocumentLine[]): MedicationFact[] {
       medication.route?.toLowerCase() ?? "",
       medication.frequency?.toLowerCase() ?? "",
     ].join("|");
-    if (seen.has(key)) {
+    const existing = seen.get(key);
+    if (existing) {
+      if (!existing.startDate && medication.startDate) {
+        existing.startDate = medication.startDate;
+      }
       continue;
     }
-    seen.add(key);
+    seen.set(key, medication);
     facts.push(medication);
   }
 
@@ -572,6 +621,7 @@ function buildPackedCharacters(pack: Omit<DocumentFactPack, "stats">): number {
       medication.dose ?? "",
       medication.route ?? "",
       medication.frequency ?? "",
+      medication.startDate ?? "",
     ]),
     ...pack.allergies,
     ...pack.homeboundEvidence.map((snippet) => snippet.text),

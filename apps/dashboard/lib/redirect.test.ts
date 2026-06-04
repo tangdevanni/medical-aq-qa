@@ -20,6 +20,14 @@ describe("redirectToSameOrigin", () => {
     assert.equal(location, "/select-agency");
   });
 
+  it("does not use the backend API URL as the dashboard redirect origin", () => {
+    const location = resolveDashboardRedirectLocation("/login", {
+      NEXT_PUBLIC_API_BASE_URL: "http://127.0.0.1:3000",
+    });
+
+    assert.equal(location, "/login");
+  });
+
   it("uses the configured dashboard public origin in route responses", () => {
     process.env.DASHBOARD_PUBLIC_BASE_URL = "http://medical-ai-qa-prod-alb-925770298.us-east-2.elb.amazonaws.com";
     const response = redirectToSameOrigin("/select-agency");

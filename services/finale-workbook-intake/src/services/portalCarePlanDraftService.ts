@@ -95,6 +95,51 @@ function rowValue(headers: string[], row: string[], headerName: string): string 
   return index >= 0 ? cleanPortalCarePlanText(row[index] ?? "") : "";
 }
 
+function rowValueAny(headers: string[], row: string[], headerNames: string[]): string {
+  for (const headerName of headerNames) {
+    const value = rowValue(headers, row, headerName);
+    if (value) {
+      return value;
+    }
+  }
+  return "";
+}
+
+function carePlanFieldValue(input: {
+  state: PortalDomExtractedState;
+  rowNumber: string;
+  kind: "goal" | "intervention";
+}): string {
+  const rowNumber = normalizeWhitespace(input.rowNumber);
+  const expectedKey = rowNumber ? `care_plan_problem_${rowNumber}_${input.kind}` : "";
+  const labelPattern = input.kind === "goal"
+    ? /\bcare\s*plan\s+goal\b|\bgoal(?:\(s\))?\b|\bpatient\s+goal\b/i
+    : /\bcare\s*plan\s+intervention\b|\bintervention\b/i;
+
+  for (const section of input.state.sections ?? []) {
+    if (!/\bcare\s*plan\b|\bidentified\s+problem/i.test(section.title)) {
+      continue;
+    }
+    for (const field of section.fields ?? []) {
+      const fieldKey = normalizeWhitespace(field.key).toLowerCase();
+      const fieldLabel = normalizeWhitespace(field.label);
+      const sameRow = expectedKey
+        ? fieldKey === expectedKey || fieldKey.startsWith(`care_plan_problem_${rowNumber}_`)
+        : true;
+      if (!sameRow || !labelPattern.test(`${fieldLabel} ${fieldKey}`)) {
+        continue;
+      }
+      const rawValue = Array.isArray(field.value) ? field.value.join(" ") : String(field.value ?? "");
+      const value = cleanPortalCarePlanText(rawValue);
+      if (!isMetadataOnlyCarePlanText(value)) {
+        return value;
+      }
+    }
+  }
+
+  return "";
+}
+
 function portalPocSource(input: {
   state: PortalDomExtractedState;
   groups: PlanOfCareReviewProblemGroup[];
@@ -111,6 +156,10 @@ export function buildPortalCarePlanDraftFromOasisDomState(input: {
   state: PortalDomExtractedState | null;
 }): PlanOfCareReviewDraftArtifact | null {
   const state = input.state;
+  if (!state) {
+    return null;
+  }
+
   const carePlanTables = (state?.sections ?? [])
     .filter((section) => /\bcare\s*plan\b|\bidentified\s+problem/i.test(section.title))
     .flatMap((section) => section.tables)
@@ -120,13 +169,35 @@ export function buildPortalCarePlanDraftFromOasisDomState(input: {
   const seenGroupKeys = new Set<string>();
   for (const table of carePlanTables) {
     for (const row of table.rows) {
-      const rawProblem = rowValue(table.headers, row, "Problem");
+      const rawProblem = rowValueAny(table.headers, row, [
+        "Problem",
+        "Problem(s)",
+        "Identified Problem",
+        "Care Plan Problem",
+        "Problem Statement",
+      ]);
       if (!rawProblem || isMetadataOnlyCarePlanText(rawProblem)) {
         continue;
       }
       const { title, statement } = splitProblemTitle(rawProblem);
-      const rawGoal = rowValue(table.headers, row, "Goal");
-      const rawIntervention = rowValue(table.headers, row, "Intervention");
+      const rowNumber = rowValueAny(table.headers, row, ["#", "No", "Number"]) || String(groups.length + 1);
+      const rawGoal = rowValueAny(table.headers, row, [
+        "Goal",
+        "Goal(s)",
+        "Patient Goal",
+        "Patient / Caregiver Goal",
+        "Short-Term Goal",
+        "Long-Term Goal",
+        "Short Term Goal",
+        "Long Term Goal",
+      ]) || carePlanFieldValue({ state, rowNumber, kind: "goal" });
+      const rawIntervention = rowValueAny(table.headers, row, [
+        "Intervention",
+        "Intervention(s)",
+        "Plan Intervention",
+        "Care Plan Intervention",
+        "Order / Intervention",
+      ]) || carePlanFieldValue({ state, rowNumber, kind: "intervention" });
       const goal = isMetadataOnlyCarePlanText(rawGoal) ? "" : rawGoal;
       const intervention = isMetadataOnlyCarePlanText(rawIntervention) ? "" : rawIntervention;
       const dedupeKey = slug([title, statement, goal, intervention].join("|"));
@@ -174,9 +245,6 @@ export function buildPortalCarePlanDraftFromOasisDomState(input: {
     return null;
   }
 
-  if (!state) {
-    return null;
-  }
   const source = portalPocSource({ state, groups });
   const groupsWithSource = groups.map((group) => ({
     ...group,

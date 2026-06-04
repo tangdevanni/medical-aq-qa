@@ -63,6 +63,8 @@ export function buildPatientDashboardArtifactPaths(input: {
     visitNotesDiscovery: path.join(patientArtifactsDirectory, "visit-notes-discovery.json"),
     visitNoteProcessingManifest: path.join(patientArtifactsDirectory, "visit-note-processing-manifest.json"),
     visitNoteQaReview: path.join(patientArtifactsDirectory, "visit-note-qa-review.json"),
+    oasisDomSectionProcessingManifest: path.join(patientArtifactsDirectory, "oasis-dom-section-processing-manifest.json"),
+    oasisDomSectionOutputs: path.join(patientArtifactsDirectory, "oasis-dom-section-outputs.json"),
     patientRunCacheSummary: path.join(patientArtifactsDirectory, "patient-run-cache-summary.json"),
   };
 }
@@ -189,7 +191,7 @@ function isImportantVisitNoteTextField(input: {
     return true;
   }
   const isTextInput =
-    /textarea|text|input/i.test(input.inputType) ||
+    /textarea|text|input|richtext|textbox|contenteditable|ql-editor|prosemirror/i.test(input.inputType) ||
     /\b(comment|narrative|reason|plan|diagnosis|subjective|training|intervention|response|summary|information)\b/.test(text);
   return isTextInput && /\b(homebound|medical diagnosis|pt diagnosis|subjective|visit narrative|summarize key findings|plan for next|next visit|reason|recommendation|coordination of care|discharge plan|provide further information|identified strengths|pain location|training|intervention|impact of intervention|patient response|goal|treatment|tx\b)\b/.test(text);
 }
@@ -418,7 +420,7 @@ async function buildVisitNoteFactsFromDomState(input: {
         }),
         label: label || key || "Visit Note field",
         value,
-        confidence: inputType === "textarea" ? 0.9 : 0.82,
+        confidence: /textarea|richtext|textbox|contenteditable|ql-editor|prosemirror/i.test(inputType) ? 0.9 : 0.82,
         indexHint: addedCount + 1,
         fieldKey: key || undefined,
         fieldLabel: label || key || undefined,
@@ -430,75 +432,6 @@ async function buildVisitNoteFactsFromDomState(input: {
   }
 
   return addedCount;
-}
-
-function hasMeaningfulValue(value: unknown): boolean {
-  if (value === null || value === undefined) {
-    return false;
-  }
-
-  if (typeof value === "string") {
-    return value.trim().length > 0;
-  }
-
-  if (Array.isArray(value)) {
-    return value.some((entry) => hasMeaningfulValue(entry));
-  }
-
-  return true;
-}
-
-function mergeFieldMapSnapshotWithPrintedNoteValues(input: {
-  fieldMapSnapshot: unknown | null;
-  printedNoteChartValues: unknown | null;
-}): unknown | null {
-  const fieldMapSnapshot = asRecord(input.fieldMapSnapshot);
-  const fields = Array.isArray(fieldMapSnapshot?.fields) ? fieldMapSnapshot.fields : null;
-  const printedNoteChartValuesRecord = asRecord(input.printedNoteChartValues);
-  const printedNoteChartValues = asRecord(printedNoteChartValuesRecord?.currentChartValues);
-
-  if (!fieldMapSnapshot || !fields || !printedNoteChartValues) {
-    return input.fieldMapSnapshot;
-  }
-
-  const mergedFields = fields.map((fieldValue) => {
-    const field = asRecord(fieldValue);
-    const fieldKey = asString(field?.key);
-    if (!field || !fieldKey) {
-      return fieldValue;
-    }
-
-    const recoveredChartValue = printedNoteChartValues[fieldKey];
-    if (!hasMeaningfulValue(recoveredChartValue)) {
-      return fieldValue;
-    }
-
-    if (asString(field.currentChartValueSource) === "chart_read") {
-      return fieldValue;
-    }
-
-    return {
-      ...field,
-      currentChartValue: recoveredChartValue,
-      currentChartValueSource: "printed_note_ocr",
-      populatedInChart: true,
-    };
-  });
-
-  return {
-    ...fieldMapSnapshot,
-    fields: mergedFields,
-    already_populated_from_chart: mergedFields
-      .filter((fieldValue) => {
-        const field = asRecord(fieldValue);
-        return typeof field?.populatedInChart === "boolean" ? field.populatedInChart : false;
-      })
-      .map((fieldValue) => {
-        const field = asRecord(fieldValue);
-        return asString(field?.key);
-      })
-      .filter((fieldKey): fieldKey is string => fieldKey !== null),
-  };
 }
 
 export async function buildVisitNoteFactPackFromCapturedText(input: {
@@ -583,12 +516,16 @@ export async function writePatientDashboardState(params: {
   const qaPrefetch = await readJsonIfExists(artifactPaths.qaPrefetch);
   const patientQaReference = await readJsonIfExists(artifactPaths.patientQaReference);
   const qaDocumentSummary = await readJsonIfExists(artifactPaths.qaDocumentSummary);
-  const rawFieldMapSnapshot = await readJsonIfExists(artifactPaths.fieldMapSnapshot);
-  const printedNoteChartValues = await readJsonIfExists(artifactPaths.printedNoteChartValues);
-  const printedNoteReview = await readJsonIfExists(artifactPaths.printedNoteReview);
+  const fieldMapSnapshot = await readJsonIfExists(artifactPaths.fieldMapSnapshot);
+  const printedNoteChartValues = null;
+  const printedNoteReview = null;
   const planOfCareReviewDraft = await readJsonIfExists(artifactPaths.planOfCareReviewDraft ?? null);
   const visitNotesDiscovery = await readJsonIfExists(artifactPaths.visitNotesDiscovery ?? null);
   const visitNoteProcessingManifest = await readJsonIfExists(artifactPaths.visitNoteProcessingManifest ?? null);
+  const oasisDomSectionProcessingManifest = await readJsonIfExists(
+    artifactPaths.oasisDomSectionProcessingManifest ?? null,
+  );
+  const oasisDomSectionOutputs = await readJsonIfExists(artifactPaths.oasisDomSectionOutputs ?? null);
   const patientRunCacheSummary = await readJsonIfExists(artifactPaths.patientRunCacheSummary ?? null);
   let visitNoteQaReview = await readJsonIfExists(artifactPaths.visitNoteQaReview ?? null);
   if (visitNotesDiscovery && artifactPaths.visitNoteQaReview) {
@@ -608,11 +545,6 @@ export async function writePatientDashboardState(params: {
     await mkdir(path.dirname(artifactPaths.visitNoteQaReview), { recursive: true });
     await writeFile(artifactPaths.visitNoteQaReview, JSON.stringify(visitNoteQaReview, null, 2), "utf8");
   }
-  const fieldMapSnapshot = mergeFieldMapSnapshotWithPrintedNoteValues({
-    fieldMapSnapshot: rawFieldMapSnapshot,
-    printedNoteChartValues,
-  });
-
   const effectiveWorkItem = hydrateWorkItemWithPortalLookupContext(
     params.run.workItemSnapshot ?? null,
     params.run.matchResult,
@@ -657,6 +589,8 @@ export async function writePatientDashboardState(params: {
       visitNotesDiscovery,
       visitNoteProcessingManifest,
       visitNoteQaReview,
+      oasisDomSectionProcessingManifest,
+      oasisDomSectionOutputs,
       patientRunCacheSummary,
     },
   };

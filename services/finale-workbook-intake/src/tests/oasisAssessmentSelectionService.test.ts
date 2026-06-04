@@ -18,7 +18,7 @@ describe("oasisAssessmentSelectionService", () => {
     },
   };
 
-  it("prefers SOC when SOC is available even if another type was requested", () => {
+  it("uses requested RECERT when RECERT is available alongside SOC", () => {
     const result = selectOasisAssessmentType({
       context,
       workItem: workItemBase as never,
@@ -32,9 +32,9 @@ describe("oasisAssessmentSelectionService", () => {
     });
 
     expect(result.result.requestedAssessmentType).toBe("RECERT");
-    expect(result.result.selectedAssessmentType).toBe("SOC");
-    expect(result.result.selectionReason).toBe("preferred_soc");
-    expect(result.result.warnings[0]).toMatch(/overridden to SOC/i);
+    expect(result.result.selectedAssessmentType).toBe("RECERT");
+    expect(result.result.selectionReason).toBe("requested_exact");
+    expect(result.result.warnings).toEqual([]);
   });
 
   it("uses the requested type when SOC is not available and the requested type is listed", () => {
@@ -52,6 +52,25 @@ describe("oasisAssessmentSelectionService", () => {
 
     expect(result.result.selectedAssessmentType).toBe("RECERT");
     expect(result.result.selectionReason).toBe("requested_exact");
+    expect(result.result.warnings).toEqual([]);
+  });
+
+  it("treats REC as a RECERT document-list alias", () => {
+    const result = selectOasisAssessmentType({
+      context,
+      workItem: workItemBase as never,
+      menuResult: {
+        opened: true,
+        currentUrl: "https://example.test/chart/oasis",
+        selectorUsed: "sidebar:OASIS",
+        availableAssessmentTypes: ["REC"],
+        warnings: [],
+      },
+    });
+
+    expect(result.result.requestedAssessmentType).toBe("RECERT");
+    expect(result.result.selectedAssessmentType).toBe("RECERT");
+    expect(result.result.selectionReason).toBe("requested_alias");
     expect(result.result.warnings).toEqual([]);
   });
 });

@@ -36,9 +36,17 @@ export interface MedicationEntry {
   source: string | null;
 }
 
+export interface AllergyEntry {
+  name: string;
+  reaction: string | null;
+  startDate: string | null;
+  status: string | null;
+  source: string | null;
+}
+
 export interface MedicationSummaryBlock {
   medications: MedicationEntry[];
-  allergies: string[];
+  allergies: Array<string | AllergyEntry>;
   medicationSource: string | null;
 }
 
@@ -252,6 +260,7 @@ export interface QaPrefetchSummary {
     status: string;
     filledFieldCount: number;
     missingFieldCount: number;
+    evidence?: string[];
   }>;
 }
 
@@ -709,6 +718,8 @@ export interface VisitNotesReview {
     captureStatus: string | null;
     analyzed: boolean;
     analysisStatus: string;
+    completionStatus: string;
+    completionReasons: string[];
     mappingStatus: string | null;
     matchStrength: number | null;
     summary: string;

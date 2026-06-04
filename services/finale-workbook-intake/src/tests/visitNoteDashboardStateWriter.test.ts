@@ -159,6 +159,22 @@ describe("writePatientDashboardState Visit Notes runtime wiring", () => {
     await writeJson(path.join(patientDirectory, "documents", "visit-notes", activeVisitNoteKey, "extraction-result.json"), {
       extractionQualityStatus: "usable",
     });
+    await writeJson(path.join(patientDirectory, "referral-document-processing", "field-map-snapshot.json"), {
+      fields: [{
+        key: "therapy_need",
+        currentChartValue: null,
+        currentChartValueSource: "unavailable",
+        populatedInChart: false,
+      }],
+    });
+    await writeJson(path.join(patientDirectory, "printed-note-chart-values.json"), {
+      currentChartValues: {
+        therapy_need: "Legacy OCR chart value",
+      },
+    });
+    await writeJson(path.join(patientDirectory, "oasis-printed-note-review.json"), {
+      reviewSource: "printed_note_ocr",
+    });
 
     const { state } = await writePatientDashboardState({
       outputDirectory,
@@ -188,6 +204,19 @@ describe("writePatientDashboardState Visit Notes runtime wiring", () => {
     expect(activeSummary?.pocMappingResult?.mappingSource).toBe("deterministic");
     expect(finalizedSummary?.lifecycleStatus).toBe("finalized_no_active_monitoring");
     expect(finalizedSummary?.pocMappingResult?.mappingStatus).toBe("deterministic_only");
+    expect(state.artifactContents.printedNoteChartValues).toBeNull();
+    expect(state.artifactContents.printedNoteReview).toBeNull();
+    const fieldMapSnapshot = state.artifactContents.fieldMapSnapshot as {
+      fields: Array<{
+        key: string;
+        currentChartValue: unknown | null;
+        currentChartValueSource: string;
+        populatedInChart: boolean;
+      }>;
+    };
+    expect(fieldMapSnapshot.fields[0]?.currentChartValue).toBeNull();
+    expect(fieldMapSnapshot.fields[0]?.currentChartValueSource).toBe("unavailable");
+    expect(fieldMapSnapshot.fields[0]?.populatedInChart).toBe(false);
 
     const persistedReview = JSON.parse(
       await readFile(path.join(patientDirectory, "visit-note-qa-review.json"), "utf8"),

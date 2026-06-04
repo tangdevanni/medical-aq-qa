@@ -63,6 +63,8 @@ export type VisitNoteTextInputSuggestionCandidate = Omit<
 > & {
   sourceFactIds: string[];
   confidence: number;
+  detailsToPreserve?: string[];
+  sourceTexts?: string[];
 };
 
 const POC_ALIGNMENT_VERDICTS = new Set<VisitNotePocAlignmentVerdict>([
@@ -199,12 +201,12 @@ function extractConverseText(response: ConverseCommandOutput): string {
     .join("\n"));
 }
 
-function compactVisitNoteFact(fact: VisitNoteFact) {
+function compactVisitNoteFact(fact: VisitNoteFact, maxLength = 180) {
   return {
     factId: fact.factId,
     category: fact.category,
-    normalizedValue: sanitizeClinicalSnippet(fact.normalizedValue, 180),
-    snippet: sanitizeClinicalSnippet(fact.rawSnippet ?? "", 180) || null,
+    normalizedValue: sanitizeClinicalSnippet(fact.normalizedValue, maxLength),
+    snippet: sanitizeClinicalSnippet(fact.rawSnippet ?? "", maxLength) || null,
     confidence: Number(fact.confidence.toFixed(2)),
   };
 }
@@ -290,6 +292,7 @@ export function buildVisitNotePocMappingPrompt(input: {
     "Use aligned when a related diagnosis/POC item is identified and no blank required field or discrepancy is present.",
     "Use partially_aligned when the related diagnosis/POC item is identified but important blanks remain.",
     "Use insufficient_documentation when no related diagnosis/POC item can be identified from the note.",
+    "When referencing Visit Note evidence, preserve concrete details such as measurements, counts, distances, scores, vitals, frequencies, device names, assist levels, and cueing details.",
     "Preserve supplied POC problemKey values exactly.",
     "Required JSON shape:",
     JSON.stringify({
@@ -315,7 +318,7 @@ export function buildVisitNotePocMappingPrompt(input: {
       status: input.status ?? null,
       lifecycleStatus: input.lifecycleStatus ?? null,
       visitDate: input.visitDate ?? null,
-      facts: input.facts.slice(0, 24).map(compactVisitNoteFact),
+      facts: input.facts.slice(0, 24).map((fact) => compactVisitNoteFact(fact, 320)),
     }),
     "POC_ITEMS:",
     JSON.stringify(input.pocTargets.slice(0, 12).map(compactPocTarget)),
@@ -434,6 +437,176 @@ function normalizeSuggestedInput(value: string): string {
     .trim();
 }
 
+function normalizeDetailComparable(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/[’']/g, "")
+    .replace(/\s*\/\s*/g, "/")
+    .replace(/\s*-\s*/g, "-")
+    .replace(/[^a-z0-9%./-]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function uniqueClinicalDetails(values: string[]): string[] {
+  const seen = new Set<string>();
+  const unique: string[] = [];
+  for (const value of values) {
+    const trimmed = value.replace(/\s+/g, " ").trim();
+    const key = normalizeDetailComparable(trimmed);
+    if (!trimmed || !key || seen.has(key)) {
+      continue;
+    }
+    seen.add(key);
+    unique.push(trimmed);
+  }
+  return unique;
+}
+
+export function extractVisitNoteDetailsToPreserve(value: string | null | undefined): string[] {
+  const text = value ?? "";
+  if (!text.trim()) {
+    return [];
+  }
+  const patterns = [
+    /\b\d+(?:\.\d+)?\s*(?:deg|degrees?|°?\s*f|bpm|\/min|mm\/hg|%|lbs?|pounds?|ft|feet|mg|mcg|meq|ml|l\/min|days?|weeks?|hrs?|hours?|minutes?|mins?|x\/wk|x\/week|x\/day)\b/gi,
+    /\b\d+(?:\.\d+)?\s*(?:\/|-)\s*\d+(?:\.\d+)?\b/g,
+    /\b\d+(?:\.\d+)?\s*\/\s*(?:10|5)\b/gi,
+    /\b(?:FWW|RW|4WW|SPC|WC|W\/C|SBA|CGA|MIN A|MOD A|MAX A|MIN ASSIST|MOD ASSIST|MAX ASSIST|VC'?S?|TC'?S?|VC\/TC|VCS\/TCS|PRN|BID|TID|QID|PO|O2|SPO2|TUG|HEP|ROM|ADL|ADLS)\b/gi,
+    /\b[A-Z]\d{2}(?:\.\d+)?\b/g,
+  ];
+  return uniqueClinicalDetails(patterns.flatMap((pattern) => Array.from(text.matchAll(pattern), (match) => match[0] ?? "")));
+}
+
+function collectDetailsToPreserveForCandidate(input: {
+  candidate: VisitNoteTextInputSuggestionCandidate;
+  facts: VisitNoteFact[];
+}): string[] {
+  if (input.candidate.detailsToPreserve?.length) {
+    return uniqueClinicalDetails(input.candidate.detailsToPreserve);
+  }
+  const sourceFactIds = new Set(input.candidate.sourceFactIds);
+  const sourceFacts = input.facts.filter((fact) => sourceFactIds.has(fact.factId));
+  return uniqueClinicalDetails([
+    ...extractVisitNoteDetailsToPreserve(input.candidate.currentValue),
+    ...sourceFacts.flatMap((fact) => [
+      ...extractVisitNoteDetailsToPreserve(fact.normalizedValue),
+      ...extractVisitNoteDetailsToPreserve(fact.rawSnippet),
+    ]),
+  ]);
+}
+
+function collectSuggestionSourceTextsForCandidate(input: {
+  candidate: VisitNoteTextInputSuggestionCandidate;
+  facts: VisitNoteFact[];
+}): string[] {
+  const sourceFactIds = new Set(input.candidate.sourceFactIds);
+  const sourceFacts = input.facts.filter((fact) => sourceFactIds.has(fact.factId));
+  return uniqueClinicalDetails([
+    input.candidate.currentValue ?? "",
+    ...sourceFacts.flatMap((fact) => [
+      fact.normalizedValue,
+      fact.rawSnippet ?? "",
+    ]),
+  ]);
+}
+
+function withDetailsToPreserve(input: {
+  candidates: VisitNoteTextInputSuggestionCandidate[];
+  facts: VisitNoteFact[];
+}): VisitNoteTextInputSuggestionCandidate[] {
+  return input.candidates.map((candidate) => ({
+    ...candidate,
+    detailsToPreserve: collectDetailsToPreserveForCandidate({ candidate, facts: input.facts }),
+    sourceTexts: collectSuggestionSourceTextsForCandidate({ candidate, facts: input.facts }),
+  }));
+}
+
+function suggestionPreservesRequiredDetails(input: {
+  candidate: VisitNoteTextInputSuggestionCandidate;
+  suggestedInput: string;
+}): boolean {
+  const detailsToPreserve = input.candidate.detailsToPreserve ?? [];
+  if (detailsToPreserve.length === 0) {
+    return true;
+  }
+  const haystack = normalizeDetailComparable(input.suggestedInput);
+  return detailsToPreserve.every((detail) => haystack.includes(normalizeDetailComparable(detail)));
+}
+
+const SOURCE_BACKING_STOP_WORDS = new Set([
+  "able",
+  "about",
+  "after",
+  "also",
+  "been",
+  "before",
+  "care",
+  "clinician",
+  "continue",
+  "during",
+  "field",
+  "from",
+  "home",
+  "note",
+  "patient",
+  "review",
+  "should",
+  "that",
+  "their",
+  "there",
+  "this",
+  "visit",
+  "with",
+]);
+
+function extractSourceTerms(value: string): string[] {
+  const normalized = normalizeDetailComparable(value);
+  return Array.from(new Set(Array.from(normalized.matchAll(/\b[a-z][a-z0-9/-]{3,}\b/g), (match) => match[0])
+    .filter((word) => !SOURCE_BACKING_STOP_WORDS.has(word))));
+}
+
+function extractConcreteTerms(value: string): string[] {
+  return uniqueClinicalDetails([
+    ...Array.from(value.matchAll(/\b\d+(?:\.\d+)?(?:\s*(?:\/|-)\s*\d+(?:\.\d+)?)?(?:\s*(?:ft|feet|mg|mcg|meq|ml|%|bpm|mm\/hg|x\/wk|x\/week|x\/day))?\b/gi), (match) => match[0] ?? ""),
+    ...Array.from(value.matchAll(/\b(?:FWW|RW|4WW|SPC|WC|W\/C|SBA|CGA|MIN A|MOD A|MAX A|VC'?S?|TC'?S?|VC\/TC|PRN|BID|TID|QID|PO|O2|SPO2|TUG|HEP|ROM|ADL|ADLS)\b/gi), (match) => match[0] ?? ""),
+    ...Array.from(value.matchAll(/\b[A-Z]\d{2}(?:\.\d+)?\b/g), (match) => match[0] ?? ""),
+  ]);
+}
+
+function suggestionIsSourceBacked(input: {
+  candidate: VisitNoteTextInputSuggestionCandidate;
+  suggestedInput: string;
+}): boolean {
+  if (input.candidate.reason === "blank") {
+    return false;
+  }
+  const sourceText = [
+    input.candidate.currentValue ?? "",
+    ...(input.candidate.sourceTexts ?? []),
+  ].join(" ");
+  if (normalizeWhitespace(sourceText).length < 12) {
+    return false;
+  }
+  const sourceComparable = normalizeDetailComparable(sourceText);
+  const missingConcreteTerm = extractConcreteTerms(input.suggestedInput)
+    .some((term) => !sourceComparable.includes(normalizeDetailComparable(term)));
+  if (missingConcreteTerm) {
+    return false;
+  }
+  const sourceTerms = new Set(extractSourceTerms(sourceText));
+  if (sourceTerms.size === 0) {
+    return false;
+  }
+  const sentences = input.suggestedInput
+    .split(/[.!?]+/)
+    .map((sentence) => sentence.trim())
+    .filter(Boolean);
+  return sentences.every((sentence) =>
+    extractSourceTerms(sentence).some((term) => sourceTerms.has(term)),
+  );
+}
+
 function stripCodeFence(value: string): string {
   return value
     .replace(/^```(?:json|text)?\s*/i, "")
@@ -451,7 +624,13 @@ function pushTextInputSuggestion(input: {
     return;
   }
   const sentenceCount = countSentences(suggestedInput);
-  if (sentenceCount < 3 || sentenceCount > 5) {
+  if (sentenceCount < 1 || sentenceCount > 5) {
+    return;
+  }
+  if (!suggestionIsSourceBacked({ candidate: input.candidate, suggestedInput })) {
+    return;
+  }
+  if (!suggestionPreservesRequiredDetails({ candidate: input.candidate, suggestedInput })) {
     return;
   }
   input.suggestions.push({
@@ -567,40 +746,44 @@ export function buildVisitNoteTextInputSuggestionPrompt(input: {
   matchedPocItems: VisitNotePocMappingResult["matchedPocItems"];
   candidates: VisitNoteTextInputSuggestionCandidate[];
 }): string {
+  const candidates = withDetailsToPreserve({
+    candidates: input.candidates,
+    facts: input.facts,
+  });
   return [
     "Return line-delimited records only. Do not include markdown, commentary, bullets, numbering, or code fences.",
-    "You are drafting suggested text for home-health Visit Note text input fields that are blank, too short, or not descriptive enough.",
-    "Each suggestedInput must be 3-5 complete sentences.",
-    "Use casual, clear, professional clinician language. Do not sound legalistic or overly formal.",
+    "You are rewriting clinician-entered home-health Visit Note text so it reads clearly while preserving the original clinical content.",
+    "Only create suggestedInput from clinician-entered Visit Note currentValue, sourceTexts, and detailsToPreserve supplied for that field.",
+    "Do not add, infer, or suggest assessment findings, interventions, goals, education, patient responses, devices, measurements, dates, or plans that are not present in the supplied Visit Note source text.",
+    "If the supplied Visit Note source text does not support a field, omit that SUGGESTION line.",
+    "Each suggestedInput must be 1-5 complete sentences.",
+    "Use plain, clear, professional clinician language. Do not sound legalistic or overly formal.",
     "The text should be suitable for a clinician to review and paste into the named input field.",
-    "Cover the main concern for that field and the problem/intervention it is tackling in the Plan of Care.",
-    "Use only the Visit Note facts and Plan of Care items supplied. If a detail is not supplied, keep it general.",
+    "Do not use Plan of Care, referral, or OASIS content as source text for the recommendation.",
+    "When rewriting an existing currentValue, preserve every concrete detail from that value and sourceTexts.",
+    "Preserve all supplied measurements, counts, distances, scores, vitals, medication doses, frequencies, dates, device names, assist levels, and cueing details exactly when they appear in currentValue or detailsToPreserve.",
+    "Do not generalize specific details. For example, do not rewrite '75 ft with FWW and vc/tc' as only 'ambulated with assistance'.",
     "Do not mention the dashboard, QA, AI, LLM, or that documentation was insufficient.",
     "Required output format:",
-    "SUGGESTION|copy the supplied suggestionId exactly|3-5 sentence suggested input for the field",
+    "SUGGESTION|copy the supplied suggestionId exactly|1-5 sentence suggested input for the field",
     "Return one SUGGESTION line for each field. Do not use the pipe character inside the suggested input text.",
     "VISIT_NOTE_CONTEXT:",
     JSON.stringify({
       visitNoteKey: input.visitNoteKey,
       visitType: input.visitType,
       status: input.status ?? null,
-      facts: input.facts.slice(0, 30).map(compactVisitNoteFact),
+      facts: input.facts.slice(0, 30).map((fact) => compactVisitNoteFact(fact, 320)),
     }),
-    "MATCHED_PLAN_OF_CARE:",
-    JSON.stringify(input.matchedPocItems.slice(0, 6).map((item) => ({
-      problemKey: item.problemKey,
-      problemTitle: sanitizeClinicalSnippet(item.problemTitle, 160),
-      goals: item.goalTexts.map((goal) => sanitizeClinicalSnippet(goal, 220)).filter(Boolean).slice(0, 4),
-      interventions: item.interventionTexts.map((intervention) => sanitizeClinicalSnippet(intervention, 260)).filter(Boolean).slice(0, 6),
-    }))),
     "FIELDS_NEEDING_SUGGESTIONS:",
-    JSON.stringify(input.candidates.map((candidate) => ({
+    JSON.stringify(candidates.map((candidate) => ({
       suggestionId: candidate.suggestionId,
       fieldLabel: candidate.fieldLabel,
       sectionLabel: candidate.sectionLabel,
       currentValue: candidate.currentValue,
       reason: candidate.reason,
       relatedPocProblemTitle: candidate.relatedPocProblemTitle,
+      detailsToPreserve: candidate.detailsToPreserve ?? [],
+      sourceTexts: candidate.sourceTexts ?? [],
     }))),
   ].join("\n");
 }
@@ -625,15 +808,22 @@ export async function runVisitNoteTextInputSuggestionLlm(input: {
       promptTokenEstimate: 0,
     };
   }
-  const prompt = buildVisitNoteTextInputSuggestionPrompt(input);
+  const candidates = withDetailsToPreserve({
+    candidates: input.candidates,
+    facts: input.facts,
+  });
+  const prompt = buildVisitNoteTextInputSuggestionPrompt({
+    ...input,
+    candidates,
+  });
   let promptTokenEstimate = Math.ceil(prompt.length / 4);
   try {
     const invoked = input.invokeText
       ? { content: await input.invokeText(prompt), invocationModelId: "test-invoker" }
       : await invokeBedrock({ env: input.env!, prompt });
-    const suggestions = parseVisitNoteTextInputSuggestionsLlmJson(invoked.content, input.candidates);
+    const suggestions = parseVisitNoteTextInputSuggestionsLlmJson(invoked.content, candidates);
     const suggestedIds = new Set(suggestions.map((suggestion) => suggestion.suggestionId));
-    const missingCandidates = input.candidates.filter((candidate) => !suggestedIds.has(candidate.suggestionId));
+    const missingCandidates = candidates.filter((candidate) => !suggestedIds.has(candidate.suggestionId));
     const warnings: string[] = [];
 
     for (const candidate of missingCandidates) {
@@ -658,6 +848,12 @@ export async function runVisitNoteTextInputSuggestionLlm(input: {
         warnings.push(`Visit Note text input suggestion LLM failed for ${candidate.fieldLabel}. ${sanitizeClinicalSnippet(message, 180)}`);
       }
     }
+    const remainingMissing = candidates.filter((candidate) => !suggestedIds.has(candidate.suggestionId));
+    for (const candidate of remainingMissing) {
+      if ((candidate.detailsToPreserve ?? []).length > 0) {
+        warnings.push(`Visit Note text input suggestion for ${candidate.fieldLabel} did not preserve required note details and was not used.`);
+      }
+    }
 
     return {
       suggestions,
@@ -668,8 +864,8 @@ export async function runVisitNoteTextInputSuggestionLlm(input: {
     const message = error instanceof Error ? error.message : String(error);
     const fallbackSuggestions: VisitNoteTextInputSuggestion[] = [];
     const fallbackWarnings = [`Visit Note text input suggestion LLM bulk response failed. ${sanitizeClinicalSnippet(message, 180)}`];
-    if (input.candidates.length > 1) {
-      for (const candidate of input.candidates) {
+    if (candidates.length > 1) {
+      for (const candidate of candidates) {
         const singlePrompt = buildVisitNoteTextInputSuggestionPrompt({
           ...input,
           candidates: [candidate],

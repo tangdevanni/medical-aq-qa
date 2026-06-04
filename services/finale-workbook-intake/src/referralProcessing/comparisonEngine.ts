@@ -73,6 +73,81 @@ function derivePriority(input: {
   return "low";
 }
 
+function comparisonDomain(category: string): string {
+  switch (category) {
+    case "active_diagnoses":
+      return "diagnoses";
+    case "pain_medications_allergies":
+      return "medications_allergies";
+    case "living_situation_caregiver":
+    case "emergency_directives_cultural":
+      return "safety_social_support";
+    case "medical_necessity_homebound":
+    case "risk_scores_and_function":
+      return "safety_functional";
+    case "therapy_plan_and_narrative":
+      return "therapy_plan_goals";
+    case "immunization_neuro_psych_cardiopulmonary":
+    case "nutrition_gi_gu_integument_safety":
+    case "past_medical_history":
+      return "body_systems";
+    case "assessment_context":
+    case "administrative_information":
+    case "patient_identity_demographics":
+    case "payer_and_utilization":
+      return "dates_admin";
+    default:
+      return category;
+  }
+}
+
+function hasChartValue(value: unknown): boolean {
+  if (value === null || value === undefined || value === "") {
+    return false;
+  }
+  if (Array.isArray(value)) {
+    return value.length > 0;
+  }
+  return true;
+}
+
+function scopedFieldsForComparison(input: {
+  fieldMapSnapshot: FieldMapSnapshot;
+  proposalByKey: Map<string, ReferralFieldProposal>;
+  diagnosisProposalAvailable: boolean;
+}): FieldMapSnapshot["fields"] {
+  const directFieldKeys = new Set(input.proposalByKey.keys());
+  const activeDomains = new Set<string>();
+
+  for (const field of input.fieldMapSnapshot.fields) {
+    if (directFieldKeys.has(field.key)) {
+      activeDomains.add(comparisonDomain(field.category));
+    }
+  }
+
+  if (input.diagnosisProposalAvailable) {
+    directFieldKeys.add("diagnosis_candidates");
+    activeDomains.add("diagnoses");
+  }
+
+  if (directFieldKeys.size === 0) {
+    return [];
+  }
+
+  return input.fieldMapSnapshot.fields.filter((field) => {
+    if (directFieldKeys.has(field.key)) {
+      return true;
+    }
+    if (!activeDomains.has(comparisonDomain(field.category))) {
+      return false;
+    }
+    if (field.reference_only) {
+      return false;
+    }
+    return field.populatedInChart || hasChartValue(field.currentChartValue);
+  });
+}
+
 export function compareProposedFieldsAgainstChart(input: {
   fieldMapSnapshot: FieldMapSnapshot;
   proposals: ReferralFieldProposal[];
@@ -91,8 +166,13 @@ export function compareProposedFieldsAgainstChart(input: {
         requires_human_review: true,
       }
     : null;
+  const fieldsToCompare = scopedFieldsForComparison({
+    fieldMapSnapshot: input.fieldMapSnapshot,
+    proposalByKey,
+    diagnosisProposalAvailable: diagnosisProposal !== null,
+  });
 
-  return input.fieldMapSnapshot.fields.map((field) => {
+  return fieldsToCompare.map((field) => {
     const proposal = field.key === "diagnosis_candidates"
       ? diagnosisProposal
       : proposalByKey.get(field.key) ?? null;

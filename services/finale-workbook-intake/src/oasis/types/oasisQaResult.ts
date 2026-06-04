@@ -102,4 +102,13 @@ export interface OasisQaEntryResult extends QaPrefetchResult {
   assessmentNote: OasisAssessmentNoteOpenResult;
   printedNoteReview: OasisPrintedNoteReviewResult | null;
   printedNoteReviewPath: string | null;
+  oasisDomSectionProcessing?: {
+    manifestPath: string | null;
+    outputsPath: string | null;
+    processedSections: number;
+    reusedSections: number;
+    deterministicSections: number;
+    skippedSections: number;
+    failedSections: number;
+  };
 }

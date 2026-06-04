@@ -59,6 +59,8 @@ export interface FieldComparison {
   portalValueSourceLabel: string;
   normalizedReferralValue: string | null;
   normalizedPortalValue: string | null;
+  documentSupportedValue: unknown;
+  currentChartValue: unknown;
   displayReferralValue: string;
   displayPortalValue: string;
   comparisonDisplayValue: string;
@@ -1211,6 +1213,8 @@ function buildFieldComparison(
     portalValueSourceLabel: getPortalValueSourceLabel(portalValueSource),
     normalizedReferralValue,
     normalizedPortalValue,
+    documentSupportedValue: referralValue,
+    currentChartValue: portalValue,
     displayReferralValue,
     displayPortalValue,
     comparisonDisplayValue: [displayReferralValue, displayPortalValue].join(" | "),
@@ -1318,6 +1322,8 @@ function mapBackendFieldRowToComparison(row: PatientDashboardFieldRow): FieldCom
     portalValueSourceLabel: row.currentChartValueSourceLabel,
     normalizedReferralValue: row.normalizedDocumentValue,
     normalizedPortalValue: row.normalizedChartValue,
+    documentSupportedValue: row.documentSupportedValue,
+    currentChartValue: row.currentChartValue,
     displayReferralValue: row.displayReferralValue,
     displayPortalValue: row.displayPortalValue,
     comparisonDisplayValue: [row.displayReferralValue, row.displayPortalValue].join(" | "),

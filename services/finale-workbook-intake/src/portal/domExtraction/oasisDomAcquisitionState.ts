@@ -270,7 +270,6 @@ export function evaluateOasisDomAcquisitionReadiness(input: {
 }): OasisDomAcquisitionReadiness {
   const minFieldCount = input.minFieldCount ?? DEFAULT_MIN_FIELD_COUNT;
   const minNonEmptyFieldCount = input.minNonEmptyFieldCount ?? DEFAULT_MIN_NON_EMPTY_FIELD_COUNT;
-  const ocrFallbackEnabled = input.ocrFallbackEnabled ?? true;
   const readinessReasons: OasisDomReadinessReason[] = [];
   const fallbackReasons = [...(input.latestDomState?.coverage.fallbackReasons ?? [])];
   const capturedSectionKeys = new Set(
@@ -296,7 +295,7 @@ export function evaluateOasisDomAcquisitionReadiness(input: {
   const missingRequiredFields: string[] = [];
 
   if (input.latestDomState?.coverage.fallbackRecommended) {
-    readinessReasons.push(ocrFallbackEnabled ? "fallback_to_ocr_required" : "blocked_extraction_failed");
+    readinessReasons.push("blocked_extraction_failed");
     fallbackReasons.push(...input.latestDomState.coverage.fallbackReasons);
   }
   if (missingRequiredSections.length > 0) {

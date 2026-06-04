@@ -110,4 +110,51 @@ describe("oasisAssessmentNoteService", () => {
     expect(result.result.matchedRequestedAssessment).toBe(false);
     expect(result.result.warnings[0]).toMatch(/did not match requested assessment type SOC/i);
   });
+
+  it("confirms REC document labels match requested RECERT type", async () => {
+    const result = await openAssessmentNote({
+      context,
+      workItem: workItem as never,
+      evidenceDir: "C:\\tmp",
+      selection: {
+        requestedAssessmentType: "RECERT",
+        selectedAssessmentType: "RECERT",
+        selectionReason: "requested_alias",
+        availableAssessmentTypes: ["REC"],
+        warnings: [],
+      },
+      logger: {
+        info: vi.fn(),
+      } as never,
+      portalClient: {
+        openOasisAssessmentNoteForReview: vi.fn().mockResolvedValue({
+          result: {
+            assessmentOpened: true,
+            matchedAssessmentLabel: "OASIS-OASIS E2 - REC",
+            matchedRequestedAssessment: true,
+            currentUrl: "https://example.test/chart/oasis/rec",
+            diagnosisSectionOpened: true,
+            diagnosisListFound: true,
+            diagnosisListSamples: [],
+            visibleDiagnoses: [],
+            lockStatus: "locked",
+            oasisAssessmentStatus: {
+              detectedStatuses: ["SIGNED", "VALIDATED"],
+              primaryStatus: "VALIDATED",
+              decision: "PROCESS",
+              processingEligible: true,
+              reason: "Continue downstream OASIS capture because no skip-only status was detected.",
+              matchedSignals: ["button role=button name=VALIDATED"],
+            },
+            warnings: [],
+          },
+          stepLogs: [],
+        }),
+      } as never,
+    });
+
+    expect(result.result.assessmentOpened).toBe(true);
+    expect(result.result.matchedRequestedAssessment).toBe(true);
+    expect(result.result.warnings).toEqual([]);
+  });
 });

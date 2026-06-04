@@ -19,10 +19,33 @@ function formatSuggestionLocation(suggestion: VisitNotesReview["noteSummaries"][
   return `${suggestion.sectionLabel} - ${suggestion.fieldLabel}`;
 }
 
+function formatVisitDate(value: string | null | undefined): string | null {
+  if (!value) {
+    return null;
+  }
+
+  const trimmed = value.trim();
+  const isoDate = /^(\d{4})-(\d{2})-(\d{2})/.exec(trimmed);
+  if (isoDate) {
+    return `${isoDate[2]}/${isoDate[3]}/${isoDate[1]}`;
+  }
+
+  return trimmed;
+}
+
 function visitNoteStatusBadges(note: VisitNotesReview["noteSummaries"][number]): string[] {
   return [
     note.lifecycleStatus === "active_monitoring" ? "New QA" : null,
+    note.completionStatus === "capture_needed" ? "Capture needed" : null,
+    note.completionStatus === "incomplete" || note.missingFields.length > 0 ? "Incomplete" : null,
   ].filter((value): value is string => Boolean(value));
+}
+
+function formatMissingFields(values: string[]): string {
+  const labels = Array.from(new Set(values
+    .map((value) => value.replace(/\s+(?:is blank|needs more detail)\.?$/i, "").trim())
+    .filter(Boolean)));
+  return labels.length > 0 ? `Missing or weak fields: ${labels.slice(0, 4).join(", ")}.` : "";
 }
 
 export function VisitNotesReviewPanel({ review }: { review: VisitNotesReview | null | undefined }) {
@@ -113,6 +136,10 @@ export function VisitNotesReviewPanel({ review }: { review: VisitNotesReview | n
           <strong>{review.pocAlignmentIssueCount}</strong>
         </div>
         <div className="metric-card">
+          <span>Incomplete Notes</span>
+          <strong>{review.incompleteNoteCount}</strong>
+        </div>
+        <div className="metric-card">
           <span>Missed Visits</span>
           <strong>{review.missedVisitNotes}</strong>
         </div>
@@ -154,11 +181,14 @@ export function VisitNotesReviewPanel({ review }: { review: VisitNotesReview | n
           <div className="comparison-list">
             {noteSummaries.slice(0, 20).map((note) => {
               const alignedPocGoals = note.alignedPocGoals ?? [];
+              const visitDate = formatVisitDate(note.visitDate);
+              const missingFields = formatMissingFields(note.missingFields);
               return (
                 <article className="section-queue-card compact-card" key={note.visitNoteKey}>
                   <div className="comparison-row-header">
                     <div>
                       <strong>{formatLabel(note.visitType)}</strong>
+                      {visitDate ? <div className="muted">Visit date: {visitDate}</div> : null}
                     </div>
                     <div className="badge-row">
                       {visitNoteStatusBadges(note).map((label) => (
@@ -169,6 +199,14 @@ export function VisitNotesReviewPanel({ review }: { review: VisitNotesReview | n
                     </div>
                   </div>
                   <p>{note.summary}</p>
+                  {missingFields || note.completionReasons.length > 0 ? (
+                    <div className="field-debug-meta">
+                      <div className="comparison-value-label">Completion</div>
+                      <div className="comparison-value-text">
+                        {missingFields || note.completionReasons.slice(0, 3).join(" ")}
+                      </div>
+                    </div>
+                  ) : null}
                   {alignedPocGoals.length > 0 ? (
                     <details className="workspace-details compact-details">
                       <summary>
@@ -214,18 +252,22 @@ export function VisitNotesReviewPanel({ review }: { review: VisitNotesReview | n
             <span className="badge warning">{pocAlignmentFindings.length}</span>
           </summary>
           <div className="workspace-details-body comparison-list">
-            {pocAlignmentFindings.map((finding) => (
-              <article className="section-queue-card visit-notes-finding-card" key={finding.findingId}>
-                <div className="comparison-row-header">
-                  <div>
-                    <h4>{finding.title}</h4>
-                    <p className="muted">{formatLabel(finding.visitType)}</p>
+            {pocAlignmentFindings.map((finding) => {
+              const visitDate = formatVisitDate(finding.visitDate);
+              return (
+                <article className="section-queue-card visit-notes-finding-card" key={finding.findingId}>
+                  <div className="comparison-row-header">
+                    <div>
+                      <h4>{finding.title}</h4>
+                      <p className="muted">{formatLabel(finding.visitType)}</p>
+                      {visitDate ? <p className="muted">Visit date: {visitDate}</p> : null}
+                    </div>
+                    <span className="badge">{pct(finding.confidence)}</span>
                   </div>
-                  <span className="badge">{pct(finding.confidence)}</span>
-                </div>
-                <p>{finding.description}</p>
-              </article>
-            ))}
+                  <p>{finding.description}</p>
+                </article>
+              );
+            })}
           </div>
         </details>
       ) : null}

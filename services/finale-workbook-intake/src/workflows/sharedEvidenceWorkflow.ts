@@ -8,7 +8,14 @@ import type { Logger } from "pino";
 import type { FinaleBatchEnv } from "../config/env";
 import type { PatientPortalContext } from "../portal/context/patientPortalContext";
 import { createAutomationStepLog } from "../portal/utils/automationLog";
-import { runReferralDocumentProcessingPipeline } from "../referralProcessing/pipeline";
+import {
+  runReferralDocumentProcessingPipeline,
+  type ReferralSourceDocumentInput,
+} from "../referralProcessing/pipeline";
+import {
+  collectReferralSourceDocumentsFromArtifacts,
+  filterArtifactsForNonReferralTextExtraction,
+} from "../referralProcessing/sourceDocumentHandoff";
 import type { ReferralDocumentProcessingResult } from "../referralProcessing/types";
 import {
   extractDiagnosisCodingContext,
@@ -48,6 +55,7 @@ export interface SharedEvidenceBundle {
   }>;
   extractedDocuments: ExtractedDocument[];
   extractedArtifactPaths: string[];
+  referralSourceDocuments: ReferralSourceDocumentInput[];
   diagnosisCodingContext: DiagnosisCodingExtractionResult;
   diagnosisSourceEvidence?: {
     primaryDiagnosisText?: string | null;
@@ -106,7 +114,9 @@ export async function runSharedEvidenceWorkflow(
     documentInventoryExportError = error instanceof Error ? error.message : String(error);
   }
 
-  const extractedDocuments = await extractDocumentsFromArtifacts(discoveryResult.artifacts);
+  const referralSourceDocuments = collectReferralSourceDocumentsFromArtifacts(discoveryResult.artifacts);
+  const nonReferralArtifacts = filterArtifactsForNonReferralTextExtraction(discoveryResult.artifacts);
+  const extractedDocuments = await extractDocumentsFromArtifacts(nonReferralArtifacts);
 
   let documentTextExportPath: string | null = null;
   let documentTextExportError: string | null = null;
@@ -227,13 +237,14 @@ export async function runSharedEvidenceWorkflow(
   let referralDocumentProcessing: ReferralDocumentProcessingResult | null = null;
   let referralDocumentSummaryPath: string | null = null;
   const orderDocuments = extractedDocuments.filter((document) => document.type === "ORDER");
-  if (orderDocuments.length > 0) {
+  if (referralSourceDocuments.length > 0 || orderDocuments.length > 0) {
     const referralProcessingResult = await runReferralDocumentProcessingPipeline({
       workItem: params.workItem,
       outputDir: params.outputDir,
       env: params.env,
       logger: params.logger,
       extractedDocuments: orderDocuments,
+      sourceDocuments: referralSourceDocuments,
     });
     referralDocumentProcessing = referralProcessingResult.result;
     referralDocumentSummaryPath = referralProcessingResult.result?.artifacts.qaDocumentSummaryPath ?? null;
@@ -276,6 +287,7 @@ export async function runSharedEvidenceWorkflow(
         path: item.sourcePath ?? null,
       })),
       extractedDocuments,
+      referralSourceDocuments,
       extractedArtifactPaths: extractedDocuments
         .map((document) => document.metadata.sourcePath ?? null)
         .filter((value): value is string => Boolean(value)),

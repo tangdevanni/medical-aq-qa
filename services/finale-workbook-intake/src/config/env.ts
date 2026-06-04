@@ -93,12 +93,12 @@ const envSchema = z.object({
   PORTAL_DOM_EXTRACTION_ENABLED: z
     .enum(["true", "false"])
     .optional()
-    .default("false")
+    .default("true")
     .transform((value) => value === "true"),
   OASIS_DOM_EXTRACTION_ENABLED: z
     .enum(["true", "false"])
     .optional()
-    .default("false")
+    .default("true")
     .transform((value) => value === "true"),
   VISIT_NOTES_DOM_EXTRACTION_ENABLED: z
     .enum(["true", "false"])
@@ -110,6 +110,11 @@ const envSchema = z.object({
     .optional()
     .default("true")
     .transform((value) => value !== "false"),
+  OCR_ENABLED: z
+    .enum(["true", "false"])
+    .optional()
+    .default("false")
+    .transform((value) => value === "true"),
   DOM_EXTRACTION_MIN_FIELD_COUNT: z.coerce.number().int().min(0).optional().default(10),
   DOM_EXTRACTION_MIN_NONEMPTY_FIELD_COUNT: z.coerce.number().int().min(0).optional().default(3),
   VISIT_NOTE_CAPTURE_TIMEOUT_MS: z.coerce.number().int().positive().optional().default(120_000),
@@ -120,6 +125,13 @@ const envSchema = z.object({
     .transform((value) => value === undefined ? undefined : value === "true"),
   VISIT_NOTE_POC_MAPPING_MODEL_ID: z.string().min(1).optional(),
   VISIT_NOTE_POC_MAPPING_MAX_TOKENS: z.coerce.number().int().min(512).max(8_000).optional().default(2_500),
+  OASIS_SECTION_LLM_ENABLED: z
+    .enum(["true", "false"])
+    .optional()
+    .transform((value) => value === undefined ? undefined : value === "true"),
+  OASIS_SECTION_LLM_MODEL_ID: z.string().min(1).optional(),
+  OASIS_SECTION_LLM_MAX_TOKENS: z.coerce.number().int().min(512).max(8_000).optional().default(1_800),
+  OASIS_SECTION_LLM_MAX_CONCURRENCY: z.coerce.number().int().min(1).max(8).optional().default(2),
   OASIS_WRITE_ENABLED: z
     .enum(["true", "false"])
     .optional()
@@ -129,6 +141,10 @@ const envSchema = z.object({
     .enum(["true", "false"])
     .optional()
     .transform((value) => value === "true"),
+  REFERRAL_EXTRACTION_MODE: z
+    .enum(["direct_document_llm_only"])
+    .optional()
+    .default("direct_document_llm_only"),
   LLM_PROVIDER: z.enum(["bedrock"]).optional().default("bedrock"),
   BEDROCK_REGION: z.string().min(1).optional(),
   BEDROCK_MODEL_ID: z.string().min(1).optional(),
@@ -143,5 +159,9 @@ const envSchema = z.object({
 export type FinaleBatchEnv = z.infer<typeof envSchema>;
 
 export function loadEnv(source: NodeJS.ProcessEnv = process.env): FinaleBatchEnv {
-  return envSchema.parse(source);
+  const parsed = envSchema.parse(source);
+  return {
+    ...parsed,
+    OCR_FALLBACK_ENABLED: parsed.OCR_ENABLED && parsed.OCR_FALLBACK_ENABLED,
+  };
 }

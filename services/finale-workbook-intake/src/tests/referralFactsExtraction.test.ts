@@ -105,7 +105,7 @@ describe("extractReferralFacts", () => {
     expect(byKey.get("caregiver_phone")?.value).toBe("4807035881");
   });
 
-  it("does not extract allergy phrases as diagnosis candidates when they follow an ICD code", () => {
+  it("does not extract allergy phrases or mismatched history text as diagnosis candidates when they follow an ICD code", () => {
     const sourceText = [
       "Active Diagnoses",
       "Z47.89) No known drug allergies",
@@ -123,13 +123,37 @@ describe("extractReferralFacts", () => {
       sourceText,
     });
 
+    expect(facts.diagnosis_candidates).toEqual([]);
+    expect(facts.diagnosis_candidates.some((candidate) => /allerg/i.test(candidate.description))).toBe(false);
+  });
+
+  it("prefers exact orthopedic aftercare wording over mismatched OCR-adjacent history text", () => {
+    const sourceText = [
+      "Impression/Plan:",
+      "Encounter for other orthopedic aftercare (Z47.89)",
+      "Located on the right shoulder.",
+      "Instructions: Post-op Shoulder Surgery, Right - right shoulder - Z47.89",
+      "Medical History",
+      "Z47.89) History of arthroplasty of left knee",
+    ].join("\n");
+
+    const fieldMapSnapshot = buildFieldMapSnapshot({
+      chartSnapshotValues: createInitialChartSnapshotValues({ workItem: buildWorkItem() }),
+    });
+
+    const facts = extractReferralFacts({
+      fieldMapSnapshot,
+      sections: normalizeReferralSections(sourceText),
+      sourceText,
+    });
+
     expect(facts.diagnosis_candidates).toEqual([
       expect.objectContaining({
         icd10_code: "Z47.89",
-        description: "History of arthroplasty of left knee",
+        description: "Encounter for other orthopedic aftercare",
       }),
     ]);
-    expect(facts.diagnosis_candidates.some((candidate) => /allerg/i.test(candidate.description))).toBe(false);
+    expect(facts.diagnosis_candidates.some((candidate) => /left knee/i.test(candidate.description))).toBe(false);
   });
 
   it("trims discharge operations text and extracts functional limits from long matched spans", () => {

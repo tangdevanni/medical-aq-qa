@@ -42,6 +42,8 @@ export const patientDashboardArtifactPathsSchema = z.object({
   referralOasisConsistency: z.string().min(1).nullable().default(null).optional(),
   oasisGate: z.string().min(1).nullable().default(null).optional(),
   generatedPlanOfCare: z.string().min(1).nullable().default(null).optional(),
+  oasisDomSectionProcessingManifest: z.string().min(1).nullable().default(null).optional(),
+  oasisDomSectionOutputs: z.string().min(1).nullable().default(null).optional(),
   patientRunCacheSummary: z.string().min(1).nullable().default(null).optional(),
 });
 
@@ -81,6 +83,8 @@ export const patientDashboardArtifactContentsSchema = z.object({
   referralOasisConsistency: z.unknown().nullable().default(null).optional(),
   oasisGate: z.unknown().nullable().default(null).optional(),
   generatedPlanOfCare: z.unknown().nullable().default(null).optional(),
+  oasisDomSectionProcessingManifest: z.unknown().nullable().default(null).optional(),
+  oasisDomSectionOutputs: z.unknown().nullable().default(null).optional(),
   patientRunCacheSummary: z.unknown().nullable().default(null).optional(),
 });
 

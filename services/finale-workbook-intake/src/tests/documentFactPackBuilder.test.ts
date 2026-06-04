@@ -100,7 +100,68 @@ describe("buildDocumentFactPack", () => {
     expect(factPack.medications).toEqual([]);
   });
 
-  it("does not pair ICD codes with allergy text as diagnosis descriptions", () => {
+  it("does not promote medication table fragments as standalone medication facts", () => {
+    const factPack = buildDocumentFactPack([
+      buildDocument({
+        type: "ORDER",
+        text: [
+          "Medication List",
+          "Left 40 mg",
+          "Tendon and Trochanteric Bursa Kenalog 40 mg",
+          "Tablet",
+          "mg Capsule",
+          "Capsule By",
+          "Oxycodone - 10 mg",
+          "Ondansetron HCI 09/19/2021 4 mg",
+        ].join("\n"),
+        metadata: {
+          portalLabel: "New Referral Gary Greuel 05202026.pdf",
+        },
+      }),
+    ]);
+
+    expect(factPack.medications).toEqual([
+      expect.objectContaining({ name: "Kenalog", dose: "40 mg" }),
+      expect.objectContaining({ name: "Oxycodone", dose: "10 mg" }),
+      expect.objectContaining({ name: "Ondansetron HCl", dose: "4 mg" }),
+    ]);
+  });
+
+  it("captures referral medication start dates and merges them into duplicate medication facts", () => {
+    const factPack = buildDocumentFactPack([
+      buildDocument({
+        type: "ORDER",
+        text: [
+          "Medication List",
+          "Eliquis 2.5 mg PO twice daily",
+          "Eliquis 2.5 mg PO twice daily Start Date: 01/24/2026",
+          "Metformin 500 mg PO daily Date Started: 2026-05-01",
+        ].join("\n"),
+        metadata: {
+          portalLabel: "Referral Medication List",
+        },
+      }),
+    ]);
+
+    expect(factPack.medications).toEqual([
+      expect.objectContaining({
+        name: "Eliquis",
+        dose: "2.5 mg",
+        route: "PO",
+        frequency: "twice daily",
+        startDate: "01/24/2026",
+      }),
+      expect.objectContaining({
+        name: "Metformin",
+        dose: "500 mg",
+        route: "PO",
+        frequency: "daily",
+        startDate: "2026-05-01",
+      }),
+    ]);
+  });
+
+  it("does not pair ICD codes with allergy text or mismatched history text as diagnosis descriptions", () => {
     const factPack = buildDocumentFactPack([
       buildDocument({
         type: "ORDER",
@@ -111,7 +172,32 @@ describe("buildDocumentFactPack", () => {
           "Allergies: No known drug allergies",
         ].join("\n"),
         metadata: {
-          portalLabel: "New Referral Allen Coleman 04282026.pdf",
+          portalLabel: "Sample Referral Patient 04282026.pdf",
+          ocrUsed: true,
+          ocrSuccess: true,
+        },
+      }),
+    ]);
+
+    expect(factPack.diagnoses).toEqual([]);
+    expect(factPack.diagnoses.some((fact) => /allerg/i.test(fact.description))).toBe(false);
+    expect(factPack.allergies.some((allergy) => /no known drug/i.test(allergy))).toBe(true);
+  });
+
+  it("keeps exact orthopedic aftercare diagnosis text and drops mismatched OCR-adjacent history text", () => {
+    const factPack = buildDocumentFactPack([
+      buildDocument({
+        type: "ORDER",
+        text: [
+          "Impression/Plan:",
+          "Encounter for other orthopedic aftercare (Z47.89)",
+          "Located on the right shoulder.",
+          "Instructions: Post-op Shoulder Surgery, Right - right shoulder - Z47.89",
+          "Medical History",
+          "Z47.89) History of arthroplasty of left knee",
+        ].join("\n"),
+        metadata: {
+          portalLabel: "Sample Referral Patient 04282026.pdf",
           ocrUsed: true,
           ocrSuccess: true,
         },
@@ -121,10 +207,9 @@ describe("buildDocumentFactPack", () => {
     expect(factPack.diagnoses).toEqual([
       expect.objectContaining({
         code: "Z47.89",
-        description: "History of arthroplasty of left knee",
+        description: "Encounter for other orthopedic aftercare",
       }),
     ]);
-    expect(factPack.diagnoses.some((fact) => /allerg/i.test(fact.description))).toBe(false);
-    expect(factPack.allergies.some((allergy) => /no known drug/i.test(allergy))).toBe(true);
+    expect(factPack.diagnoses.some((fact) => /left knee/i.test(fact.description))).toBe(false);
   });
 });

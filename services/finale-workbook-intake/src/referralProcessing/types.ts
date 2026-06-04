@@ -30,6 +30,7 @@ export interface SourceDocumentReference {
   effectiveTextSource: string | null;
   fileType: SourceDocumentFileType;
   fileSizeBytes: number | null;
+  sourceContentSha256: string | null;
   extractedTextLength: number;
   selectedReason: string | null;
   rejectedReasons: string[];
@@ -75,7 +76,7 @@ export interface SourceDocumentExtractionResult {
   documentId: string;
   localFilePath: string | null;
   fileType: SourceDocumentFileType;
-  extractionMethod: "digital_pdf_text" | "ocr_text" | "image_ocr" | "in_memory_fallback" | "failed";
+  extractionMethod: "digital_pdf_text" | "ocr_text" | "image_ocr" | "in_memory_fallback" | "direct_document_llm" | "failed";
   extractionSuccess: boolean;
   effectiveTextSource: string | null;
   rawExtractedTextSource: string | null;
@@ -349,6 +350,7 @@ export interface ReferralDocumentProcessingArtifacts {
   patientQaReferencePath: string;
   qaDocumentSummaryPath: string;
   reviewOnlyOasisSuggestionsMetadataPath: string;
+  directDocumentResultPath?: string;
 }
 
 export interface ReferralDocumentProcessingResult {

@@ -437,38 +437,162 @@ function sanitizeInsights(input: ReferralQaInsights): ReferralQaInsights {
   };
 }
 
+function insightDomain(category: string): string {
+  switch (category) {
+    case "active_diagnoses":
+      return "diagnoses";
+    case "pain_medications_allergies":
+      return "medications_allergies";
+    case "living_situation_caregiver":
+    case "emergency_directives_cultural":
+      return "safety_social_support";
+    case "medical_necessity_homebound":
+    case "risk_scores_and_function":
+      return "safety_functional";
+    case "therapy_plan_and_narrative":
+      return "therapy_plan_goals";
+    case "immunization_neuro_psych_cardiopulmonary":
+    case "nutrition_gi_gu_integument_safety":
+    case "past_medical_history":
+      return "body_systems";
+    case "assessment_context":
+    case "administrative_information":
+    case "patient_identity_demographics":
+    case "payer_and_utilization":
+      return "dates_admin";
+    default:
+      return category;
+  }
+}
+
+function scopedInsightFieldKeys(input: {
+  fieldMapSnapshot: FieldMapSnapshot;
+  llmProposal: ReferralLlmProposal;
+  fieldComparisons: FieldComparisonResult[];
+}): Set<string> {
+  const directFieldKeys = new Set([
+    ...input.llmProposal.proposed_field_values.map((proposal) => proposal.field_key),
+    ...input.fieldComparisons.map((comparison) => comparison.field_key),
+  ]);
+  if (input.llmProposal.diagnosis_candidates.length > 0) {
+    directFieldKeys.add("diagnosis_candidates");
+  }
+  if (directFieldKeys.size === 0) {
+    return directFieldKeys;
+  }
+
+  const activeDomains = new Set(
+    input.fieldMapSnapshot.fields
+      .filter((field) => directFieldKeys.has(field.key))
+      .map((field) => insightDomain(field.category)),
+  );
+  const scopedKeys = new Set(directFieldKeys);
+  for (const field of input.fieldMapSnapshot.fields) {
+    if (activeDomains.has(insightDomain(field.category)) && field.populatedInChart) {
+      scopedKeys.add(field.key);
+    }
+  }
+  return scopedKeys;
+}
+
+function uniqueNonEmpty(values: string[]): string[] {
+  return Array.from(new Set(values.map(normalizeWhitespace).filter(Boolean)));
+}
+
+function scopedReferralSourceText(input: {
+  extractedFacts: ReferralExtractedFacts;
+  llmProposal: ReferralLlmProposal;
+  fieldComparisons: FieldComparisonResult[];
+  normalizedSections: NormalizedReferralSection[];
+  sourceText: string;
+  relevantFieldKeys: Set<string>;
+}): string {
+  const sourceSectionNames = new Set<string>();
+  for (const fact of input.extractedFacts.facts) {
+    if (input.relevantFieldKeys.has(fact.fact_key)) {
+      fact.source_sections.forEach((sectionName) => sourceSectionNames.add(sectionName));
+    }
+  }
+
+  const quotes = uniqueNonEmpty([
+    ...input.llmProposal.proposed_field_values
+      .filter((proposal) => input.relevantFieldKeys.has(proposal.field_key))
+      .flatMap((proposal) => proposal.source_spans),
+    ...input.fieldComparisons
+      .filter((comparison) => input.relevantFieldKeys.has(comparison.field_key))
+      .flatMap((comparison) => comparison.source_spans),
+    ...input.extractedFacts.facts
+      .filter((fact) => input.relevantFieldKeys.has(fact.fact_key))
+      .flatMap((fact) => fact.evidence_spans),
+  ]);
+
+  const sectionText = input.normalizedSections
+    .filter((section) =>
+      input.relevantFieldKeys.has(section.sectionName) ||
+      sourceSectionNames.has(section.sectionName))
+    .flatMap((section) => section.extractedTextSpans)
+    .map(normalizeWhitespace)
+    .filter(Boolean);
+
+  const scoped = uniqueNonEmpty([...quotes, ...sectionText]).join("\n");
+  if (scoped) {
+    return scoped.slice(0, 12_000);
+  }
+  return input.sourceText.slice(0, 4_000);
+}
+
+function keepTemplateForFields(templateKey: string, relevantFieldKeys: Set<string>): boolean {
+  const text = templateKey.toLowerCase();
+  const hasAny = (patterns: RegExp[]) => Array.from(relevantFieldKeys).some((fieldKey) => patterns.some((pattern) => pattern.test(fieldKey)));
+  if (/mental|depression/.test(text)) {
+    return hasAny([/neurolog/i, /emotional/i, /behavior/i, /mood/i, /cogn/i]);
+  }
+  if (/vision/.test(text)) {
+    return hasAny([/eyes/i, /ears/i, /vision/i]);
+  }
+  if (/respiratory/.test(text)) {
+    return hasAny([/respir/i, /oxygen/i, /sob/i]);
+  }
+  if (/functional|prior-level/.test(text)) {
+    return hasAny([/gg_/i, /functional/i, /mobility/i, /prior/i, /homebound/i]);
+  }
+  if (/wound|norton/.test(text)) {
+    return hasAny([/wound/i, /integument/i, /norton/i, /skin/i]);
+  }
+  if (/pain/.test(text)) {
+    return hasAny([/pain/i, /medication/i]);
+  }
+  if (/homebound/.test(text)) {
+    return hasAny([/homebound/i, /living/i, /caregiver/i, /safety/i]);
+  }
+  if (/medical-necessity/.test(text)) {
+    return hasAny([/medical_necessity/i, /admit_reason/i, /skilled/i, /summary/i]);
+  }
+  if (/diet|fluid/.test(text)) {
+    return hasAny([/nutrition/i, /gi/i, /diet/i, /fluid/i]);
+  }
+  if (/pmh|immunizations|diabetes/.test(text)) {
+    return hasAny([/past_medical/i, /immunization/i, /diabet/i, /endocrine/i]);
+  }
+  if (/diagnoses/.test(text)) {
+    return hasAny([/diagnosis/i]);
+  }
+  return relevantFieldKeys.has(templateKey);
+}
+
 function buildLlmPrompt(input: {
   extractedFacts: ReferralExtractedFacts;
   fieldMapSnapshot: FieldMapSnapshot;
   llmProposal: ReferralLlmProposal;
   fieldComparisons: FieldComparisonResult[];
+  normalizedSections: NormalizedReferralSection[];
   sourceText: string;
 }): string {
-  const relevantFieldKeys = new Set([
-    "neurological_status",
-    "emotional_behavioral_status",
-    "eyes_ears_status",
-    "respiratory_status",
-    "gg_self_care",
-    "gg_mobility",
-    "prior_functioning",
-    "functional_limitations",
-    "integumentary_wound_status",
-    "norton_scale",
-    "pain_assessment_narrative",
-    "past_medical_history",
-    "immunization_status",
-    "homebound_narrative",
-    "homebound_supporting_factors",
-    "primary_reason_for_home_health_medical_necessity",
-    "patient_summary_narrative",
-    "skilled_interventions",
-    "plan_for_next_visit",
-    "care_plan_problems_goals_interventions",
-    "patient_caregiver_goals",
-    "therapy_need",
-    "diagnosis_candidates",
-  ]);
+  const relevantFieldKeys = scopedInsightFieldKeys(input);
+  const scopedSourceText = scopedReferralSourceText({
+    ...input,
+    relevantFieldKeys,
+  });
 
   const relevantChartFields = input.fieldMapSnapshot.fields
     .filter((field) => relevantFieldKeys.has(field.key))
@@ -483,20 +607,27 @@ function buildLlmPrompt(input: {
 
   const relevantComparisons = input.fieldComparisons
     .filter((comparison) => relevantFieldKeys.has(comparison.field_key));
+  const relevantConsistencyTemplates = CONSISTENCY_TEMPLATES
+    .filter((template) => keepTemplateForFields(template.id, relevantFieldKeys));
+  const relevantSourceHighlightTemplates = SOURCE_HIGHLIGHT_TEMPLATES
+    .filter((template) => keepTemplateForFields(template.id, relevantFieldKeys));
+  const relevantDraftNarrativeTemplates = DRAFT_NARRATIVE_TEMPLATES
+    .filter((template) => keepTemplateForFields(template.field_key, relevantFieldKeys));
 
   return [
     "Return strict JSON only.",
     "You are generating referral QA insight blocks for a dashboard used before human OASIS QA begins.",
+    "The comparison scope is category-first: only reason over the field keys and source excerpts supplied here.",
     "State findings as factual observations grounded in the referral and uploaded clinical records. Do not tell the QA user where to look, and do not give workflow commands.",
     "Draft narratives are first drafts only. They must read as chart-ready starting points, not final clinical documentation.",
     "Use CHART_FIELDS, REFERRAL_FIELD_PROPOSALS, FIELD_COMPARISONS, EXTRACTED_FACTS, and REFERRAL_SOURCE_TEXT together.",
     "If support is incomplete, say exactly that and keep the statement factual.",
     "Generate the following consistency checks when supported by the available chart/referral evidence:",
-    ...CONSISTENCY_TEMPLATES.map((template) => `- id=${template.id}; title=${template.title}`),
+    ...relevantConsistencyTemplates.map((template) => `- id=${template.id}; title=${template.title}`),
     "Generate the following source highlights:",
-    ...SOURCE_HIGHLIGHT_TEMPLATES.map((template) => `- id=${template.id}; title=${template.title}`),
+    ...relevantSourceHighlightTemplates.map((template) => `- id=${template.id}; title=${template.title}`),
     "Generate the following draft narratives:",
-    ...DRAFT_NARRATIVE_TEMPLATES.map((template) => `- field_key=${template.field_key}; label=${template.label}`),
+    ...relevantDraftNarrativeTemplates.map((template) => `- field_key=${template.field_key}; label=${template.label}`),
     "Required JSON shape:",
     JSON.stringify({
       generated_at: "2026-04-11T00:00:00.000Z",
@@ -521,6 +652,13 @@ function buildLlmPrompt(input: {
         status: "ready_for_qa",
       }],
     }),
+    "COMPARISON_SCOPE:",
+    JSON.stringify({
+      field_keys: Array.from(relevantFieldKeys),
+      consistency_template_count: relevantConsistencyTemplates.length,
+      source_highlight_template_count: relevantSourceHighlightTemplates.length,
+      draft_narrative_template_count: relevantDraftNarrativeTemplates.length,
+    }),
     "CHART_FIELDS:",
     JSON.stringify(relevantChartFields),
     "REFERRAL_FIELD_PROPOSALS:",
@@ -529,8 +667,8 @@ function buildLlmPrompt(input: {
     JSON.stringify(relevantComparisons),
     "EXTRACTED_FACTS:",
     JSON.stringify(input.extractedFacts),
-    "REFERRAL_SOURCE_TEXT:",
-    input.sourceText.slice(0, 18_000),
+    "SCOPED_REFERRAL_SOURCE_TEXT:",
+    scopedSourceText,
   ].join("\n");
 }
 
@@ -546,6 +684,15 @@ export async function generateReferralQaInsights(input: {
   const deterministicFallback = buildDeterministicFallback(input);
   if (!isReferralQaInsightsLlmEnabled(input.env)) {
     return deterministicFallback;
+  }
+  if (scopedInsightFieldKeys(input).size === 0) {
+    return {
+      ...deterministicFallback,
+      warnings: [
+        ...deterministicFallback.warnings,
+        "Referral QA insights LLM skipped because no source-backed referral comparison category was in scope.",
+      ],
+    };
   }
 
   const config = resolveBedrockConfig(input.env);

@@ -892,6 +892,11 @@ textarea {
   line-height: 1.3;
 }
 
+.clinical-value-body .clinical-value-text {
+  color: var(--text);
+  font-size: 14px;
+}
+
 .clinical-empty {
   padding: 10px 12px;
   border: 1px solid rgba(15, 23, 42, 0.08);
@@ -1275,6 +1280,14 @@ textarea {
   align-items: start;
 }
 
+.comparison-row.clinical .comparison-row-main {
+  grid-template-columns: minmax(220px, 1fr) minmax(220px, 1fr) minmax(220px, 1fr);
+}
+
+.comparison-row.clinical .comparison-row-footer {
+  justify-content: flex-end;
+}
+
 .comparison-field-block,
 .comparison-value-block,
 .comparison-status-block {
@@ -1518,7 +1531,45 @@ textarea {
   color: var(--accent);
 }
 
+.referral-oasis-category-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  border-radius: 18px;
+  background: rgba(248, 250, 252, 0.82);
+}
+
+.referral-oasis-category-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 1px solid rgba(148, 163, 184, 0.36);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.referral-oasis-category-tab.active {
+  border-color: rgba(11, 91, 211, 0.34);
+  background: #eff6ff;
+  color: var(--accent);
+}
+
+.referral-oasis-category-tab .badge {
+  min-width: 22px;
+  padding: 2px 7px;
+  font-size: 12px;
+}
+
 .workspace-tab:focus-visible,
+.referral-oasis-category-tab:focus-visible,
 .section-queue-header:focus-visible,
 .evidence-drawer summary:focus-visible {
   outline: 2px solid rgba(11, 91, 211, 0.45);

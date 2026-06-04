@@ -28,3 +28,28 @@ export function isClearlyNotDiagnosisDescription(value: string | null | undefine
 
   return false;
 }
+
+export function isSuspiciousIcdDescriptionPair(input: {
+  icd10Code: string | null | undefined;
+  description: string | null | undefined;
+}): boolean {
+  const code = normalizeWhitespace(input.icd10Code).toUpperCase();
+  const description = normalizeWhitespace(input.description);
+  if (!code || !description) {
+    return false;
+  }
+
+  const lower = description.toLowerCase();
+  const isAftercareCode = /^Z47(?:\.|$)/.test(code);
+  const looksLikePriorSurgeryHistory =
+    /\bhistory of\b/.test(lower) &&
+    /\b(?:arthroplasty|joint replacement|surgery|surgical repair)\b/.test(lower);
+  const explicitlyAftercare =
+    /\b(?:aftercare|encounter|orthopedic aftercare|post[- ]?op|postoperative)\b/.test(lower);
+
+  if (isAftercareCode && looksLikePriorSurgeryHistory && !explicitlyAftercare) {
+    return true;
+  }
+
+  return false;
+}

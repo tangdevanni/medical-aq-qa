@@ -181,6 +181,12 @@ export type VisitNoteFactPack = {
 
 export type VisitNoteQaReviewStatus = "ready" | "partial" | "pending" | "degraded";
 
+export type VisitNoteCompletionStatus =
+  | "complete"
+  | "incomplete"
+  | "capture_needed"
+  | "unknown";
+
 export type VisitNoteFindingCategory =
   | "contradiction"
   | "positive_progress"
@@ -218,6 +224,8 @@ export type VisitNoteSummary = {
   captureStatus?: VisitNoteCaptureStatus | "unavailable";
   analyzed: boolean;
   analysisStatus: "ready" | "skipped" | "cache" | "failed" | "pending";
+  completionStatus?: VisitNoteCompletionStatus;
+  completionReasons?: string[];
   summary: string;
   missingFields: string[];
   textInputSuggestions: VisitNoteTextInputSuggestion[];

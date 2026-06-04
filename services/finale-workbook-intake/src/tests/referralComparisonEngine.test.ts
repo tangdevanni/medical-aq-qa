@@ -34,6 +34,8 @@ describe("compareProposedFieldsAgainstChart", () => {
         currentChartValues: {
           preferred_language: "English",
           caregiver_name: "Emily Young",
+          caregiver_relationship: "Daughter",
+          respiratory_status: "No shortness of breath documented.",
         },
       }),
     });
@@ -71,6 +73,8 @@ describe("compareProposedFieldsAgainstChart", () => {
 
     expect(comparisons.find((result) => result.field_key === "preferred_language")?.comparison_status).toBe("match");
     expect(comparisons.find((result) => result.field_key === "caregiver_name")?.comparison_status).toBe("possible_conflict");
+    expect(comparisons.find((result) => result.field_key === "caregiver_relationship")?.comparison_status).toBe("missing_in_referral");
     expect(comparisons.find((result) => result.field_key === "homebound_narrative")?.comparison_status).toBe("requires_human_review");
+    expect(comparisons.find((result) => result.field_key === "respiratory_status")).toBeUndefined();
   });
 });

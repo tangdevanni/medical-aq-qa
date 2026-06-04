@@ -7,7 +7,10 @@ import type {
   ReferralFactCategory,
 } from "./types";
 import { normalizeIcd10Code } from "../services/documentTextAnalysis";
-import { isClearlyNotDiagnosisDescription } from "../services/diagnosisTextGuard";
+import {
+  isClearlyNotDiagnosisDescription,
+  isSuspiciousIcdDescriptionPair,
+} from "../services/diagnosisTextGuard";
 
 function normalizeWhitespace(value: string | null | undefined): string {
   return value?.replace(/\s+/g, " ").trim() ?? "";
@@ -326,9 +329,18 @@ function extractDiagnosisCandidates(text: string): ReferralDiagnosisCandidate[] 
 
   for (const pattern of patterns) {
     for (const match of text.matchAll(pattern)) {
-      const rawIcd10Code = /^[A-TV-Z1|L]/i.test(match[1]) ? match[1] : match[2];
-      const icd10Code = normalizeIcd10Code(rawIcd10Code);
-      const description = /^[A-TV-Z1|L]/i.test(match[1]) ? match[2] : match[1];
+      const firstCaptureCode = normalizeIcd10Code(match[1]);
+      const secondCaptureCode = normalizeIcd10Code(match[2]);
+      const firstCaptureIsCode = Boolean(firstCaptureCode);
+      if (
+        firstCaptureIsCode &&
+        typeof match.index === "number" &&
+        text.slice(Math.max(0, match.index - 1), match.index) === "("
+      ) {
+        continue;
+      }
+      const icd10Code = firstCaptureCode ?? secondCaptureCode;
+      const description = firstCaptureIsCode ? match[2] : match[1];
       if (!icd10Code) {
         continue;
       }
@@ -337,7 +349,13 @@ function extractDiagnosisCandidates(text: string): ReferralDiagnosisCandidate[] 
         .replace(/\s+\^.*$/i, "")
         .replace(/^[\s):-]+/, "")
         .trim();
-      if (isClearlyNotDiagnosisDescription(normalizedDescription)) {
+      if (
+        isClearlyNotDiagnosisDescription(normalizedDescription) ||
+        isSuspiciousIcdDescriptionPair({
+          icd10Code,
+          description: normalizedDescription,
+        })
+      ) {
         continue;
       }
       const key = `${icd10Code}:${description}`.toUpperCase();

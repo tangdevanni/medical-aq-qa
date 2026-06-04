@@ -1,8 +1,11 @@
 import { describe, expect, it } from "vitest";
 import {
   buildVisitNotePocAlignmentPrompt,
+  buildVisitNoteTextInputSuggestionPrompt,
   parseVisitNotePocAlignmentLlmJson,
   parseVisitNotePocMappingLlmJson,
+  parseVisitNoteTextInputSuggestionsLlmJson,
+  type VisitNoteTextInputSuggestionCandidate,
 } from "../services/visitNotePocAlignmentAgent";
 
 describe("visit note POC alignment LLM schema", () => {
@@ -91,5 +94,71 @@ describe("visit note POC alignment LLM schema", () => {
       contradictions: ["Mobility status conflicts"],
       pocUpdateSignals: ["mobility-improvement"],
     }))).toMatchObject({ alignmentStatus: "contradiction" });
+  });
+
+  it("keeps Visit Note text suggestions source-backed to clinician-entered note text", () => {
+    const candidate: VisitNoteTextInputSuggestionCandidate = {
+      suggestionId: "visit-note-suggestion:note-1:planForNextVisitComment",
+      visitNoteKey: "note-1",
+      fieldKey: "planForNextVisitComment",
+      fieldLabel: "Plan for Next Visit",
+      sectionLabel: "Visit Summary and Care Planning",
+      currentValue: "Patient completed 75 ft gait training with FWW and vc/tc for pacing and stability.",
+      reason: "too_short",
+      relatedPocProblemTitle: null,
+      sourceFactIds: ["fact-1"],
+      confidence: 0.9,
+      detailsToPreserve: ["75 ft", "FWW", "vc/tc"],
+      sourceTexts: ["Patient completed 75 ft gait training with FWW and vc/tc for pacing and stability."],
+    };
+
+    const suggestions = parseVisitNoteTextInputSuggestionsLlmJson(JSON.stringify({
+      suggestions: [
+        {
+          suggestionId: candidate.suggestionId,
+          suggestedInput: "Continue skilled PT for weakness and safe mobility. Reassess gait with the walker and how the patient responds to cueing.",
+        },
+        {
+          suggestionId: candidate.suggestionId,
+          suggestedInput: "Patient completed 75 ft gait training with FWW and vc/tc for pacing and stability.",
+        },
+      ],
+    }), [candidate]);
+
+    expect(suggestions).toHaveLength(1);
+    expect(suggestions[0]?.suggestedInput).toBe("Patient completed 75 ft gait training with FWW and vc/tc for pacing and stability.");
+  });
+
+  it("does not include POC text in Visit Note suggestion source prompts", () => {
+    const prompt = buildVisitNoteTextInputSuggestionPrompt({
+      visitNoteKey: "note-1",
+      visitType: "physical_therapy",
+      status: "In Progress",
+      facts: [],
+      matchedPocItems: [{
+        problemKey: "mobility",
+        problemTitle: "Mobility limitation",
+        goalTexts: ["Improve safe transfers"],
+        interventionTexts: ["Skilled PT gait training"],
+        evidenceIds: ["poc-1"],
+      }],
+      candidates: [{
+        suggestionId: "visit-note-suggestion:note-1:planForNextVisitComment",
+        visitNoteKey: "note-1",
+        fieldKey: "planForNextVisitComment",
+        fieldLabel: "Plan for Next Visit",
+        sectionLabel: "Visit Summary and Care Planning",
+        currentValue: "Patient completed 75 ft gait training with FWW and vc/tc.",
+        reason: "too_short",
+        relatedPocProblemTitle: "Mobility limitation",
+        sourceFactIds: [],
+        confidence: 0.9,
+      }],
+    });
+
+    expect(prompt).toContain("sourceTexts");
+    expect(prompt).toContain("Do not use Plan of Care, referral, or OASIS content");
+    expect(prompt).not.toContain("MATCHED_PLAN_OF_CARE");
+    expect(prompt).not.toContain("Improve safe transfers");
   });
 });

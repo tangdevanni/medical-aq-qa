@@ -122,6 +122,7 @@ describe("buildPatientQaReference", () => {
         effectiveTextSource: "digital_pdf_text",
         fileType: "pdf",
         fileSizeBytes: 1000,
+        sourceContentSha256: null,
         extractedTextLength: 5000,
         selectedReason: "test",
         rejectedReasons: [],

@@ -66,6 +66,7 @@ import {
 import type { BillingPeriodCalendarSummary } from "../oasis/types/billingPeriodCalendarSummary";
 import { parseBillingPeriodCalendar } from "../oasis/calendar/billingPeriodCalendarParser";
 import type { OasisPrintSectionProfileKey } from "../oasis/print/oasisPrintedNoteProfiles";
+import { deriveOasisAssessmentTypeFromWorkItem } from "../oasis/navigation/oasisAssessmentDocumentMatching";
 
 function hashString(value: string): string {
   return createHash("sha256").update(value).digest("hex");
@@ -869,6 +870,7 @@ export class PlaywrightBatchQaWorker implements BatchPortalAutomationClient {
       patientChartUrl: this.currentPatientChartUrl,
       oasisReadyDiagnosis: options?.oasisReadyDiagnosis,
       oasisReadyDiagnosisPath: options?.oasisReadyDiagnosisPath,
+      assessmentType: deriveOasisAssessmentTypeFromWorkItem(workItem),
       patientId: workItem.id,
       patientArtifactsDirectory: options?.patientArtifactsDirectory,
       captureRelevantUploadLimit: options?.captureRelevantUploadLimit,

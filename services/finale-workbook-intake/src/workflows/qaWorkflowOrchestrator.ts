@@ -6,7 +6,6 @@ import { openAssessmentNote } from "../oasis/navigation/oasisAssessmentNoteServi
 import { selectOasisAssessmentType } from "../oasis/navigation/oasisAssessmentSelectionService";
 import { selectEpisodeForReview } from "../oasis/navigation/episodeSelectionService";
 import { openOasisMenu } from "../oasis/navigation/oasisMenuNavigationService";
-import { capturePrintedOasisNoteReview } from "../oasis/print/oasisPrintedNoteReviewService";
 import type { OasisQaEntryResult } from "../oasis/types/oasisQaResult";
 import { loadEnv } from "../config/env";
 import type { PatientPortalContext } from "../portal/context/patientPortalContext";
@@ -14,6 +13,7 @@ import { createAutomationStepLog } from "../portal/utils/automationLog";
 import type { BatchPortalAutomationClient } from "../workers/playwrightBatchQaWorker";
 import { buildWorkflowRun, upsertWorkflowRun } from "./patientWorkflowRunState";
 import type { SharedEvidenceBundle } from "./sharedEvidenceWorkflow";
+import { processOasisDomSections } from "../services/oasisDomSectionProcessingService";
 
 export interface QaWorkflowOrchestratorParams {
   context: PatientPortalContext;
@@ -131,7 +131,7 @@ export async function runQaWorkflowOrchestrator(
       domWarnings.push(`oasis_dom_extraction_failed:${error instanceof Error ? error.message : "unknown_error"}`);
       domStepLogs.push(createAutomationStepLog({
         step: "oasis_dom_extraction",
-        message: "OASIS DOM extraction failed; acquisition will fall back to the existing printed-note path when OCR fallback is enabled.",
+        message: "OASIS DOM extraction failed; OCR fallback is disabled, so acquisition is marked as insufficient evidence.",
         patientName: params.workItem.patientIdentity.displayName,
         urlBefore: params.context.chartUrl,
         urlAfter: assessmentNote.result.currentUrl,
@@ -148,6 +148,11 @@ export async function runQaWorkflowOrchestrator(
     acquisitionStatus === "qa_stale_due_to_oasis_change";
   const domQaAlreadyCompleted = acquisitionStatus === "qa_completed";
   const domAcquisitionPending = acquisitionStatus === "in_progress";
+  const domAcquisitionInsufficient =
+    shouldCapturePrintedNote &&
+    !domAcquisitionReady &&
+    !domAcquisitionPending &&
+    !domQaAlreadyCompleted;
   if (domAcquisitionPending || domQaAlreadyCompleted) {
     stepLogs.push(createAutomationStepLog({
       step: domQaAlreadyCompleted
@@ -171,47 +176,80 @@ export async function runQaWorkflowOrchestrator(
       safeReadConfirmed: true,
     }));
   }
-  const shouldRunPrintedNoteFallback =
-    shouldCapturePrintedNote &&
-    !domAcquisitionPending &&
-    !domQaAlreadyCompleted &&
-    (!domAcquisitionReady || !shouldAttemptDomExtraction);
-  const printedNoteReview = shouldRunPrintedNoteFallback && env.OCR_FALLBACK_ENABLED
-    ? await capturePrintedOasisNoteReview({
-        context: params.context,
-        workItem: params.workItem,
-        evidenceDir: params.evidenceDir,
-        outputDir: params.outputDir,
-        logger: params.logger,
-        portalClient: params.portalClient,
-        sharedEvidence: params.sharedEvidence,
-        assessmentNote: assessmentNote.result,
-        assessmentType: assessmentSelection.result.selectedAssessmentType,
-      })
-    : shouldRunPrintedNoteFallback
-      ? {
-          result: null,
-          reviewPath: null,
-          stepLogs: [createAutomationStepLog({
-            step: "oasis_printed_note_review_skipped",
-            message: "Skipped printed-note OCR/PDF fallback because OCR_FALLBACK_ENABLED=false and DOM extraction was insufficient.",
-            patientName: params.workItem.patientIdentity.displayName,
-            urlBefore: params.context.chartUrl,
-            urlAfter: assessmentNote.result.currentUrl,
-            missing: ["sufficient OASIS acquisition evidence"],
-            evidence: [
-              ...(oasisDomExtraction?.state.coverage.fallbackReasons ?? ["oasis_dom_extraction_not_available"]),
-              "OCR_FALLBACK_ENABLED=false",
-            ].slice(0, 8),
-            safeReadConfirmed: true,
-          })],
-        }
-    : {
-        result: null,
-        reviewPath: null,
-        stepLogs: [] as AutomationStepLog[],
-      };
+  const printedNoteReview = {
+    result: null,
+    reviewPath: null,
+    stepLogs: domAcquisitionInsufficient
+      ? [createAutomationStepLog({
+          step: "oasis_dom_acquisition_insufficient",
+          message: "OASIS DOM acquisition is not ready; printed-note OCR fallback is disabled.",
+          patientName: params.workItem.patientIdentity.displayName,
+          urlBefore: params.context.chartUrl,
+          urlAfter: assessmentNote.result.currentUrl,
+          missing: ["sufficient OASIS DOM acquisition evidence"],
+          evidence: [
+            ...(oasisDomExtraction?.state.coverage.fallbackReasons ?? ["oasis_dom_extraction_not_available"]),
+            "OCR_ENABLED=false",
+          ].slice(0, 8),
+          safeReadConfirmed: true,
+        })]
+      : [] as AutomationStepLog[],
+  };
   stepLogs.push(...printedNoteReview.stepLogs);
+
+  let oasisDomSectionProcessing: OasisQaEntryResult["oasisDomSectionProcessing"] = undefined;
+  if (oasisDomExtraction) {
+    const patientArtifactsDirectory = path.join(params.outputDir, "patients", params.run.workItemId);
+    try {
+      const sectionProcessing = await processOasisDomSections({
+        state: oasisDomExtraction.state,
+        patientArtifactsDirectory,
+        patientId: params.workItem.id,
+        patientRunId: params.context.patientRunId,
+        env,
+      });
+      oasisDomSectionProcessing = {
+        manifestPath: sectionProcessing.manifestPath,
+        outputsPath: sectionProcessing.outputsPath,
+        processedSections: sectionProcessing.outputs.summary.processedSections,
+        reusedSections: sectionProcessing.outputs.summary.reusedSections,
+        deterministicSections: sectionProcessing.outputs.summary.deterministicSections,
+        skippedSections: sectionProcessing.outputs.summary.skippedSections,
+        failedSections: sectionProcessing.outputs.summary.failedSections,
+      };
+      stepLogs.push(createAutomationStepLog({
+        step: "oasis_dom_section_processing",
+        message: "Processed OASIS DOM sections with per-section hash reuse.",
+        patientName: params.workItem.patientIdentity.displayName,
+        urlBefore: params.context.chartUrl,
+        urlAfter: assessmentNote.result.currentUrl,
+        found: [
+          `processedSections=${oasisDomSectionProcessing.processedSections}`,
+          `reusedSections=${oasisDomSectionProcessing.reusedSections}`,
+          `deterministicSections=${oasisDomSectionProcessing.deterministicSections}`,
+          `skippedSections=${oasisDomSectionProcessing.skippedSections}`,
+          `failedSections=${oasisDomSectionProcessing.failedSections}`,
+          `manifestPath=${sectionProcessing.manifestPath}`,
+          `outputsPath=${sectionProcessing.outputsPath}`,
+        ],
+        evidence: sectionProcessing.outputs.warnings.slice(0, 6),
+        safeReadConfirmed: true,
+      }));
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      domWarnings.push(`oasis_dom_section_processing_failed:${message}`);
+      stepLogs.push(createAutomationStepLog({
+        step: "oasis_dom_section_processing_failed",
+        message: "OASIS DOM section processing failed; dashboard will fall back to raw DOM state.",
+        patientName: params.workItem.patientIdentity.displayName,
+        urlBefore: params.context.chartUrl,
+        urlAfter: assessmentNote.result.currentUrl,
+        missing: ["oasis-dom-section-outputs.json"],
+        evidence: [message],
+        safeReadConfirmed: true,
+      }));
+    }
+  }
 
   const timestamp = new Date().toISOString();
   const warnings = [
@@ -223,10 +261,10 @@ export async function runQaWorkflowOrchestrator(
     ...assessmentNote.result.warnings,
     ...(shouldCapturePrintedNote
       ? []
-      : [assessmentNote.result.oasisAssessmentStatus?.reason ?? "Skipped printed OASIS note capture due to OASIS page status."]),
+      : [assessmentNote.result.oasisAssessmentStatus?.reason ?? "Skipped OASIS DOM acquisition due to OASIS page status."]),
     ...domWarnings,
-    ...(shouldRunPrintedNoteFallback && !env.OCR_FALLBACK_ENABLED
-      ? ["OASIS DOM extraction was insufficient and OCR/PDF fallback was disabled."]
+    ...(domAcquisitionInsufficient
+      ? ["OASIS DOM extraction was insufficient and OCR/PDF fallback is disabled."]
       : []),
     ...(domAcquisitionPending
       ? [
@@ -236,7 +274,6 @@ export async function runQaWorkflowOrchestrator(
     ...(domQaAlreadyCompleted
       ? ["OASIS DOM acquisition is unchanged from prior QA input; expensive QA acquisition was skipped."]
       : []),
-    ...(printedNoteReview.result?.warnings ?? []),
   ];
   const result: OasisQaEntryResult = {
     workflowDomain: "qa",
@@ -328,6 +365,7 @@ export async function runQaWorkflowOrchestrator(
     assessmentNote: assessmentNote.result,
     printedNoteReview: printedNoteReview.result,
     printedNoteReviewPath: printedNoteReview.reviewPath,
+    oasisDomSectionProcessing,
   };
 
   const workflowResultPath = path.join(

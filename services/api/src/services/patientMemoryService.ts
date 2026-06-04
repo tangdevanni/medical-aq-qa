@@ -294,13 +294,12 @@ export class PatientMemoryService {
 
     try {
       return patientMemoryIndexSchema.parse(await readJsonFile<PatientMemoryIndex>(filePath));
-    } catch (error) {
-      const quarantinePath = `${filePath}.corrupt-${safeTimestamp(isoTimestamp())}`;
+    } catch {
+      const quarantinedPath = `${filePath}.corrupt-${safeTimestamp(isoTimestamp())}`;
       try {
-        await copyFile(filePath, quarantinePath);
+        await copyFile(filePath, quarantinedPath);
       } catch {
-        // Best effort only: the important behavior is to stop a corrupt index
-        // from blocking all patient processing for the agency.
+        // Best effort only. Returning an empty index lets the run proceed cleanly.
       }
       return createEmptyIndex(agencySlug, isoTimestamp());
     }

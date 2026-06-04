@@ -41,6 +41,10 @@ describe("portal DOM extraction", () => {
         </div>
         <label for="narrative">Narrative</label>
         <textarea id="narrative">Patient tolerated gait training.</textarea>
+        <label id="rich-label">Skilled Intervention Summary</label>
+        <div class="ql-editor" role="textbox" aria-labelledby="rich-label" contenteditable="true">
+          Patient completed 75 ft gait training with FWW and vc/tc.
+        </div>
         <label for="discipline">Discipline</label>
         <select id="discipline"><option>RN</option><option selected>PT</option></select>
         <div class="inputGroup-radio-loader m0080_assessor_discipline disable-ctrl selected">
@@ -79,12 +83,42 @@ describe("portal DOM extraction", () => {
     expect(first.contentHash).toBe(second.contentHash);
     expect(first.textDigest).toContain("Blood Pressure");
     expect(first.textDigest).toContain("Patient tolerated gait training");
+    expect(first.textDigest).toContain("Patient completed 75 ft gait training with FWW");
     expect(first.textDigest).not.toContain("secret-token");
+    expect(first.sections[0]?.fields.some((field) => field.inputType === "richtext" && field.value === "Patient completed 75 ft gait training with FWW and vc/tc.")).toBe(true);
     expect(first.sections[0]?.fields.some((field) => field.sourceKind === "checkbox" && field.checked === false)).toBe(true);
     expect(first.sections[0]?.fields.some((field) => field.itemCode === "M0010" && field.value === "disabled value")).toBe(true);
     expect(first.sections[0]?.fields.some((field) => field.itemCode === "M0032" && field.checked === true)).toBe(true);
     expect(first.sections[0]?.fields.some((field) => field.itemCode === "M0080" && field.checked === true)).toBe(true);
     expect(first.sections[0]?.fields.some((field) => /Agency Medicare Provider Number/.test(field.label ?? ""))).toBe(true);
+  });
+
+  it("preserves blank table cells so row values stay aligned to headers", async () => {
+    await page.setContent(`
+      <section>
+        <h2>Medication & Allergies</h2>
+        <table aria-label="Medication List">
+          <thead>
+            <tr><th>Medication</th><th>Dose</th><th>Route</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Metformin</td><td>500 mg</td><td></td><td>Active</td></tr>
+            <tr><td>Furosemide</td><td></td><td>Oral</td><td>Active</td></tr>
+          </tbody>
+        </table>
+      </section>
+    `);
+
+    const result = await extractPortalDomStateFromPage(page, {
+      sourceArea: "oasis",
+      sectionTitle: "Medication & Allergies",
+      minFieldCount: 0,
+      minNonEmptyFieldCount: 0,
+    });
+
+    const rows = result.sections[0]?.tables[0]?.rows ?? [];
+    expect(rows).toContainEqual(["Metformin", "500 mg", "", "Active"]);
+    expect(rows).toContainEqual(["Furosemide", "", "Oral", "Active"]);
   });
 
   it("iterates every OASIS ng-select section and continues after a degraded section", async () => {
@@ -150,6 +184,68 @@ describe("portal DOM extraction", () => {
     expect(result.state.sections.find((section) => section.title.includes("Care Plan"))?.fields[0]?.value).toBe("Deferred mapping");
     expect(result.state.coverage.fallbackReasons).not.toContain("care_plan_deferred_for_later_mapping");
     expect(result.state.coverage.fallbackRecommended).toBe(true);
+  }, 10_000);
+
+  it("captures screenshot-style care plan goals from goal-content pre blocks", async () => {
+    const goalText = "Improve TUG score to 12 seconds or better to improve fall safety.";
+    await page.setContent(`
+      <app-document-note>
+        <app-oasis>
+          <fin-select class="select-oasis-pages">
+            <ng-select class="fin-select ng-select ng-select-single">
+              <div class="ng-select-container"><div class="ng-value-container"><div class="ng-value">Care Plan: Problems / Goals / Interventions</div><div class="ng-input"><input role="combobox" /></div></div></div>
+            </ng-select>
+          </fin-select>
+          <section id="content">
+            <div class="careplan-summary">
+              <div class="careplan-summary__header-label">PT Balance Training - The patient currently demonstrates a high risk for falls with all functional mobility, as demonstrated by TUG score of 16 secs</div>
+              <div class="careplan-summary__goal-count_status-unmet">0/1 Met Goal(s)</div>
+              <div class="careplan-summary__goal-content">
+                <div class="careplan-summary__goal-content-header">
+                  <div class="careplan-summary__goal-title"><span class="font-bold">Goal</span></div>
+                  <pre>${goalText}</pre>
+                </div>
+              </div>
+              <div>Target Completion: 3 Week(s) Term: Short-term Status: Unmet Onset: 05/09/2026 Source: 05/09/2026 - 07/07/2026</div>
+            </div>
+          </section>
+        </app-oasis>
+      </app-document-note>
+      <script>
+        window.__carePlanGoalSections = {
+          "Care Plan: Problems / Goals / Interventions": document.querySelector('#content').innerHTML
+        };
+        document.querySelector('ng-select').addEventListener('click', () => {
+          let panel = document.querySelector('ng-dropdown-panel');
+          if (panel) return;
+          panel = document.createElement('ng-dropdown-panel');
+          panel.className = 'ng-dropdown-panel ng-select-bottom';
+          panel.innerHTML = '<div role="listbox" class="ng-dropdown-panel-items scroll-host">' +
+            '<div class="ng-option ng-option-selected" role="option" aria-selected="true"><span class="ng-option-label">Care Plan: Problems / Goals / Interventions</span></div>' +
+            '</div>';
+          document.body.appendChild(panel);
+          panel.querySelectorAll('.ng-option').forEach((option) => option.addEventListener('click', () => {
+            const label = option.textContent.trim();
+            document.querySelector('.ng-value').textContent = label;
+            document.querySelector('#content').innerHTML = window.__carePlanGoalSections[label] || '';
+            panel.remove();
+          }));
+        });
+      </script>
+    `);
+
+    const result = await extractOasisDomStateFromPage({
+      page,
+      thresholds: {
+        minFieldCount: 2,
+        minNonEmptyFieldCount: 2,
+      },
+    });
+    const carePlan = result.state.sections.find((section) => section.title.includes("Care Plan"));
+
+    expect(carePlan?.status).toBe("success");
+    expect(carePlan?.tables[0]?.rows[0]?.[2]).toBe(goalText);
+    expect(carePlan?.fields.find((field) => field.key === "care_plan_problem_1_goal")?.value).toBe(goalText);
   }, 10_000);
 
   it("builds deterministic OASIS bridge text and comparison artifacts against mocked baseline", async () => {

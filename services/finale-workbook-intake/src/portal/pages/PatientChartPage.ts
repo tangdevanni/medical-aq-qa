@@ -87,6 +87,10 @@ import type {
   OasisMenuOpenResult,
 } from "../../oasis/types/oasisQaResult";
 import { deriveOasisAssessmentProcessingSummary } from "../../oasis/status/oasisAssessmentProcessingStatus";
+import {
+  isOasisAssessmentLabelMatch,
+  scoreOasisAssessmentDocumentLabel,
+} from "../../oasis/navigation/oasisAssessmentDocumentMatching";
 
 const MIN_OASIS_PRINT_CAPTURE_TIMEOUT_MS = 30_000;
 import {
@@ -1784,6 +1788,7 @@ export class PatientChartPage {
       patientChartUrl?: string | null;
       oasisReadyDiagnosis?: OasisReadyDiagnosisDocument | null;
       oasisReadyDiagnosisPath?: string | null;
+      assessmentType?: string | null;
     } = {},
   ): Promise<{
     artifacts: ArtifactRecord[];
@@ -1797,6 +1802,7 @@ export class PatientChartPage {
     await mkdir(outputDirectory, { recursive: true });
     await waitForPortalPageSettled(this.page, this.options.debugConfig);
     const workflowPhase = options.workflowPhase ?? "full_discovery";
+    const targetAssessmentType = options.assessmentType ?? "SOC";
     const urlBefore = options.patientChartUrl ?? this.page.url();
     const stepLogs: AutomationStepLog[] = [];
     const primaryDiagnosisSelected = formatPrimaryDiagnosisSelected(options.oasisReadyDiagnosis);
@@ -1901,6 +1907,7 @@ export class PatientChartPage {
       ? await this.openSocDocumentFromOasisTable({
           chartUrl: urlBefore,
           oasisSelectorUsed: oasisDocumentsPage.oasisSelectorUsed,
+          assessmentType: targetAssessmentType,
         })
       : {
           opened: false,
@@ -2160,15 +2167,11 @@ export class PatientChartPage {
   }> {
     const warnings: string[] = [];
     const normalizedAssessmentType = input.assessmentType.toUpperCase();
-    if (normalizedAssessmentType !== "SOC") {
-      warnings.push(
-        `Assessment type ${normalizedAssessmentType} is not explicitly automated yet; attempting the current SOC-oriented note open path.`,
-      );
-    }
 
     const socDocumentResult = await this.openSocDocumentFromOasisTable({
       chartUrl: input.chartUrl,
       oasisSelectorUsed: "oasis_menu_for_review",
+      assessmentType: input.assessmentType,
     });
     const initialOasisLockState = socDocumentResult.opened
       ? await this.detectOasisSocLockState({
@@ -2224,9 +2227,9 @@ export class PatientChartPage {
       result: {
         assessmentOpened: socDocumentResult.opened,
         matchedAssessmentLabel: socDocumentResult.matchedSocAnchorText,
-        matchedRequestedAssessment: normalizedAssessmentType === "SOC"
-          ? Boolean(socDocumentResult.opened)
-          : false,
+        matchedRequestedAssessment:
+          socDocumentResult.opened &&
+          isOasisAssessmentLabelMatch(socDocumentResult.matchedSocAnchorText, normalizedAssessmentType),
         currentUrl: this.page.url(),
         diagnosisSectionOpened: diagnosisNavigationResult.diagnosisSectionOpened,
         diagnosisListFound: diagnosisNavigationResult.diagnosisListFound,
@@ -3712,6 +3715,7 @@ export class PatientChartPage {
   private async openSocDocumentFromOasisTable(input: {
     chartUrl: string;
     oasisSelectorUsed: string | null;
+    assessmentType: string;
   }): Promise<{
     opened: boolean;
     socDocumentFound: boolean;
@@ -3723,6 +3727,7 @@ export class PatientChartPage {
   }> {
     await waitForPortalPageSettled(this.page, this.options.debugConfig);
     const stepLogs: AutomationStepLog[] = [];
+    const targetAssessmentType = input.assessmentType.toUpperCase();
     const tableRows = this.page.locator("app-private-documents table tbody tr, fin-datatable table tbody tr, table tbody tr");
     const totalTableRowCount = await tableRows.count().catch(() => 0);
     const tableAnchors = this.page.locator(
@@ -3788,7 +3793,7 @@ export class PatientChartPage {
       );
       stepLogs.push(createAutomationStepLog({
         step: "oasis_soc_document",
-        message: "OASIS documents page was not verifiable before SOC selection.",
+        message: `OASIS documents page was not verifiable before ${targetAssessmentType} selection.`,
         urlBefore: input.chartUrl,
         urlAfter: this.page.url(),
         selectorUsed: input.oasisSelectorUsed,
@@ -3798,7 +3803,7 @@ export class PatientChartPage {
       }));
       stepLogs.push(createAutomationStepLog({
         step: "qa_summary",
-        message: "OASIS workflow stopped because the OASIS document table/list was not available for SOC selection.",
+        message: `OASIS workflow stopped because the OASIS document table/list was not available for ${targetAssessmentType} selection.`,
         urlBefore: input.chartUrl,
         urlAfter: this.page.url(),
         selectorUsed: input.oasisSelectorUsed,
@@ -3809,7 +3814,7 @@ export class PatientChartPage {
           "socDocumentClicked:false",
           `failureReason:${failureReason}`,
         ],
-        missing: ["OASIS document table/list", "SOC document click"],
+        missing: ["OASIS document table/list", `${targetAssessmentType} document click`],
         evidence,
         safeReadConfirmed: true,
       }));
@@ -3824,7 +3829,7 @@ export class PatientChartPage {
       };
     }
 
-    const candidateSocAnchors: Array<{
+    const candidateAssessmentAnchors: Array<{
       rowText: string;
       anchorText: string;
       anchor: Locator;
@@ -3843,36 +3848,55 @@ export class PatientChartPage {
         continue;
       }
 
-      const normalizedAnchorText = anchorText.toUpperCase();
-      if (!/\bSOC\b/.test(normalizedAnchorText) && !/SOC/.test(normalizedAnchorText)) {
+      const row = anchor.locator("xpath=ancestor::tr[1]").first();
+      const rowText = normalizeWhitespace(await row.textContent().catch(() => null));
+      const score = scoreOasisAssessmentDocumentLabel({
+        label: `${anchorText} ${rowText}`,
+        assessmentType: targetAssessmentType,
+        index,
+      }) + 20;
+      if (score <= 0) {
         continue;
       }
 
-      const row = anchor.locator("xpath=ancestor::tr[1]").first();
-      const rowText = normalizeWhitespace(await row.textContent().catch(() => null));
-
-      let score = 0;
-      if (/\bSOC\b/.test(normalizedAnchorText)) {
-        score += 50;
-      } else if (/SOC/.test(normalizedAnchorText)) {
-        score += 20;
-      }
-      if (/OASIS/.test(normalizedAnchorText) && /\bSOC\b/.test(normalizedAnchorText)) {
-        score += 40;
-      }
-      if (/PT\s+SOC/.test(normalizedAnchorText)) {
-        score += 20;
-      }
-      if (/OASIS.*SOC|SOC.*OASIS/.test(normalizedAnchorText)) {
-        score += 10;
-      }
-      score += Math.max(0, 100 - index);
-
-      candidateSocAnchors.push({
+      candidateAssessmentAnchors.push({
         rowText,
         anchorText,
         anchor,
         selectorUsed: "table tbody tr a.tbl-link",
+        score,
+      });
+    }
+
+    const rowScanLimit = Math.min(totalTableRowCount, 100);
+    for (let index = 0; index < rowScanLimit; index += 1) {
+      const row = tableRows.nth(index);
+      if (!(await row.isVisible().catch(() => false))) {
+        continue;
+      }
+
+      const rowText = normalizeWhitespace(await row.textContent().catch(() => null));
+      const score = scoreOasisAssessmentDocumentLabel({
+        label: rowText,
+        assessmentType: targetAssessmentType,
+        index,
+      });
+      if (score <= 0) {
+        continue;
+      }
+
+      const rowActionTarget = row
+        .locator("td:last-child a, td:last-child button, a.tbl-link, a[href]")
+        .first();
+      if (!(await rowActionTarget.isVisible().catch(() => false))) {
+        continue;
+      }
+
+      candidateAssessmentAnchors.push({
+        rowText,
+        anchorText: rowText,
+        anchor: rowActionTarget,
+        selectorUsed: "table tbody tr target-assessment action",
         score,
       });
     }
@@ -3885,13 +3909,14 @@ export class PatientChartPage {
         totalTblLinkAnchorCount: totalAnchorCount,
         allAnchorTexts,
         normalizedAnchorTexts,
-        socCandidateCount: candidateSocAnchors.length,
-        rankedSocCandidateTexts: candidateSocAnchors
+        targetAssessmentType,
+        assessmentCandidateCount: candidateAssessmentAnchors.length,
+        rankedAssessmentCandidateTexts: candidateAssessmentAnchors
           .slice()
           .sort((left, right) => right.score - left.score || left.anchorText.localeCompare(right.anchorText))
           .slice(0, 10)
           .map((candidate) => candidate.anchorText),
-        socCandidates: candidateSocAnchors.slice(0, 10).map((candidate) => ({
+        assessmentCandidates: candidateAssessmentAnchors.slice(0, 10).map((candidate) => ({
           rowText: candidate.rowText,
           anchorText: candidate.anchorText,
           selectorUsed: candidate.selectorUsed,
@@ -3901,29 +3926,30 @@ export class PatientChartPage {
       "OASIS document table/list detected",
     );
 
-    if (candidateSocAnchors.length === 0) {
-      failureReason = "no_soc_anchor_found";
+    if (candidateAssessmentAnchors.length === 0) {
+      failureReason = `no_${targetAssessmentType.toLowerCase()}_anchor_found`;
       const combinedEvidence = [
         ...listEvidence,
         `Total table tbody tr count: ${totalTableRowCount}`,
         `Total a.tbl-link anchor count: ${totalAnchorCount}`,
         `All anchor texts: ${allAnchorTexts.join(" | ") || "none"}`,
         `Normalized anchor texts: ${normalizedAnchorTexts.join(" | ") || "none"}`,
+        `Target assessment type: ${targetAssessmentType}`,
         `Visible document rows inspected: ${listItems.length}`,
       ];
       stepLogs.push(createAutomationStepLog({
         step: "oasis_soc_document",
-        message: "OASIS document table was visible, but no SOC anchor was found.",
+        message: `OASIS document table was visible, but no ${targetAssessmentType} document target was found.`,
         urlBefore: input.chartUrl,
         urlAfter: this.page.url(),
         selectorUsed: "table tbody tr a.tbl-link",
-        missing: ["SOC OASIS document anchor"],
+        missing: [`${targetAssessmentType} OASIS document target`],
         evidence: combinedEvidence,
         safeReadConfirmed: true,
       }));
       stepLogs.push(createAutomationStepLog({
         step: "qa_summary",
-        message: "OASIS workflow stopped because no SOC OASIS anchor was found in the OASIS table/list.",
+        message: `OASIS workflow stopped because no ${targetAssessmentType} OASIS document target was found in the OASIS table/list.`,
         urlBefore: input.chartUrl,
         urlAfter: this.page.url(),
         selectorUsed: "table tbody tr a.tbl-link",
@@ -3934,7 +3960,7 @@ export class PatientChartPage {
           "socDocumentClicked:false",
           `failureReason:${failureReason}`,
         ],
-        missing: ["SOC OASIS document anchor"],
+        missing: [`${targetAssessmentType} OASIS document target`],
         evidence: combinedEvidence,
         safeReadConfirmed: true,
       }));
@@ -3944,14 +3970,15 @@ export class PatientChartPage {
           totalTblLinkAnchorCount: totalAnchorCount,
           allAnchorTexts,
           normalizedAnchorTexts,
-          socCandidateCount: candidateSocAnchors.length,
-          rankedSocCandidateTexts: [],
+          targetAssessmentType,
+          assessmentCandidateCount: candidateAssessmentAnchors.length,
+          rankedAssessmentCandidateTexts: [],
           chosenSocAnchorText: null,
           socDocumentFound: false,
           socDocumentClicked: false,
           failureReason,
         },
-        "active OASIS workflow failed to locate SOC in the OASIS table",
+        "active OASIS workflow failed to locate requested assessment in the OASIS table",
       );
       return {
         opened: false,
@@ -3964,20 +3991,21 @@ export class PatientChartPage {
       };
     }
 
-    candidateSocAnchors.sort((left, right) => right.score - left.score || left.anchorText.localeCompare(right.anchorText));
-    const matchedSoc = candidateSocAnchors[0]!;
+    candidateAssessmentAnchors.sort((left, right) => right.score - left.score || left.anchorText.localeCompare(right.anchorText));
+    const matchedSoc = candidateAssessmentAnchors[0]!;
     const socClickTargetSummary = await summarizeClickTarget(matchedSoc.anchor);
     const socUrlBeforeClick = this.page.url();
-    const rankedSocCandidateTexts = candidateSocAnchors.slice(0, 10).map((candidate) => candidate.anchorText);
-    const clickMethodUsed = "clickReadOnlyTarget(a.tbl-link)";
+    const rankedAssessmentCandidateTexts = candidateAssessmentAnchors.slice(0, 10).map((candidate) => candidate.anchorText);
+    const clickMethodUsed = "clickReadOnlyTarget(oasis-assessment-target)";
     this.options.logger?.info(
       {
         totalTableRowCount,
         totalTblLinkAnchorCount: totalAnchorCount,
         allAnchorTexts,
         normalizedAnchorTexts,
-        socCandidateCount: candidateSocAnchors.length,
-        rankedSocCandidateTexts,
+        targetAssessmentType,
+        assessmentCandidateCount: candidateAssessmentAnchors.length,
+        rankedAssessmentCandidateTexts,
         chosenSocAnchorText: matchedSoc.anchorText,
         matchedSocRowText: matchedSoc.rowText,
         matchedSocAnchorText: matchedSoc.anchorText,
@@ -3985,7 +4013,7 @@ export class PatientChartPage {
         socDocumentFoundEmitted: true,
         socSelectorUsed: matchedSoc.selectorUsed,
       },
-      "SOC document found",
+      "requested OASIS assessment document found",
     );
     await clickReadOnlyTarget({
       locator: matchedSoc.anchor,
@@ -4001,7 +4029,7 @@ export class PatientChartPage {
         clickMethodUsed,
         postClickUrl: this.page.url(),
       },
-      "SOC anchor clicked",
+      "requested OASIS assessment document clicked",
     );
 
     const socPostClickMarkerResolution = await resolveVisibleLocatorList({
@@ -4031,7 +4059,7 @@ export class PatientChartPage {
         socDocumentClickedEmitted: socOpened,
         failureReason,
       },
-      "post-click SOC page markers found",
+      "post-click OASIS assessment page markers found",
     );
 
     const socEvidence = [
@@ -4041,40 +4069,41 @@ export class PatientChartPage {
       `Total a.tbl-link anchor count: ${totalAnchorCount}`,
       `All anchor texts: ${allAnchorTexts.join(" | ") || "none"}`,
       `Normalized anchor texts: ${normalizedAnchorTexts.join(" | ") || "none"}`,
-      `Candidate SOC anchors found: ${candidateSocAnchors.length}`,
-      `Ranked SOC candidate texts: ${rankedSocCandidateTexts.join(" | ") || "none"}`,
-      `Chosen SOC anchor text: ${matchedSoc.anchorText}`,
+      `Target assessment type: ${targetAssessmentType}`,
+      `Candidate assessment targets found: ${candidateAssessmentAnchors.length}`,
+      `Ranked assessment candidate texts: ${rankedAssessmentCandidateTexts.join(" | ") || "none"}`,
+      `Chosen assessment target text: ${matchedSoc.anchorText}`,
       `socDocumentFound emitted: true`,
-      `Matched SOC row text: ${matchedSoc.rowText}`,
-      `Matched SOC anchor text: ${matchedSoc.anchorText}`,
+      `Matched assessment row text: ${matchedSoc.rowText}`,
+      `Matched assessment anchor text: ${matchedSoc.anchorText}`,
       `Clicked selector/container: ${matchedSoc.selectorUsed} -> ${socClickTargetSummary}`,
       `Click method used: ${clickMethodUsed}`,
       `Post-click URL: ${this.page.url()}`,
       `Post-click markers: ${socPostClickMarkers.join(" | ") || "none"}`,
       `socDocumentClicked emitted: ${socOpened}`,
       ...(failureReason ? [`failureReason:${failureReason}`] : []),
-      ...candidateSocAnchors.slice(0, 10).map((candidate, index) =>
-        `socCandidate[${index + 1}] score=${candidate.score} anchor='${candidate.anchorText}' row='${candidate.rowText}' selector='${candidate.selectorUsed}'`,
+      ...candidateAssessmentAnchors.slice(0, 10).map((candidate, index) =>
+        `assessmentCandidate[${index + 1}] score=${candidate.score} anchor='${candidate.anchorText}' row='${candidate.rowText}' selector='${candidate.selectorUsed}'`,
       ),
     ];
 
     stepLogs.push(createAutomationStepLog({
       step: "oasis_soc_document",
       message: socOpened
-        ? "Clicked the SOC OASIS document anchor from the OASIS document list."
-        : "Clicked the matched SOC OASIS document anchor, but could not verify a resulting UI change.",
+        ? `Clicked the ${targetAssessmentType} OASIS document target from the OASIS document list.`
+        : `Clicked the matched ${targetAssessmentType} OASIS document target, but could not verify a resulting UI change.`,
       urlBefore: socUrlBeforeClick,
       urlAfter: this.page.url(),
       selectorUsed: matchedSoc.selectorUsed,
       found: socPostClickMarkers,
-      missing: socOpened ? [] : ["verified SOC document open state"],
+      missing: socOpened ? [] : [`verified ${targetAssessmentType} document open state`],
       openedDocumentLabel: matchedSoc.anchorText,
       evidence: socEvidence,
       safeReadConfirmed: true,
     }));
     stepLogs.push(createAutomationStepLog({
       step: "qa_summary",
-      message: `SOC document selection summary: socDocumentFound=true, socDocumentClicked=${socOpened}.`,
+      message: `${targetAssessmentType} document selection summary: socDocumentFound=true, socDocumentClicked=${socOpened}.`,
       urlBefore: input.chartUrl,
       urlAfter: this.page.url(),
       selectorUsed: matchedSoc.selectorUsed,
@@ -4086,7 +4115,7 @@ export class PatientChartPage {
         `postClickUrl:${this.page.url()}`,
         ...(failureReason ? [`failureReason:${failureReason}`] : []),
       ],
-      missing: socOpened ? [] : ["verified SOC document open state"],
+      missing: socOpened ? [] : [`verified ${targetAssessmentType} document open state`],
       evidence: socEvidence,
       safeReadConfirmed: true,
     }));
@@ -4096,7 +4125,7 @@ export class PatientChartPage {
         matchedSocAnchorText: matchedSoc.anchorText,
         totalTableRowCount,
         totalTblLinkAnchorCount: totalAnchorCount,
-        rankedSocCandidateTexts,
+        rankedAssessmentCandidateTexts,
         chosenSocAnchorText: matchedSoc.anchorText,
         socDocumentFound: true,
         socDocumentClicked: socOpened,

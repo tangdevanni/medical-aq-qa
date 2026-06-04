@@ -9,14 +9,12 @@ export function resolveDashboardRedirectLocation(
   }
 
   const explicitPublicBaseUrl = source.DASHBOARD_PUBLIC_BASE_URL?.trim();
-  const apiBaseUrl = source.NEXT_PUBLIC_API_BASE_URL?.trim();
-  const publicBaseUrl = explicitPublicBaseUrl || apiBaseUrl;
 
-  if (!publicBaseUrl) {
+  if (!explicitPublicBaseUrl) {
     return path;
   }
 
-  const parsed = new URL(publicBaseUrl);
+  const parsed = new URL(explicitPublicBaseUrl);
   return new URL(path, parsed.origin).toString();
 }
 

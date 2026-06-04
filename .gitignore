@@ -55,6 +55,12 @@ test-results/
 
 ### Local scratch / generated audit artifacts ###
 .tmp*
+.current-*
+.deploy-*
+.last-*
+.live-*
+.next-*
+.staged-*
 /.tmp/
 /.tmp-*/
 /Microsoft/
@@ -71,9 +77,11 @@ test-results/
 *.tsbuildinfo
 
 ### Local artifact outputs ###
+/artifacts/
 /artifacts/tmp/
 /artifacts/dashboard-verification/
 /artifacts/playwright-christine-review/
+/services/finale-workbook-intake/artifacts/
 /services/finale-workbook-intake/artifacts/tmp/
 /services/finale-workbook-intake/artifacts/artifact-quality-summary-work/
 /services/finale-workbook-intake/artifacts/test/
@@ -82,10 +90,20 @@ test-results/
 /services/api/.auth/
 
 ### Runtime Control Plane Data ###
+data/control-plane/agencies/
 data/control-plane/subsidiaries/
 data/control-plane/batches/
 data/control-plane/scheduled-runs/
+services/api/data/control-plane/agencies/
 services/api/data/control-plane/subsidiaries/
 services/api/data/control-plane/batches/*
 !services/api/data/control-plane/batches/README.md
 services/api/data/control-plane/scheduled-runs/
+
+### Local deployment snapshots ###
+/deploy/aws/*.json
+/deploy/aws/*.txt
+/deploy/aws/**/*.json
+/deploy/aws/**/*.txt
+/deploy/aws/rollback/
+/api-task-def.json

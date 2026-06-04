@@ -6,6 +6,7 @@ import type {
   OasisAssessmentNoteOpenResult,
   OasisAssessmentSelectionResult,
 } from "../types/oasisQaResult";
+import { isOasisAssessmentLabelMatch } from "./oasisAssessmentDocumentMatching";
 
 export interface OasisAssessmentNoteParams {
   context: PatientPortalContext;
@@ -31,11 +32,12 @@ export async function openAssessmentNote(
     assessmentType: params.selection.selectedAssessmentType,
   });
   const warnings = [...result.result.warnings];
-  const matchedAssessmentLabel = result.result.matchedAssessmentLabel?.toUpperCase() ?? "";
   const matchedRequestedAssessment =
     result.result.assessmentOpened &&
-    (matchedAssessmentLabel.includes(params.selection.selectedAssessmentType.toUpperCase()) ||
-      (params.selection.selectedAssessmentType === "REC" && /RECERT/i.test(matchedAssessmentLabel)));
+    isOasisAssessmentLabelMatch(
+      result.result.matchedAssessmentLabel,
+      params.selection.selectedAssessmentType,
+    );
   if (result.result.assessmentOpened && !matchedRequestedAssessment) {
     warnings.push(
       `Opened assessment label '${result.result.matchedAssessmentLabel ?? "unknown"}' did not match requested assessment type ${params.selection.selectedAssessmentType}.`,

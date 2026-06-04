@@ -99,6 +99,42 @@ function extractBetween(text: string, start: RegExp, end: RegExp): string {
   return cleanCarePlanText(endMatch?.index === undefined ? tail : tail.slice(0, endMatch.index));
 }
 
+async function extractCarePlanGoalFromHeaderDom(header: Locator): Promise<string> {
+  const rawGoal = await header.evaluate((element) => {
+    let root = (element as any).parentElement;
+    while (root && !root.querySelector("[class*='careplan-summary__goal-content']")) {
+      root = root.parentElement;
+    }
+    if (!root) {
+      return "";
+    }
+
+    const goalBlocks = Array.from(root.querySelectorAll("[class*='careplan-summary__goal-content']")) as any[];
+    for (const block of goalBlocks) {
+      const title = (block.querySelector("[class*='careplan-summary__goal-title']")?.textContent ?? "")
+        .replace(/\s+/g, " ")
+        .trim();
+      const preText = block.querySelector("pre")?.textContent ?? "";
+      const blockText = preText || block.textContent || "";
+      if (title && !/^goal(?:\(s\))?$/i.test(title)) {
+        continue;
+      }
+      const trimmed = blockText.replace(/\s+/g, " ").trim();
+      if (!trimmed) {
+        continue;
+      }
+      if (title && trimmed.toLowerCase().startsWith(title.toLowerCase())) {
+        return trimmed.slice(title.length).trim();
+      }
+      return trimmed;
+    }
+    return "";
+  }).catch(() => "");
+
+  const goal = cleanCarePlanText(rawGoal);
+  return isCarePlanMetadataOnly(goal) ? "" : goal;
+}
+
 async function extractCarePlanSectionFromPage(input: {
   page: Page;
   label: string;
@@ -144,12 +180,13 @@ async function extractCarePlanSectionFromPage(input: {
         : bodyText,
     );
     const goal = extractBetween(segment, /\bGoal(?:\(s\))?\b\s*:?\s*/i, /\b(?:Target Completion|Intervention\s*\/\s*Treatment|Date\s+Accomplished|Add Intervention)\b/i);
+    const domGoal = await extractCarePlanGoalFromHeaderDom(header);
     const intervention = extractBetween(
       segment,
       /\bIntervention\s*\/\s*Treatment\s*#?\d*\b/i,
       /\b(?:Date\s+Accomplished|Education,\s*Teaching|Discontinue Date|Assigned to Staff Type|Add Progress|No Progress Yet)\b/i,
     );
-    const usableGoal = isCarePlanMetadataOnly(goal) ? "" : goal;
+    const usableGoal = domGoal || (isCarePlanMetadataOnly(goal) ? "" : goal);
     const usableIntervention = isCarePlanMetadataOnly(intervention) ? "" : intervention;
     const targetCompletion = extractBetween(segment, /\bTarget Completion:\s*/i, /\b(?:Term:|Status:|Unmet on:|Intervention\s*\/\s*Treatment)\b/i);
     const term = extractBetween(segment, /\bTerm:\s*/i, /\b(?:Status:|Unmet on:|Intervention\s*\/\s*Treatment)\b/i);
