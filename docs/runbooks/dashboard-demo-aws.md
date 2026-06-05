@@ -50,6 +50,7 @@ Dashboard container:
 
 - `NEXT_PUBLIC_API_BASE_URL=http://medical-ai-qa-prod-alb-925770298.us-east-2.elb.amazonaws.com/api`
 - `DASHBOARD_PUBLIC_BASE_URL=http://medical-ai-qa-prod-alb-925770298.us-east-2.elb.amazonaws.com`
+- `DASHBOARD_BACKEND_FETCH_TIMEOUT_MS=25000`
 - `DASHBOARD_SESSION_TTL_HOURS=12`
 - `DASHBOARD_ALLOW_PLAINTEXT_PASSWORDS=false`
 - `DASHBOARD_SESSION_SECRET` from Secrets Manager
@@ -62,6 +63,7 @@ API container:
 
 - `API_PORT=3000`
 - `API_HOST=0.0.0.0` for container binding only. Users and redirects should never see `0.0.0.0`.
+- `API_REQUEST_TIMEOUT_MS=120000`
 - `API_STORAGE_ROOT=/data/control-plane`
 - `API_LOG_LEVEL=info`
 - `API_AUTONOMOUS_MODE=manual_only` for production initialization; switch to `full` only when scheduled autonomous runs are approved.
@@ -96,6 +98,20 @@ The API Dockerfile now fails the build if `services/finale-workbook-intake/asset
 The API seeds subsidiary metadata into `API_STORAGE_ROOT` on startup, so the mounted volume is the runtime source of truth; the image should not be treated as the place where agency state lives.
 For the production starting point, keep `API_AUTONOMOUS_MODE=manual_only`. This lets the dashboard load current memory-backed content and prevents startup from scraping the agency fleet. Operators can then run a memory migration, a dashboard reproject, or a one-patient bot run from the terminal when ready.
 `FINALE_PATIENT_CONCURRENCY` is consumed by the intake runner, not the dashboard. Keep it at `1` for initial production validation. Raise it only after controlled Star Home concurrency tests show no portal/session contention and the API task has enough CPU and memory headroom.
+
+## 504 Prevention
+
+Long-running trigger routes must acknowledge quickly and let the dashboard poll persisted status:
+
+- `POST /api/agencies/{agencyId}/refresh`
+- `POST /api/runs/upload`
+- `POST /api/runs/{batchId}/start`
+- `POST /api/runs/{batchId}/sample`
+- retry routes
+
+These routes should return `202` with a compact `{ batchId, status, refreshAcceptedAt, statusUrl }` response. They must not build full dashboard run detail before responding. Workbook acquisition, parsing, patient processing, and dashboard-state writing continue in the API process through `activeBatchJobs`, with EFS-backed control-plane JSON as the durable status source.
+
+`DASHBOARD_BACKEND_FETCH_TIMEOUT_MS` prevents a dashboard server request from hanging until the browser or ALB times out. `API_REQUEST_TIMEOUT_MS` gives the API room for non-trigger reads, but trigger routes should normally complete in under two seconds. The ALB idle timeout may be raised to `120-300` seconds for operational breathing room, but it is not the primary 504 fix.
 
 ## Demo / Staging Mode
 

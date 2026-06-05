@@ -114,6 +114,21 @@ async function buildDashboardPatientView(
   };
 }
 
+function buildRunAcceptedResponse(input: {
+  batchId: string;
+  status: string;
+  acceptedAt?: string | null;
+  message?: string;
+}) {
+  return {
+    batchId: input.batchId,
+    status: input.status,
+    refreshAcceptedAt: input.acceptedAt ?? new Date().toISOString(),
+    statusUrl: `/api/runs/${encodeURIComponent(input.batchId)}/status`,
+    ...(input.message ? { message: input.message } : {}),
+  };
+}
+
 async function buildDashboardRunDetail(
   service: BatchControlPlaneService,
   batchId: string,
@@ -156,10 +171,14 @@ export async function registerBatchRoutes(
   app.post("/api/batches/upload", async (request, reply) => {
     const payload = await readUploadPayload(request);
     const batch = await service.createBatchUpload(payload);
-    await service.parseBatch(batch.id);
-    await service.startBatchRun(batch.id);
-    reply.code(201);
-    return buildDashboardRunDetail(service, batch.id);
+    const startedBatch = await service.startBatchRunDetached(batch.id);
+    reply.code(202);
+    return buildRunAcceptedResponse({
+      batchId: startedBatch.id,
+      status: startedBatch.status,
+      acceptedAt: startedBatch.run.requestedAt ?? startedBatch.parse.requestedAt,
+      message: "Run accepted. Poll the status URL for progress.",
+    });
   });
 
   app.post("/api/batches/:id/parse", async (request) => {
@@ -171,16 +190,26 @@ export async function registerBatchRoutes(
   app.post("/api/batches/:id/run", async (request, reply) => {
     const batchId = await getBatchId(request);
     const body = runControlBodySchema.parse((request.body ?? {}) as unknown);
-    await service.startBatchRun(batchId, body);
+    const batch = await service.startBatchRunDetached(batchId, body);
     reply.code(202);
-    return buildDashboardRunDetail(service, batchId);
+    return buildRunAcceptedResponse({
+      batchId: batch.id,
+      status: batch.status,
+      acceptedAt: batch.run.requestedAt ?? batch.parse.requestedAt,
+      message: "Run accepted. Poll the status URL for progress.",
+    });
   });
 
   app.post("/api/batches/:id/retry-blocked", async (request, reply) => {
     const batchId = await getBatchId(request);
+    const batch = await service.retryBlockedPatientRuns(batchId);
     reply.code(202);
-    await service.retryBlockedPatientRuns(batchId);
-    return buildDashboardRunDetail(service, batchId);
+    return buildRunAcceptedResponse({
+      batchId: batch.id,
+      status: batch.status,
+      acceptedAt: batch.run.requestedAt,
+      message: "Retry accepted. Poll the status URL for progress.",
+    });
   });
 
   app.post("/api/batches/:id/deactivate", async (request) => {
@@ -341,10 +370,14 @@ export async function registerBatchRoutes(
   app.post("/api/runs/upload", async (request, reply) => {
     const payload = await readUploadPayload(request);
     const batch = await service.createBatchUpload(payload);
-    await service.parseBatch(batch.id);
-    await service.startBatchRun(batch.id);
-    reply.code(201);
-    return buildDashboardRunDetail(service, batch.id);
+    const startedBatch = await service.startBatchRunDetached(batch.id);
+    reply.code(202);
+    return buildRunAcceptedResponse({
+      batchId: startedBatch.id,
+      status: startedBatch.status,
+      acceptedAt: startedBatch.run.requestedAt ?? startedBatch.parse.requestedAt,
+      message: "Run accepted. Poll the status URL for progress.",
+    });
   });
 
   app.post("/api/runs/:id/parse", async (request) => {
@@ -356,9 +389,14 @@ export async function registerBatchRoutes(
   app.post("/api/runs/:id/start", async (request, reply) => {
     const batchId = await getBatchId(request);
     const body = runControlBodySchema.parse((request.body ?? {}) as unknown);
-    await service.startBatchRun(batchId, body);
+    const batch = await service.startBatchRunDetached(batchId, body);
     reply.code(202);
-    return buildDashboardRunDetail(service, batchId);
+    return buildRunAcceptedResponse({
+      batchId: batch.id,
+      status: batch.status,
+      acceptedAt: batch.run.requestedAt ?? batch.parse.requestedAt,
+      message: "Run accepted. Poll the status URL for progress.",
+    });
   });
 
   app.post("/api/runs/:id/sample", async (request, reply) => {
@@ -370,9 +408,14 @@ export async function registerBatchRoutes(
       patientIds: body.patientIds,
       seedFromMemory: body.mode !== "full",
     });
-    await service.startBatchRun(sampleBatch.id, body);
+    const startedBatch = await service.startBatchRunDetached(sampleBatch.id, body);
     reply.code(202);
-    return buildDashboardRunDetail(service, sampleBatch.id);
+    return buildRunAcceptedResponse({
+      batchId: startedBatch.id,
+      status: startedBatch.status,
+      acceptedAt: startedBatch.run.requestedAt ?? startedBatch.parse.requestedAt,
+      message: "Sample run accepted. Poll the status URL for progress.",
+    });
   });
 
   app.post("/api/runs/:id/deactivate", async (request) => {

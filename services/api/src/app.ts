@@ -27,6 +27,7 @@ export async function createApp() {
 
   const app = Fastify({
     loggerInstance: logger,
+    requestTimeout: env.API_REQUEST_TIMEOUT_MS,
   });
 
   await app.register(cors, {

@@ -89,6 +89,16 @@ describe("dashboard env", () => {
     assert.equal(env.authAuditEnabled, true);
     assert.equal(env.authAuditLogGroup, "dashboard-auth-audit");
     assert.equal(env.authAuditRegion, "us-east-2");
+    assert.equal(env.DASHBOARD_BACKEND_FETCH_TIMEOUT_MS, 25_000);
+  });
+
+  it("allows backend fetch timeout configuration", () => {
+    const env = loadDashboardEnv({
+      NEXT_PUBLIC_API_BASE_URL: "https://dashboard.example.com",
+      DASHBOARD_BACKEND_FETCH_TIMEOUT_MS: "15000",
+    });
+
+    assert.equal(env.DASHBOARD_BACKEND_FETCH_TIMEOUT_MS, 15_000);
   });
 
   it("rejects auth audit logging without an AWS region", () => {

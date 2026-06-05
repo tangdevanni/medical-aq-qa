@@ -22,7 +22,10 @@ import { PortalCredentialProvider } from "../services/portalCredentialProvider";
 import { SubsidiaryConfigService } from "../services/subsidiaryConfigService";
 import type { BatchRecord } from "../types/batchControlPlane";
 
-function createServiceFixture() {
+function createServiceFixture(input: {
+  acquisitionService?: WorkbookAcquisitionService;
+  serviceOptions?: ConstructorParameters<typeof BatchControlPlaneService>[6];
+} = {}) {
   const storageRoot = mkdtempSync(path.join(os.tmpdir(), "medical-ai-qa-api-"));
   const repository = new FilesystemBatchRepository(storageRoot);
   const scheduledRunRepository = new FilesystemScheduledRunRepository(storageRoot);
@@ -48,7 +51,7 @@ function createServiceFixture() {
     logger,
   );
 
-  const acquisitionService = {
+  const acquisitionService = input.acquisitionService ?? {
     async acquireWorkbook(params: {
       batch: { sourceWorkbook: { storedPath: string } };
       input: { fileName?: string; fileBuffer?: Buffer; exportName?: string };
@@ -103,10 +106,25 @@ function createServiceFixture() {
       acquisitionService,
       subsidiaryConfigService,
       logger,
+      input.serviceOptions,
     ),
     scheduledRunRepository,
     cleanup: () => rmSync(storageRoot, { recursive: true, force: true }),
   };
+}
+
+async function waitForCondition(
+  condition: () => Promise<boolean>,
+  timeoutMs = 2_000,
+): Promise<void> {
+  const startedAt = Date.now();
+  while (Date.now() - startedAt < timeoutMs) {
+    if (await condition()) {
+      return;
+    }
+    await new Promise((resolve) => setTimeout(resolve, 25));
+  }
+  throw new Error("Timed out waiting for condition.");
 }
 
 describe("BatchControlPlaneService scheduler metadata", () => {
@@ -220,6 +238,51 @@ describe("BatchControlPlaneService scheduler metadata", () => {
       assert.equal(batch.sourceWorkbook.acquisitionProvider, "FINALE");
       assert.equal(batch.sourceWorkbook.originalFileName, "default-oasis-30-days.xlsx");
       assert.equal(batch.sourceWorkbook.storedPath.includes("default-oasis-30-days.xlsx"), true);
+    } finally {
+      fixture.cleanup();
+    }
+  });
+
+  it("starts a manual agency refresh without waiting for workbook acquisition", async () => {
+    let acquisitionStarted: (() => void) | null = null;
+    let rejectAcquisition!: (error: Error) => void;
+    const acquisitionStartedPromise = new Promise<void>((resolve) => {
+      acquisitionStarted = resolve;
+    });
+    const acquisitionGate = new Promise<never>((_resolve, reject) => {
+      rejectAcquisition = reject;
+    });
+    const acquisitionService = {
+      async acquireWorkbook() {
+        acquisitionStarted?.();
+        return acquisitionGate;
+      },
+    } as unknown as WorkbookAcquisitionService;
+    const fixture = createServiceFixture({
+      acquisitionService,
+      serviceOptions: { autonomousMode: "manual_only" },
+    });
+
+    try {
+      await fixture.service.initialize();
+      const batch = await fixture.service.startAgencyRefresh("default");
+
+      assert.equal(batch.status, "RUNNING");
+      assert.equal(batch.sourceWorkbook.acquisitionStatus, "PENDING");
+      assert.ok(batch.run.requestedAt);
+      await acquisitionStartedPromise;
+      await assert.rejects(
+        () => fixture.service.startAgencyRefresh("default"),
+        /already running/,
+      );
+
+      rejectAcquisition(new Error("planned acquisition failure"));
+      await waitForCondition(async () => {
+        const reloaded = await fixture.repository.getBatch(batch.id);
+        return reloaded?.status === "FAILED" &&
+          reloaded.sourceWorkbook.acquisitionStatus === "FAILED" &&
+          reloaded.run.lastError === "planned acquisition failure";
+      });
     } finally {
       fixture.cleanup();
     }

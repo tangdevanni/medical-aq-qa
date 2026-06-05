@@ -49,6 +49,7 @@ export type DashboardEnv = {
   DASHBOARD_AUTH_AUDIT_LOG_GROUP: string;
   DASHBOARD_AUTH_AUDIT_AWS_REGION: string;
   DASHBOARD_AUTH_AUDIT_STREAM_PREFIX: string;
+  DASHBOARD_BACKEND_FETCH_TIMEOUT_MS: number;
   qaUsers: DashboardQaUser[];
   isProduction: boolean;
   allowPlaintextPasswords: boolean;
@@ -197,6 +198,10 @@ export function loadDashboardEnv(
     "";
   const DASHBOARD_AUTH_AUDIT_STREAM_PREFIX =
     source.DASHBOARD_AUTH_AUDIT_STREAM_PREFIX?.trim() || "dashboard-auth";
+  const DASHBOARD_BACKEND_FETCH_TIMEOUT_MS = parsePositiveInteger(
+    source.DASHBOARD_BACKEND_FETCH_TIMEOUT_MS,
+    25_000,
+  );
   const allowPlaintextPasswords = parseBooleanEnv(DASHBOARD_ALLOW_PLAINTEXT_PASSWORDS, false);
   const cookieSecure = parseBooleanEnv(DASHBOARD_COOKIE_SECURE, NODE_ENV === "production");
   const isProduction = NODE_ENV === "production";
@@ -247,6 +252,7 @@ export function loadDashboardEnv(
     DASHBOARD_AUTH_AUDIT_LOG_GROUP,
     DASHBOARD_AUTH_AUDIT_AWS_REGION,
     DASHBOARD_AUTH_AUDIT_STREAM_PREFIX,
+    DASHBOARD_BACKEND_FETCH_TIMEOUT_MS,
     qaUsers,
     isProduction,
     allowPlaintextPasswords,

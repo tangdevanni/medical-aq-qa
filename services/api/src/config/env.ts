@@ -68,6 +68,7 @@ const envSchema = z.object({
   API_LOG_LEVEL: z
     .enum(["fatal", "error", "warn", "info", "debug", "trace", "silent"])
     .default("info"),
+  API_REQUEST_TIMEOUT_MS: z.coerce.number().int().positive().default(120_000),
   API_CORS_ORIGIN: z.string().min(1).default("*"),
   API_AUTONOMOUS_MODE: z.enum(["full", "manual_only"]).default("full"),
   PATIENT_MEMORY_WRITE_ENABLED: z

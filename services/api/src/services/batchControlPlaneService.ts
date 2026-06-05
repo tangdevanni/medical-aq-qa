@@ -72,6 +72,18 @@ type BatchControlPlaneOptions = {
   scheduleLocalTimes?: readonly string[];
 };
 
+type CreateBatchFromProviderParams = {
+  providerId: WorkbookAcquisitionProviderId;
+  billingPeriod?: string | null;
+  originalFileName?: string | null;
+  subsidiaryId?: string | null;
+  input: ManualUploadWorkbookInput | { exportName?: string | null };
+};
+
+type BatchRunStartOptions = {
+  allowActiveJob?: boolean;
+};
+
 function isVisitNotesArtifactReprocessRequest(options: RunControlOptions): boolean {
   const forceStages = new Set(options.forceStages ?? []);
   return (
@@ -1284,13 +1296,15 @@ export class BatchControlPlaneService {
     });
   }
 
-  async createBatchFromProvider(params: {
-    providerId: WorkbookAcquisitionProviderId;
-    billingPeriod?: string | null;
-    originalFileName?: string | null;
-    subsidiaryId?: string | null;
-    input: ManualUploadWorkbookInput | { exportName?: string | null };
-  }): Promise<BatchRecord> {
+  async createBatchFromProvider(params: CreateBatchFromProviderParams): Promise<BatchRecord> {
+    const { batch, subsidiary } = await this.createPendingBatchFromProvider(params);
+    return this.acquireWorkbookForBatch(batch, subsidiary, params);
+  }
+
+  private async createPendingBatchFromProvider(params: CreateBatchFromProviderParams): Promise<{
+    batch: BatchRecord;
+    subsidiary: SubsidiaryRecord;
+  }> {
     const subsidiary = params.subsidiaryId
       ? await this.subsidiaryConfigService.getSubsidiaryConfig(params.subsidiaryId)
       : await this.subsidiaryConfigService.getDefaultActiveSubsidiary();
@@ -1355,6 +1369,14 @@ export class BatchControlPlaneService {
 
     await this.repository.saveBatch(batch);
 
+    return { batch, subsidiary };
+  }
+
+  private async acquireWorkbookForBatch(
+    batch: BatchRecord,
+    subsidiary: SubsidiaryRecord,
+    params: CreateBatchFromProviderParams,
+  ): Promise<BatchRecord> {
     try {
       const acquisition = await this.acquisitionService.acquireWorkbook({
         batch,
@@ -1381,7 +1403,7 @@ export class BatchControlPlaneService {
       await this.deactivateOtherActiveSchedules(batch.id, batch.subsidiary.id, acquisition.acquiredAt);
       this.logger.info(
         {
-          batchId,
+          batchId: batch.id,
           subsidiaryId: batch.subsidiary.id,
           subsidiarySlug: batch.subsidiary.slug,
           acquisitionProvider: params.providerId,
@@ -1392,19 +1414,38 @@ export class BatchControlPlaneService {
       );
       return batch;
     } catch (error) {
-      batch.status = "FAILED";
-      batch.updatedAt = new Date().toISOString();
-      batch.sourceWorkbook.acquisitionStatus = "FAILED";
-      batch.sourceWorkbook.acquisitionMetadata = null;
-      batch.sourceWorkbook.acquisitionNotes = [
-        error instanceof Error ? error.message : "Unknown workbook acquisition error.",
-      ];
-      batch.sourceWorkbook.verification = null;
-      batch.parse.lastError =
-        error instanceof Error ? error.message : "Unknown workbook acquisition error.";
-      await this.repository.saveBatch(batch);
+      await this.markWorkbookAcquisitionFailed(
+        batch.id,
+        error,
+        "Unknown workbook acquisition error.",
+      );
       throw error;
     }
+  }
+
+  private async markWorkbookAcquisitionFailed(
+    batchId: string,
+    error: unknown,
+    fallbackMessage: string,
+  ): Promise<BatchRecord | null> {
+    const batch = await this.repository.getBatch(batchId);
+    if (!batch) {
+      return null;
+    }
+
+    const message = error instanceof Error ? error.message : fallbackMessage;
+    batch.status = "FAILED";
+    batch.updatedAt = new Date().toISOString();
+    batch.sourceWorkbook.acquisitionStatus = "FAILED";
+    batch.sourceWorkbook.acquisitionMetadata = null;
+    batch.sourceWorkbook.acquisitionNotes = [message];
+    batch.sourceWorkbook.verification = null;
+    batch.parse.completedAt = batch.parse.completedAt ?? batch.updatedAt;
+    batch.parse.lastError = message;
+    batch.run.completedAt = batch.run.completedAt ?? batch.updatedAt;
+    batch.run.lastError = message;
+    await this.repository.saveBatch(batch);
+    return batch;
   }
 
   async listBatches(): Promise<BatchRecord[]> {
@@ -1422,7 +1463,7 @@ export class BatchControlPlaneService {
     }));
   }
 
-  async triggerAgencyRefresh(agencyId: string, options: RunControlOptions = {}): Promise<BatchRecord> {
+  async startAgencyRefresh(agencyId: string, options: RunControlOptions = {}): Promise<BatchRecord> {
     const subsidiary = await this.subsidiaryConfigService.getSubsidiaryConfig(agencyId);
     const batches = await this.repository.listBatches();
     const activeBatch = batches.find((batch) =>
@@ -1433,19 +1474,71 @@ export class BatchControlPlaneService {
     }
 
     const exportName = `${subsidiary.slug}-oasis-30-days.xlsx`;
-    const batch = await this.createBatchFromProvider({
+    const params: CreateBatchFromProviderParams = {
       providerId: "FINALE",
       subsidiaryId: subsidiary.id,
       originalFileName: exportName,
       input: {
         exportName,
       },
-    });
+    };
+    const { batch } = await this.createPendingBatchFromProvider(params);
+    const now = new Date().toISOString();
+    batch.status = "RUNNING";
+    batch.updatedAt = now;
+    batch.run.requestedAt = now;
+    batch.run.completedAt = null;
+    batch.run.lastError = null;
+    await this.repository.saveBatch(batch);
 
-    await this.parseBatch(batch.id);
-    const refreshedBatch = await this.startBatchRun(batch.id, options);
-    await this.removeSupersededAgencyBatches(refreshedBatch);
-    return refreshedBatch;
+    const task = new Promise<void>((resolve, reject) => {
+      setImmediate(() => {
+        void this.executeAgencyRefresh(batch.id, subsidiary, params, options).then(resolve, reject);
+      });
+    });
+    this.activeBatchJobs.set(batch.id, task);
+    void task;
+    return batch;
+  }
+
+  async triggerAgencyRefresh(agencyId: string, options: RunControlOptions = {}): Promise<BatchRecord> {
+    const batch = await this.startAgencyRefresh(agencyId, options);
+    await this.activeBatchJobs.get(batch.id);
+    return (await this.repository.getBatch(batch.id)) ?? batch;
+  }
+
+  private async executeAgencyRefresh(
+    batchId: string,
+    subsidiary: SubsidiaryRecord,
+    params: CreateBatchFromProviderParams,
+    options: RunControlOptions,
+  ): Promise<void> {
+    const initialTask = this.activeBatchJobs.get(batchId);
+    try {
+      const pendingBatch = await this.mustGetBatch(batchId);
+      const acquiredBatch = await this.acquireWorkbookForBatch(pendingBatch, subsidiary, params);
+      await this.parseBatch(acquiredBatch.id, { allowActiveJob: true });
+      const refreshedBatch = await this.startBatchRun(acquiredBatch.id, options, { allowActiveJob: true });
+      await this.removeSupersededAgencyBatches(refreshedBatch);
+      if (this.activeBatchJobs.get(batchId) === initialTask) {
+        this.activeBatchJobs.delete(batchId);
+      }
+    } catch (error) {
+      await this.markWorkbookAcquisitionFailed(
+        batchId,
+        error,
+        "Unknown agency refresh error.",
+      );
+      this.activeBatchJobs.delete(batchId);
+      this.logger.error(
+        {
+          batchId,
+          subsidiaryId: subsidiary.id,
+          errorMessage: error instanceof Error ? error.message : "Unknown agency refresh error.",
+        },
+        "agency refresh failed",
+      );
+    }
   }
 
   async createPatientSampleBatch(input: {
@@ -1720,13 +1813,16 @@ export class BatchControlPlaneService {
     };
   }
 
-  async parseBatch(batchId: string): Promise<BatchRecord> {
+  async parseBatch(
+    batchId: string,
+    options: BatchRunStartOptions = {},
+  ): Promise<BatchRecord> {
     const batch = await this.repository.getBatch(batchId);
     if (!batch) {
       throw new Error(`Batch not found: ${batchId}`);
     }
 
-    if (this.activeBatchJobs.has(batchId)) {
+    if (this.activeBatchJobs.has(batchId) && !options.allowActiveJob) {
       throw new Error(`Batch is already running: ${batchId}`);
     }
 
@@ -1810,15 +1906,19 @@ export class BatchControlPlaneService {
     }
   }
 
-  async startBatchRun(batchId: string, options: RunControlOptions = {}): Promise<BatchRecord> {
+  async startBatchRun(
+    batchId: string,
+    options: RunControlOptions = {},
+    startOptions: BatchRunStartOptions = {},
+  ): Promise<BatchRecord> {
     let batch = await this.mustGetBatch(batchId);
 
-    if (this.activeBatchJobs.has(batchId)) {
+    if (this.activeBatchJobs.has(batchId) && !startOptions.allowActiveJob) {
       return batch;
     }
 
-    if (batch.status === "CREATED") {
-      batch = await this.parseBatch(batchId);
+    if (batch.status === "CREATED" || (batch.status === "PARSING" && !batch.storage.manifestPath)) {
+      batch = await this.parseBatch(batchId, { allowActiveJob: startOptions.allowActiveJob });
     }
 
     const manifest = await this.repository.readManifest(batch);
@@ -1938,6 +2038,61 @@ export class BatchControlPlaneService {
     void task;
 
     return batch;
+  }
+
+  async startBatchRunDetached(batchId: string, options: RunControlOptions = {}): Promise<BatchRecord> {
+    const batch = await this.mustGetBatch(batchId);
+    if (this.activeBatchJobs.has(batchId)) {
+      return batch;
+    }
+
+    const now = new Date().toISOString();
+    if (batch.status === "CREATED" || (batch.status === "PARSING" && !batch.storage.manifestPath)) {
+      batch.status = "PARSING";
+      batch.updatedAt = now;
+      batch.parse.requestedAt = batch.parse.requestedAt ?? now;
+      batch.parse.completedAt = null;
+      batch.parse.lastError = null;
+    } else {
+      batch.status = "RUNNING";
+      batch.updatedAt = now;
+      batch.run.requestedAt = now;
+      batch.run.completedAt = null;
+      batch.run.lastError = null;
+    }
+    await this.repository.saveBatch(batch);
+
+    const task = new Promise<void>((resolve, reject) => {
+      setImmediate(() => {
+        void this.executeDetachedBatchStart(batch.id, options).then(resolve, reject);
+      });
+    });
+    this.activeBatchJobs.set(batch.id, task);
+    void task;
+    return batch;
+  }
+
+  private async executeDetachedBatchStart(
+    batchId: string,
+    options: RunControlOptions,
+  ): Promise<void> {
+    const initialTask = this.activeBatchJobs.get(batchId);
+    try {
+      await this.startBatchRun(batchId, options, { allowActiveJob: true });
+      if (this.activeBatchJobs.get(batchId) === initialTask) {
+        this.activeBatchJobs.delete(batchId);
+      }
+    } catch (error) {
+      await this.failBatch(batchId, error, "run");
+      this.activeBatchJobs.delete(batchId);
+      this.logger.error(
+        {
+          batchId,
+          errorMessage: error instanceof Error ? error.message : "Unknown batch start error.",
+        },
+        "detached batch start failed",
+      );
+    }
   }
 
   async deactivateBatch(batchId: string): Promise<BatchRecord> {
@@ -3308,7 +3463,7 @@ export class BatchControlPlaneService {
     try {
       this.logger.info(
         {
-          batchId: batch.id,
+          batchId,
           subsidiaryId: batch.subsidiary.id,
           subsidiaryName: batch.subsidiary.name,
         },

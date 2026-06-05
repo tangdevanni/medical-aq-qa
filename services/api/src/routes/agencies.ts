@@ -48,11 +48,14 @@ export async function registerAgencyRoutes(
     const agencyId = await getAgencyId(request);
     const body = agencyRefreshBodySchema.parse(request.body ?? {});
     try {
-      const batch = await service.triggerAgencyRefresh(agencyId, body);
+      const batch = await service.startAgencyRefresh(agencyId, body);
+      reply.code(202);
       return {
         agencyId,
         batchId: batch.id,
         status: batch.status,
+        refreshAcceptedAt: batch.run.requestedAt ?? batch.updatedAt,
+        statusUrl: `/api/runs/${encodeURIComponent(batch.id)}/status`,
         sourceWorkbookName: batch.sourceWorkbook.originalFileName,
         storedPath: batch.sourceWorkbook.storedPath,
       };

@@ -17,13 +17,35 @@ function buildBackendUrl(pathname: string): string {
   return `${base}${prefix}${pathname.startsWith("/") ? pathname : `/${pathname}`}`;
 }
 
+async function withBackendTimeout<T>(
+  url: string,
+  run: (signal: AbortSignal) => Promise<T>,
+): Promise<T> {
+  const timeoutMs = loadDashboardEnv().DASHBOARD_BACKEND_FETCH_TIMEOUT_MS;
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await run(controller.signal);
+  } catch (error) {
+    if (controller.signal.aborted) {
+      throw new Error(`Backend request timed out after ${timeoutMs}ms for ${url}.`);
+    }
+    throw error;
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
 async function fetchBackendJson<T>(pathname: string): Promise<T> {
   const url = buildBackendUrl(pathname);
   let response: Response;
   try {
-    response = await fetch(url, {
-      cache: "no-store",
-    });
+    response = await withBackendTimeout(url, (signal) =>
+      fetch(url, {
+        cache: "no-store",
+        signal,
+      }),
+    );
   } catch (error) {
     const cause = error instanceof Error ? error.message : "unknown fetch error";
     throw new Error(`Backend fetch failed for ${url}: ${cause}`);
@@ -41,14 +63,17 @@ async function postBackendJson<T>(pathname: string, body?: unknown): Promise<T> 
   const url = buildBackendUrl(pathname);
   let response: Response;
   try {
-    response = await fetch(url, {
-      method: "POST",
-      cache: "no-store",
-      headers: body === undefined ? undefined : {
-        "content-type": "application/json",
-      },
-      body: body === undefined ? undefined : JSON.stringify(body),
-    });
+    response = await withBackendTimeout(url, (signal) =>
+      fetch(url, {
+        method: "POST",
+        cache: "no-store",
+        headers: body === undefined ? undefined : {
+          "content-type": "application/json",
+        },
+        body: body === undefined ? undefined : JSON.stringify(body),
+        signal,
+      }),
+    );
   } catch (error) {
     const cause = error instanceof Error ? error.message : "unknown fetch error";
     throw new Error(`Backend fetch failed for ${url}: ${cause}`);
@@ -74,6 +99,8 @@ export function triggerBackendAgencyRefresh(agencyId: string): Promise<{
   agencyId: string;
   batchId: string;
   status: string;
+  refreshAcceptedAt: string;
+  statusUrl: string;
   sourceWorkbookName: string;
   storedPath: string;
 }> {
