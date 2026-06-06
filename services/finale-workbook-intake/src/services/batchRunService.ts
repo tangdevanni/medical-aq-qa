@@ -104,6 +104,11 @@ export interface ExecutePatientWorkItemsParams {
   onPatientRunUpdate?: (patientRun: PatientRun) => Promise<void> | void;
 }
 
+type IndexedWorkItem = {
+  index: number;
+  workItem: PatientEpisodeWorkItem;
+};
+
 export interface RunQaForPatientParams {
   batchId: string;
   patient: PatientEpisodeWorkItem;
@@ -160,6 +165,28 @@ function createLogger(): Logger {
 function resolveWorkflowDomains(workflowDomains?: WorkflowDomain[]): WorkflowDomain[] {
   const normalized = workflowDomains?.filter((domain, index, values) => values.indexOf(domain) === index) ?? [];
   return normalized.length > 0 ? normalized : ["coding", "qa"];
+}
+
+function resolvePatientWorkerConcurrency(
+  params: ExecutePatientWorkItemsParams,
+  env: FinaleBatchEnv,
+): number {
+  if (params.portalClient || params.workItems.length <= 1) {
+    return 1;
+  }
+
+  return Math.min(env.FINALE_PATIENT_CONCURRENCY, params.workItems.length);
+}
+
+function splitWorkItemsForWorkers(
+  workItems: PatientEpisodeWorkItem[],
+  workerCount: number,
+): IndexedWorkItem[][] {
+  const chunks = Array.from({ length: workerCount }, () => [] as IndexedWorkItem[]);
+  workItems.forEach((workItem, index) => {
+    chunks[index % workerCount]!.push({ index, workItem });
+  });
+  return chunks.filter((chunk) => chunk.length > 0);
 }
 
 function buildPlanOfCareInterventionDrafts(input: {
@@ -1075,6 +1102,54 @@ async function emitPatientRunUpdate(
 }
 
 export async function executePatientWorkItems(
+  params: ExecutePatientWorkItemsParams,
+): Promise<PatientRun[]> {
+  const env = loadEnv();
+  const logger = params.logger ?? createLogger();
+  const workerCount = resolvePatientWorkerConcurrency(params, env);
+
+  if (workerCount <= 1) {
+    return executePatientWorkItemsSequential(params);
+  }
+
+  const chunks = splitWorkItemsForWorkers(params.workItems, workerCount);
+  logger.info(
+    {
+      batchId: params.batchId,
+      workItemCount: params.workItems.length,
+      workerCount: chunks.length,
+    },
+    "starting portal patient worker pool",
+  );
+
+  const indexedRuns = (
+    await Promise.all(
+      chunks.map(async (chunk, workerIndex) => {
+        const workerLogger = logger.child({
+          portalWorkerIndex: workerIndex + 1,
+          portalWorkerCount: chunks.length,
+        });
+        const runs = await executePatientWorkItemsSequential({
+          ...params,
+          workItems: chunk.map((entry) => entry.workItem),
+          logger: workerLogger,
+          portalClient: undefined,
+        });
+
+        return runs.map((run, runIndex) => ({
+          index: chunk[runIndex]?.index ?? Number.MAX_SAFE_INTEGER,
+          run,
+        }));
+      }),
+    )
+  ).flat();
+
+  return indexedRuns
+    .sort((left, right) => left.index - right.index)
+    .map((entry) => entry.run);
+}
+
+async function executePatientWorkItemsSequential(
   params: ExecutePatientWorkItemsParams,
 ): Promise<PatientRun[]> {
   const env = loadEnv();

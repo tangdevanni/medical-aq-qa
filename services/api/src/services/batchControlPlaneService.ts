@@ -1253,6 +1253,7 @@ type KnownPatientArtifacts = {
 
 export class BatchControlPlaneService {
   private readonly activeBatchJobs = new Map<string, Promise<void>>();
+  private readonly batchUpdateLocks = new Map<string, Promise<void>>();
   private rerunTimer: ReturnType<typeof setInterval> | null = null;
 
   constructor(
@@ -3990,18 +3991,22 @@ export class BatchControlPlaneService {
   }
 
   private async persistPatientRunUpdate(batchId: string, patientRun: PatientRun): Promise<void> {
-    const batch = await this.mustGetBatch(batchId);
-    const previous = batch.patientRuns.find((candidate) => candidate.runId === patientRun.runId);
-    const nextRun = toPersistedPatientRun(batch, patientRun, previous);
+    const batch = await this.withBatchUpdateLock(batchId, async () => {
+      const currentBatch = await this.mustGetBatch(batchId);
+      const previous = currentBatch.patientRuns.find((candidate) => candidate.runId === patientRun.runId);
+      const nextRun = toPersistedPatientRun(currentBatch, patientRun, previous);
 
-    batch.patientRuns = [
-      ...batch.patientRuns.filter((candidate) => candidate.runId !== nextRun.runId),
-      nextRun,
-    ].sort((left, right) => left.patientName.localeCompare(right.patientName));
-    batch.updatedAt = nextRun.lastUpdatedAt;
-    batch.run.patientRunCount = countProcessedPatientRuns(batch);
-    batch.run.lastError = deriveBatchErrorSummary(batch);
-    await this.repository.saveBatch(batch);
+      currentBatch.patientRuns = [
+        ...currentBatch.patientRuns.filter((candidate) => candidate.runId !== nextRun.runId),
+        nextRun,
+      ].sort((left, right) => left.patientName.localeCompare(right.patientName));
+      currentBatch.updatedAt = nextRun.lastUpdatedAt;
+      currentBatch.run.patientRunCount = countProcessedPatientRuns(currentBatch);
+      currentBatch.run.lastError = deriveBatchErrorSummary(currentBatch);
+      await this.repository.saveBatch(currentBatch);
+      return currentBatch;
+    });
+
     await this.promotePatientRunToMemory(batch, patientRun).catch((error: unknown) => {
       this.logger.warn(
         {
@@ -4012,6 +4017,29 @@ export class BatchControlPlaneService {
         "patient memory promotion skipped",
       );
     });
+  }
+
+  private async withBatchUpdateLock<T>(
+    batchId: string,
+    operation: () => Promise<T>,
+  ): Promise<T> {
+    const previous = this.batchUpdateLocks.get(batchId) ?? Promise.resolve();
+    let releaseCurrent!: () => void;
+    const current = new Promise<void>((resolve) => {
+      releaseCurrent = resolve;
+    });
+    const next = previous.catch(() => undefined).then(() => current);
+    this.batchUpdateLocks.set(batchId, next);
+
+    await previous.catch(() => undefined);
+    try {
+      return await operation();
+    } finally {
+      releaseCurrent();
+      if (this.batchUpdateLocks.get(batchId) === next) {
+        this.batchUpdateLocks.delete(batchId);
+      }
+    }
   }
 
   private async finalizeBatchExecution(

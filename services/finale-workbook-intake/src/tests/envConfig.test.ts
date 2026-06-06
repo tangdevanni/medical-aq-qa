@@ -7,6 +7,7 @@ describe("Finale batch env OCR/DOM defaults", () => {
 
     expect(env.PORTAL_DOM_EXTRACTION_ENABLED).toBe(true);
     expect(env.OASIS_DOM_EXTRACTION_ENABLED).toBe(true);
+    expect(env.FINALE_PATIENT_CONCURRENCY).toBe(1);
     expect(env.OASIS_SECTION_LLM_ENABLED).toBeUndefined();
     expect(env.OASIS_SECTION_LLM_MAX_CONCURRENCY).toBe(2);
     expect(env.OCR_ENABLED).toBe(false);
@@ -31,5 +32,13 @@ describe("Finale batch env OCR/DOM defaults", () => {
 
     expect(env.OCR_ENABLED).toBe(true);
     expect(env.OCR_FALLBACK_ENABLED).toBe(true);
+  });
+
+  it("allows a bounded portal patient worker count", () => {
+    const env = loadEnv({
+      FINALE_PATIENT_CONCURRENCY: "2",
+    });
+
+    expect(env.FINALE_PATIENT_CONCURRENCY).toBe(2);
   });
 });

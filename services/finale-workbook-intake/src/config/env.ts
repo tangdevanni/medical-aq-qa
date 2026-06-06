@@ -49,6 +49,7 @@ const envSchema = z.object({
   FINALE_LOG_LEVEL: z
     .enum(["fatal", "error", "warn", "info", "debug", "trace", "silent"])
     .default("info"),
+  FINALE_PATIENT_CONCURRENCY: z.coerce.number().int().min(1).max(8).optional().default(1),
   PORTAL_BASE_URL: z.string().url().optional(),
   PORTAL_DASHBOARD_URL: z.string().url().optional(),
   PORTAL_USERNAME: z.string().min(1).optional(),
