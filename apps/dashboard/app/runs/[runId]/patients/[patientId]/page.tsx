@@ -785,11 +785,6 @@ const REFERRAL_OASIS_GROUPS: Array<{ key: ReferralOasisGroupKey; label: string }
   { key: "dates_admin", label: "Dates / Admin" },
 ];
 
-const REQUIRED_REFERRAL_OASIS_GROUPS = new Set<ReferralOasisGroupKey>([
-  "diagnoses",
-  "medications_allergies",
-]);
-
 type PrintedNoteSectionSummary = QaPrefetchSummary["printedNoteSections"][number];
 
 type ReferralOasisDisplayItem = {
@@ -1176,15 +1171,19 @@ function CategorySourceCard({
   title,
   items,
   emptyText,
+  sourceSelector,
 }: {
   title: string;
   items: ReferralOasisDisplayItem[];
   emptyText: string;
+  sourceSelector?: ReactNode;
 }) {
   return (
     <section className="clinical-source-card compact">
       <div className="clinical-source-card-header">
-        <h2>{title}</h2>
+        <div className="clinical-source-card-title">
+          {sourceSelector ?? <h2>{title}</h2>}
+        </div>
         <span className={`badge${items.length > 0 ? " success" : ""}`}>
           {items.length} item{items.length === 1 ? "" : "s"}
         </span>
@@ -1219,23 +1218,29 @@ function CategoryComparisonCards({
   oasisTitle = "OASIS",
   referralEmptyText = "No referral support captured",
   oasisEmptyText = "No OASIS data captured",
+  referralSourceSelector,
+  oasisSourceSelector,
 }: {
   model: ReferralOasisCategoryModel;
   referralTitle?: string;
   oasisTitle?: string;
   referralEmptyText?: string;
   oasisEmptyText?: string;
+  referralSourceSelector?: ReactNode;
+  oasisSourceSelector?: ReactNode;
 }) {
   return (
     <div className="clinical-comparison-grid" aria-label={`${model.label} referral versus OASIS`}>
       <CategorySourceCard
         emptyText={referralEmptyText}
         items={model.referralItems}
+        sourceSelector={referralSourceSelector}
         title={referralTitle}
       />
       <CategorySourceCard
         emptyText={oasisEmptyText}
         items={model.oasisItems}
+        sourceSelector={oasisSourceSelector}
         title={oasisTitle}
       />
     </div>
@@ -1340,13 +1345,7 @@ function ReferralVsOasisTab({
       ),
     ] as const),
   );
-  const visibleGroups = REFERRAL_OASIS_GROUPS.filter(
-    (group) => {
-      const model = categoryModels.get(group.key);
-      return REQUIRED_REFERRAL_OASIS_GROUPS.has(group.key) ||
-        Boolean(model && (model.referralItems.length > 0 || model.oasisItems.length > 0));
-    },
-  );
+  const visibleGroups = REFERRAL_OASIS_GROUPS;
   const [activeGroup, setActiveGroup] = useState<ReferralOasisGroupKey>(() => visibleGroups[0]?.key ?? "diagnoses");
   const selectedGroup = visibleGroups.some((group) => group.key === activeGroup)
     ? activeGroup
@@ -1366,6 +1365,49 @@ function ReferralVsOasisTab({
     : "OASIS";
   const referralIntakeRunning =
     referralIntakeStatus?.status === "pending" || referralIntakeStatus?.status === "running" || isStartingReferralIntake;
+  const referralSourceSelector = referralSources.length > 1 ? (
+    <div className="clinical-source-selector">
+      <h2>{referralTitle}</h2>
+      <div aria-label="Referral source documents" className="clinical-source-tabs" role="tablist">
+        {referralSources.map((source) => (
+          <button
+            aria-selected={selectedReferralDocument?.id === source.id}
+            className={`clinical-source-tab${selectedReferralDocument?.id === source.id ? " active" : ""}`}
+            key={source.id}
+            onClick={() => setSelectedReferralDocumentId(source.id)}
+            role="tab"
+            title={formatReferralDocumentTitle(source.title)}
+            type="button"
+          >
+            <span className="clinical-source-tab-title">{formatReferralDocumentTitle(source.title)}</span>
+            {source.date ? <span className="badge">{source.date}</span> : null}
+          </button>
+        ))}
+      </div>
+    </div>
+  ) : null;
+  const oasisSourceSelector = oasisSources.length > 1 ? (
+    <div className="clinical-source-selector">
+      <h2>{oasisTitle}</h2>
+      <div aria-label="OASIS assessment sources" className="clinical-source-tabs" role="tablist">
+        {oasisSources.map((source) => (
+          <button
+            aria-selected={selectedOasisAssessment?.id === source.id}
+            className={`clinical-source-tab${selectedOasisAssessment?.id === source.id ? " active" : ""}`}
+            key={source.id}
+            onClick={() => setSelectedOasisAssessmentId(source.id)}
+            role="tab"
+            type="button"
+          >
+            <span className="clinical-source-tab-title">{source.title}</span>
+            {source.date ? <span className="badge">{source.date}</span> : null}
+            {source.isCurrent ? <span className="badge success">Current</span> : null}
+            {!source.isMonitored ? <span className="badge">View only</span> : null}
+          </button>
+        ))}
+      </div>
+    </div>
+  ) : null;
 
   async function handleReferralIntakeStart(): Promise<void> {
     setIsStartingReferralIntake(true);
@@ -1412,43 +1454,6 @@ function ReferralVsOasisTab({
             {referralIntakeRunning ? "Checking..." : "Check Referral Files"}
           </button>
         </div>
-        {referralSources.length > 0 ? (
-          <div aria-label="Referral source documents" className="referral-oasis-category-nav" role="tablist">
-            {referralSources.map((source) => (
-              <button
-                aria-selected={selectedReferralDocument?.id === source.id}
-                className={`referral-oasis-category-tab referral-document-source-tab${selectedReferralDocument?.id === source.id ? " active" : ""}`}
-                key={source.id}
-                onClick={() => setSelectedReferralDocumentId(source.id)}
-                role="tab"
-                title={formatReferralDocumentTitle(source.title)}
-                type="button"
-              >
-                <span className="referral-document-tab-title">{formatReferralDocumentTitle(source.title)}</span>
-                {source.date ? <span className="badge">{source.date}</span> : null}
-              </button>
-            ))}
-          </div>
-        ) : null}
-        {oasisSources.length > 0 ? (
-          <div aria-label="OASIS assessment sources" className="referral-oasis-category-nav" role="tablist">
-            {oasisSources.map((source) => (
-              <button
-                aria-selected={selectedOasisAssessment?.id === source.id}
-                className={`referral-oasis-category-tab${selectedOasisAssessment?.id === source.id ? " active" : ""}`}
-                key={source.id}
-                onClick={() => setSelectedOasisAssessmentId(source.id)}
-                role="tab"
-                type="button"
-              >
-                <span>{source.title}</span>
-                {source.date ? <span className="badge">{source.date}</span> : null}
-                {source.isCurrent ? <span className="badge success">Current</span> : null}
-                {!source.isMonitored ? <span className="badge">View only</span> : null}
-              </button>
-            ))}
-          </div>
-        ) : null}
       </section>
 
       <div aria-label="Referral versus OASIS comparison groups" className="referral-oasis-category-nav" role="tablist">
@@ -1484,11 +1489,13 @@ function ReferralVsOasisTab({
               ? "OASIS assessment is viewable, but extracted rows are not available yet"
               : "No OASIS data captured"
           }
+          oasisSourceSelector={oasisSourceSelector ?? undefined}
           referralEmptyText={
             selectedReferralDocument && !selectedReferralHasAnyRows
               ? "Referral document is viewable, but extracted rows are not available yet"
               : "No referral support captured"
           }
+          referralSourceSelector={referralSourceSelector ?? undefined}
           referralTitle={referralTitle}
         />
       </section>

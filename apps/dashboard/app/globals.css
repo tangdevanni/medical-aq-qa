@@ -818,6 +818,17 @@ textarea {
   gap: 12px;
 }
 
+.clinical-source-card-title {
+  min-width: 0;
+  flex: 1;
+}
+
+.clinical-source-selector {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+
 .clinical-source-card-header h2 {
   margin: 0;
   font-size: 20px;
@@ -1574,19 +1585,61 @@ textarea {
   font-size: 12px;
 }
 
-.referral-document-source-tab {
-  max-width: min(100%, 520px);
-  border-radius: 10px;
-  line-height: 1.2;
-  text-align: left;
+.clinical-source-tabs {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(180px, 1fr);
+  gap: 6px;
+  min-width: 0;
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 2px;
+  scrollbar-width: thin;
 }
 
-.referral-document-tab-title {
+.clinical-source-tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  min-height: 34px;
+  padding: 6px 9px;
+  border: 1px solid rgba(148, 163, 184, 0.34);
+  border-radius: 999px;
+  background: var(--surface-alt);
+  color: var(--muted);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: center;
+  cursor: pointer;
+}
+
+.clinical-source-tab.active {
+  border-color: rgba(11, 91, 211, 0.42);
+  background: #eff6ff;
+  color: var(--accent);
+  box-shadow: 0 0 0 1px rgba(11, 91, 211, 0.08);
+}
+
+.clinical-source-tab .badge {
+  flex: 0 0 auto;
+  padding: 1px 6px;
+  font-size: 11px;
+}
+
+.clinical-source-tab-title {
   overflow-wrap: anywhere;
+  min-width: 0;
 }
 
 .workspace-tab:focus-visible,
 .referral-oasis-category-tab:focus-visible,
+.clinical-source-tab:focus-visible,
 .section-queue-header:focus-visible,
 .evidence-drawer summary:focus-visible {
   outline: 2px solid rgba(11, 91, 211, 0.45);
