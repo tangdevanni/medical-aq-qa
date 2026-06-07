@@ -1154,15 +1154,16 @@ function buildPrintedNoteSectionItems(
 
 function buildReferralOasisCategoryModel(
   group: { key: ReferralOasisGroupKey; label: string },
-  rows: FieldComparison[],
+  referralRows: FieldComparison[],
   oasisChangeFlags: OasisChangeFlagForDisplay[] = [],
+  oasisRows: FieldComparison[] = referralRows,
 ): ReferralOasisCategoryModel {
   const structuredOasisItems = group.key === "diagnoses"
-    ? buildDiagnosisDisplayItemsFromRows(rows, "oasis", oasisChangeFlags)
-    : buildDisplayItemsFromRows(rows, "oasis", oasisChangeFlags);
+    ? buildDiagnosisDisplayItemsFromRows(oasisRows, "oasis", oasisChangeFlags)
+    : buildDisplayItemsFromRows(oasisRows, "oasis", oasisChangeFlags);
   const referralItems = group.key === "diagnoses"
-    ? buildDiagnosisDisplayItemsFromRows(rows, "referral")
-    : buildDisplayItemsFromRows(rows, "referral");
+    ? buildDiagnosisDisplayItemsFromRows(referralRows, "referral")
+    : buildDisplayItemsFromRows(referralRows, "referral");
   return {
     key: group.key,
     label: group.label,
@@ -1216,25 +1217,58 @@ function CategoryComparisonCards({
   model,
   referralTitle = "Referral",
   oasisTitle = "OASIS",
+  referralEmptyText = "No referral support captured",
+  oasisEmptyText = "No OASIS data captured",
 }: {
   model: ReferralOasisCategoryModel;
   referralTitle?: string;
   oasisTitle?: string;
+  referralEmptyText?: string;
+  oasisEmptyText?: string;
 }) {
   return (
     <div className="clinical-comparison-grid" aria-label={`${model.label} referral versus OASIS`}>
       <CategorySourceCard
-        emptyText="No referral support captured"
+        emptyText={referralEmptyText}
         items={model.referralItems}
         title={referralTitle}
       />
       <CategorySourceCard
-        emptyText="No OASIS data captured"
+        emptyText={oasisEmptyText}
         items={model.oasisItems}
         title={oasisTitle}
       />
     </div>
   );
+}
+
+function rowMatchesSelectedReferralDocument(
+  row: FieldComparison,
+  selectedDocumentId: string | null,
+  defaultDocumentId: string | null,
+): boolean {
+  if (!selectedDocumentId) {
+    return true;
+  }
+  const rowDocumentIds = row.referralDocumentIds ?? [];
+  if (rowDocumentIds.length > 0) {
+    return rowDocumentIds.includes(selectedDocumentId);
+  }
+  return selectedDocumentId === defaultDocumentId;
+}
+
+function rowMatchesSelectedOasisAssessment(
+  row: FieldComparison,
+  selectedAssessmentId: string | null,
+  defaultAssessmentId: string | null,
+): boolean {
+  if (!selectedAssessmentId) {
+    return true;
+  }
+  if (row.oasisAssessmentId) {
+    return row.oasisAssessmentId === selectedAssessmentId;
+  }
+  return selectedAssessmentId === defaultAssessmentId;
 }
 
 function ReferralVsOasisTab({
@@ -1248,7 +1282,37 @@ function ReferralVsOasisTab({
   patientId: string;
   workspace: ComparisonWorkspaceModel;
 }) {
-  const rowsByGroup = REFERRAL_OASIS_GROUPS.reduce((map, group) => {
+  const referralSources = patient.dashboardState.referralOasisSources?.referralDocuments ?? [];
+  const oasisSources = patient.dashboardState.referralOasisSources?.oasisAssessments ?? [];
+  const referralIntakeStatus = patient.dashboardState.referralIntakeStatus;
+  const defaultReferralDocumentId =
+    patient.dashboardState.referralOasisSources?.defaultReferralDocumentId ?? referralSources[0]?.id ?? null;
+  const defaultOasisAssessmentId =
+    patient.dashboardState.referralOasisSources?.defaultOasisAssessmentId ?? oasisSources[0]?.id ?? null;
+  const [selectedReferralDocumentId, setSelectedReferralDocumentId] = useState<string | null>(
+    defaultReferralDocumentId,
+  );
+  const [selectedOasisAssessmentId, setSelectedOasisAssessmentId] = useState<string | null>(
+    defaultOasisAssessmentId,
+  );
+  const [isStartingReferralIntake, setIsStartingReferralIntake] = useState(false);
+  const selectedReferralDocument =
+    referralSources.find((source) => source.id === selectedReferralDocumentId) ?? referralSources[0] ?? null;
+  const selectedOasisAssessment =
+    oasisSources.find((source) => source.id === selectedOasisAssessmentId) ?? oasisSources[0] ?? null;
+  const selectedReferralHasAnyRows = workspace.comparisons.some((row) =>
+    rowMatchesSelectedReferralDocument(row, selectedReferralDocument?.id ?? null, defaultReferralDocumentId) &&
+    hasReferralBackedComparisonValue(row)
+  );
+  const selectedOasisHasAnyRows = workspace.comparisons.some((row) =>
+    rowMatchesSelectedOasisAssessment(row, selectedOasisAssessment?.id ?? null, defaultOasisAssessmentId) &&
+    hasUsableOasisValue(row)
+  );
+  const referralRowsByGroup = REFERRAL_OASIS_GROUPS.reduce((map, group) => {
+    map.set(group.key, [] as FieldComparison[]);
+    return map;
+  }, new Map<ReferralOasisGroupKey, FieldComparison[]>());
+  const oasisRowsByGroup = REFERRAL_OASIS_GROUPS.reduce((map, group) => {
     map.set(group.key, [] as FieldComparison[]);
     return map;
   }, new Map<ReferralOasisGroupKey, FieldComparison[]>());
@@ -1257,13 +1321,23 @@ function ReferralVsOasisTab({
     if (!groupKey) {
       continue;
     }
-    rowsByGroup.get(groupKey)?.push(row);
+    if (rowMatchesSelectedReferralDocument(row, selectedReferralDocument?.id ?? null, defaultReferralDocumentId)) {
+      referralRowsByGroup.get(groupKey)?.push(row);
+    }
+    if (rowMatchesSelectedOasisAssessment(row, selectedOasisAssessment?.id ?? null, defaultOasisAssessmentId)) {
+      oasisRowsByGroup.get(groupKey)?.push(row);
+    }
   }
   const oasisChangeFlags = patient.dashboardState.referralOasisSources?.oasisChangeFlags ?? [];
   const categoryModels = new Map(
     REFERRAL_OASIS_GROUPS.map((group) => [
       group.key,
-      buildReferralOasisCategoryModel(group, rowsByGroup.get(group.key) ?? [], oasisChangeFlags),
+      buildReferralOasisCategoryModel(
+        group,
+        referralRowsByGroup.get(group.key) ?? [],
+        oasisChangeFlags,
+        oasisRowsByGroup.get(group.key) ?? [],
+      ),
     ] as const),
   );
   const visibleGroups = REFERRAL_OASIS_GROUPS.filter(
@@ -1274,16 +1348,6 @@ function ReferralVsOasisTab({
     },
   );
   const [activeGroup, setActiveGroup] = useState<ReferralOasisGroupKey>(() => visibleGroups[0]?.key ?? "diagnoses");
-  const referralSources = patient.dashboardState.referralOasisSources?.referralDocuments ?? [];
-  const oasisSources = patient.dashboardState.referralOasisSources?.oasisAssessments ?? [];
-  const referralIntakeStatus = patient.dashboardState.referralIntakeStatus;
-  const [selectedReferralDocumentId, setSelectedReferralDocumentId] = useState<string | null>(
-    patient.dashboardState.referralOasisSources?.defaultReferralDocumentId ?? referralSources[0]?.id ?? null,
-  );
-  const [selectedOasisAssessmentId, setSelectedOasisAssessmentId] = useState<string | null>(
-    patient.dashboardState.referralOasisSources?.defaultOasisAssessmentId ?? oasisSources[0]?.id ?? null,
-  );
-  const [isStartingReferralIntake, setIsStartingReferralIntake] = useState(false);
   const selectedGroup = visibleGroups.some((group) => group.key === activeGroup)
     ? activeGroup
     : visibleGroups[0]?.key ?? "diagnoses";
@@ -1294,10 +1358,6 @@ function ReferralVsOasisTab({
     oasisItems: [],
   };
   const selectedGroupLabel = visibleGroups.find((group) => group.key === selectedGroup)?.label ?? "Diagnoses";
-  const selectedReferralDocument =
-    referralSources.find((source) => source.id === selectedReferralDocumentId) ?? referralSources[0] ?? null;
-  const selectedOasisAssessment =
-    oasisSources.find((source) => source.id === selectedOasisAssessmentId) ?? oasisSources[0] ?? null;
   const referralTitle = selectedReferralDocument
     ? `${formatReferralDocumentTitle(selectedReferralDocument.title)}${selectedReferralDocument.date ? ` (${selectedReferralDocument.date})` : ""}`
     : "Referral";
@@ -1325,18 +1385,16 @@ function ReferralVsOasisTab({
   }, [activeGroup, selectedGroup]);
 
   useEffect(() => {
-    const defaultReferralId = patient.dashboardState.referralOasisSources?.defaultReferralDocumentId ?? referralSources[0]?.id ?? null;
     if (!selectedReferralDocumentId || !referralSources.some((source) => source.id === selectedReferralDocumentId)) {
-      setSelectedReferralDocumentId(defaultReferralId);
+      setSelectedReferralDocumentId(defaultReferralDocumentId);
     }
-  }, [patient.dashboardState.referralOasisSources?.defaultReferralDocumentId, referralSources, selectedReferralDocumentId]);
+  }, [defaultReferralDocumentId, referralSources, selectedReferralDocumentId]);
 
   useEffect(() => {
-    const defaultOasisId = patient.dashboardState.referralOasisSources?.defaultOasisAssessmentId ?? oasisSources[0]?.id ?? null;
     if (!selectedOasisAssessmentId || !oasisSources.some((source) => source.id === selectedOasisAssessmentId)) {
-      setSelectedOasisAssessmentId(defaultOasisId);
+      setSelectedOasisAssessmentId(defaultOasisAssessmentId);
     }
-  }, [patient.dashboardState.referralOasisSources?.defaultOasisAssessmentId, oasisSources, selectedOasisAssessmentId]);
+  }, [defaultOasisAssessmentId, oasisSources, selectedOasisAssessmentId]);
 
   return (
     <div className="workspace-section-stack">
@@ -1421,6 +1479,16 @@ function ReferralVsOasisTab({
         <CategoryComparisonCards
           model={activeModel}
           oasisTitle={oasisTitle}
+          oasisEmptyText={
+            selectedOasisAssessment && !selectedOasisHasAnyRows
+              ? "OASIS assessment is viewable, but extracted rows are not available yet"
+              : "No OASIS data captured"
+          }
+          referralEmptyText={
+            selectedReferralDocument && !selectedReferralHasAnyRows
+              ? "Referral document is viewable, but extracted rows are not available yet"
+              : "No referral support captured"
+          }
           referralTitle={referralTitle}
         />
       </section>

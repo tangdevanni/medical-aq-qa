@@ -1485,6 +1485,7 @@ type KnownPatientArtifacts = {
     visitNoteQaReview?: string | null;
     oasisDomSectionProcessingManifest?: string | null;
     oasisDomSectionOutputs?: string | null;
+    oasisAssessmentProcessingManifest?: string | null;
     patientRunCacheSummary?: string | null;
   };
   artifactContents: {
@@ -1497,6 +1498,7 @@ type KnownPatientArtifacts = {
     referralIntakeState?: unknown | null;
     referralSourceDocumentsManifest?: unknown | null;
     referralDocumentResultsManifest?: unknown | null;
+    referralDocumentArtifacts?: unknown | null;
     patientPortalStatusSnapshot?: unknown | null;
     printedNoteChartValues: unknown | null;
     printedNoteReview: unknown | null;
@@ -1514,6 +1516,8 @@ type KnownPatientArtifacts = {
     visitNoteQaReview?: unknown | null;
     oasisDomSectionProcessingManifest?: unknown | null;
     oasisDomSectionOutputs?: unknown | null;
+    oasisAssessmentProcessingManifest?: unknown | null;
+    oasisAssessmentArtifacts?: unknown | null;
     patientRunCacheSummary?: unknown | null;
   };
 };
@@ -3190,6 +3194,9 @@ export class BatchControlPlaneService {
         path.join(patientArtifactsDirectory, "oasis-dom-section-processing-manifest.json"),
       oasisDomSectionOutputs:
         artifactPaths?.oasisDomSectionOutputs ?? path.join(patientArtifactsDirectory, "oasis-dom-section-outputs.json"),
+      oasisAssessmentProcessingManifest:
+        artifactPaths?.oasisAssessmentProcessingManifest ??
+        path.join(patientArtifactsDirectory, "oasis-assessment-processing-manifest.json"),
       patientRunCacheSummary:
         artifactPaths?.patientRunCacheSummary ?? path.join(patientArtifactsDirectory, "patient-run-cache-summary.json"),
     };
@@ -3213,6 +3220,10 @@ export class BatchControlPlaneService {
       referralDocumentResultsManifest: this.getPatientDashboardStateArtifactContent(
         patientDashboardState,
         "referralDocumentResultsManifest",
+      ),
+      referralDocumentArtifacts: this.getPatientDashboardStateArtifactContent(
+        patientDashboardState,
+        "referralDocumentArtifacts",
       ),
       patientPortalStatusSnapshot: this.getPatientDashboardStateArtifactContent(
         patientDashboardState,
@@ -3243,6 +3254,14 @@ export class BatchControlPlaneService {
         "oasisDomSectionProcessingManifest",
       ),
       oasisDomSectionOutputs: this.getPatientDashboardStateArtifactContent(patientDashboardState, "oasisDomSectionOutputs"),
+      oasisAssessmentProcessingManifest: this.getPatientDashboardStateArtifactContent(
+        patientDashboardState,
+        "oasisAssessmentProcessingManifest",
+      ),
+      oasisAssessmentArtifacts: this.getPatientDashboardStateArtifactContent(
+        patientDashboardState,
+        "oasisAssessmentArtifacts",
+      ),
       patientRunCacheSummary: this.getPatientDashboardStateArtifactContent(patientDashboardState, "patientRunCacheSummary"),
     };
   }
@@ -3374,6 +3393,7 @@ export class BatchControlPlaneService {
           visitNoteQaReview: path.join(patientArtifactsDirectory, "visit-note-qa-review.json"),
           oasisDomSectionProcessingManifest: path.join(patientArtifactsDirectory, "oasis-dom-section-processing-manifest.json"),
           oasisDomSectionOutputs: path.join(patientArtifactsDirectory, "oasis-dom-section-outputs.json"),
+          oasisAssessmentProcessingManifest: path.join(patientArtifactsDirectory, "oasis-assessment-processing-manifest.json"),
           patientRunCacheSummary: path.join(patientArtifactsDirectory, "patient-run-cache-summary.json"),
         },
         artifactContents: {
@@ -3394,6 +3414,9 @@ export class BatchControlPlaneService {
           referralDocumentResultsManifest:
             await this.readJsonIfExistsWithContext(context, getReferralDocumentResultsManifestPath(patientArtifactsDirectory)) ??
             patientDashboardState.artifactContents.referralDocumentResultsManifest ??
+            null,
+          referralDocumentArtifacts:
+            patientDashboardState.artifactContents.referralDocumentArtifacts ??
             null,
           patientPortalStatusSnapshot:
             await this.readJsonIfExistsWithContext(context, getPatientPortalStatusSnapshotPath(patientArtifactsDirectory)) ??
@@ -3457,6 +3480,15 @@ export class BatchControlPlaneService {
             context,
             path.join(patientArtifactsDirectory, "oasis-dom-section-outputs.json"),
           ),
+          oasisAssessmentProcessingManifest:
+            patientDashboardState.artifactContents.oasisAssessmentProcessingManifest ??
+            await this.readJsonIfExistsWithContext(
+              context,
+              path.join(patientArtifactsDirectory, "oasis-assessment-processing-manifest.json"),
+            ),
+          oasisAssessmentArtifacts:
+            patientDashboardState.artifactContents.oasisAssessmentArtifacts ??
+            null,
           patientRunCacheSummary: await this.readJsonIfExistsWithContext(
             context,
             path.join(patientArtifactsDirectory, "patient-run-cache-summary.json"),
@@ -3541,6 +3573,7 @@ export class BatchControlPlaneService {
       visitNoteQaReview: path.join(patientArtifactsDirectory, "visit-note-qa-review.json"),
       oasisDomSectionProcessingManifest: path.join(patientArtifactsDirectory, "oasis-dom-section-processing-manifest.json"),
       oasisDomSectionOutputs: path.join(patientArtifactsDirectory, "oasis-dom-section-outputs.json"),
+      oasisAssessmentProcessingManifest: path.join(patientArtifactsDirectory, "oasis-assessment-processing-manifest.json"),
       patientRunCacheSummary: path.join(patientArtifactsDirectory, "patient-run-cache-summary.json"),
     };
 
@@ -3569,6 +3602,7 @@ export class BatchControlPlaneService {
           context,
           artifactPaths.referralDocumentResultsManifest,
         ),
+        referralDocumentArtifacts: null,
         patientPortalStatusSnapshot: await this.readJsonIfExistsWithContext(
           context,
           artifactPaths.patientPortalStatusSnapshot,
@@ -3592,6 +3626,11 @@ export class BatchControlPlaneService {
           artifactPaths.oasisDomSectionProcessingManifest,
         ),
         oasisDomSectionOutputs: await this.readJsonIfExistsWithContext(context, artifactPaths.oasisDomSectionOutputs),
+        oasisAssessmentProcessingManifest: await this.readJsonIfExistsWithContext(
+          context,
+          artifactPaths.oasisAssessmentProcessingManifest,
+        ),
+        oasisAssessmentArtifacts: null,
         patientRunCacheSummary: await this.readJsonIfExistsWithContext(context, artifactPaths.patientRunCacheSummary),
       },
     };
@@ -3677,6 +3716,10 @@ export class BatchControlPlaneService {
             context,
             path.join(patientArtifactsDirectory, "oasis-dom-section-outputs.json"),
           ),
+          oasisAssessmentProcessingManifest: await this.readJsonIfExistsWithContext(
+            context,
+            path.join(patientArtifactsDirectory, "oasis-assessment-processing-manifest.json"),
+          ),
           sourceClinicalFactPack: await this.readJsonIfExistsWithContext(
             context,
             path.join(patientArtifactsDirectory, "source-clinical-fact-pack.json"),
@@ -3756,6 +3799,10 @@ export class BatchControlPlaneService {
           oasisDomSectionOutputs: await this.readJsonIfExistsWithContext(
             context,
             path.join(patientArtifactsDirectory, "oasis-dom-section-outputs.json"),
+          ),
+          oasisAssessmentProcessingManifest: await this.readJsonIfExistsWithContext(
+            context,
+            path.join(patientArtifactsDirectory, "oasis-assessment-processing-manifest.json"),
           ),
           sourceClinicalFactPack: await this.readJsonIfExistsWithContext(
             context,

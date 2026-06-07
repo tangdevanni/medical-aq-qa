@@ -81,6 +81,8 @@ export interface FieldComparison {
   sourceQualityWarning?: string | null;
   oasisItemId?: string | null;
   sourceDocuments: string[];
+  referralDocumentIds: string[];
+  oasisAssessmentId: string | null;
   inspectTarget?: InspectTarget;
   evidence: ComparisonEvidence[];
   backendComparisonStatus?: string;
@@ -1247,6 +1249,8 @@ function buildFieldComparison(
     sourceQualityWarning,
     oasisItemId: field.oasisItemId,
     sourceDocuments: Array.from(new Set(evidence.map((entry) => entry.sourceLabel))),
+    referralDocumentIds: [],
+    oasisAssessmentId: null,
     evidence,
   };
 
@@ -1361,6 +1365,8 @@ function mapBackendFieldRowToComparison(row: PatientDashboardFieldRow): FieldCom
         : null,
     oasisItemId: row.oasisItemId,
     sourceDocuments,
+    referralDocumentIds: row.referralDocumentIds ?? [],
+    oasisAssessmentId: row.oasisAssessmentId ?? null,
     evidence: row.evidence,
     backendComparisonStatus: row.backendComparisonStatus,
     backendWorkflowState: row.backendWorkflowState,

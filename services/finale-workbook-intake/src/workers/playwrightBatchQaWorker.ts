@@ -378,6 +378,7 @@ export interface BatchPortalAutomationClient {
     context: PatientPortalContext;
     workItem: PatientEpisodeWorkItem;
     outputDir: string;
+    patientArtifactsDirectory?: string;
     thresholds?: {
       minFieldCount?: number;
       minNonEmptyFieldCount?: number;
@@ -1158,6 +1159,7 @@ export class PlaywrightBatchQaWorker implements BatchPortalAutomationClient {
     context: PatientPortalContext;
     workItem: PatientEpisodeWorkItem;
     outputDir: string;
+    patientArtifactsDirectory?: string;
     thresholds?: {
       minFieldCount?: number;
       minNonEmptyFieldCount?: number;
@@ -1183,7 +1185,8 @@ export class PlaywrightBatchQaWorker implements BatchPortalAutomationClient {
         minNonEmptyFieldCount: input.thresholds?.minNonEmptyFieldCount,
       },
     });
-    const patientArtifactsDirectory = path.join(input.outputDir, "patients", input.workItem.id);
+    const patientArtifactsDirectory = input.patientArtifactsDirectory ??
+      path.join(input.outputDir, "patients", input.workItem.id);
     const previousAcquisitionState = await readOasisDomAcquisitionState(patientArtifactsDirectory);
     const acquisitionState = mergeOasisDomAcquisitionState(previousAcquisitionState, extraction.state, {
       patientRunId: input.context.patientRunId,

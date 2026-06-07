@@ -29,6 +29,7 @@ type KnownArtifactContents = {
   referralIntakeState?: unknown | null;
   referralSourceDocumentsManifest?: unknown | null;
   referralDocumentResultsManifest?: unknown | null;
+  referralDocumentArtifacts?: unknown | null;
   patientPortalStatusSnapshot?: unknown | null;
   printedNoteChartValues: unknown | null;
   printedNoteReview: unknown | null;
@@ -64,6 +65,8 @@ type KnownArtifactContents = {
   generatedPlanOfCare?: unknown | null;
   oasisDomSectionProcessingManifest?: unknown | null;
   oasisDomSectionOutputs?: unknown | null;
+  oasisAssessmentProcessingManifest?: unknown | null;
+  oasisAssessmentArtifacts?: unknown | null;
   patientRunCacheSummary?: unknown | null;
 };
 
@@ -2573,6 +2576,124 @@ function rowCategoryKey(category: string): string {
   return category.replace(/[^A-Za-z0-9]+/g, "_").replace(/^_+|_+$/g, "").toLowerCase() || "clinical";
 }
 
+function safeDashboardSourceKey(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "")
+    .slice(0, 80) || "source";
+}
+
+function getDefaultReferralDocumentId(artifactContents: KnownArtifactContents): string | null {
+  const resultsManifest = asRecord(artifactContents.referralDocumentResultsManifest);
+  const sourceManifest = asRecord(artifactContents.referralSourceDocumentsManifest);
+  return asString(resultsManifest?.defaultReferralDocumentId) ??
+    asArray(resultsManifest?.documents)
+      .map((entry) => asString(asRecord(entry)?.documentId))
+      .find((documentId): documentId is string => Boolean(documentId)) ??
+    asArray(sourceManifest?.documents)
+      .map((entry) => asString(asRecord(entry)?.documentId))
+      .find((documentId): documentId is string => Boolean(documentId)) ??
+    null;
+}
+
+function getCurrentOasisAssessmentId(artifactContents: KnownArtifactContents): string | null {
+  const snapshot = asRecord(artifactContents.patientPortalStatusSnapshot);
+  const oasisDomState = asRecord(artifactContents.oasisDomExtractedState);
+  return asString(snapshot?.currentOasisAssessmentId) ??
+    asString(oasisDomState?.assessmentId) ??
+    asString(oasisDomState?.documentId) ??
+    null;
+}
+
+function getOasisAssessmentArtifactSources(
+  artifactContents: KnownArtifactContents,
+): Array<{
+  assessmentId: string;
+  assessmentType: string | null;
+  title: string | null;
+  date: string | null;
+  isCurrent: boolean;
+  sourceArtifact: string;
+  artifactContents: KnownArtifactContents;
+}> {
+  return asArray(artifactContents.oasisAssessmentArtifacts)
+    .map(asRecord)
+    .filter((entry): entry is Record<string, unknown> => entry !== null)
+    .flatMap((entry) => {
+      const assessmentId = asString(entry.assessmentId);
+      if (!assessmentId || entry.isCurrent === true) {
+        return [];
+      }
+      const sourceArtifact =
+        asString(entry.sectionOutputsPath) ??
+        asString(entry.domStatePath) ??
+        "oasis-assessment-scoped-dom";
+      return [{
+        assessmentId,
+        assessmentType: asString(entry.assessmentType),
+        title: asString(entry.title),
+        date: asString(entry.date),
+        isCurrent: false,
+        sourceArtifact,
+        artifactContents: {
+          ...artifactContents,
+          oasisDomExtractedState: entry.oasisDomExtractedState ?? null,
+          oasisDomSectionProcessingManifest: entry.oasisDomSectionProcessingManifest ?? null,
+          oasisDomSectionOutputs: entry.oasisDomSectionOutputs ?? null,
+        },
+      }];
+    });
+}
+
+function deriveReferralQaDashboardSources(
+  input: {
+    artifactContents: KnownArtifactContents;
+  },
+  defaultReferralQa: ReturnType<typeof deriveReferralQaSummary>,
+): Array<{
+  documentId: string | null;
+  referralQa: ReturnType<typeof deriveReferralQaSummary>;
+}> {
+  const documentArtifacts = asArray(input.artifactContents.referralDocumentArtifacts)
+    .map((entry) => asRecord(entry))
+    .filter((entry): entry is Record<string, unknown> => entry !== null);
+
+  const documentSources = documentArtifacts.flatMap((entry) => {
+    const documentId = asString(entry.documentId);
+    const patientQaReference = entry.patientQaReference ?? null;
+    const qaDocumentSummary = entry.qaDocumentSummary ?? null;
+    const fieldMapSnapshot = entry.fieldMapSnapshot ?? null;
+    if (!documentId || (!patientQaReference && !qaDocumentSummary && !fieldMapSnapshot)) {
+      return [];
+    }
+
+    const sourceInput = {
+      ...input,
+      artifactContents: {
+        ...input.artifactContents,
+        patientQaReference,
+        qaDocumentSummary,
+        fieldMapSnapshot,
+      },
+    } as PatientViewInput;
+    const referralQa = deriveReferralQaSummary(sourceInput);
+    return [{
+      documentId,
+      referralQa,
+    }];
+  });
+
+  if (documentSources.length > 0) {
+    return documentSources;
+  }
+
+  return [{
+    documentId: getDefaultReferralDocumentId(input.artifactContents),
+    referralQa: defaultReferralQa,
+  }];
+}
+
 function buildDashboardStateFromClinicalRows(input: {
   referralQa: ReturnType<typeof deriveReferralQaSummary>;
   artifactContents: KnownArtifactContents;
@@ -2589,6 +2710,8 @@ function buildDashboardStateFromClinicalRows(input: {
     comparisonRowsStatus === "ready"
       ? getCanonicalRows(input.artifactContents.clinicalComparisonRows)
       : [];
+  const defaultReferralDocumentId = getDefaultReferralDocumentId(input.artifactContents);
+  const currentOasisAssessmentId = getCurrentOasisAssessmentId(input.artifactContents);
   const fieldMetadata = new Map(
     input.referralQa.sections.flatMap((section) =>
       section.fields.map((field) => [field.fieldKey, { section, field }] as const),
@@ -2725,6 +2848,8 @@ function buildDashboardStateFromClinicalRows(input: {
         : "Canonical backend comparison row is resolved and hidden by default.",
       strictnessFlags: [] as string[],
       sourceArtifacts,
+      referralDocumentIds: defaultReferralDocumentId ? [defaultReferralDocumentId] : [],
+      oasisAssessmentId: currentOasisAssessmentId,
       valuePresence: {
         hasDocumentValue,
         hasChartValue,
@@ -5225,12 +5350,23 @@ function deriveOasisAssessmentSources(input: {
 }) {
   const snapshot = asRecord(input.artifactContents.patientPortalStatusSnapshot);
   const currentId = asString(snapshot?.currentOasisAssessmentId);
+  const processingManifest = asRecord(input.artifactContents.oasisAssessmentProcessingManifest);
+  const processingById = new Map(
+    asArray(processingManifest?.assessments)
+      .map(asRecord)
+      .filter((entry): entry is Record<string, unknown> => entry !== null)
+      .map((entry) => [asString(entry.assessmentId), entry] as const)
+      .filter((entry): entry is [string, Record<string, unknown>] => Boolean(entry[0])),
+  );
   const snapshotAssessments = asArray(snapshot?.oasisAssessments)
     .map(asRecord)
     .filter((entry): entry is Record<string, unknown> => entry !== null)
     .map((entry, index) => {
       const id = asString(entry.id) ?? `oasis-assessment-${index + 1}`;
       const assessmentType = asString(entry.assessmentType) ?? null;
+      const processing = processingById.get(id) ?? null;
+      const processingStatus = asString(processing?.processingStatus);
+      const scopedDomStatePath = asString(processing?.domStatePath);
       const title = normalizeOasisAssessmentTitle({
         assessmentType,
         title: asString(entry.title),
@@ -5240,10 +5376,12 @@ function deriveOasisAssessmentSources(input: {
         id,
         title,
         date,
-        source: id === currentId && input.oasisDomState
-          ? "oasis-dom-extracted-state.json"
-          : "patient-portal-status-snapshot.json",
-        status: asString(entry.primaryStatus) ?? asString(entry.decision) ?? "visible",
+        source: scopedDomStatePath
+          ? scopedDomStatePath
+          : id === currentId && input.oasisDomState
+            ? "oasis-dom-extracted-state.json"
+            : "patient-portal-status-snapshot.json",
+        status: processingStatus ?? asString(entry.primaryStatus) ?? asString(entry.decision) ?? "visible",
         assessmentType,
         processingEligible: typeof entry.processingEligible === "boolean" ? entry.processingEligible : null,
         isCurrent: currentId ? id === currentId : false,
@@ -5447,8 +5585,11 @@ function derivePatientDashboardState(input: {
       ? input.qaPrefetch?.oasisAssessmentReason ?? "Subsequent OASIS capture was skipped because of the assessment page status."
       : null;
 
-  const referralRows = input.referralQa.sections.flatMap((section) =>
-    section.fields.map((field) => {
+  const referralQaSources = deriveReferralQaDashboardSources(input, input.referralQa);
+  const currentOasisAssessmentId = getCurrentOasisAssessmentId(input.artifactContents);
+  const referralRows = referralQaSources.flatMap((source) =>
+    source.referralQa.sections.flatMap((section) =>
+      section.fields.map((field) => {
       const legacyFieldChartSource = isLegacyPrintedNoteValueSource(field.currentChartValueSource);
       const fieldChartValue = legacyFieldChartSource
         ? null
@@ -5486,6 +5627,7 @@ function derivePatientDashboardState(input: {
             : currentChartValueSource;
       const sourceArtifacts = [
         "patient-qa-reference.json",
+        ...(source.documentId ? [`referral-document:${source.documentId}`] : []),
         ...(hasChartValue ? ["field-map-snapshot.json"] : []),
         ...(input.artifactContents.llmUsageAudit ? ["llm-usage-audit.json"] : []),
         ...(assessmentCaptureSkipped ? ["qa-prefetch-result.json"] : []),
@@ -5661,6 +5803,8 @@ function derivePatientDashboardState(input: {
         visibilityReason,
         strictnessFlags,
         sourceArtifacts: Array.from(new Set(sourceArtifacts)),
+        referralDocumentIds: source.documentId ? [source.documentId] : [],
+        oasisAssessmentId: currentOasisAssessmentId,
         valuePresence: {
           hasDocumentValue,
           hasChartValue,
@@ -5671,6 +5815,7 @@ function derivePatientDashboardState(input: {
         },
       };
     }),
+    ),
   );
   const existingPortalValueKeys = new Set(
     referralRows
@@ -5738,6 +5883,8 @@ function derivePatientDashboardState(input: {
         : "DOM extraction surfaced this OASIS value for QA review.",
       strictnessFlags: ["dom_oasis_value"],
       sourceArtifacts: [domSourceArtifact],
+      referralDocumentIds: [],
+      oasisAssessmentId: currentOasisAssessmentId,
       valuePresence: {
         hasDocumentValue: false,
         hasChartValue: true,
@@ -5748,7 +5895,70 @@ function derivePatientDashboardState(input: {
       },
     };
   });
-  const rows = [...referralRows, ...domRows];
+  const historicalDomRows = getOasisAssessmentArtifactSources(input.artifactContents).flatMap((source) =>
+    getMeaningfulOasisDomFields(source.artifactContents).map((entry, index) => {
+      const fieldKeyBase =
+        normalizeDashboardKey(asString(entry.field.itemCode) ?? asString(entry.field.key) ?? entry.label) ||
+        `dom_field_${index + 1}`;
+      const fieldKey = `dom_${safeDashboardSourceKey(source.assessmentId)}_${entry.sectionKey}_${fieldKeyBase}_${index + 1}`;
+      return {
+        fieldKey,
+        fieldLabel: entry.label,
+        sectionKey: entry.sectionKey,
+        sectionLabel: entry.sectionTitle,
+        sourceSectionLabel: entry.sectionTitle,
+        reviewMode: "qa_readback_and_confirm",
+        qaPriority: "medium",
+        oasisItemId: asString(entry.field.itemCode),
+        backendComparisonStatus: "missing_in_referral",
+        backendWorkflowState: "missing_in_referral",
+        displayStatus: "missing_in_referral" as DashboardComparisonResult,
+        documentSupportedValue: null,
+        currentChartValue: entry.value,
+        normalizedDocumentValue: null,
+        normalizedChartValue: normalizeDashboardComparisonText(entry.value),
+        currentChartValueSource: "portal_dom_state",
+        currentChartValueSourceLabel: getDashboardPortalValueSourceLabel("portal_dom_state"),
+        oasisEvidenceMode: "portal_dom_state" as DashboardOasisEvidenceMode,
+        oasisEvidenceLabel: getDashboardOasisEvidenceLabel("portal_dom_state"),
+        displayReferralValue: "No reliable referral value extracted",
+        displayPortalValue: entry.value,
+        comparisonResult: "missing_in_referral" as DashboardComparisonResult,
+        shortReason: `Historical ${source.assessmentType ?? "OASIS"} DOM extraction captured this OASIS value; referral support was not matched.`,
+        reviewStatus: "Missing Referral Documentation",
+        qaResultLabel: getDashboardQaResultLabel("missing_in_referral"),
+        qaActionLabel: getDashboardQaActionLabel("missing_in_referral"),
+        referralComparisonOrigin,
+        referralComparisonOriginLabel: getDashboardReferralOriginLabel(referralComparisonOrigin),
+        confidence: entry.field.confidence === "high"
+          ? "high" as const
+          : entry.field.confidence === "medium"
+            ? "medium" as const
+            : "uncertain" as const,
+        sourceSupportStrength: "missing" as const,
+        mappingStrength: "direct" as const,
+        referralSnippet: null,
+        portalSnippet: asString(entry.field.evidenceText) ?? entry.value,
+        evidence: [],
+        shownByDefault: true,
+        visibilityDecision: "show" as DashboardVisibilityDecision,
+        visibilityReason: "Historical OASIS DOM extraction surfaced this OASIS value for view-only comparison.",
+        strictnessFlags: ["dom_oasis_value", "historical_oasis_value"],
+        sourceArtifacts: [source.sourceArtifact],
+        referralDocumentIds: [],
+        oasisAssessmentId: source.assessmentId,
+        valuePresence: {
+          hasDocumentValue: false,
+          hasChartValue: true,
+          hasPrintedNoteChartValue: false,
+          printedNoteSectionKey: null,
+          printedNoteSectionStatus: null,
+          printedNoteReviewSource: "dom_state_primary",
+        },
+      };
+    })
+  );
+  const rows = [...referralRows, ...domRows, ...historicalDomRows];
 
   const hiddenByReason = rows.reduce<Record<string, number>>((accumulator, row) => {
     if (row.visibilityDecision === "show") {

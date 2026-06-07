@@ -835,6 +835,8 @@ export interface PatientDashboardFieldRow {
   visibilityReason: string;
   strictnessFlags: string[];
   sourceArtifacts: string[];
+  referralDocumentIds?: string[];
+  oasisAssessmentId?: string | null;
   valuePresence: {
     hasDocumentValue: boolean;
     hasChartValue: boolean;

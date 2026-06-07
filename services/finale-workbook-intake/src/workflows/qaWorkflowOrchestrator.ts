@@ -14,7 +14,10 @@ import type { BatchPortalAutomationClient } from "../workers/playwrightBatchQaWo
 import { buildWorkflowRun, upsertWorkflowRun } from "./patientWorkflowRunState";
 import type { SharedEvidenceBundle } from "./sharedEvidenceWorkflow";
 import { processOasisDomSections } from "../services/oasisDomSectionProcessingService";
-import type { PatientPortalStatusSnapshot } from "../portal/types/patientPortalStatus";
+import type {
+  PatientPortalStatusOasisAssessment,
+  PatientPortalStatusSnapshot,
+} from "../portal/types/patientPortalStatus";
 
 export interface QaWorkflowOrchestratorParams {
   context: PatientPortalContext;
@@ -52,6 +55,53 @@ function preflightAssessmentTypes(snapshot: PatientPortalStatusSnapshot | null):
       .map((assessment) => assessment.assessmentType)
       .filter((assessmentType) => assessmentType !== "UNKNOWN"),
   ));
+}
+
+function safeAssessmentArtifactKey(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "")
+    .slice(0, 80) || "oasis-assessment";
+}
+
+function getHistoricalOasisAssessmentTargets(input: {
+  snapshot: PatientPortalStatusSnapshot | null;
+  currentAssessmentId: string | null;
+  currentAssessmentType: string;
+}): PatientPortalStatusOasisAssessment[] {
+  const currentType = input.currentAssessmentType.toUpperCase();
+  const seenTypes = new Set<string>([currentType]);
+  return (input.snapshot?.oasisAssessments ?? [])
+    .filter((assessment) =>
+      ["SOC", "ROC", "RECERT"].includes(assessment.assessmentType) &&
+      assessment.id !== input.currentAssessmentId &&
+      assessment.assessmentType.toUpperCase() !== currentType &&
+      assessment.processingEligible !== false
+    )
+    .filter((assessment) => {
+      const type = assessment.assessmentType.toUpperCase();
+      if (seenTypes.has(type)) {
+        return false;
+      }
+      seenTypes.add(type);
+      return true;
+    });
+}
+
+async function writeOasisAssessmentProcessingManifest(input: {
+  patientArtifactsDirectory: string;
+  generatedAt: string;
+  assessments: Array<Record<string, unknown>>;
+}): Promise<string> {
+  const manifestPath = path.join(input.patientArtifactsDirectory, "oasis-assessment-processing-manifest.json");
+  await mkdir(input.patientArtifactsDirectory, { recursive: true });
+  await writeFile(manifestPath, JSON.stringify({
+    schemaVersion: "oasis-assessment-processing-manifest.v1",
+    generatedAt: input.generatedAt,
+    assessments: input.assessments,
+  }, null, 2), "utf8");
+  return manifestPath;
 }
 
 export async function runQaWorkflowOrchestrator(
@@ -297,6 +347,179 @@ export async function runQaWorkflowOrchestrator(
         safeReadConfirmed: true,
       }));
     }
+  }
+
+  const patientArtifactsDirectory = path.join(params.outputDir, "patients", params.run.workItemId);
+  const currentOasisAssessmentId = portalStatusSnapshot?.currentOasisAssessmentId ?? null;
+  const historicalAssessmentTargets = getHistoricalOasisAssessmentTargets({
+    snapshot: portalStatusSnapshot,
+    currentAssessmentId: currentOasisAssessmentId,
+    currentAssessmentType: assessmentSelection.result.selectedAssessmentType,
+  });
+  const assessmentManifestEntries: Array<Record<string, unknown>> = [
+    {
+      assessmentId: currentOasisAssessmentId,
+      assessmentType: assessmentSelection.result.selectedAssessmentType,
+      title: portalStatusSnapshot?.oasisAssessments.find((assessment) => assessment.id === currentOasisAssessmentId)?.title ?? null,
+      date: portalStatusSnapshot?.oasisAssessments.find((assessment) => assessment.id === currentOasisAssessmentId)?.date ?? null,
+      isCurrent: true,
+      isMonitored: true,
+      processingStatus: oasisDomExtraction ? "processed_root_current" : "not_processed",
+      artifactDirectory: patientArtifactsDirectory,
+      domStatePath: oasisDomExtraction?.domStatePath ?? null,
+      acquisitionStatePath: oasisDomExtraction?.acquisitionStatePath ?? null,
+      sectionOutputsPath: oasisDomSectionProcessing?.outputsPath ?? null,
+      sectionManifestPath: oasisDomSectionProcessing?.manifestPath ?? null,
+      warningCount: domWarnings.length,
+    },
+  ];
+
+  for (const target of historicalAssessmentTargets) {
+    const assessmentDirectory = path.join(
+      patientArtifactsDirectory,
+      "oasis-assessments",
+      safeAssessmentArtifactKey(target.id),
+    );
+    const targetSelection = {
+      ...assessmentSelection.result,
+      requestedAssessmentType: target.assessmentType,
+      selectedAssessmentType: target.assessmentType,
+      selectionReason: "fallback_requested" as const,
+      warnings: [
+        ...assessmentSelection.result.warnings,
+        "Selected from patient portal status preflight for historical OASIS view-only processing.",
+      ],
+    };
+    try {
+      const historicalAssessmentNote = await openAssessmentNote({
+        context: params.context,
+        workItem: params.workItem,
+        evidenceDir: params.evidenceDir,
+        selection: targetSelection,
+        logger: params.logger,
+        portalClient: params.portalClient,
+      });
+      stepLogs.push(...historicalAssessmentNote.stepLogs);
+      const historicalShouldCapture =
+        historicalAssessmentNote.result.oasisAssessmentStatus?.decision !== "SKIP" &&
+        env.PORTAL_DOM_EXTRACTION_ENABLED &&
+        env.OASIS_DOM_EXTRACTION_ENABLED &&
+        typeof params.portalClient.extractOasisDomForReview === "function";
+      if (!historicalShouldCapture) {
+        assessmentManifestEntries.push({
+          assessmentId: target.id,
+          assessmentType: target.assessmentType,
+          title: target.title,
+          date: target.date,
+          isCurrent: false,
+          isMonitored: false,
+          processingStatus: "skipped",
+          artifactDirectory: assessmentDirectory,
+          reason: historicalAssessmentNote.result.oasisAssessmentStatus?.reason ?? "OASIS DOM extraction disabled or assessment skipped.",
+        });
+        continue;
+      }
+
+      const historicalExtraction = await params.portalClient.extractOasisDomForReview?.({
+        context: params.context,
+        workItem: params.workItem,
+        outputDir: params.outputDir,
+        patientArtifactsDirectory: assessmentDirectory,
+        thresholds: {
+          minFieldCount: env.DOM_EXTRACTION_MIN_FIELD_COUNT,
+          minNonEmptyFieldCount: env.DOM_EXTRACTION_MIN_NONEMPTY_FIELD_COUNT,
+        },
+      });
+      stepLogs.push(...(historicalExtraction?.stepLogs ?? []));
+      let sectionManifestPath: string | null = null;
+      let sectionOutputsPath: string | null = null;
+      if (historicalExtraction) {
+        const sectionProcessing = await processOasisDomSections({
+          state: historicalExtraction.state,
+          patientArtifactsDirectory: assessmentDirectory,
+          patientId: params.workItem.id,
+          patientRunId: params.context.patientRunId,
+          env,
+        });
+        sectionManifestPath = sectionProcessing.manifestPath;
+        sectionOutputsPath = sectionProcessing.outputsPath;
+        stepLogs.push(createAutomationStepLog({
+          step: "historical_oasis_dom_section_processing",
+          message: `Processed historical ${target.assessmentType} OASIS DOM sections with per-section hash reuse.`,
+          patientName: params.workItem.patientIdentity.displayName,
+          urlBefore: params.context.chartUrl,
+          urlAfter: historicalAssessmentNote.result.currentUrl,
+          found: [
+            `assessmentId=${target.id}`,
+            `processedSections=${sectionProcessing.outputs.summary.processedSections}`,
+            `reusedSections=${sectionProcessing.outputs.summary.reusedSections}`,
+            `outputsPath=${sectionOutputsPath}`,
+          ],
+          evidence: sectionProcessing.outputs.warnings.slice(0, 6),
+          safeReadConfirmed: true,
+        }));
+      }
+
+      assessmentManifestEntries.push({
+        assessmentId: target.id,
+        assessmentType: target.assessmentType,
+        title: target.title,
+        date: target.date,
+        isCurrent: false,
+        isMonitored: false,
+        processingStatus: historicalExtraction ? "processed_scoped" : "not_processed",
+        artifactDirectory: assessmentDirectory,
+        domStatePath: historicalExtraction?.domStatePath ?? null,
+        acquisitionStatePath: historicalExtraction?.acquisitionStatePath ?? null,
+        sectionOutputsPath,
+        sectionManifestPath,
+        contentHash: historicalExtraction?.acquisitionState.overallContentHash ?? null,
+      });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      domWarnings.push(`historical_oasis_assessment_processing_failed:${target.id}:${message}`);
+      assessmentManifestEntries.push({
+        assessmentId: target.id,
+        assessmentType: target.assessmentType,
+        title: target.title,
+        date: target.date,
+        isCurrent: false,
+        isMonitored: false,
+        processingStatus: "failed",
+        artifactDirectory: assessmentDirectory,
+        error: message,
+      });
+      stepLogs.push(createAutomationStepLog({
+        step: "historical_oasis_assessment_processing_failed",
+        message: `Historical ${target.assessmentType} OASIS processing failed; current OASIS artifacts remain usable.`,
+        patientName: params.workItem.patientIdentity.displayName,
+        urlBefore: params.context.chartUrl,
+        urlAfter: params.context.chartUrl,
+        missing: [`historical_oasis_assessment:${target.id}`],
+        evidence: [message],
+        safeReadConfirmed: true,
+      }));
+    }
+  }
+
+  const assessmentManifestPath = await writeOasisAssessmentProcessingManifest({
+    patientArtifactsDirectory,
+    generatedAt: new Date().toISOString(),
+    assessments: assessmentManifestEntries,
+  });
+  if (historicalAssessmentTargets.length > 0) {
+    stepLogs.push(createAutomationStepLog({
+      step: "oasis_assessment_processing_manifest",
+      message: "Persisted OASIS assessment processing manifest for current and historical assessment tabs.",
+      patientName: params.workItem.patientIdentity.displayName,
+      urlBefore: params.context.chartUrl,
+      urlAfter: params.context.chartUrl,
+      found: [
+        `manifestPath=${assessmentManifestPath}`,
+        `historicalAssessmentCount=${historicalAssessmentTargets.length}`,
+      ],
+      safeReadConfirmed: true,
+    }));
   }
 
   const timestamp = new Date().toISOString();

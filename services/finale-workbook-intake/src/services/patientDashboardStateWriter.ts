@@ -69,6 +69,7 @@ export function buildPatientDashboardArtifactPaths(input: {
     visitNoteQaReview: path.join(patientArtifactsDirectory, "visit-note-qa-review.json"),
     oasisDomSectionProcessingManifest: path.join(patientArtifactsDirectory, "oasis-dom-section-processing-manifest.json"),
     oasisDomSectionOutputs: path.join(patientArtifactsDirectory, "oasis-dom-section-outputs.json"),
+    oasisAssessmentProcessingManifest: path.join(patientArtifactsDirectory, "oasis-assessment-processing-manifest.json"),
     patientRunCacheSummary: path.join(patientArtifactsDirectory, "patient-run-cache-summary.json"),
   };
 }
@@ -97,6 +98,106 @@ function asRecord(value: unknown): Record<string, unknown> | null {
 
 function asString(value: unknown): string | null {
   return typeof value === "string" ? value : null;
+}
+
+async function readReferralDocumentArtifacts(
+  resultsManifest: unknown,
+): Promise<Array<Record<string, unknown>> | null> {
+  const manifest = asRecord(resultsManifest);
+  const documents = Array.isArray(manifest?.documents) ? manifest.documents : [];
+  const loaded = await Promise.all(
+    documents.map(async (entry): Promise<Record<string, unknown> | null> => {
+      const document = asRecord(entry);
+      if (!document) {
+        return null;
+      }
+      const documentId = asString(document?.documentId);
+      const artifactDirectory = asString(document?.artifactDirectory);
+      if (!documentId || !artifactDirectory) {
+        return null;
+      }
+
+      const [
+        patientQaReference,
+        qaDocumentSummary,
+        fieldMapSnapshot,
+        fieldComparison,
+      ] = await Promise.all([
+        readJsonIfExists(path.join(artifactDirectory, "patient-qa-reference.json")),
+        readJsonIfExists(path.join(artifactDirectory, "qa-document-summary.json")),
+        readJsonIfExists(path.join(artifactDirectory, "field-map-snapshot.json")),
+        readJsonIfExists(path.join(artifactDirectory, "field-comparison.json")),
+      ]);
+
+      if (!patientQaReference && !qaDocumentSummary && !fieldMapSnapshot && !fieldComparison) {
+        return null;
+      }
+
+      return {
+        documentId,
+        title: asString(document.title),
+        documentDate: asString(document.documentDate),
+        status: asString(document.status),
+        artifactDirectory,
+        patientQaReference,
+        qaDocumentSummary,
+        fieldMapSnapshot,
+        fieldComparison,
+      };
+    }),
+  );
+  const artifacts = loaded.filter((entry): entry is Record<string, unknown> => entry !== null);
+  return artifacts.length > 0 ? artifacts : null;
+}
+
+async function readOasisAssessmentArtifacts(
+  processingManifest: unknown,
+): Promise<Array<Record<string, unknown>> | null> {
+  const manifest = asRecord(processingManifest);
+  const assessments = Array.isArray(manifest?.assessments) ? manifest.assessments : [];
+  const loaded = await Promise.all(
+    assessments.map(async (entry): Promise<Record<string, unknown> | null> => {
+      const assessment = asRecord(entry);
+      if (!assessment) {
+        return null;
+      }
+      const assessmentId = asString(assessment.assessmentId);
+      if (!assessmentId) {
+        return null;
+      }
+      const domStatePath = asString(assessment.domStatePath);
+      const sectionOutputsPath = asString(assessment.sectionOutputsPath);
+      const sectionManifestPath = asString(assessment.sectionManifestPath);
+      const [oasisDomExtractedState, oasisDomSectionOutputs, oasisDomSectionProcessingManifest] = await Promise.all([
+        readJsonIfExists(domStatePath),
+        readJsonIfExists(sectionOutputsPath),
+        readJsonIfExists(sectionManifestPath),
+      ]);
+
+      if (!oasisDomExtractedState && !oasisDomSectionOutputs && !oasisDomSectionProcessingManifest) {
+        return null;
+      }
+
+      return {
+        assessmentId,
+        assessmentType: asString(assessment.assessmentType),
+        title: asString(assessment.title),
+        date: asString(assessment.date),
+        isCurrent: assessment.isCurrent === true,
+        isMonitored: assessment.isMonitored === true,
+        processingStatus: asString(assessment.processingStatus),
+        artifactDirectory: asString(assessment.artifactDirectory),
+        domStatePath,
+        sectionOutputsPath,
+        sectionManifestPath,
+        oasisDomExtractedState,
+        oasisDomSectionOutputs,
+        oasisDomSectionProcessingManifest,
+      };
+    }),
+  );
+  const artifacts = loaded.filter((entry): entry is Record<string, unknown> => entry !== null);
+  return artifacts.length > 0 ? artifacts : null;
 }
 
 function normalizeDashboardText(value: string | null | undefined): string {
@@ -524,6 +625,7 @@ export async function writePatientDashboardState(params: {
   const referralIntakeState = await readJsonIfExists(artifactPaths.referralIntakeState ?? null);
   const referralSourceDocumentsManifest = await readJsonIfExists(artifactPaths.referralSourceDocumentsManifest ?? null);
   const referralDocumentResultsManifest = await readJsonIfExists(artifactPaths.referralDocumentResultsManifest ?? null);
+  const referralDocumentArtifacts = await readReferralDocumentArtifacts(referralDocumentResultsManifest);
   const patientPortalStatusSnapshot = await readJsonIfExists(artifactPaths.patientPortalStatusSnapshot ?? null);
   const printedNoteChartValues = null;
   const printedNoteReview = null;
@@ -534,6 +636,10 @@ export async function writePatientDashboardState(params: {
     artifactPaths.oasisDomSectionProcessingManifest ?? null,
   );
   const oasisDomSectionOutputs = await readJsonIfExists(artifactPaths.oasisDomSectionOutputs ?? null);
+  const oasisAssessmentProcessingManifest = await readJsonIfExists(
+    artifactPaths.oasisAssessmentProcessingManifest ?? null,
+  );
+  const oasisAssessmentArtifacts = await readOasisAssessmentArtifacts(oasisAssessmentProcessingManifest);
   const patientRunCacheSummary = await readJsonIfExists(artifactPaths.patientRunCacheSummary ?? null);
   let visitNoteQaReview = await readJsonIfExists(artifactPaths.visitNoteQaReview ?? null);
   if (visitNotesDiscovery && artifactPaths.visitNoteQaReview) {
@@ -594,6 +700,7 @@ export async function writePatientDashboardState(params: {
       referralIntakeState,
       referralSourceDocumentsManifest,
       referralDocumentResultsManifest,
+      referralDocumentArtifacts,
       patientPortalStatusSnapshot,
       printedNoteChartValues,
       printedNoteReview,
@@ -603,6 +710,8 @@ export async function writePatientDashboardState(params: {
       visitNoteQaReview,
       oasisDomSectionProcessingManifest,
       oasisDomSectionOutputs,
+      oasisAssessmentProcessingManifest,
+      oasisAssessmentArtifacts,
       patientRunCacheSummary,
     },
   };

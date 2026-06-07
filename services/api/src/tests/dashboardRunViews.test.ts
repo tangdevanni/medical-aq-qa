@@ -2270,6 +2270,115 @@ describe("dashboardRunViews", () => {
     );
   });
 
+  it("tags dashboard rows with selected referral document ids", () => {
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        referralDocumentResultsManifest: {
+          schemaVersion: "referral-document-results-manifest.v1",
+          defaultReferralDocumentId: "referral-doc-1",
+          documents: [{
+            documentId: "referral-doc-1",
+            title: "Referral Order",
+            status: "processed",
+            artifactDirectory: "C:\\temp\\referral-doc-1",
+          }],
+        },
+        referralDocumentArtifacts: [{
+          documentId: "referral-doc-1",
+          patientQaReference: patientViewInput.artifactContents.patientQaReference,
+          qaDocumentSummary: patientViewInput.artifactContents.qaDocumentSummary,
+          fieldMapSnapshot: patientViewInput.artifactContents.fieldMapSnapshot,
+        }],
+      },
+    });
+
+    assert.ok(detail.dashboardState.rows.length > 0);
+    assert.ok(
+      detail.dashboardState.rows.some((row) =>
+        ((row.referralDocumentIds ?? []) as string[]).includes("referral-doc-1")
+      ),
+    );
+  });
+
+  it("builds scoped historical OASIS rows from assessment artifacts", () => {
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        patientPortalStatusSnapshot: {
+          schemaVersion: "patient-portal-status-snapshot.v1",
+          status: "fresh",
+          currentOasisAssessmentId: "recert-20260519",
+          oasisAssessments: [
+            {
+              id: "soc-20260322",
+              assessmentType: "SOC",
+              title: "OASIS-OASIS E1 - SOC",
+              date: "2026-03-22",
+              primaryStatus: "VALIDATED",
+              decision: "PROCESS",
+              processingEligible: true,
+            },
+            {
+              id: "recert-20260519",
+              assessmentType: "RECERT",
+              title: "OASIS-OASIS E2 - REC",
+              date: "2026-05-19",
+              primaryStatus: "VALIDATED",
+              decision: "PROCESS",
+              processingEligible: true,
+            },
+          ],
+          referralFileArea: { available: true, labels: ["Referral Files"] },
+          documentTableSignals: [],
+        },
+        oasisAssessmentProcessingManifest: {
+          schemaVersion: "oasis-assessment-processing-manifest.v1",
+          assessments: [{
+            assessmentId: "soc-20260322",
+            assessmentType: "SOC",
+            processingStatus: "processed_scoped",
+            domStatePath: "C:\\temp\\soc\\oasis-dom-extracted-state.json",
+            sectionOutputsPath: "C:\\temp\\soc\\oasis-dom-section-outputs.json",
+          }],
+        },
+        oasisAssessmentArtifacts: [{
+          assessmentId: "soc-20260322",
+          assessmentType: "SOC",
+          isCurrent: false,
+          sectionOutputsPath: "C:\\temp\\soc\\oasis-dom-section-outputs.json",
+          oasisDomSectionOutputs: {
+            schemaVersion: "oasis-dom-section-outputs.v1",
+            sections: [{
+              sectionKey: "safety_social_support",
+              title: "Safety / Social Support",
+              status: "processed",
+              rows: [{
+                label: "Caregiver availability",
+                value: "Lives with family support",
+                sourceKind: "structured_value",
+                confidence: 0.92,
+                sourceSectionTitle: "Safety / Social Support",
+                sourceItemCode: "M1100",
+              }],
+            }],
+          },
+        }],
+      },
+    });
+
+    const historicalRow = detail.dashboardState.rows.find((row) => row.oasisAssessmentId === "soc-20260322");
+    assert.ok(historicalRow);
+    assert.equal(historicalRow.displayPortalValue, "Lives with family support");
+    assert.ok(historicalRow.sourceArtifacts.includes("C:\\temp\\soc\\oasis-dom-section-outputs.json"));
+    assert.equal(
+      detail.dashboardState.referralOasisSources?.oasisAssessments.find((assessment) => assessment.id === "soc-20260322")?.status,
+      "processed_scoped",
+    );
+  });
+
   it("renders OASIS allergy status and explicit start dates from DOM allergy tables", () => {
     const summary = toDashboardPatientSummary({
       ...patientViewInput,
