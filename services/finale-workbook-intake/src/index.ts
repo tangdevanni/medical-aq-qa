@@ -5,6 +5,8 @@ export * from "./services/oasisFieldExtractor";
 export * from "./services/visitNoteExtractor";
 export * from "./services/batchRunService";
 export * from "./services/patientDashboardStateWriter";
+export * from "./services/patientPortalStatusPreflightService";
+export * from "./services/referralFilePortalCaptureService";
 export * from "./services/workbookIntakeService";
 export * from "./services/workbookExportService";
 export * from "./services/workbookVerificationService";
@@ -13,11 +15,13 @@ export * from "./queue-building/buildWorkbookQueue";
 export * from "./workbook-intake/reviewWindow";
 export * from "./portal/agencySelectionService";
 export * from "./portal/context/patientPortalContext";
+export * from "./portal/types/patientPortalStatus";
 export * from "./portal/workflows/sharedPortalAccessWorkflow";
 export * from "./qa/types/qaPrefetchResult";
 export * from "./qaReference/projection";
 export * from "./qaReference/registry";
 export * from "./referralProcessing/pipeline";
+export * from "./referralProcessing/directDocumentExtractor";
 export type {
   ChartSnapshotValueSource,
   SourceDocumentArtifact,

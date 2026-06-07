@@ -55,6 +55,7 @@ export type DashboardEnv = {
   allowPlaintextPasswords: boolean;
   cookieSecure: boolean;
   sessionTtlSeconds: number;
+  backendFetchTimeoutMs: number;
   authAuditEnabled: boolean;
   authAuditRegion: string | null;
   authAuditLogGroup: string | null;
@@ -258,6 +259,7 @@ export function loadDashboardEnv(
     allowPlaintextPasswords,
     cookieSecure,
     sessionTtlSeconds: DASHBOARD_SESSION_TTL_HOURS * 60 * 60,
+    backendFetchTimeoutMs: DASHBOARD_BACKEND_FETCH_TIMEOUT_MS,
     authAuditEnabled,
     authAuditRegion: authAuditEnabled ? DASHBOARD_AUTH_AUDIT_AWS_REGION : null,
     authAuditLogGroup: authAuditEnabled ? DASHBOARD_AUTH_AUDIT_LOG_GROUP : null,

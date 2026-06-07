@@ -1,5 +1,5 @@
-import { randomUUID } from "node:crypto";
-import { copyFile, mkdir, readdir, stat } from "node:fs/promises";
+import { createHash, randomUUID } from "node:crypto";
+import { copyFile, mkdir, readFile, readdir, stat } from "node:fs/promises";
 import path from "node:path";
 import type {
   AgencyDashboardSnapshot,
@@ -30,9 +30,14 @@ import {
   intakeWorkbook,
   persistBatchSummary,
   loadEnv,
+  capturePatientReferralFiles,
+  capturePatientPortalStatusSnapshot,
+  REFERRAL_DIRECT_DOCUMENT_SCHEMA_VERSION,
   runReferralDocumentProcessingPipeline,
   writePatientDashboardState,
   type ChartSnapshotValueSource,
+  type PatientPortalStatusSnapshot,
+  type ReferralDirectDocumentExtractionResult,
   type ReferralSourceDocumentInput,
   type SourceDocumentArtifact,
 } from "@medical-ai-qa/finale-workbook-intake";
@@ -58,12 +63,106 @@ const SCHEDULE_POLL_INTERVAL_MS = 60_000;
 const DEFAULT_REFRESH_TIMEZONE = "Asia/Manila";
 const DEFAULT_REFRESH_LOCAL_TIMES = ["20:30"] as const;
 const DASHBOARD_REVIEWER_STATUS_FILE_NAME = "dashboard-reviewer-statuses.json";
+const PATIENT_PORTAL_STATUS_SNAPSHOT_TTL_MS = 10 * 60 * 1000;
+const REFERRAL_INTAKE_ACTIVE_PATIENT_WAIT_TIMEOUT_MS = 30 * 60 * 1000;
+const REFERRAL_INTAKE_ACTIVE_PATIENT_WAIT_INTERVAL_MS = 5_000;
 
 type RunControlOptions = {
   mode?: "delta" | "full";
   reprojectOnly?: boolean;
   forceStages?: Array<"referral" | "oasis" | "poc" | "visit_notes" | "dashboard">;
 };
+
+type ReferralIntakeStatus = "idle" | "pending" | "running" | "completed" | "failed";
+
+type ReferralSourceDocumentManifestEntry = {
+  documentId: string;
+  title: string | null;
+  documentDate?: string | null;
+  sourceLabel: string | null;
+  sourcePath: string | null;
+  extractedTextPath: string | null;
+  portalLabel: string | null;
+  acquisitionMethod: string | null;
+  sourceContentHash?: string | null;
+  contentType?: string | null;
+  captureStatus?: string | null;
+  processStatus?: string | null;
+  error?: string | null;
+  notes?: string[];
+};
+
+type ReferralSourceDocumentsManifest = {
+  schemaVersion: "referral-source-documents-manifest.v1";
+  batchId: string;
+  patientId: string;
+  generatedAt: string;
+  source: string;
+  documents: ReferralSourceDocumentManifestEntry[];
+};
+
+type ReferralDocumentResultsManifestEntry = {
+  documentId: string;
+  title: string | null;
+  sourceLabel: string | null;
+  sourcePath: string | null;
+  sourceContentHash: string | null;
+  status: "processed" | "reused" | "failed" | "skipped";
+  processedAt: string;
+  artifactDirectory: string | null;
+  selectedDocumentId: string | null;
+  extractionUsabilityStatus: string | null;
+  error: string | null;
+};
+
+type ReferralDocumentResultsManifest = {
+  schemaVersion: "referral-document-results-manifest.v1";
+  batchId: string;
+  patientId: string;
+  generatedAt: string;
+  defaultReferralDocumentId: string | null;
+  documents: ReferralDocumentResultsManifestEntry[];
+};
+
+type ReferralDirectDocumentCacheMetadata = {
+  schemaVersion: "referral-direct-document-cache-metadata.v1";
+  patientId: string;
+  documentId: string;
+  sourceContentHash: string;
+  promptVersion: string;
+  modelId: string;
+  extractionMode: "direct_document_llm_only";
+  directDocumentResultPath: string;
+  generatedAt: string;
+};
+
+export type ReferralIntakeState = {
+  schemaVersion: "referral-intake-state.v1";
+  batchId: string;
+  patientId: string;
+  status: ReferralIntakeStatus;
+  acceptedAt: string | null;
+  startedAt: string | null;
+  completedAt: string | null;
+  lastCheckedAt: string | null;
+  lastError: string | null;
+  processedCount: number;
+  reusedCount: number;
+  newOrChangedCount: number;
+  failedCount: number;
+  skippedCount: number;
+  documentCount: number;
+  sourceDocumentCount: number;
+  statusUrl: string;
+  message: string | null;
+};
+
+export class ReferralIntakeAlreadyRunningError extends Error {
+  constructor(batchId: string, patientId: string) {
+    super(`Referral intake is already running for patient ${patientId} in batch ${batchId}.`);
+    this.name = "ReferralIntakeAlreadyRunningError";
+  }
+}
 
 type BatchControlPlaneOptions = {
   patientMemoryWriteEnabled?: boolean;
@@ -148,6 +247,10 @@ function isTransientPatientStatus(status: BatchRecord["patientRuns"][number]["pr
   return ["PENDING", "MATCHING_PATIENT", "DISCOVERING_CHART", "COLLECTING_EVIDENCE", "RUNNING_QA"].includes(
     status,
   );
+}
+
+function isActivePatientChartWorkStatus(status: BatchRecord["patientRuns"][number]["processingStatus"]): boolean {
+  return ["MATCHING_PATIENT", "DISCOVERING_CHART", "COLLECTING_EVIDENCE", "RUNNING_QA"].includes(status);
 }
 
 function isRetryEligibleStatus(status: BatchRecord["patientRuns"][number]["processingStatus"]): boolean {
@@ -239,6 +342,162 @@ function extractReferralChartSnapshotValues(fieldMapSnapshot: unknown): {
     currentChartValues,
     currentChartValueSource,
   };
+}
+
+function buildReferralIntakeStatusUrl(batchId: string, patientId: string): string {
+  return `/api/runs/${encodeURIComponent(batchId)}/patients/${encodeURIComponent(patientId)}/referral-intake/status`;
+}
+
+function getPatientArtifactsDirectory(batch: BatchRecord, patientId: string): string {
+  return path.join(batch.storage.outputRoot, "patients", patientId);
+}
+
+function getReferralIntakeStatePath(patientArtifactsDirectory: string): string {
+  return path.join(patientArtifactsDirectory, "referral-intake-state.json");
+}
+
+function getReferralSourceDocumentsManifestPath(patientArtifactsDirectory: string): string {
+  return path.join(patientArtifactsDirectory, "referral-source-documents-manifest.json");
+}
+
+function getReferralDocumentResultsManifestPath(patientArtifactsDirectory: string): string {
+  return path.join(patientArtifactsDirectory, "referral-document-results-manifest.json");
+}
+
+function getPatientPortalStatusSnapshotPath(patientArtifactsDirectory: string): string {
+  return path.join(patientArtifactsDirectory, "patient-portal-status-snapshot.json");
+}
+
+function createReferralIntakeState(input: {
+  batchId: string;
+  patientId: string;
+  status: ReferralIntakeStatus;
+  now: string;
+  existing?: Partial<ReferralIntakeState> | null;
+  message?: string | null;
+  lastError?: string | null;
+}): ReferralIntakeState {
+  return {
+    schemaVersion: "referral-intake-state.v1",
+    batchId: input.batchId,
+    patientId: input.patientId,
+    status: input.status,
+    acceptedAt: input.status === "pending"
+      ? input.now
+      : input.existing?.acceptedAt ?? (input.status === "running" ? input.now : null),
+    startedAt: input.status === "running" ? input.now : input.existing?.startedAt ?? null,
+    completedAt: input.status === "completed" || input.status === "failed" ? input.now : null,
+    lastCheckedAt: input.status === "completed" || input.status === "failed" ? input.now : input.existing?.lastCheckedAt ?? null,
+    lastError: input.lastError ?? null,
+    processedCount: input.existing?.processedCount ?? 0,
+    reusedCount: input.existing?.reusedCount ?? 0,
+    newOrChangedCount: input.existing?.newOrChangedCount ?? 0,
+    failedCount: input.existing?.failedCount ?? 0,
+    skippedCount: input.existing?.skippedCount ?? 0,
+    documentCount: input.existing?.documentCount ?? 0,
+    sourceDocumentCount: input.existing?.sourceDocumentCount ?? 0,
+    statusUrl: buildReferralIntakeStatusUrl(input.batchId, input.patientId),
+    message: input.message ?? null,
+  };
+}
+
+function createPendingPatientPortalStatusSnapshot(input: {
+  batchId: string;
+  patientId: string;
+  patientName: string;
+  now: string;
+  activePatientRunStatus: string | null;
+  existing?: PatientPortalStatusSnapshot | null;
+}): PatientPortalStatusSnapshot {
+  return {
+    schemaVersion: "patient-portal-status-snapshot.v1",
+    batchId: input.batchId,
+    patientId: input.patientId,
+    patientName: input.patientName,
+    status: "pending_due_to_active_patient_run",
+    capturedAt: input.existing?.capturedAt ?? null,
+    generatedAt: input.now,
+    staleAfter: input.existing?.staleAfter ?? null,
+    matchResult: input.existing?.matchResult ?? null,
+    chartUrl: input.existing?.chartUrl ?? null,
+    dashboardUrl: input.existing?.dashboardUrl ?? null,
+    portalAdmissionStatus: input.existing?.portalAdmissionStatus ?? null,
+    oasisAssessments: input.existing?.oasisAssessments ?? [],
+    currentOasisAssessmentId: input.existing?.currentOasisAssessmentId ?? null,
+    referralFileArea: input.existing?.referralFileArea ?? { available: false, labels: [] },
+    documentTableSignals: input.existing?.documentTableSignals ?? [],
+    activePatientRunStatus: input.activePatientRunStatus,
+    error: input.existing
+      ? null
+      : "Patient portal status preflight is pending because this patient is actively being processed.",
+  };
+}
+
+function markPatientPortalStatusSnapshotFreshness(
+  snapshot: PatientPortalStatusSnapshot,
+  now = new Date(),
+): PatientPortalStatusSnapshot {
+  if (snapshot.status !== "fresh" || !snapshot.staleAfter) {
+    return snapshot;
+  }
+  const staleAt = Date.parse(snapshot.staleAfter);
+  if (Number.isFinite(staleAt) && staleAt <= now.getTime()) {
+    return {
+      ...snapshot,
+      status: "stale",
+    };
+  }
+  return snapshot;
+}
+
+function normalizeDocumentTitle(document: ReferralSourceDocumentManifestEntry): string | null {
+  return asString(document.title) ?? asString(document.sourceLabel) ?? asString(document.portalLabel) ??
+    (document.sourcePath ? path.basename(document.sourcePath) : null);
+}
+
+function normalizeReferralDocumentIdentityKey(value: string | null | undefined): string | null {
+  const normalized = value
+    ?.replace(/[^\x20-\x7E]+/g, " ")
+    .toLowerCase()
+    .replace(/[^a-z0-9.]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  return normalized || null;
+}
+
+function safeDocumentKey(input: {
+  patientId: string;
+  documentId: string;
+  title?: string | null;
+  index: number;
+}): string {
+  const raw = input.documentId || input.title || `document-${input.index + 1}`;
+  const slug = raw
+    .replace(input.patientId, "")
+    .replace(/[^a-z0-9]+/gi, "-")
+    .replace(/^-+|-+$/g, "")
+    .toLowerCase();
+  return slug || `document-${input.index + 1}`;
+}
+
+async function sha256FileIfExists(filePath: string | null | undefined): Promise<string | null> {
+  if (!filePath) {
+    return null;
+  }
+  try {
+    return createHash("sha256").update(await readFile(filePath)).digest("hex");
+  } catch {
+    return null;
+  }
+}
+
+async function fileExistsAtPath(filePath: string): Promise<boolean> {
+  try {
+    await stat(filePath);
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 function asNumber(value: unknown): number | null {
@@ -1206,6 +1465,10 @@ type KnownPatientArtifacts = {
     patientQaReference: string;
     qaDocumentSummary: string;
     fieldMapSnapshot: string;
+    referralIntakeState?: string | null;
+    referralSourceDocumentsManifest?: string | null;
+    referralDocumentResultsManifest?: string | null;
+    patientPortalStatusSnapshot?: string | null;
     printedNoteChartValues: string | null;
     printedNoteReview: string | null;
     oasisDomExtractedState?: string | null;
@@ -1231,6 +1494,10 @@ type KnownPatientArtifacts = {
     patientQaReference: unknown | null;
     qaDocumentSummary: unknown | null;
     fieldMapSnapshot: unknown | null;
+    referralIntakeState?: unknown | null;
+    referralSourceDocumentsManifest?: unknown | null;
+    referralDocumentResultsManifest?: unknown | null;
+    patientPortalStatusSnapshot?: unknown | null;
     printedNoteChartValues: unknown | null;
     printedNoteReview: unknown | null;
     oasisDomExtractedState?: unknown | null;
@@ -1251,9 +1518,37 @@ type KnownPatientArtifacts = {
   };
 };
 
+const DASHBOARD_PATIENT_SUMMARY_CONCURRENCY = 12;
+
+async function mapWithConcurrency<T, U>(
+  items: T[],
+  concurrency: number,
+  mapper: (item: T, index: number) => Promise<U>,
+): Promise<U[]> {
+  const results = new Array<U>(items.length);
+  let nextIndex = 0;
+  const workerCount = Math.min(Math.max(1, concurrency), items.length);
+
+  await Promise.all(
+    Array.from({ length: workerCount }, async () => {
+      while (true) {
+        const index = nextIndex;
+        nextIndex += 1;
+        if (index >= items.length) {
+          return;
+        }
+        results[index] = await mapper(items[index], index);
+      }
+    }),
+  );
+
+  return results;
+}
+
 export class BatchControlPlaneService {
   private readonly activeBatchJobs = new Map<string, Promise<void>>();
   private readonly batchUpdateLocks = new Map<string, Promise<void>>();
+  private readonly activeReferralIntakeJobs = new Map<string, Promise<void>>();
   private rerunTimer: ReturnType<typeof setInterval> | null = null;
 
   constructor(
@@ -2146,6 +2441,156 @@ export class BatchControlPlaneService {
     return this.repository.readWorkItems(batch);
   }
 
+  async getPatientReferralIntakeStatus(batchId: string, patientId: string): Promise<ReferralIntakeState> {
+    const batch = await this.mustGetBatch(batchId);
+    const workItems = await this.repository.readWorkItems(batch);
+    const workItem = workItems.find((item) => item.id === patientId);
+    if (!workItem) {
+      throw new Error(`Patient not found: ${patientId}`);
+    }
+
+    const patientArtifactsDirectory = getPatientArtifactsDirectory(batch, patientId);
+    const state = await this.repository.readJsonIfExists<ReferralIntakeState>(
+      getReferralIntakeStatePath(patientArtifactsDirectory),
+    );
+    if (state) {
+      const jobKey = this.buildReferralIntakeJobKey(batchId, patientId);
+      return this.activeReferralIntakeJobs.has(jobKey) && state.status !== "running"
+        ? { ...state, status: "running", message: state.message ?? "Referral intake is running." }
+        : state;
+    }
+
+    return createReferralIntakeState({
+      batchId,
+      patientId,
+      status: "idle",
+      now: new Date().toISOString(),
+      message: "Referral intake has not been run for this patient.",
+    });
+  }
+
+  async ensurePatientPortalStatusSnapshot(
+    batchId: string,
+    patientId: string,
+    options: { forceRefresh?: boolean } = {},
+  ): Promise<PatientPortalStatusSnapshot> {
+    const batch = await this.mustGetBatch(batchId);
+    const workItems = await this.repository.readWorkItems(batch);
+    const workItem = workItems.find((item) => item.id === patientId);
+    if (!workItem) {
+      throw new Error(`Patient not found: ${patientId}`);
+    }
+
+    const now = new Date();
+    const nowIso = now.toISOString();
+    const patientArtifactsDirectory = getPatientArtifactsDirectory(batch, patientId);
+    const snapshotPath = getPatientPortalStatusSnapshotPath(patientArtifactsDirectory);
+    const existingSnapshot = await this.repository.readJsonIfExists<PatientPortalStatusSnapshot>(snapshotPath);
+    const existingWithFreshness = existingSnapshot
+      ? markPatientPortalStatusSnapshotFreshness(existingSnapshot, now)
+      : null;
+    const activePatientRun = this.getActivePatientChartWorkRun(batch, patientId);
+
+    if (activePatientRun) {
+      if (existingWithFreshness) {
+        return existingWithFreshness;
+      }
+      const pendingSnapshot = createPendingPatientPortalStatusSnapshot({
+        batchId,
+        patientId,
+        patientName: workItem.patientIdentity.displayName,
+        now: nowIso,
+        activePatientRunStatus: activePatientRun.processingStatus,
+      });
+      await writeJsonFile(snapshotPath, pendingSnapshot);
+      return pendingSnapshot;
+    }
+
+    if (!options.forceRefresh && existingWithFreshness?.status === "fresh") {
+      return existingWithFreshness;
+    }
+
+    const staleAfter = new Date(now.getTime() + PATIENT_PORTAL_STATUS_SNAPSHOT_TTL_MS).toISOString();
+    const refreshingSnapshot: PatientPortalStatusSnapshot = {
+      ...(existingWithFreshness ?? createPendingPatientPortalStatusSnapshot({
+        batchId,
+        patientId,
+        patientName: workItem.patientIdentity.displayName,
+        now: nowIso,
+        activePatientRunStatus: null,
+      })),
+      status: "refreshing",
+      generatedAt: nowIso,
+      staleAfter,
+      activePatientRunStatus: null,
+      error: null,
+    };
+    await writeJsonFile(snapshotPath, refreshingSnapshot);
+
+    const env = loadEnv();
+    const subsidiaryRuntimeConfig = await this.subsidiaryConfigService.resolveRuntimeConfig(batch.subsidiary.id);
+    const captureResult = await capturePatientPortalStatusSnapshot({
+      batchId,
+      workItem,
+      outputDir: batch.storage.outputRoot,
+      patientArtifactsDirectory,
+      env,
+      logger: this.logger,
+      subsidiaryRuntimeConfig,
+      staleAfter,
+    });
+    await writeJsonFile(snapshotPath, captureResult.snapshot);
+    return captureResult.snapshot;
+  }
+
+  async startPatientReferralIntake(batchId: string, patientId: string): Promise<ReferralIntakeState> {
+    const batch = await this.mustGetBatch(batchId);
+    const workItems = await this.repository.readWorkItems(batch);
+    const workItem = workItems.find((item) => item.id === patientId);
+    if (!workItem) {
+      throw new Error(`Patient not found: ${patientId}`);
+    }
+
+    const jobKey = this.buildReferralIntakeJobKey(batchId, patientId);
+    if (this.activeReferralIntakeJobs.has(jobKey)) {
+      throw new ReferralIntakeAlreadyRunningError(batchId, patientId);
+    }
+
+    const now = new Date().toISOString();
+    const patientArtifactsDirectory = getPatientArtifactsDirectory(batch, patientId);
+    const existing = await this.repository.readJsonIfExists<ReferralIntakeState>(
+      getReferralIntakeStatePath(patientArtifactsDirectory),
+    );
+    const state = createReferralIntakeState({
+      batchId,
+      patientId,
+      status: "pending",
+      now,
+      existing,
+      message: "Referral intake accepted and queued for this patient.",
+    });
+    await writeJsonFile(getReferralIntakeStatePath(patientArtifactsDirectory), state);
+
+    const task = this.runPatientReferralIntakeJob(batchId, patientId)
+      .catch((error: unknown) => {
+        this.logger.error(
+          {
+            batchId,
+            patientId,
+            errorMessage: error instanceof Error ? error.message : "Unknown referral intake error.",
+          },
+          "patient referral intake job failed",
+        );
+      })
+      .finally(() => {
+        this.activeReferralIntakeJobs.delete(jobKey);
+      });
+    this.activeReferralIntakeJobs.set(jobKey, task);
+    void task;
+
+    return state;
+  }
+
   async getParserExceptions(batchId: string): Promise<ParserException[]> {
     const batch = await this.mustGetBatch(batchId);
     return this.repository.readParserExceptions(batch);
@@ -2647,6 +3092,204 @@ export class BatchControlPlaneService {
     };
   }
 
+  async getKnownPatientSummaryArtifactsForBatch(batchId: string): Promise<{
+    batch: BatchRecord;
+    patients: KnownPatientArtifacts[];
+  } | null> {
+    const batch = await this.repository.getBatch(batchId);
+    if (!batch) {
+      return null;
+    }
+
+    const context = this.createDashboardReadContext(batch);
+    const resolvedSummaries = await mapWithConcurrency(
+      batch.patientRuns,
+      DASHBOARD_PATIENT_SUMMARY_CONCURRENCY,
+      (patientRun) => this.resolvePreferredPatientRunSummary(batch, patientRun, context),
+    );
+    const sortedSummaries = resolvedSummaries
+      .slice()
+      .sort((left, right) => left.patientName.localeCompare(right.patientName));
+    const patients = await mapWithConcurrency(
+      sortedSummaries,
+      DASHBOARD_PATIENT_SUMMARY_CONCURRENCY,
+      (patientRun) => this.getKnownPatientSummaryArtifactsFromContext(context, patientRun),
+    );
+
+    return {
+      batch,
+      patients: patients.filter((patient): patient is KnownPatientArtifacts => patient !== null),
+    };
+  }
+
+  private getPatientDashboardStateArtifactContent(
+    patientDashboardState: PatientDashboardState | null,
+    key: string,
+  ): unknown | null {
+    if (!patientDashboardState?.artifactContents || typeof patientDashboardState.artifactContents !== "object") {
+      return null;
+    }
+
+    return (patientDashboardState.artifactContents as Record<string, unknown>)[key] ?? null;
+  }
+
+  private buildKnownPatientArtifactPaths(
+    patientArtifactsDirectory: string,
+    patientDashboardState: PatientDashboardState | null,
+  ): KnownPatientArtifacts["artifactPaths"] {
+    const artifactPaths = patientDashboardState?.artifactPaths;
+
+    return {
+      codingInput: artifactPaths?.codingInput ?? path.join(patientArtifactsDirectory, "coding-input.json"),
+      documentText: artifactPaths?.documentText ?? path.join(patientArtifactsDirectory, "document-text.json"),
+      qaPrefetch: artifactPaths?.qaPrefetch ?? path.join(patientArtifactsDirectory, "qa-prefetch-result.json"),
+      patientQaReference:
+        artifactPaths?.patientQaReference ?? path.join(patientArtifactsDirectory, "patient-qa-reference.json"),
+      qaDocumentSummary:
+        artifactPaths?.qaDocumentSummary ?? path.join(patientArtifactsDirectory, "qa-document-summary.json"),
+      fieldMapSnapshot:
+        artifactPaths?.fieldMapSnapshot ?? path.join(patientArtifactsDirectory, "field-map-snapshot.json"),
+      referralIntakeState:
+        artifactPaths?.referralIntakeState ?? getReferralIntakeStatePath(patientArtifactsDirectory),
+      referralSourceDocumentsManifest:
+        artifactPaths?.referralSourceDocumentsManifest ??
+        getReferralSourceDocumentsManifestPath(patientArtifactsDirectory),
+      referralDocumentResultsManifest:
+        artifactPaths?.referralDocumentResultsManifest ??
+        getReferralDocumentResultsManifestPath(patientArtifactsDirectory),
+      patientPortalStatusSnapshot:
+        artifactPaths?.patientPortalStatusSnapshot ??
+        getPatientPortalStatusSnapshotPath(patientArtifactsDirectory),
+      printedNoteChartValues:
+        artifactPaths?.printedNoteChartValues ?? path.join(patientArtifactsDirectory, "printed-note-chart-values.json"),
+      printedNoteReview:
+        artifactPaths?.printedNoteReview ?? path.join(patientArtifactsDirectory, "oasis-printed-note-review.json"),
+      oasisDomExtractedState: path.join(patientArtifactsDirectory, "oasis-dom-extracted-state.json"),
+      oasisDomAcquisitionState: path.join(patientArtifactsDirectory, "oasis-dom-acquisition-state.json"),
+      oasisDomComparison: path.join(patientArtifactsDirectory, "oasis-dom-vs-existing-extraction-comparison.json"),
+      sourceClinicalFactPack:
+        artifactPaths?.sourceClinicalFactPack ?? path.join(patientArtifactsDirectory, "source-clinical-fact-pack.json"),
+      documentFactPack:
+        artifactPaths?.documentFactPack ?? path.join(patientArtifactsDirectory, "document-fact-pack.json"),
+      oasisClinicalFactPack:
+        artifactPaths?.oasisClinicalFactPack ?? path.join(patientArtifactsDirectory, "oasis-clinical-fact-pack.json"),
+      referralExtractedFacts: path.join(patientArtifactsDirectory, "referral-document-processing", "extracted-facts.json"),
+      planOfCareReviewDraft:
+        artifactPaths?.planOfCareReviewDraft ?? path.join(patientArtifactsDirectory, "plan-of-care-review-draft.json"),
+      generatedPlanOfCare:
+        artifactPaths?.generatedPlanOfCare ?? path.join(patientArtifactsDirectory, "generated-plan-of-care.json"),
+      visitNotesDiscovery:
+        artifactPaths?.visitNotesDiscovery ?? path.join(patientArtifactsDirectory, "visit-notes-discovery.json"),
+      visitNoteProcessingManifest:
+        artifactPaths?.visitNoteProcessingManifest ??
+        path.join(patientArtifactsDirectory, "visit-note-processing-manifest.json"),
+      visitNoteQaReview:
+        artifactPaths?.visitNoteQaReview ?? path.join(patientArtifactsDirectory, "visit-note-qa-review.json"),
+      oasisDomSectionProcessingManifest:
+        artifactPaths?.oasisDomSectionProcessingManifest ??
+        path.join(patientArtifactsDirectory, "oasis-dom-section-processing-manifest.json"),
+      oasisDomSectionOutputs:
+        artifactPaths?.oasisDomSectionOutputs ?? path.join(patientArtifactsDirectory, "oasis-dom-section-outputs.json"),
+      patientRunCacheSummary:
+        artifactPaths?.patientRunCacheSummary ?? path.join(patientArtifactsDirectory, "patient-run-cache-summary.json"),
+    };
+  }
+
+  private buildKnownPatientSummaryArtifactContents(
+    patientDashboardState: PatientDashboardState | null,
+  ): KnownPatientArtifacts["artifactContents"] {
+    return {
+      codingInput: this.getPatientDashboardStateArtifactContent(patientDashboardState, "codingInput"),
+      documentText: this.getPatientDashboardStateArtifactContent(patientDashboardState, "documentText"),
+      qaPrefetch: this.getPatientDashboardStateArtifactContent(patientDashboardState, "qaPrefetch"),
+      patientQaReference: this.getPatientDashboardStateArtifactContent(patientDashboardState, "patientQaReference"),
+      qaDocumentSummary: this.getPatientDashboardStateArtifactContent(patientDashboardState, "qaDocumentSummary"),
+      fieldMapSnapshot: this.getPatientDashboardStateArtifactContent(patientDashboardState, "fieldMapSnapshot"),
+      referralIntakeState: this.getPatientDashboardStateArtifactContent(patientDashboardState, "referralIntakeState"),
+      referralSourceDocumentsManifest: this.getPatientDashboardStateArtifactContent(
+        patientDashboardState,
+        "referralSourceDocumentsManifest",
+      ),
+      referralDocumentResultsManifest: this.getPatientDashboardStateArtifactContent(
+        patientDashboardState,
+        "referralDocumentResultsManifest",
+      ),
+      patientPortalStatusSnapshot: this.getPatientDashboardStateArtifactContent(
+        patientDashboardState,
+        "patientPortalStatusSnapshot",
+      ),
+      printedNoteChartValues: null,
+      printedNoteReview: null,
+      oasisDomExtractedState: this.getPatientDashboardStateArtifactContent(patientDashboardState, "oasisDomExtractedState"),
+      oasisDomAcquisitionState: this.getPatientDashboardStateArtifactContent(
+        patientDashboardState,
+        "oasisDomAcquisitionState",
+      ),
+      oasisDomComparison: this.getPatientDashboardStateArtifactContent(patientDashboardState, "oasisDomComparison"),
+      sourceClinicalFactPack: this.getPatientDashboardStateArtifactContent(patientDashboardState, "sourceClinicalFactPack"),
+      documentFactPack: this.getPatientDashboardStateArtifactContent(patientDashboardState, "documentFactPack"),
+      oasisClinicalFactPack: this.getPatientDashboardStateArtifactContent(patientDashboardState, "oasisClinicalFactPack"),
+      referralExtractedFacts: this.getPatientDashboardStateArtifactContent(patientDashboardState, "referralExtractedFacts"),
+      planOfCareReviewDraft: this.getPatientDashboardStateArtifactContent(patientDashboardState, "planOfCareReviewDraft"),
+      generatedPlanOfCare: this.getPatientDashboardStateArtifactContent(patientDashboardState, "generatedPlanOfCare"),
+      visitNotesDiscovery: this.getPatientDashboardStateArtifactContent(patientDashboardState, "visitNotesDiscovery"),
+      visitNoteProcessingManifest: this.getPatientDashboardStateArtifactContent(
+        patientDashboardState,
+        "visitNoteProcessingManifest",
+      ),
+      visitNoteQaReview: this.getPatientDashboardStateArtifactContent(patientDashboardState, "visitNoteQaReview"),
+      oasisDomSectionProcessingManifest: this.getPatientDashboardStateArtifactContent(
+        patientDashboardState,
+        "oasisDomSectionProcessingManifest",
+      ),
+      oasisDomSectionOutputs: this.getPatientDashboardStateArtifactContent(patientDashboardState, "oasisDomSectionOutputs"),
+      patientRunCacheSummary: this.getPatientDashboardStateArtifactContent(patientDashboardState, "patientRunCacheSummary"),
+    };
+  }
+
+  private async getKnownPatientSummaryArtifactsFromContext(
+    context: DashboardReadContext,
+    summary: BatchRecord["patientRuns"][number],
+  ): Promise<KnownPatientArtifacts | null> {
+    const workItem = await this.getContextWorkItem(context, summary.workItemId);
+    const overlay = await this.findPreferredPatientArtifactOverlay(context.batch, summary.workItemId, context);
+    let patientArtifactsDirectory =
+      overlay?.patientArtifactsDirectory ??
+      path.join(context.batch.storage.outputRoot, "patients", summary.workItemId);
+    let patientDashboardStatePath =
+      overlay?.patientDashboardStatePath ?? path.join(patientArtifactsDirectory, "patient-dashboard-state.json");
+    let patientDashboardState = await this.readJsonIfExistsWithContext<PatientDashboardState>(
+      context,
+      patientDashboardStatePath,
+    );
+
+    if (!patientDashboardState && workItem) {
+      const memoryDirectory = await this.findPatientMemoryCurrentDirectory(
+        context.batch,
+        workItem,
+        summary.matchResult,
+      );
+      if (memoryDirectory) {
+        patientArtifactsDirectory = memoryDirectory;
+        patientDashboardStatePath = path.join(patientArtifactsDirectory, "patient-dashboard-state.json");
+        patientDashboardState = await this.readJsonIfExistsWithContext<PatientDashboardState>(
+          context,
+          patientDashboardStatePath,
+        );
+      }
+    }
+
+    return {
+      batch: context.batch,
+      summary,
+      detail: null,
+      workItem: patientDashboardState?.workItem ?? workItem,
+      patientArtifactsDirectory,
+      artifactPaths: this.buildKnownPatientArtifactPaths(patientArtifactsDirectory, patientDashboardState),
+      artifactContents: this.buildKnownPatientSummaryArtifactContents(patientDashboardState),
+    };
+  }
+
   private async getKnownPatientArtifactsFromContext(
     context: DashboardReadContext,
     patientId: string,
@@ -2699,6 +3342,18 @@ export class BatchControlPlaneService {
           patientQaReference: patientDashboardState.artifactPaths.patientQaReference,
           qaDocumentSummary: patientDashboardState.artifactPaths.qaDocumentSummary,
           fieldMapSnapshot: patientDashboardState.artifactPaths.fieldMapSnapshot,
+          referralIntakeState:
+            patientDashboardState.artifactPaths.referralIntakeState ??
+            getReferralIntakeStatePath(patientArtifactsDirectory),
+          referralSourceDocumentsManifest:
+            patientDashboardState.artifactPaths.referralSourceDocumentsManifest ??
+            getReferralSourceDocumentsManifestPath(patientArtifactsDirectory),
+          referralDocumentResultsManifest:
+            patientDashboardState.artifactPaths.referralDocumentResultsManifest ??
+            getReferralDocumentResultsManifestPath(patientArtifactsDirectory),
+          patientPortalStatusSnapshot:
+            patientDashboardState.artifactPaths.patientPortalStatusSnapshot ??
+            getPatientPortalStatusSnapshotPath(patientArtifactsDirectory),
           printedNoteChartValues:
             patientDashboardState.artifactPaths.printedNoteChartValues ??
             path.join(patientArtifactsDirectory, "printed-note-chart-values.json"),
@@ -2728,6 +3383,22 @@ export class BatchControlPlaneService {
           patientQaReference: patientDashboardState.artifactContents.patientQaReference ?? null,
           qaDocumentSummary: patientDashboardState.artifactContents.qaDocumentSummary ?? null,
           fieldMapSnapshot: patientDashboardState.artifactContents.fieldMapSnapshot ?? null,
+          referralIntakeState:
+            await this.readJsonIfExistsWithContext(context, getReferralIntakeStatePath(patientArtifactsDirectory)) ??
+            patientDashboardState.artifactContents.referralIntakeState ??
+            null,
+          referralSourceDocumentsManifest:
+            await this.readJsonIfExistsWithContext(context, getReferralSourceDocumentsManifestPath(patientArtifactsDirectory)) ??
+            patientDashboardState.artifactContents.referralSourceDocumentsManifest ??
+            null,
+          referralDocumentResultsManifest:
+            await this.readJsonIfExistsWithContext(context, getReferralDocumentResultsManifestPath(patientArtifactsDirectory)) ??
+            patientDashboardState.artifactContents.referralDocumentResultsManifest ??
+            null,
+          patientPortalStatusSnapshot:
+            await this.readJsonIfExistsWithContext(context, getPatientPortalStatusSnapshotPath(patientArtifactsDirectory)) ??
+            patientDashboardState.artifactContents.patientPortalStatusSnapshot ??
+            null,
           printedNoteChartValues: null,
           printedNoteReview: null,
           oasisDomExtractedState: await this.readJsonIfExistsWithContext(
@@ -2850,6 +3521,10 @@ export class BatchControlPlaneService {
         "referral-document-processing",
         "field-map-snapshot.json",
       ),
+      referralIntakeState: getReferralIntakeStatePath(patientArtifactsDirectory),
+      referralSourceDocumentsManifest: getReferralSourceDocumentsManifestPath(patientArtifactsDirectory),
+      referralDocumentResultsManifest: getReferralDocumentResultsManifestPath(patientArtifactsDirectory),
+      patientPortalStatusSnapshot: getPatientPortalStatusSnapshotPath(patientArtifactsDirectory),
       printedNoteChartValues: path.join(patientArtifactsDirectory, "printed-note-chart-values.json"),
       printedNoteReview: path.join(patientArtifactsDirectory, "oasis-printed-note-review.json"),
       oasisDomExtractedState: path.join(patientArtifactsDirectory, "oasis-dom-extracted-state.json"),
@@ -2885,6 +3560,19 @@ export class BatchControlPlaneService {
         patientQaReference: await this.readJsonIfExistsWithContext(context, artifactPaths.patientQaReference),
         qaDocumentSummary: await this.readJsonIfExistsWithContext(context, artifactPaths.qaDocumentSummary),
         fieldMapSnapshot: await this.readJsonIfExistsWithContext(context, artifactPaths.fieldMapSnapshot),
+        referralIntakeState: await this.readJsonIfExistsWithContext(context, artifactPaths.referralIntakeState),
+        referralSourceDocumentsManifest: await this.readJsonIfExistsWithContext(
+          context,
+          artifactPaths.referralSourceDocumentsManifest,
+        ),
+        referralDocumentResultsManifest: await this.readJsonIfExistsWithContext(
+          context,
+          artifactPaths.referralDocumentResultsManifest,
+        ),
+        patientPortalStatusSnapshot: await this.readJsonIfExistsWithContext(
+          context,
+          artifactPaths.patientPortalStatusSnapshot,
+        ),
         printedNoteChartValues: null,
         printedNoteReview: null,
         oasisDomExtractedState: await this.readJsonIfExistsWithContext(context, artifactPaths.oasisDomExtractedState),
@@ -3690,6 +4378,648 @@ export class BatchControlPlaneService {
         portalLabel: document.portalLabel,
         acquisitionMethod: document.acquisitionMethod,
       }));
+  }
+
+  private buildReferralIntakeJobKey(batchId: string, patientId: string): string {
+    return `referral-intake:${batchId}:${patientId}`;
+  }
+
+  private getActivePatientChartWorkRun(
+    batch: BatchRecord,
+    patientId: string,
+  ): BatchRecord["patientRuns"][number] | null {
+    return batch.patientRuns.find((patientRun) =>
+      patientRun.workItemId === patientId && isActivePatientChartWorkStatus(patientRun.processingStatus)
+    ) ?? null;
+  }
+
+  private async waitForPatientChartWorkSlot(input: {
+    batchId: string;
+    patientId: string;
+    patientArtifactsDirectory: string;
+    existingState: ReferralIntakeState | null;
+  }): Promise<boolean> {
+    const startedAt = Date.now();
+    let currentState = input.existingState;
+    let waited = false;
+
+    while (Date.now() - startedAt < REFERRAL_INTAKE_ACTIVE_PATIENT_WAIT_TIMEOUT_MS) {
+      const batch = await this.mustGetBatch(input.batchId);
+      const activeRun = this.getActivePatientChartWorkRun(batch, input.patientId);
+      if (!activeRun) {
+        return waited;
+      }
+
+      waited = true;
+      const now = new Date().toISOString();
+      currentState = createReferralIntakeState({
+        batchId: input.batchId,
+        patientId: input.patientId,
+        status: "pending",
+        now,
+        existing: currentState,
+        message: `Referral intake is queued while this patient is actively in ${activeRun.processingStatus}.`,
+      });
+      await this.writeReferralIntakeState(input.patientArtifactsDirectory, currentState);
+      await new Promise((resolve) => setTimeout(resolve, REFERRAL_INTAKE_ACTIVE_PATIENT_WAIT_INTERVAL_MS));
+    }
+
+    throw new Error("Referral intake timed out waiting for the active patient automation step to finish.");
+  }
+
+  private async writeReferralIntakeState(
+    patientArtifactsDirectory: string,
+    state: ReferralIntakeState,
+  ): Promise<void> {
+    await writeJsonFile(getReferralIntakeStatePath(patientArtifactsDirectory), state);
+  }
+
+  private async loadReferralSourceDocumentManifestEntries(
+    batch: BatchRecord,
+    patientId: string,
+  ): Promise<ReferralSourceDocumentManifestEntry[]> {
+    const patientArtifactsDirectory = getPatientArtifactsDirectory(batch, patientId);
+    const manifest = await this.repository.readJsonIfExists<ReferralSourceDocumentsManifest>(
+      getReferralSourceDocumentsManifestPath(patientArtifactsDirectory),
+    );
+    if (manifest?.documents?.length) {
+      return manifest.documents
+        .filter((document) => Boolean(document.sourcePath || document.extractedTextPath))
+        .map((document, index) => ({
+          documentId: document.documentId || `${patientId}-referral-${index + 1}`,
+          title: normalizeDocumentTitle(document),
+          sourceLabel: document.sourceLabel ?? null,
+          sourcePath: document.sourcePath ?? null,
+          extractedTextPath: document.extractedTextPath ?? null,
+          portalLabel: document.portalLabel ?? null,
+          acquisitionMethod: document.acquisitionMethod ?? null,
+          sourceContentHash: document.sourceContentHash ?? null,
+          documentDate: document.documentDate ?? null,
+          contentType: document.contentType ?? null,
+          captureStatus: document.captureStatus ?? null,
+          processStatus: document.processStatus ?? null,
+          error: document.error ?? null,
+          notes: document.notes ?? [],
+        }));
+    }
+
+    const sourceMeta = await this.repository.readJsonIfExists<SourceDocumentArtifact>(
+      path.join(patientArtifactsDirectory, "referral-document-processing", "source-meta.json"),
+    );
+    return (sourceMeta?.sourceDocuments ?? [])
+      .filter((document) => Boolean(document.localFilePath))
+      .map((document, index) => ({
+        documentId: document.documentId || `${patientId}-referral-${index + 1}`,
+        title: document.sourceLabel ?? document.portalLabel ?? path.basename(document.localFilePath ?? ""),
+        sourceLabel: document.sourceLabel ?? null,
+        sourcePath: document.localFilePath ?? null,
+        extractedTextPath: null,
+        portalLabel: document.portalLabel ?? null,
+        acquisitionMethod: document.acquisitionMethod ?? null,
+        sourceContentHash: document.sourceContentSha256 ?? null,
+        notes: [],
+      }));
+  }
+
+  private async writeReferralSourceDocumentsManifest(
+    batch: BatchRecord,
+    patientId: string,
+    documents: ReferralSourceDocumentManifestEntry[],
+    source = "static_referral_intake",
+  ): Promise<void> {
+    const generatedAt = new Date().toISOString();
+    const patientArtifactsDirectory = getPatientArtifactsDirectory(batch, patientId);
+    await writeJsonFile(getReferralSourceDocumentsManifestPath(patientArtifactsDirectory), {
+      schemaVersion: "referral-source-documents-manifest.v1",
+      batchId: batch.id,
+      patientId,
+      generatedAt,
+      source,
+      documents,
+    } satisfies ReferralSourceDocumentsManifest);
+  }
+
+  private async copyReferralDocumentArtifactsToLegacyRoot(input: {
+    sourceDirectory: string;
+    patientArtifactsDirectory: string;
+  }): Promise<void> {
+    const targetDirectory = path.join(input.patientArtifactsDirectory, "referral-document-processing");
+    await mkdir(targetDirectory, { recursive: true });
+    const artifactNames = [
+      "source-meta.json",
+      "extraction-result.json",
+      "extracted-text.txt",
+      "normalized-sections.json",
+      "extracted-facts.json",
+      "field-map-snapshot.json",
+      "llm-proposal.json",
+      "field-comparison.json",
+      "patient-qa-reference.json",
+      "qa-document-summary.json",
+      "review-only-oasis-suggestions-metadata.json",
+      "direct-document-result.json",
+      "referral-reuse-metadata.json",
+    ];
+    await Promise.all(artifactNames.map(async (artifactName) => {
+      const sourcePath = path.join(input.sourceDirectory, artifactName);
+      if (!(await fileExistsAtPath(sourcePath))) {
+        return;
+      }
+      await copyFile(sourcePath, path.join(targetDirectory, artifactName));
+    }));
+  }
+
+  private async copyLegacyReferralDocumentArtifactsToDocumentDirectory(input: {
+    artifactDirectory: string;
+    patientArtifactsDirectory: string;
+  }): Promise<boolean> {
+    const legacyDirectory = path.join(input.patientArtifactsDirectory, "referral-document-processing");
+    if (await fileExistsAtPath(path.join(input.artifactDirectory, "source-meta.json"))) {
+      return false;
+    }
+    if (!(await fileExistsAtPath(path.join(legacyDirectory, "source-meta.json")))) {
+      return false;
+    }
+    await mkdir(input.artifactDirectory, { recursive: true });
+    const artifactNames = [
+      "source-meta.json",
+      "extraction-result.json",
+      "extracted-text.txt",
+      "normalized-sections.json",
+      "extracted-facts.json",
+      "field-map-snapshot.json",
+      "llm-proposal.json",
+      "field-comparison.json",
+      "patient-qa-reference.json",
+      "qa-document-summary.json",
+      "review-only-oasis-suggestions-metadata.json",
+      "direct-document-result.json",
+      "referral-reuse-metadata.json",
+    ];
+    let copied = false;
+    await Promise.all(artifactNames.map(async (artifactName) => {
+      const sourcePath = path.join(legacyDirectory, artifactName);
+      if (!(await fileExistsAtPath(sourcePath))) {
+        return;
+      }
+      await copyFile(sourcePath, path.join(input.artifactDirectory, artifactName));
+      copied = true;
+    }));
+    return copied;
+  }
+
+  private resolveReferralDirectDocumentModelId(env: ReturnType<typeof loadEnv>): string {
+    return env.BEDROCK_MODEL_ID ?? env.BEDROCK_INFERENCE_PROFILE_ID ?? "default";
+  }
+
+  private getReferralDirectDocumentCacheMetadataPath(artifactDirectory: string): string {
+    return path.join(artifactDirectory, "referral-direct-document-cache-metadata.json");
+  }
+
+  private async loadReusableReferralDirectDocumentResult(input: {
+    artifactDirectory: string;
+    patientId: string;
+    documentId: string;
+    sourceContentHash: string | null | undefined;
+    modelId: string;
+  }): Promise<ReferralDirectDocumentExtractionResult | null> {
+    if (!input.sourceContentHash) {
+      return null;
+    }
+    const metadata = await this.repository.readJsonIfExists<ReferralDirectDocumentCacheMetadata>(
+      this.getReferralDirectDocumentCacheMetadataPath(input.artifactDirectory),
+    );
+    if (
+      metadata?.patientId !== input.patientId ||
+      metadata.documentId !== input.documentId ||
+      metadata.sourceContentHash !== input.sourceContentHash ||
+      metadata.promptVersion !== REFERRAL_DIRECT_DOCUMENT_SCHEMA_VERSION ||
+      metadata.modelId !== input.modelId ||
+      metadata.extractionMode !== "direct_document_llm_only"
+    ) {
+      return null;
+    }
+    if (!(await fileExistsAtPath(metadata.directDocumentResultPath))) {
+      return null;
+    }
+    return this.repository.readJsonIfExists<ReferralDirectDocumentExtractionResult>(
+      metadata.directDocumentResultPath,
+    );
+  }
+
+  private async writeReferralDirectDocumentCacheMetadata(input: {
+    artifactDirectory: string;
+    patientId: string;
+    documentId: string;
+    sourceContentHash: string | null | undefined;
+    modelId: string;
+    directDocumentResultPath?: string | null;
+  }): Promise<void> {
+    if (!input.sourceContentHash) {
+      return;
+    }
+    const directDocumentResultPath = input.directDocumentResultPath ?? path.join(input.artifactDirectory, "direct-document-result.json");
+    if (!(await fileExistsAtPath(directDocumentResultPath))) {
+      return;
+    }
+    await writeJsonFile(this.getReferralDirectDocumentCacheMetadataPath(input.artifactDirectory), {
+      schemaVersion: "referral-direct-document-cache-metadata.v1",
+      patientId: input.patientId,
+      documentId: input.documentId,
+      sourceContentHash: input.sourceContentHash,
+      promptVersion: REFERRAL_DIRECT_DOCUMENT_SCHEMA_VERSION,
+      modelId: input.modelId,
+      extractionMode: "direct_document_llm_only",
+      directDocumentResultPath,
+      generatedAt: new Date().toISOString(),
+    } satisfies ReferralDirectDocumentCacheMetadata);
+  }
+
+  private async runPatientReferralIntakeJob(batchId: string, patientId: string): Promise<void> {
+    const batch = await this.mustGetBatch(batchId);
+    const workItems = await this.repository.readWorkItems(batch);
+    const workItem = workItems.find((item) => item.id === patientId);
+    if (!workItem) {
+      throw new Error(`Patient not found: ${patientId}`);
+    }
+
+    const patientArtifactsDirectory = getPatientArtifactsDirectory(batch, patientId);
+    const now = new Date().toISOString();
+    const previousState = await this.repository.readJsonIfExists<ReferralIntakeState>(
+      getReferralIntakeStatePath(patientArtifactsDirectory),
+    );
+    let runningState: ReferralIntakeState | null = null;
+
+    try {
+      const preflight = await this.ensurePatientPortalStatusSnapshot(batchId, patientId);
+      const waitedForChartWork = await this.waitForPatientChartWorkSlot({
+        batchId,
+        patientId,
+        patientArtifactsDirectory,
+        existingState: previousState,
+      });
+      if (preflight.status === "pending_due_to_active_patient_run" || waitedForChartWork) {
+        await this.ensurePatientPortalStatusSnapshot(batchId, patientId, { forceRefresh: true });
+      }
+      runningState = createReferralIntakeState({
+        batchId,
+        patientId,
+        status: "running",
+        now,
+        existing: previousState,
+        message: "Checking and processing static referral files for this patient.",
+      });
+      await this.writeReferralIntakeState(patientArtifactsDirectory, runningState);
+      const env = loadEnv();
+      const subsidiaryRuntimeConfig = await this.subsidiaryConfigService.resolveRuntimeConfig(batch.subsidiary.id);
+      const captureResult = await capturePatientReferralFiles({
+        batchId,
+        workItem,
+        outputDir: batch.storage.outputRoot,
+        patientArtifactsDirectory,
+        env,
+        logger: this.logger,
+        subsidiaryRuntimeConfig,
+      });
+      const chartSnapshot = await this.loadReferralChartSnapshotFromExistingArtifacts(patientArtifactsDirectory);
+      const previousManifestDocuments = await this.loadReferralSourceDocumentManifestEntries(batch, patientId);
+      const previousResultsManifest = await this.repository.readJsonIfExists<ReferralDocumentResultsManifest>(
+        getReferralDocumentResultsManifestPath(patientArtifactsDirectory),
+      );
+      const previousDocumentByHash = new Map(
+        previousManifestDocuments
+          .filter((document) => Boolean(document.sourceContentHash))
+          .map((document) => [document.sourceContentHash!, document]),
+      );
+      const previousDocumentByTitle = new Map(
+        previousManifestDocuments
+          .map((document) => [normalizeReferralDocumentIdentityKey(normalizeDocumentTitle(document)), document] as const)
+          .filter((entry): entry is [string, ReferralSourceDocumentManifestEntry] => Boolean(entry[0])),
+      );
+      const manifestDocuments = await Promise.all(
+        captureResult.documents.map(async (document, index) => {
+          const sourcePath = document.sourcePath ?? document.extractedTextPath;
+          const sourceContentHash = document.sourceContentHash ?? await sha256FileIfExists(sourcePath);
+          const title = normalizeDocumentTitle(document);
+          const previousDocument =
+            (sourceContentHash ? previousDocumentByHash.get(sourceContentHash) : undefined) ??
+            previousDocumentByTitle.get(normalizeReferralDocumentIdentityKey(title) ?? "");
+          const documentId = previousDocument?.documentId ?? document.documentId ?? `${patientId}-referral-${index + 1}`;
+          return {
+            documentId,
+            title,
+            documentDate: document.documentDate ?? null,
+            sourceLabel: document.sourceLabel ?? null,
+            sourcePath: document.sourcePath ?? null,
+            extractedTextPath: document.extractedTextPath ?? null,
+            portalLabel: document.portalLabel ?? null,
+            acquisitionMethod: document.acquisitionMethod ?? null,
+            contentType: document.contentType ?? null,
+            captureStatus: document.captureStatus ?? null,
+            processStatus: null,
+            error: document.error ?? null,
+            notes: document.notes ?? [],
+            sourceContentHash,
+          };
+        }),
+      );
+
+      if (manifestDocuments.length === 0 && previousManifestDocuments.length > 0) {
+        const generatedAt = new Date().toISOString();
+        await this.writeReferralSourceDocumentsManifest(
+          batch,
+          patientId,
+          previousManifestDocuments,
+          "portal_referral_files_preserved_existing",
+        );
+
+        const previousResults = previousResultsManifest?.documents ?? [];
+        const previousProcessedCount = previousResults.length > 0
+          ? previousResults.filter((document) => document.status === "processed" || document.status === "reused").length
+          : 0;
+        const previousReusedCount = previousResults.length > 0
+          ? previousResults.filter((document) => document.status === "reused").length
+          : 0;
+        const previousFailedCount = previousResults.length > 0
+          ? previousResults.filter((document) => document.status === "failed").length
+          : 0;
+        const previousSkippedCount = previousResults.length > 0
+          ? previousResults.filter((document) => document.status === "skipped").length
+          : 0;
+
+        const previous = batch.patientRuns.find((patientRun) => patientRun.workItemId === patientId);
+        const dashboardRun = toArtifactReprocessPatientRun(batch, workItem, previous);
+        dashboardRun.executionStep = "STATIC_REFERRAL_INTAKE_COMPLETED";
+        dashboardRun.notes = [
+          `Static referral intake checked the portal at ${generatedAt}; no current referral rows were found, so previously processed referral documents were preserved.`,
+        ];
+        await writePatientDashboardState({
+          outputDirectory: batch.storage.outputRoot,
+          run: dashboardRun,
+          env,
+        });
+
+        await this.writeReferralIntakeState(patientArtifactsDirectory, {
+          ...createReferralIntakeState({
+            batchId,
+            patientId,
+            status: "completed",
+            now: generatedAt,
+            existing: runningState,
+            lastError: null,
+            message: "No new referral files were found; preserved previously processed referral documents.",
+          }),
+          processedCount: previousProcessedCount,
+          reusedCount: previousReusedCount,
+          newOrChangedCount: 0,
+          failedCount: previousFailedCount,
+          skippedCount: previousSkippedCount,
+          documentCount: previousResults.length > 0 ? previousResults.length : previousManifestDocuments.length,
+          sourceDocumentCount: previousManifestDocuments.length,
+        });
+        return;
+      }
+
+      await this.writeReferralSourceDocumentsManifest(batch, patientId, manifestDocuments, "portal_referral_files");
+
+      const results: ReferralDocumentResultsManifestEntry[] = [];
+      let defaultReferralDocumentId: string | null = null;
+      let defaultArtifactDirectory: string | null = null;
+      const directDocumentModelId = this.resolveReferralDirectDocumentModelId(env);
+
+      for (const [index, document] of manifestDocuments.entries()) {
+        const title = normalizeDocumentTitle(document);
+        const sourcePath = document.sourcePath ?? document.extractedTextPath;
+        const sourceIsDirectDocumentCompatible = Boolean(
+          document.sourcePath && /\.(?:pdf|png|jpe?g)$/i.test(document.sourcePath),
+        );
+        if (!sourcePath || !sourceIsDirectDocumentCompatible) {
+          results.push({
+            documentId: document.documentId,
+            title,
+            sourceLabel: document.sourceLabel,
+            sourcePath,
+            sourceContentHash: document.sourceContentHash ?? null,
+            status: "skipped",
+            processedAt: new Date().toISOString(),
+            artifactDirectory: null,
+            selectedDocumentId: null,
+            extractionUsabilityStatus: null,
+            error: sourcePath
+              ? "Referral source was captured as text-only or unsupported media; direct-document LLM requires PDF, PNG, JPG, or JPEG."
+              : "Referral source document did not include a local source path.",
+          });
+          continue;
+        }
+
+        const documentKey = safeDocumentKey({
+          patientId,
+          documentId: document.documentId,
+          title,
+          index,
+        });
+        const artifactDirectory = path.join(
+          patientArtifactsDirectory,
+          "referral-document-processing",
+          "documents",
+          documentKey,
+        );
+        const previousDocument = previousManifestDocuments.find((candidate) => candidate.documentId === document.documentId);
+        const previousDocumentTitleKey = previousDocument
+          ? normalizeReferralDocumentIdentityKey(normalizeDocumentTitle(previousDocument))
+          : null;
+        const shouldSeedFromLegacyRoot = Boolean(previousDocument) && (
+          Boolean(document.sourceContentHash && previousDocument?.sourceContentHash === document.sourceContentHash) ||
+          previousDocumentTitleKey === normalizeReferralDocumentIdentityKey(title)
+        );
+        if (shouldSeedFromLegacyRoot) {
+          const copiedLegacyArtifacts = await this.copyLegacyReferralDocumentArtifactsToDocumentDirectory({
+            artifactDirectory,
+            patientArtifactsDirectory,
+          });
+          if (copiedLegacyArtifacts) {
+            await this.writeReferralDirectDocumentCacheMetadata({
+              artifactDirectory,
+              patientId,
+              documentId: document.documentId,
+              sourceContentHash: document.sourceContentHash,
+              modelId: directDocumentModelId,
+            });
+          }
+        }
+
+        try {
+          const cachedDirectDocumentResult = await this.loadReusableReferralDirectDocumentResult({
+            artifactDirectory,
+            patientId,
+            documentId: document.documentId,
+            sourceContentHash: document.sourceContentHash,
+            modelId: directDocumentModelId,
+          });
+          const result = await runReferralDocumentProcessingPipeline({
+            workItem,
+            outputDir: batch.storage.outputRoot,
+            env,
+            logger: this.logger,
+            sourceDocuments: [{
+              sourceLabel: document.sourceLabel ?? title,
+              sourcePath,
+              extractedTextPath: document.extractedTextPath,
+              portalLabel: document.portalLabel,
+              acquisitionMethod: document.acquisitionMethod as ReferralSourceDocumentInput["acquisitionMethod"],
+            }],
+            currentChartValues: chartSnapshot.currentChartValues,
+            currentChartValueSource: chartSnapshot.currentChartValueSource,
+            artifactDirectory,
+            includeManualSourceCandidates: false,
+            directDocumentExtractor: cachedDirectDocumentResult
+              ? async () => cachedDirectDocumentResult
+              : undefined,
+          });
+          await this.writeReferralDirectDocumentCacheMetadata({
+            artifactDirectory,
+            patientId,
+            documentId: document.documentId,
+            sourceContentHash: document.sourceContentHash,
+            modelId: directDocumentModelId,
+            directDocumentResultPath: result.result?.artifacts.directDocumentResultPath ?? null,
+          });
+          const reused = result.stepLogs.some((stepLog) => stepLog.step === "referral_processing_reused");
+          const reusedDirectDocument = Boolean(cachedDirectDocumentResult);
+          const selectedDocumentId = result.result?.sourceMeta.selectedDocumentId ?? null;
+          const extractionSuccess = result.result?.extractionResult.extractionSuccess === true;
+          const extractionFailureReason = result.result?.extractionResult.failureReasons[0] ??
+            result.result?.qaDocumentSummary.warnings[0] ??
+            null;
+          const status = (reused || reusedDirectDocument) && extractionSuccess
+            ? "reused"
+            : extractionSuccess
+              ? "processed"
+              : "failed";
+          results.push({
+            documentId: document.documentId,
+            title,
+            sourceLabel: document.sourceLabel,
+            sourcePath,
+            sourceContentHash: document.sourceContentHash ?? null,
+            status,
+            processedAt: new Date().toISOString(),
+            artifactDirectory,
+            selectedDocumentId,
+            extractionUsabilityStatus: result.result?.qaDocumentSummary.extractionUsabilityStatus ?? null,
+            error: status === "failed"
+              ? extractionFailureReason ?? "Direct-document referral extraction did not produce usable source-backed facts."
+              : selectedDocumentId
+                ? null
+                : "No direct-document-compatible referral source was selected.",
+          });
+          if (!defaultReferralDocumentId && selectedDocumentId && status !== "failed") {
+            defaultReferralDocumentId = document.documentId;
+            defaultArtifactDirectory = artifactDirectory;
+          }
+        } catch (error) {
+          results.push({
+            documentId: document.documentId,
+            title,
+            sourceLabel: document.sourceLabel,
+            sourcePath,
+            sourceContentHash: document.sourceContentHash ?? null,
+            status: "failed",
+            processedAt: new Date().toISOString(),
+            artifactDirectory,
+            selectedDocumentId: null,
+            extractionUsabilityStatus: null,
+            error: error instanceof Error ? error.message : "Unknown referral document processing error.",
+          });
+        }
+      }
+
+      const generatedAt = new Date().toISOString();
+      const resultByDocumentId = new Map(results.map((document) => [document.documentId, document]));
+      await this.writeReferralSourceDocumentsManifest(
+        batch,
+        patientId,
+        manifestDocuments.map((document) => {
+          const result = resultByDocumentId.get(document.documentId);
+          return {
+            ...document,
+            processStatus: result?.status ?? "skipped",
+            error: result?.error ?? document.error ?? null,
+          };
+        }),
+        "portal_referral_files",
+      );
+      await writeJsonFile(getReferralDocumentResultsManifestPath(patientArtifactsDirectory), {
+        schemaVersion: "referral-document-results-manifest.v1",
+        batchId,
+        patientId,
+        generatedAt,
+        defaultReferralDocumentId,
+        documents: results,
+      } satisfies ReferralDocumentResultsManifest);
+
+      if (defaultArtifactDirectory) {
+        await this.copyReferralDocumentArtifactsToLegacyRoot({
+          sourceDirectory: defaultArtifactDirectory,
+          patientArtifactsDirectory,
+        });
+      }
+
+      const previous = batch.patientRuns.find((patientRun) => patientRun.workItemId === patientId);
+      const dashboardRun = toArtifactReprocessPatientRun(batch, workItem, previous);
+      dashboardRun.executionStep = "STATIC_REFERRAL_INTAKE_COMPLETED";
+      dashboardRun.notes = [
+        `Static referral intake completed independently at ${generatedAt}; OASIS, Plan of Care, and Visit Notes automation was not rerun.`,
+      ];
+      await writePatientDashboardState({
+        outputDirectory: batch.storage.outputRoot,
+        run: dashboardRun,
+        env,
+      });
+
+      const processedCount = results.filter((document) => document.status === "processed" || document.status === "reused").length;
+      const reusedCount = results.filter((document) => document.status === "reused").length;
+      const failedCount = results.filter((document) => document.status === "failed").length;
+      const skippedCount = results.filter((document) => document.status === "skipped").length;
+      await this.writeReferralIntakeState(patientArtifactsDirectory, {
+        ...createReferralIntakeState({
+          batchId,
+          patientId,
+          status: failedCount > 0 && processedCount === 0 ? "failed" : "completed",
+          now: generatedAt,
+          existing: runningState,
+          lastError: failedCount > 0 && processedCount === 0
+            ? "Static referral intake failed for all referral documents."
+            : null,
+          message: failedCount > 0 && processedCount === 0
+            ? "Static referral intake captured referral files, but direct-document processing failed for all documents."
+            : manifestDocuments.length === 0
+              ? "No referral source documents were found for this patient."
+              : "Static referral intake completed for this patient.",
+        }),
+        processedCount,
+        reusedCount,
+        newOrChangedCount: results.filter((document) => document.status === "processed").length,
+        failedCount,
+        skippedCount,
+        documentCount: manifestDocuments.length,
+        sourceDocumentCount: manifestDocuments.length,
+      });
+    } catch (error) {
+      const failedAt = new Date().toISOString();
+      await this.writeReferralIntakeState(patientArtifactsDirectory, {
+        ...createReferralIntakeState({
+          batchId,
+          patientId,
+          status: "failed",
+          now: failedAt,
+          existing: runningState,
+          lastError: error instanceof Error ? error.message : "Unknown referral intake error.",
+          message: "Static referral intake failed for this patient.",
+        }),
+      });
+      throw error;
+    }
   }
 
   private async loadReferralChartSnapshotFromExistingArtifacts(

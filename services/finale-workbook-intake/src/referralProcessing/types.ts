@@ -11,7 +11,8 @@ export type SourceDocumentAcquisitionMethod =
   | "download"
   | "printed_pdf"
   | "local_file"
-  | "in_memory_fallback";
+  | "in_memory_fallback"
+  | "viewer_text_only";
 
 export type SourceDocumentFileType = "pdf" | "jpg" | "jpeg" | "png" | "unknown";
 

@@ -10,7 +10,10 @@ import {
   toPatientRunLogResponse,
   toBatchSummaryResponse,
 } from "../mappers/dashboardRunViews";
-import type { BatchControlPlaneService } from "../services/batchControlPlaneService";
+import {
+  ReferralIntakeAlreadyRunningError,
+  type BatchControlPlaneService,
+} from "../services/batchControlPlaneService";
 
 const batchIdParamsSchema = z.object({
   id: z.string().min(1),
@@ -133,7 +136,7 @@ async function buildDashboardRunDetail(
   service: BatchControlPlaneService,
   batchId: string,
 ) {
-  const knownArtifacts = await service.getKnownPatientArtifactsForBatch(batchId);
+  const knownArtifacts = await service.getKnownPatientSummaryArtifactsForBatch(batchId);
   if (!knownArtifacts) {
     return null;
   }
@@ -277,7 +280,7 @@ export async function registerBatchRoutes(
 
   app.get("/api/batches/:id/patient-runs", async (request) => {
     const batchId = await getBatchId(request);
-    const knownArtifacts = await service.getKnownPatientArtifactsForBatch(batchId);
+    const knownArtifacts = await service.getKnownPatientSummaryArtifactsForBatch(batchId);
     if (!knownArtifacts) {
       throw new Error(`Batch not found: ${batchId}`);
     }
@@ -509,6 +512,51 @@ export async function registerBatchRoutes(
     }
 
     return toDashboardPatientStatus(patient);
+  });
+
+  app.post("/api/runs/:batchId/patients/:patientId/referral-intake", async (request, reply) => {
+    const { batchId, patientId } = await getBatchPatientParams(request);
+    try {
+      const state = await service.startPatientReferralIntake(batchId, patientId);
+      reply.code(202);
+      return {
+        batchId,
+        patientId,
+        status: state.status,
+        acceptedAt: state.acceptedAt,
+        statusUrl: state.statusUrl,
+        message: state.message,
+      };
+    } catch (error) {
+      if (error instanceof ReferralIntakeAlreadyRunningError) {
+        reply.code(409);
+        return { message: error.message };
+      }
+      throw error;
+    }
+  });
+
+  app.get("/api/runs/:batchId/patients/:patientId/referral-intake/status", async (request, reply) => {
+    const { batchId, patientId } = await getBatchPatientParams(request);
+    const state = await service.getPatientReferralIntakeStatus(batchId, patientId);
+    reply.code(200);
+    return state;
+  });
+
+  app.get("/api/runs/:batchId/patients/:patientId/portal-status", async (request, reply) => {
+    const { batchId, patientId } = await getBatchPatientParams(request);
+    const snapshot = await service.ensurePatientPortalStatusSnapshot(batchId, patientId);
+    reply.code(200);
+    return snapshot;
+  });
+
+  app.post("/api/runs/:batchId/patients/:patientId/portal-status/refresh", async (request, reply) => {
+    const { batchId, patientId } = await getBatchPatientParams(request);
+    const snapshot = await service.ensurePatientPortalStatusSnapshot(batchId, patientId, {
+      forceRefresh: true,
+    });
+    reply.code(snapshot.status === "pending_due_to_active_patient_run" ? 202 : 200);
+    return snapshot;
   });
 
   app.get("/api/patients/:patientId/latest", async (request, reply) => {

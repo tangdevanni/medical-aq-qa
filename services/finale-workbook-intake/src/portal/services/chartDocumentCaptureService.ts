@@ -1,4 +1,5 @@
-import { mkdir, writeFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import type { Locator, Page, Response } from "@playwright/test";
 import type { AutomationStepLog } from "@medical-ai-qa/shared-types";
@@ -105,6 +106,54 @@ export interface CaptureChartDocumentParams {
   ensureDocumentsSectionVisible?: () => Promise<{
     log: AutomationStepLog | null;
   }>;
+}
+
+export type ReferralFileCaptureStatus =
+  | "captured"
+  | "not_found"
+  | "empty_response"
+  | "viewer_text_only"
+  | "skipped_unsupported"
+  | "failed";
+
+export interface ReferralFileCaptureDocument {
+  documentId: string;
+  title: string | null;
+  documentDate: string | null;
+  sourceLabel: string | null;
+  sourcePath: string | null;
+  extractedTextPath: string | null;
+  portalLabel: string | null;
+  acquisitionMethod: "download" | "network_pdf_response" | "viewer_text_only" | "in_memory_fallback";
+  sourceContentHash: string | null;
+  contentType: string | null;
+  captureStatus: ReferralFileCaptureStatus;
+  error: string | null;
+  notes: string[];
+}
+
+export interface ReferralFileCaptureResult {
+  schemaVersion: "referral-source-documents-manifest.v1";
+  batchId: string;
+  patientId: string;
+  generatedAt: string;
+  source: "portal_referral_files";
+  fileUploadsUrl: string | null;
+  referralFolderSelected: boolean;
+  referralFolderLabel: string | null;
+  documents: ReferralFileCaptureDocument[];
+  evidence: string[];
+}
+
+export interface CaptureReferralFilesParams {
+  page: Page;
+  logger?: Logger;
+  debugConfig?: PortalDebugConfig;
+  chartUrl: string;
+  outputDirectory: string;
+  batchId: string;
+  patientId: string;
+  captureRelevantUploadLimit?: number;
 }
 
 const FILE_UPLOADS_SIDEBAR_LABEL_SELECTORS: PortalSelectorCandidate[] = [
@@ -441,6 +490,51 @@ export function isFileUploadFolderLabel(value: string | null | undefined): boole
   ].includes(normalized) || (/\b(?:referral|admission|progress)\b/.test(normalized) && !/\.(?:pdf|docx?|txt|rtf|png|jpe?g|tiff?)\b/i.test(normalized));
 }
 
+export function extractReferralUploadLabelsFromText(value: string | null | undefined): string[] {
+  const text = value ?? "";
+  const labels: string[] = [];
+  const addLabel = (candidate: string) => {
+    const label = normalizeUploadFileLabelForDisplay(candidate);
+    if (label && /\.(?:pdf|png|jpe?g)\b/i.test(label) && !isFileUploadFolderLabel(label)) {
+      labels.push(label);
+    }
+  };
+
+  for (const line of text.split(/\r?\n/)) {
+    const normalizedLine = normalizeWhitespace(line);
+    if (!/\.(?:pdf|png|jpe?g)\b/i.test(normalizedLine)) {
+      continue;
+    }
+    if (normalizedLine.length <= 220) {
+      addLabel(normalizedLine);
+      continue;
+    }
+    for (const match of normalizedLine.matchAll(/[^|]{1,180}\.(?:pdf|png|jpe?g)\b/gi)) {
+      addLabel(match[0] ?? "");
+    }
+  }
+
+  return Array.from(new Set(labels));
+}
+
+export function selectRootLevelReferralUploadLabels(labels: string[]): string[] {
+  const documentLabels = Array.from(new Set(
+    labels
+      .map((label) => normalizeUploadFileLabelForDisplay(label))
+      .filter((label) => label && !isFileUploadFolderLabel(label)),
+  ));
+  const explicitReferralLabels = documentLabels.filter((label) =>
+    scoreReferralOrAdmissionUploadLabel(label) > 0 && /\breferral\b/i.test(label),
+  );
+  if (explicitReferralLabels.length > 0) {
+    return explicitReferralLabels;
+  }
+
+  return documentLabels
+    .filter((label) => scoreReferralOrAdmissionUploadLabel(label) > 0)
+    .filter((label) => /\b(?:referral|admission|admit|order)\b/i.test(label));
+}
+
 function isPatientSpecificFileUploadsUrl(value: string | null | undefined): boolean {
   const normalized = normalizeWhitespace(value ?? "");
   return /\/provider\/[^/]+\/client\/[^/]+\/file-uploads(?:$|[?#/])/i.test(normalized);
@@ -454,6 +548,12 @@ function isGenericProviderDocumentsUrl(value: string | null | undefined): boolea
 
 function slugify(value: string): string {
   return value.replace(/[^A-Za-z0-9]+/g, "-").replace(/^-+|-+$/g, "").toLowerCase();
+}
+
+function buildStableReferralDocumentId(patientId: string, label: string): string {
+  const labelSlug = slugify(normalizeUploadFileLabelForDisplay(label)).slice(0, 120);
+  const labelHash = createHash("sha256").update(normalizeUploadFileNameForMatch(label) || label).digest("hex").slice(0, 12);
+  return `${patientId}-referral-file-${labelSlug || "document"}-${labelHash}`;
 }
 
 function resolvePatientDocumentsDirectory(outputDirectory: string): string {
@@ -471,6 +571,96 @@ function isLikelyPdfResponse(input: {
   return normalizedContentType.includes("application/pdf") ||
     /\.pdf(?:$|[?#])/i.test(normalizedUrl) ||
     (/pdf/.test(normalizedUrl) && /octet-stream|application\/pdf|binary/.test(normalizedContentType));
+}
+
+function inferCapturedDocumentExtension(input: {
+  label: string;
+  contentType?: string | null;
+  url?: string | null;
+}): string {
+  const labelExtension = path.extname(input.label).toLowerCase();
+  if (labelExtension && labelExtension.length <= 8) {
+    return labelExtension;
+  }
+  let urlExtension = "";
+  try {
+    urlExtension = path.extname(new URL(input.url ?? "https://local.invalid/source").pathname).toLowerCase();
+  } catch {
+    urlExtension = path.extname(input.url ?? "").toLowerCase();
+  }
+  if (urlExtension && urlExtension.length <= 8) {
+    return urlExtension;
+  }
+  const contentType = input.contentType ?? "";
+  if (/pdf/i.test(contentType)) {
+    return ".pdf";
+  }
+  if (/jpe?g/i.test(contentType)) {
+    return ".jpg";
+  }
+  if (/png/i.test(contentType)) {
+    return ".png";
+  }
+  return ".bin";
+}
+
+function isLikelyReferralDocumentResponse(input: {
+  url: string;
+  contentType: string;
+}): boolean {
+  return (
+    /\.(?:pdf|png|jpe?g)(?:$|[?#])/i.test(input.url) ||
+    /application\/pdf|image\/(?:png|jpe?g)/i.test(input.contentType) ||
+    /\/api\/v\d+\/files\//i.test(input.url)
+  );
+}
+
+function extractDocumentDateFromLabel(value: string | null | undefined): string | null {
+  const label = normalizeWhitespace(value);
+  const iso = /\b(20\d{2})[-/](0?[1-9]|1[0-2])[-/](0?[1-9]|[12]\d|3[01])\b/.exec(label);
+  if (iso) {
+    return `${iso[1]}-${iso[2]!.padStart(2, "0")}-${iso[3]!.padStart(2, "0")}`;
+  }
+  const us = /\b(0?[1-9]|1[0-2])[-/](0?[1-9]|[12]\d|3[01])[-/](20\d{2})\b/.exec(label);
+  if (us) {
+    return `${us[3]}-${us[1]!.padStart(2, "0")}-${us[2]!.padStart(2, "0")}`;
+  }
+  return null;
+}
+
+async function collectVisibleReferralUploadLabels(page: Page): Promise<string[]> {
+  const nodeLabels = await page
+    .locator(".file-label, .file-item, table tbody tr, app-client-file-upload button, app-client-file-upload a, app-client-file-upload [role='button']")
+    .evaluateAll((nodes) => nodes.flatMap((node) => {
+      const text = (node.textContent ?? "").trim();
+      return text ? [text] : [];
+    }))
+    .catch(() => []);
+  const componentText = await page
+    .locator("app-client-file-upload")
+    .innerText({ timeout: 5_000 })
+    .catch(() => "");
+  return Array.from(new Set(
+    [...nodeLabels, componentText].flatMap((label) => extractReferralUploadLabelsFromText(label)),
+  ));
+}
+
+async function findReferralUploadLocator(page: Page, label: string): Promise<Locator | null> {
+  const candidates = [
+    page.locator("app-client-file-upload button", { hasText: label }).first(),
+    page.locator("app-client-file-upload a", { hasText: label }).first(),
+    page.locator("app-client-file-upload [role='button']", { hasText: label }).first(),
+    page.locator(".file-item", { hasText: label }).first(),
+    page.locator(".file-label", { hasText: label }).first(),
+    page.locator("table tbody tr", { hasText: label }).first(),
+    page.getByText(label, { exact: true }).first(),
+  ];
+  for (const locator of candidates) {
+    if (await locator.count().catch(() => 0) > 0 && await locator.isVisible().catch(() => false)) {
+      return locator;
+    }
+  }
+  return null;
 }
 
 async function readLocatorLabel(locator: Locator): Promise<string | null> {
@@ -513,6 +703,354 @@ async function clickReadOnlyTarget(input: {
     });
   });
   await waitForPortalPageSettled(input.page, input.debugConfig);
+}
+
+async function openReferralFileUploadsFolder(params: CaptureReferralFilesParams, evidence: string[]): Promise<{
+  fileUploadsUrl: string | null;
+  referralFolderSelected: boolean;
+  referralFolderLabel: string | null;
+  matchedFileUploadsLabel: string | null;
+  labels: string[];
+}> {
+  await waitForPortalPageSettled(params.page, params.debugConfig);
+  let matchedFileUploadsLabel: string | null = null;
+  const fileUploadsResolution = await resolveFirstVisibleLocator({
+    page: params.page,
+    candidates: FILE_UPLOADS_SIDEBAR_LABEL_SELECTORS,
+    step: "referral_intake_file_uploads_sidebar_label",
+    logger: params.logger,
+    debugConfig: params.debugConfig,
+    settle: () => waitForPortalPageSettled(params.page, params.debugConfig),
+  });
+  evidence.push(...fileUploadsResolution.attempts.map(selectorAttemptToEvidence));
+
+  if (fileUploadsResolution.locator && fileUploadsResolution.matchedCandidate) {
+    const resolvedFileUploadsTarget = fileUploadsResolution.locator;
+    const resolvedTagName = await resolvedFileUploadsTarget.evaluate((element) =>
+      element.tagName.toLowerCase()).catch(() => "");
+    const ancestorAnchor = resolvedFileUploadsTarget.locator('xpath=ancestor::a[contains(@href,"/file-uploads")][1]').first();
+    const ancestorAnchorCount = await ancestorAnchor.count().catch(() => 0);
+    const notesSubMenuContainer = resolvedFileUploadsTarget.locator("xpath=ancestor::li[contains(@class,'notes-sub-menu')][1]").first();
+    const notesSubMenuContainerCount = await notesSubMenuContainer.count().catch(() => 0);
+    const fileUploadsClickTarget = resolvedTagName === "a"
+      ? resolvedFileUploadsTarget
+      : ancestorAnchorCount > 0
+      ? ancestorAnchor
+      : notesSubMenuContainerCount > 0
+      ? notesSubMenuContainer
+      : resolvedFileUploadsTarget;
+    matchedFileUploadsLabel =
+      normalizeWhitespace(await resolvedFileUploadsTarget.textContent().catch(() => null)) ||
+      fileUploadsResolution.matchedCandidate.description;
+    await clickReadOnlyTarget({
+      locator: fileUploadsClickTarget,
+      page: params.page,
+      debugConfig: params.debugConfig,
+    });
+  } else if (!isPatientSpecificFileUploadsUrl(params.page.url())) {
+    evidence.push("Referral intake could not find File Uploads or Intake/Referral navigation.");
+    return {
+      fileUploadsUrl: null,
+      referralFolderSelected: false,
+      referralFolderLabel: null,
+      matchedFileUploadsLabel,
+      labels: [],
+    };
+  }
+
+  let folderLabels: string[] = [];
+  let rootVisibleFileLabels: string[] = [];
+  for (let attempt = 1; attempt <= 10; attempt += 1) {
+    await waitForPortalPageSettled(params.page, params.debugConfig);
+    folderLabels = await params.page
+      .locator("app-client-file-upload .folder-label, .folder-item .folder-label, .folder-label")
+      .evaluateAll((nodes) => nodes.map((node) => (node.textContent ?? "").replace(/\s+/g, " ").trim()))
+      .catch(() => []);
+    rootVisibleFileLabels = await collectVisibleReferralUploadLabels(params.page);
+    const fileUploadRootCount = await params.page.locator("app-client-file-upload").count().catch(() => 0);
+    evidence.push(
+      `Referral File Uploads ready attempt=${attempt} url=${params.page.url()} rootCount=${fileUploadRootCount} folderCount=${folderLabels.length} fileLabelCount=${rootVisibleFileLabels.length}`,
+    );
+    if (folderLabels.length > 0 || rootVisibleFileLabels.length > 0) {
+      break;
+    }
+    await params.page.waitForTimeout(1_000).catch(() => undefined);
+  }
+  const referralFolderLabel = Array.from(new Set(folderLabels))
+    .map((label) => normalizeWhitespace(label))
+    .filter((label) => label && isReferralDocumentsFolderLabel(label) && !/\.(?:pdf|docx?|txt|rtf|png|jpe?g|tiff?)\b/i.test(label))
+    .sort((left, right) => {
+      const leftExact = /^Referral(?: Files)?$/i.test(left) ? 1 : 0;
+      const rightExact = /^Referral(?: Files)?$/i.test(right) ? 1 : 0;
+      return rightExact - leftExact || left.length - right.length || left.localeCompare(right);
+    })[0] ?? null;
+
+  let referralFolderSelected = false;
+  if (referralFolderLabel) {
+    const folderLabelLocator = params.page
+      .locator("app-client-file-upload .folder-label, .folder-item .folder-label, .folder-label")
+      .filter({ hasText: referralFolderLabel })
+      .first();
+    const folderRow = folderLabelLocator.locator("xpath=ancestor::*[contains(@class,'folder-item')][1]").first();
+    const folderRowCount = await folderRow.count().catch(() => 0);
+    await clickReadOnlyTarget({
+      locator: folderRowCount > 0 ? folderRow : folderLabelLocator,
+      page: params.page,
+      debugConfig: params.debugConfig,
+    });
+    referralFolderSelected = true;
+    evidence.push(`Referral intake selected folder: ${referralFolderLabel}`);
+  } else if (/intake\s*\/\s*referral/i.test(matchedFileUploadsLabel ?? "")) {
+    referralFolderSelected = true;
+    evidence.push("Referral intake is already scoped by Intake/Referral navigation.");
+  } else {
+    evidence.push(`Referral intake did not find a Referral/Referral Files folder. Visible folders: ${folderLabels.join(" | ") || "none"}`);
+  }
+
+  await waitForPortalPageSettled(params.page, params.debugConfig);
+  let labels = referralFolderSelected ? await collectVisibleReferralUploadLabels(params.page) : [];
+  if (!referralFolderSelected && folderLabels.length === 0) {
+    const rootLevelReferralLabels = selectRootLevelReferralUploadLabels(rootVisibleFileLabels);
+    if (rootLevelReferralLabels.length > 0) {
+      labels = rootLevelReferralLabels;
+      referralFolderSelected = true;
+      evidence.push(
+        "Referral intake did not find a folder tree; using root-level File Uploads rows whose labels explicitly match referral/admission source documents.",
+      );
+    }
+  }
+  evidence.push(`Referral intake visible file labels: ${labels.join(" | ") || "none"}`);
+  return {
+    fileUploadsUrl: params.page.url(),
+    referralFolderSelected,
+    referralFolderLabel,
+    matchedFileUploadsLabel,
+    labels,
+  };
+}
+
+async function captureReferralUpload(input: {
+  page: Page;
+  debugConfig?: PortalDebugConfig;
+  label: string;
+  outputDirectory: string;
+}): Promise<Omit<ReferralFileCaptureDocument, "documentId" | "documentDate">> {
+  const locator = await findReferralUploadLocator(input.page, input.label);
+  const documentDirectory = path.join(input.outputDirectory, slugify(input.label) || "document");
+  await mkdir(documentDirectory, { recursive: true });
+  if (!locator) {
+    return {
+      title: input.label,
+      sourceLabel: input.label,
+      sourcePath: null,
+      extractedTextPath: null,
+      portalLabel: input.label,
+      acquisitionMethod: "in_memory_fallback",
+      sourceContentHash: null,
+      contentType: null,
+      captureStatus: "not_found",
+      error: "Referral upload label was not visible after selecting the Referral folder.",
+      notes: ["upload label was not visible on the referral file uploads page"],
+    };
+  }
+
+  const responseTasks: Array<Promise<{ body: Buffer; contentType: string; url: string } | null>> = [];
+  const onResponse = (response: Response) => {
+    const contentType = response.headers()["content-type"] ?? "";
+    if (!isLikelyReferralDocumentResponse({ url: response.url(), contentType })) {
+      return;
+    }
+    responseTasks.push((async () => {
+      try {
+        const body = await response.body();
+        return body.length > 0 ? { body, contentType, url: response.url() } : null;
+      } catch {
+        return null;
+      }
+    })());
+  };
+
+  input.page.on("response", onResponse);
+  const downloadPromise = input.page.waitForEvent("download", { timeout: 15_000 }).catch(() => null);
+  const popupPromise = input.page.waitForEvent("popup", { timeout: 15_000 }).catch(() => null);
+  try {
+    await clickReadOnlyTarget({
+      locator,
+      page: input.page,
+      debugConfig: input.debugConfig,
+    });
+    await input.page.waitForTimeout(2_500).catch(() => undefined);
+  } finally {
+    input.page.off("response", onResponse);
+  }
+
+  const download = await downloadPromise;
+  if (download) {
+    const extension = inferCapturedDocumentExtension({
+      label: download.suggestedFilename() || input.label,
+    });
+    const outputPath = path.join(documentDirectory, `source${extension}`);
+    await download.saveAs(outputPath);
+    const body = await readFile(outputPath);
+    return {
+      title: input.label,
+      sourceLabel: input.label,
+      sourcePath: outputPath,
+      extractedTextPath: null,
+      portalLabel: input.label,
+      acquisitionMethod: "download",
+      sourceContentHash: createHash("sha256").update(body).digest("hex"),
+      contentType: null,
+      captureStatus: body.length > 0 ? "captured" : "empty_response",
+      error: body.length > 0 ? null : "Downloaded referral file was empty.",
+      notes: [`download:${download.suggestedFilename() || "unknown"}`],
+    };
+  }
+
+  const responses = (await Promise.all(responseTasks)).filter((entry): entry is {
+    body: Buffer;
+    contentType: string;
+    url: string;
+  } => entry !== null);
+  const response = responses.sort((left, right) => right.body.length - left.body.length)[0] ?? null;
+  if (response) {
+    const extension = inferCapturedDocumentExtension({
+      label: input.label,
+      contentType: response.contentType,
+      url: response.url,
+    });
+    const outputPath = path.join(documentDirectory, `source${extension}`);
+    await writeFile(outputPath, response.body);
+    return {
+      title: input.label,
+      sourceLabel: input.label,
+      sourcePath: outputPath,
+      extractedTextPath: null,
+      portalLabel: input.label,
+      acquisitionMethod: "network_pdf_response",
+      sourceContentHash: createHash("sha256").update(response.body).digest("hex"),
+      contentType: response.contentType || null,
+      captureStatus: response.body.length > 0 ? "captured" : "empty_response",
+      error: response.body.length > 0 ? null : "Referral document response was empty.",
+      notes: [`response:${response.contentType || "unknown"}:${response.url}`],
+    };
+  }
+
+  const popup = await popupPromise;
+  const textPage = popup ?? input.page;
+  const text = normalizeWhitespace(await textPage.locator("body").innerText({ timeout: 5_000 }).catch(() => ""));
+  if (popup) {
+    await popup.close().catch(() => undefined);
+  }
+  if (text.length > 100) {
+    const textPath = path.join(documentDirectory, "source.txt");
+    await writeFile(textPath, `${text}\n`, "utf8");
+    return {
+      title: input.label,
+      sourceLabel: input.label,
+      sourcePath: null,
+      extractedTextPath: textPath,
+      portalLabel: input.label,
+      acquisitionMethod: "viewer_text_only",
+      sourceContentHash: createHash("sha256").update(text).digest("hex"),
+      contentType: "text/plain",
+      captureStatus: "viewer_text_only",
+      error: null,
+      notes: ["captured visible viewer text only; direct-document LLM requires a PDF or image source"],
+    };
+  }
+
+  return {
+    title: input.label,
+    sourceLabel: input.label,
+    sourcePath: null,
+    extractedTextPath: null,
+    portalLabel: input.label,
+    acquisitionMethod: "in_memory_fallback",
+    sourceContentHash: null,
+    contentType: null,
+    captureStatus: "empty_response",
+    error: "No referral document response, download, or visible text was captured.",
+    notes: ["no document response, download, or visible text was captured"],
+  };
+}
+
+export async function captureReferralFiles(
+  params: CaptureReferralFilesParams,
+): Promise<ReferralFileCaptureResult> {
+  const evidence: string[] = [];
+  const acquisitionDirectory = path.join(params.outputDirectory, "referral-file-acquisition");
+  const documentsDirectory = path.join(acquisitionDirectory, "documents");
+  await mkdir(documentsDirectory, { recursive: true });
+  params.logger?.info(
+    {
+      chartUrl: params.chartUrl,
+      currentUrl: params.page.url(),
+      acquisitionDirectory,
+      patientId: params.patientId,
+    },
+    "referral file capture started",
+  );
+
+  let openResult = await openReferralFileUploadsFolder(params, evidence);
+  const labels = openResult.labels.slice(0, params.captureRelevantUploadLimit ?? 25);
+  const documents: ReferralFileCaptureDocument[] = [];
+
+  for (const [index, label] of labels.entries()) {
+    const documentId = buildStableReferralDocumentId(params.patientId, label);
+    try {
+      if (index > 0) {
+        openResult = await openReferralFileUploadsFolder(params, evidence);
+      }
+      const captured = await captureReferralUpload({
+        page: params.page,
+        debugConfig: params.debugConfig,
+        label,
+        outputDirectory: documentsDirectory,
+      });
+      documents.push({
+        ...captured,
+        documentId,
+        documentDate: extractDocumentDateFromLabel(label),
+      });
+    } catch (error) {
+      documents.push({
+        documentId,
+        title: label,
+        documentDate: extractDocumentDateFromLabel(label),
+        sourceLabel: label,
+        sourcePath: null,
+        extractedTextPath: null,
+        portalLabel: label,
+        acquisitionMethod: "in_memory_fallback",
+        sourceContentHash: null,
+        contentType: null,
+        captureStatus: "failed",
+        error: error instanceof Error ? error.message : "Unknown referral file capture error.",
+        notes: ["capture failed"],
+      });
+    }
+  }
+
+  const generatedAt = new Date().toISOString();
+  const result: ReferralFileCaptureResult = {
+    schemaVersion: "referral-source-documents-manifest.v1",
+    batchId: params.batchId,
+    patientId: params.patientId,
+    generatedAt,
+    source: "portal_referral_files",
+    fileUploadsUrl: openResult.fileUploadsUrl,
+    referralFolderSelected: openResult.referralFolderSelected,
+    referralFolderLabel: openResult.referralFolderLabel,
+    documents,
+    evidence,
+  };
+  await writeFile(
+    path.join(acquisitionDirectory, "referral-file-capture-result.json"),
+    JSON.stringify(result, null, 2),
+    "utf8",
+  );
+  return result;
 }
 
 export async function captureChartDocument(

@@ -853,6 +853,76 @@ export interface PatientDashboardVisibilitySummary {
   potentiallyTooStrictRows: string[];
 }
 
+export interface PatientReferralIntakeStatus {
+  status: string;
+  acceptedAt: string | null;
+  startedAt: string | null;
+  completedAt: string | null;
+  lastCheckedAt: string | null;
+  lastError: string | null;
+  processedCount: number;
+  reusedCount: number;
+  newOrChangedCount: number;
+  failedCount: number;
+  skippedCount: number;
+  documentCount: number;
+  sourceDocumentCount: number;
+  statusUrl: string | null;
+  message: string | null;
+}
+
+export interface ReferralIntakeStartResponse {
+  batchId: string;
+  patientId: string;
+  status: string;
+  acceptedAt: string | null;
+  statusUrl: string | null;
+  message: string | null;
+}
+
+export interface ReferralOasisSourceDocument {
+  id: string;
+  title: string;
+  date: string | null;
+  sourcePath: string | null;
+  sourceLabel: string | null;
+  status: string;
+  extractionUsabilityStatus: string | null;
+  artifactDirectory: string | null;
+  error: string | null;
+}
+
+export interface ReferralOasisAssessmentSource {
+  id: string;
+  title: string;
+  date: string | null;
+  source: string;
+  status: string;
+  assessmentType?: string | null;
+  processingEligible?: boolean | null;
+  isCurrent?: boolean;
+  isMonitored?: boolean;
+}
+
+export interface ReferralOasisChangeFlag {
+  id: string;
+  kind: string;
+  fieldKey: string;
+  label: string;
+  assessmentId: string | null;
+  baselineAssessmentId: string | null;
+  source: string;
+}
+
+export interface PatientReferralOasisSources {
+  referralDocuments: ReferralOasisSourceDocument[];
+  oasisAssessments: ReferralOasisAssessmentSource[];
+  defaultReferralDocumentId: string | null;
+  defaultOasisAssessmentId: string | null;
+  baselineOasisAssessmentId: string | null;
+  oasisChangeFlags: ReferralOasisChangeFlag[];
+}
+
 export interface PatientDashboardDetailState {
   rows: PatientDashboardFieldRow[];
   comparisonRowsStatus?: "pending" | "ready";
@@ -866,6 +936,8 @@ export interface PatientDashboardDetailState {
     fieldLevelValueCount: number;
     sectionEvidenceFallbackRowCount: number;
   };
+  referralIntakeStatus?: PatientReferralIntakeStatus;
+  referralOasisSources?: PatientReferralOasisSources;
 }
 
 export interface PatientDashboardReviewSummary {

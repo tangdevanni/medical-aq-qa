@@ -37,7 +37,7 @@ export async function createPortalSession(env: FinaleBatchEnv): Promise<{
 
   const page = await context.newPage();
   context.setDefaultTimeout(env.PORTAL_STEP_TIMEOUT_MS);
-  context.setDefaultNavigationTimeout(Math.max(env.PORTAL_STEP_TIMEOUT_MS, 8_000));
+  context.setDefaultNavigationTimeout(env.PORTAL_NAVIGATION_TIMEOUT_MS);
 
   return { browser, context, page };
 }

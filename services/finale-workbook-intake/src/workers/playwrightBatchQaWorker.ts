@@ -24,12 +24,14 @@ import type { OasisInputActionPlan } from "../services/oasisInputActionPlanServi
 import { LoginPage } from "../portal/pages/LoginPage";
 import { PatientChartPage } from "../portal/pages/PatientChartPage";
 import { PatientSearchPage } from "../portal/pages/PatientSearchPage";
+import type { ReferralFileCaptureResult } from "../portal/services/chartDocumentCaptureService";
 import { createAutomationStepLog } from "../portal/utils/automationLog";
 import { gotoPortalPage } from "../portal/utils/portalNavigation";
 import { diagnosePortalNetwork } from "../portal/utils/portalNetworkDiagnostics";
 import type { ResolvedPatientPortalAccess } from "../portal/context/patientPortalContext";
 import type { PortalDebugConfig } from "../portal/utils/locatorResolution";
 import type { OasisLockStateSnapshot } from "../portal/utils/oasisLockStateDetector";
+import type { PatientPortalStatusPageMetadata } from "../portal/types/patientPortalStatus";
 import { capturePageDebugArtifacts } from "../portal/utils/pageDiagnostics";
 import { discoverVisitNotesFromPage } from "../portal/services/visitNotesDiscoveryService";
 import {
@@ -246,6 +248,19 @@ export interface BatchPortalAutomationClient {
     calendarScope?: OasisCalendarScopeResult | null;
     calendarScopePath?: string | null;
   }>;
+  captureReferralFiles?(
+    workItem: PatientEpisodeWorkItem,
+    evidenceDir: string,
+    options: {
+      patientArtifactsDirectory: string;
+      captureRelevantUploadLimit?: number;
+      batchId: string;
+    },
+  ): Promise<ReferralFileCaptureResult>;
+  readPatientPortalStatus?(
+    workItem: PatientEpisodeWorkItem,
+    evidenceDir: string,
+  ): Promise<PatientPortalStatusPageMetadata>;
   debugFileUploadsDiscovery?(
     workItem: PatientEpisodeWorkItem,
     evidenceDir: string,
@@ -874,6 +889,63 @@ export class PlaywrightBatchQaWorker implements BatchPortalAutomationClient {
       patientId: workItem.id,
       patientArtifactsDirectory: options?.patientArtifactsDirectory,
       captureRelevantUploadLimit: options?.captureRelevantUploadLimit,
+    });
+  }
+
+  async captureReferralFiles(
+    workItem: PatientEpisodeWorkItem,
+    evidenceDir: string,
+    options: {
+      patientArtifactsDirectory: string;
+      captureRelevantUploadLimit?: number;
+      batchId: string;
+    },
+  ): Promise<ReferralFileCaptureResult> {
+    if (!this.session) {
+      throw new Error("Playwright batch worker was not initialized.");
+    }
+    if (!this.currentPatientChartUrl) {
+      throw new Error("Patient chart URL was not resolved before referral file capture.");
+    }
+
+    this.logger.info(
+      { workItemId: workItem.id, subsidiaryId: this.runtimeConfig.subsidiaryId },
+      "capturing patient referral files from File Uploads",
+    );
+    this.currentDebugDir = path.join(evidenceDir, "debug");
+    const patientChartPage = new PatientChartPage(this.session.page, {
+      logger: this.logger,
+      debugConfig: this.debugConfig,
+      debugDir: this.currentDebugDir,
+    });
+    return patientChartPage.captureReferralFiles(options.patientArtifactsDirectory, {
+      batchId: options.batchId,
+      patientId: workItem.id,
+      patientChartUrl: this.currentPatientChartUrl,
+      captureRelevantUploadLimit: options.captureRelevantUploadLimit,
+    });
+  }
+
+  async readPatientPortalStatus(
+    workItem: PatientEpisodeWorkItem,
+    evidenceDir: string,
+  ): Promise<PatientPortalStatusPageMetadata> {
+    if (!this.session) {
+      throw new Error("Playwright batch worker was not initialized.");
+    }
+
+    this.logger.info(
+      { workItemId: workItem.id, subsidiaryId: this.runtimeConfig.subsidiaryId },
+      "reading patient portal status metadata",
+    );
+    this.currentDebugDir = path.join(evidenceDir, "debug");
+    const patientChartPage = new PatientChartPage(this.session.page, {
+      logger: this.logger,
+      debugConfig: this.debugConfig,
+      debugDir: this.currentDebugDir,
+    });
+    return patientChartPage.readPatientPortalStatusMetadata({
+      chartUrl: this.currentPatientChartUrl,
     });
   }
 

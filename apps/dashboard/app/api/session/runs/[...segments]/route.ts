@@ -1,9 +1,13 @@
 import { NextResponse } from "next/server";
 import {
+  BackendRequestError,
   createBackendRunSample,
   getLatestBackendPatient,
   getBackendPatientArtifacts,
+  getBackendPatientReferralIntakeStatus,
   getBackendRun,
+  getBackendRunStatus,
+  startBackendPatientReferralIntake,
 } from "../../../../../lib/server/backendApi";
 import { agencyIdsMatch, requireSelectedAgencySession } from "../../../../../lib/auth/session";
 
@@ -31,39 +35,49 @@ export async function GET(_request: Request, { params }: Params) {
     }
 
     if (segments.length === 2 && segments[1] === "status") {
-      const run = await getBackendRun(segments[0]!);
-      if (!agencyIdsMatch(run.subsidiaryId, session.selectedAgencyId)) {
+      const status = await getBackendRunStatus(segments[0]!);
+      if (!agencyIdsMatch(status.subsidiaryId, session.selectedAgencyId)) {
         return unauthorizedAgencyResponse();
       }
-      return NextResponse.json(run);
+      return NextResponse.json(status);
     }
 
     if (segments.length === 3 && segments[1] === "patients") {
-      const run = await getBackendRun(segments[0]!);
-      if (!agencyIdsMatch(run.subsidiaryId, session.selectedAgencyId)) {
+      const status = await getBackendRunStatus(segments[0]!);
+      if (!agencyIdsMatch(status.subsidiaryId, session.selectedAgencyId)) {
         return unauthorizedAgencyResponse();
       }
-      const patient = await getLatestBackendPatient(run.subsidiaryId, segments[2]!);
+      const patient = await getLatestBackendPatient(status.subsidiaryId, segments[2]!);
       return NextResponse.json(patient);
     }
 
     if (segments.length === 4 && segments[1] === "patients" && segments[3] === "status") {
-      const run = await getBackendRun(segments[0]!);
-      if (!agencyIdsMatch(run.subsidiaryId, session.selectedAgencyId)) {
+      const status = await getBackendRunStatus(segments[0]!);
+      if (!agencyIdsMatch(status.subsidiaryId, session.selectedAgencyId)) {
         return unauthorizedAgencyResponse();
       }
-      const patient = await getLatestBackendPatient(run.subsidiaryId, segments[2]!);
+      const patient = await getLatestBackendPatient(status.subsidiaryId, segments[2]!);
       return NextResponse.json(patient);
     }
 
     if (segments.length === 4 && segments[1] === "patients" && segments[3] === "artifacts") {
-      const run = await getBackendRun(segments[0]!);
-      if (!agencyIdsMatch(run.subsidiaryId, session.selectedAgencyId)) {
+      const status = await getBackendRunStatus(segments[0]!);
+      if (!agencyIdsMatch(status.subsidiaryId, session.selectedAgencyId)) {
         return unauthorizedAgencyResponse();
       }
-      const patient = await getLatestBackendPatient(run.subsidiaryId, segments[2]!);
+      const patient = await getLatestBackendPatient(status.subsidiaryId, segments[2]!);
       const patientArtifacts = await getBackendPatientArtifacts(patient.batchId, patient.workItemId);
       return NextResponse.json(patientArtifacts);
+    }
+
+    if (segments.length === 5 && segments[1] === "patients" && segments[3] === "referral-intake" && segments[4] === "status") {
+      const runStatus = await getBackendRunStatus(segments[0]!);
+      if (!agencyIdsMatch(runStatus.subsidiaryId, session.selectedAgencyId)) {
+        return unauthorizedAgencyResponse();
+      }
+      const patient = await getLatestBackendPatient(runStatus.subsidiaryId, segments[2]!);
+      const intakeStatus = await getBackendPatientReferralIntakeStatus(patient.batchId, patient.workItemId);
+      return NextResponse.json(intakeStatus);
     }
 
     return NextResponse.json({ message: "Unsupported dashboard session route." }, { status: 404 });
@@ -81,8 +95,8 @@ export async function POST(request: Request, { params }: Params) {
 
   try {
     if (segments.length === 2 && segments[1] === "sample") {
-      const sourceRun = await getBackendRun(segments[0]!);
-      if (!agencyIdsMatch(sourceRun.subsidiaryId, session.selectedAgencyId)) {
+      const sourceRunStatus = await getBackendRunStatus(segments[0]!);
+      if (!agencyIdsMatch(sourceRunStatus.subsidiaryId, session.selectedAgencyId)) {
         return unauthorizedAgencyResponse();
       }
 
@@ -97,8 +111,22 @@ export async function POST(request: Request, { params }: Params) {
       return NextResponse.json(sampleRun, { status: 202 });
     }
 
+    if (segments.length === 4 && segments[1] === "patients" && segments[3] === "referral-intake") {
+      const status = await getBackendRunStatus(segments[0]!);
+      if (!agencyIdsMatch(status.subsidiaryId, session.selectedAgencyId)) {
+        return unauthorizedAgencyResponse();
+      }
+
+      const patient = await getLatestBackendPatient(status.subsidiaryId, segments[2]!);
+      const response = await startBackendPatientReferralIntake(patient.batchId, patient.workItemId);
+      return NextResponse.json(response, { status: 202 });
+    }
+
     return NextResponse.json({ message: "Unsupported dashboard session route." }, { status: 404 });
   } catch (error) {
+    if (error instanceof BackendRequestError && error.status === 409) {
+      return NextResponse.json({ message: error.message }, { status: 409 });
+    }
     return NextResponse.json(
       { message: error instanceof Error ? error.message : "Failed to run dashboard action." },
       { status: 500 },

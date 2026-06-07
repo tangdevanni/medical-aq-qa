@@ -5,13 +5,25 @@ import type {
 import type {
   PatientArtifactsResponse,
   PatientDetail,
+  PatientReferralIntakeStatus,
+  ReferralIntakeStartResponse,
   RunDetail,
   RunListItem,
+  RunStatusResponse,
 } from "../types";
-import { loadDashboardEnv } from "../env";
+import { loadDashboardEnv, type DashboardEnv } from "../env";
 
-function buildBackendUrl(pathname: string): string {
-  const env = loadDashboardEnv();
+export class BackendRequestError extends Error {
+  constructor(
+    message: string,
+    readonly status: number,
+  ) {
+    super(message);
+    this.name = "BackendRequestError";
+  }
+}
+
+function buildBackendUrl(pathname: string, env: DashboardEnv = loadDashboardEnv()): string {
   const base = env.NEXT_PUBLIC_API_BASE_URL.replace(/\/$/, "");
   const prefix = base.endsWith("/api") ? "" : "/api";
   return `${base}${prefix}${pathname.startsWith("/") ? pathname : `/${pathname}`}`;
@@ -37,7 +49,8 @@ async function withBackendTimeout<T>(
 }
 
 async function fetchBackendJson<T>(pathname: string): Promise<T> {
-  const url = buildBackendUrl(pathname);
+  const env = loadDashboardEnv();
+  const url = buildBackendUrl(pathname, env);
   let response: Response;
   try {
     response = await withBackendTimeout(url, (signal) =>
@@ -53,14 +66,15 @@ async function fetchBackendJson<T>(pathname: string): Promise<T> {
 
   if (!response.ok) {
     const errorBody = (await response.json().catch(() => null)) as { message?: string } | null;
-    throw new Error(errorBody?.message ?? `Backend request failed: ${response.status}`);
+    throw new BackendRequestError(errorBody?.message ?? `Backend request failed: ${response.status}`, response.status);
   }
 
   return response.json() as Promise<T>;
 }
 
 async function postBackendJson<T>(pathname: string, body?: unknown): Promise<T> {
-  const url = buildBackendUrl(pathname);
+  const env = loadDashboardEnv();
+  const url = buildBackendUrl(pathname, env);
   let response: Response;
   try {
     response = await withBackendTimeout(url, (signal) =>
@@ -81,7 +95,7 @@ async function postBackendJson<T>(pathname: string, body?: unknown): Promise<T> 
 
   if (!response.ok) {
     const errorBody = (await response.json().catch(() => null)) as { message?: string } | null;
-    throw new Error(errorBody?.message ?? `Backend request failed: ${response.status}`);
+    throw new BackendRequestError(errorBody?.message ?? `Backend request failed: ${response.status}`, response.status);
   }
 
   return response.json() as Promise<T>;
@@ -141,6 +155,10 @@ export function getBackendRun(runId: string): Promise<RunDetail> {
   return fetchBackendJson<RunDetail>(`/runs/${encodeURIComponent(runId)}`);
 }
 
+export function getBackendRunStatus(runId: string): Promise<RunStatusResponse> {
+  return fetchBackendJson<RunStatusResponse>(`/runs/${encodeURIComponent(runId)}/status`);
+}
+
 export function getBackendPatient(runId: string, patientId: string): Promise<PatientDetail> {
   return fetchBackendJson<PatientDetail>(`/runs/${encodeURIComponent(runId)}/patients/${encodeURIComponent(patientId)}`);
 }
@@ -153,4 +171,22 @@ export function getLatestBackendPatient(subsidiaryId: string, patientId: string)
 
 export function getBackendPatientArtifacts(runId: string, patientId: string): Promise<PatientArtifactsResponse> {
   return fetchBackendJson<PatientArtifactsResponse>(`/runs/${encodeURIComponent(runId)}/patients/${encodeURIComponent(patientId)}/artifacts`);
+}
+
+export function startBackendPatientReferralIntake(
+  runId: string,
+  patientId: string,
+): Promise<ReferralIntakeStartResponse> {
+  return postBackendJson<ReferralIntakeStartResponse>(
+    `/runs/${encodeURIComponent(runId)}/patients/${encodeURIComponent(patientId)}/referral-intake`,
+  );
+}
+
+export function getBackendPatientReferralIntakeStatus(
+  runId: string,
+  patientId: string,
+): Promise<PatientReferralIntakeStatus> {
+  return fetchBackendJson<PatientReferralIntakeStatus>(
+    `/runs/${encodeURIComponent(runId)}/patients/${encodeURIComponent(patientId)}/referral-intake/status`,
+  );
 }

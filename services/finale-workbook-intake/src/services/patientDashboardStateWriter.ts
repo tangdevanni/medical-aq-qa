@@ -57,6 +57,10 @@ export function buildPatientDashboardArtifactPaths(input: {
     patientQaReference: path.join(referralDirectory, "patient-qa-reference.json"),
     qaDocumentSummary: path.join(referralDirectory, "qa-document-summary.json"),
     fieldMapSnapshot: path.join(referralDirectory, "field-map-snapshot.json"),
+    referralIntakeState: path.join(patientArtifactsDirectory, "referral-intake-state.json"),
+    referralSourceDocumentsManifest: path.join(patientArtifactsDirectory, "referral-source-documents-manifest.json"),
+    referralDocumentResultsManifest: path.join(patientArtifactsDirectory, "referral-document-results-manifest.json"),
+    patientPortalStatusSnapshot: path.join(patientArtifactsDirectory, "patient-portal-status-snapshot.json"),
     printedNoteChartValues: path.join(patientArtifactsDirectory, "printed-note-chart-values.json"),
     printedNoteReview: path.join(patientArtifactsDirectory, "oasis-printed-note-review.json"),
     planOfCareReviewDraft: path.join(patientArtifactsDirectory, "plan-of-care-review-draft.json"),
@@ -517,6 +521,10 @@ export async function writePatientDashboardState(params: {
   const patientQaReference = await readJsonIfExists(artifactPaths.patientQaReference);
   const qaDocumentSummary = await readJsonIfExists(artifactPaths.qaDocumentSummary);
   const fieldMapSnapshot = await readJsonIfExists(artifactPaths.fieldMapSnapshot);
+  const referralIntakeState = await readJsonIfExists(artifactPaths.referralIntakeState ?? null);
+  const referralSourceDocumentsManifest = await readJsonIfExists(artifactPaths.referralSourceDocumentsManifest ?? null);
+  const referralDocumentResultsManifest = await readJsonIfExists(artifactPaths.referralDocumentResultsManifest ?? null);
+  const patientPortalStatusSnapshot = await readJsonIfExists(artifactPaths.patientPortalStatusSnapshot ?? null);
   const printedNoteChartValues = null;
   const printedNoteReview = null;
   const planOfCareReviewDraft = await readJsonIfExists(artifactPaths.planOfCareReviewDraft ?? null);
@@ -583,6 +591,10 @@ export async function writePatientDashboardState(params: {
       patientQaReference,
       qaDocumentSummary,
       fieldMapSnapshot,
+      referralIntakeState,
+      referralSourceDocumentsManifest,
+      referralDocumentResultsManifest,
+      patientPortalStatusSnapshot,
       printedNoteChartValues,
       printedNoteReview,
       planOfCareReviewDraft,

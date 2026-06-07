@@ -86,6 +86,7 @@ const envSchema = z.object({
   PORTAL_NAVIGATION_RETRIES: z.coerce.number().int().min(1).max(5).optional().default(3),
   PORTAL_WORKBOOK_DOWNLOAD_TIMEOUT_MS: z.coerce.number().int().positive().optional().default(30_000),
   PORTAL_WORKBOOK_MIN_BYTES: z.coerce.number().int().positive().optional().default(1_024),
+  PORTAL_PATIENT_WORKER_COUNT: z.coerce.number().int().min(1).max(8).optional().default(1),
   PORTAL_SELECTOR_RETRY_COUNT: z.coerce.number().int().min(1).max(5).optional().default(2),
   PORTAL_TRACE_ON_FAILURE: z
     .enum(["true", "false"])
@@ -150,6 +151,7 @@ const envSchema = z.object({
   BEDROCK_REGION: z.string().min(1).optional(),
   BEDROCK_MODEL_ID: z.string().min(1).optional(),
   BEDROCK_INFERENCE_PROFILE_ID: z.string().min(1).optional(),
+  BEDROCK_CONVERSE_TIMEOUT_MS: z.coerce.number().int().min(5_000).optional().default(120_000),
   TEXTRACT_S3_BUCKET: z.string().min(1).optional(),
   TEXTRACT_S3_REGION: z.string().min(1).optional(),
   TEXTRACT_S3_PREFIX: z.string().min(1).optional(),

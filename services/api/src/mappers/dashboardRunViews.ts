@@ -26,6 +26,10 @@ type KnownArtifactContents = {
   patientQaReference: unknown | null;
   qaDocumentSummary: unknown | null;
   fieldMapSnapshot: unknown | null;
+  referralIntakeState?: unknown | null;
+  referralSourceDocumentsManifest?: unknown | null;
+  referralDocumentResultsManifest?: unknown | null;
+  patientPortalStatusSnapshot?: unknown | null;
   printedNoteChartValues: unknown | null;
   printedNoteReview: unknown | null;
   oasisDomExtractedState?: unknown | null;
@@ -5167,6 +5171,251 @@ function getMeaningfulOasisDomFields(artifactContents: KnownArtifactContents): A
   return rows;
 }
 
+function deriveReferralIntakeStatusState(artifactContents: KnownArtifactContents) {
+  const state = asRecord(artifactContents.referralIntakeState);
+  return {
+    status: asString(state?.status) ?? "idle",
+    acceptedAt: asString(state?.acceptedAt),
+    startedAt: asString(state?.startedAt),
+    completedAt: asString(state?.completedAt),
+    lastCheckedAt: asString(state?.lastCheckedAt),
+    lastError: asString(state?.lastError),
+    processedCount: asNumber(state?.processedCount) ?? 0,
+    reusedCount: asNumber(state?.reusedCount) ?? 0,
+    newOrChangedCount: asNumber(state?.newOrChangedCount) ?? 0,
+    failedCount: asNumber(state?.failedCount) ?? 0,
+    skippedCount: asNumber(state?.skippedCount) ?? 0,
+    documentCount: asNumber(state?.documentCount) ?? 0,
+    sourceDocumentCount: asNumber(state?.sourceDocumentCount) ?? 0,
+    statusUrl: asString(state?.statusUrl),
+    message: asString(state?.message),
+  };
+}
+
+function parseDashboardSourceDate(value: string | null): number {
+  if (!value) {
+    return 0;
+  }
+  const parsed = Date.parse(value);
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+
+function normalizeOasisAssessmentTitle(input: {
+  assessmentType: string | null;
+  title: string | null;
+}): string {
+  const title = input.title?.trim();
+  if (title) {
+    return title;
+  }
+  const type = input.assessmentType?.trim();
+  return type ? `${type} OASIS` : "OASIS assessment";
+}
+
+function sourceDateSortDescending<T extends { date: string | null; id: string }>(items: T[]): T[] {
+  return items.slice().sort((left, right) =>
+    parseDashboardSourceDate(right.date) - parseDashboardSourceDate(left.date) ||
+    left.id.localeCompare(right.id)
+  );
+}
+
+function deriveOasisAssessmentSources(input: {
+  artifactContents: KnownArtifactContents;
+  oasisDomState: Record<string, unknown> | null;
+}) {
+  const snapshot = asRecord(input.artifactContents.patientPortalStatusSnapshot);
+  const currentId = asString(snapshot?.currentOasisAssessmentId);
+  const snapshotAssessments = asArray(snapshot?.oasisAssessments)
+    .map(asRecord)
+    .filter((entry): entry is Record<string, unknown> => entry !== null)
+    .map((entry, index) => {
+      const id = asString(entry.id) ?? `oasis-assessment-${index + 1}`;
+      const assessmentType = asString(entry.assessmentType) ?? null;
+      const title = normalizeOasisAssessmentTitle({
+        assessmentType,
+        title: asString(entry.title),
+      });
+      const date = asString(entry.date);
+      return {
+        id,
+        title,
+        date,
+        source: id === currentId && input.oasisDomState
+          ? "oasis-dom-extracted-state.json"
+          : "patient-portal-status-snapshot.json",
+        status: asString(entry.primaryStatus) ?? asString(entry.decision) ?? "visible",
+        assessmentType,
+        processingEligible: typeof entry.processingEligible === "boolean" ? entry.processingEligible : null,
+        isCurrent: currentId ? id === currentId : false,
+        isMonitored: currentId ? id === currentId : index === 0,
+      };
+    });
+
+  if (snapshotAssessments.length > 0) {
+    const sorted = sourceDateSortDescending(snapshotAssessments);
+    const currentAssessment = currentId
+      ? sorted.find((assessment) => assessment.id === currentId)
+      : null;
+    const currentFirst = currentAssessment
+      ? [currentAssessment, ...sorted.filter((assessment) => assessment.id !== currentAssessment.id)]
+      : sorted;
+    return currentFirst.map((assessment, index) => ({
+      ...assessment,
+      isCurrent: currentId ? assessment.id === currentId : index === 0,
+      isMonitored: currentId ? assessment.id === currentId : index === 0,
+    }));
+  }
+
+  return input.oasisDomState
+    ? [{
+        id: asString(input.oasisDomState.assessmentId) ?? asString(input.oasisDomState.documentId) ?? "current-oasis",
+        title: asString(input.oasisDomState.assessmentType) ?? "Current OASIS",
+        date: asString(input.oasisDomState.assessmentDate) ?? asString(input.oasisDomState.extractedAt),
+        source: "oasis-dom-extracted-state.json",
+        status: asString(input.oasisDomState.status) ?? "captured",
+        assessmentType: asString(input.oasisDomState.assessmentType),
+        processingEligible: null,
+        isCurrent: true,
+        isMonitored: true,
+      }]
+    : [];
+}
+
+function normalizeOasisChangeLabel(value: string): string {
+  const lastSegment = value.split(/[./:|]/).filter(Boolean).pop() ?? value;
+  return toTitleCaseFromKey(
+    lastSegment
+      .replace(/([a-z])([A-Z])/g, "$1_$2")
+      .replace(/[^a-zA-Z0-9]+/g, "_")
+      .replace(/^_+|_+$/g, "")
+      .toLowerCase(),
+  );
+}
+
+function deriveOasisChangeFlags(input: {
+  artifactContents: KnownArtifactContents;
+  currentOasisAssessmentId: string | null;
+  baselineOasisAssessmentId: string | null;
+}) {
+  const acquisition = asRecord(input.artifactContents.oasisDomAcquisitionState);
+  const changedFields = asArray(acquisition?.changedFields)
+    .map(asString)
+    .filter((value): value is string => Boolean(value));
+  const regressedFields = asArray(acquisition?.regressedFields)
+    .map(asString)
+    .filter((value): value is string => Boolean(value));
+  const flags: Array<Record<string, unknown>> = [];
+  const seen = new Set<string>();
+
+  for (const [kind, values] of [
+    ["changed", changedFields],
+    ["regressed", regressedFields],
+  ] as const) {
+    for (const value of values) {
+      const key = `${kind}:${value}`;
+      if (seen.has(key)) {
+        continue;
+      }
+      seen.add(key);
+      flags.push({
+        id: key,
+        kind,
+        fieldKey: value,
+        label: normalizeOasisChangeLabel(value),
+        assessmentId: input.currentOasisAssessmentId,
+        baselineAssessmentId: input.baselineOasisAssessmentId,
+        source: "oasis-dom-acquisition-state.json",
+      });
+    }
+  }
+
+  return flags;
+}
+
+function deriveReferralOasisSourcesState(artifactContents: KnownArtifactContents) {
+  const resultsManifest = asRecord(artifactContents.referralDocumentResultsManifest);
+  const sourceManifest = asRecord(artifactContents.referralSourceDocumentsManifest);
+  const sourceManifestDocuments = asArray(sourceManifest?.documents)
+    .map((entry) => asRecord(entry))
+    .filter((entry): entry is Record<string, unknown> => entry !== null);
+  const sourceDocumentById = new Map(
+    sourceManifestDocuments
+      .map((entry) => [asString(entry.documentId), entry] as const)
+      .filter((entry): entry is [string, Record<string, unknown>] => Boolean(entry[0])),
+  );
+  const resultDocuments = asArray(resultsManifest?.documents)
+    .map((entry) => asRecord(entry))
+    .filter((entry): entry is Record<string, unknown> => entry !== null)
+    .map((entry) => {
+      const id = asString(entry.documentId) ?? asString(entry.selectedDocumentId) ?? "referral-document";
+      const sourceEntry = sourceDocumentById.get(id) ?? null;
+      return {
+        id,
+        title:
+          asString(entry.title) ??
+          asString(entry.sourceLabel) ??
+          asString(sourceEntry?.title) ??
+          asString(sourceEntry?.sourceLabel) ??
+          "Referral document",
+        date: asString(entry.documentDate) ?? asString(sourceEntry?.documentDate) ?? null,
+        sourcePath: asString(entry.sourcePath) ?? asString(sourceEntry?.sourcePath),
+        sourceLabel: asString(entry.sourceLabel) ?? asString(sourceEntry?.sourceLabel),
+        status: asString(entry.status) ?? asString(sourceEntry?.processStatus) ?? "processed",
+        extractionUsabilityStatus: asString(entry.extractionUsabilityStatus),
+        artifactDirectory: asString(entry.artifactDirectory),
+        error: asString(entry.error) ?? asString(sourceEntry?.error),
+      };
+    });
+  const sourceDocuments = resultDocuments.length > 0
+    ? resultDocuments
+    : sourceManifestDocuments
+      .map((entry) => ({
+        id: asString(entry.documentId) ?? "referral-document",
+        title: asString(entry.title) ?? asString(entry.sourceLabel) ?? "Referral document",
+        date: asString(entry.documentDate) ?? null,
+        sourcePath: asString(entry.sourcePath),
+        sourceLabel: asString(entry.sourceLabel),
+        status: "discovered",
+        extractionUsabilityStatus: null,
+        artifactDirectory: null,
+        error: null,
+      }));
+  const oasisDomState = asRecord(artifactContents.oasisDomExtractedState);
+  const oasisAssessments = deriveOasisAssessmentSources({
+    artifactContents,
+    oasisDomState,
+  });
+  const defaultOasisAssessmentId =
+    oasisAssessments.find((assessment) => assessment.isCurrent)?.id ?? oasisAssessments[0]?.id ?? null;
+  const baselineOasisAssessmentId =
+    oasisAssessments.find((assessment) => assessment.id !== defaultOasisAssessmentId)?.id ?? null;
+
+  return {
+    referralDocuments: sourceDocuments,
+    oasisAssessments,
+    defaultReferralDocumentId:
+      asString(resultsManifest?.defaultReferralDocumentId) ?? sourceDocuments[0]?.id ?? null,
+    defaultOasisAssessmentId,
+    baselineOasisAssessmentId,
+    oasisChangeFlags: deriveOasisChangeFlags({
+      artifactContents,
+      currentOasisAssessmentId: defaultOasisAssessmentId,
+      baselineOasisAssessmentId,
+    }),
+  };
+}
+
+function withReferralIntakeDashboardState<T extends { rows: unknown[] }>(
+  state: T,
+  artifactContents: KnownArtifactContents,
+) {
+  return {
+    ...state,
+    referralIntakeStatus: deriveReferralIntakeStatusState(artifactContents),
+    referralOasisSources: deriveReferralOasisSourcesState(artifactContents),
+  };
+}
+
 function derivePatientDashboardState(input: {
   referralQa: ReturnType<typeof deriveReferralQaSummary>;
   qaPrefetch: ReturnType<typeof deriveQaPrefetchSummary>;
@@ -5179,10 +5428,10 @@ function derivePatientDashboardState(input: {
     explicitComparisonRowsStatus === "pending" ||
     hasCanonicalComparisonRows
   ) {
-    return buildDashboardStateFromClinicalRows({
+    return withReferralIntakeDashboardState(buildDashboardStateFromClinicalRows({
       referralQa: input.referralQa,
       artifactContents: input.artifactContents,
-    });
+    }), input.artifactContents);
   }
 
   const oasisDomState = asRecord(input.artifactContents.oasisDomExtractedState);
@@ -5510,7 +5759,7 @@ function derivePatientDashboardState(input: {
     return accumulator;
   }, {});
 
-  return {
+  return withReferralIntakeDashboardState({
     rows,
     comparisonRowsStatus: "ready" as const,
     comparisonRowsReason: null,
@@ -5535,7 +5784,7 @@ function derivePatientDashboardState(input: {
       ).length,
       sectionEvidenceFallbackRowCount: 0,
     },
-  };
+  }, input.artifactContents);
 }
 
 function derivePatientDashboardReviewSummary(

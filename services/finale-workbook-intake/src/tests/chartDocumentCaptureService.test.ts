@@ -1,7 +1,9 @@
 import { describe, expect, it } from "vitest";
 import {
+  extractReferralUploadLabelsFromText,
   isFileUploadsAccessLabel,
   isReferralDocumentsFolderLabel,
+  selectRootLevelReferralUploadLabels,
   scoreReferralOrAdmissionUploadLabel,
 } from "../portal/services/chartDocumentCaptureService";
 
@@ -26,5 +28,26 @@ describe("chartDocumentCaptureService label matching", () => {
     expect(scoreReferralOrAdmissionUploadLabel("New Referral Packet.pdf")).toBeGreaterThan(
       scoreReferralOrAdmissionUploadLabel("Calendar"),
     );
+  });
+
+  it("extracts visible upload labels from button/link text", () => {
+    expect(
+      extractReferralUploadLabelsFromText("New Referral Steven Mace 03202026.pdf"),
+    ).toEqual(["New Referral Steven Mace 03202026.pdf"]);
+  });
+
+  it("prefers explicit referral files over other root-level uploads", () => {
+    const labels = [
+      "New Referral Steven Mace 03202026.pdf",
+      "New Referral Steven Mace Wound Care Order 03202026.pdf",
+      "Mace, Steven - Admission Consent.pdf",
+      "Admission Packet.pdf",
+      "Mace, Steven - Progress Notes 04072026.pdf",
+    ];
+
+    expect(selectRootLevelReferralUploadLabels(labels)).toEqual([
+      "New Referral Steven Mace 03202026.pdf",
+      "New Referral Steven Mace Wound Care Order 03202026.pdf",
+    ]);
   });
 });

@@ -1,4 +1,4 @@
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import type { AutomationStepLog, PatientEpisodeWorkItem, PatientRun } from "@medical-ai-qa/shared-types";
 import type { Logger } from "pino";
@@ -14,6 +14,7 @@ import type { BatchPortalAutomationClient } from "../workers/playwrightBatchQaWo
 import { buildWorkflowRun, upsertWorkflowRun } from "./patientWorkflowRunState";
 import type { SharedEvidenceBundle } from "./sharedEvidenceWorkflow";
 import { processOasisDomSections } from "../services/oasisDomSectionProcessingService";
+import type { PatientPortalStatusSnapshot } from "../portal/types/patientPortalStatus";
 
 export interface QaWorkflowOrchestratorParams {
   context: PatientPortalContext;
@@ -30,6 +31,27 @@ export interface QaWorkflowOrchestratorResult {
   stepLogs: AutomationStepLog[];
   workflowResultPath: string;
   result: OasisQaEntryResult;
+}
+
+async function readPatientPortalStatusSnapshot(
+  outputDir: string,
+  patientId: string,
+): Promise<PatientPortalStatusSnapshot | null> {
+  try {
+    return JSON.parse(
+      await readFile(path.join(outputDir, "patients", patientId, "patient-portal-status-snapshot.json"), "utf8"),
+    ) as PatientPortalStatusSnapshot;
+  } catch {
+    return null;
+  }
+}
+
+function preflightAssessmentTypes(snapshot: PatientPortalStatusSnapshot | null): string[] {
+  return Array.from(new Set(
+    (snapshot?.oasisAssessments ?? [])
+      .map((assessment) => assessment.assessmentType)
+      .filter((assessmentType) => assessmentType !== "UNKNOWN"),
+  ));
 }
 
 export async function runQaWorkflowOrchestrator(
@@ -82,11 +104,37 @@ export async function runQaWorkflowOrchestrator(
     portalClient: params.portalClient,
   });
   stepLogs.push(...oasisMenu.stepLogs);
+  const portalStatusSnapshot = await readPatientPortalStatusSnapshot(params.outputDir, params.run.workItemId);
+  const snapshotAssessmentTypes = preflightAssessmentTypes(portalStatusSnapshot);
+  const oasisMenuForSelection = snapshotAssessmentTypes.length > 0
+    ? {
+        ...oasisMenu.result,
+        availableAssessmentTypes: Array.from(new Set([
+          ...oasisMenu.result.availableAssessmentTypes,
+          ...snapshotAssessmentTypes,
+        ])),
+      }
+    : oasisMenu.result;
+  if (snapshotAssessmentTypes.length > 0) {
+    stepLogs.push(createAutomationStepLog({
+      step: "patient_portal_status_preflight_reused",
+      message: "OASIS assessment selection reused patient portal status preflight metadata.",
+      patientName: params.workItem.patientIdentity.displayName,
+      urlBefore: params.context.chartUrl,
+      urlAfter: oasisMenu.result.currentUrl,
+      found: snapshotAssessmentTypes.map((assessmentType) => `assessmentType=${assessmentType}`),
+      evidence: [
+        `snapshotStatus=${portalStatusSnapshot?.status ?? "missing"}`,
+        `currentOasisAssessmentId=${portalStatusSnapshot?.currentOasisAssessmentId ?? "none"}`,
+      ],
+      safeReadConfirmed: true,
+    }));
+  }
 
   const assessmentSelection = selectOasisAssessmentType({
     context: params.context,
     workItem: params.workItem,
-    menuResult: oasisMenu.result,
+    menuResult: oasisMenuForSelection,
   });
   stepLogs.push(...assessmentSelection.stepLogs);
 

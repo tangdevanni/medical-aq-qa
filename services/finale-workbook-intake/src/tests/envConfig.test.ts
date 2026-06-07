@@ -10,8 +10,17 @@ describe("Finale batch env OCR/DOM defaults", () => {
     expect(env.FINALE_PATIENT_CONCURRENCY).toBe(1);
     expect(env.OASIS_SECTION_LLM_ENABLED).toBeUndefined();
     expect(env.OASIS_SECTION_LLM_MAX_CONCURRENCY).toBe(2);
+    expect(env.PORTAL_PATIENT_WORKER_COUNT).toBe(1);
     expect(env.OCR_ENABLED).toBe(false);
     expect(env.OCR_FALLBACK_ENABLED).toBe(false);
+  });
+
+  it("allows explicit bounded portal patient worker concurrency", () => {
+    const env = loadEnv({
+      PORTAL_PATIENT_WORKER_COUNT: "4",
+    });
+
+    expect(env.PORTAL_PATIENT_WORKER_COUNT).toBe(4);
   });
 
   it("does not let the legacy OCR fallback flag enable OCR", () => {

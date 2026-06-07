@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import { createSampleRun, getRun } from "../../../lib/api";
+import { createSampleRun, getRun, getRunStatus } from "../../../lib/api";
 import {
   batchStatusClass,
   discrepancyBadgeClass,
@@ -11,7 +11,71 @@ import {
   formatDaysLeft,
   formatTimestamp,
 } from "../../../lib/qa";
-import type { RunDetail } from "../../../lib/types";
+import type { RunDetail, RunStatusResponse } from "../../../lib/types";
+
+function runStatusSummaryFromStatus(status: RunStatusResponse): RunDetail["patientStatusSummary"] {
+  return {
+    ready: status.totalCompleted,
+    blocked: status.totalBlocked,
+    failed: status.totalFailed,
+    needsManualReview: status.totalNeedsHumanReview,
+    inProgress: status.currentlyRunningCount,
+  };
+}
+
+function applyRunStatus(current: RunDetail, status: RunStatusResponse): RunDetail {
+  return {
+    ...current,
+    status: status.currentBatchStatus,
+    currentExecutionStep: status.currentExecutionStep,
+    percentComplete: status.percentComplete,
+    currentlyRunningCount: status.currentlyRunningCount,
+    totalWorkItems: status.totalWorkItems,
+    totalCompleted: status.totalCompleted,
+    totalBlocked: status.totalBlocked,
+    totalFailed: status.totalFailed,
+    totalNeedsHumanReview: status.totalNeedsHumanReview,
+    lastUpdatedAt: status.lastUpdatedAt,
+    errorSummary: status.errorSummary,
+    runMode: status.runMode,
+    rerunEnabled: status.rerunEnabled,
+    lastRunAt: status.lastRunAt,
+    nextScheduledRunAt: status.nextScheduledRunAt,
+    patientStatusSummary: runStatusSummaryFromStatus(status),
+  };
+}
+
+function createRunShellFromStatus(runId: string, status: RunStatusResponse): RunDetail {
+  return {
+    subsidiaryId: status.subsidiaryId,
+    subsidiarySlug: status.subsidiarySlug,
+    subsidiaryName: status.subsidiaryName,
+    id: runId,
+    billingPeriod: null,
+    status: status.currentBatchStatus,
+    currentExecutionStep: status.currentExecutionStep,
+    percentComplete: status.percentComplete,
+    currentlyRunningCount: status.currentlyRunningCount,
+    totalWorkItems: status.totalWorkItems,
+    totalCompleted: status.totalCompleted,
+    totalBlocked: status.totalBlocked,
+    totalFailed: status.totalFailed,
+    totalNeedsHumanReview: status.totalNeedsHumanReview,
+    createdAt: status.createdAt,
+    lastUpdatedAt: status.lastUpdatedAt,
+    errorSummary: status.errorSummary,
+    runMode: status.runMode,
+    rerunEnabled: status.rerunEnabled,
+    lastRunAt: status.lastRunAt,
+    nextScheduledRunAt: status.nextScheduledRunAt,
+    sourceWorkbookName: "Patient list loading",
+    uploadedAt: status.createdAt,
+    canRetryBlockedPatients: false,
+    canDeactivate: status.rerunEnabled,
+    patientStatusSummary: runStatusSummaryFromStatus(status),
+    patients: [],
+  };
+}
 
 export default function RunDetailPage() {
   const params = useParams<{ runId: string }>();
@@ -23,8 +87,14 @@ export default function RunDetailPage() {
 
   useEffect(() => {
     let active = true;
+    let requestInFlight = false;
+    let fullRunLoaded = false;
 
     async function loadRun(): Promise<void> {
+      if (requestInFlight) {
+        return;
+      }
+      requestInFlight = true;
       try {
         const nextRun = await getRun(runId);
         if (!active) {
@@ -32,18 +102,56 @@ export default function RunDetailPage() {
         }
         setRun(nextRun);
         setError(null);
+        fullRunLoaded = true;
       } catch (nextError) {
         if (!active) {
           return;
         }
-        setError(nextError instanceof Error ? nextError.message : "Failed to load batch.");
+        try {
+          const status = await getRunStatus(runId);
+          if (!active) {
+            return;
+          }
+          setRun(createRunShellFromStatus(runId, status));
+          setError("Run status loaded. Patient list is still assembling; refresh will retry automatically.");
+        } catch {
+          setError(nextError instanceof Error ? nextError.message : "Failed to load batch.");
+        }
+      } finally {
+        requestInFlight = false;
+      }
+    }
+
+    async function loadRunStatus(): Promise<void> {
+      if (requestInFlight) {
+        return;
+      }
+      if (!fullRunLoaded) {
+        await loadRun();
+        return;
+      }
+      requestInFlight = true;
+      try {
+        const status = await getRunStatus(runId);
+        if (!active) {
+          return;
+        }
+        setRun((currentRun) => (currentRun ? applyRunStatus(currentRun, status) : currentRun));
+        setError(null);
+      } catch (nextError) {
+        if (!active) {
+          return;
+        }
+        setError(nextError instanceof Error ? nextError.message : "Failed to refresh run status.");
+      } finally {
+        requestInFlight = false;
       }
     }
 
     void loadRun();
     const interval = window.setInterval(() => {
-      void loadRun();
-    }, 2500);
+      void loadRunStatus();
+    }, 10000);
 
     return () => {
       active = false;

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { type MutableRefObject, type ReactNode, type RefObject, useEffect, useRef, useState } from "react";
-import { getPatient } from "../../../../../lib/api";
+import { getPatient, startPatientReferralIntake } from "../../../../../lib/api";
 import {
   buildComparisonWorkspaceModel,
   getConfidenceLabel,
@@ -60,6 +60,11 @@ function formatStatusLabel(value: string | null | undefined): string {
   return value
     .replace(/_/g, " ")
     .replace(/\b\w/g, (character) => character.toUpperCase());
+}
+
+function formatReferralDocumentTitle(value: string | null | undefined): string {
+  const title = value?.trim();
+  return title && title.length > 0 ? title : "Referral document";
 }
 
 function normalizeLabelForComparison(value: string): string {
@@ -791,6 +796,8 @@ type ReferralOasisDisplayItem = {
   label: string;
   value: string;
   meta?: string | null;
+  changed?: boolean;
+  changeReason?: string | null;
 };
 
 type ReferralOasisCategoryModel = {
@@ -925,7 +932,44 @@ function dedupeReferralOasisItems(items: ReferralOasisDisplayItem[]): ReferralOa
   return deduped;
 }
 
-function buildDisplayItemsFromRows(rows: FieldComparison[], side: "referral" | "oasis"): ReferralOasisDisplayItem[] {
+type OasisChangeFlagForDisplay = {
+  fieldKey?: string | null;
+  label?: string | null;
+  kind?: string | null;
+};
+
+function findOasisChangeReason(row: FieldComparison, flags: OasisChangeFlagForDisplay[]): string | null {
+  if (flags.length === 0) {
+    return null;
+  }
+  const rowKeys = [
+    row.fieldKey,
+    row.fieldLabel,
+    row.oasisItemId ?? "",
+    row.sectionKey,
+    row.sectionLabel,
+  ].map(normalizeLabelForComparison).filter(Boolean);
+
+  for (const flag of flags) {
+    const flagKeys = [
+      flag.fieldKey ?? "",
+      flag.label ?? "",
+    ].map(normalizeLabelForComparison).filter(Boolean);
+    if (flagKeys.some((flagKey) =>
+      rowKeys.some((rowKey) => rowKey === flagKey || rowKey.includes(flagKey) || flagKey.includes(rowKey))
+    )) {
+      return flag.kind === "regressed" ? "Regressed from prior OASIS snapshot" : "Changed from prior OASIS snapshot";
+    }
+  }
+
+  return null;
+}
+
+function buildDisplayItemsFromRows(
+  rows: FieldComparison[],
+  side: "referral" | "oasis",
+  oasisChangeFlags: OasisChangeFlagForDisplay[] = [],
+): ReferralOasisDisplayItem[] {
   const items = rows.flatMap((row) => {
     const value = side === "referral" ? row.displayReferralValue : row.displayPortalValue;
     const hasValue = side === "referral"
@@ -936,12 +980,15 @@ function buildDisplayItemsFromRows(rows: FieldComparison[], side: "referral" | "
       return [];
     }
 
+    const changeReason = side === "oasis" ? findOasisChangeReason(row, oasisChangeFlags) : null;
     return splitDisplayListValue(value)
       .filter((entry) => !isOasisItemIdPlaceholder(entry, row))
       .map((entry) => ({
         label: row.fieldLabel,
         value: entry,
         meta: buildStructuredItemMeta(row, side),
+        changed: Boolean(changeReason),
+        changeReason,
       }));
   });
 
@@ -1001,7 +1048,11 @@ function getStructuredDiagnosisItems(value: unknown): ReferralOasisDisplayItem[]
   });
 }
 
-function buildDiagnosisDisplayItemsFromRows(rows: FieldComparison[], side: "referral" | "oasis"): ReferralOasisDisplayItem[] {
+function buildDiagnosisDisplayItemsFromRows(
+  rows: FieldComparison[],
+  side: "referral" | "oasis",
+  oasisChangeFlags: OasisChangeFlagForDisplay[] = [],
+): ReferralOasisDisplayItem[] {
   const valueRows = rows.filter((row) => {
     const value = getDiagnosisSideValue(row, side);
     return side === "referral"
@@ -1030,7 +1081,7 @@ function buildDiagnosisDisplayItemsFromRows(rows: FieldComparison[], side: "refe
   });
 
   if (diagnosisRows.length === 0) {
-    return buildDisplayItemsFromRows(rows, side);
+    return buildDisplayItemsFromRows(rows, side, oasisChangeFlags);
   }
 
   const items = diagnosisRows.flatMap((row, index): ReferralOasisDisplayItem[] => {
@@ -1042,10 +1093,13 @@ function buildDiagnosisDisplayItemsFromRows(rows: FieldComparison[], side: "refe
     const description = cleanDiagnosisDescription(getDiagnosisSideSnippet(row, side), code) ??
       cleanDiagnosisDescription(value, code);
     const onsetDate = onsetValues[index] ?? onsetValues[0] ?? null;
+    const changeReason = side === "oasis" ? findOasisChangeReason(row, oasisChangeFlags) : null;
     return [{
       label: description ? `${code} - ${description}` : code,
       value: onsetDate ? `Onset: ${onsetDate}` : "Diagnosis",
       meta: row.oasisItemId && side === "oasis" ? row.oasisItemId : null,
+      changed: Boolean(changeReason),
+      changeReason,
     }];
   });
 
@@ -1101,10 +1155,11 @@ function buildPrintedNoteSectionItems(
 function buildReferralOasisCategoryModel(
   group: { key: ReferralOasisGroupKey; label: string },
   rows: FieldComparison[],
+  oasisChangeFlags: OasisChangeFlagForDisplay[] = [],
 ): ReferralOasisCategoryModel {
   const structuredOasisItems = group.key === "diagnoses"
-    ? buildDiagnosisDisplayItemsFromRows(rows, "oasis")
-    : buildDisplayItemsFromRows(rows, "oasis");
+    ? buildDiagnosisDisplayItemsFromRows(rows, "oasis", oasisChangeFlags)
+    : buildDisplayItemsFromRows(rows, "oasis", oasisChangeFlags);
   const referralItems = group.key === "diagnoses"
     ? buildDiagnosisDisplayItemsFromRows(rows, "referral")
     : buildDisplayItemsFromRows(rows, "referral");
@@ -1136,12 +1191,16 @@ function CategorySourceCard({
       {items.length > 0 ? (
         <div className="clinical-value-list">
           {items.map((item, index) => (
-            <div className="clinical-value-row" key={`${item.label}-${item.value}-${index}`}>
+            <div
+              className={`clinical-value-row${item.changed ? " changed" : ""}`}
+              key={`${item.label}-${item.value}-${index}`}
+            >
               <span className="clinical-value-index">{index + 1}</span>
               <div className="clinical-value-body">
                 <strong>{item.label}</strong>
                 <span className="clinical-value-text">{item.value}</span>
                 {item.meta ? <span>{item.meta}</span> : null}
+                {item.changed ? <span className="badge warning">{item.changeReason ?? "Changed"}</span> : null}
               </div>
             </div>
           ))}
@@ -1153,26 +1212,40 @@ function CategorySourceCard({
   );
 }
 
-function CategoryComparisonCards({ model }: { model: ReferralOasisCategoryModel }) {
+function CategoryComparisonCards({
+  model,
+  referralTitle = "Referral",
+  oasisTitle = "OASIS",
+}: {
+  model: ReferralOasisCategoryModel;
+  referralTitle?: string;
+  oasisTitle?: string;
+}) {
   return (
     <div className="clinical-comparison-grid" aria-label={`${model.label} referral versus OASIS`}>
       <CategorySourceCard
         emptyText="No referral support captured"
         items={model.referralItems}
-        title="Referral"
+        title={referralTitle}
       />
       <CategorySourceCard
         emptyText="No OASIS data captured"
         items={model.oasisItems}
-        title="OASIS"
+        title={oasisTitle}
       />
     </div>
   );
 }
 
 function ReferralVsOasisTab({
+  patient,
+  runId,
+  patientId,
   workspace,
 }: {
+  patient: PatientDetail;
+  runId: string;
+  patientId: string;
   workspace: ComparisonWorkspaceModel;
 }) {
   const rowsByGroup = REFERRAL_OASIS_GROUPS.reduce((map, group) => {
@@ -1186,10 +1259,11 @@ function ReferralVsOasisTab({
     }
     rowsByGroup.get(groupKey)?.push(row);
   }
+  const oasisChangeFlags = patient.dashboardState.referralOasisSources?.oasisChangeFlags ?? [];
   const categoryModels = new Map(
     REFERRAL_OASIS_GROUPS.map((group) => [
       group.key,
-      buildReferralOasisCategoryModel(group, rowsByGroup.get(group.key) ?? []),
+      buildReferralOasisCategoryModel(group, rowsByGroup.get(group.key) ?? [], oasisChangeFlags),
     ] as const),
   );
   const visibleGroups = REFERRAL_OASIS_GROUPS.filter(
@@ -1200,6 +1274,16 @@ function ReferralVsOasisTab({
     },
   );
   const [activeGroup, setActiveGroup] = useState<ReferralOasisGroupKey>(() => visibleGroups[0]?.key ?? "diagnoses");
+  const referralSources = patient.dashboardState.referralOasisSources?.referralDocuments ?? [];
+  const oasisSources = patient.dashboardState.referralOasisSources?.oasisAssessments ?? [];
+  const referralIntakeStatus = patient.dashboardState.referralIntakeStatus;
+  const [selectedReferralDocumentId, setSelectedReferralDocumentId] = useState<string | null>(
+    patient.dashboardState.referralOasisSources?.defaultReferralDocumentId ?? referralSources[0]?.id ?? null,
+  );
+  const [selectedOasisAssessmentId, setSelectedOasisAssessmentId] = useState<string | null>(
+    patient.dashboardState.referralOasisSources?.defaultOasisAssessmentId ?? oasisSources[0]?.id ?? null,
+  );
+  const [isStartingReferralIntake, setIsStartingReferralIntake] = useState(false);
   const selectedGroup = visibleGroups.some((group) => group.key === activeGroup)
     ? activeGroup
     : visibleGroups[0]?.key ?? "diagnoses";
@@ -1210,6 +1294,29 @@ function ReferralVsOasisTab({
     oasisItems: [],
   };
   const selectedGroupLabel = visibleGroups.find((group) => group.key === selectedGroup)?.label ?? "Diagnoses";
+  const selectedReferralDocument =
+    referralSources.find((source) => source.id === selectedReferralDocumentId) ?? referralSources[0] ?? null;
+  const selectedOasisAssessment =
+    oasisSources.find((source) => source.id === selectedOasisAssessmentId) ?? oasisSources[0] ?? null;
+  const referralTitle = selectedReferralDocument
+    ? `${formatReferralDocumentTitle(selectedReferralDocument.title)}${selectedReferralDocument.date ? ` (${selectedReferralDocument.date})` : ""}`
+    : "Referral";
+  const oasisTitle = selectedOasisAssessment
+    ? `${selectedOasisAssessment.title}${selectedOasisAssessment.date ? ` (${selectedOasisAssessment.date})` : ""}`
+    : "OASIS";
+  const referralIntakeRunning =
+    referralIntakeStatus?.status === "pending" || referralIntakeStatus?.status === "running" || isStartingReferralIntake;
+
+  async function handleReferralIntakeStart(): Promise<void> {
+    setIsStartingReferralIntake(true);
+    try {
+      await startPatientReferralIntake(runId, patientId);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsStartingReferralIntake(false);
+    }
+  }
 
   useEffect(() => {
     if (selectedGroup !== activeGroup) {
@@ -1217,8 +1324,75 @@ function ReferralVsOasisTab({
     }
   }, [activeGroup, selectedGroup]);
 
+  useEffect(() => {
+    const defaultReferralId = patient.dashboardState.referralOasisSources?.defaultReferralDocumentId ?? referralSources[0]?.id ?? null;
+    if (!selectedReferralDocumentId || !referralSources.some((source) => source.id === selectedReferralDocumentId)) {
+      setSelectedReferralDocumentId(defaultReferralId);
+    }
+  }, [patient.dashboardState.referralOasisSources?.defaultReferralDocumentId, referralSources, selectedReferralDocumentId]);
+
+  useEffect(() => {
+    const defaultOasisId = patient.dashboardState.referralOasisSources?.defaultOasisAssessmentId ?? oasisSources[0]?.id ?? null;
+    if (!selectedOasisAssessmentId || !oasisSources.some((source) => source.id === selectedOasisAssessmentId)) {
+      setSelectedOasisAssessmentId(defaultOasisId);
+    }
+  }, [patient.dashboardState.referralOasisSources?.defaultOasisAssessmentId, oasisSources, selectedOasisAssessmentId]);
+
   return (
     <div className="workspace-section-stack">
+      <section className="panel stack">
+        <div className="panel-header-inline">
+          <div>
+            <h2>Referral Files</h2>
+          </div>
+          <button
+            className="button secondary compact"
+            disabled={referralIntakeRunning}
+            onClick={() => void handleReferralIntakeStart()}
+            type="button"
+          >
+            {referralIntakeRunning ? "Checking..." : "Check Referral Files"}
+          </button>
+        </div>
+        {referralSources.length > 0 ? (
+          <div aria-label="Referral source documents" className="referral-oasis-category-nav" role="tablist">
+            {referralSources.map((source) => (
+              <button
+                aria-selected={selectedReferralDocument?.id === source.id}
+                className={`referral-oasis-category-tab referral-document-source-tab${selectedReferralDocument?.id === source.id ? " active" : ""}`}
+                key={source.id}
+                onClick={() => setSelectedReferralDocumentId(source.id)}
+                role="tab"
+                title={formatReferralDocumentTitle(source.title)}
+                type="button"
+              >
+                <span className="referral-document-tab-title">{formatReferralDocumentTitle(source.title)}</span>
+                {source.date ? <span className="badge">{source.date}</span> : null}
+              </button>
+            ))}
+          </div>
+        ) : null}
+        {oasisSources.length > 0 ? (
+          <div aria-label="OASIS assessment sources" className="referral-oasis-category-nav" role="tablist">
+            {oasisSources.map((source) => (
+              <button
+                aria-selected={selectedOasisAssessment?.id === source.id}
+                className={`referral-oasis-category-tab${selectedOasisAssessment?.id === source.id ? " active" : ""}`}
+                key={source.id}
+                onClick={() => setSelectedOasisAssessmentId(source.id)}
+                role="tab"
+                type="button"
+              >
+                <span>{source.title}</span>
+                {source.date ? <span className="badge">{source.date}</span> : null}
+                {source.isCurrent ? <span className="badge success">Current</span> : null}
+                {!source.isMonitored ? <span className="badge">View only</span> : null}
+              </button>
+            ))}
+          </div>
+        ) : null}
+      </section>
+
       <div aria-label="Referral versus OASIS comparison groups" className="referral-oasis-category-nav" role="tablist">
         {visibleGroups.map((group) => {
           const model = categoryModels.get(group.key);
@@ -1244,7 +1418,11 @@ function ReferralVsOasisTab({
           <h2>{selectedGroupLabel}</h2>
         </div>
 
-        <CategoryComparisonCards model={activeModel} />
+        <CategoryComparisonCards
+          model={activeModel}
+          oasisTitle={oasisTitle}
+          referralTitle={referralTitle}
+        />
       </section>
     </div>
   );
@@ -2656,6 +2834,9 @@ export default function PatientDetailPage() {
 
           {activeTab === "referral_vs_oasis" ? (
             <ReferralVsOasisTab
+              patient={patient}
+              patientId={patientId}
+              runId={runId}
               workspace={workspace}
             />
           ) : null}

@@ -851,6 +851,12 @@ textarea {
   background: var(--surface-alt);
 }
 
+.clinical-value-row.changed {
+  border-color: rgba(183, 121, 31, 0.42);
+  border-left: 4px solid var(--warning);
+  background: #fff8ed;
+}
+
 .compact .clinical-value-row {
   padding: 8px 10px;
 }
@@ -1566,6 +1572,17 @@ textarea {
   min-width: 22px;
   padding: 2px 7px;
   font-size: 12px;
+}
+
+.referral-document-source-tab {
+  max-width: min(100%, 520px);
+  border-radius: 10px;
+  line-height: 1.2;
+  text-align: left;
+}
+
+.referral-document-tab-title {
+  overflow-wrap: anywhere;
 }
 
 .workspace-tab:focus-visible,

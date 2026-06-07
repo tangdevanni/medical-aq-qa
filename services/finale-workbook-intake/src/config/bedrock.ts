@@ -11,6 +11,7 @@ export type ResolvedBedrockConfig = {
   configuredModelId: string;
   invocationModelId: string;
   inferenceProfileId: string | null;
+  converseTimeoutMs: number;
 };
 
 function normalizeWhitespace(value: string | null | undefined): string {
@@ -64,7 +65,36 @@ export function resolveBedrockConfig(env: FinaleBatchEnv): ResolvedBedrockConfig
     configuredModelId,
     invocationModelId: inferenceProfileId || configuredModelId,
     inferenceProfileId: inferenceProfileId || null,
+    converseTimeoutMs: env.BEDROCK_CONVERSE_TIMEOUT_MS,
   };
+}
+
+async function sendConverseWithTimeout(input: {
+  client: BedrockRuntimeClient;
+  command: Omit<ConverseCommandInput, "modelId">;
+  modelId: string;
+  timeoutMs: number;
+}): Promise<ConverseCommandOutput> {
+  const abortController = new AbortController();
+  const timeout = setTimeout(() => {
+    abortController.abort();
+  }, input.timeoutMs);
+
+  try {
+    return await input.client.send(new ConverseCommand({
+      ...input.command,
+      modelId: input.modelId,
+    }), {
+      abortSignal: abortController.signal,
+    });
+  } catch (error) {
+    if (abortController.signal.aborted) {
+      throw new Error(`Bedrock Converse timed out after ${input.timeoutMs}ms for model ${input.modelId}.`);
+    }
+    throw error;
+  } finally {
+    clearTimeout(timeout);
+  }
 }
 
 export async function sendBedrockConverseWithProfileFallback(input: {
@@ -77,10 +107,12 @@ export async function sendBedrockConverseWithProfileFallback(input: {
   autoResolvedInferenceProfile: boolean;
 }> {
   try {
-    const response = await input.client.send(new ConverseCommand({
-      ...input.command,
+    const response = await sendConverseWithTimeout({
+      client: input.client,
+      command: input.command,
       modelId: input.config.invocationModelId,
-    }));
+      timeoutMs: input.config.converseTimeoutMs,
+    });
     return {
       response,
       invocationModelId: input.config.invocationModelId,
@@ -100,10 +132,12 @@ export async function sendBedrockConverseWithProfileFallback(input: {
       throw error;
     }
 
-    const response = await input.client.send(new ConverseCommand({
-      ...input.command,
+    const response = await sendConverseWithTimeout({
+      client: input.client,
+      command: input.command,
       modelId: derivedInferenceProfileId,
-    }));
+      timeoutMs: input.config.converseTimeoutMs,
+    });
     return {
       response,
       invocationModelId: derivedInferenceProfileId,

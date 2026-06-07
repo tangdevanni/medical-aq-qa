@@ -21,6 +21,7 @@ import { PatientMemoryService } from "../services/patientMemoryService";
 import { PortalCredentialProvider } from "../services/portalCredentialProvider";
 import { SubsidiaryConfigService } from "../services/subsidiaryConfigService";
 import type { BatchRecord } from "../types/batchControlPlane";
+import type { PatientPortalStatusSnapshot } from "@medical-ai-qa/finale-workbook-intake";
 
 function createServiceFixture(input: {
   acquisitionService?: WorkbookAcquisitionService;
@@ -127,7 +128,278 @@ async function waitForCondition(
   throw new Error("Timed out waiting for condition.");
 }
 
+function createPortalStatusWorkItem(id = "patient-portal-status-1"): PatientEpisodeWorkItem {
+  return {
+    id,
+    subsidiaryId: "default",
+    patientIdentity: {
+      displayName: "Portal Status Patient",
+      normalizedName: "PORTAL STATUS PATIENT",
+      medicareNumber: null,
+    },
+    episodeContext: {
+      episodeDate: "2026-04-15",
+      socDate: "2026-04-01",
+      episodePeriod: "2026-04",
+      billingPeriod: "2026-04",
+      payer: null,
+      assignedStaff: null,
+      clinician: null,
+      qaSpecialist: null,
+      rfa: "SOC",
+    },
+    workflowTypes: ["SOC"],
+    sourceSheets: ["OASIS Tracking Report"],
+    timingMetadata: {
+      trackingDays: 30,
+      daysInPeriod: 30,
+      daysLeft: 10,
+      daysLeftBeforeOasisDueDate: 7,
+      rawTrackingValues: ["30"],
+      rawDaysInPeriodValues: ["30"],
+      rawDaysLeftValues: ["10"],
+    },
+    codingReviewStatus: "NOT_STARTED",
+    oasisQaStatus: "NOT_STARTED",
+    pocQaStatus: "NOT_STARTED",
+    visitNotesQaStatus: "NOT_STARTED",
+    billingPrepStatus: "NOT_STARTED",
+    sourceRemarks: [],
+    sourceRowReferences: [],
+    sourceValues: [],
+    importWarnings: [],
+  };
+}
+
+async function createPortalStatusBatch(
+  fixture: ReturnType<typeof createServiceFixture>,
+  input: {
+    patientRunStatus: BatchRecord["patientRuns"][number]["processingStatus"];
+  },
+): Promise<{ batch: BatchRecord; workItem: PatientEpisodeWorkItem; patientArtifactsDirectory: string }> {
+  const batchId = `batch-portal-status-${input.patientRunStatus.toLowerCase()}`;
+  const storage = fixture.repository.createBatchPaths(batchId, "reference-workbook.xlsx");
+  const manifestPath = path.join(storage.outputRoot, "batch-manifest.json");
+  const workItemsPath = path.join(storage.outputRoot, "work-items.json");
+  const parserExceptionsPath = path.join(storage.outputRoot, "parser-exceptions.json");
+  const workItem = createPortalStatusWorkItem();
+  const manifest: BatchManifest = {
+    batchId,
+    subsidiaryId: "default",
+    createdAt: "2026-04-15T06:00:00.000Z",
+    status: "RUNNING",
+    workbookPath: storage.sourceWorkbookPath,
+    outputDirectory: storage.outputRoot,
+    billingPeriod: "2026-04",
+    totalWorkItems: 1,
+    parserExceptionCount: 0,
+    automationEligibleWorkItemIds: [workItem.id],
+    blockedWorkItemIds: [],
+  };
+
+  await mkdir(path.dirname(storage.sourceWorkbookPath), { recursive: true });
+  await mkdir(storage.outputRoot, { recursive: true });
+  await writeFile(storage.sourceWorkbookPath, "workbook");
+  await writeFile(manifestPath, JSON.stringify(manifest, null, 2));
+  await writeFile(workItemsPath, JSON.stringify([workItem], null, 2));
+  await writeFile(parserExceptionsPath, JSON.stringify([], null, 2));
+
+  const batch: BatchRecord = {
+    id: batchId,
+    subsidiary: {
+      id: "default",
+      slug: "default",
+      name: "Default Subsidiary",
+    },
+    createdAt: "2026-04-15T06:00:00.000Z",
+    updatedAt: "2026-04-15T06:05:00.000Z",
+    runMode: "read_only",
+    billingPeriod: "2026-04",
+    status: "RUNNING",
+    schedule: {
+      scheduledRunId: null,
+      active: true,
+      rerunEnabled: true,
+      intervalHours: 24,
+      timezone: "Asia/Manila",
+      localTimes: ["20:30"],
+      lastRunAt: null,
+      nextScheduledRunAt: null,
+    },
+    sourceWorkbook: {
+      subsidiaryId: "default",
+      acquisitionProvider: "MANUAL_UPLOAD",
+      acquisitionStatus: "ACQUIRED",
+      acquisitionReference: null,
+      acquisitionNotes: [],
+      acquisitionMetadata: null,
+      originalFileName: "reference-workbook.xlsx",
+      storedPath: storage.sourceWorkbookPath,
+      uploadedAt: "2026-04-15T06:00:00.000Z",
+      verification: null,
+    },
+    storage: {
+      batchRoot: storage.batchRoot,
+      outputRoot: storage.outputRoot,
+      manifestPath,
+      workItemsPath,
+      parserExceptionsPath,
+      batchSummaryPath: null,
+      patientResultsDirectory: storage.patientResultsDirectory,
+      evidenceDirectory: storage.evidenceDirectory,
+    },
+    parse: {
+      requestedAt: "2026-04-15T06:00:00.000Z",
+      completedAt: "2026-04-15T06:05:00.000Z",
+      workItemCount: 1,
+      eligibleWorkItemCount: 1,
+      parserExceptionCount: 0,
+      sourceDetections: [],
+      sheetSummaries: [],
+      lastError: null,
+    },
+    run: {
+      requestedAt: "2026-04-15T06:06:00.000Z",
+      completedAt: null,
+      patientRunCount: 1,
+      lastError: null,
+    },
+    patientRuns: [{
+      runId: `${batchId}-${workItem.id}`,
+      subsidiaryId: "default",
+      workItemId: workItem.id,
+      patientName: workItem.patientIdentity.displayName,
+      processingStatus: input.patientRunStatus,
+      executionStep: "TEST_ACTIVE_STEP",
+      progressPercent: 50,
+      startedAt: "2026-04-15T06:06:00.000Z",
+      completedAt: null,
+      lastUpdatedAt: "2026-04-15T06:07:00.000Z",
+      matchResult: {
+        status: "EXACT",
+        searchQuery: workItem.patientIdentity.displayName,
+        portalPatientId: "portal-patient-1",
+        portalDisplayName: workItem.patientIdentity.displayName,
+        candidateNames: [],
+        note: null,
+      },
+      qaOutcome: "INCOMPLETE",
+      oasisQaSummary: {
+        overallStatus: "IN_PROGRESS",
+        urgency: "ON_TRACK",
+        daysInPeriod: 30,
+        daysLeft: 10,
+        sections: [],
+        blockers: [],
+      },
+      artifactCount: 0,
+      hasFindings: false,
+      bundleAvailable: false,
+      logPath: null,
+      logAvailable: false,
+      retryEligible: false,
+      errorSummary: null,
+      resultBundlePath: path.join(storage.patientResultsDirectory, `${workItem.id}.json`),
+      evidenceDirectory: path.join(storage.evidenceDirectory, workItem.id),
+      tracePath: null,
+      screenshotPaths: [],
+      downloadPaths: [],
+      workflowRuns: [],
+      lastAttemptAt: null,
+      attemptCount: 1,
+    }],
+  };
+
+  await fixture.repository.saveBatch(batch);
+  return {
+    batch,
+    workItem,
+    patientArtifactsDirectory: path.join(storage.outputRoot, "patients", workItem.id),
+  };
+}
+
 describe("BatchControlPlaneService scheduler metadata", () => {
+  it("marks patient portal status preflight pending when the same patient has active chart work", async () => {
+    const fixture = createServiceFixture();
+
+    try {
+      await fixture.service.initialize();
+      const { batch, workItem, patientArtifactsDirectory } = await createPortalStatusBatch(fixture, {
+        patientRunStatus: "RUNNING_QA",
+      });
+
+      const snapshot = await fixture.service.ensurePatientPortalStatusSnapshot(batch.id, workItem.id);
+
+      assert.equal(snapshot.status, "pending_due_to_active_patient_run");
+      assert.equal(snapshot.activePatientRunStatus, "RUNNING_QA");
+      assert.equal(snapshot.patientId, workItem.id);
+      const persisted = JSON.parse(
+        await readFile(path.join(patientArtifactsDirectory, "patient-portal-status-snapshot.json"), "utf8"),
+      ) as PatientPortalStatusSnapshot;
+      assert.equal(persisted.status, "pending_due_to_active_patient_run");
+    } finally {
+      fixture.cleanup();
+    }
+  });
+
+  it("reuses an existing patient portal status snapshot while same-patient chart work is active", async () => {
+    const fixture = createServiceFixture();
+
+    try {
+      await fixture.service.initialize();
+      const { batch, workItem, patientArtifactsDirectory } = await createPortalStatusBatch(fixture, {
+        patientRunStatus: "COLLECTING_EVIDENCE",
+      });
+      await mkdir(patientArtifactsDirectory, { recursive: true });
+      const existingSnapshot: PatientPortalStatusSnapshot = {
+        schemaVersion: "patient-portal-status-snapshot.v1",
+        batchId: batch.id,
+        patientId: workItem.id,
+        patientName: workItem.patientIdentity.displayName,
+        status: "fresh",
+        capturedAt: "2026-04-15T06:01:00.000Z",
+        generatedAt: "2026-04-15T06:01:00.000Z",
+        staleAfter: "2999-01-01T00:00:00.000Z",
+        matchResult: batch.patientRuns[0].matchResult,
+        chartUrl: "https://app.finalehealth.com/client/demo",
+        dashboardUrl: "https://app.finalehealth.com/provider/demo/dashboard",
+        portalAdmissionStatus: "Active",
+        oasisAssessments: [{
+          id: "soc-04012026-oasis",
+          assessmentType: "SOC",
+          title: "OASIS SOC",
+          date: "04/01/2026",
+          detectedStatuses: ["VALIDATED"],
+          primaryStatus: "VALIDATED",
+          decision: "PROCESS",
+          processingEligible: true,
+        }],
+        currentOasisAssessmentId: "soc-04012026-oasis",
+        referralFileArea: {
+          available: true,
+          labels: ["File Uploads"],
+        },
+        documentTableSignals: ["SOC:04/01/2026:VALIDATED:OASIS SOC"],
+        activePatientRunStatus: null,
+        error: null,
+      };
+      await writeFile(
+        path.join(patientArtifactsDirectory, "patient-portal-status-snapshot.json"),
+        JSON.stringify(existingSnapshot, null, 2),
+      );
+
+      const snapshot = await fixture.service.ensurePatientPortalStatusSnapshot(batch.id, workItem.id, {
+        forceRefresh: true,
+      });
+
+      assert.equal(snapshot.status, "fresh");
+      assert.equal(snapshot.currentOasisAssessmentId, "soc-04012026-oasis");
+      assert.equal(snapshot.activePatientRunStatus, null);
+    } finally {
+      fixture.cleanup();
+    }
+  });
+
   it("creates a read-only 24-hour rerun schedule on workbook upload", async () => {
     const fixture = createServiceFixture();
 

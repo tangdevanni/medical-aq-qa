@@ -4,14 +4,13 @@ import type {
   DocumentInventoryItem,
   PatientEpisodeWorkItem,
 } from "@medical-ai-qa/shared-types";
+import { mkdir, writeFile } from "node:fs/promises";
+import path from "node:path";
 import type { Logger } from "pino";
 import type { FinaleBatchEnv } from "../config/env";
 import type { PatientPortalContext } from "../portal/context/patientPortalContext";
 import { createAutomationStepLog } from "../portal/utils/automationLog";
-import {
-  runReferralDocumentProcessingPipeline,
-  type ReferralSourceDocumentInput,
-} from "../referralProcessing/pipeline";
+import type { ReferralSourceDocumentInput } from "../referralProcessing/pipeline";
 import {
   collectReferralSourceDocumentsFromArtifacts,
   filterArtifactsForNonReferralTextExtraction,
@@ -78,6 +77,68 @@ export interface SharedEvidenceWorkflowResult {
   stepLogs: AutomationStepLog[];
 }
 
+function stableReferralDocumentId(input: {
+  patientId: string;
+  index: number;
+  sourceLabel?: string | null;
+  sourcePath?: string | null;
+  portalLabel?: string | null;
+}): string {
+  const label = (input.sourceLabel ?? input.portalLabel ?? input.sourcePath ?? `document-${input.index + 1}`)
+    .replace(/[^a-z0-9]+/gi, "-")
+    .replace(/^-+|-+$/g, "")
+    .toLowerCase();
+  return `${input.patientId}-referral-${label || input.index + 1}`;
+}
+
+async function writeReferralSourceDocumentsManifest(input: {
+  outputDirectory: string;
+  batchId: string;
+  patientId: string;
+  sourceDocuments: ReferralSourceDocumentInput[];
+}): Promise<string | null> {
+  if (input.sourceDocuments.length === 0) {
+    return null;
+  }
+
+  const generatedAt = new Date().toISOString();
+  const filePath = path.join(
+    input.outputDirectory,
+    "patients",
+    input.patientId,
+    "referral-source-documents-manifest.json",
+  );
+  await mkdir(path.dirname(filePath), { recursive: true });
+  await writeFile(
+    filePath,
+    JSON.stringify({
+      schemaVersion: "referral-source-documents-manifest.v1",
+      batchId: input.batchId,
+      patientId: input.patientId,
+      generatedAt,
+      source: "live_automation_discovery",
+      documents: input.sourceDocuments.map((document, index) => ({
+        documentId: stableReferralDocumentId({
+          patientId: input.patientId,
+          index,
+          sourceLabel: document.sourceLabel,
+          sourcePath: document.sourcePath,
+          portalLabel: document.portalLabel,
+        }),
+        title: document.sourceLabel ?? document.portalLabel ?? path.basename(document.sourcePath ?? ""),
+        sourceLabel: document.sourceLabel ?? null,
+        sourcePath: document.sourcePath ?? null,
+        extractedTextPath: document.extractedTextPath ?? null,
+        portalLabel: document.portalLabel ?? null,
+        acquisitionMethod: document.acquisitionMethod ?? null,
+      })),
+    }, null, 2),
+    "utf8",
+  );
+
+  return filePath;
+}
+
 export async function runSharedEvidenceWorkflow(
   params: SharedEvidenceWorkflowParams,
 ): Promise<SharedEvidenceWorkflowResult> {
@@ -115,6 +176,26 @@ export async function runSharedEvidenceWorkflow(
   }
 
   const referralSourceDocuments = collectReferralSourceDocumentsFromArtifacts(discoveryResult.artifacts);
+  const referralSourceDocumentsManifestPath = await writeReferralSourceDocumentsManifest({
+    outputDirectory: params.outputDir,
+    batchId: params.context.batchId,
+    patientId: params.workItem.id,
+    sourceDocuments: referralSourceDocuments,
+  });
+  if (referralSourceDocumentsManifestPath) {
+    stepLogs.push(createAutomationStepLog({
+      step: "static_referral_source_manifest_written",
+      message: "Wrote referral source document manifest for patient-level static referral intake.",
+      patientName: params.context.patientName,
+      found: [
+        `referralSourceDocumentCount:${referralSourceDocuments.length}`,
+        `manifestPath:${referralSourceDocumentsManifestPath}`,
+      ],
+      missing: [],
+      evidence: referralSourceDocuments.map((document) => document.sourceLabel ?? document.portalLabel ?? "").filter(Boolean).slice(0, 8),
+      safeReadConfirmed: true,
+    }));
+  }
   const nonReferralArtifacts = filterArtifactsForNonReferralTextExtraction(discoveryResult.artifacts);
   const extractedDocuments = await extractDocumentsFromArtifacts(nonReferralArtifacts);
 
@@ -234,21 +315,23 @@ export async function runSharedEvidenceWorkflow(
       safeReadConfirmed: true,
   }));
 
-  let referralDocumentProcessing: ReferralDocumentProcessingResult | null = null;
-  let referralDocumentSummaryPath: string | null = null;
+  const referralDocumentProcessing: ReferralDocumentProcessingResult | null = null;
+  const referralDocumentSummaryPath: string | null = null;
   const orderDocuments = extractedDocuments.filter((document) => document.type === "ORDER");
   if (referralSourceDocuments.length > 0 || orderDocuments.length > 0) {
-    const referralProcessingResult = await runReferralDocumentProcessingPipeline({
-      workItem: params.workItem,
-      outputDir: params.outputDir,
-      env: params.env,
-      logger: params.logger,
-      extractedDocuments: orderDocuments,
-      sourceDocuments: referralSourceDocuments,
-    });
-    referralDocumentProcessing = referralProcessingResult.result;
-    referralDocumentSummaryPath = referralProcessingResult.result?.artifacts.qaDocumentSummaryPath ?? null;
-    stepLogs.push(...referralProcessingResult.stepLogs);
+    stepLogs.push(createAutomationStepLog({
+      step: "static_referral_intake_deferred",
+      message:
+        "Referral source documents were discovered but not processed during live automation; use static referral intake to process referral files independently.",
+      patientName: params.context.patientName,
+      found: [`referralSourceDocumentCount:${referralSourceDocuments.length}`],
+      missing: [],
+      evidence: referralSourceDocuments
+        .map((document) => document.sourceLabel ?? document.portalLabel ?? document.sourcePath)
+        .filter((value): value is string => Boolean(value))
+        .slice(0, 8),
+      safeReadConfirmed: true,
+    }));
   }
 
   stepLogs.push(createWorkflowStepLog({
@@ -310,7 +393,6 @@ export async function runSharedEvidenceWorkflow(
         ...(documentTextExportError ? [documentTextExportError] : []),
         ...(documentFactPackError ? [documentFactPackError] : []),
         ...(diagnosisCodingContext.llmError ? [diagnosisCodingContext.llmError] : []),
-        ...(referralDocumentProcessing?.qaDocumentSummary.warnings ?? []),
       ],
     },
     stepLogs,

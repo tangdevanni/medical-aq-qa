@@ -52,7 +52,6 @@ import {
 import { intakeWorkbook } from "./workbookIntakeService";
 import { extractCurrentChartValuesFromPrintedNote } from "../oasis/print/printedNoteChartValueExtractionService";
 import type { OasisPrintedNoteReviewResult } from "../oasis/types/oasisPrintedNoteReview";
-import { runReferralDocumentProcessingPipeline } from "../referralProcessing/pipeline";
 import { filterArtifactsForNonReferralTextExtraction } from "../referralProcessing/sourceDocumentHandoff";
 import { runCodingWorkflowOrchestrator } from "../workflows/codingWorkflowOrchestrator";
 import { runQaWorkflowOrchestrator } from "../workflows/qaWorkflowOrchestrator";
@@ -102,6 +101,7 @@ export interface ExecutePatientWorkItemsParams {
   logger?: Logger;
   portalClient?: BatchPortalAutomationClient;
   onPatientRunUpdate?: (patientRun: PatientRun) => Promise<void> | void;
+  skipStartupVerification?: boolean;
 }
 
 type IndexedWorkItem = {
@@ -648,6 +648,18 @@ function createBatchManifestFromPatients(input: {
   };
 }
 
+function partitionWorkItemsForPortalWorkers(
+  workItems: PatientEpisodeWorkItem[],
+  workerCount: number,
+): PatientEpisodeWorkItem[][] {
+  const boundedWorkerCount = Math.min(Math.max(1, workerCount), workItems.length);
+  const partitions = Array.from({ length: boundedWorkerCount }, () => [] as PatientEpisodeWorkItem[]);
+  workItems.forEach((workItem, index) => {
+    partitions[index % boundedWorkerCount]!.push(workItem);
+  });
+  return partitions.filter((partition) => partition.length > 0);
+}
+
 function processingStatusForOutcome(run: PatientRun): PatientRun["processingStatus"] {
   switch (run.qaOutcome) {
     case "READY_FOR_BILLING_PREP":
@@ -1159,21 +1171,70 @@ async function executePatientWorkItemsSequential(
 
   await mkdir(params.outputDir, { recursive: true });
 
-  try {
-    await verifyDiagnosisCodingLlmAccess({
-      env,
-      logger,
-    });
-  } catch (error) {
-    const llmStartupWarning = error instanceof Error ? error.message : String(error);
-    logger.warn(
+  if (!params.skipStartupVerification) {
+    try {
+      await verifyDiagnosisCodingLlmAccess({
+        env,
+        logger,
+      });
+    } catch (error) {
+      const llmStartupWarning = error instanceof Error ? error.message : String(error);
+      logger.warn(
+        {
+          llmProvider: env.LLM_PROVIDER,
+          codeLlmEnabled: env.CODE_LLM_ENABLED,
+          warning: llmStartupWarning,
+        },
+        "Bedrock startup verification failed; continuing with per-patient fallback handling",
+      );
+    }
+  }
+
+  const portalPatientWorkerCount = params.portalClient
+    ? 1
+    : Math.min(env.PORTAL_PATIENT_WORKER_COUNT, Math.max(1, params.workItems.length));
+  if (portalPatientWorkerCount > 1) {
+    const partitions = partitionWorkItemsForPortalWorkers(params.workItems, portalPatientWorkerCount);
+    logger.info(
       {
-        llmProvider: env.LLM_PROVIDER,
-        codeLlmEnabled: env.CODE_LLM_ENABLED,
-        warning: llmStartupWarning,
+        batchId: params.batchId,
+        totalWorkItems: params.workItems.length,
+        portalPatientWorkerCount,
+        partitionSizes: partitions.map((partition) => partition.length),
       },
-      "Bedrock startup verification failed; continuing with per-patient fallback handling",
+      "parallel portal patient workers enabled",
     );
+
+    const workerResults = await Promise.all(
+      partitions.map((partition, workerIndex) => {
+        const workerLogger = logger.child({
+          portalPatientWorkerIndex: workerIndex + 1,
+          portalPatientWorkerCount,
+        });
+        const workerPortalClient = new PlaywrightBatchQaWorker(
+          resolvePortalRuntimeConfig({
+            env,
+            providedRuntimeConfig: params.subsidiaryRuntimeConfig,
+            fallbackSubsidiaryId: partition[0]?.subsidiaryId,
+          }),
+          env,
+          workerLogger,
+        );
+        return executePatientWorkItems({
+          ...params,
+          workItems: partition,
+          logger: workerLogger,
+          portalClient: workerPortalClient,
+          skipStartupVerification: true,
+        });
+      }),
+    );
+    const runsByWorkItemId = new Map(
+      workerResults.flat().map((patientRun) => [patientRun.workItemId, patientRun]),
+    );
+    return params.workItems
+      .map((workItem) => runsByWorkItemId.get(workItem.id))
+      .filter((patientRun): patientRun is PatientRun => Boolean(patientRun));
   }
 
   const portalClient =
@@ -1612,46 +1673,21 @@ async function executePatientWorkItemsSequential(
               })]);
 
               if (printedNoteChartValues.extractedFieldCount > 0) {
-                const referralSourceDocumentsForRefresh = sharedEvidenceResult.sharedEvidence.referralSourceDocuments;
-                if (referralSourceDocumentsForRefresh.length === 0) {
-                  run.notes.push(
-                    "Skipped referral comparison refresh after printed OASIS note because no captured referral/admission-order source files remained in shared evidence.",
-                  );
-                  appendAutomationLogs(run, [createAutomationStepLog({
-                    step: "referral_refresh_after_printed_note",
-                    message:
-                      "Skipped referral comparison refresh after printed OASIS note because no captured referral/admission-order source files were available to refresh against.",
-                    patientName: run.patientName,
-                    found: [
-                      `printedNoteFieldCount=${printedNoteChartValues.extractedFieldCount}`,
-                    ],
-                    missing: ["captured referral/admission-order source file"],
-                    evidence: [],
-                    safeReadConfirmed: true,
-                  })]);
-                } else {
-                  const refreshedReferralProcessing = await timing.time("referral_refresh", () => runReferralDocumentProcessingPipeline({
-                    workItem,
-                    outputDir: params.outputDir,
-                    env,
-                    logger,
-                    extractedDocuments: [],
-                    sourceDocuments: referralSourceDocumentsForRefresh,
-                    currentChartValues: printedNoteChartValues.currentChartValues,
-                    currentChartValueSource: printedNoteChartValues.currentChartValueSource ?? undefined,
-                  }));
-                  appendAutomationLogs(run, refreshedReferralProcessing.stepLogs);
-                  if (refreshedReferralProcessing.result) {
-                    sharedEvidenceResult.sharedEvidence.referralDocumentProcessing = refreshedReferralProcessing.result;
-                    sharedEvidenceResult.sharedEvidence.referralDocumentSummaryPath =
-                      refreshedReferralProcessing.result.artifacts.qaDocumentSummaryPath ?? null;
-                    run.notes.push(
-                      `Referral comparison refreshed from printed OASIS note: ${refreshedReferralProcessing.result.artifacts.qaDocumentSummaryPath ?? "artifacts updated"}`,
-                    );
-                  } else {
-                    run.notes.push("Referral comparison refresh from printed OASIS note did not produce updated artifacts.");
-                  }
-                }
+                run.notes.push(
+                  "Referral comparison refresh skipped during live automation; referral files are processed by static referral intake.",
+                );
+                appendAutomationLogs(run, [createAutomationStepLog({
+                  step: "static_referral_intake_deferred",
+                  message:
+                    "Skipped referral comparison refresh during live automation because referral documents are now handled by static referral intake.",
+                  patientName: run.patientName,
+                  found: [
+                    `printedNoteFieldCount=${printedNoteChartValues.extractedFieldCount}`,
+                  ],
+                  missing: [],
+                  evidence: [],
+                  safeReadConfirmed: true,
+                })]);
               }
             }
             const portalPlanOfCareDraftPath = await timing.time("plan_of_care", () => writePortalCarePlanDraftFromOasisDom({

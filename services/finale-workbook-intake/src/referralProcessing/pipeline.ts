@@ -182,6 +182,7 @@ async function loadReusableReferralArtifacts(input: {
   if (
     !sourceMeta ||
     !extractionResult ||
+    extractionResult.extractionSuccess !== true ||
     extractedText === null ||
     !normalizedSections ||
     !extractedFacts ||
@@ -341,6 +342,7 @@ async function buildSourceReferences(input: {
   patientId: string;
   patientName: string;
   outputDir: string;
+  includeManualSourceCandidates?: boolean;
 }): Promise<SourceDocumentReference[]> {
   const references: SourceDocumentReference[] = [];
   const seenLocalPaths = new Set<string>();
@@ -410,52 +412,54 @@ async function buildSourceReferences(input: {
     });
   }
 
-  const batchSourceDir = path.resolve(input.outputDir, "..", "source");
-  const batchWorkItemCount = await readBatchWorkItemCount(input.outputDir);
-  try {
-    const entries = await readdir(batchSourceDir, { withFileTypes: true });
-    const manualCandidates = entries.filter((entry) => entry.isFile());
+  if (input.includeManualSourceCandidates !== false) {
+    const batchSourceDir = path.resolve(input.outputDir, "..", "source");
+    const batchWorkItemCount = await readBatchWorkItemCount(input.outputDir);
+    try {
+      const entries = await readdir(batchSourceDir, { withFileTypes: true });
+      const manualCandidates = entries.filter((entry) => entry.isFile());
 
-    for (const entry of manualCandidates) {
-      const localFilePath = path.join(batchSourceDir, entry.name);
-      const resolvedPath = path.resolve(localFilePath);
-      if (seenLocalPaths.has(resolvedPath)) {
-        continue;
+      for (const entry of manualCandidates) {
+        const localFilePath = path.join(batchSourceDir, entry.name);
+        const resolvedPath = path.resolve(localFilePath);
+        if (seenLocalPaths.has(resolvedPath)) {
+          continue;
+        }
+        if (!fileLooksLikePatientSource({
+          filePath: localFilePath,
+          patientName: input.patientName,
+          batchWorkItemCount,
+        })) {
+          continue;
+        }
+
+        let fileSizeBytes: number | null = null;
+        const fileMetadata = await readFileMetadata(localFilePath);
+        fileSizeBytes = fileMetadata.fileSizeBytes;
+
+        references.push({
+          documentId: `${input.patientId}-manual-source-${references.length + 1}`,
+          sourceIndex: -1,
+          sourceLabel: entry.name,
+          normalizedSourceLabel: slugify(entry.name),
+          sourceType: "REFERRAL_ORDER",
+          acquisitionMethod: "local_file",
+          selectionStatus: "candidate",
+          portalLabel: null,
+          localFilePath,
+          effectiveTextSource: null,
+          fileType: classifySourceDocumentFileType(localFilePath),
+          fileSizeBytes,
+          sourceContentSha256: fileMetadata.sourceContentSha256,
+          extractedTextLength: 0,
+          selectedReason: null,
+          rejectedReasons: [],
+        });
+        seenLocalPaths.add(resolvedPath);
       }
-      if (!fileLooksLikePatientSource({
-        filePath: localFilePath,
-        patientName: input.patientName,
-        batchWorkItemCount,
-      })) {
-        continue;
-      }
-
-      let fileSizeBytes: number | null = null;
-      const fileMetadata = await readFileMetadata(localFilePath);
-      fileSizeBytes = fileMetadata.fileSizeBytes;
-
-      references.push({
-        documentId: `${input.patientId}-manual-source-${references.length + 1}`,
-        sourceIndex: -1,
-        sourceLabel: entry.name,
-        normalizedSourceLabel: slugify(entry.name),
-        sourceType: "REFERRAL_ORDER",
-        acquisitionMethod: "local_file",
-        selectionStatus: "candidate",
-        portalLabel: null,
-        localFilePath,
-        effectiveTextSource: null,
-        fileType: classifySourceDocumentFileType(localFilePath),
-        fileSizeBytes,
-        sourceContentSha256: fileMetadata.sourceContentSha256,
-        extractedTextLength: 0,
-        selectedReason: null,
-        rejectedReasons: [],
-      });
-      seenLocalPaths.add(resolvedPath);
+    } catch {
+      // Manual batch-source documents are optional.
     }
-  } catch {
-    // Manual batch-source documents are optional.
   }
 
   return references;
@@ -1021,10 +1025,13 @@ export async function runReferralDocumentProcessingPipeline(input: {
   currentChartValues?: Record<string, unknown>;
   currentChartValueSource?: ChartSnapshotValueSource;
   directDocumentExtractor?: ReferralDirectDocumentExtractor;
+  artifactDirectory?: string;
+  includeManualSourceCandidates?: boolean;
 }): Promise<{ result: ReferralDocumentProcessingResult | null; stepLogs: AutomationStepLog[] }> {
   const patientName = input.workItem.patientIdentity.displayName;
   const stepLogs: AutomationStepLog[] = [];
-  const artifactDirectory = path.join(input.outputDir, "patients", input.workItem.id, "referral-document-processing");
+  const artifactDirectory =
+    input.artifactDirectory ?? path.join(input.outputDir, "patients", input.workItem.id, "referral-document-processing");
   const extractedDocuments = input.extractedDocuments ?? [];
   const directDocumentExtractor = input.directDocumentExtractor ?? extractReferralDirectDocument;
   const configuredModelId = input.env.BEDROCK_MODEL_ID ?? input.env.BEDROCK_INFERENCE_PROFILE_ID ?? null;
@@ -1035,6 +1042,7 @@ export async function runReferralDocumentProcessingPipeline(input: {
     patientId: input.workItem.id,
     patientName: input.workItem.patientIdentity.displayName,
     outputDir: input.outputDir,
+    includeManualSourceCandidates: input.includeManualSourceCandidates,
   });
   const selectedSource = await selectDirectDocumentSource(sourceDocuments);
   const selectedDocumentId = selectedSource?.documentId ?? null;

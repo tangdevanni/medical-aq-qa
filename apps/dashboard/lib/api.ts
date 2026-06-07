@@ -1,7 +1,9 @@
 import type {
   PatientArtifactsResponse,
   PatientDetail,
+  PatientReferralIntakeStatus,
   PatientStatusResponse,
+  ReferralIntakeStartResponse,
   RunDetail,
   RunListItem,
   RunStatusResponse,
@@ -58,6 +60,25 @@ export function getPatientArtifacts(
 ): Promise<PatientArtifactsResponse> {
   return fetchJson<PatientArtifactsResponse>(
     `/api/session/runs/${encodeURIComponent(runId)}/patients/${encodeURIComponent(patientId)}/artifacts`,
+  );
+}
+
+export function startPatientReferralIntake(
+  runId: string,
+  patientId: string,
+): Promise<ReferralIntakeStartResponse> {
+  return fetchJson<ReferralIntakeStartResponse>(
+    `/api/session/runs/${encodeURIComponent(runId)}/patients/${encodeURIComponent(patientId)}/referral-intake`,
+    { method: "POST" },
+  );
+}
+
+export function getPatientReferralIntakeStatus(
+  runId: string,
+  patientId: string,
+): Promise<PatientReferralIntakeStatus> {
+  return fetchJson<PatientReferralIntakeStatus>(
+    `/api/session/runs/${encodeURIComponent(runId)}/patients/${encodeURIComponent(patientId)}/referral-intake/status`,
   );
 }
 

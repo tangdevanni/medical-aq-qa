@@ -79,7 +79,11 @@ import {
   extractPossibleIcd10Codes,
 } from "../../services/documentTextAnalysis";
 import { decideDocumentExtractionPolicy } from "../../services/documentExtractionPolicyService";
-import { captureChartDocument } from "../services/chartDocumentCaptureService";
+import {
+  captureChartDocument,
+  captureReferralFiles as captureReferralFilesFromPage,
+  type ReferralFileCaptureResult,
+} from "../services/chartDocumentCaptureService";
 import type { OasisReadyDiagnosisDocument } from "../../services/codingInputExportService";
 import type {
   OasisAssessmentNoteOpenResult,
@@ -110,6 +114,10 @@ import type {
   OasisInputAction,
   OasisInputActionPlan,
 } from "../../services/oasisInputActionPlanService";
+import type {
+  PatientPortalStatusOasisAssessment,
+  PatientPortalStatusPageMetadata,
+} from "../types/patientPortalStatus";
 
 const artifactTypes = Object.keys(selectorRegistry.chartArtifacts) as ArtifactType[];
 const MINIMUM_QA_DOCUMENT_TYPES: ReadonlyArray<DocumentInventoryItem["normalizedType"]> = [
@@ -506,6 +514,64 @@ const INVENTORY_TO_ARTIFACT_TYPE: Partial<Record<DocumentInventoryItem["normaliz
 
 function normalizeWhitespace(value: string | null | undefined): string {
   return value?.replace(/\s+/g, " ").trim() ?? "";
+}
+
+function inferOasisAssessmentType(value: string): PatientPortalStatusOasisAssessment["assessmentType"] {
+  const normalized = normalizeWhitespace(value).toUpperCase();
+  if (/\bREC\b|\bRECERT\b|\bRECERTIFICATION\b/.test(normalized)) {
+    return "RECERT";
+  }
+  if (/\bROC\b|\bRESUMPTION\s+OF\s+CARE\b/.test(normalized)) {
+    return "ROC";
+  }
+  if (/\bSOC\b|\bSTART\s+OF\s+CARE\b/.test(normalized)) {
+    return "SOC";
+  }
+  if (/\bDC\b|\bDISCHARGE\b/.test(normalized)) {
+    return "DC";
+  }
+  return "UNKNOWN";
+}
+
+function extractFirstDate(value: string): string | null {
+  return value.match(/\b\d{4}-\d{2}-\d{2}\b|\b\d{1,2}\/\d{1,2}\/\d{4}\b/)?.[0] ?? null;
+}
+
+function parseAssessmentDate(value: string | null): number {
+  if (!value) {
+    return 0;
+  }
+  const isoMatch = value.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (isoMatch) {
+    return Date.UTC(Number(isoMatch[1]), Number(isoMatch[2]) - 1, Number(isoMatch[3]));
+  }
+  const slashMatch = value.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if (slashMatch) {
+    return Date.UTC(Number(slashMatch[3]), Number(slashMatch[1]) - 1, Number(slashMatch[2]));
+  }
+  return 0;
+}
+
+function sanitizeStatusIdPart(value: string): string {
+  return normalizeWhitespace(value)
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 80);
+}
+
+function selectCurrentOasisAssessmentId(
+  assessments: PatientPortalStatusOasisAssessment[],
+): string | null {
+  if (assessments.length === 0) {
+    return null;
+  }
+  return assessments
+    .slice()
+    .sort((left, right) =>
+      parseAssessmentDate(right.date) - parseAssessmentDate(left.date) ||
+      assessments.indexOf(left) - assessments.indexOf(right)
+    )[0]?.id ?? null;
 }
 
 function formatPrimaryDiagnosisSelected(document: OasisReadyDiagnosisDocument | null | undefined): string {
@@ -2131,6 +2197,75 @@ export class PatientChartPage {
     };
   }
 
+  async captureReferralFiles(
+    outputDirectory: string,
+    options: {
+      batchId: string;
+      patientId: string;
+      patientChartUrl?: string | null;
+      captureRelevantUploadLimit?: number;
+    },
+  ): Promise<ReferralFileCaptureResult> {
+    await waitForPortalPageSettled(this.page, this.options.debugConfig);
+    return captureReferralFilesFromPage({
+      page: this.page,
+      logger: this.options.logger,
+      debugConfig: this.options.debugConfig,
+      chartUrl: options.patientChartUrl ?? this.page.url(),
+      outputDirectory,
+      batchId: options.batchId,
+      patientId: options.patientId,
+      captureRelevantUploadLimit: options.captureRelevantUploadLimit,
+    });
+  }
+
+  async readPatientPortalStatusMetadata(input: {
+    chartUrl?: string | null;
+  } = {}): Promise<PatientPortalStatusPageMetadata> {
+    const chartUrl = input.chartUrl ?? this.page.url();
+    await waitForPortalPageSettled(this.page, this.options.debugConfig);
+    const referralFileArea = await this.readReferralFileAreaStatus();
+    const menuResult = await this.openOasisDocumentsPageFromSidebar();
+    const oasisAssessments = menuResult.opened
+      ? await this.collectVisibleOasisAssessmentMetadata()
+      : [];
+    const currentOasisAssessmentId = selectCurrentOasisAssessmentId(oasisAssessments);
+    const documentTableSignals = oasisAssessments.map((assessment) =>
+      [
+        assessment.assessmentType,
+        assessment.date ?? "no-date",
+        assessment.primaryStatus ?? "UNKNOWN",
+        assessment.title,
+      ].join(":"),
+    );
+
+    return {
+      oasisAssessments,
+      currentOasisAssessmentId,
+      referralFileArea,
+      documentTableSignals,
+      stepLogs: [
+        ...menuResult.stepLogs,
+        createAutomationStepLog({
+          step: "patient_portal_status_preflight",
+          message: "Read patient portal status metadata for referral and OASIS agents.",
+          urlBefore: chartUrl,
+          urlAfter: this.page.url(),
+          found: [
+            `oasisAssessments:${oasisAssessments.length}`,
+            `referralFileAreaAvailable:${referralFileArea.available}`,
+          ],
+          missing: menuResult.opened ? [] : ["OASIS document metadata"],
+          evidence: [
+            `Current OASIS assessment: ${currentOasisAssessmentId ?? "none"}`,
+            `Referral area labels: ${referralFileArea.labels.join(" | ") || "none"}`,
+          ],
+          safeReadConfirmed: true,
+        }),
+      ],
+    };
+  }
+
   async openOasisMenuForReview(input: {
     chartUrl: string;
     patientKey?: string | null;
@@ -3710,6 +3845,94 @@ export class PatientChartPage {
     }
 
     return [...labels];
+  }
+
+  private async readReferralFileAreaStatus(): Promise<{
+    available: boolean;
+    labels: string[];
+  }> {
+    const candidateLocators = [
+      this.page.locator('a[href*="/file-uploads"], a:has-text("File Uploads"), span:has-text("File Uploads")'),
+      this.page.locator('a:has-text("Referral"), button:has-text("Referral"), span:has-text("Referral")'),
+      this.page.locator('a:has-text("Referral Files"), button:has-text("Referral Files"), span:has-text("Referral Files")'),
+      this.page.locator('a:has-text("Intake/Referral"), button:has-text("Intake/Referral"), span:has-text("Intake/Referral")'),
+    ];
+    const labels = new Set<string>();
+    let available = false;
+
+    for (const locator of candidateLocators) {
+      const count = Math.min(await locator.count().catch(() => 0), 20);
+      if (count > 0) {
+        available = true;
+      }
+      for (let index = 0; index < count; index += 1) {
+        const item = locator.nth(index);
+        if (!(await item.isVisible().catch(() => false))) {
+          continue;
+        }
+        const label = normalizeWhitespace(await item.textContent().catch(() => null));
+        if (label && /\b(?:File Uploads|Referral|Referral Files|Intake\s*\/\s*Referral)\b/i.test(label)) {
+          labels.add(label);
+        }
+      }
+    }
+
+    return {
+      available,
+      labels: [...labels].slice(0, 20),
+    };
+  }
+
+  private async collectVisibleOasisAssessmentMetadata(): Promise<PatientPortalStatusOasisAssessment[]> {
+    const tableRows = this.page.locator("app-private-documents table tbody tr, fin-datatable table tbody tr, table tbody tr");
+    const rowCount = Math.min(await tableRows.count().catch(() => 0), 100);
+    const assessments: PatientPortalStatusOasisAssessment[] = [];
+    const seenIds = new Set<string>();
+
+    for (let index = 0; index < rowCount; index += 1) {
+      const row = tableRows.nth(index);
+      const rowText = normalizeWhitespace(await row.textContent().catch(() => null));
+      if (!rowText || !/\bOASIS\b|\bSOC\b|\bROC\b|\bREC\b|\bRECERT\b|\bDISCHARGE\b|\bDC\b/i.test(rowText)) {
+        continue;
+      }
+
+      const anchorText = normalizeWhitespace(
+        await row.locator("a.tbl-link, a").first().textContent().catch(() => null),
+      );
+      const title = anchorText || rowText.split(/\s{2,}|\t/)[0] || `OASIS assessment ${index + 1}`;
+      const assessmentType = inferOasisAssessmentType(`${title} ${rowText}`);
+      if (assessmentType === "UNKNOWN" && !/\bOASIS\b/i.test(rowText)) {
+        continue;
+      }
+
+      const date = extractFirstDate(rowText);
+      const summary = deriveOasisAssessmentProcessingSummary([rowText, title]);
+      const idBase = [
+        assessmentType.toLowerCase(),
+        date ? date.replace(/[^0-9]/g, "") : `row-${index + 1}`,
+        sanitizeStatusIdPart(title),
+      ].filter(Boolean).join("-");
+      let id = idBase || `oasis-assessment-${index + 1}`;
+      let duplicateIndex = 2;
+      while (seenIds.has(id)) {
+        id = `${idBase}-${duplicateIndex}`;
+        duplicateIndex += 1;
+      }
+      seenIds.add(id);
+
+      assessments.push({
+        id,
+        assessmentType,
+        title,
+        date,
+        detectedStatuses: summary.detectedStatuses,
+        primaryStatus: summary.primaryStatus,
+        decision: summary.decision,
+        processingEligible: summary.processingEligible,
+      });
+    }
+
+    return assessments;
   }
 
   private async openSocDocumentFromOasisTable(input: {

@@ -2172,6 +2172,104 @@ describe("dashboardRunViews", () => {
     );
   });
 
+  it("builds selectable OASIS assessment sources and deterministic change flags from portal preflight metadata", () => {
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        patientPortalStatusSnapshot: {
+          schemaVersion: "patient-portal-status-snapshot.v1",
+          status: "fresh",
+          currentOasisAssessmentId: "recert-20260519-oasis-oasis-e2-rec",
+          oasisAssessments: [
+            {
+              id: "soc-20260322-oasis-oasis-e1-soc",
+              assessmentType: "SOC",
+              title: "OASIS-OASIS E1 - SOC",
+              date: "2026-03-22",
+              primaryStatus: "VALIDATED",
+              decision: "PROCESS",
+              processingEligible: true,
+            },
+            {
+              id: "recert-20260519-oasis-oasis-e2-rec",
+              assessmentType: "RECERT",
+              title: "OASIS-OASIS E2 - REC",
+              date: "2026-05-19",
+              primaryStatus: "VALIDATED",
+              decision: "PROCESS",
+              processingEligible: true,
+            },
+          ],
+          referralFileArea: { available: true, labels: ["Referral Files"] },
+          documentTableSignals: [],
+        },
+        oasisDomExtractedState: {
+          assessmentType: "RECERT",
+          assessmentDate: "2026-05-19",
+          contentHash: "recert-dom-hash",
+        },
+        oasisDomAcquisitionState: {
+          changedFields: ["active_diagnoses.primary_diagnosis"],
+          regressedFields: ["medications_allergies.medication_list"],
+        },
+      },
+    });
+
+    assert.deepEqual(
+      detail.dashboardState.referralOasisSources?.oasisAssessments.map((assessment) => ({
+        id: assessment.id,
+        title: assessment.title,
+        current: assessment.isCurrent,
+        monitored: assessment.isMonitored,
+      })),
+      [
+        {
+          id: "recert-20260519-oasis-oasis-e2-rec",
+          title: "OASIS-OASIS E2 - REC",
+          current: true,
+          monitored: true,
+        },
+        {
+          id: "soc-20260322-oasis-oasis-e1-soc",
+          title: "OASIS-OASIS E1 - SOC",
+          current: false,
+          monitored: false,
+        },
+      ],
+    );
+    assert.equal(
+      detail.dashboardState.referralOasisSources?.defaultOasisAssessmentId,
+      "recert-20260519-oasis-oasis-e2-rec",
+    );
+    assert.equal(
+      detail.dashboardState.referralOasisSources?.baselineOasisAssessmentId,
+      "soc-20260322-oasis-oasis-e1-soc",
+    );
+    assert.deepEqual(
+      detail.dashboardState.referralOasisSources?.oasisChangeFlags.map((flag) => ({
+        kind: flag.kind,
+        fieldKey: flag.fieldKey,
+        assessmentId: flag.assessmentId,
+        baselineAssessmentId: flag.baselineAssessmentId,
+      })),
+      [
+        {
+          kind: "changed",
+          fieldKey: "active_diagnoses.primary_diagnosis",
+          assessmentId: "recert-20260519-oasis-oasis-e2-rec",
+          baselineAssessmentId: "soc-20260322-oasis-oasis-e1-soc",
+        },
+        {
+          kind: "regressed",
+          fieldKey: "medications_allergies.medication_list",
+          assessmentId: "recert-20260519-oasis-oasis-e2-rec",
+          baselineAssessmentId: "soc-20260322-oasis-oasis-e1-soc",
+        },
+      ],
+    );
+  });
+
   it("renders OASIS allergy status and explicit start dates from DOM allergy tables", () => {
     const summary = toDashboardPatientSummary({
       ...patientViewInput,

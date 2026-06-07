@@ -52,6 +52,12 @@ const USER_PROMPT = [
   "}",
 ].join("\n");
 
+const INVALID_JSON_RETRY_PREFIX = [
+  "Return only one valid JSON object for the schema below.",
+  "Do not include Markdown, analysis, citations, XML, or prose outside the JSON object.",
+  "Use empty arrays when facts are not visibly supported.",
+].join("\n");
+
 const directPatientContextSchema = z.object({
   patient_name: z.string().nullable().optional().default(null),
   dob: z.string().nullable().optional().default(null),
@@ -63,9 +69,9 @@ const directDiagnosisSchema = z.object({
   description: z.string().min(1),
   icd10_code: z.string().min(1).nullable().optional().default(null),
   is_primary_candidate: z.boolean().optional().default(false),
-  confidence: z.number().min(0).max(1).optional().default(0.5),
+  confidence: z.coerce.number().min(0).max(1).catch(0.5).optional().default(0.5),
   source_quote: z.string().nullable().optional().default(null),
-  page: z.number().int().positive().nullable().optional().default(null),
+  page: z.coerce.number().int().positive().nullable().catch(null).optional().default(null),
   laterality_terms: z.array(z.string()).optional().default([]),
   body_site_terms: z.array(z.string()).optional().default([]),
   requires_human_review: z.boolean().optional().default(true),
@@ -78,9 +84,9 @@ const directMedicationSchema = z.object({
   route: z.string().nullable().optional().default(null),
   frequency: z.string().nullable().optional().default(null),
   start_date: z.string().nullable().optional().default(null),
-  confidence: z.number().min(0).max(1).optional().default(0.5),
+  confidence: z.coerce.number().min(0).max(1).catch(0.5).optional().default(0.5),
   source_quote: z.string().nullable().optional().default(null),
-  page: z.number().int().positive().nullable().optional().default(null),
+  page: z.coerce.number().int().positive().nullable().catch(null).optional().default(null),
   requires_human_review: z.boolean().optional().default(true),
   review_reasons: z.array(z.string()).optional().default([]),
 }).passthrough();
@@ -88,20 +94,25 @@ const directMedicationSchema = z.object({
 const directFieldProposalSchema = z.object({
   field_key: z.string().min(1),
   proposed_value: z.unknown().nullable(),
-  confidence: z.number().min(0).max(1).optional().default(0.5),
+  confidence: z.coerce.number().min(0).max(1).catch(0.5).optional().default(0.5),
   source_quote: z.string().nullable().optional().default(null),
-  page: z.number().int().positive().nullable().optional().default(null),
+  page: z.coerce.number().int().positive().nullable().catch(null).optional().default(null),
   requires_human_review: z.boolean().optional().default(true),
   review_reasons: z.array(z.string()).optional().default([]),
 }).passthrough();
 
 const directDocumentPayloadSchema = z.object({
-  patient_context: directPatientContextSchema.optional().default({}),
-  diagnoses: z.array(directDiagnosisSchema).optional().default([]),
-  medications: z.array(directMedicationSchema).optional().default([]),
-  field_proposals: z.array(directFieldProposalSchema).default([]),
-  unsupported_or_missing_fields: z.array(z.string()).optional().default([]),
-  warnings: z.array(z.string()).optional().default([]),
+  patient_context: directPatientContextSchema.optional().default({}).catch({
+    patient_name: null,
+    dob: null,
+    soc_date: null,
+    referral_date: null,
+  }),
+  diagnoses: z.array(directDiagnosisSchema).optional().default([]).catch([]),
+  medications: z.array(directMedicationSchema).optional().default([]).catch([]),
+  field_proposals: z.array(directFieldProposalSchema).default([]).catch([]),
+  unsupported_or_missing_fields: z.array(z.string()).optional().default([]).catch([]),
+  warnings: z.array(z.string()).optional().default([]).catch([]),
 }).passthrough();
 
 export type ReferralDirectDocumentPayload = z.infer<typeof directDocumentPayloadSchema>;
@@ -127,7 +138,7 @@ export interface ReferralDirectDocumentExtractionResult {
     invocationModelId: string;
     region: string;
     autoResolvedInferenceProfile: boolean;
-    citationMode: "enabled" | "disabled_unsupported_retry" | "not_applicable";
+    citationMode: "enabled" | "disabled_unsupported_retry" | "disabled_invalid_json_retry" | "not_applicable";
     latencyMs: number;
     inputTokenCount: number | null;
     outputTokenCount: number | null;
@@ -336,7 +347,7 @@ export async function extractReferralDirectDocument(input: {
   const config = resolveBedrockConfig(input.env);
   const client = getBedrockClient(config.region);
   const startedAt = Date.now();
-  const sendRequest = (enableCitations: boolean) =>
+  const sendRequest = (enableCitations: boolean, retryForInvalidJson = false) =>
     sendBedrockConverseWithProfileFallback({
       client,
       config,
@@ -345,7 +356,7 @@ export async function extractReferralDirectDocument(input: {
         messages: [{
           role: "user",
           content: [
-            { text: USER_PROMPT },
+            { text: retryForInvalidJson ? `${INVALID_JSON_RETRY_PREFIX}\n\n${USER_PROMPT}` : USER_PROMPT },
             buildSourceContentBlock({
               fileType,
               documentName: buildDocumentName(input.patientName),
@@ -381,12 +392,21 @@ export async function extractReferralDirectDocument(input: {
     invocationModelId = result.invocationModelId;
     autoResolvedInferenceProfile = result.autoResolvedInferenceProfile;
   }
-  const latencyMs = Date.now() - startedAt;
-  const { text, citations } = extractConverseTextAndCitations(response);
-  const parsed = parseReferralDirectDocumentPayload(text);
+  let { text, citations } = extractConverseTextAndCitations(response);
+  let parsed = parseReferralDirectDocumentPayload(text);
+  if (!parsed && fileType === "pdf" && citationMode === "enabled") {
+    citationMode = "disabled_invalid_json_retry";
+    const retryResult = await sendRequest(false, true);
+    response = retryResult.response;
+    invocationModelId = retryResult.invocationModelId;
+    autoResolvedInferenceProfile = retryResult.autoResolvedInferenceProfile;
+    ({ text, citations } = extractConverseTextAndCitations(response));
+    parsed = parseReferralDirectDocumentPayload(text);
+  }
   if (!parsed) {
     throw new Error("Bedrock returned invalid or non-JSON direct-document referral output.");
   }
+  const latencyMs = Date.now() - startedAt;
 
   const diagnoses = parsed.diagnoses.map(withSourceQuoteReview);
   const medications = parsed.medications.map(withSourceQuoteReview);
@@ -410,6 +430,9 @@ export async function extractReferralDirectDocument(input: {
       : []),
     ...(citationMode === "disabled_unsupported_retry"
       ? ["Configured Bedrock model rejected citation metadata, so the request was retried without citations."]
+      : []),
+    ...(citationMode === "disabled_invalid_json_retry"
+      ? ["Configured Bedrock model returned invalid JSON with citation metadata, so the request was retried without citations."]
       : []),
   ];
 
