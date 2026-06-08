@@ -23,6 +23,7 @@ Referral vs OASIS compares a selected static referral document against a selecte
 - Diagnoses and Medications & Allergies are summary-first categories. Render the selected source's structured summary before using same-source row fallback.
 - Summary data must be source-scoped. A selected referral document can only show diagnosis/medication summaries derived from that document's artifacts. A selected OASIS assessment can only show diagnosis/medication summaries derived from that assessment's OASIS artifacts.
 - OASIS diagnosis names must come from OASIS artifacts only. Do not infer or borrow OASIS diagnosis descriptions from referral documents. If OASIS captured a code/onset but no description, show the code, onset, role when available, and a quiet `Description not captured` meta.
+- Do not promote portal identity/header text, such as uppercase `LAST, FIRST` patient names or MRN/DOB/status headers, into diagnosis cards. If that is the only OASIS diagnosis text and no ICD code is present, omit the card and let the source/category empty state handle it.
 
 ## Row Labels
 

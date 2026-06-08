@@ -97,6 +97,45 @@ export function cleanDiagnosisDescription(value: string | null | undefined, code
   return cleaned;
 }
 
+function isLikelyPatientIdentityOrPortalHeaderText(value: string | null | undefined): boolean {
+  const cleaned = compactDisplayText(value ?? "").replace(/[^\x20-\x7E]/g, " ");
+  if (!cleaned) {
+    return false;
+  }
+
+  const normalized = normalizeLabelForComparison(cleaned);
+  if (
+    /\b(?:patient|client|member|mrn|medical record|record number|dob|date of birth|payer|episode|status|case manager)\b/.test(
+      normalized,
+    )
+  ) {
+    return true;
+  }
+
+  const upper = cleaned.toUpperCase();
+  const looksLikeLastFirstName =
+    /^[A-Z][A-Z' -]{1,40},\s*[A-Z][A-Z' -]{1,40}(?:\s+[A-Z][A-Z' -]{1,40})?$/.test(cleaned) &&
+    cleaned === upper;
+
+  return looksLikeLastFirstName;
+}
+
+function cleanOasisDiagnosisDescription(value: string | null | undefined, code: string | null): string | null {
+  const cleaned = code
+    ? cleanDiagnosisDescription(value, code)
+    : compactDisplayText(value ?? "").replace(/[^\x20-\x7E]/g, " ").trim();
+  if (!cleaned || isLikelyPatientIdentityOrPortalHeaderText(cleaned)) {
+    return null;
+  }
+
+  const normalized = normalizeLabelForComparison(cleaned);
+  if (/^(?:diagnosis|diagnoses|active diagnoses|icd 10 code|primary diagnosis|other diagnosis)$/.test(normalized)) {
+    return null;
+  }
+
+  return cleaned;
+}
+
 export type ReferralOasisGroupKey =
   | "diagnoses"
   | "medications_allergies"
@@ -439,7 +478,9 @@ function formatDiagnosisEntry(entry: DiagnosisEntry | null, side: "referral" | "
     return null;
   }
   const code = entry.code ?? entry.normalizedIcd10Code ?? null;
-  const description = entry.description?.trim() || null;
+  const description = side === "oasis"
+    ? cleanOasisDiagnosisDescription(entry.description, code)
+    : entry.description?.trim() || null;
   if (!code && !description) {
     return null;
   }
@@ -520,8 +561,11 @@ function buildDiagnosisItemsFromRows(
     if (!code) {
       return [];
     }
-    const description = cleanDiagnosisDescription(getDiagnosisSideSnippet(row, side), code) ??
-      cleanDiagnosisDescription(value, code);
+    const description = side === "oasis"
+      ? cleanOasisDiagnosisDescription(getDiagnosisSideSnippet(row, side), code) ??
+        cleanOasisDiagnosisDescription(value, code)
+      : cleanDiagnosisDescription(getDiagnosisSideSnippet(row, side), code) ??
+        cleanDiagnosisDescription(value, code);
     const onsetDate = onsetValues[index] ?? onsetValues[0] ?? null;
     const changeReason = side === "oasis" ? findOasisChangeReason(row, oasisChangeFlags) : null;
     const roleLabel = getDiagnosisRoleLabel(row);

@@ -118,6 +118,63 @@ test("shows OASIS diagnosis codes without borrowing descriptions from referral c
   assert.equal(model.oasisItems[0]?.meta, "Primary | Description not captured");
 });
 
+test("does not promote OASIS patient identity header text as a diagnosis", () => {
+  const diagnosesGroup = REFERRAL_OASIS_GROUPS.find((group) => group.key === "diagnoses");
+  assert.ok(diagnosesGroup);
+
+  const model = buildReferralOasisCategoryModel({
+    group: diagnosesGroup,
+    referralRows: [],
+    oasisRows: [],
+    oasisSummary: {
+      diagnosisSummary: {
+        primaryDiagnosis: {
+          code: null,
+          normalizedIcd10Code: null,
+          description: "MACE, STEVEN",
+          onsetDate: null,
+          role: null,
+          confidence: "dom",
+        },
+        otherDiagnoses: [],
+        diagnosisSource: "portal_dom_state",
+      },
+    },
+  });
+
+  assert.equal(model.oasisItems.length, 0);
+});
+
+test("keeps OASIS diagnosis code while dropping patient identity text as description", () => {
+  const diagnosesGroup = REFERRAL_OASIS_GROUPS.find((group) => group.key === "diagnoses");
+  assert.ok(diagnosesGroup);
+
+  const model = buildReferralOasisCategoryModel({
+    group: diagnosesGroup,
+    referralRows: [],
+    oasisRows: [],
+    oasisSummary: {
+      diagnosisSummary: {
+        primaryDiagnosis: {
+          code: "Z47.89",
+          normalizedIcd10Code: "Z47.89",
+          description: "MACE, STEVEN",
+          onsetDate: "2026-05-09",
+          role: "primary",
+          confidence: "dom",
+        },
+        otherDiagnoses: [],
+        diagnosisSource: "portal_dom_state",
+      },
+    },
+  });
+
+  assert.equal(model.oasisItems.length, 1);
+  assert.equal(model.oasisItems[0]?.label, "Z47.89");
+  assert.equal(model.oasisItems[0]?.value, "Onset: 2026-05-09");
+  assert.equal(model.oasisItems[0]?.meta, "Primary | Description not captured");
+});
+
 test("does not duplicate diagnosis summary entries with same-code row fallback", () => {
   const diagnosesGroup = REFERRAL_OASIS_GROUPS.find((group) => group.key === "diagnoses");
   assert.ok(diagnosesGroup);
