@@ -122,14 +122,16 @@ async function readReferralDocumentArtifacts(
         qaDocumentSummary,
         fieldMapSnapshot,
         fieldComparison,
+        extractedFacts,
       ] = await Promise.all([
         readJsonIfExists(path.join(artifactDirectory, "patient-qa-reference.json")),
         readJsonIfExists(path.join(artifactDirectory, "qa-document-summary.json")),
         readJsonIfExists(path.join(artifactDirectory, "field-map-snapshot.json")),
         readJsonIfExists(path.join(artifactDirectory, "field-comparison.json")),
+        readJsonIfExists(path.join(artifactDirectory, "extracted-facts.json")),
       ]);
 
-      if (!patientQaReference && !qaDocumentSummary && !fieldMapSnapshot && !fieldComparison) {
+      if (!patientQaReference && !qaDocumentSummary && !fieldMapSnapshot && !fieldComparison && !extractedFacts) {
         return null;
       }
 
@@ -143,6 +145,7 @@ async function readReferralDocumentArtifacts(
         qaDocumentSummary,
         fieldMapSnapshot,
         fieldComparison,
+        referralExtractedFacts: extractedFacts,
       };
     }),
   );

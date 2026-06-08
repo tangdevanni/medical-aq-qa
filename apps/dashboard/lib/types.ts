@@ -892,6 +892,8 @@ export interface ReferralOasisSourceDocument {
   extractionUsabilityStatus: string | null;
   artifactDirectory: string | null;
   error: string | null;
+  diagnosisSummary?: DiagnosisSummaryBlock | null;
+  medicationSummary?: MedicationSummaryBlock | null;
 }
 
 export interface ReferralOasisAssessmentSource {
@@ -904,6 +906,8 @@ export interface ReferralOasisAssessmentSource {
   processingEligible?: boolean | null;
   isCurrent?: boolean;
   isMonitored?: boolean;
+  diagnosisSummary?: DiagnosisSummaryBlock | null;
+  medicationSummary?: MedicationSummaryBlock | null;
 }
 
 export interface ReferralOasisChangeFlag {

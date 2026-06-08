@@ -20,6 +20,9 @@ Referral vs OASIS compares a selected static referral document against a selecte
   - Dates / Admin
 - Empty source/category states should say that no data was captured or that the source is viewable but not processed yet. Do not backfill from OCR or printed-note artifacts.
 - OASIS source dates shown to users should be date-only, not raw ISO timestamps.
+- Diagnoses and Medications & Allergies are summary-first categories. Render the selected source's structured summary before using same-source row fallback.
+- Summary data must be source-scoped. A selected referral document can only show diagnosis/medication summaries derived from that document's artifacts. A selected OASIS assessment can only show diagnosis/medication summaries derived from that assessment's OASIS artifacts.
+- OASIS diagnosis names must come from OASIS artifacts only. Do not infer or borrow OASIS diagnosis descriptions from referral documents. If OASIS captured a code/onset but no description, show the code, onset, role when available, and a quiet `Description not captured` meta.
 
 ## Row Labels
 
@@ -28,6 +31,7 @@ Dashboard rows should show clinical labels, not internal extraction labels.
 - Do not render raw OASIS item IDs like `M1021` or `M1023` as the primary visible description.
 - Do not render extraction scaffolding such as `POC Element`, `ICD-10 Code`, `PRIMARY DIAGNOSIS`, `OTHER DIAGNOSIS - 1`, or non-clinical symbols as the main label.
 - Diagnoses should show the ICD code, a meaningful diagnosis name when available, onset date when available, and diagnosis role when available.
+- Medication and allergy display should preserve structured medication/allergy summaries first. Row fallback may add clean same-source entries only when they are not duplicates.
 - Medication, allergy, safety, functional, body-system, and date/admin rows should show compact clinical labels and values.
 - Deterministic cleanup belongs in dashboard display helpers. Do not use an LLM to clean labels, detect changed fields, or compare unchanged values.
 

@@ -18,6 +18,7 @@ import {
 } from "../../../../../lib/patientComparison";
 import { formatTimestamp } from "../../../../../lib/qa";
 import {
+  buildReferralOasisCategoryModel as buildSourceAwareReferralOasisCategoryModel,
   cleanDiagnosisDescription,
   cleanOasisDisplayLabel,
   compactDisplayText,
@@ -952,7 +953,7 @@ function findOasisChangeReason(row: FieldComparison, flags: OasisChangeFlagForDi
     if (flagKeys.some((flagKey) =>
       rowKeys.some((rowKey) => rowKey === flagKey || rowKey.includes(flagKey) || flagKey.includes(rowKey))
     )) {
-      return flag.kind === "regressed" ? "Regressed from prior OASIS snapshot" : "Changed from prior OASIS snapshot";
+      return flag.kind === "regressed" ? "Regressed" : "Changed";
     }
   }
 
@@ -1169,6 +1170,40 @@ function buildReferralOasisCategoryModel(
   };
 }
 
+function isGenericClinicalCategoryText(value: string | null | undefined): boolean {
+  const normalized = normalizeLabelForComparison(value ?? "");
+  if (!normalized) {
+    return false;
+  }
+  return new Set([
+    "diagnosis",
+    "diagnoses",
+    "active diagnoses",
+    "medication",
+    "medications",
+    "allergy",
+    "allergies",
+    "medication allergies",
+    "medications allergies",
+    "medications allergies injectable medication",
+    "medications allergies injectables medication",
+    "medications allergies injectable medications",
+    "safety social support",
+    "functional therapy",
+    "body systems",
+    "dates admin",
+  ]).has(normalized);
+}
+
+function cleanClinicalItemMeta(value: string | null | undefined): string | null {
+  const cleaned = (value ?? "")
+    .split(/\s*\|\s*/)
+    .map((part) => part.trim())
+    .filter((part) => part.length > 0 && !isGenericClinicalCategoryText(part))
+    .join(" | ");
+  return cleaned.length > 0 ? cleaned : null;
+}
+
 function CategorySourceCard({
   title,
   items,
@@ -1192,20 +1227,23 @@ function CategorySourceCard({
       </div>
       {items.length > 0 ? (
         <div className="clinical-value-list">
-          {items.map((item, index) => (
-            <div
-              className={`clinical-value-row${item.changed ? " changed" : ""}`}
-              key={`${item.label}-${item.value}-${index}`}
-            >
-              <span className="clinical-value-index">{index + 1}</span>
-              <div className="clinical-value-body">
-                <strong>{item.label}</strong>
-                <span className="clinical-value-text">{item.value}</span>
-                {item.meta ? <span>{item.meta}</span> : null}
-                {item.changed ? <span className="badge warning">{item.changeReason ?? "Changed"}</span> : null}
+          {items.map((item, index) => {
+            const displayValue = isGenericClinicalCategoryText(item.value) ? null : item.value;
+            const displayMeta = cleanClinicalItemMeta(item.meta);
+            return (
+              <div
+                className={`clinical-value-row${item.changed ? " changed" : ""}`}
+                key={`${item.label}-${item.value}-${index}`}
+              >
+                <span className="clinical-value-index">{index + 1}</span>
+                <div className="clinical-value-body">
+                  <strong>{item.label}</strong>
+                  {displayValue ? <span className="clinical-value-text">{displayValue}</span> : null}
+                  {displayMeta ? <span>{displayMeta}</span> : null}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       ) : (
         <div className="clinical-empty">{emptyText}</div>
@@ -1279,19 +1317,18 @@ function rowMatchesSelectedOasisAssessment(
 }
 
 function ReferralVsOasisTab({
+  onReferralIntakeStart,
   patient,
-  runId,
-  patientId,
+  referralIntakeRunning,
   workspace,
 }: {
+  onReferralIntakeStart: () => void;
   patient: PatientDetail;
-  runId: string;
-  patientId: string;
+  referralIntakeRunning: boolean;
   workspace: ComparisonWorkspaceModel;
 }) {
   const referralSources = patient.dashboardState.referralOasisSources?.referralDocuments ?? [];
   const oasisSources = patient.dashboardState.referralOasisSources?.oasisAssessments ?? [];
-  const referralIntakeStatus = patient.dashboardState.referralIntakeStatus;
   const defaultReferralDocumentId =
     patient.dashboardState.referralOasisSources?.defaultReferralDocumentId ?? referralSources[0]?.id ?? null;
   const defaultOasisAssessmentId =
@@ -1302,7 +1339,6 @@ function ReferralVsOasisTab({
   const [selectedOasisAssessmentId, setSelectedOasisAssessmentId] = useState<string | null>(
     defaultOasisAssessmentId,
   );
-  const [isStartingReferralIntake, setIsStartingReferralIntake] = useState(false);
   const selectedReferralDocument =
     referralSources.find((source) => source.id === selectedReferralDocumentId) ?? referralSources[0] ?? null;
   const selectedOasisAssessment =
@@ -1336,15 +1372,55 @@ function ReferralVsOasisTab({
     }
   }
   const oasisChangeFlags = patient.dashboardState.referralOasisSources?.oasisChangeFlags ?? [];
+  const selectedReferralSourceHasSummary = Boolean(
+    selectedReferralDocument?.diagnosisSummary || selectedReferralDocument?.medicationSummary,
+  );
+  const selectedOasisSourceHasSummary = Boolean(
+    selectedOasisAssessment?.diagnosisSummary || selectedOasisAssessment?.medicationSummary,
+  );
+  const selectedReferralSummary = selectedReferralDocument
+    ? selectedReferralSourceHasSummary
+      ? {
+          diagnosisSummary: selectedReferralDocument.diagnosisSummary ?? null,
+          medicationSummary: selectedReferralDocument.medicationSummary ?? null,
+        }
+      : selectedReferralDocument.id === defaultReferralDocumentId
+        ? {
+            diagnosisSummary: patient.referralDiagnosisSummary,
+            medicationSummary: patient.referralMedicationSummary,
+          }
+        : { diagnosisSummary: null, medicationSummary: null }
+    : {
+        diagnosisSummary: patient.referralDiagnosisSummary,
+        medicationSummary: patient.referralMedicationSummary,
+      };
+  const selectedOasisSummary = selectedOasisAssessment
+    ? selectedOasisSourceHasSummary
+      ? {
+          diagnosisSummary: selectedOasisAssessment.diagnosisSummary ?? null,
+          medicationSummary: selectedOasisAssessment.medicationSummary ?? null,
+        }
+      : selectedOasisAssessment.id === defaultOasisAssessmentId
+        ? {
+            diagnosisSummary: patient.oasisDiagnosisSummary,
+            medicationSummary: patient.oasisMedicationSummary,
+          }
+        : { diagnosisSummary: null, medicationSummary: null }
+    : {
+        diagnosisSummary: patient.oasisDiagnosisSummary,
+        medicationSummary: patient.oasisMedicationSummary,
+      };
   const categoryModels = new Map(
     REFERRAL_OASIS_GROUPS.map((group) => [
       group.key,
-      buildReferralOasisCategoryModel(
+      buildSourceAwareReferralOasisCategoryModel({
         group,
-        referralRowsByGroup.get(group.key) ?? [],
+        referralRows: referralRowsByGroup.get(group.key) ?? [],
+        oasisRows: oasisRowsByGroup.get(group.key) ?? [],
+        referralSummary: selectedReferralSummary,
+        oasisSummary: selectedOasisSummary,
         oasisChangeFlags,
-        oasisRowsByGroup.get(group.key) ?? [],
-      ),
+      }),
     ] as const),
   );
   const visibleGroups = REFERRAL_OASIS_GROUPS;
@@ -1367,9 +1443,7 @@ function ReferralVsOasisTab({
   const oasisTitle = selectedOasisAssessment
     ? `${selectedOasisAssessment.title}${selectedOasisAssessmentDate ? ` (${selectedOasisAssessmentDate})` : ""}`
     : "OASIS";
-  const referralIntakeRunning =
-    referralIntakeStatus?.status === "pending" || referralIntakeStatus?.status === "running" || isStartingReferralIntake;
-  const referralSourceSelector = referralSources.length > 1 ? (
+  const referralSourceSelector = referralSources.length > 0 ? (
     <div className="clinical-source-selector">
       <h2>{referralTitle}</h2>
       <div aria-label="Referral source documents" className="clinical-source-tabs" role="tablist">
@@ -1390,7 +1464,7 @@ function ReferralVsOasisTab({
       </div>
     </div>
   ) : null;
-  const oasisSourceSelector = oasisSources.length > 1 ? (
+  const oasisSourceSelector = oasisSources.length > 0 ? (
     <div className="clinical-source-selector">
       <h2>{oasisTitle}</h2>
       <div aria-label="OASIS assessment sources" className="clinical-source-tabs" role="tablist">
@@ -1413,17 +1487,6 @@ function ReferralVsOasisTab({
     </div>
   ) : null;
 
-  async function handleReferralIntakeStart(): Promise<void> {
-    setIsStartingReferralIntake(true);
-    try {
-      await startPatientReferralIntake(runId, patientId);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsStartingReferralIntake(false);
-    }
-  }
-
   useEffect(() => {
     if (selectedGroup !== activeGroup) {
       setActiveGroup(selectedGroup);
@@ -1444,22 +1507,6 @@ function ReferralVsOasisTab({
 
   return (
     <div className="workspace-section-stack">
-      <section className="panel stack">
-        <div className="panel-header-inline">
-          <div>
-            <h2>Referral Files</h2>
-          </div>
-          <button
-            className="button secondary compact"
-            disabled={referralIntakeRunning}
-            onClick={() => void handleReferralIntakeStart()}
-            type="button"
-          >
-            {referralIntakeRunning ? "Checking..." : "Check Referral Files"}
-          </button>
-        </div>
-      </section>
-
       <div aria-label="Referral versus OASIS comparison groups" className="referral-oasis-category-nav" role="tablist">
         {visibleGroups.map((group) => {
           const model = categoryModels.get(group.key);
@@ -1481,8 +1528,17 @@ function ReferralVsOasisTab({
       </div>
 
       <section className="panel stack">
-        <div className="panel-header-inline">
+        <div className="panel-header-inline referral-oasis-section-header">
           <h2>{selectedGroupLabel}</h2>
+          <button
+            aria-label="Check referral files for this patient"
+            className="button secondary compact"
+            disabled={referralIntakeRunning}
+            onClick={onReferralIntakeStart}
+            type="button"
+          >
+            {referralIntakeRunning ? "Checking..." : "Check Referral Files"}
+          </button>
         </div>
 
         <CategoryComparisonCards
@@ -2789,6 +2845,7 @@ export default function PatientDetailPage() {
   const [patient, setPatient] = useState<PatientDetail | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<WorkspaceTab>("referral_vs_oasis");
+  const [isStartingReferralIntake, setIsStartingReferralIntake] = useState(false);
   const autoSelectedPatientRef = useRef<string | null>(null);
 
   useEffect(() => {
@@ -2869,6 +2926,23 @@ export default function PatientDetailPage() {
         { key: "visit_notes", label: "Visit Notes", count: visitNoteCount },
       ]
     : [];
+  const referralIntakeStatus = patient?.dashboardState.referralIntakeStatus;
+  const referralIntakeRunning =
+    referralIntakeStatus?.status === "pending" ||
+    referralIntakeStatus?.status === "running" ||
+    isStartingReferralIntake;
+
+  async function handleReferralIntakeStart(): Promise<void> {
+    setIsStartingReferralIntake(true);
+    try {
+      await startPatientReferralIntake(runId, patientId);
+    } catch (nextError) {
+      console.error(nextError);
+      setError(nextError instanceof Error ? nextError.message : "Failed to start referral file check.");
+    } finally {
+      setIsStartingReferralIntake(false);
+    }
+  }
 
   return (
     <main className="page-shell patient-page-shell patient-dashboard stack">
@@ -2913,9 +2987,9 @@ export default function PatientDetailPage() {
 
           {activeTab === "referral_vs_oasis" ? (
             <ReferralVsOasisTab
+              onReferralIntakeStart={() => void handleReferralIntakeStart()}
               patient={patient}
-              patientId={patientId}
-              runId={runId}
+              referralIntakeRunning={referralIntakeRunning}
               workspace={workspace}
             />
           ) : null}

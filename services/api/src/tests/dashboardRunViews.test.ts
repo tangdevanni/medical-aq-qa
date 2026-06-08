@@ -2086,6 +2086,90 @@ describe("dashboardRunViews", () => {
     ]);
   });
 
+  it("realigns OASIS medication rows with a leading blank cell before parsing medications", () => {
+    const summary = toDashboardPatientSummary({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        oasisDomExtractedState: {
+          sections: [{
+            title: "Medication & Allergies (Injectable Medications)",
+            fields: [],
+            tables: [{
+              headers: [
+                "Start Date",
+                "Medication",
+                "Strength / Dosage / Frequency",
+                "Route",
+                "Classification/Indication",
+                "Status",
+              ],
+              rows: [
+                ["", "Start Date", "Medication", "Strength / Dosage / Frequency", "Route", "Classification/Indication", "Status"],
+                ["", "05/09/2026", "Tamsulosin (Oral Pill)", "0.4 mg 2 Cap Once a day", "By mouth", "ALPHA BLOCKERS/RELATED /", "New"],
+                ["", "05/09/2026", "oxyCODONE (Oral Pill)", "10 mg 1 Tab Q4-6 H PRN", "By mouth", "OPIOID ANALGESICS /", "New"],
+              ],
+            }],
+          }],
+        },
+      },
+    });
+
+    assert.deepEqual(summary.oasisMedicationSummary?.medications.map((entry) => ({
+      name: entry.name,
+      dose: entry.dose,
+      route: entry.route,
+      classification: entry.classification,
+      startDate: entry.startDate,
+      status: entry.status,
+    })), [
+      {
+        name: "Tamsulosin (Oral Pill)",
+        dose: "0.4 mg 2 Cap once a day",
+        route: "By mouth",
+        classification: "ALPHA BLOCKERS/RELATED /",
+        startDate: "05/09/2026",
+        status: "New",
+      },
+      {
+        name: "Oxycodone (Oral Pill)",
+        dose: "10 mg 1 Tab Q4-6 H PRN",
+        route: "By mouth",
+        classification: "OPIOID ANALGESICS /",
+        startDate: "05/09/2026",
+        status: "New",
+      },
+    ]);
+  });
+
+  it("attaches current OASIS summaries to the synthesized current-oasis source", () => {
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        oasisDomExtractedState: {
+          sections: [{
+            title: "Medication & Allergies (Injectable Medications)",
+            fields: [],
+            tables: [{
+              headers: ["Medication Name", "Strength / Dose", "Route", "Classification", "Start Date", "Status"],
+              rows: [
+                ["Medication Name", "Strength / Dose", "Route", "Classification", "Start Date", "Status"],
+                ["Metformin", "500 mg", "Oral", "Antidiabetic", "05/01/2026", "Active"],
+              ],
+            }],
+          }],
+        },
+      },
+    });
+
+    const currentOasis = detail.dashboardState.referralOasisSources?.oasisAssessments.find(
+      (assessment) => assessment.id === "current-oasis",
+    );
+    assert.equal(currentOasis?.medicationSummary?.medications[0]?.name, "Metformin");
+    assert.equal(currentOasis?.medicationSummary?.medications[0]?.dose, "500 mg");
+  });
+
   it("uses OASIS DOM section outputs for comparison fallback rows without leaking Plan of Care", () => {
     const detail = toDashboardPatientDetail({
       ...patientViewInput,
@@ -2170,6 +2254,67 @@ describe("dashboardRunViews", () => {
     assert.ok(
       detail.dashboardState.rows.some((row) => row.sourceArtifacts.includes("oasis-dom-section-outputs.json")),
     );
+  });
+
+  it("derives OASIS diagnosis summaries from processed diagnoses section outputs", () => {
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        oasisDiagnosisExtraction: null,
+        oasisClinicalFactPack: null,
+        qaPrefetch: {
+          ...patientViewInput.artifactContents.qaPrefetch,
+          diagnosisRoute: null,
+        },
+        oasisDomSectionOutputs: {
+          schemaVersion: "oasis-dom-section-outputs.v1",
+          sections: [{
+            sectionKey: "diagnoses",
+            label: "Diagnoses",
+            rows: [
+              {
+                label: "ICD-10 Code",
+                value: "Z47.89",
+                meta: "Encounter for other orthopedic aftercare",
+                sourceKind: "structured_value",
+                confidence: 0.94,
+                sourceSectionTitle: "Diagnoses",
+                sourceItemCode: "M1021",
+              },
+              {
+                label: "Onset Date",
+                value: "2026-05-09",
+                sourceKind: "structured_value",
+                confidence: 0.94,
+                sourceSectionTitle: "Diagnoses",
+                sourceItemCode: "M1021",
+              },
+              {
+                label: "ICD-10 Code",
+                value: "M75.121",
+                meta: "Complete rotator-cuff tear/rupture of right shoulder, not trauma",
+                sourceKind: "structured_value",
+                confidence: 0.94,
+                sourceSectionTitle: "Diagnoses",
+                sourceItemCode: "M1023",
+              },
+            ],
+          }],
+        },
+      },
+    });
+
+    assert.equal(detail.oasisDiagnosisSummary.diagnosisSource, "portal_dom_state");
+    assert.equal(detail.oasisDiagnosisSummary.primaryDiagnosis?.code, "Z47.89");
+    assert.equal(detail.oasisDiagnosisSummary.primaryDiagnosis?.description, "Encounter for other orthopedic aftercare");
+    assert.equal(detail.oasisDiagnosisSummary.primaryDiagnosis?.onsetDate, "2026-05-09");
+    assert.equal(detail.oasisDiagnosisSummary.otherDiagnoses[0]?.code, "M75.121");
+    assert.equal(
+      detail.oasisDiagnosisSummary.otherDiagnoses[0]?.description,
+      "Complete rotator-cuff tear/rupture of right shoulder, not trauma",
+    );
+    assert.equal(detail.oasisDiagnosisSummary.otherDiagnoses[0]?.onsetDate, "2026-05-09");
   });
 
   it("builds selectable OASIS assessment sources and deterministic change flags from portal preflight metadata", () => {
@@ -2300,6 +2445,113 @@ describe("dashboardRunViews", () => {
         ((row.referralDocumentIds ?? []) as string[]).includes("referral-doc-1")
       ),
     );
+  });
+
+  it("attaches source-scoped referral diagnosis and medication summaries to each referral document", () => {
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        referralDocumentResultsManifest: {
+          schemaVersion: "referral-document-results-manifest.v1",
+          defaultReferralDocumentId: "referral-doc-a",
+          documents: [
+            {
+              documentId: "referral-doc-a",
+              title: "Referral A",
+              status: "processed",
+              artifactDirectory: "C:\\temp\\referral-doc-a",
+            },
+            {
+              documentId: "referral-doc-b",
+              title: "Referral B",
+              status: "processed",
+              artifactDirectory: "C:\\temp\\referral-doc-b",
+            },
+          ],
+        },
+        referralDocumentArtifacts: [
+          {
+            documentId: "referral-doc-a",
+            qaDocumentSummary: { extractionUsabilityStatus: "usable" },
+            referralExtractedFacts: {
+              diagnosis_candidates: [{
+                code: "S81.801A",
+                description: "Right leg wound",
+                is_primary_candidate: true,
+                confidence: 0.91,
+              }],
+              facts: [
+                {
+                  fact_key: "medication_list",
+                  value: [{ name: "Doc A Medication", dose: "5 mg", route: "Oral" }],
+                },
+                {
+                  fact_key: "allergy_list",
+                  value: [{ name: "Doc A Allergy", reaction: "Rash" }],
+                },
+              ],
+            },
+          },
+          {
+            documentId: "referral-doc-b",
+            qaDocumentSummary: { extractionUsabilityStatus: "usable" },
+            referralExtractedFacts: {
+              diagnosis_candidates: [{
+                code: "I10",
+                description: "Hypertension",
+                is_primary_candidate: true,
+                confidence: 0.9,
+              }],
+              facts: [
+                {
+                  fact_key: "medication_list",
+                  value: [{ name: "Doc B Medication", dose: "10 mg", route: "Oral" }],
+                },
+              ],
+            },
+          },
+        ],
+      },
+    });
+
+    const documents = detail.dashboardState.referralOasisSources?.referralDocuments ?? [];
+    const docA = documents.find((document) => document.id === "referral-doc-a");
+    const docB = documents.find((document) => document.id === "referral-doc-b");
+
+    assert.equal(docA?.diagnosisSummary?.primaryDiagnosis?.code, "S81.801A");
+    assert.equal(docA?.diagnosisSummary?.primaryDiagnosis?.description, "Right leg wound");
+    assert.equal(docA?.medicationSummary?.medications[0]?.name, "Doc A Medication");
+    assert.equal(docA?.medicationSummary?.allergies[0]?.name, "Doc A Allergy");
+    assert.equal(docB?.diagnosisSummary?.primaryDiagnosis?.code, "I10");
+    assert.equal(docB?.diagnosisSummary?.primaryDiagnosis?.description, "Hypertension");
+    assert.equal(docB?.medicationSummary?.medications[0]?.name, "Doc B Medication");
+    assert.equal(docB?.medicationSummary?.allergies.length, 0);
+  });
+
+  it("creates a selectable legacy referral source when current referral artifacts predate manifests", () => {
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        referralDocumentResultsManifest: null,
+        referralSourceDocumentsManifest: null,
+        referralDocumentArtifacts: null,
+        documentText: {
+          documents: [{
+            type: "OASIS",
+            portalLabel: "OASIS documents page",
+            sourcePath: null,
+            text: "OASIS documents page https://demo.portal/file-uploads New Referral Christine Young 04012026.pdf true dom viewer text",
+          }],
+        },
+      },
+    });
+
+    const documents = detail.dashboardState.referralOasisSources?.referralDocuments ?? [];
+    assert.equal(documents.length, 1);
+    assert.equal(documents[0]?.title, "New Referral Christine Young 04012026.pdf");
+    assert.equal(documents[0]?.diagnosisSummary?.primaryDiagnosis?.code, "J18.9");
   });
 
   it("builds scoped historical OASIS rows from assessment artifacts", () => {

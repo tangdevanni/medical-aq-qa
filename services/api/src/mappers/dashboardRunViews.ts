@@ -1662,11 +1662,28 @@ function normalizeDiagnosisEntry(value: unknown): DashboardDiagnosisEntry | null
     return null;
   }
   if (!description && code) {
-    return {
+    const entry: DashboardDiagnosisEntry = {
       code: code.toUpperCase(),
+      normalizedIcd10Code: normalizedIcd10Code ?? code.toUpperCase(),
       description: null,
       confidence,
     };
+    const rank = asNumber(record.rank);
+    if (rank !== null) entry.rank = rank;
+    const role = asString(record.role) ?? (record.isPrimary === true ? "primary" : record.isPrimary === false ? "secondary" : null);
+    const effectiveRole = role ?? (record.is_primary_candidate === true ? "primary" : record.is_primary_candidate === false ? "secondary" : null);
+    if (effectiveRole) entry.role = effectiveRole;
+    const slotLabel = asString(record.slotLabel) ?? asString(record.slot_label);
+    if (slotLabel) entry.slotLabel = slotLabel;
+    const onsetDate = asString(record.onsetDate) ?? asString(record.onset_date);
+    if (onsetDate) entry.onsetDate = onsetDate;
+    const group = asString(record.group) ?? asString(record.clinicalGroup) ?? asString(record.comorbidityGroup);
+    if (group) entry.group = group;
+    const source = asString(record.source) ?? asString(record.sourceSection);
+    if (source) entry.source = source;
+    const status = asString(record.status);
+    if (status) entry.status = status;
+    return entry;
   }
   if (!isPlausibleDashboardDiagnosisDescription(description)) {
     return null;
@@ -1855,9 +1872,53 @@ function deriveOasisExtractedDiagnosisSummary(input: PatientViewInput) {
   );
 }
 
+function isGenericOasisDiagnosisEvidenceText(value: string): boolean {
+  const normalized = normalizeDashboardKey(value) ?? "";
+  return normalized.length === 0 ||
+    /^(?:primary_)?diagnosis(?:es)?(?:_and_symptom_control)?$/.test(normalized) ||
+    /^other_diagnosis_\d+(?:_icd_10_code)?$/.test(normalized) ||
+    /^primary_diagnosis_icd_10_code$/.test(normalized) ||
+    /^icd_10_code$/.test(normalized) ||
+    /^onset_date$/.test(normalized) ||
+    /^active_diagnoses$/.test(normalized) ||
+    /^severity$/.test(normalized);
+}
+
+function getOasisDomDiagnosisDescriptionCandidate(
+  entry: {
+    field: Record<string, unknown>;
+    label: string;
+    value: string;
+  },
+  code: string,
+): string | null {
+  const candidates = [
+    asString(entry.field.description),
+    asString(entry.field.diagnosisDescription),
+    asString(entry.field.meta),
+    asString(entry.field.evidenceText),
+  ];
+
+  for (const candidate of candidates) {
+    const text = sanitizeDashboardClinicalValue(candidate);
+    if (!text || text.localeCompare(code, undefined, { sensitivity: "accent" }) === 0) {
+      continue;
+    }
+    if (isGenericOasisDiagnosisEvidenceText(text)) {
+      continue;
+    }
+    if (isPlausibleDashboardDiagnosisDescription(text)) {
+      return text;
+    }
+  }
+
+  return null;
+}
+
 function deriveOasisDomDiagnosisSummary(input: PatientViewInput) {
   const entries: DashboardDiagnosisEntry[] = [];
   let current: DashboardDiagnosisEntry | null = null;
+  let lastOnsetDate: string | null = null;
 
   const flushCurrent = () => {
     const normalized = normalizeDiagnosisEntry(current);
@@ -1868,7 +1929,14 @@ function deriveOasisDomDiagnosisSummary(input: PatientViewInput) {
   };
 
   for (const entry of getMeaningfulOasisDomFields(input.artifactContents)) {
-    if (!entry.sectionKey.startsWith("active_diagnoses")) {
+    const normalizedSection = normalizeDashboardKey(`${entry.sectionKey} ${entry.sectionTitle}`) ?? "";
+    const normalizedLabel = normalizeDashboardKey(entry.label) ?? "";
+    if (
+      !entry.sectionKey.startsWith("active_diagnoses") &&
+      !/\bdiagnos/.test(normalizedSection) &&
+      !/\bdiagnos/.test(normalizedLabel) &&
+      !/^icd_10_code$/.test(normalizedLabel)
+    ) {
       continue;
     }
     const label = entry.label.toLowerCase();
@@ -1880,17 +1948,20 @@ function deriveOasisDomDiagnosisSummary(input: PatientViewInput) {
     if (label.includes("onset date")) {
       if (current && /^\d{4}-\d{2}-\d{2}$/.test(value)) {
         current.onsetDate = value;
+        lastOnsetDate = value;
       }
       continue;
     }
 
     if (isValidDashboardIcdCode(value)) {
+      const code = value.toUpperCase();
       flushCurrent();
       current = {
-        code: value.toUpperCase(),
-        normalizedIcd10Code: value.toUpperCase(),
-        description: null,
+        code,
+        normalizedIcd10Code: code,
+        description: getOasisDomDiagnosisDescriptionCandidate(entry, code),
         confidence: "dom",
+        onsetDate: lastOnsetDate ?? undefined,
       };
       continue;
     }
@@ -2356,8 +2427,26 @@ function findMedicationColumnIndex(headers: string[], predicate: (header: string
 function isMedicationHeaderEcho(value: string, header: string | undefined): boolean {
   const normalizedValue = normalizeMedicationHeader(value);
   const normalizedHeader = normalizeMedicationHeader(header ?? "");
+  const headerLikeValues = new Set([
+    "start date",
+    "medication",
+    "medication name",
+    "strength dosage frequency",
+    "strength dose frequency route",
+    "route",
+    "classification indication",
+    "status",
+  ]);
   return normalizedValue === "medication" ||
+    headerLikeValues.has(normalizedValue) ||
     (normalizedHeader.length > 0 && normalizedValue === normalizedHeader);
+}
+
+function normalizeMedicationTableRow(row: string[], headers: string[]): string[] {
+  if (row.length === headers.length + 1 && !row[0]?.trim()) {
+    return row.slice(1);
+  }
+  return row;
 }
 
 function deriveOasisMedicationSummary(input: PatientViewInput): DashboardMedicationSummary | null {
@@ -2382,7 +2471,11 @@ function deriveOasisMedicationSummary(input: PatientViewInput): DashboardMedicat
     for (const tableValue of asArray(section.tables)) {
       const table = asRecord(tableValue);
       const headers = asArray(table?.headers).map((header) => cleanMedicationText(header) ?? "");
-      const rows = asArray(table?.rows).map((row) => asArray(row).map((cell) => cleanMedicationText(cell) ?? ""));
+      const rows = asArray(table?.rows).map((row) =>
+        normalizeMedicationTableRow(
+          asArray(row).map((cell) => cleanMedicationText(cell) ?? ""),
+          headers,
+        ));
       const medicationIndex = findMedicationColumnIndex(headers, (header) =>
         header === "medication" ||
         header === "medication name" ||
@@ -5470,9 +5563,176 @@ function deriveOasisChangeFlags(input: {
   return flags;
 }
 
-function deriveReferralOasisSourcesState(artifactContents: KnownArtifactContents) {
+function deriveReferralDocumentClinicalSummaryMap(input: PatientViewInput) {
+  const documentArtifacts = asArray(input.artifactContents.referralDocumentArtifacts)
+    .map((entry) => asRecord(entry))
+    .filter((entry): entry is Record<string, unknown> => entry !== null);
+  const summaries = new Map<string, {
+    diagnosisSummary: ReturnType<typeof deriveReferralDiagnosisSummary>;
+    medicationSummary: ReturnType<typeof deriveReferralMedicationSummary>;
+  }>();
+
+  for (const artifact of documentArtifacts) {
+    const documentId = asString(artifact.documentId);
+    if (!documentId) {
+      continue;
+    }
+    const sourceInput = {
+      ...input,
+      artifactContents: {
+        ...input.artifactContents,
+        patientQaReference: artifact.patientQaReference ?? null,
+        qaDocumentSummary: artifact.qaDocumentSummary ?? null,
+        fieldMapSnapshot: artifact.fieldMapSnapshot ?? null,
+        referralExtractedFacts: artifact.referralExtractedFacts ?? null,
+      },
+    } as PatientViewInput;
+    summaries.set(documentId, {
+      diagnosisSummary: deriveReferralDiagnosisSummary(sourceInput),
+      medicationSummary: deriveReferralMedicationSummary(sourceInput),
+    });
+  }
+
+  return summaries;
+}
+
+function deriveOasisAssessmentClinicalSummaryMap(input: PatientViewInput) {
+  const summaries = new Map<string, {
+    diagnosisSummary: ReturnType<typeof deriveOasisDiagnosisSummary>;
+    medicationSummary: ReturnType<typeof deriveOasisMedicationSummary>;
+  }>();
+
+  for (const source of getOasisAssessmentArtifactSources(input.artifactContents)) {
+    const sourceInput = {
+      ...input,
+      artifactContents: source.artifactContents,
+    } as PatientViewInput;
+    summaries.set(source.assessmentId, {
+      diagnosisSummary: deriveOasisDiagnosisSummary(sourceInput),
+      medicationSummary: deriveOasisMedicationSummary(sourceInput),
+    });
+  }
+
+  const currentId = getCurrentOasisAssessmentId(input.artifactContents);
+  if (currentId && !summaries.has(currentId)) {
+    summaries.set(currentId, {
+      diagnosisSummary: deriveOasisDiagnosisSummary(input),
+      medicationSummary: deriveOasisMedicationSummary(input),
+    });
+  }
+
+  if (!summaries.has("current-oasis")) {
+    const diagnosisSummary = deriveOasisDiagnosisSummary(input);
+    const medicationSummary = deriveOasisMedicationSummary(input);
+    if (hasDiagnosisSummaryContent(diagnosisSummary) || hasMedicationSummaryContent(medicationSummary)) {
+      summaries.set("current-oasis", {
+        diagnosisSummary,
+        medicationSummary,
+      });
+    }
+  }
+
+  return summaries;
+}
+
+function hasDiagnosisSummaryContent(summary: ReturnType<typeof deriveReferralDiagnosisSummary> | ReturnType<typeof deriveOasisDiagnosisSummary> | null | undefined): boolean {
+  return Boolean(summary?.primaryDiagnosis || (summary?.otherDiagnoses?.length ?? 0) > 0);
+}
+
+function hasMedicationSummaryContent(summary: ReturnType<typeof deriveReferralMedicationSummary> | ReturnType<typeof deriveOasisMedicationSummary> | null | undefined): boolean {
+  return Boolean(summary && ((summary.medications?.length ?? 0) > 0 || (summary.allergies?.length ?? 0) > 0));
+}
+
+function findLegacyReferralPdfName(documentText: Record<string, unknown> | null): string | null {
+  const text = asArray(documentText?.documents)
+    .map((entry) => asRecord(entry))
+    .filter((entry): entry is Record<string, unknown> => entry !== null)
+    .map((entry) => [
+      asString(entry.portalLabel),
+      asString(entry.textPreview),
+      asString(entry.text),
+    ].filter(Boolean).join(" "))
+    .join(" ");
+  const matches = text.match(/[^|\\/\r\n]{0,180}\.pdf\b/gi) ?? [];
+  for (const match of matches) {
+    if (!/\breferral\b/i.test(match)) {
+      continue;
+    }
+    const cleaned = match
+      .replace(/^.*?(?=(?:new\s+)?referral\b)/i, "")
+      .replace(/\s+/g, " ")
+      .trim();
+    if (cleaned) {
+      return cleaned;
+    }
+  }
+  return null;
+}
+
+function deriveLegacyReferralSourceDocument(input: PatientViewInput) {
+  const artifactContents = input.artifactContents;
+  const documentText = asRecord(artifactContents.documentText);
+  const qaDocumentSummary = asRecord(artifactContents.qaDocumentSummary);
+  const referralDocument = asArray(documentText?.documents)
+    .map((entry) => asRecord(entry))
+    .find((entry): entry is Record<string, unknown> => Boolean(entry && isReferralSourceDocumentRecord(entry)));
+  const legacyReferralPdfName = findLegacyReferralPdfName(documentText);
+  const diagnosisSummary = deriveReferralDiagnosisSummary(input);
+  const medicationSummary = deriveReferralMedicationSummary(input);
+  const hasClinicalSummary = hasDiagnosisSummaryContent(diagnosisSummary) || hasMedicationSummaryContent(medicationSummary);
+  const hasLegacyReferralArtifacts = Boolean(
+    referralDocument ||
+      qaDocumentSummary ||
+      asRecord(artifactContents.patientQaReference) ||
+      asRecord(artifactContents.documentFactPack) ||
+      asRecord(artifactContents.referralExtractedFacts),
+  );
+
+  if (!hasClinicalSummary && !hasLegacyReferralArtifacts) {
+    return null;
+  }
+
+  const id =
+    asString(referralDocument?.documentId) ??
+    asString(referralDocument?.documentCacheKey) ??
+    asString(referralDocument?.sourcePath) ??
+    asString(qaDocumentSummary?.selectedDocumentId) ??
+    "current-referral";
+  const title =
+    asString(referralDocument?.portalLabel) ??
+    asString(referralDocument?.displayName) ??
+    asString(referralDocument?.fileName) ??
+    asString(referralDocument?.title) ??
+    legacyReferralPdfName ??
+    asString(qaDocumentSummary?.selectedDocumentTitle) ??
+    asString(qaDocumentSummary?.sourceLabel) ??
+    "Current referral document";
+
+  return {
+    id,
+    title,
+    date:
+      asString(referralDocument?.documentDate) ??
+      asString(referralDocument?.date) ??
+      asString(qaDocumentSummary?.documentDate) ??
+      null,
+    sourcePath: asString(referralDocument?.sourcePath),
+    sourceLabel: asString(referralDocument?.portalLabel) ?? legacyReferralPdfName ?? asString(qaDocumentSummary?.sourceLabel),
+    status: asString(qaDocumentSummary?.status) ?? "processed",
+    extractionUsabilityStatus: asString(qaDocumentSummary?.extractionUsabilityStatus),
+    artifactDirectory: "referral-document-processing",
+    error: asString(qaDocumentSummary?.error),
+    diagnosisSummary: hasDiagnosisSummaryContent(diagnosisSummary) ? diagnosisSummary : null,
+    medicationSummary: hasMedicationSummaryContent(medicationSummary) ? medicationSummary : null,
+  };
+}
+
+function deriveReferralOasisSourcesState(input: PatientViewInput) {
+  const artifactContents = input.artifactContents;
   const resultsManifest = asRecord(artifactContents.referralDocumentResultsManifest);
   const sourceManifest = asRecord(artifactContents.referralSourceDocumentsManifest);
+  const referralSummaryByDocumentId = deriveReferralDocumentClinicalSummaryMap(input);
+  const oasisSummaryByAssessmentId = deriveOasisAssessmentClinicalSummaryMap(input);
   const sourceManifestDocuments = asArray(sourceManifest?.documents)
     .map((entry) => asRecord(entry))
     .filter((entry): entry is Record<string, unknown> => entry !== null);
@@ -5487,6 +5747,7 @@ function deriveReferralOasisSourcesState(artifactContents: KnownArtifactContents
     .map((entry) => {
       const id = asString(entry.documentId) ?? asString(entry.selectedDocumentId) ?? "referral-document";
       const sourceEntry = sourceDocumentById.get(id) ?? null;
+      const summaries = referralSummaryByDocumentId.get(id);
       return {
         id,
         title:
@@ -5502,26 +5763,45 @@ function deriveReferralOasisSourcesState(artifactContents: KnownArtifactContents
         extractionUsabilityStatus: asString(entry.extractionUsabilityStatus),
         artifactDirectory: asString(entry.artifactDirectory),
         error: asString(entry.error) ?? asString(sourceEntry?.error),
+        diagnosisSummary: summaries?.diagnosisSummary ?? null,
+        medicationSummary: summaries?.medicationSummary ?? null,
       };
     });
-  const sourceDocuments = resultDocuments.length > 0
+  let sourceDocuments = resultDocuments.length > 0
     ? resultDocuments
     : sourceManifestDocuments
-      .map((entry) => ({
-        id: asString(entry.documentId) ?? "referral-document",
-        title: asString(entry.title) ?? asString(entry.sourceLabel) ?? "Referral document",
-        date: asString(entry.documentDate) ?? null,
-        sourcePath: asString(entry.sourcePath),
-        sourceLabel: asString(entry.sourceLabel),
-        status: "discovered",
-        extractionUsabilityStatus: null,
-        artifactDirectory: null,
-        error: null,
-      }));
+      .map((entry) => {
+        const id = asString(entry.documentId) ?? "referral-document";
+        const summaries = referralSummaryByDocumentId.get(id);
+        return {
+          id,
+          title: asString(entry.title) ?? asString(entry.sourceLabel) ?? "Referral document",
+          date: asString(entry.documentDate) ?? null,
+          sourcePath: asString(entry.sourcePath),
+          sourceLabel: asString(entry.sourceLabel),
+          status: "discovered",
+          extractionUsabilityStatus: null,
+          artifactDirectory: null,
+          error: null,
+          diagnosisSummary: summaries?.diagnosisSummary ?? null,
+          medicationSummary: summaries?.medicationSummary ?? null,
+        };
+      });
+  const legacyReferralSourceDocument = deriveLegacyReferralSourceDocument(input);
+  if (sourceDocuments.length === 0 && legacyReferralSourceDocument) {
+    sourceDocuments = [legacyReferralSourceDocument];
+  }
   const oasisDomState = asRecord(artifactContents.oasisDomExtractedState);
   const oasisAssessments = deriveOasisAssessmentSources({
     artifactContents,
     oasisDomState,
+  }).map((assessment) => {
+    const summaries = oasisSummaryByAssessmentId.get(assessment.id);
+    return {
+      ...assessment,
+      diagnosisSummary: summaries?.diagnosisSummary ?? null,
+      medicationSummary: summaries?.medicationSummary ?? null,
+    };
   });
   const defaultOasisAssessmentId =
     oasisAssessments.find((assessment) => assessment.isCurrent)?.id ?? oasisAssessments[0]?.id ?? null;
@@ -5545,16 +5825,17 @@ function deriveReferralOasisSourcesState(artifactContents: KnownArtifactContents
 
 function withReferralIntakeDashboardState<T extends { rows: unknown[] }>(
   state: T,
-  artifactContents: KnownArtifactContents,
+  input: PatientViewInput,
 ) {
   return {
     ...state,
-    referralIntakeStatus: deriveReferralIntakeStatusState(artifactContents),
-    referralOasisSources: deriveReferralOasisSourcesState(artifactContents),
+    referralIntakeStatus: deriveReferralIntakeStatusState(input.artifactContents),
+    referralOasisSources: deriveReferralOasisSourcesState(input),
   };
 }
 
 function derivePatientDashboardState(input: {
+  patientInput: PatientViewInput;
   referralQa: ReturnType<typeof deriveReferralQaSummary>;
   qaPrefetch: ReturnType<typeof deriveQaPrefetchSummary>;
   artifactContents: KnownArtifactContents;
@@ -5569,7 +5850,7 @@ function derivePatientDashboardState(input: {
     return withReferralIntakeDashboardState(buildDashboardStateFromClinicalRows({
       referralQa: input.referralQa,
       artifactContents: input.artifactContents,
-    }), input.artifactContents);
+    }), input.patientInput);
   }
 
   const oasisDomState = asRecord(input.artifactContents.oasisDomExtractedState);
@@ -5994,7 +6275,7 @@ function derivePatientDashboardState(input: {
       ).length,
       sectionEvidenceFallbackRowCount: 0,
     },
-  }, input.artifactContents);
+  }, input.patientInput);
 }
 
 function derivePatientDashboardReviewSummary(
@@ -6227,6 +6508,7 @@ export function toDashboardPatientSummary(input: PatientViewInput) {
   const diagnosisReconciliationReview = deriveDiagnosisReconciliationReview(input.artifactContents);
   const referralQa = deriveReferralQaSummary(input);
   const dashboardState = derivePatientDashboardState({
+    patientInput: input,
     referralQa,
     qaPrefetch,
     artifactContents: input.artifactContents,
@@ -6321,6 +6603,7 @@ export function toDashboardRunDetail(input: {
 export function toDashboardPatientDetail(input: PatientViewInput) {
   const summary = toDashboardPatientSummary(input);
   const dashboardState = derivePatientDashboardState({
+    patientInput: input,
     referralQa: summary.referralQa,
     qaPrefetch: summary.qaPrefetch,
     artifactContents: input.artifactContents,
