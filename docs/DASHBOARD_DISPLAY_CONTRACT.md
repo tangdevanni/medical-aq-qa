@@ -33,6 +33,7 @@ Dashboard rows should show clinical labels, not internal extraction labels.
 - Diagnoses should show the ICD code, a meaningful diagnosis name when available, onset date when available, and diagnosis role when available.
 - Medication and allergy display should preserve structured medication/allergy summaries first. Row fallback may add clean same-source entries only when they are not duplicates.
 - Medication, allergy, safety, functional, body-system, and date/admin rows should show compact clinical labels and values.
+- Row fallback must not show table headers, category echoes, or repeated section labels as clinical content. If a row label is generic, such as `Medication`, `Allergies`, or `Medication List`, the actual captured value should be promoted to the visible card title.
 - Deterministic cleanup belongs in dashboard display helpers. Do not use an LLM to clean labels, detect changed fields, or compare unchanged values.
 
 ## Source Boundaries

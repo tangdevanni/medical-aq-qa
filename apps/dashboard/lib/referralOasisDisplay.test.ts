@@ -243,6 +243,100 @@ test("uses medication summaries instead of appending noisy same-source row fallb
   assert.equal(model.referralItems[0]?.label, "Acetaminophen");
 });
 
+test("cleans generic medication and allergy fallback rows when summaries are unavailable", () => {
+  const medicationGroup = REFERRAL_OASIS_GROUPS.find((group) => group.key === "medications_allergies");
+  assert.ok(medicationGroup);
+
+  const model = buildReferralOasisCategoryModel({
+    group: medicationGroup,
+    referralRows: [],
+    oasisRows: [{
+      sectionKey: "medications_allergies",
+      sourceSectionLabel: "Medications & Allergies",
+      fieldKey: "allergies",
+      fieldLabel: "Allergies (POC Element):",
+      sectionLabel: "Medications & Allergies",
+      displayReferralValue: "",
+      displayPortalValue: "No known drug allergies",
+      valuePresence: { hasChartValue: true },
+    } as any, {
+      sectionKey: "medications_allergies",
+      sourceSectionLabel: "Medications & Allergies",
+      fieldKey: "medication",
+      fieldLabel: "Medication (POC Element (§484.60 (2.x))):",
+      sectionLabel: "Medications & Allergies",
+      displayReferralValue: "",
+      displayPortalValue: "Tamsulosin (Oral Pill)",
+      valuePresence: { hasChartValue: true },
+    } as any],
+  });
+
+  assert.equal(model.oasisItems.length, 2);
+  assert.equal(model.oasisItems[0]?.label, "No known drug allergies");
+  assert.equal(model.oasisItems[0]?.value, "Allergy");
+  assert.equal(model.oasisItems[0]?.meta, null);
+  assert.equal(model.oasisItems[1]?.label, "Tamsulosin (Oral Pill)");
+  assert.equal(model.oasisItems[1]?.value, "Medication");
+  assert.equal(model.oasisItems[1]?.meta, null);
+});
+
+test("omits table header echoes from row fallback display", () => {
+  const medicationGroup = REFERRAL_OASIS_GROUPS.find((group) => group.key === "medications_allergies");
+  assert.ok(medicationGroup);
+
+  const model = buildReferralOasisCategoryModel({
+    group: medicationGroup,
+    referralRows: [],
+    oasisRows: [{
+      sectionKey: "medications_allergies",
+      sourceSectionLabel: "Medications & Allergies",
+      fieldKey: "start_date",
+      fieldLabel: "Start Date",
+      sectionLabel: "Medications & Allergies",
+      displayReferralValue: "",
+      displayPortalValue: "Medication | Strength / Dosage / Frequency | Route | Classification/Indication",
+      valuePresence: { hasChartValue: true },
+    } as any, {
+      sectionKey: "medications_allergies",
+      sourceSectionLabel: "Medications & Allergies",
+      fieldKey: "medication",
+      fieldLabel: "Medication",
+      sectionLabel: "Medications & Allergies",
+      displayReferralValue: "",
+      displayPortalValue: "Oxycodone 5 mg Oral - Tablet",
+      valuePresence: { hasChartValue: true },
+    } as any],
+  });
+
+  assert.equal(model.oasisItems.length, 1);
+  assert.equal(model.oasisItems[0]?.label, "Oxycodone 5 mg Oral - Tablet");
+});
+
+test("keeps non-summary clinical rows compact without repeated section metadata", () => {
+  const bodySystemsGroup = REFERRAL_OASIS_GROUPS.find((group) => group.key === "body_systems");
+  assert.ok(bodySystemsGroup);
+
+  const model = buildReferralOasisCategoryModel({
+    group: bodySystemsGroup,
+    referralRows: [],
+    oasisRows: [{
+      sectionKey: "body_systems",
+      sourceSectionLabel: "Body Systems",
+      fieldKey: "pain",
+      fieldLabel: "Pain (POC Element):",
+      sectionLabel: "Body Systems",
+      displayReferralValue: "",
+      displayPortalValue: "Moderate pain in right shoulder",
+      valuePresence: { hasChartValue: true },
+    } as any],
+  });
+
+  assert.equal(model.oasisItems.length, 1);
+  assert.equal(model.oasisItems[0]?.label, "Pain");
+  assert.equal(model.oasisItems[0]?.value, "Moderate pain in right shoulder");
+  assert.equal(model.oasisItems[0]?.meta, null);
+});
+
 test("selected source summaries produce different display rows for the same category", () => {
   const diagnosesGroup = REFERRAL_OASIS_GROUPS.find((group) => group.key === "diagnoses");
   assert.ok(diagnosesGroup);

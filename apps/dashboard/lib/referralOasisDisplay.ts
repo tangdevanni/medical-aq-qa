@@ -144,6 +144,26 @@ const PORTAL_VALUE_PLACEHOLDERS = new Set([
   "no explicit other diagnoses identified in the text",
 ]);
 
+const GENERIC_CLINICAL_DISPLAY_TEXT = new Set([
+  "diagnosis",
+  "diagnoses",
+  "active diagnoses",
+  "medication",
+  "medications",
+  "medication list",
+  "allergy",
+  "allergies",
+  "medication allergies",
+  "medications allergies",
+  "medications allergies injectable medication",
+  "medications allergies injectables medication",
+  "medications allergies injectable medications",
+  "safety social support",
+  "functional therapy",
+  "body systems",
+  "dates admin",
+]);
+
 function hasVisiblePortalValue(value: string | null | undefined): boolean {
   if (!value) {
     return false;
@@ -162,6 +182,40 @@ function hasUsableOasisValue(row: FieldComparison): boolean {
 
 function isIcdCodeValue(value: string | null | undefined): boolean {
   return typeof value === "string" && /^[A-TV-Z][0-9][0-9A-Z](?:\.[0-9A-Z]{1,4})?$/i.test(value.trim());
+}
+
+function isGenericClinicalDisplayText(value: string | null | undefined): boolean {
+  const normalized = normalizeLabelForComparison(value ?? "");
+  return normalized.length > 0 && GENERIC_CLINICAL_DISPLAY_TEXT.has(normalized);
+}
+
+function isTableHeaderEchoValue(value: string): boolean {
+  const normalized = normalizeLabelForComparison(value);
+  if (!value.includes("|")) {
+    return false;
+  }
+
+  return (
+    /\bmedication\b/.test(normalized) &&
+    /\bstrength\b|\bdosage\b|\bfrequency\b|\broute\b|\bclassification\b|\bindication\b/.test(normalized)
+  ) || (
+    /\bdiagnosis\b|\bicd\b/.test(normalized) &&
+    /\bonset\b|\bdate\b|\bdescription\b|\bcode\b/.test(normalized)
+  );
+}
+
+function genericHiddenValueForLabel(label: string): string {
+  const normalized = normalizeLabelForComparison(label);
+  if (/\ballerg/.test(normalized)) {
+    return "Allergy";
+  }
+  if (/\bdiagnos|\bicd/.test(normalized)) {
+    return "Diagnosis";
+  }
+  if (/\bmedic/.test(normalized)) {
+    return "Medication";
+  }
+  return "";
 }
 
 function isPlanOfCareCategoryText(value: string): boolean {
@@ -223,12 +277,15 @@ function isOasisItemIdPlaceholder(value: string | null | undefined, row: FieldCo
 }
 
 function buildStructuredItemMeta(row: FieldComparison, side: "referral" | "oasis"): string | null {
+  const sectionLabel = compactDisplayText(row.sectionLabel ?? "");
   const parts = [
     side === "oasis" && row.oasisItemId && !isOasisItemIdPlaceholder(row.oasisItemId, row)
       ? row.oasisItemId
       : null,
-    row.sectionLabel && normalizeLabelForComparison(row.sectionLabel) !== normalizeLabelForComparison(row.fieldLabel)
-      ? row.sectionLabel
+    sectionLabel &&
+      normalizeLabelForComparison(sectionLabel) !== normalizeLabelForComparison(row.fieldLabel) &&
+      !isGenericClinicalDisplayText(sectionLabel)
+      ? sectionLabel
       : null,
   ].filter((part): part is string => Boolean(part?.trim()));
 
@@ -254,6 +311,43 @@ function splitDisplayListValue(value: string): string[] {
     .split(/\s*;\s*/)
     .map((entry) => entry.trim())
     .filter((entry) => hasVisiblePortalValue(entry));
+}
+
+function buildCleanRowDisplay(
+  label: string,
+  value: string,
+): { label: string; value: string } | null {
+  const cleanedLabel = compactDisplayText(label);
+  const cleanedValue = compactDisplayText(value);
+  if (!cleanedLabel || !cleanedValue || isTableHeaderEchoValue(cleanedValue)) {
+    return null;
+  }
+
+  const normalizedLabel = normalizeLabelForComparison(cleanedLabel);
+  const normalizedValue = normalizeLabelForComparison(cleanedValue);
+  if (!normalizedLabel || !normalizedValue || normalizedLabel === normalizedValue) {
+    return null;
+  }
+
+  if (normalizedLabel === "start date" && !/\b\d{1,4}[-/]\d{1,2}[-/]\d{1,4}\b/.test(cleanedValue)) {
+    return null;
+  }
+
+  if (isGenericClinicalDisplayText(cleanedLabel) && isGenericClinicalDisplayText(cleanedValue)) {
+    return null;
+  }
+
+  if (isGenericClinicalDisplayText(cleanedLabel) && !isGenericClinicalDisplayText(cleanedValue)) {
+    return {
+      label: cleanedValue,
+      value: genericHiddenValueForLabel(cleanedLabel),
+    };
+  }
+
+  return {
+    label: cleanedLabel,
+    value: cleanedValue,
+  };
 }
 
 function findOasisChangeReason(row: FieldComparison, flags: ReferralOasisChangeFlag[]): string | null {
@@ -302,13 +396,20 @@ function buildDisplayItemsFromRows(
     const label = side === "oasis" ? cleanOasisDisplayLabel(row.fieldLabel) : row.fieldLabel;
     return splitDisplayListValue(value)
       .filter((entry) => !isOasisItemIdPlaceholder(entry, row))
-      .map((entry) => ({
-        label,
-        value: entry,
-        meta: buildStructuredItemMeta(row, side),
-        changed: Boolean(changeReason),
-        changeReason,
-      }));
+      .flatMap((entry): ReferralOasisDisplayItem[] => {
+        const display = buildCleanRowDisplay(label, entry);
+        if (!display) {
+          return [];
+        }
+
+        return [{
+          label: display.label,
+          value: display.value,
+          meta: buildStructuredItemMeta(row, side),
+          changed: Boolean(changeReason),
+          changeReason,
+        }];
+      });
   });
 
   return dedupeReferralOasisItems(items);
