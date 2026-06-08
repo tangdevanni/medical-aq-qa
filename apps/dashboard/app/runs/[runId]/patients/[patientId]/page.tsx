@@ -17,6 +17,13 @@ import {
   type FieldComparison,
 } from "../../../../../lib/patientComparison";
 import { formatTimestamp } from "../../../../../lib/qa";
+import {
+  cleanDiagnosisDescription,
+  cleanOasisDisplayLabel,
+  compactDisplayText,
+  formatClinicalSourceDate,
+  normalizeLabelForComparison,
+} from "../../../../../lib/referralOasisDisplay";
 import type {
   AllergyEntry,
   DiagnosisEntry,
@@ -65,10 +72,6 @@ function formatStatusLabel(value: string | null | undefined): string {
 function formatReferralDocumentTitle(value: string | null | undefined): string {
   const title = value?.trim();
   return title && title.length > 0 ? title : "Referral document";
-}
-
-function normalizeLabelForComparison(value: string): string {
-  return value.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 }
 
 const PORTAL_VALUE_PLACEHOLDERS = new Set([
@@ -891,10 +894,6 @@ function isOasisItemIdPlaceholder(value: string | null | undefined, row: FieldCo
   return normalizeLabelForComparison(value) === normalizeLabelForComparison(row.oasisItemId);
 }
 
-function compactDisplayText(value: string): string {
-  return value.replace(/\s+/g, " ").trim();
-}
-
 function truncateDisplayText(value: string, maxLength = SECTION_EVIDENCE_PREVIEW_LIMIT): string {
   const compacted = compactDisplayText(value);
   return compacted.length > maxLength ? `${compacted.slice(0, maxLength - 1).trim()}...` : compacted;
@@ -976,10 +975,11 @@ function buildDisplayItemsFromRows(
     }
 
     const changeReason = side === "oasis" ? findOasisChangeReason(row, oasisChangeFlags) : null;
+    const label = side === "oasis" ? cleanOasisDisplayLabel(row.fieldLabel) : row.fieldLabel;
     return splitDisplayListValue(value)
       .filter((entry) => !isOasisItemIdPlaceholder(entry, row))
       .map((entry) => ({
-        label: row.fieldLabel,
+        label,
         value: entry,
         meta: buildStructuredItemMeta(row, side),
         changed: Boolean(changeReason),
@@ -988,17 +988,6 @@ function buildDisplayItemsFromRows(
   });
 
   return dedupeReferralOasisItems(items);
-}
-
-function cleanDiagnosisDescription(value: string | null | undefined, code: string): string | null {
-  const cleaned = compactDisplayText(value ?? "")
-    .replace(new RegExp(`^${code.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\s*(?:-|:|\\))?\\s*`, "i"), "")
-    .replace(/^ICD-?10 Code\s*/i, "")
-    .trim();
-  if (!cleaned || isIcdCodeValue(cleaned) || /^diagnoses?$/i.test(cleaned) || /^active diagnoses$/i.test(cleaned)) {
-    return null;
-  }
-  return cleaned;
 }
 
 function diagnosisCodeFromValue(value: string): string | null {
@@ -1016,6 +1005,18 @@ function getDiagnosisSideValue(row: FieldComparison, side: "referral" | "oasis")
 
 function getDiagnosisSideSnippet(row: FieldComparison, side: "referral" | "oasis"): string | null | undefined {
   return side === "referral" ? row.referralSnippet : row.portalSnippet;
+}
+
+function getDiagnosisRoleLabel(row: FieldComparison): string | null {
+  const text = normalizeLabelForComparison(`${row.fieldKey} ${row.fieldLabel}`);
+  if (text.includes("primary diagnosis")) {
+    return "Primary";
+  }
+  const otherMatch = text.match(/\bother diagnosis (\d+)\b/);
+  if (otherMatch) {
+    return `Other diagnosis ${otherMatch[1]}`;
+  }
+  return null;
 }
 
 function getStructuredDiagnosisItems(value: unknown): ReferralOasisDisplayItem[] {
@@ -1089,10 +1090,11 @@ function buildDiagnosisDisplayItemsFromRows(
       cleanDiagnosisDescription(value, code);
     const onsetDate = onsetValues[index] ?? onsetValues[0] ?? null;
     const changeReason = side === "oasis" ? findOasisChangeReason(row, oasisChangeFlags) : null;
+    const roleLabel = getDiagnosisRoleLabel(row);
     return [{
       label: description ? `${code} - ${description}` : code,
       value: onsetDate ? `Onset: ${onsetDate}` : "Diagnosis",
-      meta: row.oasisItemId && side === "oasis" ? row.oasisItemId : null,
+      meta: roleLabel,
       changed: Boolean(changeReason),
       changeReason,
     }];
@@ -1357,11 +1359,13 @@ function ReferralVsOasisTab({
     oasisItems: [],
   };
   const selectedGroupLabel = visibleGroups.find((group) => group.key === selectedGroup)?.label ?? "Diagnoses";
+  const selectedReferralDocumentDate = formatClinicalSourceDate(selectedReferralDocument?.date);
+  const selectedOasisAssessmentDate = formatClinicalSourceDate(selectedOasisAssessment?.date);
   const referralTitle = selectedReferralDocument
-    ? `${formatReferralDocumentTitle(selectedReferralDocument.title)}${selectedReferralDocument.date ? ` (${selectedReferralDocument.date})` : ""}`
+    ? `${formatReferralDocumentTitle(selectedReferralDocument.title)}${selectedReferralDocumentDate ? ` (${selectedReferralDocumentDate})` : ""}`
     : "Referral";
   const oasisTitle = selectedOasisAssessment
-    ? `${selectedOasisAssessment.title}${selectedOasisAssessment.date ? ` (${selectedOasisAssessment.date})` : ""}`
+    ? `${selectedOasisAssessment.title}${selectedOasisAssessmentDate ? ` (${selectedOasisAssessmentDate})` : ""}`
     : "OASIS";
   const referralIntakeRunning =
     referralIntakeStatus?.status === "pending" || referralIntakeStatus?.status === "running" || isStartingReferralIntake;
@@ -1380,7 +1384,7 @@ function ReferralVsOasisTab({
             type="button"
           >
             <span className="clinical-source-tab-title">{formatReferralDocumentTitle(source.title)}</span>
-            {source.date ? <span className="badge">{source.date}</span> : null}
+            {formatClinicalSourceDate(source.date) ? <span className="badge">{formatClinicalSourceDate(source.date)}</span> : null}
           </button>
         ))}
       </div>
@@ -1400,7 +1404,7 @@ function ReferralVsOasisTab({
             type="button"
           >
             <span className="clinical-source-tab-title">{source.title}</span>
-            {source.date ? <span className="badge">{source.date}</span> : null}
+            {formatClinicalSourceDate(source.date) ? <span className="badge">{formatClinicalSourceDate(source.date)}</span> : null}
             {source.isCurrent ? <span className="badge success">Current</span> : null}
             {!source.isMonitored ? <span className="badge">View only</span> : null}
           </button>
