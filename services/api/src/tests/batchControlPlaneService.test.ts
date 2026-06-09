@@ -16,7 +16,7 @@ import { loadEnv } from "../config/env";
 import { FilesystemBatchRepository } from "../repositories/filesystemBatchRepository";
 import { FilesystemScheduledRunRepository } from "../repositories/filesystemScheduledRunRepository";
 import { FilesystemSubsidiaryRepository } from "../repositories/filesystemSubsidiaryRepository";
-import { BatchControlPlaneService } from "../services/batchControlPlaneService";
+import { BatchControlPlaneService, type ReferralIntakeState } from "../services/batchControlPlaneService";
 import { PatientMemoryService } from "../services/patientMemoryService";
 import { PortalCredentialProvider } from "../services/portalCredentialProvider";
 import { SubsidiaryConfigService } from "../services/subsidiaryConfigService";
@@ -413,6 +413,260 @@ async function createPortalStatusBatch(
     workItem,
     patientArtifactsDirectory: path.join(storage.outputRoot, "patients", workItem.id),
   };
+}
+
+function createPostBatchReferralWorkItem(id: string, displayName: string): PatientEpisodeWorkItem {
+  return {
+    ...createPortalStatusWorkItem(id),
+    patientIdentity: {
+      displayName,
+      normalizedName: displayName.toUpperCase(),
+      medicareNumber: null,
+    },
+  };
+}
+
+function createPostBatchReferralPatientRun(input: {
+  batchId: string;
+  storage: ReturnType<FilesystemBatchRepository["createBatchPaths"]>;
+  workItem: PatientEpisodeWorkItem;
+  processingStatus?: BatchRecord["patientRuns"][number]["processingStatus"];
+  executionStep?: string;
+  matchStatus?: BatchRecord["patientRuns"][number]["matchResult"]["status"];
+  errorSummary?: string | null;
+}): BatchRecord["patientRuns"][number] {
+  const now = "2026-04-15T06:05:00.000Z";
+  return {
+    runId: `${input.batchId}-${input.workItem.id}`,
+    subsidiaryId: "default",
+    workItemId: input.workItem.id,
+    patientName: input.workItem.patientIdentity.displayName,
+    processingStatus: input.processingStatus ?? "COMPLETE",
+    executionStep: input.executionStep ?? "COMPLETE",
+    progressPercent: 100,
+    startedAt: now,
+    completedAt: now,
+    lastUpdatedAt: now,
+    matchResult: {
+      status: input.matchStatus ?? "EXACT",
+      searchQuery: input.workItem.patientIdentity.displayName,
+      portalPatientId: "portal-patient-1",
+      portalDisplayName: input.matchStatus === "NOT_FOUND" ? null : input.workItem.patientIdentity.displayName,
+      candidateNames: input.matchStatus === "NOT_FOUND" ? [] : [input.workItem.patientIdentity.displayName],
+      note: null,
+    },
+    qaOutcome: input.executionStep === "PATIENT_STATUS_EXCLUDED" ? "PORTAL_MISMATCH" : "READY_FOR_BILLING_PREP",
+    oasisQaSummary: {
+      overallStatus: "READY_FOR_BILLING",
+      urgency: "ON_TRACK",
+      daysInPeriod: 30,
+      daysLeft: 10,
+      sections: [],
+      blockers: [],
+    },
+    artifactCount: 0,
+    hasFindings: false,
+    bundleAvailable: true,
+    logPath: null,
+    logAvailable: false,
+    retryEligible: false,
+    errorSummary: input.errorSummary ?? null,
+    resultBundlePath: path.join(input.storage.patientResultsDirectory, `${input.workItem.id}.json`),
+    evidenceDirectory: path.join(input.storage.evidenceDirectory, input.workItem.id),
+    tracePath: null,
+    screenshotPaths: [],
+    downloadPaths: [],
+    workflowRuns: [],
+    lastAttemptAt: now,
+    attemptCount: 1,
+  };
+}
+
+async function createPostBatchReferralBatch(
+  fixture: ReturnType<typeof createServiceFixture>,
+  input: {
+    batchId: string;
+    workItems: PatientEpisodeWorkItem[];
+    patientRuns: BatchRecord["patientRuns"];
+    queueStatuses: Record<string, PatientQueueArtifact["entries"][number]["status"]>;
+  },
+): Promise<BatchRecord> {
+  const storage = fixture.repository.createBatchPaths(input.batchId, "reference-workbook.xlsx");
+  const manifestPath = path.join(storage.outputRoot, "batch-manifest.json");
+  const workItemsPath = path.join(storage.outputRoot, "work-items.json");
+  const parserExceptionsPath = path.join(storage.outputRoot, "parser-exceptions.json");
+  const patientQueuePath = path.join(storage.outputRoot, "patient-queue.json");
+  const now = "2026-04-15T06:00:00.000Z";
+  const manifest: BatchManifest = {
+    batchId: input.batchId,
+    subsidiaryId: "default",
+    createdAt: now,
+    status: "COMPLETED",
+    workbookPath: storage.sourceWorkbookPath,
+    outputDirectory: storage.outputRoot,
+    billingPeriod: "2026-04",
+    totalWorkItems: input.workItems.length,
+    parserExceptionCount: 0,
+    automationEligibleWorkItemIds: input.workItems.map((workItem) => workItem.id),
+    blockedWorkItemIds: [],
+  };
+  const queueArtifact: PatientQueueArtifact = {
+    generatedAt: now,
+    agencyId: "default",
+    batchId: input.batchId,
+    reviewWindowId: "default-2026-04-15",
+    summary: {
+      total: input.workItems.length,
+      eligible: input.workItems.filter((workItem) => input.queueStatuses[workItem.id] === "eligible").length,
+      skippedNonAdmit: input.workItems.filter((workItem) => input.queueStatuses[workItem.id] === "skipped_non_admit").length,
+      skippedPending: input.workItems.filter((workItem) => input.queueStatuses[workItem.id] === "skipped_pending").length,
+      excludedOther: input.workItems.filter((workItem) => input.queueStatuses[workItem.id] === "excluded_other").length,
+    },
+    entries: input.workItems.map((workItem, index) => ({
+      id: `default-2026-04-15:${workItem.id}`,
+      agencyId: "default",
+      batchId: input.batchId,
+      workItemId: workItem.id,
+      patientName: workItem.patientIdentity.displayName,
+      reviewWindowId: "default-2026-04-15",
+      workflowTypes: workItem.workflowTypes,
+      status: input.queueStatuses[workItem.id] ?? "eligible",
+      eligibility: {
+        eligible: (input.queueStatuses[workItem.id] ?? "eligible") === "eligible",
+        reason: null,
+        rationale: "Test queue status.",
+        matchedSignals: [],
+      },
+      episodeDate: workItem.episodeContext.episodeDate,
+      socDate: workItem.episodeContext.socDate,
+      billingPeriod: workItem.episodeContext.billingPeriod,
+      sourceSheets: workItem.sourceSheets,
+      sourceRowNumbers: [index + 2],
+      notes: [],
+      createdAt: now,
+    })),
+  };
+  const batch: BatchRecord = {
+    id: input.batchId,
+    subsidiary: {
+      id: "default",
+      slug: "default",
+      name: "Default Subsidiary",
+    },
+    createdAt: now,
+    updatedAt: now,
+    runMode: "read_only",
+    billingPeriod: "2026-04",
+    status: "COMPLETED",
+    schedule: {
+      scheduledRunId: null,
+      active: true,
+      rerunEnabled: true,
+      intervalHours: 24,
+      timezone: "Asia/Manila",
+      localTimes: ["20:30"],
+      lastRunAt: null,
+      nextScheduledRunAt: null,
+    },
+    sourceWorkbook: {
+      subsidiaryId: "default",
+      acquisitionProvider: "MANUAL_UPLOAD",
+      acquisitionStatus: "ACQUIRED",
+      acquisitionReference: null,
+      acquisitionNotes: [],
+      acquisitionMetadata: null,
+      originalFileName: "reference-workbook.xlsx",
+      storedPath: storage.sourceWorkbookPath,
+      uploadedAt: now,
+      verification: null,
+    },
+    storage: {
+      batchRoot: storage.batchRoot,
+      outputRoot: storage.outputRoot,
+      manifestPath,
+      workItemsPath,
+      parserExceptionsPath,
+      batchSummaryPath: null,
+      patientResultsDirectory: storage.patientResultsDirectory,
+      evidenceDirectory: storage.evidenceDirectory,
+    },
+    parse: {
+      requestedAt: now,
+      completedAt: now,
+      workItemCount: input.workItems.length,
+      eligibleWorkItemCount: input.workItems.length,
+      parserExceptionCount: 0,
+      sourceDetections: [],
+      sheetSummaries: [],
+      lastError: null,
+    },
+    run: {
+      requestedAt: now,
+      completedAt: now,
+      patientRunCount: input.patientRuns.length,
+      lastError: null,
+    },
+    patientRuns: input.patientRuns,
+  };
+
+  await mkdir(path.dirname(storage.sourceWorkbookPath), { recursive: true });
+  await mkdir(storage.outputRoot, { recursive: true });
+  await mkdir(storage.patientResultsDirectory, { recursive: true });
+  await writeFile(storage.sourceWorkbookPath, "workbook");
+  await writeFile(manifestPath, JSON.stringify(manifest, null, 2));
+  await writeFile(workItemsPath, JSON.stringify(input.workItems, null, 2));
+  await writeFile(parserExceptionsPath, JSON.stringify([], null, 2));
+  await writeFile(patientQueuePath, JSON.stringify(queueArtifact, null, 2));
+  for (const patientRun of input.patientRuns) {
+    await writeFile(patientRun.resultBundlePath, JSON.stringify(patientRun, null, 2));
+  }
+  await fixture.repository.saveBatch(batch);
+  return batch;
+}
+
+function createReferralIntakeTestState(input: {
+  batchId: string;
+  patientId: string;
+  status?: ReferralIntakeState["status"];
+  processedCount?: number;
+  failedCount?: number;
+  documentCount?: number;
+  sourceDocumentCount?: number;
+  message?: string | null;
+  lastError?: string | null;
+}): ReferralIntakeState {
+  const now = new Date().toISOString();
+  return {
+    schemaVersion: "referral-intake-state.v1",
+    batchId: input.batchId,
+    patientId: input.patientId,
+    status: input.status ?? "completed",
+    acceptedAt: now,
+    startedAt: now,
+    completedAt: now,
+    lastCheckedAt: now,
+    lastError: input.lastError ?? null,
+    processedCount: input.processedCount ?? 1,
+    reusedCount: 0,
+    newOrChangedCount: input.processedCount ?? 1,
+    failedCount: input.failedCount ?? 0,
+    skippedCount: 0,
+    documentCount: input.documentCount ?? 1,
+    sourceDocumentCount: input.sourceDocumentCount ?? input.documentCount ?? 1,
+    statusUrl: `/api/runs/${encodeURIComponent(input.batchId)}/patients/${encodeURIComponent(input.patientId)}/referral-intake/status`,
+    message: input.message ?? "Test referral intake completed.",
+  };
+}
+
+async function postBatchReferralSummaryExists(
+  storage: ReturnType<FilesystemBatchRepository["createBatchPaths"]>,
+): Promise<boolean> {
+  try {
+    await readFile(path.join(storage.outputRoot, "post-batch-referral-intake-summary.json"), "utf8");
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 describe("BatchControlPlaneService scheduler metadata", () => {
@@ -1068,6 +1322,224 @@ describe("BatchControlPlaneService scheduler metadata", () => {
       assert.equal(firstSchedule.subsidiaryId, "default");
       assert.equal(secondSchedule.subsidiaryId, "default");
     } finally {
+      fixture.cleanup();
+    }
+  });
+
+  it("runs post-batch referral intake for eligible active exact-match patients only", async () => {
+    const calls: Array<{ patientId: string; trigger: string }> = [];
+    const fixture = createServiceFixture({
+      serviceOptions: {
+        deltaReuseEnabled: true,
+        async referralIntakeJobRunner(input) {
+          calls.push({ patientId: input.patientId, trigger: input.trigger });
+          return createReferralIntakeTestState({
+            batchId: input.batchId,
+            patientId: input.patientId,
+            processedCount: 2,
+            documentCount: 2,
+            sourceDocumentCount: 2,
+          });
+        },
+      },
+    });
+
+    try {
+      await fixture.service.initialize();
+      const batchId = "batch-post-referral-selection";
+      const storage = fixture.repository.createBatchPaths(batchId, "reference-workbook.xlsx");
+      const workItems = [
+        createPostBatchReferralWorkItem("patient-active", "Active Patient"),
+        createPostBatchReferralWorkItem("patient-pending", "Pending Patient"),
+        createPostBatchReferralWorkItem("patient-unmatched", "Unmatched Patient"),
+        createPostBatchReferralWorkItem("patient-excluded", "Excluded Patient"),
+      ];
+      await createPostBatchReferralBatch(fixture, {
+        batchId,
+        workItems,
+        queueStatuses: {
+          "patient-active": "eligible",
+          "patient-pending": "skipped_pending",
+          "patient-unmatched": "eligible",
+          "patient-excluded": "eligible",
+        },
+        patientRuns: [
+          createPostBatchReferralPatientRun({ batchId, storage, workItem: workItems[0]! }),
+          createPostBatchReferralPatientRun({ batchId, storage, workItem: workItems[1]! }),
+          createPostBatchReferralPatientRun({
+            batchId,
+            storage,
+            workItem: workItems[2]!,
+            matchStatus: "NOT_FOUND",
+          }),
+          createPostBatchReferralPatientRun({
+            batchId,
+            storage,
+            workItem: workItems[3]!,
+            executionStep: "PATIENT_STATUS_EXCLUDED",
+            errorSummary: "Portal patient status 'Non-Admit' excludes this patient from autonomous QA evaluation.",
+          }),
+        ],
+      });
+
+      await fixture.service.startBatchRun(batchId);
+      await waitForCondition(async () => {
+        const state = await fixture.service.getPatientReferralIntakeStatus(batchId, "patient-active");
+        return state.status === "completed" && await postBatchReferralSummaryExists(storage);
+      });
+
+      assert.deepEqual(calls, [{ patientId: "patient-active", trigger: "post_batch" }]);
+      const summary = JSON.parse(
+        await readFile(
+          path.join(storage.outputRoot, "post-batch-referral-intake-summary.json"),
+          "utf8",
+        ),
+      ) as {
+        processedPatientCount: number;
+        failedPatientCount: number;
+        skippedPatientCount: number;
+        documentCount: number;
+        results: Array<{ patientId: string; status: string; reason: string | null }>;
+      };
+      assert.equal(summary.processedPatientCount, 1);
+      assert.equal(summary.failedPatientCount, 0);
+      assert.equal(summary.skippedPatientCount, 3);
+      assert.equal(summary.documentCount, 2);
+      assert.deepEqual(
+        summary.results.map((result) => [result.patientId, result.status, result.reason]),
+        [
+          ["patient-active", "processed", "Test referral intake completed."],
+          ["patient-pending", "skipped", "queue_status_skipped_pending"],
+          ["patient-unmatched", "skipped", "match_status_NOT_FOUND"],
+          ["patient-excluded", "skipped", "portal_status_excluded"],
+        ],
+      );
+      const activeState = await fixture.service.getPatientReferralIntakeStatus(batchId, "patient-active");
+      assert.equal(activeState.status, "completed");
+      assert.equal(activeState.processedCount, 2);
+    } finally {
+      fixture.cleanup();
+    }
+  });
+
+  it("records post-batch referral failures without failing the completed OASIS batch", async () => {
+    const fixture = createServiceFixture({
+      serviceOptions: {
+        deltaReuseEnabled: true,
+        async referralIntakeJobRunner(input) {
+          return createReferralIntakeTestState({
+            batchId: input.batchId,
+            patientId: input.patientId,
+            status: "failed",
+            processedCount: 0,
+            failedCount: 1,
+            documentCount: 1,
+            sourceDocumentCount: 1,
+            message: "Static referral intake failed for all referral documents.",
+            lastError: "Direct-document extraction failed.",
+          });
+        },
+      },
+    });
+
+    try {
+      await fixture.service.initialize();
+      const batchId = "batch-post-referral-failure";
+      const storage = fixture.repository.createBatchPaths(batchId, "reference-workbook.xlsx");
+      const workItem = createPostBatchReferralWorkItem("patient-active", "Active Patient");
+      await createPostBatchReferralBatch(fixture, {
+        batchId,
+        workItems: [workItem],
+        queueStatuses: {
+          "patient-active": "eligible",
+        },
+        patientRuns: [
+          createPostBatchReferralPatientRun({ batchId, storage, workItem }),
+        ],
+      });
+
+      await fixture.service.startBatchRun(batchId);
+      await waitForCondition(async () => {
+        const state = await fixture.service.getPatientReferralIntakeStatus(batchId, "patient-active");
+        return state.status === "failed" && await postBatchReferralSummaryExists(storage);
+      });
+
+      const reloaded = await fixture.repository.getBatch(batchId);
+      assert.equal(reloaded?.status, "COMPLETED");
+      assert.equal(reloaded?.run.lastError, null);
+      const state = await fixture.service.getPatientReferralIntakeStatus(batchId, "patient-active");
+      assert.equal(state.status, "failed");
+      assert.equal(state.lastError, "Direct-document extraction failed.");
+      const summary = JSON.parse(
+        await readFile(
+          path.join(storage.outputRoot, "post-batch-referral-intake-summary.json"),
+          "utf8",
+        ),
+      ) as { failedPatientCount: number; results: Array<{ status: string; error: string | null }> };
+      assert.equal(summary.failedPatientCount, 1);
+      assert.deepEqual(summary.results.map((result) => [result.status, result.error]), [
+        ["failed", "Direct-document extraction failed."],
+      ]);
+    } finally {
+      fixture.cleanup();
+    }
+  });
+
+  it("rejects manual referral intake while automatic post-batch intake is running for the same patient", async () => {
+    let markReferralStarted!: () => void;
+    let releaseReferral: () => void = () => undefined;
+    const referralStarted = new Promise<void>((resolve) => {
+      markReferralStarted = resolve;
+    });
+    const referralGate = new Promise<void>((resolve) => {
+      releaseReferral = resolve;
+    });
+    const fixture = createServiceFixture({
+      serviceOptions: {
+        deltaReuseEnabled: true,
+        async referralIntakeJobRunner(input) {
+          markReferralStarted();
+          await referralGate;
+          return createReferralIntakeTestState({
+            batchId: input.batchId,
+            patientId: input.patientId,
+          });
+        },
+      },
+    });
+
+    try {
+      await fixture.service.initialize();
+      const batchId = "batch-post-referral-conflict";
+      const storage = fixture.repository.createBatchPaths(batchId, "reference-workbook.xlsx");
+      const workItem = createPostBatchReferralWorkItem("patient-active", "Active Patient");
+      await createPostBatchReferralBatch(fixture, {
+        batchId,
+        workItems: [workItem],
+        queueStatuses: {
+          "patient-active": "eligible",
+        },
+        patientRuns: [
+          createPostBatchReferralPatientRun({ batchId, storage, workItem }),
+        ],
+      });
+
+      const batchRun = fixture.service.startBatchRun(batchId);
+      await referralStarted;
+      await assert.rejects(
+        () => fixture.service.startPatientReferralIntake(batchId, "patient-active"),
+        /Referral intake is already running/,
+      );
+      releaseReferral();
+      await batchRun;
+      await waitForCondition(async () => {
+        const state = await fixture.service.getPatientReferralIntakeStatus(batchId, "patient-active");
+        return state.status === "completed" && await postBatchReferralSummaryExists(storage);
+      });
+      const state = await fixture.service.getPatientReferralIntakeStatus(batchId, "patient-active");
+      assert.equal(state.status, "completed");
+    } finally {
+      releaseReferral();
       fixture.cleanup();
     }
   });

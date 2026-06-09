@@ -854,6 +854,39 @@ const nonBlockingOasisGate = {
 };
 
 describe("dashboardRunViews", () => {
+  it("exposes running referral intake state for the patient dashboard button", () => {
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        referralIntakeState: {
+          schemaVersion: "referral-intake-state.v1",
+          batchId: "batch-1",
+          patientId: "patient-1",
+          status: "running",
+          acceptedAt: "2026-04-06T20:06:00.000Z",
+          startedAt: "2026-04-06T20:06:05.000Z",
+          completedAt: null,
+          lastCheckedAt: "2026-04-06T20:06:05.000Z",
+          lastError: null,
+          processedCount: 0,
+          reusedCount: 0,
+          newOrChangedCount: 0,
+          failedCount: 0,
+          skippedCount: 0,
+          documentCount: 0,
+          sourceDocumentCount: 0,
+          statusUrl: "/api/runs/batch-1/patients/patient-1/referral-intake/status",
+          message: "Referral intake queued after the OASIS batch completed.",
+        },
+      },
+    });
+
+    assert.equal(detail.dashboardState.referralIntakeStatus?.status, "running");
+    assert.equal(detail.dashboardState.referralIntakeStatus?.message, "Referral intake queued after the OASIS batch completed.");
+    assert.equal(detail.dashboardState.referralIntakeStatus?.statusUrl, "/api/runs/batch-1/patients/patient-1/referral-intake/status");
+  });
+
   it("loads Plan of Care review draft into patient detail payload", () => {
     const detail = toDashboardPatientDetail({
       ...patientViewInput,

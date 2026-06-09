@@ -67,6 +67,7 @@ const SCHEDULE_POLL_INTERVAL_MS = 60_000;
 const DEFAULT_REFRESH_TIMEZONE = "Asia/Manila";
 const DEFAULT_REFRESH_LOCAL_TIMES = ["20:30"] as const;
 const DASHBOARD_REVIEWER_STATUS_FILE_NAME = "dashboard-reviewer-statuses.json";
+const POST_BATCH_REFERRAL_INTAKE_SUMMARY_FILE_NAME = "post-batch-referral-intake-summary.json";
 const PATIENT_PORTAL_STATUS_SNAPSHOT_TTL_MS = 10 * 60 * 1000;
 const REFERRAL_INTAKE_ACTIVE_PATIENT_WAIT_TIMEOUT_MS = 30 * 60 * 1000;
 const REFERRAL_INTAKE_ACTIVE_PATIENT_WAIT_INTERVAL_MS = 5_000;
@@ -78,6 +79,7 @@ type RunControlOptions = {
 };
 
 type ReferralIntakeStatus = "idle" | "pending" | "running" | "completed" | "failed";
+type ReferralIntakeExecutionTrigger = "manual" | "post_batch";
 type OasisCheckJobStatus = "idle" | "pending" | "running" | "completed" | "failed";
 
 type ReferralSourceDocumentManifestEntry = {
@@ -196,6 +198,38 @@ export type PatientOasisCheckState = {
   checks: Record<string, PatientOasisCheckAssessmentState>;
 };
 
+type PostBatchReferralIntakePatientResult = {
+  patientId: string;
+  patientName: string;
+  status: "processed" | "failed" | "skipped";
+  referralIntakeStatus: ReferralIntakeStatus | null;
+  processedCount: number;
+  reusedCount: number;
+  newOrChangedCount: number;
+  failedCount: number;
+  skippedCount: number;
+  documentCount: number;
+  sourceDocumentCount: number;
+  reason: string | null;
+  error: string | null;
+};
+
+type PostBatchReferralIntakeSummary = {
+  schemaVersion: "post-batch-referral-intake-summary.v1";
+  batchId: string;
+  subsidiaryId: string;
+  trigger: "post_batch";
+  reason: string;
+  startedAt: string;
+  completedAt: string;
+  processedPatientCount: number;
+  failedPatientCount: number;
+  skippedPatientCount: number;
+  documentCount: number;
+  sourceDocumentCount: number;
+  results: PostBatchReferralIntakePatientResult[];
+};
+
 export class ReferralIntakeAlreadyRunningError extends Error {
   constructor(batchId: string, patientId: string) {
     super(`Referral intake is already running for patient ${patientId} in batch ${batchId}.`);
@@ -215,6 +249,13 @@ type BatchControlPlaneOptions = {
   deltaReuseEnabled?: boolean;
   autonomousMode?: "full" | "manual_only";
   scheduleLocalTimes?: readonly string[];
+  referralIntakeJobRunner?: (input: {
+    batchId: string;
+    patientId: string;
+    patientArtifactsDirectory: string;
+    workItem: PatientEpisodeWorkItem;
+    trigger: ReferralIntakeExecutionTrigger;
+  }) => Promise<ReferralIntakeState | void>;
 };
 
 type CreateBatchFromProviderParams = {
@@ -2465,6 +2506,14 @@ export class BatchControlPlaneService {
         },
         "scheduled batch run skipped because existing patient bundles were reused",
       );
+      const postBatchReferralTask = this.runPostBatchReferralIntakePhaseSafely(
+        batch.id,
+        "no_patient_work_required",
+      ).finally(() => {
+        this.activeBatchJobs.delete(batch.id);
+      });
+      this.activeBatchJobs.set(batch.id, postBatchReferralTask);
+      void postBatchReferralTask;
       return batch;
     }
 
@@ -2712,7 +2761,13 @@ export class BatchControlPlaneService {
     });
     await writeJsonFile(getReferralIntakeStatePath(patientArtifactsDirectory), state);
 
-    const task = this.runPatientReferralIntakeJob(batchId, patientId)
+    const task = this.executePatientReferralIntakeJob({
+      batchId,
+      patientId,
+      patientArtifactsDirectory,
+      workItem,
+      trigger: "manual",
+    })
       .catch((error: unknown) => {
         this.logger.error(
           {
@@ -4472,6 +4527,7 @@ export class BatchControlPlaneService {
       });
 
       await this.finalizeBatchExecution(batch.id, manifest, parserExceptions);
+      await this.runPostBatchReferralIntakePhaseSafely(batch.id, "batch_run_completed");
       this.logger.info({ batchId }, "batch run completed");
     } catch (error) {
       await this.failBatch(batch.id, error, "run");
@@ -4684,6 +4740,241 @@ export class BatchControlPlaneService {
 
   private buildReferralIntakeJobKey(batchId: string, patientId: string): string {
     return `referral-intake:${batchId}:${patientId}`;
+  }
+
+  private getPostBatchReferralIntakeSummaryPath(batch: BatchRecord): string {
+    return path.join(batch.storage.outputRoot, POST_BATCH_REFERRAL_INTAKE_SUMMARY_FILE_NAME);
+  }
+
+  private async executePatientReferralIntakeJob(input: {
+    batchId: string;
+    patientId: string;
+    patientArtifactsDirectory: string;
+    workItem: PatientEpisodeWorkItem;
+    trigger: ReferralIntakeExecutionTrigger;
+  }): Promise<void> {
+    const customRunner = this.options.referralIntakeJobRunner;
+    if (customRunner) {
+      const state = await customRunner(input);
+      if (state) {
+        await this.writeReferralIntakeState(input.patientArtifactsDirectory, state);
+      }
+      return;
+    }
+
+    await this.runPatientReferralIntakeJob(input.batchId, input.patientId);
+  }
+
+  private buildPostBatchReferralSkipResult(input: {
+    workItem: PatientEpisodeWorkItem;
+    reason: string;
+    error?: string | null;
+  }): PostBatchReferralIntakePatientResult {
+    return {
+      patientId: input.workItem.id,
+      patientName: input.workItem.patientIdentity.displayName,
+      status: "skipped",
+      referralIntakeStatus: null,
+      processedCount: 0,
+      reusedCount: 0,
+      newOrChangedCount: 0,
+      failedCount: 0,
+      skippedCount: 0,
+      documentCount: 0,
+      sourceDocumentCount: 0,
+      reason: input.reason,
+      error: input.error ?? null,
+    };
+  }
+
+  private buildPostBatchReferralStateResult(input: {
+    workItem: PatientEpisodeWorkItem;
+    state: ReferralIntakeState;
+  }): PostBatchReferralIntakePatientResult {
+    return {
+      patientId: input.workItem.id,
+      patientName: input.workItem.patientIdentity.displayName,
+      status: input.state.status === "failed" ? "failed" : "processed",
+      referralIntakeStatus: input.state.status,
+      processedCount: input.state.processedCount,
+      reusedCount: input.state.reusedCount,
+      newOrChangedCount: input.state.newOrChangedCount,
+      failedCount: input.state.failedCount,
+      skippedCount: input.state.skippedCount,
+      documentCount: input.state.documentCount,
+      sourceDocumentCount: input.state.sourceDocumentCount,
+      reason: input.state.message,
+      error: input.state.lastError,
+    };
+  }
+
+  private async runPostBatchReferralIntakeForPatient(input: {
+    batch: BatchRecord;
+    workItem: PatientEpisodeWorkItem;
+  }): Promise<PostBatchReferralIntakePatientResult> {
+    const batchId = input.batch.id;
+    const patientId = input.workItem.id;
+    const jobKey = this.buildReferralIntakeJobKey(batchId, patientId);
+    if (this.activeReferralIntakeJobs.has(jobKey)) {
+      return this.buildPostBatchReferralSkipResult({
+        workItem: input.workItem,
+        reason: "referral_intake_already_running",
+      });
+    }
+
+    const patientArtifactsDirectory = getPatientArtifactsDirectory(input.batch, patientId);
+    const existing = await this.repository.readJsonIfExists<ReferralIntakeState>(
+      getReferralIntakeStatePath(patientArtifactsDirectory),
+    );
+    const queuedState = createReferralIntakeState({
+      batchId,
+      patientId,
+      status: "pending",
+      now: new Date().toISOString(),
+      existing,
+      message: "Referral intake queued after the OASIS batch completed.",
+    });
+    await this.writeReferralIntakeState(patientArtifactsDirectory, queuedState);
+
+    const task = this.executePatientReferralIntakeJob({
+      batchId,
+      patientId,
+      patientArtifactsDirectory,
+      workItem: input.workItem,
+      trigger: "post_batch",
+    }).finally(() => {
+      this.activeReferralIntakeJobs.delete(jobKey);
+    });
+    this.activeReferralIntakeJobs.set(jobKey, task);
+
+    try {
+      await task;
+      const state = await this.getPatientReferralIntakeStatus(batchId, patientId);
+      return this.buildPostBatchReferralStateResult({ workItem: input.workItem, state });
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "Unknown referral intake error.";
+      const state = await this.getPatientReferralIntakeStatus(batchId, patientId).catch(() => null);
+      if (state?.status === "failed" || state?.status === "completed") {
+        return this.buildPostBatchReferralStateResult({ workItem: input.workItem, state });
+      }
+      const failedState = createReferralIntakeState({
+        batchId,
+        patientId,
+        status: "failed",
+        now: new Date().toISOString(),
+        existing: state,
+        lastError: errorMessage,
+        message: "Static referral intake failed for this patient.",
+      });
+      await this.writeReferralIntakeState(patientArtifactsDirectory, failedState);
+      return this.buildPostBatchReferralStateResult({ workItem: input.workItem, state: failedState });
+    }
+  }
+
+  private shouldRunPostBatchReferralIntakeForPatient(input: {
+    workItem: PatientEpisodeWorkItem;
+    patientRun: BatchRecord["patientRuns"][number] | undefined;
+    queueStatus: PatientQueueArtifact["entries"][number]["status"] | undefined;
+  }): string | null {
+    if (input.queueStatus && input.queueStatus !== "eligible") {
+      return `queue_status_${input.queueStatus}`;
+    }
+    if (!input.patientRun) {
+      return "missing_patient_run";
+    }
+    if (input.patientRun.matchResult.status !== "EXACT") {
+      return `match_status_${input.patientRun.matchResult.status}`;
+    }
+    if (isStatusOnlyExcludedPatientRun(input.patientRun)) {
+      return "portal_status_excluded";
+    }
+    return null;
+  }
+
+  private async runPostBatchReferralIntakePhase(
+    batchId: string,
+    reason: string,
+  ): Promise<PostBatchReferralIntakeSummary | null> {
+    const startedAt = new Date().toISOString();
+    const batch = await this.mustGetBatch(batchId);
+    const manifest = await this.repository.readManifest(batch);
+    const workItems = filterEligibleWorkItems(await this.repository.readWorkItems(batch), manifest);
+    if (workItems.length === 0) {
+      return null;
+    }
+
+    const patientQueue = await this.repository.readJsonIfExists<PatientQueueArtifact>(
+      path.join(batch.storage.outputRoot, "patient-queue.json"),
+    );
+    const queueStatusByWorkItemId = new Map(
+      (patientQueue?.entries ?? []).map((entry) => [entry.workItemId, entry.status]),
+    );
+    const patientRunByWorkItemId = new Map(batch.patientRuns.map((patientRun) => [patientRun.workItemId, patientRun]));
+    const results: PostBatchReferralIntakePatientResult[] = [];
+
+    for (const workItem of workItems) {
+      const skipReason = this.shouldRunPostBatchReferralIntakeForPatient({
+        workItem,
+        patientRun: patientRunByWorkItemId.get(workItem.id),
+        queueStatus: queueStatusByWorkItemId.get(workItem.id),
+      });
+      if (skipReason) {
+        results.push(this.buildPostBatchReferralSkipResult({ workItem, reason: skipReason }));
+        continue;
+      }
+
+      results.push(await this.runPostBatchReferralIntakeForPatient({ batch, workItem }));
+    }
+
+    const completedAt = new Date().toISOString();
+    const summary: PostBatchReferralIntakeSummary = {
+      schemaVersion: "post-batch-referral-intake-summary.v1",
+      batchId,
+      subsidiaryId: batch.subsidiary.id,
+      trigger: "post_batch",
+      reason,
+      startedAt,
+      completedAt,
+      processedPatientCount: results.filter((result) => result.status === "processed").length,
+      failedPatientCount: results.filter((result) => result.status === "failed").length,
+      skippedPatientCount: results.filter((result) => result.status === "skipped").length,
+      documentCount: results.reduce((total, result) => total + result.documentCount, 0),
+      sourceDocumentCount: results.reduce((total, result) => total + result.sourceDocumentCount, 0),
+      results,
+    };
+    await writeJsonFile(this.getPostBatchReferralIntakeSummaryPath(batch), summary);
+
+    const logPayload = {
+      batchId,
+      subsidiaryId: batch.subsidiary.id,
+      processedPatientCount: summary.processedPatientCount,
+      failedPatientCount: summary.failedPatientCount,
+      skippedPatientCount: summary.skippedPatientCount,
+      documentCount: summary.documentCount,
+      summaryPath: this.getPostBatchReferralIntakeSummaryPath(batch),
+    };
+    if (summary.failedPatientCount > 0) {
+      this.logger.warn(logPayload, "post-batch referral intake completed with patient failures");
+    } else {
+      this.logger.info(logPayload, "post-batch referral intake completed");
+    }
+
+    return summary;
+  }
+
+  private async runPostBatchReferralIntakePhaseSafely(batchId: string, reason: string): Promise<void> {
+    try {
+      await this.runPostBatchReferralIntakePhase(batchId, reason);
+    } catch (error) {
+      this.logger.error(
+        {
+          batchId,
+          reason,
+          errorMessage: error instanceof Error ? error.message : "Unknown post-batch referral intake error.",
+        },
+        "post-batch referral intake phase failed after OASIS batch completion",
+      );
+    }
   }
 
   private buildOasisCheckJobKey(batchId: string, patientId: string, assessmentId: string): string {
