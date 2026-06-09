@@ -58,6 +58,7 @@ export function buildPatientDashboardArtifactPaths(input: {
     qaDocumentSummary: path.join(referralDirectory, "qa-document-summary.json"),
     fieldMapSnapshot: path.join(referralDirectory, "field-map-snapshot.json"),
     referralIntakeState: path.join(patientArtifactsDirectory, "referral-intake-state.json"),
+    oasisCheckState: path.join(patientArtifactsDirectory, "oasis-check-state.json"),
     referralSourceDocumentsManifest: path.join(patientArtifactsDirectory, "referral-source-documents-manifest.json"),
     referralDocumentResultsManifest: path.join(patientArtifactsDirectory, "referral-document-results-manifest.json"),
     patientPortalStatusSnapshot: path.join(patientArtifactsDirectory, "patient-portal-status-snapshot.json"),
@@ -123,12 +124,14 @@ async function readReferralDocumentArtifacts(
         fieldMapSnapshot,
         fieldComparison,
         extractedFacts,
+        directDocumentFailureDiagnostic,
       ] = await Promise.all([
         readJsonIfExists(path.join(artifactDirectory, "patient-qa-reference.json")),
         readJsonIfExists(path.join(artifactDirectory, "qa-document-summary.json")),
         readJsonIfExists(path.join(artifactDirectory, "field-map-snapshot.json")),
         readJsonIfExists(path.join(artifactDirectory, "field-comparison.json")),
         readJsonIfExists(path.join(artifactDirectory, "extracted-facts.json")),
+        readJsonIfExists(path.join(artifactDirectory, "direct-document-failure-diagnostic.json")),
       ]);
 
       if (!patientQaReference && !qaDocumentSummary && !fieldMapSnapshot && !fieldComparison && !extractedFacts) {
@@ -146,6 +149,7 @@ async function readReferralDocumentArtifacts(
         fieldMapSnapshot,
         fieldComparison,
         referralExtractedFacts: extractedFacts,
+        directDocumentFailureDiagnostic,
       };
     }),
   );
@@ -171,13 +175,20 @@ async function readOasisAssessmentArtifacts(
       const domStatePath = asString(assessment.domStatePath);
       const sectionOutputsPath = asString(assessment.sectionOutputsPath);
       const sectionManifestPath = asString(assessment.sectionManifestPath);
-      const [oasisDomExtractedState, oasisDomSectionOutputs, oasisDomSectionProcessingManifest] = await Promise.all([
+      const mggSnapshotPath = asString(assessment.mggSnapshotPath);
+      const [
+        oasisDomExtractedState,
+        oasisDomSectionOutputs,
+        oasisDomSectionProcessingManifest,
+        oasisMggFieldSnapshot,
+      ] = await Promise.all([
         readJsonIfExists(domStatePath),
         readJsonIfExists(sectionOutputsPath),
         readJsonIfExists(sectionManifestPath),
+        readJsonIfExists(mggSnapshotPath),
       ]);
 
-      if (!oasisDomExtractedState && !oasisDomSectionOutputs && !oasisDomSectionProcessingManifest) {
+      if (!oasisDomExtractedState && !oasisDomSectionOutputs && !oasisDomSectionProcessingManifest && !oasisMggFieldSnapshot) {
         return null;
       }
 
@@ -193,9 +204,11 @@ async function readOasisAssessmentArtifacts(
         domStatePath,
         sectionOutputsPath,
         sectionManifestPath,
+        mggSnapshotPath,
         oasisDomExtractedState,
         oasisDomSectionOutputs,
         oasisDomSectionProcessingManifest,
+        oasisMggFieldSnapshot,
       };
     }),
   );
@@ -626,6 +639,7 @@ export async function writePatientDashboardState(params: {
   const qaDocumentSummary = await readJsonIfExists(artifactPaths.qaDocumentSummary);
   const fieldMapSnapshot = await readJsonIfExists(artifactPaths.fieldMapSnapshot);
   const referralIntakeState = await readJsonIfExists(artifactPaths.referralIntakeState ?? null);
+  const oasisCheckState = await readJsonIfExists(artifactPaths.oasisCheckState ?? null);
   const referralSourceDocumentsManifest = await readJsonIfExists(artifactPaths.referralSourceDocumentsManifest ?? null);
   const referralDocumentResultsManifest = await readJsonIfExists(artifactPaths.referralDocumentResultsManifest ?? null);
   const referralDocumentArtifacts = await readReferralDocumentArtifacts(referralDocumentResultsManifest);
@@ -701,6 +715,7 @@ export async function writePatientDashboardState(params: {
       qaDocumentSummary,
       fieldMapSnapshot,
       referralIntakeState,
+      oasisCheckState,
       referralSourceDocumentsManifest,
       referralDocumentResultsManifest,
       referralDocumentArtifacts,

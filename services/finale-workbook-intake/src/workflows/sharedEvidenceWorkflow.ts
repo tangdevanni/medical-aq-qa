@@ -40,6 +40,7 @@ export interface SharedEvidenceWorkflowParams {
   env: FinaleBatchEnv;
   logger: Logger;
   portalClient: BatchPortalAutomationClient;
+  fileUploadsDiscoveryEnabled?: boolean;
 }
 
 export interface SharedEvidenceBundle {
@@ -156,10 +157,25 @@ export async function runSharedEvidenceWorkflow(
     "shared evidence workflow started",
   );
 
+  const fileUploadsDiscoveryEnabled = params.fileUploadsDiscoveryEnabled ?? true;
   const discoveryResult = await params.portalClient.discoverArtifacts(params.workItem, params.evidenceDir, {
-    workflowPhase: "file_uploads_only",
+    workflowPhase: fileUploadsDiscoveryEnabled ? "file_uploads_only" : "oasis_diagnosis_only",
   });
   stepLogs.push(...discoveryResult.stepLogs);
+  if (!fileUploadsDiscoveryEnabled) {
+    stepLogs.push(createAutomationStepLog({
+      step: "shared_evidence_file_uploads_discovery_skipped",
+      message:
+        "Skipped File Uploads shared-evidence discovery during live OASIS, Plan of Care, and Visit Notes automation; referral files are handled by static referral intake.",
+      patientName: params.context.patientName,
+      urlBefore: params.context.chartUrl,
+      urlAfter: params.context.chartUrl,
+      found: ["workflowPhase=oasis_diagnosis_only"],
+      missing: [],
+      evidence: ["source=static_referral_intake"],
+      safeReadConfirmed: true,
+    }));
+  }
 
   let documentInventoryExportPath: string | null = null;
   let documentInventoryExportError: string | null = null;

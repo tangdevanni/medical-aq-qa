@@ -32,10 +32,14 @@ import {
   loadEnv,
   capturePatientReferralFiles,
   capturePatientPortalStatusSnapshot,
+  buildOasisInternalMismatchReview,
   REFERRAL_DIRECT_DOCUMENT_SCHEMA_VERSION,
   runReferralDocumentProcessingPipeline,
   writePatientDashboardState,
   type ChartSnapshotValueSource,
+  type OasisDomSectionOutputsArtifact,
+  type OasisInternalMismatchReviewResult,
+  type OasisMggFieldSnapshotArtifact,
   type PatientPortalStatusSnapshot,
   type ReferralDirectDocumentExtractionResult,
   type ReferralSourceDocumentInput,
@@ -74,6 +78,7 @@ type RunControlOptions = {
 };
 
 type ReferralIntakeStatus = "idle" | "pending" | "running" | "completed" | "failed";
+type OasisCheckJobStatus = "idle" | "pending" | "running" | "completed" | "failed";
 
 type ReferralSourceDocumentManifestEntry = {
   documentId: string;
@@ -124,6 +129,18 @@ type ReferralDocumentResultsManifest = {
   documents: ReferralDocumentResultsManifestEntry[];
 };
 
+type ResolvedOasisCheckAssessment = {
+  assessmentId: string;
+  assessmentType: string | null;
+  title: string | null;
+  date: string | null;
+  sourceRowText: string | null;
+  artifactDirectory: string;
+  sectionOutputsPath: string | null;
+  domStatePath: string | null;
+  mggSnapshotPath: string | null;
+};
+
 type ReferralDirectDocumentCacheMetadata = {
   schemaVersion: "referral-direct-document-cache-metadata.v1";
   patientId: string;
@@ -157,10 +174,39 @@ export type ReferralIntakeState = {
   message: string | null;
 };
 
+export type PatientOasisCheckAssessmentState = {
+  assessmentId: string;
+  status: OasisCheckJobStatus;
+  acceptedAt: string | null;
+  startedAt: string | null;
+  completedAt: string | null;
+  lastCheckedAt: string | null;
+  lastError: string | null;
+  resultPath: string | null;
+  statusUrl: string;
+  message: string | null;
+  result: OasisInternalMismatchReviewResult | null;
+};
+
+export type PatientOasisCheckState = {
+  schemaVersion: "oasis-check-state.v1";
+  batchId: string;
+  patientId: string;
+  updatedAt: string;
+  checks: Record<string, PatientOasisCheckAssessmentState>;
+};
+
 export class ReferralIntakeAlreadyRunningError extends Error {
   constructor(batchId: string, patientId: string) {
     super(`Referral intake is already running for patient ${patientId} in batch ${batchId}.`);
     this.name = "ReferralIntakeAlreadyRunningError";
+  }
+}
+
+export class OasisCheckAlreadyRunningError extends Error {
+  constructor(batchId: string, patientId: string, assessmentId: string) {
+    super(`OASIS check is already running for assessment ${assessmentId} on patient ${patientId} in batch ${batchId}.`);
+    this.name = "OasisCheckAlreadyRunningError";
   }
 }
 
@@ -295,6 +341,25 @@ function asString(value: unknown): string | null {
   return typeof value === "string" && value.trim() ? value.trim() : null;
 }
 
+function hasDischargeOasisMarker(value: string | null | undefined): boolean {
+  return /\b(?:dc|d\/c|discharge|discharged)\b/i.test(value ?? "");
+}
+
+function isDischargedOasisAssessment(input: {
+  assessmentType?: string | null;
+  title?: string | null;
+  sourceRowText?: string | null;
+}): boolean {
+  return input.assessmentType?.trim().toUpperCase() === "DC" ||
+    hasDischargeOasisMarker(input.title) ||
+    hasDischargeOasisMarker(input.sourceRowText);
+}
+
+function oasisAssessmentDateSortValue(value: string | null | undefined): number {
+  const parsed = parseDateOnly(value);
+  return parsed ? parsed.getTime() : Number.MAX_SAFE_INTEGER;
+}
+
 function asChartSnapshotValueSource(value: unknown): ChartSnapshotValueSource | null {
   if (
     value === "chart_read" ||
@@ -348,6 +413,10 @@ function buildReferralIntakeStatusUrl(batchId: string, patientId: string): strin
   return `/api/runs/${encodeURIComponent(batchId)}/patients/${encodeURIComponent(patientId)}/referral-intake/status`;
 }
 
+function buildOasisCheckStatusUrl(batchId: string, patientId: string, assessmentId: string): string {
+  return `/api/runs/${encodeURIComponent(batchId)}/patients/${encodeURIComponent(patientId)}/oasis-check/status?assessmentId=${encodeURIComponent(assessmentId)}`;
+}
+
 function getPatientArtifactsDirectory(batch: BatchRecord, patientId: string): string {
   return path.join(batch.storage.outputRoot, "patients", patientId);
 }
@@ -366,6 +435,58 @@ function getReferralDocumentResultsManifestPath(patientArtifactsDirectory: strin
 
 function getPatientPortalStatusSnapshotPath(patientArtifactsDirectory: string): string {
   return path.join(patientArtifactsDirectory, "patient-portal-status-snapshot.json");
+}
+
+function getOasisCheckStatePath(patientArtifactsDirectory: string): string {
+  return path.join(patientArtifactsDirectory, "oasis-check-state.json");
+}
+
+function createOasisCheckAssessmentState(input: {
+  batchId: string;
+  patientId: string;
+  assessmentId: string;
+  status: OasisCheckJobStatus;
+  now: string;
+  existing?: Partial<PatientOasisCheckAssessmentState> | null;
+  message?: string | null;
+  lastError?: string | null;
+  resultPath?: string | null;
+  result?: OasisInternalMismatchReviewResult | null;
+}): PatientOasisCheckAssessmentState {
+  return {
+    assessmentId: input.assessmentId,
+    status: input.status,
+    acceptedAt: input.status === "pending"
+      ? input.now
+      : input.existing?.acceptedAt ?? (input.status === "running" ? input.now : null),
+    startedAt: input.status === "running" ? input.now : input.existing?.startedAt ?? null,
+    completedAt: input.status === "completed" || input.status === "failed" ? input.now : null,
+    lastCheckedAt: input.status === "completed" || input.status === "failed" ? input.now : input.existing?.lastCheckedAt ?? null,
+    lastError: input.lastError ?? null,
+    resultPath: input.resultPath ?? input.existing?.resultPath ?? null,
+    statusUrl: buildOasisCheckStatusUrl(input.batchId, input.patientId, input.assessmentId),
+    message: input.message ?? null,
+    result: input.result ?? input.existing?.result ?? null,
+  };
+}
+
+function createOasisCheckState(input: {
+  batchId: string;
+  patientId: string;
+  now: string;
+  existing?: PatientOasisCheckState | null;
+  assessmentState?: PatientOasisCheckAssessmentState;
+}): PatientOasisCheckState {
+  return {
+    schemaVersion: "oasis-check-state.v1",
+    batchId: input.batchId,
+    patientId: input.patientId,
+    updatedAt: input.now,
+    checks: {
+      ...(input.existing?.checks ?? {}),
+      ...(input.assessmentState ? { [input.assessmentState.assessmentId]: input.assessmentState } : {}),
+    },
+  };
 }
 
 function createReferralIntakeState(input: {
@@ -478,6 +599,19 @@ function safeDocumentKey(input: {
     .replace(/^-+|-+$/g, "")
     .toLowerCase();
   return slug || `document-${input.index + 1}`;
+}
+
+function safeOasisAssessmentKey(input: {
+  assessmentId: string;
+  title?: string | null;
+  date?: string | null;
+}): string {
+  const raw = [input.assessmentId, input.title, input.date].filter(Boolean).join("-");
+  const slug = raw
+    .replace(/[^a-z0-9]+/gi, "-")
+    .replace(/^-+|-+$/g, "")
+    .toLowerCase();
+  return slug || "selected-oasis";
 }
 
 async function sha256FileIfExists(filePath: string | null | undefined): Promise<string | null> {
@@ -1466,6 +1600,7 @@ type KnownPatientArtifacts = {
     qaDocumentSummary: string;
     fieldMapSnapshot: string;
     referralIntakeState?: string | null;
+    oasisCheckState?: string | null;
     referralSourceDocumentsManifest?: string | null;
     referralDocumentResultsManifest?: string | null;
     patientPortalStatusSnapshot?: string | null;
@@ -1496,6 +1631,7 @@ type KnownPatientArtifacts = {
     qaDocumentSummary: unknown | null;
     fieldMapSnapshot: unknown | null;
     referralIntakeState?: unknown | null;
+    oasisCheckState?: unknown | null;
     referralSourceDocumentsManifest?: unknown | null;
     referralDocumentResultsManifest?: unknown | null;
     referralDocumentArtifacts?: unknown | null;
@@ -1553,6 +1689,7 @@ export class BatchControlPlaneService {
   private readonly activeBatchJobs = new Map<string, Promise<void>>();
   private readonly batchUpdateLocks = new Map<string, Promise<void>>();
   private readonly activeReferralIntakeJobs = new Map<string, Promise<void>>();
+  private readonly activeOasisCheckJobs = new Map<string, Promise<void>>();
   private rerunTimer: ReturnType<typeof setInterval> | null = null;
 
   constructor(
@@ -2595,6 +2732,112 @@ export class BatchControlPlaneService {
     return state;
   }
 
+  async getPatientOasisCheckStatus(
+    batchId: string,
+    patientId: string,
+    assessmentId: string,
+  ): Promise<PatientOasisCheckAssessmentState> {
+    const batch = await this.mustGetBatch(batchId);
+    const workItems = await this.repository.readWorkItems(batch);
+    const workItem = workItems.find((item) => item.id === patientId);
+    if (!workItem) {
+      throw new Error(`Patient not found: ${patientId}`);
+    }
+    if (!assessmentId.trim()) {
+      throw new Error("assessmentId is required.");
+    }
+
+    const patientArtifactsDirectory = getPatientArtifactsDirectory(batch, patientId);
+    const state = await this.repository.readJsonIfExists<PatientOasisCheckState>(
+      getOasisCheckStatePath(patientArtifactsDirectory),
+    );
+    const existing = state?.checks?.[assessmentId] ?? null;
+    const jobKey = this.buildOasisCheckJobKey(batchId, patientId, assessmentId);
+    if (existing) {
+      return this.activeOasisCheckJobs.has(jobKey) && existing.status !== "running"
+        ? { ...existing, status: "running", message: existing.message ?? "OASIS check is running." }
+        : existing;
+    }
+
+    return createOasisCheckAssessmentState({
+      batchId,
+      patientId,
+      assessmentId,
+      status: "idle",
+      now: new Date().toISOString(),
+      message: "OASIS check has not been run for this assessment.",
+    });
+  }
+
+  async startPatientOasisCheck(input: {
+    batchId: string;
+    patientId: string;
+    assessmentId: string;
+    force?: boolean;
+  }): Promise<PatientOasisCheckAssessmentState> {
+    const batch = await this.mustGetBatch(input.batchId);
+    const workItems = await this.repository.readWorkItems(batch);
+    if (!workItems.some((item) => item.id === input.patientId)) {
+      throw new Error(`Patient not found: ${input.patientId}`);
+    }
+    const assessmentId = input.assessmentId.trim();
+    if (!assessmentId) {
+      throw new Error("assessmentId is required.");
+    }
+
+    const jobKey = this.buildOasisCheckJobKey(input.batchId, input.patientId, assessmentId);
+    if (this.activeOasisCheckJobs.has(jobKey)) {
+      throw new OasisCheckAlreadyRunningError(input.batchId, input.patientId, assessmentId);
+    }
+
+    const now = new Date().toISOString();
+    const patientArtifactsDirectory = getPatientArtifactsDirectory(batch, input.patientId);
+    const existingState = await this.repository.readJsonIfExists<PatientOasisCheckState>(
+      getOasisCheckStatePath(patientArtifactsDirectory),
+    );
+    const existingAssessmentState = existingState?.checks?.[assessmentId] ?? null;
+    const assessmentState = createOasisCheckAssessmentState({
+      batchId: input.batchId,
+      patientId: input.patientId,
+      assessmentId,
+      status: "pending",
+      now,
+      existing: existingAssessmentState,
+      message: "OASIS check accepted and queued for this assessment.",
+    });
+    await this.writeOasisCheckState(patientArtifactsDirectory, createOasisCheckState({
+      batchId: input.batchId,
+      patientId: input.patientId,
+      now,
+      existing: existingState,
+      assessmentState,
+    }));
+
+    const task = this.runPatientOasisCheckJob({
+      batchId: input.batchId,
+      patientId: input.patientId,
+      assessmentId,
+    })
+      .catch((error: unknown) => {
+        this.logger.error(
+          {
+            batchId: input.batchId,
+            patientId: input.patientId,
+            assessmentId,
+            errorMessage: error instanceof Error ? error.message : "Unknown OASIS check error.",
+          },
+          "patient OASIS check job failed",
+        );
+      })
+      .finally(() => {
+        this.activeOasisCheckJobs.delete(jobKey);
+      });
+    this.activeOasisCheckJobs.set(jobKey, task);
+    void task;
+
+    return assessmentState;
+  }
+
   async getParserExceptions(batchId: string): Promise<ParserException[]> {
     const batch = await this.mustGetBatch(batchId);
     return this.repository.readParserExceptions(batch);
@@ -3155,6 +3398,8 @@ export class BatchControlPlaneService {
         artifactPaths?.fieldMapSnapshot ?? path.join(patientArtifactsDirectory, "field-map-snapshot.json"),
       referralIntakeState:
         artifactPaths?.referralIntakeState ?? getReferralIntakeStatePath(patientArtifactsDirectory),
+      oasisCheckState:
+        artifactPaths?.oasisCheckState ?? getOasisCheckStatePath(patientArtifactsDirectory),
       referralSourceDocumentsManifest:
         artifactPaths?.referralSourceDocumentsManifest ??
         getReferralSourceDocumentsManifestPath(patientArtifactsDirectory),
@@ -3213,6 +3458,7 @@ export class BatchControlPlaneService {
       qaDocumentSummary: this.getPatientDashboardStateArtifactContent(patientDashboardState, "qaDocumentSummary"),
       fieldMapSnapshot: this.getPatientDashboardStateArtifactContent(patientDashboardState, "fieldMapSnapshot"),
       referralIntakeState: this.getPatientDashboardStateArtifactContent(patientDashboardState, "referralIntakeState"),
+      oasisCheckState: this.getPatientDashboardStateArtifactContent(patientDashboardState, "oasisCheckState"),
       referralSourceDocumentsManifest: this.getPatientDashboardStateArtifactContent(
         patientDashboardState,
         "referralSourceDocumentsManifest",
@@ -3364,6 +3610,9 @@ export class BatchControlPlaneService {
           referralIntakeState:
             patientDashboardState.artifactPaths.referralIntakeState ??
             getReferralIntakeStatePath(patientArtifactsDirectory),
+          oasisCheckState:
+            patientDashboardState.artifactPaths.oasisCheckState ??
+            getOasisCheckStatePath(patientArtifactsDirectory),
           referralSourceDocumentsManifest:
             patientDashboardState.artifactPaths.referralSourceDocumentsManifest ??
             getReferralSourceDocumentsManifestPath(patientArtifactsDirectory),
@@ -3406,6 +3655,10 @@ export class BatchControlPlaneService {
           referralIntakeState:
             await this.readJsonIfExistsWithContext(context, getReferralIntakeStatePath(patientArtifactsDirectory)) ??
             patientDashboardState.artifactContents.referralIntakeState ??
+            null,
+          oasisCheckState:
+            await this.readJsonIfExistsWithContext(context, getOasisCheckStatePath(patientArtifactsDirectory)) ??
+            patientDashboardState.artifactContents.oasisCheckState ??
             null,
           referralSourceDocumentsManifest:
             await this.readJsonIfExistsWithContext(context, getReferralSourceDocumentsManifestPath(patientArtifactsDirectory)) ??
@@ -3554,6 +3807,7 @@ export class BatchControlPlaneService {
         "field-map-snapshot.json",
       ),
       referralIntakeState: getReferralIntakeStatePath(patientArtifactsDirectory),
+      oasisCheckState: getOasisCheckStatePath(patientArtifactsDirectory),
       referralSourceDocumentsManifest: getReferralSourceDocumentsManifestPath(patientArtifactsDirectory),
       referralDocumentResultsManifest: getReferralDocumentResultsManifestPath(patientArtifactsDirectory),
       patientPortalStatusSnapshot: getPatientPortalStatusSnapshotPath(patientArtifactsDirectory),
@@ -3594,6 +3848,7 @@ export class BatchControlPlaneService {
         qaDocumentSummary: await this.readJsonIfExistsWithContext(context, artifactPaths.qaDocumentSummary),
         fieldMapSnapshot: await this.readJsonIfExistsWithContext(context, artifactPaths.fieldMapSnapshot),
         referralIntakeState: await this.readJsonIfExistsWithContext(context, artifactPaths.referralIntakeState),
+        oasisCheckState: await this.readJsonIfExistsWithContext(context, artifactPaths.oasisCheckState),
         referralSourceDocumentsManifest: await this.readJsonIfExistsWithContext(
           context,
           artifactPaths.referralSourceDocumentsManifest,
@@ -4431,6 +4686,10 @@ export class BatchControlPlaneService {
     return `referral-intake:${batchId}:${patientId}`;
   }
 
+  private buildOasisCheckJobKey(batchId: string, patientId: string, assessmentId: string): string {
+    return `oasis-check:${batchId}:${patientId}:${assessmentId}`;
+  }
+
   private getActivePatientChartWorkRun(
     batch: BatchRecord,
     patientId: string,
@@ -4479,6 +4738,341 @@ export class BatchControlPlaneService {
     state: ReferralIntakeState,
   ): Promise<void> {
     await writeJsonFile(getReferralIntakeStatePath(patientArtifactsDirectory), state);
+  }
+
+  private async writeOasisCheckState(
+    patientArtifactsDirectory: string,
+    state: PatientOasisCheckState,
+  ): Promise<void> {
+    await writeJsonFile(getOasisCheckStatePath(patientArtifactsDirectory), state);
+  }
+
+  private async waitForPatientChartWorkSlotForOasisCheck(input: {
+    batchId: string;
+    patientId: string;
+    assessmentId: string;
+    patientArtifactsDirectory: string;
+    existingState: PatientOasisCheckState | null;
+  }): Promise<boolean> {
+    const startedAt = Date.now();
+    let currentState = input.existingState;
+    let currentAssessmentState = currentState?.checks?.[input.assessmentId] ?? null;
+    let waited = false;
+
+    while (Date.now() - startedAt < REFERRAL_INTAKE_ACTIVE_PATIENT_WAIT_TIMEOUT_MS) {
+      const batch = await this.mustGetBatch(input.batchId);
+      const activeRun = this.getActivePatientChartWorkRun(batch, input.patientId);
+      if (!activeRun) {
+        return waited;
+      }
+
+      waited = true;
+      const now = new Date().toISOString();
+      currentAssessmentState = createOasisCheckAssessmentState({
+        batchId: input.batchId,
+        patientId: input.patientId,
+        assessmentId: input.assessmentId,
+        status: "pending",
+        now,
+        existing: currentAssessmentState,
+        message: `OASIS check is queued while this patient is actively in ${activeRun.processingStatus}.`,
+      });
+      currentState = createOasisCheckState({
+        batchId: input.batchId,
+        patientId: input.patientId,
+        now,
+        existing: currentState,
+        assessmentState: currentAssessmentState,
+      });
+      await this.writeOasisCheckState(input.patientArtifactsDirectory, currentState);
+      await new Promise((resolve) => setTimeout(resolve, REFERRAL_INTAKE_ACTIVE_PATIENT_WAIT_INTERVAL_MS));
+    }
+
+    throw new Error("OASIS check timed out waiting for the active patient automation step to finish.");
+  }
+
+  private async resolveOasisCheckAssessment(input: {
+    patientArtifactsDirectory: string;
+    assessmentId: string;
+  }): Promise<ResolvedOasisCheckAssessment> {
+    const snapshot = await this.repository.readJsonIfExists<PatientPortalStatusSnapshot>(
+      getPatientPortalStatusSnapshotPath(input.patientArtifactsDirectory),
+    );
+    const manifest = asRecord(await this.repository.readJsonIfExists(
+      path.join(input.patientArtifactsDirectory, "oasis-assessment-processing-manifest.json"),
+    ));
+    const manifestEntries = asArray(manifest?.assessments)
+      .map(asRecord)
+      .filter((entry): entry is Record<string, unknown> => entry !== null);
+    const manifestEntry = manifestEntries.find((entry) => asString(entry.assessmentId) === input.assessmentId) ?? null;
+    const snapshotAssessment = (snapshot?.oasisAssessments ?? []).find((entry) => entry.id === input.assessmentId) ?? null;
+    const isCurrent =
+      snapshot?.currentOasisAssessmentId === input.assessmentId ||
+      manifestEntry?.isCurrent === true;
+
+    if (!snapshotAssessment && !manifestEntry && !isCurrent) {
+      throw new Error(`Selected OASIS assessment was not found: ${input.assessmentId}`);
+    }
+
+    const artifactDirectory =
+      asString(manifestEntry?.artifactDirectory) ??
+      (snapshotAssessment
+        ? path.join(input.patientArtifactsDirectory, "oasis-assessments", safeOasisAssessmentKey({
+            assessmentId: input.assessmentId,
+            title: snapshotAssessment.title,
+            date: snapshotAssessment.date,
+          }))
+        : (isCurrent ? input.patientArtifactsDirectory : null));
+    if (!artifactDirectory) {
+      throw new Error(`Selected OASIS assessment has no artifact directory: ${input.assessmentId}`);
+    }
+
+    return {
+      assessmentId: input.assessmentId,
+      assessmentType:
+        asString(manifestEntry?.assessmentType) ??
+        snapshotAssessment?.assessmentType ??
+        null,
+      title:
+        asString(manifestEntry?.title) ??
+        snapshotAssessment?.title ??
+        null,
+      date:
+        asString(manifestEntry?.date) ??
+        snapshotAssessment?.date ??
+        null,
+      sourceRowText: snapshotAssessment?.sourceRowText ?? null,
+      artifactDirectory,
+      sectionOutputsPath:
+        asString(manifestEntry?.sectionOutputsPath) ??
+        (isCurrent ? path.join(input.patientArtifactsDirectory, "oasis-dom-section-outputs.json") : null),
+      domStatePath:
+        asString(manifestEntry?.domStatePath) ??
+        (isCurrent ? path.join(input.patientArtifactsDirectory, "oasis-dom-extracted-state.json") : null),
+      mggSnapshotPath:
+        asString(manifestEntry?.mggSnapshotPath) ??
+        (isCurrent ? path.join(input.patientArtifactsDirectory, "oasis-mgg-field-snapshot.json") : null),
+    };
+  }
+
+  private async resolveOasisCheckBaselineAssessment(input: {
+    patientArtifactsDirectory: string;
+    selectedAssessment: ResolvedOasisCheckAssessment;
+  }): Promise<(ResolvedOasisCheckAssessment & { selectionReason: string }) | null> {
+    const snapshot = await this.repository.readJsonIfExists<PatientPortalStatusSnapshot>(
+      getPatientPortalStatusSnapshotPath(input.patientArtifactsDirectory),
+    );
+    const manifest = asRecord(await this.repository.readJsonIfExists(
+      path.join(input.patientArtifactsDirectory, "oasis-assessment-processing-manifest.json"),
+    ));
+    const candidateIds = new Set<string>();
+    for (const assessment of snapshot?.oasisAssessments ?? []) {
+      if (assessment.id !== input.selectedAssessment.assessmentId) {
+        candidateIds.add(assessment.id);
+      }
+    }
+    for (const assessment of asArray(manifest?.assessments).map(asRecord)) {
+      const id = asString(assessment?.assessmentId);
+      if (id && id !== input.selectedAssessment.assessmentId) {
+        candidateIds.add(id);
+      }
+    }
+
+    const candidates: ResolvedOasisCheckAssessment[] = [];
+    for (const assessmentId of candidateIds) {
+      try {
+        const assessment = await this.resolveOasisCheckAssessment({
+          patientArtifactsDirectory: input.patientArtifactsDirectory,
+          assessmentId,
+        });
+        if (!isDischargedOasisAssessment(assessment)) {
+          candidates.push(assessment);
+        }
+      } catch {
+        continue;
+      }
+    }
+
+    const sortEarliest = (left: ResolvedOasisCheckAssessment, right: ResolvedOasisCheckAssessment) =>
+      oasisAssessmentDateSortValue(left.date) - oasisAssessmentDateSortValue(right.date) ||
+      left.assessmentId.localeCompare(right.assessmentId);
+
+    const earliestCandidate = candidates.sort(sortEarliest)[0] ?? null;
+    return earliestCandidate
+      ? {
+          ...earliestCandidate,
+          selectionReason: "earliest_non_discharge_oasis",
+        }
+      : null;
+  }
+
+  private async loadOasisCheckSectionOutputs(
+    assessment: ResolvedOasisCheckAssessment,
+  ): Promise<OasisDomSectionOutputsArtifact | null> {
+    if (!assessment.sectionOutputsPath) {
+      return null;
+    }
+    const artifact = await this.repository.readJsonIfExists<OasisDomSectionOutputsArtifact>(
+      assessment.sectionOutputsPath,
+    );
+    return artifact?.schemaVersion === "oasis-dom-section-outputs.v1" ? artifact : null;
+  }
+
+  private async loadOasisCheckMggSnapshot(
+    assessment: ResolvedOasisCheckAssessment,
+  ): Promise<OasisMggFieldSnapshotArtifact | null> {
+    if (!assessment.mggSnapshotPath) {
+      return null;
+    }
+    const artifact = await this.repository.readJsonIfExists<OasisMggFieldSnapshotArtifact>(
+      assessment.mggSnapshotPath,
+    );
+    return artifact?.schemaVersion === "oasis-mgg-field-snapshot.v1" ? artifact : null;
+  }
+
+  private async runPatientOasisCheckJob(input: {
+    batchId: string;
+    patientId: string;
+    assessmentId: string;
+  }): Promise<void> {
+    const batch = await this.mustGetBatch(input.batchId);
+    const workItems = await this.repository.readWorkItems(batch);
+    const workItem = workItems.find((item) => item.id === input.patientId);
+    if (!workItem) {
+      throw new Error(`Patient not found: ${input.patientId}`);
+    }
+
+    const patientArtifactsDirectory = getPatientArtifactsDirectory(batch, input.patientId);
+    const previousState = await this.repository.readJsonIfExists<PatientOasisCheckState>(
+      getOasisCheckStatePath(patientArtifactsDirectory),
+    );
+    const previousAssessmentState = previousState?.checks?.[input.assessmentId] ?? null;
+    let runningState: PatientOasisCheckState | null = previousState;
+    let runningAssessmentState: PatientOasisCheckAssessmentState | null = previousAssessmentState;
+
+    try {
+      await this.waitForPatientChartWorkSlotForOasisCheck({
+        batchId: input.batchId,
+        patientId: input.patientId,
+        assessmentId: input.assessmentId,
+        patientArtifactsDirectory,
+        existingState: previousState,
+      });
+
+      const startedAt = new Date().toISOString();
+      runningAssessmentState = createOasisCheckAssessmentState({
+        batchId: input.batchId,
+        patientId: input.patientId,
+        assessmentId: input.assessmentId,
+        status: "running",
+        now: startedAt,
+        existing: previousAssessmentState,
+        message: "Running internal OASIS mismatch review for the selected assessment.",
+      });
+      runningState = createOasisCheckState({
+        batchId: input.batchId,
+        patientId: input.patientId,
+        now: startedAt,
+        existing: previousState,
+        assessmentState: runningAssessmentState,
+      });
+      await this.writeOasisCheckState(patientArtifactsDirectory, runningState);
+
+      const assessment = await this.resolveOasisCheckAssessment({
+        patientArtifactsDirectory,
+        assessmentId: input.assessmentId,
+      });
+      const selectedIsDischarge = isDischargedOasisAssessment(assessment);
+      const baselineAssessment = selectedIsDischarge
+        ? await this.resolveOasisCheckBaselineAssessment({
+            patientArtifactsDirectory,
+            selectedAssessment: assessment,
+          })
+        : null;
+      const env = loadEnv();
+      const selectedSectionOutputs = await this.loadOasisCheckSectionOutputs(assessment);
+      if (!selectedSectionOutputs) {
+        throw new Error(`Selected OASIS assessment has no processed DOM section outputs: ${assessment.assessmentId}`);
+      }
+      const selectedMggSnapshot = await this.loadOasisCheckMggSnapshot(assessment);
+      const baselineMggSnapshot = baselineAssessment
+        ? await this.loadOasisCheckMggSnapshot(baselineAssessment)
+        : null;
+      const checkedAt = new Date().toISOString();
+      const result = await buildOasisInternalMismatchReview({
+        assessmentId: assessment.assessmentId,
+        assessmentType: assessment.assessmentType,
+        title: assessment.title,
+        date: assessment.date,
+        sectionOutputs: selectedSectionOutputs,
+        mggSnapshot: selectedMggSnapshot,
+        baselineAssessment: baselineAssessment
+          ? {
+              assessmentId: baselineAssessment.assessmentId,
+              assessmentType: baselineAssessment.assessmentType,
+              title: baselineAssessment.title,
+              date: baselineAssessment.date,
+              selectionReason: baselineAssessment.selectionReason,
+              mggSnapshot: baselineMggSnapshot,
+              unavailableReason: baselineMggSnapshot
+                ? null
+                : "Baseline OASIS was found, but its M/GG field snapshot was unavailable.",
+            }
+          : null,
+        sourceArtifactPaths: [
+          assessment.sectionOutputsPath,
+          assessment.mggSnapshotPath,
+          baselineAssessment?.mggSnapshotPath,
+        ].filter((entry): entry is string => Boolean(entry)),
+        env,
+        checkedAt,
+      });
+
+      const resultPath = path.join(assessment.artifactDirectory, "oasis-check-result.json");
+      await mkdir(path.dirname(resultPath), { recursive: true });
+      await writeJsonFile(resultPath, result);
+      const completedAt = new Date().toISOString();
+      const completedAssessmentState = createOasisCheckAssessmentState({
+        batchId: input.batchId,
+        patientId: input.patientId,
+        assessmentId: input.assessmentId,
+        status: result.status === "failed" ? "failed" : "completed",
+        now: completedAt,
+        existing: runningAssessmentState,
+        lastError: result.status === "failed" ? result.summary : null,
+        resultPath,
+        result,
+        message: result.summary,
+      });
+      await this.writeOasisCheckState(patientArtifactsDirectory, createOasisCheckState({
+        batchId: input.batchId,
+        patientId: input.patientId,
+        now: completedAt,
+        existing: runningState,
+        assessmentState: completedAssessmentState,
+      }));
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      const failedAt = new Date().toISOString();
+      const failedAssessmentState = createOasisCheckAssessmentState({
+        batchId: input.batchId,
+        patientId: input.patientId,
+        assessmentId: input.assessmentId,
+        status: "failed",
+        now: failedAt,
+        existing: runningAssessmentState,
+        lastError: message,
+        message,
+      });
+      await this.writeOasisCheckState(patientArtifactsDirectory, createOasisCheckState({
+        batchId: input.batchId,
+        patientId: input.patientId,
+        now: failedAt,
+        existing: runningState,
+        assessmentState: failedAssessmentState,
+      }));
+      throw error;
+    }
   }
 
   private async loadReferralSourceDocumentManifestEntries(
@@ -4565,6 +5159,7 @@ export class BatchControlPlaneService {
       "qa-document-summary.json",
       "review-only-oasis-suggestions-metadata.json",
       "direct-document-result.json",
+      "direct-document-failure-diagnostic.json",
       "referral-reuse-metadata.json",
     ];
     await Promise.all(artifactNames.map(async (artifactName) => {
@@ -4601,6 +5196,7 @@ export class BatchControlPlaneService {
       "qa-document-summary.json",
       "review-only-oasis-suggestions-metadata.json",
       "direct-document-result.json",
+      "direct-document-failure-diagnostic.json",
       "referral-reuse-metadata.json",
     ];
     let copied = false;
@@ -4649,9 +5245,14 @@ export class BatchControlPlaneService {
     if (!(await fileExistsAtPath(metadata.directDocumentResultPath))) {
       return null;
     }
-    return this.repository.readJsonIfExists<ReferralDirectDocumentExtractionResult>(
+    const result = await this.repository.readJsonIfExists<ReferralDirectDocumentExtractionResult>(
       metadata.directDocumentResultPath,
     );
+    const acceptedFactCount =
+      (result?.accepted?.diagnoses?.length ?? 0) +
+      (result?.accepted?.medications?.length ?? 0) +
+      (result?.accepted?.fieldProposals?.length ?? 0);
+    return acceptedFactCount > 0 ? result : null;
   }
 
   private async writeReferralDirectDocumentCacheMetadata(input: {

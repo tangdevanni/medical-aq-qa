@@ -27,6 +27,7 @@ type KnownArtifactContents = {
   qaDocumentSummary: unknown | null;
   fieldMapSnapshot: unknown | null;
   referralIntakeState?: unknown | null;
+  oasisCheckState?: unknown | null;
   referralSourceDocumentsManifest?: unknown | null;
   referralDocumentResultsManifest?: unknown | null;
   referralDocumentArtifacts?: unknown | null;
@@ -848,13 +849,105 @@ function deriveOasisDocumentationReview(artifactContents: KnownArtifactContents)
   };
 }
 
+function isUsableReferralDocumentArtifact(document: Record<string, unknown>): boolean {
+  const status = asString(document.status);
+  const qaDocumentSummary = asRecord(document.qaDocumentSummary);
+  const extractionUsabilityStatus = asString(qaDocumentSummary?.extractionUsabilityStatus);
+  return /^(?:processed|reused)$/i.test(status ?? "") && extractionUsabilityStatus === "usable";
+}
+
+function selectDefaultUsableReferralDocumentArtifact(
+  artifactContents: KnownArtifactContents,
+): Record<string, unknown> | null {
+  const documentArtifacts = asArray(artifactContents.referralDocumentArtifacts)
+    .map(asRecord)
+    .filter((document): document is Record<string, unknown> => document !== null);
+  if (documentArtifacts.length === 0) {
+    return null;
+  }
+
+  const resultsManifest = asRecord(artifactContents.referralDocumentResultsManifest);
+  const defaultReferralDocumentId = asString(resultsManifest?.defaultReferralDocumentId);
+  const defaultArtifact = defaultReferralDocumentId
+    ? documentArtifacts.find((document) => asString(document.documentId) === defaultReferralDocumentId)
+    : null;
+  if (defaultArtifact && isUsableReferralDocumentArtifact(defaultArtifact)) {
+    return defaultArtifact;
+  }
+
+  return documentArtifacts.find(isUsableReferralDocumentArtifact) ?? null;
+}
+
+function deriveFailedReferralDocumentsReview(artifactContents: KnownArtifactContents): DashboardDocumentationReview | null {
+  const resultsManifest = asRecord(artifactContents.referralDocumentResultsManifest);
+  const documents = asArray(resultsManifest?.documents)
+    .map(asRecord)
+    .filter((document): document is Record<string, unknown> => document !== null);
+  if (documents.length === 0) {
+    return null;
+  }
+
+  const processedCount = documents.filter((document) => /^(?:processed|reused)$/i.test(asString(document.status) ?? "")).length;
+  if (processedCount > 0) {
+    return null;
+  }
+
+  const failedDocuments = documents.filter((document) => /^failed$/i.test(asString(document.status) ?? ""));
+  const skippedDocuments = documents.filter((document) => /^skipped$/i.test(asString(document.status) ?? ""));
+  const warnings = documents
+    .map((document) => asString(document.error))
+    .filter((error): error is string => Boolean(error))
+    .slice(0, 4);
+  return {
+    available: true,
+    status: failedDocuments.length > 0 ? "rejected" : "not_available",
+    artifactPaths: [
+      "referral-source-documents-manifest.json",
+      "referral-document-results-manifest.json",
+    ],
+    summaryItems: [
+      { label: "Extraction Quality", value: failedDocuments.length > 0 ? "rejected" : "Not available" },
+      { label: "Processed Documents", value: "0" },
+      { label: "Failed Documents", value: String(failedDocuments.length) },
+      { label: "Skipped Documents", value: String(skippedDocuments.length) },
+      { label: "Source Documents", value: String(documents.length) },
+    ],
+    factCount: 0,
+    factCategories: [],
+    diagnosisCount: 0,
+    icdCodeCount: 0,
+    warningCount: warnings.length,
+    warnings,
+    note: "Referral intake captured source documents, but no document produced usable source-backed facts.",
+  };
+}
+
 function deriveReferralDocumentationReview(artifactContents: KnownArtifactContents): DashboardDocumentationReview {
+  const defaultUsableDocument = selectDefaultUsableReferralDocumentArtifact(artifactContents);
+  if (defaultUsableDocument) {
+    return deriveReferralDocumentationReview({
+      ...artifactContents,
+      patientQaReference: defaultUsableDocument.patientQaReference ?? null,
+      qaDocumentSummary: defaultUsableDocument.qaDocumentSummary ?? null,
+      fieldMapSnapshot: defaultUsableDocument.fieldMapSnapshot ?? null,
+      referralExtractedFacts: defaultUsableDocument.referralExtractedFacts ?? null,
+      referralDocumentArtifacts: null,
+      referralDocumentResultsManifest: null,
+    });
+  }
+
+  const failedDocumentsReview = deriveFailedReferralDocumentsReview(artifactContents);
+  if (failedDocumentsReview) {
+    return failedDocumentsReview;
+  }
+
   const patientQaReference = asRecord(artifactContents.patientQaReference);
   const qaDocumentSummary = asRecord(artifactContents.qaDocumentSummary);
   const documentText = asRecord(artifactContents.documentText);
   const documentFactPack = asRecord(artifactContents.documentFactPack);
   const documentCatalog = asRecord(artifactContents.documentCatalog);
   const sourceFactPack = asRecord(artifactContents.sourceClinicalFactPack);
+  const referralExtractedFacts = asRecord(artifactContents.referralExtractedFacts);
   const referralDiagnosisExtraction = asRecord(artifactContents.referralDiagnosisExtraction);
   const extractedDiagnoses = asArray(referralDiagnosisExtraction?.diagnoses);
   const referralDocumentTextEntries = asArray(documentText?.documents)
@@ -867,13 +960,17 @@ function deriveReferralDocumentationReview(artifactContents: KnownArtifactConten
     .map(asRecord)
     .filter((fact): fact is Record<string, unknown> =>
       Boolean(fact && !/^visit_note$|^oasis$|^poc$/i.test(asString(fact?.sourceType) ?? "")));
-  const categories = Array.from(new Set(facts.map((fact) => asString(fact?.category)).filter((value): value is string => Boolean(value)))).sort();
+  const directFacts = asArray(referralExtractedFacts?.facts)
+    .map(asRecord)
+    .filter((fact): fact is Record<string, unknown> => fact !== null);
+  const effectiveFacts = facts.length > 0 ? facts : directFacts;
+  const categories = Array.from(new Set(effectiveFacts.map((fact) => asString(fact?.category)).filter((value): value is string => Boolean(value)))).sort();
   const warnings = [
     ...asArray(qaDocumentSummary?.warnings).map(asString).filter((value): value is string => Boolean(value)).slice(0, 4),
     ...asArray(patientQaReference?.displayWarnings).map(asString).filter((value): value is string => Boolean(value)).slice(0, 4),
   ];
   return {
-    available: Boolean(patientQaReference || referralDocumentTextEntries.length > 0 || documentFactPack || facts.length > 0),
+    available: Boolean(patientQaReference || referralDocumentTextEntries.length > 0 || documentFactPack || effectiveFacts.length > 0),
     status: asString(qaDocumentSummary?.extractionUsabilityStatus) ?? asString(patientQaReference?.extractionUsabilityStatus),
     artifactPaths: [
       ...(documentCatalog ? ["document-catalog.json"] : []),
@@ -883,6 +980,7 @@ function deriveReferralDocumentationReview(artifactContents: KnownArtifactConten
       ...(qaDocumentSummary ? ["referral-document-processing/qa-document-summary.json"] : []),
       ...(referralDiagnosisExtraction ? ["referral-diagnosis-extraction.json"] : []),
       ...(sourceFactPack ? ["source-clinical-fact-pack.json"] : []),
+      ...(referralExtractedFacts ? ["referral-document-processing/extracted-facts.json"] : []),
     ],
     summaryItems: [
       { label: "Extraction Quality", value: asString(qaDocumentSummary?.extractionUsabilityStatus) ?? "Not available" },
@@ -891,13 +989,13 @@ function deriveReferralDocumentationReview(artifactContents: KnownArtifactConten
       { label: "Referral Fields", value: String(asArray(patientQaReference?.fieldRegistry).length) },
       { label: "Comparison Fields", value: String(Object.keys(asRecord(patientQaReference?.comparisonResults) ?? {}).length) },
     ],
-    factCount: facts.length,
+    factCount: effectiveFacts.length,
     factCategories: categories,
     diagnosisCount: asNumber(referralDiagnosisExtraction?.diagnosisCount) ??
-      facts.filter((fact) => asString(fact?.category) === "diagnosis").length,
+      effectiveFacts.filter((fact) => asString(fact?.category) === "diagnosis").length,
     icdCodeCount: extractedDiagnoses.length > 0
       ? extractedDiagnoses.filter((entry) => Boolean(asString(asRecord(entry)?.icdCode))).length
-      : facts.filter((fact) => asString(fact?.category) === "icd_code").length,
+      : effectiveFacts.filter((fact) => asString(fact?.category) === "icd_code").length,
     warningCount: warnings.length,
     warnings,
     note: /^rejected$/i.test(asString(qaDocumentSummary?.extractionUsabilityStatus) ?? "")
@@ -969,17 +1067,12 @@ function derivePlanOfCareReview(
   const draft = isPlanOfCareReviewDraft(artifactContents.planOfCareReviewDraft)
     ? artifactContents.planOfCareReviewDraft
     : null;
-  const portalCarePlanAvailable =
-    draft?.sourcePriorityUsed === "oasis_snapshot" &&
-    (draft.carePlanProblemGroups?.length ?? 0) > 0;
-  if (!oasisValidatedForPlanOfCare && !portalCarePlanAvailable) {
-    return emptyPlanOfCareReview([
-      "Plan of Care review is pending until OASIS is validated for Plan of Care generation.",
-    ]);
-  }
-
   if (!draft) {
-    return emptyPlanOfCareReview();
+    return emptyPlanOfCareReview([
+      oasisValidatedForPlanOfCare
+        ? "Plan of Care review has not been generated yet."
+        : "Plan of Care review is unavailable because no Plan of Care artifact exists yet.",
+    ]);
   }
   const sourceType = draft.pocSource?.sourceType ??
     (draft.sourcePriorityUsed === "oasis_snapshot" ? "oasis_portal" : "generated_suggestion");
@@ -2680,11 +2773,26 @@ function safeDashboardSourceKey(value: string): string {
 function getDefaultReferralDocumentId(artifactContents: KnownArtifactContents): string | null {
   const resultsManifest = asRecord(artifactContents.referralDocumentResultsManifest);
   const sourceManifest = asRecord(artifactContents.referralSourceDocumentsManifest);
-  return asString(resultsManifest?.defaultReferralDocumentId) ??
-    asArray(resultsManifest?.documents)
-      .map((entry) => asString(asRecord(entry)?.documentId))
-      .find((documentId): documentId is string => Boolean(documentId)) ??
-    asArray(sourceManifest?.documents)
+  const explicitDefault = asString(resultsManifest?.defaultReferralDocumentId);
+  if (explicitDefault) {
+    return explicitDefault;
+  }
+
+  const resultDocuments = asArray(resultsManifest?.documents)
+    .map(asRecord)
+    .filter((entry): entry is Record<string, unknown> => entry !== null);
+  const processedDocumentId = resultDocuments
+    .filter((entry) => /^(?:processed|reused)$/i.test(asString(entry.status) ?? ""))
+    .map((entry) => asString(entry.documentId))
+    .find((documentId): documentId is string => Boolean(documentId));
+  if (processedDocumentId) {
+    return processedDocumentId;
+  }
+  if (resultDocuments.length > 0) {
+    return null;
+  }
+
+  return asArray(sourceManifest?.documents)
       .map((entry) => asString(asRecord(entry)?.documentId))
       .find((documentId): documentId is string => Boolean(documentId)) ??
     null;
@@ -5430,11 +5538,155 @@ function normalizeOasisAssessmentTitle(input: {
   return type ? `${type} OASIS` : "OASIS assessment";
 }
 
+function hasDischargeOasisMarker(value: string | null | undefined): boolean {
+  return /\b(?:dc|d\/c|discharge|discharged)\b/i.test(value ?? "");
+}
+
+function isDischargedOasisAssessment(input: {
+  assessmentType?: string | null;
+  title?: string | null;
+  sourceRowText?: string | null;
+}): boolean {
+  return input.assessmentType?.trim().toUpperCase() === "DC" ||
+    hasDischargeOasisMarker(input.title) ||
+    hasDischargeOasisMarker(input.sourceRowText);
+}
+
 function sourceDateSortDescending<T extends { date: string | null; id: string }>(items: T[]): T[] {
   return items.slice().sort((left, right) =>
     parseDashboardSourceDate(right.date) - parseDashboardSourceDate(left.date) ||
     left.id.localeCompare(right.id)
   );
+}
+
+function deriveOasisDischargeComparisonSummary(value: unknown) {
+  const comparison = asRecord(value);
+  if (!comparison) {
+    return null;
+  }
+  const baselineAssessment = asRecord(comparison.baselineAssessment);
+  const dischargeAssessment = asRecord(comparison.dischargeAssessment);
+  const findings = asArray(comparison.findings)
+    .map(asRecord)
+    .filter((finding): finding is Record<string, unknown> => finding !== null)
+    .map((finding) => ({
+      fieldGroup: asString(finding.fieldGroup) ?? "M fields",
+      itemCode: asString(finding.itemCode),
+      itemLabel: asString(finding.itemLabel),
+      baselineValue: asString(finding.baselineValue),
+      dischargeValue: asString(finding.dischargeValue),
+      scoringInterpretation: asString(finding.scoringInterpretation),
+      result: asString(finding.result),
+      reasoning: asString(finding.reasoning),
+      confidence: asString(finding.confidence),
+      reviewerAction: asString(finding.reviewerAction),
+    }))
+    .filter((finding) => Boolean(finding.reasoning || finding.baselineValue || finding.dischargeValue));
+  return {
+    status: asString(comparison.status),
+    outcome: asString(comparison.outcome),
+    summary: asString(comparison.summary),
+    baselineAssessment: baselineAssessment
+      ? {
+          assessmentId: asString(baselineAssessment.assessmentId),
+          assessmentType: asString(baselineAssessment.assessmentType),
+          title: asString(baselineAssessment.title),
+          date: asString(baselineAssessment.date),
+          selectionReason: asString(baselineAssessment.selectionReason),
+        }
+      : null,
+    dischargeAssessment: dischargeAssessment
+      ? {
+          assessmentId: asString(dischargeAssessment.assessmentId),
+          assessmentType: asString(dischargeAssessment.assessmentType),
+          title: asString(dischargeAssessment.title),
+          date: asString(dischargeAssessment.date),
+        }
+      : null,
+    reviewedItemCount: typeof comparison.reviewedItemCount === "number" && Number.isFinite(comparison.reviewedItemCount)
+      ? Math.max(0, Math.trunc(comparison.reviewedItemCount))
+      : findings.length,
+    findings,
+    warnings: asArray(comparison.warnings)
+      .map(asString)
+      .filter((entry): entry is string => Boolean(entry)),
+  };
+}
+
+function deriveOasisCheckSummaryForAssessment(
+  oasisCheckState: unknown,
+  assessmentId: string,
+) {
+  const state = asRecord(oasisCheckState);
+  const checks = asRecord(state?.checks);
+  const check = asRecord(checks?.[assessmentId]);
+  if (!check) {
+    return null;
+  }
+
+  const result = asRecord(check.result);
+  const sections = asArray(result?.sections)
+    .map(asRecord)
+    .filter((section): section is Record<string, unknown> => section !== null)
+    .map((section) => {
+      const discrepancies = asArray(section.discrepancies)
+        .map(asRecord)
+        .filter((finding): finding is Record<string, unknown> => finding !== null)
+        .map((finding) => ({
+          itemCode: asString(finding.itemCode),
+          itemLabel: asString(finding.itemLabel),
+          primarySection: asString(finding.primarySection),
+          contradictingSections: asArray(finding.contradictingSections)
+            .map(asString)
+            .filter((entry): entry is string => Boolean(entry)),
+          valuesInConflict: asArray(finding.valuesInConflict)
+            .map(asString)
+            .filter((entry): entry is string => Boolean(entry)),
+          reasoning: asString(finding.reasoning),
+          confidence: asString(finding.confidence),
+          reviewerAction: asString(finding.reviewerAction),
+        }))
+        .filter((finding) => Boolean(finding.reasoning || finding.valuesInConflict.length > 0));
+      return {
+        sectionKey: asString(section.sectionKey),
+        sectionLabel: asString(section.sectionLabel),
+        status: asString(section.status),
+        discrepancies,
+      };
+    });
+  const dischargeComparison = deriveOasisDischargeComparisonSummary(result?.dischargeComparison);
+  const discrepancyCount =
+    sections.reduce((total, section) => total + section.discrepancies.length, 0) +
+    (dischargeComparison?.findings.length ?? 0);
+  return {
+    assessmentId,
+    status: asString(check.status) ?? "idle",
+    acceptedAt: asString(check.acceptedAt),
+    startedAt: asString(check.startedAt),
+    completedAt: asString(check.completedAt),
+    lastCheckedAt: asString(check.lastCheckedAt),
+    lastError: asString(check.lastError),
+    resultPath: asString(check.resultPath),
+    message: asString(check.message),
+    result: result
+      ? {
+          status: asString(result.status),
+          summary: asString(result.summary),
+          checkedAt: asString(result.checkedAt),
+          discrepancyCount,
+          sections,
+          dischargeComparison,
+          diagnostics: {
+            modelId: asString(asRecord(result.diagnostics)?.modelId),
+            promptVersion: asString(asRecord(result.diagnostics)?.promptVersion),
+            rawLlmParseStatus: asString(asRecord(result.diagnostics)?.rawLlmParseStatus),
+            warnings: asArray(asRecord(result.diagnostics)?.warnings)
+              .map(asString)
+              .filter((entry): entry is string => Boolean(entry)),
+          },
+        }
+      : null,
+  };
 }
 
 function deriveOasisAssessmentSources(input: {
@@ -5465,6 +5717,7 @@ function deriveOasisAssessmentSources(input: {
         title: asString(entry.title),
       });
       const date = asString(entry.date);
+      const sourceRowText = asString(entry.sourceRowText);
       return {
         id,
         title,
@@ -5479,6 +5732,12 @@ function deriveOasisAssessmentSources(input: {
         processingEligible: typeof entry.processingEligible === "boolean" ? entry.processingEligible : null,
         isCurrent: currentId ? id === currentId : false,
         isMonitored: currentId ? id === currentId : index === 0,
+        isDischarged: isDischargedOasisAssessment({
+          assessmentType,
+          title,
+          sourceRowText,
+        }),
+        oasisCheck: deriveOasisCheckSummaryForAssessment(input.artifactContents.oasisCheckState, id),
       };
     });
 
@@ -5508,6 +5767,15 @@ function deriveOasisAssessmentSources(input: {
         processingEligible: null,
         isCurrent: true,
         isMonitored: true,
+        isDischarged: isDischargedOasisAssessment({
+          assessmentType: asString(input.oasisDomState.assessmentType),
+          title: asString(input.oasisDomState.assessmentType) ?? "Current OASIS",
+          sourceRowText: null,
+        }),
+        oasisCheck: deriveOasisCheckSummaryForAssessment(
+          input.artifactContents.oasisCheckState,
+          asString(input.oasisDomState.assessmentId) ?? asString(input.oasisDomState.documentId) ?? "current-oasis",
+        ),
       }]
     : [];
 }
@@ -5811,8 +6079,7 @@ function deriveReferralOasisSourcesState(input: PatientViewInput) {
   return {
     referralDocuments: sourceDocuments,
     oasisAssessments,
-    defaultReferralDocumentId:
-      asString(resultsManifest?.defaultReferralDocumentId) ?? sourceDocuments[0]?.id ?? null,
+    defaultReferralDocumentId: getDefaultReferralDocumentId(artifactContents),
     defaultOasisAssessmentId,
     baselineOasisAssessmentId,
     oasisChangeFlags: deriveOasisChangeFlags({

@@ -574,6 +574,46 @@ function selectCurrentOasisAssessmentId(
     )[0]?.id ?? null;
 }
 
+function normalizeOasisAssessmentTargetText(value: string | null | undefined): string {
+  return normalizeWhitespace(value).toUpperCase();
+}
+
+function scoreOasisAssessmentTargetMatch(input: {
+  rowText: string;
+  anchorText: string;
+  targetAssessment?: PatientPortalStatusOasisAssessment | null;
+}): number {
+  const target = input.targetAssessment;
+  if (!target) {
+    return 0;
+  }
+
+  const combined = normalizeOasisAssessmentTargetText(`${input.anchorText} ${input.rowText}`);
+  const targetRowText = normalizeOasisAssessmentTargetText(target.sourceRowText);
+  const targetTitle = normalizeOasisAssessmentTargetText(target.title);
+  const targetDate = normalizeOasisAssessmentTargetText(target.date);
+  const targetStatus = normalizeOasisAssessmentTargetText(target.primaryStatus);
+  let score = 0;
+
+  if (targetRowText && normalizeOasisAssessmentTargetText(input.rowText) === targetRowText) {
+    score += 1_000;
+  }
+  if (targetTitle && combined.includes(targetTitle)) {
+    score += 350;
+  }
+  if (targetDate && combined.includes(targetDate)) {
+    score += 350;
+  }
+  if (targetStatus && combined.includes(targetStatus)) {
+    score += 75;
+  }
+  if (targetTitle && targetDate && combined.includes(targetTitle) && combined.includes(targetDate)) {
+    score += 250;
+  }
+
+  return score;
+}
+
 function formatPrimaryDiagnosisSelected(document: OasisReadyDiagnosisDocument | null | undefined): string {
   if (!document?.primaryDiagnosis.description) {
     return "none";
@@ -743,6 +783,13 @@ function isLikelyPdfResponse(input: {
   return normalizedContentType.includes("application/pdf") ||
     /\.pdf(?:$|[?#])/i.test(normalizedUrl) ||
     (/pdf/.test(normalizedUrl) && /octet-stream|application\/pdf|binary/.test(normalizedContentType));
+}
+
+function isLikelyPdfPlaywrightResponse(response: Response): boolean {
+  return isLikelyPdfResponse({
+    url: response.url(),
+    contentType: response.headers()["content-type"] ?? "",
+  });
 }
 
 async function readLocatorLabel(locator: Locator): Promise<string | null> {
@@ -2295,6 +2342,7 @@ export class PatientChartPage {
   async openOasisAssessmentNoteForReview(input: {
     chartUrl: string;
     assessmentType: string;
+    targetAssessment?: PatientPortalStatusOasisAssessment | null;
     patientKey?: string | null;
   }): Promise<{
     result: OasisAssessmentNoteOpenResult;
@@ -2307,6 +2355,7 @@ export class PatientChartPage {
       chartUrl: input.chartUrl,
       oasisSelectorUsed: "oasis_menu_for_review",
       assessmentType: input.assessmentType,
+      targetAssessment: input.targetAssessment,
     });
     const initialOasisLockState = socDocumentResult.opened
       ? await this.detectOasisSocLockState({
@@ -2397,6 +2446,7 @@ export class PatientChartPage {
     matchedAssessmentLabel?: string | null;
     printProfileKey?: OasisPrintSectionProfileKey | null;
     patientKey?: string | null;
+    skipTextExtraction?: boolean;
   }): Promise<{
     result: OasisPrintedNoteCaptureOpenResult;
     stepLogs: AutomationStepLog[];
@@ -2573,16 +2623,30 @@ export class PatientChartPage {
         selectedSectionLabels = modalSelection.selectedSectionLabels;
         warnings.push(...modalSelection.warnings);
 
-        const modalConfirmCandidates = [
-          "button:has-text('Print')",
-          "fin-button[title='Print']",
-          "fin-button[icon='ft-printer']",
-          "fin-button:has-text('Print')",
-          "button:has-text('Preview')",
-          "button:has-text('Generate')",
-          "button:has-text('OK')",
-          "button:has-text('Ok')",
-        ];
+        const modalConfirmCandidates = input.skipTextExtraction
+          ? [
+              "button:has-text('Print Preview')",
+              "fin-button[title='Print Preview']",
+              "fin-button:has-text('Print Preview')",
+              "button:has-text('Preview')",
+              "button:has-text('Generate')",
+              "button:has-text('Print')",
+              "fin-button[title='Print']",
+              "fin-button[icon='ft-printer']",
+              "fin-button:has-text('Print')",
+              "button:has-text('OK')",
+              "button:has-text('Ok')",
+            ]
+          : [
+              "button:has-text('Print')",
+              "fin-button[title='Print']",
+              "fin-button[icon='ft-printer']",
+              "fin-button:has-text('Print')",
+              "button:has-text('Preview')",
+              "button:has-text('Generate')",
+              "button:has-text('OK')",
+              "button:has-text('Ok')",
+            ];
         for (const selector of modalConfirmCandidates) {
           const confirmButton = modalResolution.locator.locator(selector).first();
           if (await confirmButton.count().catch(() => 0) > 0 && await confirmButton.isVisible().catch(() => false)) {
@@ -2590,13 +2654,25 @@ export class PatientChartPage {
             const printCaptureTimeoutMs = resolveOasisPrintCaptureTimeoutMs(this.options.debugConfig);
             const downloadPromise = this.page.waitForEvent("download", {
               timeout: printCaptureTimeoutMs,
-            }).catch(() => null);
-            const pdfResponsePromise = this.page.waitForResponse((response) => {
-              const contentType = response.headers()["content-type"] ?? "";
-              return /application\/pdf/i.test(contentType);
-            }, {
+            })
+              .then((download) => ({ kind: "download" as const, download }))
+              .catch(() => null);
+            const pdfResponsePromise = this.page.waitForResponse(isLikelyPdfPlaywrightResponse, {
               timeout: printCaptureTimeoutMs,
-            }).catch(() => null);
+            })
+              .then((response) => ({ kind: "response" as const, response }))
+              .catch(() => null);
+            const contextPdfResponsePromise = this.page.context().waitForEvent("response", {
+              predicate: isLikelyPdfPlaywrightResponse,
+              timeout: printCaptureTimeoutMs,
+            })
+              .then((response) => ({ kind: "response" as const, response }))
+              .catch(() => null);
+            const previewPagePromise = input.skipTextExtraction && /preview/i.test(selector)
+              ? this.page.context().waitForEvent("page", {
+                  timeout: Math.min(10_000, printCaptureTimeoutMs),
+                }).catch(() => null)
+              : Promise.resolve(null);
 
             await clickReadOnlyTarget({
               locator: confirmButton,
@@ -2608,21 +2684,36 @@ export class PatientChartPage {
               printModalConfirmSucceeded = false;
             });
 
-            const download = await downloadPromise;
-            if (download) {
-              await download.saveAs(printedPdfPath).catch(() => undefined);
-            } else {
-              const pdfResponse = await pdfResponsePromise;
-              if (pdfResponse) {
-                const responseBody = await pdfResponse.body().catch(() => null);
-                if (responseBody) {
-                  await writeFile(printedPdfPath, responseBody);
-                }
-              } else {
-                warnings.push(
-                  `Timed out after ${printCaptureTimeoutMs}ms waiting for Finale to produce the printed OASIS PDF.`,
-                );
+            const previewPage = await previewPagePromise;
+            if (previewPage) {
+              await previewPage.waitForLoadState("domcontentloaded", {
+                timeout: Math.min(10_000, printCaptureTimeoutMs),
+              }).catch(() => undefined);
+              await previewPage.waitForLoadState("networkidle", {
+                timeout: Math.min(10_000, printCaptureTimeoutMs),
+              }).catch(() => undefined);
+            }
+            if (input.skipTextExtraction && /preview/i.test(selector)) {
+              await this.page.waitForTimeout(1_000).catch(() => undefined);
+            }
+
+            const capture = await Promise.any([
+              downloadPromise.then((value) => value ?? Promise.reject(new Error("no download"))),
+              pdfResponsePromise.then((value) => value ?? Promise.reject(new Error("no page PDF response"))),
+              contextPdfResponsePromise.then((value) => value ?? Promise.reject(new Error("no context PDF response"))),
+            ]).catch(() => null);
+            if (capture?.kind === "download") {
+              await capture.download.saveAs(printedPdfPath).catch(() => undefined);
+            } else if (capture?.kind === "response") {
+              const responseBody = await capture.response.body().catch(() => null);
+              if (responseBody) {
+                await writeFile(printedPdfPath, responseBody);
               }
+            }
+            if (!capture) {
+              warnings.push(
+                `Timed out after ${printCaptureTimeoutMs}ms waiting for Finale to produce the printed OASIS PDF.`,
+              );
             }
             break;
           }
@@ -2655,7 +2746,9 @@ export class PatientChartPage {
       );
     }
 
-    const extractedTextFallback = normalizeWhitespace(await dumpTopVisibleText(this.page, 16_000).catch(() => ""));
+    const extractedTextFallback = input.skipTextExtraction
+      ? ""
+      : normalizeWhitespace(await dumpTopVisibleText(this.page, 16_000).catch(() => ""));
     const artifact: ArtifactRecord = {
       artifactType: "OASIS",
       status: "DOWNLOADED",
@@ -2666,12 +2759,16 @@ export class PatientChartPage {
       extractedFields: {},
       notes: [],
     };
-    const extractedDocuments = await extractDocumentsFromArtifacts(sourcePdfPath ? [artifact] : []);
+    const extractedDocuments = input.skipTextExtraction
+      ? []
+      : await extractDocumentsFromArtifacts(sourcePdfPath ? [artifact] : []);
     const extractedDocument = extractedDocuments.find((document) => document.type === "OASIS") ?? null;
     const extractedTextPath = path.join(documentDirectory, "extracted-text.txt");
     const ocrResultPath = path.join(documentDirectory, "ocr-result.json");
     let textLength = extractedDocument?.text.length ?? 0;
-    if (!extractedDocument) {
+    if (input.skipTextExtraction) {
+      warnings.push("Skipped OASIS printed-note text extraction because PDF-direct OASIS check uses the source PDF.");
+    } else if (!extractedDocument) {
       await writeFile(extractedTextPath, `${extractedTextFallback}\n`, "utf8");
       textLength = extractedTextFallback.length;
       warnings.push("Fell back to visible page text because printed-note OCR text was unavailable.");
@@ -2698,8 +2795,8 @@ export class PatientChartPage {
           printModalConfirmSucceeded,
           selectedSectionLabels,
           printedPdfPath: sourcePdfPath,
-          extractedTextPath,
-          ocrResultPath: sourcePdfPath ? ocrResultPath : null,
+          extractedTextPath: input.skipTextExtraction ? null : extractedTextPath,
+          ocrResultPath: !input.skipTextExtraction && sourcePdfPath ? ocrResultPath : null,
           textLength,
           extractionMethod,
           warnings,
@@ -2713,7 +2810,9 @@ export class PatientChartPage {
 
     stepLogs.push(createAutomationStepLog({
       step: "oasis_print_capture",
-      message: sourcePdfPath
+      message: input.skipTextExtraction && sourcePdfPath
+        ? "Captured the OASIS assessment PDF for direct LLM review."
+        : sourcePdfPath
         ? "Captured the OASIS assessment print view for read-only OCR review."
         : "Attempted OASIS assessment print capture and fell back to visible text review.",
       urlBefore: input.chartUrl,
@@ -2729,14 +2828,16 @@ export class PatientChartPage {
         `extractionMethod=${extractionMethod}`,
         `textLength=${textLength}`,
       ],
-      missing: textLength > 0 ? [] : ["printed OASIS note text"],
+      missing: input.skipTextExtraction
+        ? (sourcePdfPath ? [] : ["printed OASIS PDF"])
+        : (textLength > 0 ? [] : ["printed OASIS note text"]),
       openedDocumentLabel: input.matchedAssessmentLabel ?? `${input.assessmentType} OASIS`,
       openedDocumentUrl: this.page.url(),
       evidence: [
         `printedPdfPath=${sourcePdfPath ?? "none"}`,
         `selectedSectionLabels=${selectedSectionLabels.join(" | ") || "none"}`,
-        `extractedTextPath=${extractedTextPath}`,
-        `ocrResultPath=${sourcePdfPath ? ocrResultPath : "none"}`,
+        `extractedTextPath=${input.skipTextExtraction ? "none" : extractedTextPath}`,
+        `ocrResultPath=${!input.skipTextExtraction && sourcePdfPath ? ocrResultPath : "none"}`,
         `extractionResultPath=${extractionResultPath}`,
         `warnings=${warnings.join(" | ") || "none"}`,
       ],
@@ -2760,9 +2861,9 @@ export class PatientChartPage {
         currentUrl: this.page.url(),
         printedPdfPath: sourcePdfPath,
         sourcePdfPath,
-        extractedTextPath,
+        extractedTextPath: input.skipTextExtraction ? null : extractedTextPath,
         extractionResultPath,
-        ocrResultPath: sourcePdfPath ? ocrResultPath : null,
+        ocrResultPath: !input.skipTextExtraction && sourcePdfPath ? ocrResultPath : null,
         textLength,
         extractionMethod,
         warnings,
@@ -3925,6 +4026,7 @@ export class PatientChartPage {
         assessmentType,
         title,
         date,
+        sourceRowText: rowText,
         detectedStatuses: summary.detectedStatuses,
         primaryStatus: summary.primaryStatus,
         decision: summary.decision,
@@ -3939,6 +4041,7 @@ export class PatientChartPage {
     chartUrl: string;
     oasisSelectorUsed: string | null;
     assessmentType: string;
+    targetAssessment?: PatientPortalStatusOasisAssessment | null;
   }): Promise<{
     opened: boolean;
     socDocumentFound: boolean;
@@ -3951,11 +4054,36 @@ export class PatientChartPage {
     await waitForPortalPageSettled(this.page, this.options.debugConfig);
     const stepLogs: AutomationStepLog[] = [];
     const targetAssessmentType = input.assessmentType.toUpperCase();
+    const targetAssessment = input.targetAssessment ?? null;
     const tableRows = this.page.locator("app-private-documents table tbody tr, fin-datatable table tbody tr, table tbody tr");
-    const totalTableRowCount = await tableRows.count().catch(() => 0);
     const tableAnchors = this.page.locator(
       "app-private-documents table tbody tr a.tbl-link, fin-datatable table tbody tr a.tbl-link, table tbody tr a.tbl-link, a.tbl-link",
     );
+    const readinessEvidence: string[] = [];
+    for (let attempt = 1; attempt <= 12; attempt += 1) {
+      await waitForPortalPageSettled(this.page, this.options.debugConfig);
+      const rowCount = await tableRows.count().catch(() => 0);
+      const anchorCount = await tableAnchors.count().catch(() => 0);
+      const listResolution = await resolveVisibleLocatorList({
+        page: this.page,
+        candidates: OASIS_DOCUMENT_LIST_SELECTORS,
+        step: "oasis_document_list_wait",
+        logger: this.options.logger,
+        debugConfig: this.options.debugConfig,
+        maxItems: 40,
+      });
+      readinessEvidence.push(
+        `readinessAttempt=${attempt} rowCount=${rowCount} anchorCount=${anchorCount} listItemCount=${listResolution.items.length} url=${this.page.url()}`,
+      );
+      if (rowCount > 0 || anchorCount > 0 || listResolution.items.length > 0) {
+        break;
+      }
+      if (attempt < 12) {
+        await this.page.waitForTimeout(750);
+      }
+    }
+
+    const totalTableRowCount = await tableRows.count().catch(() => 0);
     const totalAnchorCount = await tableAnchors.count().catch(() => 0);
     const allAnchorTexts: string[] = [];
     const normalizedAnchorTexts: string[] = [];
@@ -3976,6 +4104,7 @@ export class PatientChartPage {
         totalTblLinkAnchorCount: totalAnchorCount,
         allAnchorTexts,
         normalizedAnchorTexts,
+        readinessEvidence,
       },
       "OASIS document anchors collected",
     );
@@ -3995,6 +4124,7 @@ export class PatientChartPage {
     if (listItems.length === 0 && totalTableRowCount === 0 && totalAnchorCount === 0) {
       failureReason = "oasis_document_table_unavailable";
       const evidence = [
+        ...readinessEvidence,
         ...listEvidence,
         `Total table tbody tr count: ${totalTableRowCount}`,
         `Total a.tbl-link anchor count: ${totalAnchorCount}`,
@@ -4077,7 +4207,7 @@ export class PatientChartPage {
         label: `${anchorText} ${rowText}`,
         assessmentType: targetAssessmentType,
         index,
-      }) + 20;
+      }) + 20 + scoreOasisAssessmentTargetMatch({ rowText, anchorText, targetAssessment });
       if (score <= 0) {
         continue;
       }
@@ -4103,7 +4233,7 @@ export class PatientChartPage {
         label: rowText,
         assessmentType: targetAssessmentType,
         index,
-      });
+      }) + scoreOasisAssessmentTargetMatch({ rowText, anchorText: rowText, targetAssessment });
       if (score <= 0) {
         continue;
       }
@@ -4133,6 +4263,9 @@ export class PatientChartPage {
         allAnchorTexts,
         normalizedAnchorTexts,
         targetAssessmentType,
+        targetAssessmentId: targetAssessment?.id ?? null,
+        targetAssessmentTitle: targetAssessment?.title ?? null,
+        targetAssessmentDate: targetAssessment?.date ?? null,
         assessmentCandidateCount: candidateAssessmentAnchors.length,
         rankedAssessmentCandidateTexts: candidateAssessmentAnchors
           .slice()
@@ -4152,6 +4285,7 @@ export class PatientChartPage {
     if (candidateAssessmentAnchors.length === 0) {
       failureReason = `no_${targetAssessmentType.toLowerCase()}_anchor_found`;
       const combinedEvidence = [
+        ...readinessEvidence,
         ...listEvidence,
         `Total table tbody tr count: ${totalTableRowCount}`,
         `Total a.tbl-link anchor count: ${totalAnchorCount}`,
@@ -4293,6 +4427,13 @@ export class PatientChartPage {
       `All anchor texts: ${allAnchorTexts.join(" | ") || "none"}`,
       `Normalized anchor texts: ${normalizedAnchorTexts.join(" | ") || "none"}`,
       `Target assessment type: ${targetAssessmentType}`,
+      ...(targetAssessment
+        ? [
+            `Target assessment id: ${targetAssessment.id}`,
+            `Target assessment title: ${targetAssessment.title}`,
+            `Target assessment date: ${targetAssessment.date ?? "none"}`,
+          ]
+        : []),
       `Candidate assessment targets found: ${candidateAssessmentAnchors.length}`,
       `Ranked assessment candidate texts: ${rankedAssessmentCandidateTexts.join(" | ") || "none"}`,
       `Chosen assessment target text: ${matchedSoc.anchorText}`,

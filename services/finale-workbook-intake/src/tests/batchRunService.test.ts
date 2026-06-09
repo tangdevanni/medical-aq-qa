@@ -7,9 +7,13 @@ import type {
   ArtifactRecord,
   AutomationStepLog,
   DocumentInventoryItem,
+  OasisDomAcquisitionState,
   PatientDashboardState,
   PatientEpisodeWorkItem,
   PatientMatchResult,
+  PortalDomExtractedField,
+  PortalDomExtractedSection,
+  PortalDomExtractedState,
 } from "@medical-ai-qa/shared-types";
 import { runBatchQA, runFinaleBatch, runQAForPatient } from "../services/batchRunService";
 import type { OasisExecutionActionPerformed } from "../services/oasisDiagnosisExecutionService";
@@ -30,13 +34,293 @@ import type {
   ResolvedEpisodeSelection,
 } from "../oasis/navigation/episodeRangeDropdownService";
 import type { BillingPeriodCalendarSummary } from "../oasis/types/billingPeriodCalendarSummary";
+import {
+  mergeOasisDomAcquisitionState,
+  readOasisDomAcquisitionState,
+  writeOasisDomAcquisitionState,
+} from "../portal/domExtraction/oasisDomAcquisitionState";
+import { persistOasisDomAcquisitionArtifacts } from "../portal/domExtraction/oasisDomBridge";
+import {
+  buildVisitNotesDiscoveryArtifact,
+  VISIT_NOTES_DISCOVERY_FILE_NAME,
+} from "../portal/services/visitNotesDiscoveryService";
 
 vi.setConfig({ testTimeout: 20_000 });
+
+function domField(input: {
+  section: string;
+  itemCode: string;
+  label: string;
+  value: string;
+}): PortalDomExtractedField {
+  return {
+    section: input.section,
+    itemCode: input.itemCode,
+    label: input.label,
+    key: input.itemCode.toLowerCase(),
+    inputType: "text",
+    value: input.value,
+    sourceKind: "input",
+    confidence: "high",
+    evidenceText: `${input.label}: ${input.value}`,
+  };
+}
+
+function buildFixtureOasisDomState(input: {
+  variant: "current" | "supplemental";
+  includePlanOfCare?: boolean;
+  extractedAt?: string;
+}): PortalDomExtractedState {
+  const extractedAt = input.extractedAt ?? new Date().toISOString();
+  const includePlanOfCare = input.includePlanOfCare ?? true;
+  const carePlanProblem = input.variant === "current"
+    ? "Latest OASIS POC - Wound care requires skilled nursing with current right lower leg open wound."
+    : "Older OASIS POC - Historical wound care plan from a previous OASIS.";
+  const carePlanGoal = input.variant === "current"
+    ? "Patient wound will show no signs of infection and improve epithelialization this episode."
+    : "Historical wound goal from older OASIS episode.";
+  const carePlanIntervention = input.variant === "current"
+    ? "Skilled nursing to perform wound assessment, wound care, infection monitoring, medication review, and caregiver teaching."
+    : "Historical skilled nursing intervention from older OASIS episode.";
+
+  const sections: PortalDomExtractedSection[] = [
+    {
+      title: "Administrative Information",
+      status: "success",
+      fields: [
+        domField({
+          section: "Administrative Information",
+          itemCode: "M0090",
+          label: "Date Assessment Completed",
+          value: input.variant === "current" ? "06/01/2026" : "05/01/2026",
+        }),
+      ],
+      tables: [],
+      visibleTextDigest: "SOC date provider identity patient information billing episode.",
+    },
+    {
+      title: "Active Diagnoses",
+      status: "success",
+      fields: [
+        domField({
+          section: "Active Diagnoses",
+          itemCode: "M1021",
+          label: "Primary Diagnosis ICD",
+          value: "S81.801D - Unspecified open wound, right lower leg, subsequent encounter",
+        }),
+      ],
+      tables: [],
+      visibleTextDigest: "Diagnosis ICD M1021 active problem wound right lower leg.",
+    },
+    {
+      title: "Vital Signs & Pain Assessment",
+      status: "success",
+      fields: [
+        domField({
+          section: "Vital Signs & Pain Assessment",
+          itemCode: "M1242",
+          label: "Pain Frequency",
+          value: "Vitals stable. Blood pressure and heart rate documented. Pain reviewed.",
+        }),
+      ],
+      tables: [],
+      visibleTextDigest: "Vital signs pain assessment blood pressure heart rate temperature.",
+    },
+    {
+      title: "Medication & Allergies",
+      status: "success",
+      fields: [
+        domField({
+          section: "Medication & Allergies",
+          itemCode: "O0110",
+          label: "Medication Review",
+          value: "Medication profile reviewed. No allergy changes. Injectable medication status checked.",
+        }),
+      ],
+      tables: [],
+      visibleTextDigest: "Medication allergy injectable O0110 drug dose route.",
+    },
+    {
+      title: "Neurological",
+      status: "success",
+      fields: [
+        domField({
+          section: "Neurological",
+          itemCode: "C0500",
+          label: "Cognitive Assessment",
+          value: "Neurological status intact. BIMS and mood screening reviewed.",
+        }),
+      ],
+      tables: [],
+      visibleTextDigest: "Neurological head mood eyes ears BIMS PHQ cognitive.",
+    },
+    {
+      title: "Cardiopulmonary",
+      status: "success",
+      fields: [
+        domField({
+          section: "Cardiopulmonary",
+          itemCode: "J0510",
+          label: "Respiratory Assessment",
+          value: "Cardiopulmonary assessment completed. Respiratory status stable.",
+        }),
+      ],
+      tables: [],
+      visibleTextDigest: "Cardiopulmonary chest thorax respiratory oxygen dyspnea.",
+    },
+    {
+      title: "Gastrointestinal & Genitourinary",
+      status: "success",
+      fields: [
+        domField({
+          section: "Gastrointestinal & Genitourinary",
+          itemCode: "M1600",
+          label: "GI GU Assessment",
+          value: "Gastrointestinal and genitourinary assessment completed.",
+        }),
+      ],
+      tables: [],
+      visibleTextDigest: "Gastrointestinal genitourinary continence nutrition.",
+    },
+    {
+      title: "Integumentary / Skin & Wound",
+      status: "success",
+      fields: [
+        domField({
+          section: "Integumentary / Skin & Wound",
+          itemCode: "M1342",
+          label: "Wound Status",
+          value: "Open wound to right lower leg requires skilled wound care and monitoring.",
+        }),
+      ],
+      tables: [],
+      visibleTextDigest: "Integumentary skin wound pressure ulcer drainage.",
+    },
+    {
+      title: "Safety & Risk Assessment / Self Care",
+      status: "success",
+      fields: [
+        domField({
+          section: "Safety & Risk Assessment / Self Care",
+          itemCode: "M1033",
+          label: "Risk Assessment",
+          value: "Fall risk and safety needs reviewed. Caregiver support available.",
+        }),
+      ],
+      tables: [],
+      visibleTextDigest: "Safety risk assessment self care emergency caregiver support.",
+    },
+    {
+      title: "Functional Assessment / Mobility & Musculoskeletal",
+      status: "success",
+      fields: [
+        domField({
+          section: "Functional Assessment / Mobility & Musculoskeletal",
+          itemCode: "GG0170",
+          label: "Mobility",
+          value: "Mobility, transfers, ambulation, walker use, and musculoskeletal status reviewed.",
+        }),
+      ],
+      tables: [],
+      visibleTextDigest: "Functional mobility musculoskeletal gait ambulate transfer walker wheelchair GG0170.",
+    },
+    {
+      title: "Endocrine / Diabetic Management",
+      status: "success",
+      fields: [
+        domField({
+          section: "Endocrine / Diabetic Management",
+          itemCode: "M1740",
+          label: "Endocrine Assessment",
+          value: "Endocrine and diabetic management reviewed.",
+        }),
+      ],
+      tables: [],
+      visibleTextDigest: "Endocrine diabetic management nutrition supplement.",
+    },
+    {
+      title: "Plan of Care / Identified Problem Care Plan and Physical Therapy Evaluation",
+      status: "success",
+      fields: [
+        domField({
+          section: "Plan of Care / Identified Problem Care Plan and Physical Therapy Evaluation",
+          itemCode: "M2200",
+          label: "Therapy Need",
+          value: "Plan of care includes skilled nursing frequency and patient caregiver goals.",
+        }),
+      ],
+      tables: includePlanOfCare
+        ? [{
+            section: "Plan of Care / Identified Problem Care Plan and Physical Therapy Evaluation",
+            title: "Care Plan Problems, Goals, and Interventions",
+            headers: ["#", "Problem", "Goal", "Intervention", "Target Completion", "Term", "Status", "Onset", "Source"],
+            rows: [[
+              "1",
+              carePlanProblem,
+              carePlanGoal,
+              carePlanIntervention,
+              "3 Week(s)",
+              "Short-term",
+              "Unmet",
+              input.variant === "current" ? "06/01/2026" : "05/01/2026",
+              "From OASIS",
+            ]],
+          }]
+        : [],
+      visibleTextDigest: includePlanOfCare
+        ? `${carePlanProblem} ${carePlanGoal} ${carePlanIntervention}`
+        : "Plan of care section visible but no usable care plan problem table exists yet.",
+    },
+    {
+      title: "Patient Summary & Clinical Narrative",
+      status: "success",
+      fields: [
+        domField({
+          section: "Patient Summary & Clinical Narrative",
+          itemCode: "M2102",
+          label: "Clinical Narrative",
+          value: "Patient is homebound. Medical necessity supports skilled nursing for wound care and teaching.",
+        }),
+      ],
+      tables: [],
+      visibleTextDigest: "Patient summary clinical narrative homebound medical necessity skilled nursing wound care.",
+    },
+  ];
+
+  return {
+    artifactType: "portal_dom_extracted_state",
+    sourceArea: "oasis",
+    extractionVersion: "test",
+    extractedAt,
+    sections,
+    coverage: {
+      sectionCount: sections.length,
+      fieldCount: sections.reduce((total, section) => total + section.fields.length, 0),
+      nonEmptyFieldCount: sections.reduce((total, section) => total + section.fields.length, 0),
+      tableCount: sections.reduce((total, section) => total + section.tables.length, 0),
+      confidence: "high",
+      fallbackRecommended: false,
+      fallbackReasons: [],
+    },
+    diagnostics: {
+      inputSource: "dom_state_primary",
+      ocrUsed: false,
+      pdfCaptureUsed: false,
+      routePattern: input.variant === "current" ? "current-oasis" : "supplemental-oasis",
+      sectionOptionLabels: sections.map((section) => section.title),
+      skippedDeferredSections: [],
+    },
+    contentHash: input.variant === "current" ? "latest-oasis-poc-hash" : "older-oasis-poc-hash",
+    textDigest: sections.map((section) => `${section.title} ${section.visibleTextDigest ?? ""}`).join("\n"),
+  };
+}
 
 class FakePortalClient implements BatchPortalAutomationClient {
   public oasisExecutionCalls = 0;
   public discoverArtifactsCalls = 0;
   public discoverArtifactWorkflowPhases: string[] = [];
+
+  constructor(private readonly options: { includeCurrentPlanOfCare?: boolean } = {}) {}
 
   async initialize(): Promise<void> {}
 
@@ -117,8 +401,7 @@ class FakePortalClient implements BatchPortalAutomationClient {
       "utf8",
     );
 
-    return {
-      artifacts: [
+    const artifacts: ArtifactRecord[] = [
       {
         artifactType: "OASIS",
         status: "FOUND",
@@ -169,8 +452,8 @@ class FakePortalClient implements BatchPortalAutomationClient {
         extractedFields: {},
         notes: [],
       },
-      ],
-      documentInventory: [
+    ];
+    const documentInventory: DocumentInventoryItem[] = [
         {
           sourceLabel: "OASIS",
           normalizedType: "OASIS",
@@ -182,7 +465,14 @@ class FakePortalClient implements BatchPortalAutomationClient {
           discoveredAt: new Date().toISOString(),
           openBehavior: "DOWNLOAD",
         },
-      ],
+      ];
+    return {
+      artifacts: options?.workflowPhase === "oasis_diagnosis_only"
+        ? artifacts.filter((artifact) => artifact.artifactType === "OASIS")
+        : artifacts,
+      documentInventory: options?.workflowPhase === "oasis_diagnosis_only"
+        ? documentInventory.filter((item) => item.normalizedType === "OASIS")
+        : documentInventory,
       stepLogs: [],
     };
   }
@@ -514,6 +804,14 @@ class FakePortalClient implements BatchPortalAutomationClient {
           },
         ],
         lockStatus: "locked",
+        oasisAssessmentStatus: {
+          detectedStatuses: [],
+          primaryStatus: "UNKNOWN",
+          decision: "PROCESS",
+          processingEligible: true,
+          reason: "Fixture OASIS assessment is processable.",
+          matchedSignals: [],
+        },
         warnings: [],
       },
       stepLogs: [
@@ -614,6 +912,159 @@ class FakePortalClient implements BatchPortalAutomationClient {
           openedDocumentLabel: input.matchedAssessmentLabel ?? `${input.assessmentType} OASIS`,
           openedDocumentUrl: `${input.context.chartUrl}/oasis/${input.assessmentType.toLowerCase()}`,
           evidence: [extractedTextPath],
+          retryCount: 0,
+          safeReadConfirmed: true,
+        },
+      ],
+    };
+  }
+
+  async extractOasisDomForReview(input: {
+    context: import("../portal/context/patientPortalContext").PatientPortalContext;
+    workItem: PatientEpisodeWorkItem;
+    outputDir: string;
+    patientArtifactsDirectory?: string;
+    thresholds?: {
+      minFieldCount?: number;
+      minNonEmptyFieldCount?: number;
+    };
+  }): Promise<{
+    state: PortalDomExtractedState;
+    acquisitionState: OasisDomAcquisitionState;
+    domStatePath: string;
+    acquisitionStatePath: string;
+    bridgeTextPath: string;
+    comparisonPath: string;
+    recommendedDecision: string;
+    stepLogs: AutomationStepLog[];
+  }> {
+    const patientArtifactsDirectory = input.patientArtifactsDirectory ??
+      path.join(input.outputDir, "patients", input.workItem.id);
+    const variant = patientArtifactsDirectory.includes(`${path.sep}oasis-assessments${path.sep}`)
+      ? "supplemental"
+      : "current";
+    const state = buildFixtureOasisDomState({
+      variant,
+      includePlanOfCare: variant === "current"
+        ? this.options.includeCurrentPlanOfCare ?? true
+        : true,
+    });
+    const previousAcquisitionState = await readOasisDomAcquisitionState(patientArtifactsDirectory);
+    const acquisitionState = mergeOasisDomAcquisitionState(previousAcquisitionState, state, {
+      patientRunId: input.context.patientRunId,
+      patientId: input.workItem.id,
+      sourceKey: state.diagnostics.routePattern,
+      ocrFallbackEnabled: false,
+      minFieldCount: input.thresholds?.minFieldCount,
+      minNonEmptyFieldCount: input.thresholds?.minNonEmptyFieldCount,
+    });
+    const persisted = await persistOasisDomAcquisitionArtifacts({
+      state,
+      patientArtifactsDirectory,
+      patientCase: input.context.patientRunId,
+    });
+    const acquisitionStatePath = await writeOasisDomAcquisitionState({
+      patientArtifactsDirectory,
+      state: acquisitionState,
+    });
+
+    return {
+      state,
+      acquisitionState,
+      domStatePath: persisted.domStatePath,
+      acquisitionStatePath,
+      bridgeTextPath: persisted.bridgeTextPath,
+      comparisonPath: persisted.comparisonPath,
+      recommendedDecision: persisted.comparison.recommendedDecision,
+      stepLogs: [
+        {
+          timestamp: new Date().toISOString(),
+          step: "oasis_dom_extraction",
+          message: "Persisted fixture OASIS DOM extraction for read-only QA review.",
+          patientName: input.workItem.patientIdentity.displayName,
+          urlBefore: input.context.chartUrl,
+          urlAfter: input.context.chartUrl,
+          selectorUsed: null,
+          found: [
+            `variant=${variant}`,
+            `sectionCount=${state.coverage.sectionCount}`,
+            `fieldCount=${state.coverage.fieldCount}`,
+            `nonEmptyFieldCount=${state.coverage.nonEmptyFieldCount}`,
+            `acquisitionStatus=${acquisitionState.acquisitionStatus}`,
+          ],
+          missing: acquisitionState.acquisitionStatus === "ready_for_qa" ? [] : acquisitionState.readinessReasons,
+          openedDocumentLabel: variant === "current" ? "Current OASIS" : "Supplemental OASIS",
+          openedDocumentUrl: null,
+          evidence: [
+            `domStatePath=${persisted.domStatePath}`,
+            `acquisitionStatePath=${acquisitionStatePath}`,
+            "ocrUsed=false",
+          ],
+          retryCount: 0,
+          safeReadConfirmed: true,
+        },
+      ],
+    };
+  }
+
+  async discoverVisitNotesForReview(input: {
+    context: import("../portal/context/patientPortalContext").PatientPortalContext;
+    workItem: PatientEpisodeWorkItem;
+    patientArtifactsDirectory: string;
+    evidenceDir: string;
+    episode?: {
+      label?: string;
+      startDate?: string;
+      endDate?: string;
+    };
+  }): Promise<{
+    discoveryPath: string;
+    stepLogs: AutomationStepLog[];
+  }> {
+    mkdirSync(input.patientArtifactsDirectory, { recursive: true });
+    const artifact = buildVisitNotesDiscoveryArtifact({
+      patientKeyHash: input.workItem.id,
+      episode: input.episode,
+      pageUrl: input.context.chartUrl,
+      rows: [{
+        portalDocumentId: "visit-note-1",
+        rawDocumentType: "SN Visit Note",
+        visitDate: "03/05/2026",
+        assignedStaffRaw: "Alice RN",
+        statusRaw: "QA Completed",
+        rowText:
+          "SN Visit Note 03/05/2026 Alice RN QA Completed. Skilled nursing wound care visit.",
+        hasSafeOpenAction: true,
+        actionHints: ["read_only_open"],
+      }],
+      diagnostics: {
+        beforeUrl: input.context.chartUrl,
+        afterUrl: input.context.chartUrl,
+        sidebarMenuFound: true,
+        sidebarMenuClicked: true,
+        tableRowCount: 1,
+        firstRowTexts: ["SN Visit Note 03/05/2026 Alice RN QA Completed"],
+      },
+    });
+    const discoveryPath = path.join(input.patientArtifactsDirectory, VISIT_NOTES_DISCOVERY_FILE_NAME);
+    writeFileSync(discoveryPath, JSON.stringify(artifact, null, 2), "utf8");
+
+    return {
+      discoveryPath,
+      stepLogs: [
+        {
+          timestamp: new Date().toISOString(),
+          step: "visit_notes_discovery",
+          message: "Persisted fixture Visit Notes discovery artifact for read-only QA review.",
+          patientName: input.workItem.patientIdentity.displayName,
+          urlBefore: input.context.chartUrl,
+          urlAfter: input.context.chartUrl,
+          selectorUsed: "Visit Notes",
+          found: [`visitNotesDiscoveryPath=${discoveryPath}`, "rowCount=1"],
+          missing: [],
+          openedDocumentLabel: "Visit Notes",
+          openedDocumentUrl: input.context.chartUrl,
+          evidence: ["workflowDomain=qa", "fileUploadsUsed=false"],
           retryCount: 0,
           safeReadConfirmed: true,
         },
@@ -838,23 +1289,31 @@ describe("runFinaleBatch", () => {
 
       expect(result.manifest.totalWorkItems).toBe(1);
       expect(result.patientRuns).toHaveLength(1);
-      expect(result.patientRuns[0]?.processingStatus).toBe("COMPLETE");
-      expect(result.patientRuns[0]?.qaOutcome).toBe("READY_FOR_BILLING_PREP");
-      expect(result.patientRuns[0]?.oasisQaSummary.overallStatus).toBe("READY_FOR_BILLING");
+      expect(result.patientRuns[0]?.processingStatus).toBe("NEEDS_HUMAN_REVIEW");
+      expect(result.patientRuns[0]?.qaOutcome).toBe("NEEDS_MANUAL_QA");
+      expect(result.patientRuns[0]?.oasisQaSummary.overallStatus).toBe("NEEDS_QA");
+      expect(result.patientRuns[0]?.oasisQaSummary.blockers).toHaveLength(0);
       expect(result.patientRuns[0]?.documentInventory.length).toBeGreaterThan(0);
       expect(result.patientRuns[0]?.automationStepLogs.length).toBeGreaterThan(0);
-      expect(result.batchSummary.complete).toBe(1);
-      expect(result.batchSummary.qaOutcomes.READY_FOR_BILLING_PREP).toBe(1);
+      expect(result.batchSummary.complete).toBe(0);
+      expect(result.batchSummary.totalNeedsHumanReview).toBe(1);
+      expect(result.batchSummary.qaOutcomes.NEEDS_MANUAL_QA).toBe(1);
       expect(result.patientRuns[0]?.resultBundlePath).toMatch(/patient-results/);
       expect(result.patientRuns[0]?.logPath).toMatch(/logs/);
       expect(result.patientRuns[0]?.logAvailable).toBe(true);
-      expect(result.patientRuns[0]?.workflowRuns.find((workflowRun) => workflowRun.workflowDomain === "coding")?.status).toBe("COMPLETED");
+      expect(result.patientRuns[0]?.workflowRuns.find((workflowRun) => workflowRun.workflowDomain === "coding")?.status).toBe("NEEDS_HUMAN_REVIEW");
       expect(result.patientRuns[0]?.workflowRuns.find((workflowRun) => workflowRun.workflowDomain === "qa")?.status).toBe("COMPLETED");
       expect(portalClient.oasisExecutionCalls).toBe(0);
       expect(portalClient.discoverArtifactsCalls).toBe(1);
-      expect(portalClient.discoverArtifactWorkflowPhases).toEqual(["file_uploads_only"]);
+      expect(portalClient.discoverArtifactWorkflowPhases).toEqual(["oasis_diagnosis_only"]);
       expect(result.patientRuns[0]?.automationStepLogs.some((log) => log.step === "shared_evidence_discovery_start")).toBe(true);
+      expect(result.patientRuns[0]?.automationStepLogs.some((log) => log.step === "shared_evidence_file_uploads_discovery_skipped")).toBe(true);
       expect(result.patientRuns[0]?.automationStepLogs.some((log) => log.step === "shared_evidence_discovery_complete")).toBe(true);
+      expect(result.patientRuns[0]?.automationStepLogs.some((log) => log.step === "referral_document_check_skipped_static_intake")).toBe(true);
+      expect(result.patientRuns[0]?.automationStepLogs.some((log) => log.step === "oasis_dom_extraction")).toBe(true);
+      expect(result.patientRuns[0]?.automationStepLogs.some((log) => log.step === "plan_of_care_review_draft")).toBe(true);
+      expect(result.patientRuns[0]?.automationStepLogs.some((log) => log.step === "visit_notes_discovery")).toBe(true);
+      expect(result.patientRuns[0]?.automationStepLogs.some((log) => log.step === "oasis_dom_acquisition_insufficient")).toBe(false);
       expect(result.patientRuns[0]?.automationStepLogs.some((log) =>
         [
           "oasis_menu",
@@ -867,8 +1326,16 @@ describe("runFinaleBatch", () => {
           "oasis_diagnosis_compare",
         ].includes(log.step),
       )).toBe(false);
+      expect(result.patientRuns[0]?.artifacts.map((artifact) => artifact.artifactType)).toEqual(["OASIS"]);
       expect(result.patientRuns[0]?.artifacts[0]?.extractedFields).not.toHaveProperty("oasisReadyDiagnosisPath");
       expect(result.patientRuns[0]?.artifacts[0]?.extractedFields).not.toHaveProperty("oasisLockStatePath");
+      const planOfCareDraftPath = path.join(
+        fixture.outputDir,
+        "patients",
+        result.patientRuns[0]!.workItemId,
+        "plan-of-care-review-draft.json",
+      );
+      expect(readFileSync(planOfCareDraftPath, "utf8")).toContain("Latest OASIS POC");
     } finally {
       fixture.cleanup();
     }
@@ -890,13 +1357,14 @@ describe("runFinaleBatch", () => {
         portalClient: new FakePortalClient(),
       });
 
-      expect(patientRun.processingStatus).toBe("COMPLETE");
+      expect(patientRun.processingStatus).toBe("NEEDS_HUMAN_REVIEW");
+      expect(patientRun.qaOutcome).toBe("NEEDS_MANUAL_QA");
       expect(patientRun.logAvailable).toBe(true);
       expect(patientRun.oasisQaSummary.blockers).toHaveLength(0);
       expect(patientRun.documentInventory.length).toBeGreaterThan(0);
       expect(patientRun.logPath).toBeTruthy();
       expect(existsSync(patientRun.logPath!)).toBe(true);
-      expect(patientRun.workflowRuns.find((workflowRun) => workflowRun.workflowDomain === "coding")?.status).toBe("COMPLETED");
+      expect(patientRun.workflowRuns.find((workflowRun) => workflowRun.workflowDomain === "coding")?.status).toBe("NEEDS_HUMAN_REVIEW");
 
       const logPayload = JSON.parse(readFileSync(patientRun.logPath!, "utf8")) as {
         workItemId: string;
@@ -905,7 +1373,7 @@ describe("runFinaleBatch", () => {
       };
 
       expect(logPayload.workItemId).toBe(patientRun.workItemId);
-      expect(logPayload.processingStatus).toBe("COMPLETE");
+      expect(logPayload.processingStatus).toBe("NEEDS_HUMAN_REVIEW");
       expect(logPayload.workflowRuns.some((workflowRun) => workflowRun.workflowDomain === "coding")).toBe(true);
 
       const dashboardStatePath = path.join(
@@ -920,7 +1388,7 @@ describe("runFinaleBatch", () => {
       expect(dashboardState.workItem?.id).toBe(patientRun.workItemId);
       expect(dashboardState.artifactContents.codingInput).toBeTruthy();
       expect(dashboardState.artifactContents.qaPrefetch).toBeTruthy();
-      expect(dashboardState.artifactContents.patientQaReference).toBeTruthy();
+      expect(dashboardState.artifactContents.patientQaReference).toBeNull();
     } finally {
       fixture.cleanup();
     }
@@ -946,8 +1414,10 @@ describe("runFinaleBatch", () => {
 
       expect(result.manifest.totalWorkItems).toBe(1);
       expect(result.patientRuns).toHaveLength(1);
-      expect(result.batchSummary.totalReadyForBillingPrep).toBe(1);
-      expect(result.patientRuns[0]?.oasisQaSummary.overallStatus).toBe("READY_FOR_BILLING");
+      expect(result.batchSummary.totalReadyForBillingPrep).toBe(0);
+      expect(result.batchSummary.totalNeedsHumanReview).toBe(1);
+      expect(result.patientRuns[0]?.oasisQaSummary.overallStatus).toBe("NEEDS_QA");
+      expect(result.patientRuns[0]?.oasisQaSummary.blockers).toHaveLength(0);
       expect(existsSync(result.workItemsPath)).toBe(true);
       expect(existsSync(result.batchSummaryPath)).toBe(true);
     } finally {
@@ -989,10 +1459,10 @@ describe("runFinaleBatch", () => {
       expect(result.patientRuns[0]?.processingStatus).toBe("BLOCKED");
       expect(result.patientRuns[0]?.automationStepLogs.some((log) => log.step === "login")).toBe(true);
       expect(result.patientRuns[0]?.automationStepLogs.some((log) => log.step === "patient_search")).toBe(true);
-      expect(result.patientRuns[1]?.processingStatus).toBe("COMPLETE");
-      expect(result.patientRuns[1]?.qaOutcome).toBe("READY_FOR_BILLING_PREP");
+      expect(result.patientRuns[1]?.processingStatus).toBe("NEEDS_HUMAN_REVIEW");
+      expect(result.patientRuns[1]?.qaOutcome).toBe("NEEDS_MANUAL_QA");
       expect(result.batchSummary.qaOutcomes.PORTAL_NOT_FOUND).toBe(1);
-      expect(result.batchSummary.qaOutcomes.READY_FOR_BILLING_PREP).toBe(1);
+      expect(result.batchSummary.qaOutcomes.NEEDS_MANUAL_QA).toBe(1);
     } finally {
       fixture.cleanup();
     }
@@ -1029,23 +1499,62 @@ describe("runFinaleBatch", () => {
       expect(result.patientRuns).toHaveLength(2);
       expect(result.patientRuns[0]?.qaOutcome).toBe("NEEDS_MANUAL_QA");
       expect(result.patientRuns[0]?.processingStatus).toBe("NEEDS_HUMAN_REVIEW");
-      expect(result.patientRuns[0]?.executionStep).toBe("REFERRAL_DOCUMENT_REQUIRED_REVIEW");
-      expect(result.patientRuns[0]?.automationStepLogs.some((log) => log.step === "referral_document_check")).toBe(true);
-      expect(result.patientRuns[0]?.automationStepLogs.some((log) => log.step === "referral_document_review_required")).toBe(true);
+      expect(result.patientRuns[0]?.executionStep).not.toBe("REFERRAL_DOCUMENT_REQUIRED_REVIEW");
+      expect(result.patientRuns[0]?.executionStep).not.toBe("REFERRAL_DOCUMENT_REQUIRED");
+      expect(result.patientRuns[0]?.oasisQaSummary.blockers).toHaveLength(0);
+      expect(result.patientRuns[0]?.automationStepLogs.some((log) => log.step === "referral_document_check")).toBe(false);
+      expect(result.patientRuns[0]?.automationStepLogs.some((log) => log.step === "referral_document_check_skipped_static_intake")).toBe(true);
+      expect(result.patientRuns[0]?.automationStepLogs.some((log) => log.step === "referral_document_review_required")).toBe(false);
       expect(result.patientRuns[0]?.workflowRuns.find((workflowRun) => workflowRun.workflowDomain === "coding")?.status).not.toBe("BLOCKED");
       expect(result.patientRuns[0]?.workflowRuns.find((workflowRun) => workflowRun.workflowDomain === "qa")?.status).not.toBe("BLOCKED");
       expect(result.patientRuns[0]?.automationStepLogs.some((log) => log.step === "oasis_print_capture")).toBe(false);
-      expect(result.patientRuns[0]?.automationStepLogs.some((log) => log.step === "oasis_dom_acquisition_insufficient")).toBe(true);
-      expect(result.patientRuns[1]?.qaOutcome).toBe("READY_FOR_BILLING_PREP");
-      expect(result.patientRuns[1]?.processingStatus).toBe("COMPLETE");
+      expect(result.patientRuns[0]?.automationStepLogs.some((log) => log.step === "oasis_dom_acquisition_insufficient")).toBe(false);
+      expect(result.patientRuns[0]?.automationStepLogs.some((log) => log.step === "plan_of_care_review_draft")).toBe(true);
+      expect(result.patientRuns[0]?.automationStepLogs.some((log) => log.step === "visit_notes_discovery")).toBe(true);
+      expect(result.patientRuns[1]?.qaOutcome).toBe("NEEDS_MANUAL_QA");
+      expect(result.patientRuns[1]?.processingStatus).toBe("NEEDS_HUMAN_REVIEW");
+      expect(result.patientRuns[1]?.oasisQaSummary.blockers).toHaveLength(0);
       expect(result.patientRuns[1]?.automationStepLogs.some((log) => log.step === "oasis_print_capture")).toBe(false);
-      expect(result.patientRuns[1]?.automationStepLogs.some((log) => log.step === "oasis_dom_acquisition_insufficient")).toBe(true);
-      expect(result.batchSummary.qaOutcomes.NEEDS_MANUAL_QA).toBe(1);
-      expect(result.batchSummary.qaOutcomes.READY_FOR_BILLING_PREP).toBe(1);
+      expect(result.patientRuns[1]?.automationStepLogs.some((log) => log.step === "oasis_dom_acquisition_insufficient")).toBe(false);
+      expect(result.batchSummary.qaOutcomes.NEEDS_MANUAL_QA).toBe(2);
+      expect(result.batchSummary.qaOutcomes.MISSING_DOCUMENTS).toBe(0);
     } finally {
       fixture.cleanup();
     }
   }, 10_000);
+
+  it("skips Visit Notes discovery when no Plan of Care review artifact exists yet", async () => {
+    const fixture = writeWorkbookFixture();
+
+    try {
+      const intake = await intakeWorkbook({
+        workbookPath: fixture.workbookPath,
+        outputDir: fixture.outputDir,
+      });
+
+      const patientRun = await runQAForPatient({
+        batchId: `${intake.manifest.batchId}-no-poc`,
+        patient: intake.workItems[0]!,
+        outputDir: fixture.outputDir,
+        portalClient: new FakePortalClient({ includeCurrentPlanOfCare: false }),
+      });
+      const patientArtifactsDirectory = path.join(
+        fixture.outputDir,
+        "patients",
+        patientRun.workItemId,
+      );
+
+      expect(patientRun.processingStatus).toBe("BLOCKED");
+      expect(patientRun.qaOutcome).toBe("MISSING_DOCUMENTS");
+      expect(patientRun.automationStepLogs.some((log) => log.step === "plan_of_care_review_draft")).toBe(false);
+      expect(patientRun.automationStepLogs.some((log) => log.step === "visit_notes_discovery")).toBe(false);
+      expect(patientRun.automationStepLogs.some((log) => log.step === "visit_notes_discovery_skipped_pending_plan_of_care")).toBe(true);
+      expect(existsSync(path.join(patientArtifactsDirectory, "plan-of-care-review-draft.json"))).toBe(false);
+      expect(existsSync(path.join(patientArtifactsDirectory, "visit-notes-discovery.json"))).toBe(false);
+    } finally {
+      fixture.cleanup();
+    }
+  });
 
   it("routes a QA-only workflow through shared access and records a separate QA workflow run", async () => {
     const fixture = writeWorkbookFixture();
@@ -1072,15 +1581,19 @@ describe("runFinaleBatch", () => {
       expect(qaWorkflow?.workflowResultPath).toMatch(/qa-prefetch-result\.json$/);
       expect(codingWorkflow?.status).toBe("NOT_STARTED");
       expect(portalClient.discoverArtifactsCalls).toBe(1);
-      expect(portalClient.discoverArtifactWorkflowPhases).toEqual(["file_uploads_only"]);
+      expect(portalClient.discoverArtifactWorkflowPhases).toEqual(["oasis_diagnosis_only"]);
       expect(patientRun.automationStepLogs.some((log) => log.step === "shared_portal_access")).toBe(true);
       expect(patientRun.automationStepLogs.some((log) => log.step === "shared_evidence_discovery_start")).toBe(true);
+      expect(patientRun.automationStepLogs.some((log) => log.step === "shared_evidence_file_uploads_discovery_skipped")).toBe(true);
       expect(patientRun.automationStepLogs.some((log) => log.step === "oasis_episode_resolution")).toBe(true);
       expect(patientRun.automationStepLogs.some((log) => log.step === "billing_calendar_summary_persisted")).toBe(true);
       expect(patientRun.automationStepLogs.some((log) => log.step === "oasis_menu_open")).toBe(true);
       expect(patientRun.automationStepLogs.some((log) => log.step === "oasis_assessment_note_opened")).toBe(true);
+      expect(patientRun.automationStepLogs.some((log) => log.step === "oasis_dom_extraction")).toBe(true);
+      expect(patientRun.automationStepLogs.some((log) => log.step === "plan_of_care_review_draft")).toBe(true);
+      expect(patientRun.automationStepLogs.some((log) => log.step === "visit_notes_discovery")).toBe(true);
       expect(patientRun.automationStepLogs.some((log) => log.step === "oasis_printed_note_review")).toBe(false);
-      expect(patientRun.automationStepLogs.some((log) => log.step === "oasis_dom_acquisition_insufficient")).toBe(true);
+      expect(patientRun.automationStepLogs.some((log) => log.step === "oasis_dom_acquisition_insufficient")).toBe(false);
       expect(patientRun.artifacts.find((artifact) => artifact.artifactType === "OASIS")).toMatchObject({
         artifactType: "OASIS",
         status: "FOUND",
@@ -1136,7 +1649,8 @@ describe("runFinaleBatch", () => {
       expect(patientRun.notes.some((note) => note.includes("Document text refreshed after printed OASIS review:"))).toBe(false);
       expect(patientRun.automationStepLogs.some((log) => log.step === "document_text_refresh_after_qa")).toBe(false);
       expect(patientRun.automationStepLogs.some((log) => log.step === "printed_note_chart_values")).toBe(false);
-      expect(patientRun.automationStepLogs.some((log) => log.step === "oasis_dom_acquisition_insufficient")).toBe(true);
+      expect(patientRun.automationStepLogs.some((log) => log.step === "oasis_dom_extraction")).toBe(true);
+      expect(patientRun.automationStepLogs.some((log) => log.step === "oasis_dom_acquisition_insufficient")).toBe(false);
     } finally {
       fixture.cleanup();
     }
@@ -1203,12 +1717,12 @@ describe("runFinaleBatch", () => {
       const codingWorkflow = patientRun.workflowRuns.find((workflowRun) => workflowRun.workflowDomain === "coding");
       const qaWorkflow = patientRun.workflowRuns.find((workflowRun) => workflowRun.workflowDomain === "qa");
 
-      expect(codingWorkflow?.status).toBe("COMPLETED");
+      expect(codingWorkflow?.status).toBe("NEEDS_HUMAN_REVIEW");
       expect(qaWorkflow?.status).toBe("COMPLETED");
       expect(codingWorkflow?.workflowResultPath).toMatch(/coding-input\.json$/);
       expect(qaWorkflow?.workflowResultPath).toMatch(/qa-prefetch-result\.json$/);
       expect(portalClient.discoverArtifactsCalls).toBe(1);
-      expect(portalClient.discoverArtifactWorkflowPhases).toEqual(["file_uploads_only"]);
+      expect(portalClient.discoverArtifactWorkflowPhases).toEqual(["oasis_diagnosis_only"]);
     } finally {
       fixture.cleanup();
     }
@@ -1234,7 +1748,7 @@ describe("runFinaleBatch", () => {
       const codingWorkflow = patientRun.workflowRuns.find((workflowRun) => workflowRun.workflowDomain === "coding");
       const qaWorkflow = patientRun.workflowRuns.find((workflowRun) => workflowRun.workflowDomain === "qa");
 
-      expect(codingWorkflow?.status).toBe("COMPLETED");
+      expect(codingWorkflow?.status).toBe("NEEDS_HUMAN_REVIEW");
       expect(qaWorkflow?.status).toBe("COMPLETED");
       expect(qaWorkflow?.workflowResultPath).toMatch(/qa-prefetch-result\.json$/);
       expect(patientRun.notes.some((note) => note.includes("QA prefetch result persisted:"))).toBe(true);

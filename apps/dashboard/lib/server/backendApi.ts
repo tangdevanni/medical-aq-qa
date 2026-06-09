@@ -5,7 +5,9 @@ import type {
 import type {
   PatientArtifactsResponse,
   PatientDetail,
+  PatientOasisCheckState,
   PatientReferralIntakeStatus,
+  OasisCheckStartResponse,
   ReferralIntakeStartResponse,
   RunDetail,
   RunListItem,
@@ -188,5 +190,26 @@ export function getBackendPatientReferralIntakeStatus(
 ): Promise<PatientReferralIntakeStatus> {
   return fetchBackendJson<PatientReferralIntakeStatus>(
     `/runs/${encodeURIComponent(runId)}/patients/${encodeURIComponent(patientId)}/referral-intake/status`,
+  );
+}
+
+export function startBackendPatientOasisCheck(
+  runId: string,
+  patientId: string,
+  assessmentId: string,
+): Promise<OasisCheckStartResponse> {
+  return postBackendJson<OasisCheckStartResponse>(
+    `/runs/${encodeURIComponent(runId)}/patients/${encodeURIComponent(patientId)}/oasis-check`,
+    { assessmentId },
+  );
+}
+
+export function getBackendPatientOasisCheckStatus(
+  runId: string,
+  patientId: string,
+  assessmentId: string,
+): Promise<PatientOasisCheckState> {
+  return fetchBackendJson<PatientOasisCheckState>(
+    `/runs/${encodeURIComponent(runId)}/patients/${encodeURIComponent(patientId)}/oasis-check/status?assessmentId=${encodeURIComponent(assessmentId)}`,
   );
 }

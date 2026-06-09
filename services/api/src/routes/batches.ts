@@ -11,6 +11,7 @@ import {
   toBatchSummaryResponse,
 } from "../mappers/dashboardRunViews";
 import {
+  OasisCheckAlreadyRunningError,
   ReferralIntakeAlreadyRunningError,
   type BatchControlPlaneService,
 } from "../services/batchControlPlaneService";
@@ -22,6 +23,15 @@ const batchIdParamsSchema = z.object({
 const batchPatientParamsSchema = z.object({
   batchId: z.string().min(1),
   patientId: z.string().min(1),
+});
+
+const oasisCheckBodySchema = z.object({
+  assessmentId: z.string().min(1),
+  force: z.boolean().optional(),
+});
+
+const oasisCheckStatusQuerySchema = z.object({
+  assessmentId: z.string().min(1),
 });
 
 const latestPatientQuerySchema = z.object({
@@ -539,6 +549,43 @@ export async function registerBatchRoutes(
   app.get("/api/runs/:batchId/patients/:patientId/referral-intake/status", async (request, reply) => {
     const { batchId, patientId } = await getBatchPatientParams(request);
     const state = await service.getPatientReferralIntakeStatus(batchId, patientId);
+    reply.code(200);
+    return state;
+  });
+
+  app.post("/api/runs/:batchId/patients/:patientId/oasis-check", async (request, reply) => {
+    const { batchId, patientId } = await getBatchPatientParams(request);
+    const body = oasisCheckBodySchema.parse(request.body ?? {});
+    try {
+      const state = await service.startPatientOasisCheck({
+        batchId,
+        patientId,
+        assessmentId: body.assessmentId,
+        force: body.force,
+      });
+      reply.code(202);
+      return {
+        batchId,
+        patientId,
+        assessmentId: state.assessmentId,
+        status: state.status,
+        acceptedAt: state.acceptedAt,
+        statusUrl: state.statusUrl,
+        message: state.message,
+      };
+    } catch (error) {
+      if (error instanceof OasisCheckAlreadyRunningError) {
+        reply.code(409);
+        return { message: error.message };
+      }
+      throw error;
+    }
+  });
+
+  app.get("/api/runs/:batchId/patients/:patientId/oasis-check/status", async (request, reply) => {
+    const { batchId, patientId } = await getBatchPatientParams(request);
+    const query = oasisCheckStatusQuerySchema.parse(request.query);
+    const state = await service.getPatientOasisCheckStatus(batchId, patientId, query.assessmentId);
     reply.code(200);
     return state;
   });

@@ -157,4 +157,66 @@ describe("oasisAssessmentNoteService", () => {
     expect(result.result.matchedRequestedAssessment).toBe(true);
     expect(result.result.warnings).toEqual([]);
   });
+
+  it("passes the exact captured OASIS row to the portal opener", async () => {
+    const targetAssessment = {
+      id: "recert-05192026-oasis-oasis-e2-rec",
+      assessmentType: "RECERT" as const,
+      title: "OASIS-OASIS E2 - REC",
+      date: "05/19/2026",
+      sourceRowText: "OASIS-OASIS E2 - REC 05/19/2026 IN_PROGRESS",
+      detectedStatuses: ["IN_PROGRESS"],
+      primaryStatus: "IN_PROGRESS",
+      decision: "PROCESS",
+      processingEligible: true,
+    };
+    const openOasisAssessmentNoteForReview = vi.fn().mockResolvedValue({
+      result: {
+        assessmentOpened: true,
+        matchedAssessmentLabel: "OASIS-OASIS E2 - REC",
+        matchedRequestedAssessment: true,
+        currentUrl: "https://example.test/chart/oasis/rec",
+        diagnosisSectionOpened: true,
+        diagnosisListFound: true,
+        diagnosisListSamples: [],
+        visibleDiagnoses: [],
+        lockStatus: "locked",
+        oasisAssessmentStatus: {
+          detectedStatuses: ["IN_PROGRESS"],
+          primaryStatus: "IN_PROGRESS",
+          decision: "PROCESS",
+          processingEligible: true,
+          reason: "Continue downstream OASIS capture because no skip-only status was detected.",
+          matchedSignals: ["button role=button name=IN PROGRESS"],
+        },
+        warnings: [],
+      },
+      stepLogs: [],
+    });
+
+    await openAssessmentNote({
+      context,
+      workItem: workItem as never,
+      evidenceDir: "C:\\tmp",
+      selection: {
+        requestedAssessmentType: "RECERT",
+        selectedAssessmentType: "RECERT",
+        selectionReason: "requested_exact",
+        availableAssessmentTypes: ["RECERT"],
+        warnings: [],
+      },
+      targetAssessment,
+      logger: {
+        info: vi.fn(),
+      } as never,
+      portalClient: {
+        openOasisAssessmentNoteForReview,
+      } as never,
+    });
+
+    expect(openOasisAssessmentNoteForReview).toHaveBeenCalledWith(expect.objectContaining({
+      assessmentType: "RECERT",
+      targetAssessment,
+    }));
+  });
 });

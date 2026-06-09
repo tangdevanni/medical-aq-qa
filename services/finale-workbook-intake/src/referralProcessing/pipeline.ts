@@ -15,6 +15,8 @@ import { normalizePatientName } from "../utils/patientName";
 import {
   extractReferralDirectDocument,
   REFERRAL_DIRECT_DOCUMENT_SCHEMA_VERSION,
+  ReferralDirectDocumentInvalidJsonError,
+  type ReferralDirectDocumentFailureDiagnostic,
   type ReferralDirectDocumentExtractionResult,
 } from "./directDocumentExtractor";
 import type {
@@ -946,6 +948,7 @@ async function persistArtifacts(input: {
   qaDocumentSummary: QaDocumentSummary;
   reuseMetadata: ReferralReuseMetadata;
   directDocumentResult?: ReferralDirectDocumentExtractionResult | null;
+  directDocumentFailureDiagnostic?: ReferralDirectDocumentFailureDiagnostic | null;
 }): Promise<ReferralDocumentProcessingArtifacts> {
   await mkdir(input.artifactDirectory, { recursive: true });
 
@@ -965,6 +968,7 @@ async function persistArtifacts(input: {
   );
   const referralReuseMetadataPath = path.join(input.artifactDirectory, "referral-reuse-metadata.json");
   const directDocumentResultPath = path.join(input.artifactDirectory, "direct-document-result.json");
+  const directDocumentFailureDiagnosticPath = path.join(input.artifactDirectory, "direct-document-failure-diagnostic.json");
   const referralDocumentationFingerprint = hashReferralSuggestionInputs({
     sourceMeta: input.sourceMeta,
     extractionResult: input.extractionResult,
@@ -996,6 +1000,9 @@ async function persistArtifacts(input: {
     ...(input.directDocumentResult
       ? [writeFile(directDocumentResultPath, JSON.stringify(input.directDocumentResult, null, 2), "utf8")]
       : []),
+    ...(input.directDocumentFailureDiagnostic
+      ? [writeFile(directDocumentFailureDiagnosticPath, JSON.stringify(input.directDocumentFailureDiagnostic, null, 2), "utf8")]
+      : []),
   ]);
 
   return {
@@ -1012,6 +1019,7 @@ async function persistArtifacts(input: {
     qaDocumentSummaryPath,
     reviewOnlyOasisSuggestionsMetadataPath,
     ...(input.directDocumentResult ? { directDocumentResultPath } : {}),
+    ...(input.directDocumentFailureDiagnostic ? { directDocumentFailureDiagnosticPath } : {}),
   };
 }
 
@@ -1146,6 +1154,7 @@ export async function runReferralDocumentProcessingPipeline(input: {
   }
 
   let directDocumentResult: ReferralDirectDocumentExtractionResult | null = null;
+  let directDocumentFailureDiagnostic: ReferralDirectDocumentFailureDiagnostic | null = null;
   const directFailureReasons: string[] = [];
   if (selectedSource?.localFilePath) {
     stepLogs.push(createAutomationStepLog({
@@ -1168,6 +1177,9 @@ export async function runReferralDocumentProcessingPipeline(input: {
         sourceLabel: selectedSource.sourceLabel,
       });
     } catch (error) {
+      if (error instanceof ReferralDirectDocumentInvalidJsonError) {
+        directDocumentFailureDiagnostic = error.diagnostic;
+      }
       directFailureReasons.push(`Direct-document referral extraction failed: ${error instanceof Error ? error.message : String(error)}`);
     }
   } else {
@@ -1355,6 +1367,7 @@ export async function runReferralDocumentProcessingPipeline(input: {
     patientQaReference,
     qaDocumentSummary,
     directDocumentResult,
+    directDocumentFailureDiagnostic,
     reuseMetadata: {
       schemaVersion: "referral-reuse-metadata.v1",
       generatedAt: new Date().toISOString(),
@@ -1391,6 +1404,7 @@ export async function runReferralDocumentProcessingPipeline(input: {
       artifacts.qaDocumentSummaryPath,
       artifacts.reviewOnlyOasisSuggestionsMetadataPath,
       ...(artifacts.directDocumentResultPath ? [artifacts.directDocumentResultPath] : []),
+      ...(artifacts.directDocumentFailureDiagnosticPath ? [artifacts.directDocumentFailureDiagnosticPath] : []),
     ],
     safeReadConfirmed: true,
   }));

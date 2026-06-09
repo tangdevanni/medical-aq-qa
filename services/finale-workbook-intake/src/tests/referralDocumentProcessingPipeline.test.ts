@@ -8,7 +8,10 @@ import {
   runReferralDocumentProcessingPipeline,
   type ReferralSourceDocumentInput,
 } from "../referralProcessing/pipeline";
-import type { ReferralDirectDocumentExtractionResult } from "../referralProcessing/directDocumentExtractor";
+import {
+  ReferralDirectDocumentInvalidJsonError,
+  type ReferralDirectDocumentExtractionResult,
+} from "../referralProcessing/directDocumentExtractor";
 import * as documentExtractionService from "../services/documentExtractionService";
 
 function buildWorkItem(id = "SAMPLE_PATIENT__test") {
@@ -222,7 +225,17 @@ describe("runReferralDocumentProcessingPipeline", () => {
         logger: pino({ level: "silent" }),
         sourceDocuments,
         directDocumentExtractor: async () => {
-          throw new Error("Bedrock returned invalid JSON");
+          throw new ReferralDirectDocumentInvalidJsonError({
+            schemaVersion: "referral-direct-document-failure-diagnostic.v1",
+            generatedAt: "2026-05-01T00:00:00.000Z",
+            failureReason: "Bedrock returned invalid JSON",
+            configuredModelId: "test-model",
+            invocationModelId: "test-model",
+            region: "us-east-2",
+            retryMode: "compact_json",
+            citationMode: "disabled_invalid_json_retry",
+            rawResponseExcerpt: "invalid response",
+          });
         },
       });
 
@@ -232,6 +245,11 @@ describe("runReferralDocumentProcessingPipeline", () => {
       expect(result.result?.qaDocumentSummary.extractionUsabilityStatus).toBe("rejected");
       expect(result.result?.qaDocumentSummary.warnings.join(" ")).toContain("Bedrock returned invalid JSON");
       expect(result.result?.llmProposal.diagnosis_candidates).toHaveLength(0);
+      expect(result.result?.artifacts.directDocumentFailureDiagnosticPath).toBeTruthy();
+      const diagnostic = JSON.parse(
+        await readFile(result.result!.artifacts.directDocumentFailureDiagnosticPath!, "utf8"),
+      ) as Record<string, unknown>;
+      expect(diagnostic.retryMode).toBe("compact_json");
     } finally {
       ocrSpy.mockRestore();
       await rm(tempDir, { recursive: true, force: true });
@@ -278,6 +296,67 @@ describe("runReferralDocumentProcessingPipeline", () => {
       expect(result.result?.extractionResult.extractionSuccess).toBe(false);
       expect(result.result?.llmProposal.diagnosis_candidates).toHaveLength(0);
       expect(result.result?.extractedFacts.warnings.join(" ")).toContain("uncited diagnosis");
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
+  });
+
+  it("does not reuse rejected direct-document artifacts as a cache hit", async () => {
+    const tempDir = await mkdtemp(path.join(os.tmpdir(), "referral-direct-rejected-reuse-"));
+
+    try {
+      const { pdfPath, sourceDocuments } = await createReferralSource(tempDir);
+      const firstExtractor = vi.fn(async () => directResult({
+        filePath: pdfPath,
+        acceptedDiagnoses: [],
+        acceptedMedications: [],
+        acceptedFieldProposals: [],
+        rejectedDiagnoses: [{
+          description: "History of arthroplasty of left knee",
+          icd10_code: "Z47.89",
+          is_primary_candidate: true,
+          confidence: 0.3,
+          source_quote: null,
+          page: 1,
+          laterality_terms: ["left"],
+          body_site_terms: ["knee"],
+          requires_human_review: true,
+          review_reasons: ["missing_source_quote"],
+        }],
+      }));
+
+      const first = await runReferralDocumentProcessingPipeline({
+        workItem: buildWorkItem("SAMPLE_PATIENT__rejected_reuse"),
+        outputDir: tempDir,
+        env: loadEnv({
+          ...process.env,
+          CODE_LLM_ENABLED: "false",
+          REFERRAL_EXTRACTION_MODE: "direct_document_llm_only",
+        }),
+        logger: pino({ level: "silent" }),
+        sourceDocuments,
+        directDocumentExtractor: firstExtractor,
+      });
+      expect(first.result?.extractionResult.extractionSuccess).toBe(false);
+
+      const secondExtractor = vi.fn(async () => directResult({ filePath: pdfPath }));
+      const second = await runReferralDocumentProcessingPipeline({
+        workItem: buildWorkItem("SAMPLE_PATIENT__rejected_reuse"),
+        outputDir: tempDir,
+        env: loadEnv({
+          ...process.env,
+          CODE_LLM_ENABLED: "false",
+          REFERRAL_EXTRACTION_MODE: "direct_document_llm_only",
+        }),
+        logger: pino({ level: "silent" }),
+        sourceDocuments,
+        directDocumentExtractor: secondExtractor,
+      });
+
+      expect(firstExtractor).toHaveBeenCalledTimes(1);
+      expect(secondExtractor).toHaveBeenCalledTimes(1);
+      expect(second.stepLogs.some((log) => log.step === "referral_processing_reused")).toBe(false);
+      expect(second.result?.extractionResult.extractionSuccess).toBe(true);
     } finally {
       await rm(tempDir, { recursive: true, force: true });
     }

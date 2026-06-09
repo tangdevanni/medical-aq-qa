@@ -31,7 +31,10 @@ import { diagnosePortalNetwork } from "../portal/utils/portalNetworkDiagnostics"
 import type { ResolvedPatientPortalAccess } from "../portal/context/patientPortalContext";
 import type { PortalDebugConfig } from "../portal/utils/locatorResolution";
 import type { OasisLockStateSnapshot } from "../portal/utils/oasisLockStateDetector";
-import type { PatientPortalStatusPageMetadata } from "../portal/types/patientPortalStatus";
+import type {
+  PatientPortalStatusOasisAssessment,
+  PatientPortalStatusPageMetadata,
+} from "../portal/types/patientPortalStatus";
 import { capturePageDebugArtifacts } from "../portal/utils/pageDiagnostics";
 import { discoverVisitNotesFromPage } from "../portal/services/visitNotesDiscoveryService";
 import {
@@ -359,6 +362,7 @@ export interface BatchPortalAutomationClient {
     workItem: PatientEpisodeWorkItem;
     evidenceDir: string;
     assessmentType: string;
+    targetAssessment?: PatientPortalStatusOasisAssessment | null;
   }): Promise<{
     result: OasisAssessmentNoteOpenResult;
     stepLogs: AutomationStepLog[];
@@ -370,6 +374,7 @@ export interface BatchPortalAutomationClient {
     assessmentType: string;
     matchedAssessmentLabel?: string | null;
     printProfileKey?: OasisPrintSectionProfileKey | null;
+    skipTextExtraction?: boolean;
   }): Promise<{
     result: OasisPrintedNoteCaptureOpenResult;
     stepLogs: AutomationStepLog[];
@@ -1103,6 +1108,7 @@ export class PlaywrightBatchQaWorker implements BatchPortalAutomationClient {
     workItem: PatientEpisodeWorkItem;
     evidenceDir: string;
     assessmentType: string;
+    targetAssessment?: PatientPortalStatusOasisAssessment | null;
   }): Promise<{
     result: OasisAssessmentNoteOpenResult;
     stepLogs: AutomationStepLog[];
@@ -1120,6 +1126,7 @@ export class PlaywrightBatchQaWorker implements BatchPortalAutomationClient {
     return patientChartPage.openOasisAssessmentNoteForReview({
       chartUrl: this.currentPatientChartUrl ?? input.context.chartUrl,
       assessmentType: input.assessmentType,
+      targetAssessment: input.targetAssessment,
       patientKey: input.workItem.id,
     });
   }
@@ -1131,6 +1138,7 @@ export class PlaywrightBatchQaWorker implements BatchPortalAutomationClient {
     assessmentType: string;
     matchedAssessmentLabel?: string | null;
     printProfileKey?: OasisPrintSectionProfileKey | null;
+    skipTextExtraction?: boolean;
   }): Promise<{
     result: OasisPrintedNoteCaptureOpenResult;
     stepLogs: AutomationStepLog[];
@@ -1152,6 +1160,7 @@ export class PlaywrightBatchQaWorker implements BatchPortalAutomationClient {
       patientKey: input.workItem.id,
       matchedAssessmentLabel: input.matchedAssessmentLabel,
       printProfileKey: input.printProfileKey,
+      skipTextExtraction: input.skipTextExtraction,
     });
   }
 

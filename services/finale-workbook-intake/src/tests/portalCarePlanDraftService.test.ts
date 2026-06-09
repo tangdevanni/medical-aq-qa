@@ -1,4 +1,4 @@
-import { mkdtemp, mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdtemp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
@@ -197,6 +197,48 @@ describe("portal care plan draft service", () => {
       "Improve TUG score to 12 seconds or better to improve fall safety.",
     );
     expect(draft?.carePlanProblemGroups?.[0]?.needsHumanReview).toBe(false);
+  });
+
+  it("uses the root current OASIS care plan for the dashboard POC draft when older scoped OASIS artifacts exist", async () => {
+    const outputDir = await mkdtemp(path.join(tmpdir(), "portal-poc-current-"));
+    const workItem = {
+      id: "patient-1",
+      patientName: "Test Patient",
+    };
+    const patientDir = path.join(outputDir, "patients", workItem.id);
+    const olderAssessmentDir = path.join(patientDir, "oasis-assessments", "older-recert");
+
+    try {
+      const currentState = stateWithCarePlan();
+      currentState.contentHash = "current-oasis";
+      currentState.sections[0]!.tables[0]!.rows[0]![1] =
+        "Latest OASIS POC - Skilled nursing wound care is active for the current OASIS.";
+      const olderState = stateWithCarePlan();
+      olderState.contentHash = "older-oasis";
+      olderState.sections[0]!.tables[0]!.rows[0]![1] =
+        "Older OASIS POC - Historical care plan from a previous OASIS.";
+
+      await mkdir(patientDir, { recursive: true });
+      await mkdir(olderAssessmentDir, { recursive: true });
+      await writeFile(
+        path.join(patientDir, "oasis-dom-extracted-state.json"),
+        JSON.stringify(currentState, null, 2),
+        "utf8",
+      );
+      await writeFile(
+        path.join(olderAssessmentDir, "oasis-dom-extracted-state.json"),
+        JSON.stringify(olderState, null, 2),
+        "utf8",
+      );
+
+      const draftPath = await writePortalCarePlanDraftFromOasisDom({ outputDir, workItem: workItem as never });
+      const draftRaw = await readFile(draftPath ?? "", "utf8");
+
+      expect(draftRaw).toContain("Latest OASIS POC");
+      expect(draftRaw).not.toContain("Older OASIS POC");
+    } finally {
+      await rm(outputDir, { recursive: true, force: true });
+    }
   });
 
   it("keeps previous portal POC as Needs Review when latest DOM no longer has usable rows", async () => {

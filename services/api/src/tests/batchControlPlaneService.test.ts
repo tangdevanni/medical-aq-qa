@@ -21,7 +21,9 @@ import { PatientMemoryService } from "../services/patientMemoryService";
 import { PortalCredentialProvider } from "../services/portalCredentialProvider";
 import { SubsidiaryConfigService } from "../services/subsidiaryConfigService";
 import type { BatchRecord } from "../types/batchControlPlane";
-import type { PatientPortalStatusSnapshot } from "@medical-ai-qa/finale-workbook-intake";
+import type {
+  PatientPortalStatusSnapshot,
+} from "@medical-ai-qa/finale-workbook-intake";
 
 function createServiceFixture(input: {
   acquisitionService?: WorkbookAcquisitionService;
@@ -128,6 +130,20 @@ async function waitForCondition(
   throw new Error("Timed out waiting for condition.");
 }
 
+async function withCodeLlmDisabled<T>(callback: () => Promise<T>): Promise<T> {
+  const previous = process.env.CODE_LLM_ENABLED;
+  process.env.CODE_LLM_ENABLED = "false";
+  try {
+    return await callback();
+  } finally {
+    if (previous === undefined) {
+      delete process.env.CODE_LLM_ENABLED;
+    } else {
+      process.env.CODE_LLM_ENABLED = previous;
+    }
+  }
+}
+
 function createPortalStatusWorkItem(id = "patient-portal-status-1"): PatientEpisodeWorkItem {
   return {
     id,
@@ -168,6 +184,87 @@ function createPortalStatusWorkItem(id = "patient-portal-status-1"): PatientEpis
     sourceRowReferences: [],
     sourceValues: [],
     importWarnings: [],
+  };
+}
+
+function oasisCheckSectionOutputs() {
+  return {
+    schemaVersion: "oasis-dom-section-outputs.v1",
+    generatedAt: "2026-04-15T06:02:00.000Z",
+    patientId: "patient-1",
+    patientRunId: "run-1",
+    processingMode: "dom_section_llm",
+    promptVersion: "oasis-dom-section-llm.v1",
+    modelId: "disabled",
+    domContentHash: "dom-hash",
+    sections: [],
+    summary: {
+      totalSections: 0,
+      processedSections: 0,
+      reusedSections: 0,
+      deterministicSections: 0,
+      skippedSections: 0,
+      failedSections: 0,
+    },
+    warnings: [],
+  };
+}
+
+function oasisMggSnapshot(input: {
+  assessmentId: string;
+  assessmentType: string;
+  value?: string;
+  selectedText?: string;
+}) {
+  return {
+    schemaVersion: "oasis-mgg-field-snapshot.v1",
+    generatedAt: "2026-04-15T06:02:00.000Z",
+    assessmentId: input.assessmentId,
+    assessmentType: input.assessmentType,
+    title: `OASIS ${input.assessmentType}`,
+    date: null,
+    sourceDomStatePath: null,
+    fieldCount: 1,
+    fields: [{
+      fieldKey: "M1850",
+      fieldGroup: "M fields",
+      itemCode: "M1850",
+      itemLabel: "Transferring",
+      sectionTitle: "Functional Status",
+      selectedValue: input.value ?? "1",
+      selectedOptionText: input.selectedText ??
+        "1. Able to transfer with minimal human assistance or with use of an assistive device.",
+      optionTexts: [
+        "0. Able to independently transfer.",
+        "1. Able to transfer with minimal human assistance or with use of an assistive device.",
+        "2. Able to bear weight and pivot during the transfer process but unable to transfer self.",
+        "3. Unable to transfer self and is unable to bear weight or pivot.",
+      ],
+      confidence: "high",
+      sourceEvidenceText: "M1850 transferring options",
+    }],
+    warnings: [],
+  };
+}
+
+async function writeOasisCheckArtifacts(input: {
+  directory: string;
+  assessmentId: string;
+  assessmentType: string;
+  includeMggSnapshot?: boolean;
+  value?: string;
+  selectedText?: string;
+}): Promise<{ sectionOutputsPath: string; mggSnapshotPath: string | null }> {
+  await mkdir(input.directory, { recursive: true });
+  const sectionOutputsPath = path.join(input.directory, "oasis-dom-section-outputs.json");
+  const mggSnapshotPath = path.join(input.directory, "oasis-mgg-field-snapshot.json");
+  await writeFile(sectionOutputsPath, JSON.stringify(oasisCheckSectionOutputs(), null, 2));
+  if (input.includeMggSnapshot !== false) {
+    await writeFile(mggSnapshotPath, JSON.stringify(oasisMggSnapshot(input), null, 2));
+  }
+  return {
+    sectionOutputsPath,
+    mggSnapshotPath: input.includeMggSnapshot === false ? null : mggSnapshotPath,
   };
 }
 
@@ -337,6 +434,507 @@ describe("BatchControlPlaneService scheduler metadata", () => {
         await readFile(path.join(patientArtifactsDirectory, "patient-portal-status-snapshot.json"), "utf8"),
       ) as PatientPortalStatusSnapshot;
       assert.equal(persisted.status, "pending_due_to_active_patient_run");
+    } finally {
+      fixture.cleanup();
+    }
+  });
+
+  it("stores latest OASIS check result for the selected assessment", async () => {
+    const fixture = createServiceFixture();
+
+    try {
+      await fixture.service.initialize();
+      const { batch, workItem, patientArtifactsDirectory } = await createPortalStatusBatch(fixture, {
+        patientRunStatus: "COMPLETE",
+      });
+      const assessmentDirectory = path.join(patientArtifactsDirectory, "oasis-assessments", "soc-20260415");
+      const artifacts = await writeOasisCheckArtifacts({
+        directory: assessmentDirectory,
+        assessmentId: "soc-20260415",
+        assessmentType: "SOC",
+      });
+      await writeFile(path.join(patientArtifactsDirectory, "patient-portal-status-snapshot.json"), JSON.stringify({
+        schemaVersion: "patient-portal-status-snapshot.v1",
+        batchId: batch.id,
+        patientId: workItem.id,
+        patientName: workItem.patientIdentity.displayName,
+        status: "fresh",
+        capturedAt: "2026-04-15T06:01:00.000Z",
+        generatedAt: "2026-04-15T06:01:00.000Z",
+        staleAfter: "2026-04-15T06:11:00.000Z",
+        activePatientRunStatus: null,
+        error: null,
+        currentOasisAssessmentId: "soc-20260415",
+        oasisAssessments: [{
+          id: "soc-20260415",
+          assessmentType: "SOC",
+          title: "OASIS SOC",
+          date: "2026-04-15",
+          primaryStatus: "VALIDATED",
+          decision: "PROCESS",
+          processingEligible: true,
+        }],
+      }, null, 2));
+      await writeFile(path.join(patientArtifactsDirectory, "oasis-assessment-processing-manifest.json"), JSON.stringify({
+        schemaVersion: "oasis-assessment-processing-manifest.v1",
+        generatedAt: "2026-04-15T06:02:00.000Z",
+        assessments: [{
+          assessmentId: "soc-20260415",
+          assessmentType: "SOC",
+          title: "OASIS SOC",
+          date: "2026-04-15",
+          isCurrent: true,
+          isMonitored: true,
+          processingStatus: "processed_root_current",
+          artifactDirectory: assessmentDirectory,
+          sectionOutputsPath: artifacts.sectionOutputsPath,
+          domStatePath: null,
+          mggSnapshotPath: artifacts.mggSnapshotPath,
+        }],
+      }, null, 2));
+
+      await withCodeLlmDisabled(async () => {
+        await fixture.service.startPatientOasisCheck({
+          batchId: batch.id,
+          patientId: workItem.id,
+          assessmentId: "soc-20260415",
+        });
+        await waitForCondition(async () => {
+          const status = await fixture.service.getPatientOasisCheckStatus(batch.id, workItem.id, "soc-20260415");
+          return status.status === "completed";
+        });
+      });
+
+      const status = await fixture.service.getPatientOasisCheckStatus(batch.id, workItem.id, "soc-20260415");
+      assert.equal(status.status, "completed");
+      assert.equal(status.result?.assessmentId, "soc-20260415");
+      assert.equal(status.result?.status, "unavailable");
+      assert.ok(status.resultPath?.endsWith("oasis-check-result.json"));
+      assert.equal(status.result?.diagnostics.rawLlmParseStatus, "not_invoked");
+      assert.ok(status.result?.diagnostics.sourceArtifactPaths.includes(artifacts.sectionOutputsPath));
+    } finally {
+      fixture.cleanup();
+    }
+  });
+
+  it("selects the earliest non-discharge OASIS as discharge comparison baseline even when SOC is labeled", async () => {
+    const fixture = createServiceFixture();
+
+    try {
+      await fixture.service.initialize();
+      const { batch, workItem, patientArtifactsDirectory } = await createPortalStatusBatch(fixture, {
+        patientRunStatus: "COMPLETE",
+      });
+      const socDirectory = path.join(patientArtifactsDirectory, "oasis-assessments", "soc-20260415");
+      const recertDirectory = path.join(patientArtifactsDirectory, "oasis-assessments", "recert-20260401");
+      const dcDirectory = path.join(patientArtifactsDirectory, "oasis-assessments", "dc-20260608");
+      const recertArtifacts = await writeOasisCheckArtifacts({
+        directory: recertDirectory,
+        assessmentId: "recert-20260401",
+        assessmentType: "RECERT",
+        value: "1",
+      });
+      const socArtifacts = await writeOasisCheckArtifacts({
+        directory: socDirectory,
+        assessmentId: "soc-20260415",
+        assessmentType: "SOC",
+        value: "1",
+      });
+      const dcArtifacts = await writeOasisCheckArtifacts({
+        directory: dcDirectory,
+        assessmentId: "dc-20260608",
+        assessmentType: "DC",
+        value: "3",
+        selectedText: "3. Unable to transfer self and is unable to bear weight or pivot.",
+      });
+      await mkdir(patientArtifactsDirectory, { recursive: true });
+      await writeFile(path.join(patientArtifactsDirectory, "patient-portal-status-snapshot.json"), JSON.stringify({
+        schemaVersion: "patient-portal-status-snapshot.v1",
+        batchId: batch.id,
+        patientId: workItem.id,
+        patientName: workItem.patientIdentity.displayName,
+        status: "fresh",
+        capturedAt: "2026-04-15T06:01:00.000Z",
+        generatedAt: "2026-04-15T06:01:00.000Z",
+        staleAfter: "2026-04-15T06:11:00.000Z",
+        activePatientRunStatus: null,
+        error: null,
+        currentOasisAssessmentId: "recert-20260401",
+        oasisAssessments: [
+          {
+            id: "recert-20260401",
+            assessmentType: "RECERT",
+            title: "OASIS REC",
+            date: "2026-04-01",
+            primaryStatus: "VALIDATED",
+            decision: "PROCESS",
+            processingEligible: true,
+          },
+          {
+            id: "soc-20260415",
+            assessmentType: "SOC",
+            title: "OASIS SOC",
+            date: "2026-04-15",
+            primaryStatus: "VALIDATED",
+            decision: "PROCESS",
+            processingEligible: true,
+          },
+          {
+            id: "dc-20260608",
+            assessmentType: "DC",
+            title: "OASIS DC",
+            date: "2026-06-08",
+            primaryStatus: "VALIDATED",
+            decision: "PROCESS",
+            processingEligible: true,
+          },
+        ],
+      }, null, 2));
+      await writeFile(path.join(patientArtifactsDirectory, "oasis-assessment-processing-manifest.json"), JSON.stringify({
+        schemaVersion: "oasis-assessment-processing-manifest.v1",
+        generatedAt: "2026-04-15T06:02:00.000Z",
+        assessments: [
+          {
+            assessmentId: "recert-20260401",
+            assessmentType: "RECERT",
+            title: "OASIS REC",
+            date: "2026-04-01",
+            artifactDirectory: recertDirectory,
+            sectionOutputsPath: recertArtifacts.sectionOutputsPath,
+            domStatePath: null,
+            mggSnapshotPath: recertArtifacts.mggSnapshotPath,
+          },
+          {
+            assessmentId: "soc-20260415",
+            assessmentType: "SOC",
+            title: "OASIS SOC",
+            date: "2026-04-15",
+            artifactDirectory: socDirectory,
+            sectionOutputsPath: socArtifacts.sectionOutputsPath,
+            domStatePath: null,
+            mggSnapshotPath: socArtifacts.mggSnapshotPath,
+          },
+          {
+            assessmentId: "dc-20260608",
+            assessmentType: "DC",
+            title: "OASIS DC",
+            date: "2026-06-08",
+            artifactDirectory: dcDirectory,
+            sectionOutputsPath: dcArtifacts.sectionOutputsPath,
+            domStatePath: null,
+            mggSnapshotPath: dcArtifacts.mggSnapshotPath,
+          },
+        ],
+      }, null, 2));
+
+      const status = await withCodeLlmDisabled(async () => {
+        await fixture.service.startPatientOasisCheck({
+          batchId: batch.id,
+          patientId: workItem.id,
+          assessmentId: "dc-20260608",
+        });
+        await waitForCondition(async () => {
+          const nextStatus = await fixture.service.getPatientOasisCheckStatus(batch.id, workItem.id, "dc-20260608");
+          return nextStatus.status === "completed" || nextStatus.status === "failed";
+        });
+        return fixture.service.getPatientOasisCheckStatus(batch.id, workItem.id, "dc-20260608");
+      });
+      assert.equal(status.status, "completed", status.lastError ?? "OASIS check did not complete.");
+      assert.equal(status.result?.dischargeComparison?.baselineAssessment?.assessmentId, "recert-20260401");
+      assert.equal(status.result?.dischargeComparison?.baselineAssessment?.selectionReason, "earliest_non_discharge_oasis");
+      assert.equal(status.result?.dischargeComparison?.findings[0]?.itemCode, "M1850");
+      assert.equal(status.result?.dischargeComparison?.findings[0]?.result, "worsened");
+    } finally {
+      fixture.cleanup();
+    }
+  });
+
+  it("uses the earliest non-discharge OASIS as discharge baseline when SOC is not labeled", async () => {
+    const fixture = createServiceFixture();
+
+    try {
+      await fixture.service.initialize();
+      const { batch, workItem, patientArtifactsDirectory } = await createPortalStatusBatch(fixture, {
+        patientRunStatus: "COMPLETE",
+      });
+      const earlyDirectory = path.join(patientArtifactsDirectory, "oasis-assessments", "rec-20260401");
+      const laterDirectory = path.join(patientArtifactsDirectory, "oasis-assessments", "rec-20260501");
+      const dcDirectory = path.join(patientArtifactsDirectory, "oasis-assessments", "dc-20260608");
+      const earlyArtifacts = await writeOasisCheckArtifacts({
+        directory: earlyDirectory,
+        assessmentId: "rec-20260401",
+        assessmentType: "RECERT",
+        value: "1",
+      });
+      const laterArtifacts = await writeOasisCheckArtifacts({
+        directory: laterDirectory,
+        assessmentId: "rec-20260501",
+        assessmentType: "RECERT",
+        value: "1",
+      });
+      const dcArtifacts = await writeOasisCheckArtifacts({
+        directory: dcDirectory,
+        assessmentId: "dc-20260608",
+        assessmentType: "DC",
+        value: "3",
+        selectedText: "3. Unable to transfer self and is unable to bear weight or pivot.",
+      });
+      await mkdir(patientArtifactsDirectory, { recursive: true });
+      await writeFile(path.join(patientArtifactsDirectory, "patient-portal-status-snapshot.json"), JSON.stringify({
+        schemaVersion: "patient-portal-status-snapshot.v1",
+        batchId: batch.id,
+        patientId: workItem.id,
+        patientName: workItem.patientIdentity.displayName,
+        status: "fresh",
+        capturedAt: "2026-04-15T06:01:00.000Z",
+        generatedAt: "2026-04-15T06:01:00.000Z",
+        staleAfter: "2026-04-15T06:11:00.000Z",
+        activePatientRunStatus: null,
+        error: null,
+        currentOasisAssessmentId: "rec-20260501",
+        oasisAssessments: [
+          {
+            id: "rec-20260401",
+            assessmentType: "RECERT",
+            title: "OASIS REC",
+            date: "2026-04-01",
+            primaryStatus: "VALIDATED",
+            decision: "PROCESS",
+            processingEligible: true,
+          },
+          {
+            id: "rec-20260501",
+            assessmentType: "RECERT",
+            title: "OASIS REC",
+            date: "2026-05-01",
+            primaryStatus: "VALIDATED",
+            decision: "PROCESS",
+            processingEligible: true,
+          },
+          {
+            id: "dc-20260608",
+            assessmentType: "UNKNOWN",
+            title: "OASIS DC",
+            date: "2026-06-08",
+            primaryStatus: "VALIDATED",
+            decision: "PROCESS",
+            processingEligible: true,
+          },
+        ],
+      }, null, 2));
+      await writeFile(path.join(patientArtifactsDirectory, "oasis-assessment-processing-manifest.json"), JSON.stringify({
+        schemaVersion: "oasis-assessment-processing-manifest.v1",
+        generatedAt: "2026-04-15T06:02:00.000Z",
+        assessments: [
+          {
+            assessmentId: "rec-20260401",
+            assessmentType: "RECERT",
+            title: "OASIS REC",
+            date: "2026-04-01",
+            artifactDirectory: earlyDirectory,
+            sectionOutputsPath: earlyArtifacts.sectionOutputsPath,
+            domStatePath: null,
+            mggSnapshotPath: earlyArtifacts.mggSnapshotPath,
+          },
+          {
+            assessmentId: "rec-20260501",
+            assessmentType: "RECERT",
+            title: "OASIS REC",
+            date: "2026-05-01",
+            artifactDirectory: laterDirectory,
+            sectionOutputsPath: laterArtifacts.sectionOutputsPath,
+            domStatePath: null,
+            mggSnapshotPath: laterArtifacts.mggSnapshotPath,
+          },
+          {
+            assessmentId: "dc-20260608",
+            assessmentType: "UNKNOWN",
+            title: "OASIS DC",
+            date: "2026-06-08",
+            artifactDirectory: dcDirectory,
+            sectionOutputsPath: dcArtifacts.sectionOutputsPath,
+            domStatePath: null,
+            mggSnapshotPath: dcArtifacts.mggSnapshotPath,
+          },
+        ],
+      }, null, 2));
+
+      const status = await withCodeLlmDisabled(async () => {
+        await fixture.service.startPatientOasisCheck({
+          batchId: batch.id,
+          patientId: workItem.id,
+          assessmentId: "dc-20260608",
+        });
+        await waitForCondition(async () => {
+          const nextStatus = await fixture.service.getPatientOasisCheckStatus(batch.id, workItem.id, "dc-20260608");
+          return nextStatus.status === "completed" || nextStatus.status === "failed";
+        });
+        return fixture.service.getPatientOasisCheckStatus(batch.id, workItem.id, "dc-20260608");
+      });
+      assert.equal(status.status, "completed", status.lastError ?? "OASIS check did not complete.");
+      assert.equal(status.result?.dischargeComparison?.baselineAssessment?.assessmentId, "rec-20260401");
+      assert.equal(status.result?.dischargeComparison?.baselineAssessment?.selectionReason, "earliest_non_discharge_oasis");
+      assert.equal(status.result?.dischargeComparison?.findings[0]?.itemCode, "M1850");
+    } finally {
+      fixture.cleanup();
+    }
+  });
+
+  it("keeps selected DC review available when baseline M/GG snapshot is missing", async () => {
+    const fixture = createServiceFixture();
+
+    try {
+      await fixture.service.initialize();
+      const { batch, workItem, patientArtifactsDirectory } = await createPortalStatusBatch(fixture, {
+        patientRunStatus: "COMPLETE",
+      });
+      const baselineDirectory = path.join(patientArtifactsDirectory, "oasis-assessments", "soc-20260401");
+      const dcDirectory = path.join(patientArtifactsDirectory, "oasis-assessments", "dc-20260608");
+      const baselineArtifacts = await writeOasisCheckArtifacts({
+        directory: baselineDirectory,
+        assessmentId: "soc-20260401",
+        assessmentType: "SOC",
+        includeMggSnapshot: false,
+      });
+      const dcArtifacts = await writeOasisCheckArtifacts({
+        directory: dcDirectory,
+        assessmentId: "dc-20260608",
+        assessmentType: "DC",
+        value: "3",
+        selectedText: "3. Unable to transfer self and is unable to bear weight or pivot.",
+      });
+      await mkdir(patientArtifactsDirectory, { recursive: true });
+      await writeFile(path.join(patientArtifactsDirectory, "patient-portal-status-snapshot.json"), JSON.stringify({
+        schemaVersion: "patient-portal-status-snapshot.v1",
+        batchId: batch.id,
+        patientId: workItem.id,
+        patientName: workItem.patientIdentity.displayName,
+        status: "fresh",
+        capturedAt: "2026-04-15T06:01:00.000Z",
+        generatedAt: "2026-04-15T06:01:00.000Z",
+        staleAfter: "2026-04-15T06:11:00.000Z",
+        activePatientRunStatus: null,
+        error: null,
+        currentOasisAssessmentId: "dc-20260608",
+        oasisAssessments: [
+          {
+            id: "soc-20260401",
+            assessmentType: "SOC",
+            title: "OASIS SOC",
+            date: "2026-04-01",
+            primaryStatus: "VALIDATED",
+            decision: "PROCESS",
+            processingEligible: true,
+          },
+          {
+            id: "dc-20260608",
+            assessmentType: "DC",
+            title: "OASIS DC",
+            date: "2026-06-08",
+            primaryStatus: "VALIDATED",
+            decision: "PROCESS",
+            processingEligible: true,
+          },
+        ],
+      }, null, 2));
+      await writeFile(path.join(patientArtifactsDirectory, "oasis-assessment-processing-manifest.json"), JSON.stringify({
+        schemaVersion: "oasis-assessment-processing-manifest.v1",
+        generatedAt: "2026-04-15T06:02:00.000Z",
+        assessments: [
+          {
+            assessmentId: "soc-20260401",
+            assessmentType: "SOC",
+            title: "OASIS SOC",
+            date: "2026-04-01",
+            artifactDirectory: baselineDirectory,
+            sectionOutputsPath: baselineArtifacts.sectionOutputsPath,
+            domStatePath: null,
+            mggSnapshotPath: baselineArtifacts.mggSnapshotPath,
+          },
+          {
+            assessmentId: "dc-20260608",
+            assessmentType: "DC",
+            title: "OASIS DC",
+            date: "2026-06-08",
+            artifactDirectory: dcDirectory,
+            sectionOutputsPath: dcArtifacts.sectionOutputsPath,
+            domStatePath: null,
+            mggSnapshotPath: dcArtifacts.mggSnapshotPath,
+          },
+        ],
+      }, null, 2));
+
+      const status = await withCodeLlmDisabled(async () => {
+        await fixture.service.startPatientOasisCheck({
+          batchId: batch.id,
+          patientId: workItem.id,
+          assessmentId: "dc-20260608",
+        });
+        await waitForCondition(async () => {
+          const nextStatus = await fixture.service.getPatientOasisCheckStatus(batch.id, workItem.id, "dc-20260608");
+          return nextStatus.status === "completed" || nextStatus.status === "failed";
+        });
+        return fixture.service.getPatientOasisCheckStatus(batch.id, workItem.id, "dc-20260608");
+      });
+
+      assert.equal(status.status, "completed", status.lastError ?? "OASIS check did not complete.");
+      assert.equal(status.result?.dischargeComparison?.baselineAssessment?.assessmentId, "soc-20260401");
+      assert.equal(
+        status.result?.dischargeComparison?.summary,
+        "Baseline OASIS was found, but its M/GG field snapshot was unavailable.",
+      );
+      assert.equal(status.result?.diagnostics.rawLlmParseStatus, "not_invoked");
+    } finally {
+      fixture.cleanup();
+    }
+  });
+
+  it("fails an OASIS check for an unknown assessment without falling back", async () => {
+    const fixture = createServiceFixture();
+
+    try {
+      await fixture.service.initialize();
+      const { batch, workItem, patientArtifactsDirectory } = await createPortalStatusBatch(fixture, {
+        patientRunStatus: "COMPLETE",
+      });
+      await mkdir(patientArtifactsDirectory, { recursive: true });
+      await writeFile(path.join(patientArtifactsDirectory, "patient-portal-status-snapshot.json"), JSON.stringify({
+        schemaVersion: "patient-portal-status-snapshot.v1",
+        batchId: batch.id,
+        patientId: workItem.id,
+        patientName: workItem.patientIdentity.displayName,
+        status: "fresh",
+        capturedAt: "2026-04-15T06:01:00.000Z",
+        generatedAt: "2026-04-15T06:01:00.000Z",
+        staleAfter: "2026-04-15T06:11:00.000Z",
+        activePatientRunStatus: null,
+        error: null,
+        currentOasisAssessmentId: "soc-20260415",
+        oasisAssessments: [{
+          id: "soc-20260415",
+          assessmentType: "SOC",
+          title: "OASIS SOC",
+          date: "2026-04-15",
+          primaryStatus: "VALIDATED",
+          decision: "PROCESS",
+          processingEligible: true,
+        }],
+      }, null, 2));
+
+      await fixture.service.startPatientOasisCheck({
+        batchId: batch.id,
+        patientId: workItem.id,
+        assessmentId: "missing-assessment",
+      });
+      await waitForCondition(async () => {
+        const status = await fixture.service.getPatientOasisCheckStatus(batch.id, workItem.id, "missing-assessment");
+        return status.status === "failed";
+      });
+
+      const status = await fixture.service.getPatientOasisCheckStatus(batch.id, workItem.id, "missing-assessment");
+      assert.equal(status.status, "failed");
+      assert.match(status.lastError ?? "", /not found/i);
+      assert.equal(status.resultPath, null);
     } finally {
       fixture.cleanup();
     }

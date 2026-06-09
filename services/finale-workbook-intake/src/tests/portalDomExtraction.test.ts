@@ -121,6 +121,259 @@ describe("portal DOM extraction", () => {
     expect(rows).toContainEqual(["Furosemide", "", "Oral", "Active"]);
   });
 
+  it("captures OASIS radio selected values, all options, zero responses, and full GG suffixes", async () => {
+    await page.setContent(`
+      <section>
+        <h2>Functional Assessment (Self Care)</h2>
+        <div class="form-body m1800">
+          <h6>(M1800) Grooming:</h6>
+          <p>Current ability to tend safely to personal hygiene needs</p>
+          <label><input type="radio" name="M1800" value="0" /> 0. Able to groom self unaided.</label>
+          <label class="inputGroup-radio-loader selected"><input type="radio" name="M1800" value="1" checked /> 1. Grooming utensils must be placed within reach before able to complete grooming activities.</label>
+          <label><input type="radio" name="M1800" value="2" /> 2. Someone must assist the patient to groom self.</label>
+          <label><input type="radio" name="M1800" value="3" /> 3. Patient depends entirely upon someone else for grooming needs</label>
+        </div>
+        <div class="form-body m1810">
+          <h6>(M1810) Ability to Dress Upper Body:</h6>
+          <label class="selected"><input type="radio" name="M1810" value="0" checked /> 0. Able to get clothes out of closets and drawers, put them on and remove them without assistance.</label>
+          <label><input type="radio" name="M1810" value="1" /> 1. Able to dress upper body without assistance if clothing is laid out or handed to the patient.</label>
+          <label><input type="radio" name="M1810" value="2" /> 2. Someone must help the patient put on upper body clothing.</label>
+        </div>
+        <div class="form-body gg0170c">
+          <h6>(GG0170C) Mobility - Lying to sitting on side of bed</h6>
+          <label><input type="radio" name="GG0170C" value="01" /> 01. Dependent</label>
+          <label><input type="radio" name="GG0170C" value="04" checked /> 04. Supervision or touching assistance</label>
+          <label><input type="radio" name="GG0170C" value="06" /> 06. Independent</label>
+        </div>
+      </section>
+    `);
+
+    const result = await extractPortalDomStateFromPage(page, {
+      sourceArea: "oasis",
+      sectionTitle: "Functional Assessment (Self Care)",
+      minFieldCount: 3,
+      minNonEmptyFieldCount: 3,
+    });
+
+    const fields = result.sections[0]?.fields ?? [];
+    const grooming = fields.find((field) => field.itemCode === "M1800");
+    const dressing = fields.find((field) => field.itemCode === "M1810");
+    const gg = fields.find((field) => field.itemCode === "GG0170C");
+
+    expect(grooming?.selectedValue).toBe("1");
+    expect(grooming?.selectedText).toContain("Grooming utensils must be placed within reach");
+    expect(grooming?.optionTexts).toEqual(expect.arrayContaining([
+      "0. Able to groom self unaided.",
+      "1. Grooming utensils must be placed within reach before able to complete grooming activities.",
+      "2. Someone must assist the patient to groom self.",
+      "3. Patient depends entirely upon someone else for grooming needs",
+    ]));
+    expect(dressing?.selectedValue).toBe("0");
+    expect(dressing?.selectedText).toContain("0. Able to get clothes out of closets");
+    expect(gg?.itemCode).toBe("GG0170C");
+    expect(gg?.selectedValue).toBe("04");
+    expect(gg?.optionTexts).toEqual(expect.arrayContaining([
+      "01. Dependent",
+      "04. Supervision or touching assistance",
+      "06. Independent",
+    ]));
+  });
+
+  it("captures Finale styled hidden OASIS radio controls", async () => {
+    await page.setContent(`
+      <section>
+        <h2>Functional Assessment (Self Care)</h2>
+        <style>
+          .inputGroup-radio-loader input { display: none; }
+        </style>
+        <div class="form-body m1800">
+          <h6>(M1800) Grooming:</h6>
+          <div class="inputGroup-radio-loader">
+            <input type="radio" id="M1800-0" name="M1800" value="0" />
+            <label for="M1800-0">0. Able to groom self unaided, with or without the use of assistive devices or adapted methods.</label>
+          </div>
+          <div class="inputGroup-radio-loader selected">
+            <input type="radio" id="M1800-1" name="M1800" value="1" />
+            <label for="M1800-1">1. Grooming utensils must be placed within reach before able to complete grooming activities.</label>
+          </div>
+          <div class="inputGroup-radio-loader">
+            <input type="radio" id="M1800-2" name="M1800" value="2" />
+            <label for="M1800-2">2. Someone must assist the patient to groom self.</label>
+          </div>
+        </div>
+        <div class="form-body gg0170c">
+          <h6>(GG0170C) C. Lying to sitting on side of bed:</h6>
+          <div class="inputGroup-radio-loader">
+            <input type="radio" id="GG0170C-01" name="GG0170C" value="01" />
+            <label for="GG0170C-01">01. Dependent</label>
+          </div>
+          <div class="inputGroup-radio-loader selected">
+            <input type="radio" id="GG0170C-04" name="GG0170C" value="04" />
+            <label for="GG0170C-04">04. Supervision or touching assistance</label>
+          </div>
+          <div class="inputGroup-radio-loader">
+            <input type="radio" id="GG0170C-06" name="GG0170C" value="06" />
+            <label for="GG0170C-06">06. Independent</label>
+          </div>
+        </div>
+      </section>
+    `);
+
+    const result = await extractPortalDomStateFromPage(page, {
+      sourceArea: "oasis",
+      sectionTitle: "Functional Assessment (Self Care)",
+      minFieldCount: 2,
+      minNonEmptyFieldCount: 2,
+    });
+
+    const fields = result.sections[0]?.fields ?? [];
+    const grooming = fields.find((field) => field.itemCode === "M1800");
+    const gg = fields.find((field) => field.itemCode === "GG0170C");
+
+    expect(grooming).toMatchObject({
+      inputType: "radio",
+      selectedValue: "1",
+      checked: true,
+    });
+    expect(grooming?.selectedText).toContain("Grooming utensils must be placed within reach");
+    expect(grooming?.optionTexts).toEqual(expect.arrayContaining([
+      "0. Able to groom self unaided, with or without the use of assistive devices or adapted methods.",
+      "1. Grooming utensils must be placed within reach before able to complete grooming activities.",
+      "2. Someone must assist the patient to groom self.",
+    ]));
+    expect(gg).toMatchObject({
+      inputType: "radio",
+      itemCode: "GG0170C",
+      selectedValue: "04",
+      checked: true,
+    });
+    expect(gg?.selectedText).toBe("04. Supervision or touching assistance");
+  });
+
+  it("groups live Finale OASIS radios by ID prefix when name/value attributes are missing", async () => {
+    await page.setContent(`
+      <section>
+        <h2>Functional Assessment (Self Care)</h2>
+        <div class="form-body m1800">
+          <h6>(M1800) Grooming:</h6>
+          <div class="inputGroup-radio-loader">
+            <input type="radio" id="M1800_CRNT_GROOMING-1-00" />
+            0. Able to groom self unaided, with or without the use of assistive devices or adapted methods.
+          </div>
+          <div class="inputGroup-radio-loader">
+            <input type="radio" id="M1800_CRNT_GROOMING-2-01" />
+            1. Grooming utensils must be placed within reach before able to complete grooming activities.
+          </div>
+          <div class="inputGroup-radio-loader">
+            <input type="radio" id="M1800_CRNT_GROOMING-3-02" checked />
+            2. Someone must assist the patient to groom self.
+          </div>
+        </div>
+        <div class="form-body gg0130a">
+          <h6>(GG0130A1) Eating</h6>
+          <div class="inputGroup-radio-loader">
+            <input type="radio" id="GG0130A1-1-06" />
+            06. Independent
+          </div>
+          <div class="inputGroup-radio-loader">
+            <input type="radio" id="GG0130A1-2-05" checked />
+            05. Setup or clean-up assistance
+          </div>
+          <div class="inputGroup-radio-loader">
+            <input type="radio" id="GG0130A1-3-04" />
+            04. Supervision or touching assistance
+          </div>
+        </div>
+      </section>
+    `);
+
+    const result = await extractPortalDomStateFromPage(page, {
+      sourceArea: "oasis",
+      sectionTitle: "Functional Assessment (Self Care)",
+      minFieldCount: 2,
+      minNonEmptyFieldCount: 2,
+    });
+
+    const fields = result.sections[0]?.fields ?? [];
+    const grooming = fields.find((field) => field.itemCode === "M1800");
+    const eating = fields.find((field) => field.itemCode === "GG0130A1");
+
+    expect(fields.filter((field) => field.itemCode === "M1800")).toHaveLength(1);
+    expect(grooming).toMatchObject({
+      inputType: "radio",
+      selectedValue: "2",
+      checked: true,
+    });
+    expect(grooming?.selectedText).toBe("2. Someone must assist the patient to groom self.");
+    expect(grooming?.optionTexts).toEqual(expect.arrayContaining([
+      "0. Able to groom self unaided, with or without the use of assistive devices or adapted methods.",
+      "1. Grooming utensils must be placed within reach before able to complete grooming activities.",
+      "2. Someone must assist the patient to groom self.",
+    ]));
+    expect(eating).toMatchObject({
+      inputType: "radio",
+      itemCode: "GG0130A1",
+      selectedValue: "05",
+      selectedText: "05. Setup or clean-up assistance",
+      checked: true,
+    });
+    expect(eating?.optionTexts).toEqual(expect.arrayContaining([
+      "06. Independent",
+      "05. Setup or clean-up assistance",
+      "04. Supervision or touching assistance",
+    ]));
+  });
+
+  it("captures selected OASIS option rows when Finale does not expose usable inputs", async () => {
+    await page.setContent(`
+      <section>
+        <h2>Functional Assessment (Self Care)</h2>
+        <div class="form-body m1810">
+          <h6>(M1810) Ability to Dress Upper Body:</h6>
+          <div class="inputGroup-radio-loader">0. Able to get clothes out of closets and drawers, put them on and remove them from the upper body without assistance.</div>
+          <div class="inputGroup-radio-loader selected">1. Able to dress upper body without assistance if clothing is laid out or handed to the patient.</div>
+          <div class="inputGroup-radio-loader">2. Someone must help the patient put on upper body clothing.</div>
+        </div>
+        <div class="form-body gg0170c">
+          <h6>(GG0170C) C. Lying to sitting on side of bed:</h6>
+          <div class="inputGroup-radio-loader">01. Dependent</div>
+          <div class="inputGroup-radio-loader selected">04. Supervision or touching assistance</div>
+          <div class="inputGroup-radio-loader">06. Independent</div>
+        </div>
+      </section>
+    `);
+
+    const result = await extractPortalDomStateFromPage(page, {
+      sourceArea: "oasis",
+      sectionTitle: "Functional Assessment (Self Care)",
+      minFieldCount: 2,
+      minNonEmptyFieldCount: 2,
+    });
+
+    const fields = result.sections[0]?.fields ?? [];
+    const dressing = fields.find((field) => field.itemCode === "M1810");
+    const gg = fields.find((field) => field.itemCode === "GG0170C");
+
+    expect(dressing).toMatchObject({
+      inputType: "radio",
+      selectedValue: "1",
+      selectedText: "1. Able to dress upper body without assistance if clothing is laid out or handed to the patient.",
+      checked: true,
+    });
+    expect(dressing?.optionTexts).toEqual(expect.arrayContaining([
+      "0. Able to get clothes out of closets and drawers, put them on and remove them from the upper body without assistance.",
+      "1. Able to dress upper body without assistance if clothing is laid out or handed to the patient.",
+      "2. Someone must help the patient put on upper body clothing.",
+    ]));
+    expect(gg).toMatchObject({
+      inputType: "radio",
+      itemCode: "GG0170C",
+      selectedValue: "04",
+      selectedText: "04. Supervision or touching assistance",
+      checked: true,
+    });
+  });
+
   it("iterates every OASIS ng-select section and continues after a degraded section", async () => {
     await page.setContent(`
       <app-document-note>

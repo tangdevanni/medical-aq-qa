@@ -72,13 +72,11 @@ function hasNonEmptyValue(field: PortalDomExtractedField): boolean {
 
 function normalizeOasisItemCode(value: string | null | undefined): string | undefined {
   const normalized = normalizeWhitespace(value).toUpperCase();
-  const match = normalized.match(/\b(?:M|GG|O)\d{4}[A-Z0-9_() -]*\b/);
-  if (!match?.[0]) {
-    return undefined;
+  const ggMatch = normalized.match(/\bGG\d{4}[A-Z0-9]*\b/);
+  if (ggMatch?.[0]) {
+    return ggMatch[0];
   }
-  const compact = match[0].replace(/[_() -]+$/g, "");
-  const base = compact.match(/^(?:M|GG|O)\d{4}/)?.[0];
-  return base ?? compact;
+  return normalized.match(/\b(?:M|O)\d{4}/)?.[0];
 }
 
 function buildCoverage(input: {
@@ -244,11 +242,11 @@ export async function extractPortalDomStateFromPage(
       (value ?? "").replace(/\s+/g, " ").trim();
     const normalizeOasisItemCode = (value: string | null | undefined): string | undefined => {
       const normalized = normalize(value).toUpperCase();
-      const explicit = normalized.match(/\b(?:M|GG|O)\d{4}\b/)?.[0];
-      if (explicit) {
-        return explicit;
+      const ggMatch = normalized.match(/\bGG\d{4}[A-Z0-9]*\b/)?.[0];
+      if (ggMatch) {
+        return ggMatch;
       }
-      return normalized.match(/\b(?:M|GG|O)\d{4}/)?.[0];
+      return normalized.match(/\b(?:M|O)\d{4}/)?.[0];
     };
     const isSensitiveKey = (value: string): boolean =>
       /\b(password|token|secret|session|cookie|auth|bearer|csrf|jwt)\b/i.test(value);
@@ -306,15 +304,96 @@ export async function extractPortalDomStateFromPage(
         codeContainer?.className,
         codeContainer?.querySelector("h1,h2,h3,h4,h5,h6,.form-section")?.textContent,
       ].map((value) => normalize(String(value ?? ""))).join(" ");
-      const explicit = haystack.match(/\b(?:M|GG|O)\d{4}\b/i)?.[0];
-      if (explicit) {
+      const explicit = haystack.match(/\b(?:M|O)\d{4}/i)?.[0];
+      const ggExplicit = haystack.match(/\bGG\d{4}[A-Z0-9]*\b/i)?.[0];
+      if (ggExplicit) {
+        return ggExplicit.toUpperCase();
+      }
+      if (explicit && !/^GG/i.test(explicit)) {
         return explicit.toUpperCase();
       }
-      const classCode = haystack.match(/\b(?:m|gg|o)\d{4}/i)?.[0];
+      const classCode = haystack.match(/\b(?:m|o)\d{4}/i)?.[0];
       return classCode?.toUpperCase();
     };
     const selectedWrapper = (element: any): any =>
       element.closest(".selected, [class*=' selected'], [class$='selected'], .ng-option-selected");
+    const optionValue = (text: string): string | undefined => {
+      const normalized = normalize(text);
+      const numeric = normalized.match(/^\(?(\d{1,2})\)?\s*\./);
+      if (numeric?.[1]) {
+        return numeric[1];
+      }
+      return /^\(-\)/.test(normalized) ? "-" : undefined;
+    };
+    const selectedOptionCandidateText = (element: any): string => {
+      const text = textOf(element);
+      const lines = text.split(/\n+/).map(normalize).filter(Boolean);
+      return lines.find((line) => optionValue(line)) ?? text;
+    };
+    const radioIdGroupPrefix = (element: any): string | undefined => {
+      const id = normalize(element.id).toUpperCase();
+      return (
+        id.match(/^((?:M|O)\d{4}(?:_[A-Z0-9]+)*|GG\d{4}[A-Z0-9]*)-\d{1,2}-[\d-]+$/)?.[1] ??
+        id.match(/^((?:M|O)\d{4}(?:_[A-Z0-9]+)*|GG\d{4}[A-Z0-9]*)-[\d-]+$/)?.[1]
+      );
+    };
+    const radioGroupKey = (element: any, itemCode?: string, label?: string, key?: string): string => {
+      const name = normalize(element.name);
+      if (name) {
+        return `name:${name}`;
+      }
+      const idPrefix = radioIdGroupPrefix(element);
+      if (idPrefix) {
+        return `id:${idPrefix}`;
+      }
+      if (itemCode) {
+        return `item:${itemCode}:${nearestHeading(element) || sectionFor(element)}`;
+      }
+      return `fallback:${normalize(key || label || element.id || element.value)}`;
+    };
+    const radioOptionText = (element: any): string => {
+      const host = element.closest("label, .inputGroup-radio-loader, [class*='radio'], [role='radio'], li");
+      const hostText = host ? selectedOptionCandidateText(host) : "";
+      if (optionValue(hostText)) {
+        return hostText;
+      }
+      const labelText = associatedLabel(element);
+      if (optionValue(labelText)) {
+        return labelText;
+      }
+      const evidenceText = evidenceNear(element);
+      if (optionValue(evidenceText)) {
+        return evidenceText;
+      }
+      return normalize(labelText || hostText || element.value || evidenceText);
+    };
+    const radioSelectedValue = (element: any, optionText: string): string | undefined => {
+      const rawValue = normalize(element.value);
+      if (rawValue && rawValue.toLowerCase() !== "on") {
+        return rawValue;
+      }
+      const parsed = optionValue(optionText);
+      if (parsed !== undefined) {
+        return parsed;
+      }
+      return normalize(element.id).match(/-([\d-]{1,2})$/)?.[1];
+    };
+    const optionTextsNearSelected = (element: any): string[] => {
+      const host = element.parentElement ?? element.closest(".form-body, fieldset, section, div") ?? element;
+      const childOptions = Array.from(host.children ?? [])
+        .map((child) => selectedOptionCandidateText(child))
+        .map(normalize)
+        .filter((option) => optionValue(option));
+      if (childOptions.length > 0) {
+        return Array.from(new Set(childOptions));
+      }
+      const containerText = textOf(element.closest(".form-body, fieldset, section, div") ?? host);
+      return Array.from(new Set(containerText
+        .split(/\n+/)
+        .map(normalize)
+        .filter((option) => optionValue(option))
+        .slice(0, 30)));
+    };
     const fields: PortalDomExtractedField[] = [];
     const seenRadioGroups = new Set<string>();
 
@@ -330,33 +409,44 @@ export async function extractPortalDomStateFromPage(
       if (isSensitiveKey([type, key, label, element.getAttribute("autocomplete") ?? ""].join(" "))) {
         continue;
       }
-      if (type === "hidden" || type === "password" || !isVisible(element)) {
-        continue;
-      }
       if (type === "radio") {
         const input = element;
-        const group = input.name || input.id || label || input.value;
+        const group = radioGroupKey(input, itemCode, label, key);
         if (seenRadioGroups.has(group)) {
           continue;
         }
         seenRadioGroups.add(group);
         const radios = input.name
           ? Array.from(documentRef.querySelectorAll(`input[type="radio"][name="${cssEscape(input.name)}"]`)) as any[]
-          : [input];
+          : (Array.from(documentRef.querySelectorAll("input[type='radio']")) as any[])
+            .filter((radio) => radioGroupKey(radio, oasisItemCodeFor(radio), associatedLabel(radio), fieldKey(radio)) === group);
         const checked = radios.find((radio) => radio.checked || selectedWrapper(radio));
+        const selectedText = checked ? radioOptionText(checked) : undefined;
+        const selectedValue = checked && selectedText ? radioSelectedValue(checked, selectedText) : undefined;
+        const optionTexts = Array.from(new Set(radios
+          .map((radio) => normalize(radioOptionText(radio)))
+          .filter(Boolean)));
         fields.push({
           section: sectionFor(element),
           itemCode,
-          label: label || group,
+          label: heading || label || group,
           key: itemCode ?? key ?? group,
           inputType: "radio",
-          value: checked ? normalize(checked.value || associatedLabel(checked) || evidenceNear(checked)) : "",
-          selectedText: checked ? normalize(associatedLabel(checked) || checked.value) : undefined,
+          value: checked ? normalize(selectedValue || selectedText || evidenceNear(checked)) : "",
+          selectedText,
+          selectedValue,
+          optionTexts,
           checked: Boolean(checked),
           sourceKind: "radio",
           confidence: checked ? "high" : "medium",
-          evidenceText: evidenceNear(checked ?? element),
+          evidenceText: normalize([
+            evidenceNear(checked ?? element),
+            optionTexts.length > 0 ? `Options: ${optionTexts.join(" | ")}` : "",
+          ].filter(Boolean).join(" ")).slice(0, 700),
         });
+        continue;
+      }
+      if (type === "hidden" || type === "password" || !isVisible(element)) {
         continue;
       }
       if (type === "checkbox") {
@@ -406,6 +496,58 @@ export async function extractPortalDomStateFromPage(
         sourceKind: element.tagName.toLowerCase() === "textarea" ? "textarea" : "input",
         confidence: label || key ? "high" : "medium",
         evidenceText: evidenceNear(element),
+      });
+    }
+
+    const seenSelectedOptions = new Set<string>();
+    for (const element of Array.from(documentRef.querySelectorAll(
+      ".selected, [class*=' selected'], [class$='selected'], [aria-checked='true']",
+    )) as any[]) {
+      if (
+        element.closest("ng-select, ng-dropdown-panel, fin-select.select-oasis-pages, fin-select[class*='select-oasis-pages']") ||
+        element.classList?.contains("ng-option-selected")
+      ) {
+        continue;
+      }
+      if (!isVisible(element)) {
+        continue;
+      }
+      const itemCode = oasisItemCodeFor(element);
+      if (!itemCode) {
+        continue;
+      }
+      const selectedText = selectedOptionCandidateText(element);
+      const selectedValue = optionValue(selectedText);
+      if (!selectedText || !selectedValue) {
+        continue;
+      }
+      const options = optionTextsNearSelected(element);
+      const dedupeKey = `${itemCode}|${selectedValue}|${selectedText}`.toLowerCase();
+      if (seenSelectedOptions.has(dedupeKey) || fields.some((field) =>
+        field.itemCode === itemCode &&
+        normalize(String(field.selectedValue ?? field.value ?? "")) === selectedValue &&
+        normalize(field.selectedText ?? "") === selectedText
+      )) {
+        continue;
+      }
+      seenSelectedOptions.add(dedupeKey);
+      fields.push({
+        section: sectionFor(element),
+        itemCode,
+        label: normalize([nearestHeading(element), selectedText].filter(Boolean).join(" - ")),
+        key: itemCode,
+        inputType: "radio",
+        value: selectedValue,
+        selectedText,
+        selectedValue,
+        optionTexts: options,
+        checked: true,
+        sourceKind: "radio",
+        confidence: "high",
+        evidenceText: normalize([
+          evidenceNear(element),
+          options.length > 0 ? `Options: ${options.join(" | ")}` : "",
+        ].filter(Boolean).join(" ")).slice(0, 700),
       });
     }
 

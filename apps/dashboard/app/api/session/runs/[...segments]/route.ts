@@ -4,9 +4,11 @@ import {
   createBackendRunSample,
   getLatestBackendPatient,
   getBackendPatientArtifacts,
+  getBackendPatientOasisCheckStatus,
   getBackendPatientReferralIntakeStatus,
   getBackendRun,
   getBackendRunStatus,
+  startBackendPatientOasisCheck,
   startBackendPatientReferralIntake,
 } from "../../../../../lib/server/backendApi";
 import { agencyIdsMatch, requireSelectedAgencySession } from "../../../../../lib/auth/session";
@@ -80,6 +82,21 @@ export async function GET(_request: Request, { params }: Params) {
       return NextResponse.json(intakeStatus);
     }
 
+    if (segments.length === 5 && segments[1] === "patients" && segments[3] === "oasis-check" && segments[4] === "status") {
+      const runStatus = await getBackendRunStatus(segments[0]!);
+      if (!agencyIdsMatch(runStatus.subsidiaryId, session.selectedAgencyId)) {
+        return unauthorizedAgencyResponse();
+      }
+      const url = new URL(_request.url);
+      const assessmentId = url.searchParams.get("assessmentId");
+      if (!assessmentId) {
+        return NextResponse.json({ message: "assessmentId is required." }, { status: 400 });
+      }
+      const patient = await getLatestBackendPatient(runStatus.subsidiaryId, segments[2]!);
+      const checkStatus = await getBackendPatientOasisCheckStatus(patient.batchId, patient.workItemId, assessmentId);
+      return NextResponse.json(checkStatus);
+    }
+
     return NextResponse.json({ message: "Unsupported dashboard session route." }, { status: 404 });
   } catch (error) {
     return NextResponse.json(
@@ -119,6 +136,21 @@ export async function POST(request: Request, { params }: Params) {
 
       const patient = await getLatestBackendPatient(status.subsidiaryId, segments[2]!);
       const response = await startBackendPatientReferralIntake(patient.batchId, patient.workItemId);
+      return NextResponse.json(response, { status: 202 });
+    }
+
+    if (segments.length === 4 && segments[1] === "patients" && segments[3] === "oasis-check") {
+      const status = await getBackendRunStatus(segments[0]!);
+      if (!agencyIdsMatch(status.subsidiaryId, session.selectedAgencyId)) {
+        return unauthorizedAgencyResponse();
+      }
+
+      const body = (await request.json().catch(() => ({}))) as { assessmentId?: string };
+      if (!body.assessmentId) {
+        return NextResponse.json({ message: "assessmentId is required." }, { status: 400 });
+      }
+      const patient = await getLatestBackendPatient(status.subsidiaryId, segments[2]!);
+      const response = await startBackendPatientOasisCheck(patient.batchId, patient.workItemId, body.assessmentId);
       return NextResponse.json(response, { status: 202 });
     }
 

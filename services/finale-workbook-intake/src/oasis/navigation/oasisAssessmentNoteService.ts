@@ -1,6 +1,7 @@
 import type { AutomationStepLog, PatientEpisodeWorkItem } from "@medical-ai-qa/shared-types";
 import type { Logger } from "pino";
 import type { PatientPortalContext } from "../../portal/context/patientPortalContext";
+import type { PatientPortalStatusOasisAssessment } from "../../portal/types/patientPortalStatus";
 import type { BatchPortalAutomationClient } from "../../workers/playwrightBatchQaWorker";
 import type {
   OasisAssessmentNoteOpenResult,
@@ -13,6 +14,7 @@ export interface OasisAssessmentNoteParams {
   workItem: PatientEpisodeWorkItem;
   evidenceDir: string;
   selection: OasisAssessmentSelectionResult;
+  targetAssessment?: PatientPortalStatusOasisAssessment | null;
   logger: Logger;
   portalClient: BatchPortalAutomationClient;
 }
@@ -30,6 +32,7 @@ export async function openAssessmentNote(
     workItem: params.workItem,
     evidenceDir: params.evidenceDir,
     assessmentType: params.selection.selectedAssessmentType,
+    targetAssessment: params.targetAssessment,
   });
   const warnings = [...result.result.warnings];
   const matchedRequestedAssessment =

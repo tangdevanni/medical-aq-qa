@@ -12,6 +12,10 @@ import type {
 } from "@medical-ai-qa/shared-types";
 import { resolveBedrockConfig, sendBedrockConverseWithProfileFallback } from "../config/bedrock";
 import type { FinaleBatchEnv } from "../config/env";
+import {
+  writeOasisMggFieldSnapshot,
+  type OasisMggFieldSnapshotArtifact,
+} from "./oasisMggFieldSnapshotService";
 
 export const OASIS_DOM_SECTION_PROCESSING_MANIFEST_FILE_NAME = "oasis-dom-section-processing-manifest.json";
 export const OASIS_DOM_SECTION_OUTPUTS_FILE_NAME = "oasis-dom-section-outputs.json";
@@ -567,7 +571,10 @@ function deterministicRows(workItem: SectionWorkItem): OasisDomSectionOutputRow[
   for (const section of workItem.sourceSections) {
     for (const field of usefulSectionFields(section)) {
       const value = formatFieldValue(field);
-      if (!value || /^(?:0|false|unchecked|not selected)$/i.test(value)) {
+      const isZeroMggSelection =
+        /\b(?:M\d{4}|GG\d{4}[A-Z0-9]*)\b/i.test([field.itemCode, field.key, field.label].filter(Boolean).join(" ")) &&
+        (normalizeWhitespace(field.selectedValue) === "0" || /^0(?:\.|\s|$)/.test(value ?? ""));
+      if (!value || isZeroMggSelection || /^(?:0|false|unchecked|not selected)$/i.test(value)) {
         continue;
       }
       rows.push({
@@ -720,11 +727,18 @@ export async function processOasisDomSections(input: {
   env: FinaleBatchEnv;
   invokeText?: OasisDomSectionLlmInvoke;
   generatedAt?: string;
+  assessmentId?: string | null;
+  assessmentType?: string | null;
+  title?: string | null;
+  date?: string | null;
+  sourceDomStatePath?: string | null;
 }): Promise<{
   manifestPath: string;
   outputsPath: string;
+  mggSnapshotPath: string;
   manifest: OasisDomSectionProcessingManifest;
   outputs: OasisDomSectionOutputsArtifact;
+  mggSnapshot: OasisMggFieldSnapshotArtifact;
 }> {
   const generatedAt = input.generatedAt ?? new Date().toISOString();
   const llmEnabled = isOasisSectionLlmEnabled(input.env, input.invokeText);
@@ -863,6 +877,16 @@ export async function processOasisDomSections(input: {
   };
 
   await mkdir(input.patientArtifactsDirectory, { recursive: true });
+  const mggSnapshot = await writeOasisMggFieldSnapshot({
+    state: input.state,
+    patientArtifactsDirectory: input.patientArtifactsDirectory,
+    assessmentId: input.assessmentId,
+    assessmentType: input.assessmentType,
+    title: input.title,
+    date: input.date,
+    sourceDomStatePath: input.sourceDomStatePath,
+    generatedAt,
+  });
   await Promise.all([
     writeFile(manifestPath, JSON.stringify(manifest, null, 2), "utf8"),
     writeFile(outputsPath, JSON.stringify(outputs, null, 2), "utf8"),
@@ -871,7 +895,9 @@ export async function processOasisDomSections(input: {
   return {
     manifestPath,
     outputsPath,
+    mggSnapshotPath: mggSnapshot.snapshotPath,
     manifest,
     outputs,
+    mggSnapshot: mggSnapshot.snapshot,
   };
 }

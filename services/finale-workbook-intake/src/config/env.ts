@@ -134,6 +134,8 @@ const envSchema = z.object({
   OASIS_SECTION_LLM_MODEL_ID: z.string().min(1).optional(),
   OASIS_SECTION_LLM_MAX_TOKENS: z.coerce.number().int().min(512).max(8_000).optional().default(1_800),
   OASIS_SECTION_LLM_MAX_CONCURRENCY: z.coerce.number().int().min(1).max(8).optional().default(2),
+  OASIS_CHECK_LLM_MODEL_ID: z.string().min(1).optional(),
+  OASIS_CHECK_LLM_MAX_TOKENS: z.coerce.number().int().min(512).max(8_000).optional().default(2_500),
   OASIS_WRITE_ENABLED: z
     .enum(["true", "false"])
     .optional()

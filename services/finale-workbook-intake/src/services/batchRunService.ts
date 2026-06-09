@@ -1457,6 +1457,7 @@ async function executePatientWorkItemsSequential(
             env,
             logger,
             portalClient,
+            fileUploadsDiscoveryEnabled: params.stopAfterSharedEvidence === true,
           }));
           run.artifacts = sharedEvidenceResult.sharedEvidence.artifacts;
           setDocumentInventory(run, sharedEvidenceResult.sharedEvidence.documentInventory);
@@ -1476,33 +1477,49 @@ async function executePatientWorkItemsSequential(
             run.notes.push(`Referral document QA summary persisted: ${sharedEvidenceResult.sharedEvidence.referralDocumentSummaryPath}`);
           }
 
-          const referralDocumentAvailable = hasReferralDocumentEvidence({
-            artifacts: sharedEvidenceResult.sharedEvidence.artifacts,
-            documentInventory: sharedEvidenceResult.sharedEvidence.documentInventory,
-            extractedDocuments: sharedEvidenceResult.sharedEvidence.extractedDocuments,
-          });
-          const missingReferralDocumentReviewMessage = referralDocumentAvailable
-            ? null
-            : "Referral/admission-order document text was not found in shared evidence; continuing OASIS, Plan of Care, and Visit Notes capture for reviewer visibility.";
-          appendAutomationLogs(run, [createAutomationStepLog({
-            step: "referral_document_check",
-            message: referralDocumentAvailable
-              ? "Referral/admission-order evidence was found in shared chart documents."
-              : "Referral/admission-order evidence was not found; downstream OASIS, Plan of Care, and Visit Notes capture will continue for reviewer visibility.",
-            patientName: run.patientName,
-            found: [
-              `artifactOrderCount:${sharedEvidenceResult.sharedEvidence.artifacts.filter((artifact) => artifact.artifactType === "PHYSICIAN_ORDERS").length}`,
-              `inventoryOrderCount:${sharedEvidenceResult.sharedEvidence.documentInventory.filter((item) => item.normalizedType === "ORDER").length}`,
-              `extractedOrderCount:${sharedEvidenceResult.sharedEvidence.extractedDocuments.filter((document) => document.type === "ORDER" && document.text.trim().length > 0).length}`,
-            ],
-            missing: referralDocumentAvailable ? [] : ["Referral/admission-order source document"],
-            evidence: sharedEvidenceResult.sharedEvidence.extractedDocuments
-              .filter((document) => document.type === "ORDER")
-              .slice(0, 4)
-              .map((document) =>
-                `${document.metadata.portalLabel ?? "ORDER"}:${document.metadata.sourcePath ?? "in_memory"}:${document.text.slice(0, 180)}`),
-            safeReadConfirmed: true,
-          })]);
+          const liveReferralDocumentCheckEnabled = params.stopAfterSharedEvidence === true;
+          const referralDocumentAvailable = liveReferralDocumentCheckEnabled
+            ? hasReferralDocumentEvidence({
+                artifacts: sharedEvidenceResult.sharedEvidence.artifacts,
+                documentInventory: sharedEvidenceResult.sharedEvidence.documentInventory,
+                extractedDocuments: sharedEvidenceResult.sharedEvidence.extractedDocuments,
+              })
+            : true;
+          const missingReferralDocumentReviewMessage = liveReferralDocumentCheckEnabled && !referralDocumentAvailable
+            ? "Referral/admission-order document text was not found in shared evidence."
+            : null;
+          if (liveReferralDocumentCheckEnabled) {
+            appendAutomationLogs(run, [createAutomationStepLog({
+              step: "referral_document_check",
+              message: referralDocumentAvailable
+                ? "Referral/admission-order evidence was found in shared chart documents."
+                : "Referral/admission-order evidence was not found in shared chart documents.",
+              patientName: run.patientName,
+              found: [
+                `artifactOrderCount:${sharedEvidenceResult.sharedEvidence.artifacts.filter((artifact) => artifact.artifactType === "PHYSICIAN_ORDERS").length}`,
+                `inventoryOrderCount:${sharedEvidenceResult.sharedEvidence.documentInventory.filter((item) => item.normalizedType === "ORDER").length}`,
+                `extractedOrderCount:${sharedEvidenceResult.sharedEvidence.extractedDocuments.filter((document) => document.type === "ORDER" && document.text.trim().length > 0).length}`,
+              ],
+              missing: referralDocumentAvailable ? [] : ["Referral/admission-order source document"],
+              evidence: sharedEvidenceResult.sharedEvidence.extractedDocuments
+                .filter((document) => document.type === "ORDER")
+                .slice(0, 4)
+                .map((document) =>
+                  `${document.metadata.portalLabel ?? "ORDER"}:${document.metadata.sourcePath ?? "in_memory"}:${document.text.slice(0, 180)}`),
+              safeReadConfirmed: true,
+            })]);
+          } else {
+            appendAutomationLogs(run, [createAutomationStepLog({
+              step: "referral_document_check_skipped_static_intake",
+              message:
+                "Skipped referral/admission-order File Uploads check during live OASIS, Plan of Care, and Visit Notes automation; referral documents are processed by static referral intake.",
+              patientName: run.patientName,
+              found: ["static_referral_intake_required=true"],
+              missing: [],
+              evidence: [],
+              safeReadConfirmed: true,
+            })]);
+          }
 
           const referralDirectDocumentNeedsReview =
             sharedEvidenceResult.sharedEvidence.referralDocumentProcessing?.extractionResult.extractionSuccess === false;
@@ -1557,7 +1574,7 @@ async function executePatientWorkItemsSequential(
             continue;
           }
 
-          if (!referralDocumentAvailable) {
+          if (missingReferralDocumentReviewMessage) {
             run.notes.push(missingReferralDocumentReviewMessage!);
             appendAutomationLogs(run, [createAutomationStepLog({
               step: "referral_document_review_required",
@@ -1720,38 +1737,60 @@ async function executePatientWorkItemsSequential(
               })]);
             }
 
-            if (env.VISIT_NOTES_DOM_EXTRACTION_ENABLED && typeof portalClient.discoverVisitNotesForReview === "function") {
-            try {
-              const visitNotesResult = await timing.time("visit_notes_dom_and_llm", () => portalClient.discoverVisitNotesForReview!({
-                context: qaPortalContext,
-                workItem,
-                patientArtifactsDirectory: path.join(params.outputDir, "patients", workItem.id),
-                evidenceDir,
-                episode: qaResult.result.episodeSelection.selectedRange
-                  ? {
-                      label: qaResult.result.episodeSelection.selectedRange.rawLabel,
-                      startDate: qaResult.result.episodeSelection.selectedRange.startDate ?? undefined,
-                      endDate: qaResult.result.episodeSelection.selectedRange.endDate ?? undefined,
-                    }
-                  : undefined,
-                captureVisitNotesLimit: env.VISIT_NOTE_CAPTURE_MAX_NOTES,
-                forceRerunVisitNotes: false,
-              }));
-              appendAutomationLogs(run, visitNotesResult.stepLogs);
-              run.notes.push(`Visit Notes DOM discovery persisted: ${visitNotesResult.discoveryPath}`);
-            } catch (error) {
-              const visitNotesError = error instanceof Error ? error.message : String(error);
+            if (!planOfCareDraftPath) {
               appendAutomationLogs(run, [createAutomationStepLog({
-                step: "visit_notes_discovery",
-                message: "Visit Notes DOM discovery failed without interrupting the patient run.",
+                step: "visit_notes_discovery_skipped_pending_plan_of_care",
+                message: "Skipped Visit Notes discovery because no Plan of Care review artifact exists yet.",
+                patientName: run.patientName,
+                found: [],
+                missing: ["plan-of-care-review-draft.json"],
+                evidence: ["poc_to_visit_notes_gate=true"],
+                safeReadConfirmed: true,
+              })]);
+              run.notes.push("Visit Notes discovery skipped until Plan of Care review is available.");
+            } else if (env.VISIT_NOTES_DOM_EXTRACTION_ENABLED && typeof portalClient.discoverVisitNotesForReview === "function") {
+              try {
+                const visitNotesResult = await timing.time("visit_notes_dom_and_llm", () => portalClient.discoverVisitNotesForReview!({
+                  context: qaPortalContext,
+                  workItem,
+                  patientArtifactsDirectory: path.join(params.outputDir, "patients", workItem.id),
+                  evidenceDir,
+                  episode: qaResult.result.episodeSelection.selectedRange
+                    ? {
+                        label: qaResult.result.episodeSelection.selectedRange.rawLabel,
+                        startDate: qaResult.result.episodeSelection.selectedRange.startDate ?? undefined,
+                        endDate: qaResult.result.episodeSelection.selectedRange.endDate ?? undefined,
+                      }
+                    : undefined,
+                  captureVisitNotesLimit: env.VISIT_NOTE_CAPTURE_MAX_NOTES,
+                  forceRerunVisitNotes: false,
+                }));
+                appendAutomationLogs(run, visitNotesResult.stepLogs);
+                run.notes.push(`Visit Notes DOM discovery persisted: ${visitNotesResult.discoveryPath}`);
+              } catch (error) {
+                const visitNotesError = error instanceof Error ? error.message : String(error);
+                appendAutomationLogs(run, [createAutomationStepLog({
+                  step: "visit_notes_discovery",
+                  message: "Visit Notes DOM discovery failed without interrupting the patient run.",
+                  patientName: run.patientName,
+                  found: [],
+                  missing: ["visit-notes-discovery.json"],
+                  evidence: [visitNotesError.slice(0, 240)],
+                  safeReadConfirmed: true,
+                })]);
+                run.notes.push(`Visit Notes DOM discovery failed: ${visitNotesError}`);
+              }
+            } else {
+              appendAutomationLogs(run, [createAutomationStepLog({
+                step: "visit_notes_discovery_skipped",
+                message: "Skipped Visit Notes discovery because DOM extraction is disabled or unsupported.",
                 patientName: run.patientName,
                 found: [],
                 missing: ["visit-notes-discovery.json"],
-                evidence: [visitNotesError.slice(0, 240)],
+                evidence: [`VISIT_NOTES_DOM_EXTRACTION_ENABLED=${String(env.VISIT_NOTES_DOM_EXTRACTION_ENABLED)}`],
                 safeReadConfirmed: true,
               })]);
-              run.notes.push(`Visit Notes DOM discovery failed: ${visitNotesError}`);
-            }
+              run.notes.push("Visit Notes DOM discovery skipped because the portal client does not support it or the feature is disabled.");
             }
           }
 

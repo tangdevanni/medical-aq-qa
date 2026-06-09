@@ -959,7 +959,7 @@ describe("dashboardRunViews", () => {
     assert.equal(detail.oasisValidatedForPlanOfCare, true);
   });
 
-  it("gates Plan of Care review until OASIS is validated for generation", () => {
+  it("shows Plan of Care review draft before OASIS is validated", () => {
     const detail = toDashboardPatientDetail({
       ...patientViewInput,
       artifactContents: {
@@ -969,8 +969,137 @@ describe("dashboardRunViews", () => {
     });
 
     assert.equal(detail.oasisValidatedForPlanOfCare, false);
+    assert.equal(detail.planOfCareReview.available, true);
+    assert.equal(detail.planOfCareReview.status, "deterministic_candidate_draft");
+    assert.equal(detail.planOfCareReview.draftItems[0]?.diagnosisLabel, "Pneumonia");
+  });
+
+  it("reports Plan of Care review unavailable when no Plan of Care artifact exists", () => {
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        oasisDomAcquisitionState: oasisDomAcquisitionQaCompleted,
+        oasisGate: nonBlockingOasisGate,
+      },
+    });
+
+    assert.equal(detail.oasisValidatedForPlanOfCare, true);
     assert.equal(detail.planOfCareReview.available, false);
-    assert.match(detail.planOfCareReview.warnings.join(" "), /OASIS is validated/);
+    assert.match(detail.planOfCareReview.warnings.join(" "), /not been generated yet/);
+  });
+
+  it("shows Visit Notes discovery when Plan of Care review exists before OASIS validation", () => {
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        planOfCareReviewDraft,
+        visitNotesDiscovery: {
+          schemaVersion: "visit-notes-discovery.v1",
+          rows: [
+            {
+              visitNoteKey: "sn-note-1",
+              visitType: "skilled_nursing",
+              lifecycleStatus: "active_monitoring",
+              captureStatus: "captured",
+            },
+            {
+              visitNoteKey: "pt-note-1",
+              visitType: "physical_therapy",
+              lifecycleStatus: "finalized_no_active_monitoring",
+              captureStatus: "pending",
+            },
+          ],
+          counts: {
+            total: 2,
+            byVisitType: { skilled_nursing: 1, physical_therapy: 1 },
+            byStatus: { in_progress: 1, qa_pending: 1 },
+          },
+        },
+      },
+    });
+
+    assert.equal(detail.oasisValidatedForPlanOfCare, false);
+    assert.equal(detail.planOfCareReview.available, true);
+    assert.equal(detail.visitNotesReview.available, true);
+    assert.equal(detail.visitNotesReview.status, "pending");
+    assert.equal(detail.visitNotesReview.totalVisitNotes, 2);
+    assert.equal(detail.visitNotesReview.capturedVisitNotes, 1);
+    assert.equal(detail.visitNotesReview.activeMonitoringCount, 1);
+    assert.equal(detail.visitNotesReview.byVisitType.skilled_nursing, 1);
+    assert.doesNotMatch(detail.visitNotesReview.warnings.join(" "), /Plan of Care/);
+  });
+
+  it("shows Visit Notes QA review when Plan of Care review exists before OASIS validation", () => {
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        planOfCareReviewDraft,
+        visitNoteQaReview: {
+          schemaVersion: "visit-note-qa-review.v1",
+          generatedAt: "2026-05-07T00:00:00.000Z",
+          status: "ready",
+          summary: {
+            totalVisitNotes: 1,
+            eligibleVisitNotes: 1,
+            analyzedVisitNotes: 1,
+            skippedVisitNotes: 0,
+            byVisitType: { skilled_nursing: 1 },
+            byStatus: { qa_completed: 1 },
+            actionableFindingCount: 1,
+            contradictionCount: 0,
+            pocAlignmentIssueCount: 0,
+            incompleteNoteCount: 0,
+          },
+          visitTypeCounts: [
+            { visitType: "skilled_nursing", count: 1, statuses: { qa_completed: 1 } },
+          ],
+          findings: [{
+            findingId: "finding-1",
+            visitNoteKey: "sn-note-1",
+            visitType: "skilled_nursing",
+            visitDate: "2026-05-02",
+            severity: "medium",
+            category: "documentation_quality",
+            title: "Visit note needs reviewer confirmation",
+            description: "The note has captured QA evidence.",
+            visitNoteEvidence: ["visit-note-fact-1"],
+            pocEvidence: [],
+            oasisEvidence: ["oasis-fact-1"],
+            suggestedReviewerAction: "Confirm the documented status.",
+            needsHumanReview: true,
+            confidence: 0.82,
+          }],
+          noteSummaries: [{
+            visitNoteKey: "sn-note-1",
+            visitType: "skilled_nursing",
+            visitDate: "2026-05-02",
+            status: "qa_completed",
+            lifecycleStatus: "active_monitoring",
+            captureStatus: "captured",
+            analyzed: true,
+            analysisStatus: "ready",
+            summary: "SN note documents wound assessment.",
+            missingFields: [],
+            alignedPocGoals: [],
+            pocProblemMatches: [],
+            possibleContradictions: [],
+          }],
+          warnings: [],
+        },
+      },
+    });
+
+    assert.equal(detail.oasisValidatedForPlanOfCare, false);
+    assert.equal(detail.planOfCareReview.available, true);
+    assert.equal(detail.visitNotesReview.available, true);
+    assert.equal(detail.visitNotesReview.status, "ready");
+    assert.equal(detail.visitNotesReview.totalVisitNotes, 1);
+    assert.equal(detail.visitNotesReview.analyzedVisitNotes, 1);
+    assert.equal(detail.visitNotesReview.findings[0]?.evidenceCount, 2);
+    assert.equal(detail.visitNotesReview.noteSummaries[0]?.visitNoteKey, "sn-note-1");
   });
 
   it("gates Visit Notes review until Plan of Care review is available", () => {
@@ -978,36 +1107,29 @@ describe("dashboardRunViews", () => {
       ...patientViewInput,
       artifactContents: {
         ...patientViewInput.artifactContents,
-        oasisDomAcquisitionState: oasisDomAcquisitionQaCompleted,
-        oasisGate: nonBlockingOasisGate,
-        visitNoteQaReview: {
-          schemaVersion: "visit-note-qa-review.v1",
-          generatedAt: "2026-05-07T00:00:00.000Z",
-          status: "ready",
-          summary: {
-            totalVisitNotes: 1,
-            analyzedVisitNotes: 1,
-            skippedVisitNotes: 0,
-            byVisitType: {},
-            byStatus: {},
-            actionableFindingCount: 0,
-            contradictionCount: 0,
-            pocAlignmentIssueCount: 0,
-            incompleteNoteCount: 0,
+        visitNotesDiscovery: {
+          schemaVersion: "visit-notes-discovery.v1",
+          rows: [
+            {
+              visitNoteKey: "sn-note-1",
+              visitType: "skilled_nursing",
+              lifecycleStatus: "active_monitoring",
+              captureStatus: "captured",
+            },
+          ],
+          counts: {
+            total: 1,
+            byVisitType: { skilled_nursing: 1 },
+            byStatus: { in_progress: 1 },
           },
-          visitTypeCounts: [],
-          findings: [],
-          noteSummaries: [],
-          warnings: [],
         },
       },
     });
 
-    assert.equal(detail.oasisValidatedForPlanOfCare, true);
     assert.equal(detail.planOfCareReview.available, false);
     assert.equal(detail.visitNotesReview.available, false);
     assert.equal(detail.visitNotesReview.status, "discovery_not_run");
-    assert.match(detail.visitNotesReview.warnings.join(" "), /Plan of Care/);
+    assert.match(detail.visitNotesReview.warnings.join(" "), /Plan of Care review is available/);
   });
 
   it("suppresses non-clinical Plan of Care diagnosis draft items in patient detail payload", () => {
@@ -2447,6 +2569,124 @@ describe("dashboardRunViews", () => {
     );
   });
 
+  it("uses the default usable referral document for the main referral documentation review", () => {
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        qaDocumentSummary: {
+          extractionUsabilityStatus: "rejected",
+          warnings: ["stale rejected root artifact"],
+        },
+        referralDocumentResultsManifest: {
+          schemaVersion: "referral-document-results-manifest.v1",
+          defaultReferralDocumentId: "referral-doc-good",
+          documents: [
+            {
+              documentId: "referral-doc-bad",
+              title: "Referral Bad",
+              status: "failed",
+              artifactDirectory: "C:\\temp\\referral-doc-bad",
+              error: "Bedrock returned invalid or non-JSON direct-document referral output.",
+            },
+            {
+              documentId: "referral-doc-good",
+              title: "Referral Good",
+              status: "processed",
+              artifactDirectory: "C:\\temp\\referral-doc-good",
+            },
+          ],
+        },
+        referralDocumentArtifacts: [
+          {
+            documentId: "referral-doc-bad",
+            status: "failed",
+            qaDocumentSummary: {
+              extractionUsabilityStatus: "rejected",
+              warnings: ["Bedrock returned invalid or non-JSON direct-document referral output."],
+            },
+          },
+          {
+            documentId: "referral-doc-good",
+            status: "processed",
+            patientQaReference: patientViewInput.artifactContents.patientQaReference,
+            qaDocumentSummary: {
+              extractionUsabilityStatus: "usable",
+              warnings: ["usable direct-document referral"],
+            },
+            fieldMapSnapshot: patientViewInput.artifactContents.fieldMapSnapshot,
+            referralExtractedFacts: {
+              facts: [{
+                fact_key: "primary_diagnosis",
+                category: "diagnosis",
+                value: "Traumatic wound",
+              }],
+            },
+          },
+        ],
+      },
+    });
+
+    assert.equal(detail.referralDocumentationReview.status, "usable");
+    assert.equal(detail.referralDocumentationReview.factCount, 1);
+    assert.deepEqual(detail.referralDocumentationReview.warnings, ["usable direct-document referral"]);
+    assert.equal(detail.dashboardState.referralOasisSources?.defaultReferralDocumentId, "referral-doc-good");
+  });
+
+  it("does not choose a failed referral document as the default source", () => {
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        qaDocumentSummary: {
+          extractionUsabilityStatus: "usable",
+          warnings: ["stale usable root artifact"],
+        },
+        referralDocumentResultsManifest: {
+          schemaVersion: "referral-document-results-manifest.v1",
+          defaultReferralDocumentId: null,
+          documents: [
+            {
+              documentId: "referral-doc-a",
+              title: "Referral A",
+              status: "failed",
+              artifactDirectory: "C:\\temp\\referral-doc-a",
+              error: "Bedrock returned invalid or non-JSON direct-document referral output.",
+            },
+            {
+              documentId: "referral-doc-b",
+              title: "Referral B",
+              status: "failed",
+              artifactDirectory: "C:\\temp\\referral-doc-b",
+              error: "Direct-document referral extraction did not produce usable source-backed facts.",
+            },
+          ],
+        },
+        referralDocumentArtifacts: [
+          {
+            documentId: "referral-doc-a",
+            status: "failed",
+            qaDocumentSummary: { extractionUsabilityStatus: "rejected" },
+          },
+          {
+            documentId: "referral-doc-b",
+            status: "failed",
+            qaDocumentSummary: { extractionUsabilityStatus: "rejected" },
+          },
+        ],
+      },
+    });
+
+    assert.equal(detail.referralDocumentationReview.status, "rejected");
+    assert.equal(detail.referralDocumentationReview.factCount, 0);
+    assert.equal(detail.referralDocumentationReview.summaryItems.find((item) => item.label === "Failed Documents")?.value, "2");
+    assert.equal(detail.dashboardState.referralOasisSources?.defaultReferralDocumentId, null);
+    assert.deepEqual(
+      detail.dashboardState.referralOasisSources?.referralDocuments.map((document) => document.status),
+      ["failed", "failed"],
+    );
+  });
+
   it("attaches source-scoped referral diagnosis and medication summaries to each referral document", () => {
     const detail = toDashboardPatientDetail({
       ...patientViewInput,
@@ -2629,6 +2869,237 @@ describe("dashboardRunViews", () => {
       detail.dashboardState.referralOasisSources?.oasisAssessments.find((assessment) => assessment.id === "soc-20260322")?.status,
       "processed_scoped",
     );
+  });
+
+  it("maps independent per-assessment OASIS check results", () => {
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        oasisGate: {
+          evaluatedAt: "2026-06-08T08:00:00.000Z",
+          status: "failed_referral_mismatch",
+          blockedFromPlanOfCare: true,
+          missingFieldCount: 0,
+          contradictionCount: 99,
+          topReasons: ["legacy global gate should not populate Oasis check tab"],
+          planOfCareAttempted: false,
+          planOfCareAttemptSkippedReason: null,
+        },
+        patientPortalStatusSnapshot: {
+          schemaVersion: "patient-portal-status-snapshot.v1",
+          status: "fresh",
+          currentOasisAssessmentId: "recert-20260519",
+          oasisAssessments: [
+            {
+              id: "soc-20260322",
+              assessmentType: "SOC",
+              title: "OASIS-OASIS E1 - SOC",
+              date: "2026-03-22",
+              primaryStatus: "VALIDATED",
+              decision: "PROCESS",
+              processingEligible: true,
+            },
+            {
+              id: "recert-20260519",
+              assessmentType: "RECERT",
+              title: "OASIS-OASIS E2 - REC",
+              date: "2026-05-19",
+              primaryStatus: "VALIDATED",
+              decision: "PROCESS",
+              processingEligible: true,
+            },
+          ],
+          referralFileArea: { available: true, labels: ["Referral Files"] },
+          documentTableSignals: [],
+        },
+        oasisCheckState: {
+          schemaVersion: "oasis-check-state.v1",
+          batchId: "batch-1",
+          patientId: "patient-1",
+          updatedAt: "2026-06-08T09:00:00.000Z",
+          checks: {
+            "soc-20260322": {
+              assessmentId: "soc-20260322",
+              status: "completed",
+              acceptedAt: "2026-06-08T08:58:00.000Z",
+              startedAt: "2026-06-08T08:59:00.000Z",
+              completedAt: "2026-06-08T09:00:00.000Z",
+              lastCheckedAt: "2026-06-08T09:00:00.000Z",
+              lastError: null,
+              resultPath: "C:\\temp\\soc\\oasis-check-result.json",
+              statusUrl: "/status",
+              message: "One diagnosis-to-function contradiction needs review.",
+              result: {
+                schemaVersion: "oasis-check-result.v1",
+                assessmentId: "soc-20260322",
+                assessmentType: "SOC",
+                title: "OASIS-OASIS E1 - SOC",
+                date: "2026-03-22",
+                status: "discrepancies_found",
+                summary: "One diagnosis-to-function contradiction needs review.",
+                checkedAt: "2026-06-08T09:00:00.000Z",
+                sections: [{
+                  sectionKey: "diagnoses",
+                  sectionLabel: "Diagnoses",
+                  status: "discrepancies_found",
+                  discrepancies: [{
+                    itemCode: "M1021",
+                    itemLabel: "Primary diagnosis",
+                    primarySection: "Diagnoses",
+                    contradictingSections: ["Functional / Therapy"],
+                    valuesInConflict: ["Cannot ambulate", "Ambulates 150 feet"],
+                    reasoning: "Diagnosis conflicts with function.",
+                    confidence: "high",
+                    reviewerAction: "Verify current ambulation response.",
+                  }],
+                }],
+                diagnostics: {
+                  modelId: "test-model",
+                  promptVersion: "oasis-internal-mismatch-review.v1",
+                  inputHash: "hash",
+                  sourceArtifactPaths: [],
+                  rawLlmParseStatus: "parsed",
+                  warnings: [],
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+
+    const assessments = detail.dashboardState.referralOasisSources?.oasisAssessments ?? [];
+    const soc = assessments.find((assessment) => assessment.id === "soc-20260322");
+    const recert = assessments.find((assessment) => assessment.id === "recert-20260519");
+    assert.equal(soc?.oasisCheck?.result?.discrepancyCount, 1);
+    assert.equal(soc?.oasisCheck?.result?.sections[0]?.discrepancies[0]?.contradictingSections[0], "Functional / Therapy");
+    assert.equal(recert?.oasisCheck ?? null, null);
+  });
+
+  it("maps discharged OASIS status and discharge comparison results", () => {
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        oasisGate: {
+          evaluatedAt: "2026-06-08T08:00:00.000Z",
+          status: "failed_referral_mismatch",
+          blockedFromPlanOfCare: true,
+          missingFieldCount: 0,
+          contradictionCount: 99,
+          topReasons: ["legacy global gate should not populate Oasis check tab"],
+          planOfCareAttempted: false,
+          planOfCareAttemptSkippedReason: null,
+        },
+        patientPortalStatusSnapshot: {
+          schemaVersion: "patient-portal-status-snapshot.v1",
+          status: "fresh",
+          currentOasisAssessmentId: "recert-20260519",
+          oasisAssessments: [
+            {
+              id: "recert-20260519",
+              assessmentType: "RECERT",
+              title: "OASIS-OASIS E2 - REC",
+              date: "2026-05-19",
+              primaryStatus: "VALIDATED",
+              decision: "PROCESS",
+              processingEligible: true,
+            },
+            {
+              id: "dc-20260608",
+              assessmentType: "UNKNOWN",
+              title: "OASIS DC",
+              date: "2026-06-08",
+              sourceRowText: "OASIS DC completed",
+              primaryStatus: "VALIDATED",
+              decision: "PROCESS",
+              processingEligible: true,
+            },
+          ],
+          referralFileArea: { available: true, labels: ["Referral Files"] },
+          documentTableSignals: [],
+        },
+        oasisCheckState: {
+          schemaVersion: "oasis-check-state.v1",
+          batchId: "batch-1",
+          patientId: "patient-1",
+          updatedAt: "2026-06-08T09:00:00.000Z",
+          checks: {
+            "dc-20260608": {
+              assessmentId: "dc-20260608",
+              status: "completed",
+              acceptedAt: "2026-06-08T08:58:00.000Z",
+              startedAt: "2026-06-08T08:59:00.000Z",
+              completedAt: "2026-06-08T09:00:00.000Z",
+              lastCheckedAt: "2026-06-08T09:00:00.000Z",
+              lastError: null,
+              resultPath: "C:\\temp\\dc\\oasis-check-result.json",
+              statusUrl: "/status",
+              message: "M1850 worsened from baseline.",
+              result: {
+                schemaVersion: "oasis-check-result.v1",
+                assessmentId: "dc-20260608",
+                assessmentType: "DC",
+                title: "OASIS DC",
+                date: "2026-06-08",
+                status: "discrepancies_found",
+                summary: "M1850 worsened from baseline.",
+                checkedAt: "2026-06-08T09:00:00.000Z",
+                sections: [],
+                dischargeComparison: {
+                  status: "available",
+                  outcome: "worsened",
+                  summary: "M1850 worsened from SOC.",
+                  baselineAssessment: {
+                    assessmentId: "soc-20260401",
+                    assessmentType: "SOC",
+                    title: "OASIS SOC",
+                    date: "2026-04-01",
+                    selectionReason: "soc_assessment_type",
+                  },
+                  dischargeAssessment: {
+                    assessmentId: "dc-20260608",
+                    assessmentType: "DC",
+                    title: "OASIS DC",
+                    date: "2026-06-08",
+                  },
+                  reviewedItemCount: 1,
+                  findings: [{
+                    fieldGroup: "M fields",
+                    itemCode: "M1850",
+                    itemLabel: "Transferring",
+                    baselineValue: "SOC: 1 - minimal assistance",
+                    dischargeValue: "DC: 3 - unable to transfer self",
+                    scoringInterpretation: "Higher M1850 scores are worse in the supplied scale.",
+                    result: "worsened",
+                    reasoning: "The discharge score is higher than baseline.",
+                    confidence: "high",
+                    reviewerAction: "Verify the DC transferring response.",
+                  }],
+                  warnings: [],
+                },
+                diagnostics: {
+                  modelId: "test-model",
+                  promptVersion: "oasis-internal-mismatch-review.v2",
+                  inputHash: "hash",
+                  sourceArtifactPaths: [],
+                  rawLlmParseStatus: "parsed",
+                  warnings: [],
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+
+    const assessments = detail.dashboardState.referralOasisSources?.oasisAssessments ?? [];
+    const dc = assessments.find((assessment) => assessment.id === "dc-20260608");
+    assert.equal(dc?.isDischarged, true);
+    assert.equal(dc?.oasisCheck?.result?.discrepancyCount, 1);
+    assert.equal(dc?.oasisCheck?.result?.dischargeComparison?.baselineAssessment?.assessmentId, "soc-20260401");
+    assert.equal(dc?.oasisCheck?.result?.dischargeComparison?.findings[0]?.itemCode, "M1850");
   });
 
   it("renders OASIS allergy status and explicit start dates from DOM allergy tables", () => {

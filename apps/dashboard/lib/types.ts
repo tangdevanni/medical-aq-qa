@@ -882,6 +882,97 @@ export interface ReferralIntakeStartResponse {
   message: string | null;
 }
 
+export interface PatientOasisCheckFinding {
+  itemCode: string | null;
+  itemLabel: string | null;
+  primarySection: string | null;
+  contradictingSections: string[];
+  valuesInConflict: string[];
+  reasoning: string | null;
+  confidence: string | null;
+  reviewerAction: string | null;
+}
+
+export interface PatientOasisCheckSection {
+  sectionKey: string | null;
+  sectionLabel: string | null;
+  status: string | null;
+  discrepancies: PatientOasisCheckFinding[];
+}
+
+export interface PatientOasisDischargeFinding {
+  fieldGroup: string;
+  itemCode: string | null;
+  itemLabel: string | null;
+  baselineValue: string | null;
+  dischargeValue: string | null;
+  scoringInterpretation: string | null;
+  result: string | null;
+  reasoning: string | null;
+  confidence: string | null;
+  reviewerAction: string | null;
+}
+
+export interface PatientOasisDischargeComparison {
+  status: string | null;
+  outcome: string | null;
+  summary: string | null;
+  baselineAssessment: {
+    assessmentId: string | null;
+    assessmentType: string | null;
+    title: string | null;
+    date: string | null;
+    selectionReason: string | null;
+  } | null;
+  dischargeAssessment: {
+    assessmentId: string | null;
+    assessmentType: string | null;
+    title: string | null;
+    date: string | null;
+  } | null;
+  reviewedItemCount: number;
+  findings: PatientOasisDischargeFinding[];
+  warnings: string[];
+}
+
+export interface PatientOasisCheckResult {
+  status: string | null;
+  summary: string | null;
+  checkedAt: string | null;
+  discrepancyCount: number;
+  sections: PatientOasisCheckSection[];
+  dischargeComparison: PatientOasisDischargeComparison | null;
+  diagnostics: {
+    modelId: string | null;
+    promptVersion: string | null;
+    rawLlmParseStatus: string | null;
+    warnings: string[];
+  };
+}
+
+export interface PatientOasisCheckState {
+  assessmentId: string;
+  status: string;
+  acceptedAt: string | null;
+  startedAt: string | null;
+  completedAt: string | null;
+  lastCheckedAt: string | null;
+  lastError: string | null;
+  resultPath: string | null;
+  message: string | null;
+  result: PatientOasisCheckResult | null;
+}
+
+export interface OasisCheckStartResponse {
+  batchId: string;
+  patientId: string;
+  assessmentId: string;
+  status: string;
+  acceptedAt: string | null;
+  statusUrl: string | null;
+  message: string | null;
+}
+
 export interface ReferralOasisSourceDocument {
   id: string;
   title: string;
@@ -906,8 +997,10 @@ export interface ReferralOasisAssessmentSource {
   processingEligible?: boolean | null;
   isCurrent?: boolean;
   isMonitored?: boolean;
+  isDischarged?: boolean;
   diagnosisSummary?: DiagnosisSummaryBlock | null;
   medicationSummary?: MedicationSummaryBlock | null;
+  oasisCheck?: PatientOasisCheckState | null;
 }
 
 export interface ReferralOasisChangeFlag {

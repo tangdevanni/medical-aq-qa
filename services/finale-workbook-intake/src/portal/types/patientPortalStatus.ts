@@ -13,6 +13,7 @@ export interface PatientPortalStatusOasisAssessment {
   assessmentType: "SOC" | "ROC" | "RECERT" | "DC" | "UNKNOWN";
   title: string;
   date: string | null;
+  sourceRowText?: string | null;
   detectedStatuses: string[];
   primaryStatus: string | null;
   decision: string | null;

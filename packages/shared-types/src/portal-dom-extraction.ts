@@ -29,6 +29,7 @@ export const portalDomExtractedFieldSchema = z.object({
   checked: z.boolean().optional(),
   selectedText: z.string().min(1).optional(),
   selectedValue: z.string().min(1).optional(),
+  optionTexts: z.array(z.string().min(1)).optional(),
   sourceKind: portalDomSourceKindSchema,
   confidence: portalDomExtractionConfidenceSchema,
   evidenceText: z.string().min(1).optional(),

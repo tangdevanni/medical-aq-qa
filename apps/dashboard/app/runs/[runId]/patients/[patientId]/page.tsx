@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { type MutableRefObject, type ReactNode, type RefObject, useEffect, useRef, useState } from "react";
-import { getPatient, startPatientReferralIntake } from "../../../../../lib/api";
+import { getPatient, startPatientOasisCheck, startPatientReferralIntake } from "../../../../../lib/api";
 import {
   buildComparisonWorkspaceModel,
   getConfidenceLabel,
@@ -1480,7 +1480,6 @@ function ReferralVsOasisTab({
             <span className="clinical-source-tab-title">{source.title}</span>
             {formatClinicalSourceDate(source.date) ? <span className="badge">{formatClinicalSourceDate(source.date)}</span> : null}
             {source.isCurrent ? <span className="badge success">Current</span> : null}
-            {!source.isMonitored ? <span className="badge">View only</span> : null}
           </button>
         ))}
       </div>
@@ -1712,69 +1711,288 @@ function OasisSnapshotPanel({
   );
 }
 
-function OasisInternalChecksPanel({ patient }: { patient: PatientDetail }) {
-  const missingFields = patient.oasisValidation?.missingFields.slice(0, 12) ?? [];
-  const internalReasons = patient.oasisGate?.topReasons.slice(0, 8) ?? [];
-  const daysLeft = patient.daysLeftBeforeOasisDueDate;
-  const aiAssistEligible = typeof daysLeft === "number" && daysLeft <= 15;
+function getOasisCheckDiscrepancyCount(patient: PatientDetail): number {
+  return (patient.dashboardState.referralOasisSources?.oasisAssessments ?? [])
+    .reduce((total, source) => total + (source.oasisCheck?.result?.discrepancyCount ?? 0), 0);
+}
+
+function oasisCheckBadgeClass(status: string | null | undefined, discrepancyCount: number): string {
+  if (status === "discrepancies_found" || discrepancyCount > 0) {
+    return "badge danger";
+  }
+  if (status === "clean") {
+    return "badge success";
+  }
+  if (status === "failed" || status === "unavailable") {
+    return "badge warning";
+  }
+  return "badge";
+}
+
+function OasisCheckPanel({
+  oasisCheckRunningAssessmentId,
+  onOasisCheckStart,
+  patient,
+}: {
+  oasisCheckRunningAssessmentId: string | null;
+  onOasisCheckStart: (assessmentId: string) => void;
+  patient: PatientDetail;
+}) {
+  const oasisSources = patient.dashboardState.referralOasisSources?.oasisAssessments ?? [];
+  const defaultAssessmentId =
+    patient.dashboardState.referralOasisSources?.defaultOasisAssessmentId ?? oasisSources[0]?.id ?? null;
+  const [selectedOasisAssessmentId, setSelectedOasisAssessmentId] = useState<string | null>(defaultAssessmentId);
+  const selectedAssessment =
+    oasisSources.find((source) => source.id === selectedOasisAssessmentId) ?? oasisSources[0] ?? null;
+  const selectedCheck = selectedAssessment?.oasisCheck ?? null;
+  const checkStatus = selectedCheck?.status ?? "idle";
+  const result = selectedCheck?.result ?? null;
+  const discrepancyCount = result?.discrepancyCount ?? 0;
+  const running =
+    oasisCheckRunningAssessmentId === selectedAssessment?.id ||
+    checkStatus === "pending" ||
+    checkStatus === "running";
+  const sectionsWithDiscrepancies = (result?.sections ?? [])
+    .filter((section) => section.discrepancies.length > 0);
+  const dischargeComparison = result?.dischargeComparison ?? null;
+  const dischargeFindingsByGroup = dischargeComparison?.findings.reduce<
+    Record<string, NonNullable<typeof dischargeComparison>["findings"]>
+  >(
+    (groups, finding) => {
+      const key = finding.fieldGroup || "M/GG fields";
+      groups[key] = [...(groups[key] ?? []), finding];
+      return groups;
+    },
+    {},
+  ) ?? {};
+  const checkedAt = result?.checkedAt ?? selectedCheck?.lastCheckedAt ?? selectedCheck?.completedAt ?? null;
+
+  useEffect(() => {
+    if (!selectedOasisAssessmentId || !oasisSources.some((source) => source.id === selectedOasisAssessmentId)) {
+      setSelectedOasisAssessmentId(defaultAssessmentId);
+    }
+  }, [defaultAssessmentId, oasisSources, selectedOasisAssessmentId]);
+
+  if (oasisSources.length === 0) {
+    return (
+      <section className="panel stack">
+        <div className="panel-header-inline">
+          <h2>Oasis check</h2>
+        </div>
+        <div className="muted">No OASIS assessments have been discovered for this patient yet.</div>
+      </section>
+    );
+  }
 
   return (
     <section className="panel stack">
       <div className="panel-header-inline">
         <div>
-          <h2>Internal OASIS Checks</h2>
+          <h2>{selectedAssessment?.title ?? "Oasis check"}</h2>
+          <div className="muted">
+            {[
+              selectedAssessment?.assessmentType,
+              formatClinicalSourceDate(selectedAssessment?.date),
+              selectedAssessment?.isCurrent ? "Current" : null,
+              selectedAssessment?.isDischarged ? "Discharged" : null,
+            ].filter(Boolean).join(" | ") || "Selected OASIS assessment"}
+          </div>
         </div>
         <div className="badge-row">
-          {patient.oasisValidation ? (
-            <span className={patient.oasisValidation.missingFieldCount > 0 ? "badge warning" : "badge success"}>
-              {patient.oasisValidation.missingFieldCount} missing field{patient.oasisValidation.missingFieldCount === 1 ? "" : "s"}
+          {result ? (
+            <span className={oasisCheckBadgeClass(result.status, discrepancyCount)}>
+              {result.status === "clean"
+                ? "Clean"
+                : result.status === "discrepancies_found"
+                  ? `${discrepancyCount} discrepancy${discrepancyCount === 1 ? "" : "ies"}`
+                  : result.status ?? "Check result"}
             </span>
-          ) : null}
-          {patient.oasisGate ? (
-            <span className={patient.oasisGate.contradictionCount > 0 ? "badge danger" : "badge success"}>
-              {patient.oasisGate.contradictionCount} contradiction{patient.oasisGate.contradictionCount === 1 ? "" : "s"}
-            </span>
-          ) : null}
-          {aiAssistEligible ? <span className="badge warning">AI assist window</span> : null}
+          ) : (
+            <span className="badge">Not checked</span>
+          )}
+          {checkedAt ? <span className="badge">Checked {formatTimestamp(checkedAt)}</span> : null}
         </div>
       </div>
 
-      {aiAssistEligible ? (
-        <section className="panel global-trust-banner">
-          <span className="badge warning">Day 15+</span>
-          <div>
-            OASIS is inside the assist window. Missing input suggestions should be generated for reviewer approval only; referral evidence remains limited to diagnosis comparison.
+      <div className="clinical-source-selector">
+        <div aria-label="OASIS assessments to check" className="clinical-source-tabs" role="tablist">
+          {oasisSources.map((source) => {
+            const sourceCount = source.oasisCheck?.result?.discrepancyCount ?? 0;
+            const sourceStatus = source.oasisCheck?.result?.status ?? source.oasisCheck?.status ?? null;
+            return (
+              <button
+                aria-selected={selectedAssessment?.id === source.id}
+                className={`clinical-source-tab${selectedAssessment?.id === source.id ? " active" : ""}`}
+                key={source.id}
+                onClick={() => setSelectedOasisAssessmentId(source.id)}
+                role="tab"
+                type="button"
+              >
+                <span className="clinical-source-tab-title">{source.title}</span>
+                {formatClinicalSourceDate(source.date) ? <span className="badge">{formatClinicalSourceDate(source.date)}</span> : null}
+                {source.isCurrent ? <span className="badge success">Current</span> : null}
+                {source.isDischarged ? <span className="badge warning">Discharged</span> : null}
+                {source.oasisCheck ? (
+                  <span className={oasisCheckBadgeClass(sourceStatus, sourceCount)}>
+                    {source.oasisCheck.status === "pending" || source.oasisCheck.status === "running"
+                      ? "Checking"
+                      : sourceCount > 0
+                        ? `${sourceCount}`
+                        : source.oasisCheck.result?.status === "clean"
+                          ? "Clean"
+                          : "Checked"}
+                  </span>
+                ) : null}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="panel-header-inline">
+        <div>
+          <h3>Internal mismatch report</h3>
+          {!result ? (
+            <div className="muted">
+              {selectedCheck?.message ?? "Run an OASIS check to review internal contradictions in the selected assessment."}
+            </div>
+          ) : null}
+        </div>
+        <button
+          aria-label="Run OASIS check for selected assessment"
+          className="button secondary compact"
+          disabled={!selectedAssessment || running}
+          onClick={() => selectedAssessment ? onOasisCheckStart(selectedAssessment.id) : undefined}
+          type="button"
+        >
+          {running ? "Checking..." : result ? "Recheck" : "Oasis check"}
+        </button>
+      </div>
+
+      {selectedCheck?.lastError ? <div className="badge warning">{selectedCheck.lastError}</div> : null}
+
+      {dischargeComparison ? (
+        <section className="stack">
+          <div className="flagged-field-header">
+            <div>
+              <strong>Discharge improvement</strong>
+              <div className="flagged-field-rationale">
+                {[
+                  dischargeComparison.summary,
+                  dischargeComparison.baselineAssessment
+                    ? `Baseline: ${[
+                        dischargeComparison.baselineAssessment.title,
+                        formatClinicalSourceDate(dischargeComparison.baselineAssessment.date),
+                      ].filter(Boolean).join(" | ")}`
+                    : null,
+                  dischargeComparison.reviewedItemCount
+                    ? `${dischargeComparison.reviewedItemCount} M/GG item${dischargeComparison.reviewedItemCount === 1 ? "" : "s"} reviewed`
+                    : null,
+                ].filter(Boolean).join(" | ")}
+              </div>
+            </div>
+            <span className={dischargeComparison.status === "available" && dischargeComparison.findings.length === 0 ? "badge success" : dischargeComparison.status === "available" ? "badge danger" : "badge warning"}>
+              {dischargeComparison.status === "available"
+                ? dischargeComparison.outcome ?? "Compared"
+                : "Unavailable"}
+            </span>
           </div>
+
+          {Object.entries(dischargeFindingsByGroup).length > 0 ? (
+            <div className="section-field-list">
+              {Object.entries(dischargeFindingsByGroup).map(([group, findings]) => (
+                <section className="stack" key={group}>
+                  <div className="flagged-field-header">
+                    <div>
+                      <strong>{group}</strong>
+                      <div className="flagged-field-rationale">
+                        {findings.length} finding{findings.length === 1 ? "" : "s"}
+                      </div>
+                    </div>
+                    <span className="badge danger">Review</span>
+                  </div>
+                  {findings.map((finding, index) => (
+                    <article className="flagged-field-row" key={`${group}-${finding.itemCode ?? finding.itemLabel ?? index}`}>
+                      <div className="flagged-field-header">
+                        <div>
+                          <strong>{[finding.itemCode, finding.itemLabel].filter(Boolean).join(" - ") || "Discharge M/GG item"}</strong>
+                          <div className="flagged-field-rationale">
+                            {[
+                              finding.result,
+                              finding.confidence ? `${finding.confidence} confidence` : null,
+                            ].filter(Boolean).join(" | ")}
+                          </div>
+                        </div>
+                        <span className="badge danger">Discharge</span>
+                      </div>
+                      <div className="checklist compact-checklist">
+                        {finding.baselineValue ? <div>Baseline: {finding.baselineValue}</div> : null}
+                        {finding.dischargeValue ? <div>Discharge: {finding.dischargeValue}</div> : null}
+                        {finding.scoringInterpretation ? <div>Scale: {finding.scoringInterpretation}</div> : null}
+                      </div>
+                      {finding.reasoning ? <div>{finding.reasoning}</div> : null}
+                      {finding.reviewerAction ? <div className="muted">{finding.reviewerAction}</div> : null}
+                    </article>
+                  ))}
+                </section>
+              ))}
+            </div>
+          ) : dischargeComparison.status === "available" ? (
+            <div className="muted">No discharge M/GG improvement concerns were reported for the selected assessment.</div>
+          ) : (
+            <div className="muted">
+              {dischargeComparison.warnings[0] ?? "Discharge comparison was unavailable for the selected assessment."}
+            </div>
+          )}
         </section>
       ) : null}
 
-      {missingFields.length > 0 ? (
+      {sectionsWithDiscrepancies.length > 0 ? (
         <div className="section-field-list">
-          {missingFields.map((field) => (
-            <article className="flagged-field-row" key={`${field.fieldId ?? field.label}-${field.mItem ?? ""}`}>
+          {sectionsWithDiscrepancies.map((section) => (
+            <section className="stack" key={section.sectionKey ?? section.sectionLabel ?? "section"}>
               <div className="flagged-field-header">
                 <div>
-                  <strong>{field.label}</strong>
-                  <div className="flagged-field-rationale">
-                    {[field.mItem, field.section].filter(Boolean).join(" | ") || "Required OASIS field"}
-                  </div>
+                  <strong>{section.sectionLabel ?? "OASIS section"}</strong>
                 </div>
-                <span className="badge warning">Missing</span>
+                <span className="badge danger">Review</span>
               </div>
-              <div className="muted">{field.message ?? "Enter the clinically appropriate OASIS value."}</div>
-            </article>
+              {section.discrepancies.map((finding, index) => (
+                <article className="flagged-field-row" key={`${section.sectionKey ?? "section"}-${finding.itemCode ?? finding.itemLabel ?? index}`}>
+                  <div className="flagged-field-header">
+                    <div>
+                      <strong>{[finding.itemCode, finding.itemLabel].filter(Boolean).join(" - ") || finding.primarySection || "OASIS mismatch"}</strong>
+                      <div className="flagged-field-rationale">
+                        {[
+                          finding.primarySection,
+                          finding.contradictingSections.length > 0
+                            ? `Contradicts ${finding.contradictingSections.join(", ")}`
+                            : null,
+                          finding.confidence ? `${finding.confidence} confidence` : null,
+                        ].filter(Boolean).join(" | ")}
+                      </div>
+                    </div>
+                    <span className="badge danger">Mismatch</span>
+                  </div>
+                  <div className="checklist compact-checklist">
+                    {finding.valuesInConflict.map((value) => (
+                      <div key={value}>{value}</div>
+                    ))}
+                  </div>
+                  {finding.reasoning ? <div>{finding.reasoning}</div> : null}
+                  {finding.reviewerAction ? <div className="muted">{finding.reviewerAction}</div> : null}
+                </article>
+              ))}
+            </section>
           ))}
         </div>
-      ) : null}
-
-      {internalReasons.length > 0 ? (
-        <div className="checklist compact-checklist">
-          {internalReasons.map((reason) => (
-            <div key={reason}>{reason}</div>
-          ))}
+      ) : result ? (
+        <div className="muted">
+          {result.status === "clean"
+            ? "No internal OASIS discrepancies were reported for the selected assessment."
+            : "No displayable discrepancy details were returned for this assessment."}
         </div>
       ) : null}
-
     </section>
   );
 }
@@ -2846,6 +3064,7 @@ export default function PatientDetailPage() {
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<WorkspaceTab>("referral_vs_oasis");
   const [isStartingReferralIntake, setIsStartingReferralIntake] = useState(false);
+  const [isStartingOasisCheckAssessmentId, setIsStartingOasisCheckAssessmentId] = useState<string | null>(null);
   const autoSelectedPatientRef = useRef<string | null>(null);
 
   useEffect(() => {
@@ -2919,8 +3138,8 @@ export default function PatientDetailPage() {
         { key: "referral_documents", label: "Referral Documents" },
         {
           key: "oasis",
-          label: "OASIS",
-          count: (patient?.oasisValidation?.missingFieldCount ?? 0) + (patient?.oasisGate?.contradictionCount ?? 0),
+          label: "Oasis check",
+          count: patient ? getOasisCheckDiscrepancyCount(patient) : 0,
         },
         { key: "plan_of_care", label: "Plan of Care", count: planOfCareCount },
         { key: "visit_notes", label: "Visit Notes", count: visitNoteCount },
@@ -2941,6 +3160,18 @@ export default function PatientDetailPage() {
       setError(nextError instanceof Error ? nextError.message : "Failed to start referral file check.");
     } finally {
       setIsStartingReferralIntake(false);
+    }
+  }
+
+  async function handleOasisCheckStart(assessmentId: string): Promise<void> {
+    setIsStartingOasisCheckAssessmentId(assessmentId);
+    try {
+      await startPatientOasisCheck(runId, patientId, assessmentId);
+    } catch (nextError) {
+      console.error(nextError);
+      setError(nextError instanceof Error ? nextError.message : "Failed to start OASIS check.");
+    } finally {
+      setIsStartingOasisCheckAssessmentId(null);
     }
   }
 
@@ -3002,7 +3233,13 @@ export default function PatientDetailPage() {
             />
           ) : null}
 
-          {activeTab === "oasis" ? <OasisInternalChecksPanel patient={patient} /> : null}
+          {activeTab === "oasis" ? (
+            <OasisCheckPanel
+              oasisCheckRunningAssessmentId={isStartingOasisCheckAssessmentId}
+              onOasisCheckStart={(assessmentId) => void handleOasisCheckStart(assessmentId)}
+              patient={patient}
+            />
+          ) : null}
           {activeTab === "plan_of_care" ? <PlanOfCareGenerationTab patient={patient} /> : null}
           {activeTab === "visit_notes" ? <VisitNotesTab patient={patient} /> : null}
         </>

@@ -352,6 +352,7 @@ export interface ReferralDocumentProcessingArtifacts {
   qaDocumentSummaryPath: string;
   reviewOnlyOasisSuggestionsMetadataPath: string;
   directDocumentResultPath?: string;
+  directDocumentFailureDiagnosticPath?: string;
 }
 
 export interface ReferralDocumentProcessingResult {

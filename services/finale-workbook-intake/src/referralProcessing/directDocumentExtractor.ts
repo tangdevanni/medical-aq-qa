@@ -58,6 +58,18 @@ const INVALID_JSON_RETRY_PREFIX = [
   "Use empty arrays when facts are not visibly supported.",
 ].join("\n");
 
+const COMPACT_JSON_RETRY_PROMPT = [
+  "Read the attached referral/admission-order document directly.",
+  "Return exactly one valid JSON object. No Markdown. No prose. No citations outside JSON.",
+  "Use this compact schema:",
+  '{"patient_context":{"patient_name":null,"dob":null,"soc_date":null,"referral_date":null},"diagnoses":[],"medications":[],"field_proposals":[],"unsupported_or_missing_fields":[],"warnings":[]}',
+  "diagnoses items: description, icd10_code, is_primary_candidate, confidence, source_quote, page, laterality_terms, body_site_terms, requires_human_review, review_reasons.",
+  "medications items: name, dose, route, frequency, start_date, confidence, source_quote, page, requires_human_review, review_reasons.",
+  "field_proposals items: field_key, proposed_value, confidence, source_quote, page, requires_human_review, review_reasons.",
+  "Only include facts visibly supported by the document. Every included diagnosis, medication, and field proposal must include an exact source_quote.",
+  "Use empty arrays when facts are not visibly supported.",
+].join("\n");
+
 const directPatientContextSchema = z.object({
   patient_name: z.string().nullable().optional().default(null),
   dob: z.string().nullable().optional().default(null),
@@ -158,6 +170,34 @@ export interface ReferralDirectDocumentExtractionResult {
   citations: unknown[];
   rawResponseText: string;
   warnings: string[];
+}
+
+export type ReferralDirectDocumentRetryMode =
+  | "initial"
+  | "citation_disabled_unsupported"
+  | "citation_disabled_invalid_json"
+  | "compact_json";
+
+export interface ReferralDirectDocumentFailureDiagnostic {
+  schemaVersion: "referral-direct-document-failure-diagnostic.v1";
+  generatedAt: string;
+  failureReason: string;
+  configuredModelId: string;
+  invocationModelId: string | null;
+  region: string;
+  retryMode: ReferralDirectDocumentRetryMode;
+  citationMode: ReferralDirectDocumentExtractionResult["invocation"]["citationMode"];
+  rawResponseExcerpt: string | null;
+}
+
+export class ReferralDirectDocumentInvalidJsonError extends Error {
+  readonly diagnostic: ReferralDirectDocumentFailureDiagnostic;
+
+  constructor(diagnostic: ReferralDirectDocumentFailureDiagnostic) {
+    super(diagnostic.failureReason);
+    this.name = "ReferralDirectDocumentInvalidJsonError";
+    this.diagnostic = diagnostic;
+  }
 }
 
 const bedrockClientByRegion = new Map<string, BedrockRuntimeClient>();
@@ -347,7 +387,10 @@ export async function extractReferralDirectDocument(input: {
   const config = resolveBedrockConfig(input.env);
   const client = getBedrockClient(config.region);
   const startedAt = Date.now();
-  const sendRequest = (enableCitations: boolean, retryForInvalidJson = false) =>
+  const sendRequest = (
+    enableCitations: boolean,
+    promptMode: "standard" | "invalid_json" | "compact_json" = "standard",
+  ) =>
     sendBedrockConverseWithProfileFallback({
       client,
       config,
@@ -356,7 +399,13 @@ export async function extractReferralDirectDocument(input: {
         messages: [{
           role: "user",
           content: [
-            { text: retryForInvalidJson ? `${INVALID_JSON_RETRY_PREFIX}\n\n${USER_PROMPT}` : USER_PROMPT },
+            {
+              text: promptMode === "compact_json"
+                ? COMPACT_JSON_RETRY_PROMPT
+                : promptMode === "invalid_json"
+                  ? `${INVALID_JSON_RETRY_PREFIX}\n\n${USER_PROMPT}`
+                  : USER_PROMPT,
+            },
             buildSourceContentBlock({
               fileType,
               documentName: buildDocumentName(input.patientName),
@@ -377,6 +426,7 @@ export async function extractReferralDirectDocument(input: {
   let response: ConverseCommandOutput;
   let invocationModelId: string;
   let autoResolvedInferenceProfile: boolean;
+  let retryMode: ReferralDirectDocumentRetryMode = "initial";
   try {
     const result = await sendRequest(fileType === "pdf");
     response = result.response;
@@ -387,6 +437,7 @@ export async function extractReferralDirectDocument(input: {
       throw error;
     }
     citationMode = "disabled_unsupported_retry";
+    retryMode = "citation_disabled_unsupported";
     const result = await sendRequest(false);
     response = result.response;
     invocationModelId = result.invocationModelId;
@@ -396,7 +447,8 @@ export async function extractReferralDirectDocument(input: {
   let parsed = parseReferralDirectDocumentPayload(text);
   if (!parsed && fileType === "pdf" && citationMode === "enabled") {
     citationMode = "disabled_invalid_json_retry";
-    const retryResult = await sendRequest(false, true);
+    retryMode = "citation_disabled_invalid_json";
+    const retryResult = await sendRequest(false, "invalid_json");
     response = retryResult.response;
     invocationModelId = retryResult.invocationModelId;
     autoResolvedInferenceProfile = retryResult.autoResolvedInferenceProfile;
@@ -404,7 +456,26 @@ export async function extractReferralDirectDocument(input: {
     parsed = parseReferralDirectDocumentPayload(text);
   }
   if (!parsed) {
-    throw new Error("Bedrock returned invalid or non-JSON direct-document referral output.");
+    retryMode = "compact_json";
+    const retryResult = await sendRequest(false, "compact_json");
+    response = retryResult.response;
+    invocationModelId = retryResult.invocationModelId;
+    autoResolvedInferenceProfile = retryResult.autoResolvedInferenceProfile;
+    ({ text, citations } = extractConverseTextAndCitations(response));
+    parsed = parseReferralDirectDocumentPayload(text);
+  }
+  if (!parsed) {
+    throw new ReferralDirectDocumentInvalidJsonError({
+      schemaVersion: "referral-direct-document-failure-diagnostic.v1",
+      generatedAt: new Date().toISOString(),
+      failureReason: "Bedrock returned invalid or non-JSON direct-document referral output.",
+      configuredModelId: config.configuredModelId,
+      invocationModelId,
+      region: config.region,
+      retryMode,
+      citationMode,
+      rawResponseExcerpt: normalizeWhitespace(text).slice(0, 2_000) || null,
+    });
   }
   const latencyMs = Date.now() - startedAt;
 
@@ -433,6 +504,9 @@ export async function extractReferralDirectDocument(input: {
       : []),
     ...(citationMode === "disabled_invalid_json_retry"
       ? ["Configured Bedrock model returned invalid JSON with citation metadata, so the request was retried without citations."]
+      : []),
+    ...(retryMode === "compact_json"
+      ? ["Configured Bedrock model required compact JSON retry before returning parseable direct-document referral output."]
       : []),
   ];
 
