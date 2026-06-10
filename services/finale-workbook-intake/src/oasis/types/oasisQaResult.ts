@@ -2,6 +2,7 @@ import type { QaPrefetchResult, QaVisibleDiagnosis } from "../../qa/types/qaPref
 import type { BillingPeriodCalendarSummary } from "./billingPeriodCalendarSummary";
 import type { EpisodeRangeOption } from "../navigation/episodeRangeDropdownService";
 import type { OasisPrintedNoteReviewResult } from "./oasisPrintedNoteReview";
+import type { PatientPortalStatusOasisAssessment } from "../../portal/types/patientPortalStatus";
 import type {
   OasisAssessmentProcessingDecision,
   OasisAssessmentProcessingStatus,
@@ -30,6 +31,8 @@ export interface OasisMenuOpenResult {
   currentUrl: string;
   selectorUsed: string | null;
   availableAssessmentTypes: string[];
+  oasisAssessments?: PatientPortalStatusOasisAssessment[];
+  currentOasisAssessmentId?: string | null;
   warnings: string[];
 }
 

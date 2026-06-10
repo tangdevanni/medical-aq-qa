@@ -771,6 +771,47 @@ describe("BatchControlPlaneService scheduler metadata", () => {
     }
   });
 
+  it("resolves the legacy current-oasis dashboard id against root OASIS DOM artifacts", async () => {
+    const fixture = createServiceFixture();
+
+    try {
+      await fixture.service.initialize();
+      const { batch, workItem, patientArtifactsDirectory } = await createPortalStatusBatch(fixture, {
+        patientRunStatus: "COMPLETE",
+      });
+      const artifacts = await writeOasisCheckArtifacts({
+        directory: patientArtifactsDirectory,
+        assessmentId: "current-oasis",
+        assessmentType: "RECERT",
+      });
+      await writeFile(path.join(patientArtifactsDirectory, "oasis-dom-extracted-state.json"), JSON.stringify({
+        schemaVersion: "oasis-dom-extracted-state.v1",
+        assessmentType: "RECERT",
+        assessmentDate: "2026-05-30",
+      }, null, 2));
+
+      await withCodeLlmDisabled(async () => {
+        await fixture.service.startPatientOasisCheck({
+          batchId: batch.id,
+          patientId: workItem.id,
+          assessmentId: "current-oasis",
+        });
+        await waitForCondition(async () => {
+          const status = await fixture.service.getPatientOasisCheckStatus(batch.id, workItem.id, "current-oasis");
+          return status.status === "completed";
+        });
+      });
+
+      const status = await fixture.service.getPatientOasisCheckStatus(batch.id, workItem.id, "current-oasis");
+      assert.equal(status.status, "completed");
+      assert.equal(status.result?.assessmentId, "current-oasis");
+      assert.ok(status.result?.diagnostics.sourceArtifactPaths.includes(artifacts.sectionOutputsPath));
+      assert.equal(status.result?.assessmentType, "RECERT");
+    } finally {
+      fixture.cleanup();
+    }
+  });
+
   it("selects the earliest non-discharge OASIS as discharge comparison baseline even when SOC is labeled", async () => {
     const fixture = createServiceFixture();
 

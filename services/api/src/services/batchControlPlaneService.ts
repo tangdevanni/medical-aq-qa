@@ -5097,9 +5097,14 @@ export class BatchControlPlaneService {
       .filter((entry): entry is Record<string, unknown> => entry !== null);
     const manifestEntry = manifestEntries.find((entry) => asString(entry.assessmentId) === input.assessmentId) ?? null;
     const snapshotAssessment = (snapshot?.oasisAssessments ?? []).find((entry) => entry.id === input.assessmentId) ?? null;
+    const legacyCurrentAlias = input.assessmentId === "current-oasis";
+    const rootDomState = legacyCurrentAlias
+      ? asRecord(await this.repository.readJsonIfExists(path.join(input.patientArtifactsDirectory, "oasis-dom-extracted-state.json")))
+      : null;
     const isCurrent =
       snapshot?.currentOasisAssessmentId === input.assessmentId ||
-      manifestEntry?.isCurrent === true;
+      manifestEntry?.isCurrent === true ||
+      legacyCurrentAlias;
 
     if (!snapshotAssessment && !manifestEntry && !isCurrent) {
       throw new Error(`Selected OASIS assessment was not found: ${input.assessmentId}`);
@@ -5123,14 +5128,19 @@ export class BatchControlPlaneService {
       assessmentType:
         asString(manifestEntry?.assessmentType) ??
         snapshotAssessment?.assessmentType ??
+        asString(rootDomState?.assessmentType) ??
         null,
       title:
         asString(manifestEntry?.title) ??
         snapshotAssessment?.title ??
+        asString(rootDomState?.assessmentTitle) ??
+        asString(rootDomState?.assessmentType) ??
         null,
       date:
         asString(manifestEntry?.date) ??
         snapshotAssessment?.date ??
+        asString(rootDomState?.assessmentDate) ??
+        asString(rootDomState?.extractedAt) ??
         null,
       sourceRowText: snapshotAssessment?.sourceRowText ?? null,
       artifactDirectory,

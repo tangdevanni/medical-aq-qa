@@ -49,6 +49,81 @@ async function readPatientPortalStatusSnapshot(
   }
 }
 
+function emptyReferralFileArea(): PatientPortalStatusSnapshot["referralFileArea"] {
+  return {
+    available: false,
+    labels: [],
+  };
+}
+
+function buildOasisAssessmentDocumentTableSignals(
+  assessments: PatientPortalStatusOasisAssessment[],
+): string[] {
+  return assessments.map((assessment) =>
+    [
+      assessment.assessmentType,
+      assessment.date ?? "no-date",
+      assessment.primaryStatus ?? "UNKNOWN",
+      assessment.title,
+    ].join(":"),
+  );
+}
+
+function selectCurrentOasisAssessmentIdFromAssessments(
+  assessments: PatientPortalStatusOasisAssessment[],
+): string | null {
+  if (assessments.length === 0) {
+    return null;
+  }
+
+  return assessments
+    .slice()
+    .sort((left, right) =>
+      parseAssessmentDate(right.date) - parseAssessmentDate(left.date) ||
+      assessments.indexOf(left) - assessments.indexOf(right)
+    )[0]?.id ?? null;
+}
+
+export function buildQaWorkflowPatientPortalStatusSnapshot(input: {
+  existing: PatientPortalStatusSnapshot | null;
+  batchId: string;
+  workItem: PatientEpisodeWorkItem;
+  chartUrl: string;
+  dashboardUrl: string | null;
+  now: string;
+  oasisAssessments: PatientPortalStatusOasisAssessment[];
+  currentOasisAssessmentId: string | null;
+}): PatientPortalStatusSnapshot | null {
+  if (input.oasisAssessments.length === 0) {
+    return input.existing;
+  }
+
+  const currentOasisAssessmentId =
+    input.currentOasisAssessmentId ??
+    selectCurrentOasisAssessmentIdFromAssessments(input.oasisAssessments);
+
+  return {
+    schemaVersion: "patient-portal-status-snapshot.v1",
+    batchId: input.batchId,
+    patientId: input.workItem.id,
+    patientName: input.workItem.patientIdentity.displayName,
+    status: "fresh",
+    capturedAt: input.now,
+    generatedAt: input.now,
+    staleAfter: input.existing?.staleAfter ?? null,
+    matchResult: input.existing?.matchResult ?? null,
+    chartUrl: input.chartUrl,
+    dashboardUrl: input.dashboardUrl,
+    portalAdmissionStatus: input.existing?.portalAdmissionStatus ?? null,
+    oasisAssessments: input.oasisAssessments,
+    currentOasisAssessmentId,
+    referralFileArea: input.existing?.referralFileArea ?? emptyReferralFileArea(),
+    documentTableSignals: buildOasisAssessmentDocumentTableSignals(input.oasisAssessments),
+    activePatientRunStatus: null,
+    error: null,
+  };
+}
+
 function preflightAssessmentTypes(snapshot: PatientPortalStatusSnapshot | null): string[] {
   return Array.from(new Set(
     (snapshot?.oasisAssessments ?? [])
@@ -192,7 +267,41 @@ export async function runQaWorkflowOrchestrator(
     portalClient: params.portalClient,
   });
   stepLogs.push(...oasisMenu.stepLogs);
-  const portalStatusSnapshot = await readPatientPortalStatusSnapshot(params.outputDir, params.run.workItemId);
+  const existingPortalStatusSnapshot = await readPatientPortalStatusSnapshot(params.outputDir, params.run.workItemId);
+  const liveOasisAssessments = oasisMenu.result.oasisAssessments ?? [];
+  const portalStatusSnapshot = buildQaWorkflowPatientPortalStatusSnapshot({
+    existing: existingPortalStatusSnapshot,
+    batchId: params.context.batchId,
+    workItem: params.workItem,
+    chartUrl: params.context.chartUrl,
+    dashboardUrl: params.context.dashboardUrl ?? null,
+    now: new Date().toISOString(),
+    oasisAssessments: liveOasisAssessments,
+    currentOasisAssessmentId: oasisMenu.result.currentOasisAssessmentId ?? null,
+  });
+  if (liveOasisAssessments.length > 0 && portalStatusSnapshot) {
+    const snapshotPath = path.join(
+      params.outputDir,
+      "patients",
+      params.run.workItemId,
+      "patient-portal-status-snapshot.json",
+    );
+    await mkdir(path.dirname(snapshotPath), { recursive: true });
+    await writeFile(snapshotPath, JSON.stringify(portalStatusSnapshot, null, 2), "utf8");
+    stepLogs.push(createAutomationStepLog({
+      step: "oasis_assessment_metadata_snapshot",
+      message: "Persisted visible OASIS assessment rows from the QA workflow for per-assessment processing.",
+      patientName: params.workItem.patientIdentity.displayName,
+      urlBefore: params.context.chartUrl,
+      urlAfter: oasisMenu.result.currentUrl,
+      found: [
+        `oasisAssessmentCount=${liveOasisAssessments.length}`,
+        `currentOasisAssessmentId=${portalStatusSnapshot.currentOasisAssessmentId ?? "none"}`,
+      ],
+      evidence: buildOasisAssessmentDocumentTableSignals(liveOasisAssessments).slice(0, 8),
+      safeReadConfirmed: true,
+    }));
+  }
   const currentOasisAssessmentId = portalStatusSnapshot?.currentOasisAssessmentId ?? null;
   const currentOasisAssessmentTarget =
     portalStatusSnapshot?.oasisAssessments.find((assessment) => assessment.id === currentOasisAssessmentId) ?? null;

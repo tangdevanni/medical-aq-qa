@@ -36,6 +36,8 @@ export async function openOasisMenu(
       currentUrl: result.result.currentUrl,
       selectorUsed: result.result.selectorUsed,
       availableAssessmentTypes: result.result.availableAssessmentTypes,
+      oasisAssessmentCount: result.result.oasisAssessments?.length ?? 0,
+      currentOasisAssessmentId: result.result.currentOasisAssessmentId ?? null,
     },
     "opened OASIS menu for review",
   );

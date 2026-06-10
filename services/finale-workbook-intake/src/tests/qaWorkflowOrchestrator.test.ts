@@ -4,6 +4,7 @@ import type {
   PatientPortalStatusSnapshot,
 } from "../portal/types/patientPortalStatus";
 import {
+  buildQaWorkflowPatientPortalStatusSnapshot,
   buildOasisAssessmentSelectionForTarget,
   getSupplementalOasisAssessmentTargets,
 } from "../workflows/qaWorkflowOrchestrator";
@@ -50,6 +51,52 @@ function makeSnapshot(oasisAssessments: PatientPortalStatusOasisAssessment[]): P
 }
 
 describe("qaWorkflowOrchestrator OASIS assessment selection", () => {
+  it("materializes live OASIS menu rows into a patient portal snapshot for supplemental capture", () => {
+    const snapshot = buildQaWorkflowPatientPortalStatusSnapshot({
+      existing: null,
+      batchId: "batch-1",
+      workItem: {
+        id: "patient-1",
+        patientIdentity: {
+          displayName: "Norma Galvan",
+          normalizedName: "NORMA GALVAN",
+          medicareNumber: null,
+        },
+      } as any,
+      chartUrl: "https://app.finalehealth.com/client/norma",
+      dashboardUrl: null,
+      now: "2026-06-09T23:00:00.000Z",
+      currentOasisAssessmentId: "dc-20260617-oasis-oasis-e2-pt-dc",
+      oasisAssessments: [
+        makeAssessment({
+          id: "dc-20260617-oasis-oasis-e2-pt-dc",
+          assessmentType: "DC",
+          title: "OASIS-OASIS E2 - PT DC",
+          date: "06/17/2026",
+          sourceRowText: "OASIS-OASIS E2 - PT DC 06/17/2026 Not Due",
+        }),
+        makeAssessment({
+          id: "recert-20260530-oasis-oasis-e2-pt-rec",
+          assessmentType: "RECERT",
+          title: "OASIS-OASIS E2 - PT REC",
+          date: "05/30/2026",
+          sourceRowText: "OASIS-OASIS E2 - PT REC 05/30/2026 In Progress",
+        }),
+      ],
+    });
+
+    expect(snapshot?.status).toBe("fresh");
+    expect(snapshot?.currentOasisAssessmentId).toBe("dc-20260617-oasis-oasis-e2-pt-dc");
+    expect(snapshot?.oasisAssessments.map((assessment) => assessment.id)).toEqual([
+      "dc-20260617-oasis-oasis-e2-pt-dc",
+      "recert-20260530-oasis-oasis-e2-pt-rec",
+    ]);
+    expect(snapshot?.documentTableSignals).toEqual([
+      "DC:06/17/2026:UNKNOWN:OASIS-OASIS E2 - PT DC",
+      "RECERT:05/30/2026:UNKNOWN:OASIS-OASIS E2 - PT REC",
+    ]);
+  });
+
   it("keeps every non-current processable OASIS row eligible for scoped acquisition", () => {
     const supplementalTargets = getSupplementalOasisAssessmentTargets({
       snapshot: makeSnapshot([

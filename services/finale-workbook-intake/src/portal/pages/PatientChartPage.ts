@@ -2321,9 +2321,22 @@ export class PatientChartPage {
     stepLogs: AutomationStepLog[];
   }> {
     const menuResult = await this.openOasisDocumentsPageFromSidebar();
-    const availableAssessmentTypes = menuResult.opened
+    const oasisAssessments = menuResult.opened
+      ? await this.collectVisibleOasisAssessmentMetadata()
+      : [];
+    const metadataAssessmentTypes = oasisAssessments
+      .map((assessment) => assessment.assessmentType)
+      .filter((assessmentType) => assessmentType !== "UNKNOWN");
+    const visibleAssessmentTypes = menuResult.opened
       ? await this.collectVisibleOasisAssessmentTypes()
       : [];
+    const availableAssessmentTypes = menuResult.opened
+      ? Array.from(new Set([
+          ...visibleAssessmentTypes,
+          ...metadataAssessmentTypes,
+        ]))
+      : [];
+    const currentOasisAssessmentId = selectCurrentOasisAssessmentId(oasisAssessments);
 
     return {
       result: {
@@ -2331,6 +2344,8 @@ export class PatientChartPage {
         currentUrl: this.page.url(),
         selectorUsed: menuResult.oasisSelectorUsed,
         availableAssessmentTypes,
+        oasisAssessments,
+        currentOasisAssessmentId,
         warnings: menuResult.opened
           ? []
           : ["OASIS documents page could not be verified from the patient chart sidebar."],
