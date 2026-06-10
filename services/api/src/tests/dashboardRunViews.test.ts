@@ -2446,6 +2446,14 @@ describe("dashboardRunViews", () => {
                 sourceItemCode: "M1021",
               },
               {
+                label: "Symptom Control",
+                value: "Exacerbate",
+                sourceKind: "structured_value",
+                confidence: 0.94,
+                sourceSectionTitle: "Diagnoses",
+                sourceItemCode: "M1021",
+              },
+              {
                 label: "ICD-10 Code",
                 value: "M75.121",
                 meta: "Complete rotator-cuff tear/rupture of right shoulder, not trauma",
@@ -2453,6 +2461,14 @@ describe("dashboardRunViews", () => {
                 confidence: 0.94,
                 sourceSectionTitle: "Diagnoses",
                 sourceItemCode: "M1023",
+              },
+              {
+                label: "Risk Factor",
+                value: "None of the above",
+                sourceKind: "structured_value",
+                confidence: 0.94,
+                sourceSectionTitle: "Diagnoses",
+                sourceItemCode: "M1033",
               },
             ],
           }],
@@ -2470,6 +2486,16 @@ describe("dashboardRunViews", () => {
       "Complete rotator-cuff tear/rupture of right shoulder, not trauma",
     );
     assert.equal(detail.oasisDiagnosisSummary.otherDiagnoses[0]?.onsetDate, "2026-05-09");
+    assert.deepEqual(
+      [
+        detail.oasisDiagnosisSummary.primaryDiagnosis,
+        ...detail.oasisDiagnosisSummary.otherDiagnoses,
+      ].map((diagnosis) => diagnosis?.description),
+      [
+        "Encounter for other orthopedic aftercare",
+        "Complete rotator-cuff tear/rupture of right shoulder, not trauma",
+      ],
+    );
   });
 
   it("builds selectable OASIS assessment sources and deterministic change flags from portal preflight metadata", () => {

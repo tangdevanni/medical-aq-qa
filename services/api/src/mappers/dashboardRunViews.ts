@@ -2008,6 +2008,46 @@ function getOasisDomDiagnosisDescriptionCandidate(
   return null;
 }
 
+function normalizeOasisDomDiagnosisCodeEntry(
+  entry: {
+    field: Record<string, unknown>;
+    label: string;
+    value: string;
+  },
+): DashboardDiagnosisEntry | null {
+  const value = entry.value.trim();
+  const explicitCode =
+    asString(entry.field.code) ??
+    asString(entry.field.icdCode) ??
+    asString(entry.field.icd10Code) ??
+    asString(entry.field.icd10_code);
+  const codeCandidate = explicitCode ?? value;
+
+  if (isValidDashboardIcdCode(codeCandidate)) {
+    const code = codeCandidate.toUpperCase().replace(/\.(?=\s*$)/, "");
+    return {
+      code,
+      normalizedIcd10Code: code,
+      description: getOasisDomDiagnosisDescriptionCandidate(entry, code),
+      confidence: "dom",
+    };
+  }
+
+  const parsed = normalizeDiagnosisEntry(value);
+  if (!parsed?.code || !isValidDashboardIcdCode(parsed.code)) {
+    return null;
+  }
+
+  const code = parsed.code.toUpperCase().replace(/\.(?=\s*$)/, "");
+  return {
+    ...parsed,
+    code,
+    normalizedIcd10Code: parsed.normalizedIcd10Code ?? code,
+    description: parsed.description ?? getOasisDomDiagnosisDescriptionCandidate(entry, code),
+    confidence: parsed.confidence ?? "dom",
+  };
+}
+
 function deriveOasisDomDiagnosisSummary(input: PatientViewInput) {
   const entries: DashboardDiagnosisEntry[] = [];
   let current: DashboardDiagnosisEntry | null = null;
@@ -2046,41 +2086,15 @@ function deriveOasisDomDiagnosisSummary(input: PatientViewInput) {
       continue;
     }
 
-    if (isValidDashboardIcdCode(value)) {
-      const code = value.toUpperCase();
+    const diagnosisEntry = normalizeOasisDomDiagnosisCodeEntry(entry);
+    if (diagnosisEntry) {
       flushCurrent();
       current = {
-        code,
-        normalizedIcd10Code: code,
-        description: getOasisDomDiagnosisDescriptionCandidate(entry, code),
+        ...diagnosisEntry,
         confidence: "dom",
         onsetDate: lastOnsetDate ?? undefined,
       };
       continue;
-    }
-
-    if (!isPlausibleDashboardDiagnosisDescription(value)) {
-      continue;
-    }
-
-    if (!current) {
-      current = {
-        code: null,
-        description: value,
-        confidence: "dom",
-      };
-      continue;
-    }
-
-    if (!current.description) {
-      current.description = value;
-    } else {
-      flushCurrent();
-      current = {
-        code: null,
-        description: value,
-        confidence: "dom",
-      };
     }
   }
 
