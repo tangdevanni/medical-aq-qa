@@ -3,7 +3,13 @@
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { type MutableRefObject, type ReactNode, type RefObject, useEffect, useRef, useState } from "react";
-import { getPatient, startPatientOasisCheck, startPatientReferralIntake } from "../../../../../lib/api";
+import {
+  getPatient,
+  getPatientClinicalRefreshStatus,
+  startPatientClinicalRefresh,
+  startPatientOasisCheck,
+  startPatientReferralIntake,
+} from "../../../../../lib/api";
 import {
   buildComparisonWorkspaceModel,
   getConfidenceLabel,
@@ -32,6 +38,7 @@ import type {
   MedicationEntry,
   MedicationSummaryBlock,
   PatientDetail,
+  PatientClinicalRefreshStatus,
   QaPrefetchSummary,
 } from "../../../../../lib/types";
 
@@ -73,6 +80,12 @@ function formatStatusLabel(value: string | null | undefined): string {
 function formatReferralDocumentTitle(value: string | null | undefined): string {
   const title = value?.trim();
   return title && title.length > 0 ? title : "Referral document";
+}
+
+function formatOasisAssessmentTitle(value: string | null | undefined): string {
+  const title = value?.trim();
+  if (!title) return "OASIS";
+  return title.replace(/^OASIS[-\s]+OASIS\b/i, "OASIS").replace(/\s+/g, " ");
 }
 
 const PORTAL_VALUE_PLACEHOLDERS = new Set([
@@ -1317,11 +1330,13 @@ function rowMatchesSelectedOasisAssessment(
 }
 
 function ReferralVsOasisTab({
+  onOasisAssessmentSelectionChange,
   onReferralIntakeStart,
   patient,
   referralIntakeRunning,
   workspace,
 }: {
+  onOasisAssessmentSelectionChange?: (assessmentId: string | null) => void;
   onReferralIntakeStart: () => void;
   patient: PatientDetail;
   referralIntakeRunning: boolean;
@@ -1441,7 +1456,7 @@ function ReferralVsOasisTab({
     ? `${formatReferralDocumentTitle(selectedReferralDocument.title)}${selectedReferralDocumentDate ? ` (${selectedReferralDocumentDate})` : ""}`
     : "Referral";
   const oasisTitle = selectedOasisAssessment
-    ? `${selectedOasisAssessment.title}${selectedOasisAssessmentDate ? ` (${selectedOasisAssessmentDate})` : ""}`
+    ? `${formatOasisAssessmentTitle(selectedOasisAssessment.title)}${selectedOasisAssessmentDate ? ` (${selectedOasisAssessmentDate})` : ""}`
     : "OASIS";
   const referralSourceSelector = referralSources.length > 0 ? (
     <div className="clinical-source-selector">
@@ -1475,9 +1490,10 @@ function ReferralVsOasisTab({
             key={source.id}
             onClick={() => setSelectedOasisAssessmentId(source.id)}
             role="tab"
+            title={formatOasisAssessmentTitle(source.title)}
             type="button"
           >
-            <span className="clinical-source-tab-title">{source.title}</span>
+            <span className="clinical-source-tab-title">{formatOasisAssessmentTitle(source.title)}</span>
             {formatClinicalSourceDate(source.date) ? <span className="badge">{formatClinicalSourceDate(source.date)}</span> : null}
             {source.isCurrent ? <span className="badge success">Current</span> : null}
           </button>
@@ -1503,6 +1519,10 @@ function ReferralVsOasisTab({
       setSelectedOasisAssessmentId(defaultOasisAssessmentId);
     }
   }, [defaultOasisAssessmentId, oasisSources, selectedOasisAssessmentId]);
+
+  useEffect(() => {
+    onOasisAssessmentSelectionChange?.(selectedOasisAssessment?.id ?? null);
+  }, [onOasisAssessmentSelectionChange, selectedOasisAssessment?.id]);
 
   return (
     <div className="workspace-section-stack">
@@ -1732,10 +1752,12 @@ function oasisCheckBadgeClass(status: string | null | undefined, discrepancyCoun
 function OasisCheckPanel({
   oasisCheckRunningAssessmentId,
   onOasisCheckStart,
+  onOasisAssessmentSelectionChange,
   patient,
 }: {
   oasisCheckRunningAssessmentId: string | null;
   onOasisCheckStart: (assessmentId: string) => void;
+  onOasisAssessmentSelectionChange?: (assessmentId: string | null) => void;
   patient: PatientDetail;
 }) {
   const oasisSources = patient.dashboardState.referralOasisSources?.oasisAssessments ?? [];
@@ -1772,6 +1794,10 @@ function OasisCheckPanel({
       setSelectedOasisAssessmentId(defaultAssessmentId);
     }
   }, [defaultAssessmentId, oasisSources, selectedOasisAssessmentId]);
+
+  useEffect(() => {
+    onOasisAssessmentSelectionChange?.(selectedAssessment?.id ?? null);
+  }, [onOasisAssessmentSelectionChange, selectedAssessment?.id]);
 
   if (oasisSources.length === 0) {
     return (
@@ -1826,9 +1852,10 @@ function OasisCheckPanel({
                 key={source.id}
                 onClick={() => setSelectedOasisAssessmentId(source.id)}
                 role="tab"
+                title={formatOasisAssessmentTitle(source.title)}
                 type="button"
               >
-                <span className="clinical-source-tab-title">{source.title}</span>
+                <span className="clinical-source-tab-title">{formatOasisAssessmentTitle(source.title)}</span>
                 {formatClinicalSourceDate(source.date) ? <span className="badge">{formatClinicalSourceDate(source.date)}</span> : null}
                 {source.isCurrent ? <span className="badge success">Current</span> : null}
                 {source.isDischarged ? <span className="badge warning">Discharged</span> : null}
@@ -1958,7 +1985,7 @@ function OasisCheckPanel({
                 <span className="badge danger">Review</span>
               </div>
               {section.discrepancies.map((finding, index) => (
-                <article className="flagged-field-row" key={`${section.sectionKey ?? "section"}-${finding.itemCode ?? finding.itemLabel ?? index}`}>
+                <article className="flagged-field-row" key={`${section.sectionKey ?? "section"}-${finding.itemCode ?? finding.itemLabel ?? "finding"}-${index}`}>
                   <div className="flagged-field-header">
                     <div>
                       <strong>{[finding.itemCode, finding.itemLabel].filter(Boolean).join(" - ") || finding.primarySection || "OASIS mismatch"}</strong>
@@ -1975,8 +2002,8 @@ function OasisCheckPanel({
                     <span className="badge danger">Mismatch</span>
                   </div>
                   <div className="checklist compact-checklist">
-                    {finding.valuesInConflict.map((value) => (
-                      <div key={value}>{value}</div>
+                    {finding.valuesInConflict.map((value, valueIndex) => (
+                      <div key={`${valueIndex}-${value}`}>{value}</div>
                     ))}
                   </div>
                   {finding.reasoning ? <div>{finding.reasoning}</div> : null}
@@ -3064,7 +3091,10 @@ export default function PatientDetailPage() {
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<WorkspaceTab>("referral_vs_oasis");
   const [isStartingReferralIntake, setIsStartingReferralIntake] = useState(false);
+  const [isStartingClinicalRefresh, setIsStartingClinicalRefresh] = useState(false);
+  const [clinicalRefreshStatus, setClinicalRefreshStatus] = useState<PatientClinicalRefreshStatus | null>(null);
   const [isStartingOasisCheckAssessmentId, setIsStartingOasisCheckAssessmentId] = useState<string | null>(null);
+  const [selectedRefreshOasisAssessmentId, setSelectedRefreshOasisAssessmentId] = useState<string | null>(null);
   const autoSelectedPatientRef = useRef<string | null>(null);
 
   useEffect(() => {
@@ -3072,11 +3102,15 @@ export default function PatientDetailPage() {
 
     async function loadPatient(): Promise<void> {
       try {
-        const nextPatient = await getPatient(runId, patientId);
+        const [nextPatient, nextClinicalRefreshStatus] = await Promise.all([
+          getPatient(runId, patientId),
+          getPatientClinicalRefreshStatus(runId, patientId).catch(() => null),
+        ]);
         if (!active) {
           return;
         }
         setPatient(nextPatient);
+        setClinicalRefreshStatus(nextClinicalRefreshStatus);
         setError(null);
       } catch (nextError) {
         if (!active) {
@@ -3150,6 +3184,21 @@ export default function PatientDetailPage() {
     referralIntakeStatus?.status === "pending" ||
     referralIntakeStatus?.status === "running" ||
     isStartingReferralIntake;
+  const clinicalRefreshRunning =
+    clinicalRefreshStatus?.status === "pending" ||
+    clinicalRefreshStatus?.status === "running" ||
+    isStartingClinicalRefresh;
+  const clinicalRefreshBlockedReason =
+    clinicalRefreshStatus?.preflight && !clinicalRefreshStatus.preflight.ok
+      ? `Refresh unavailable: ${clinicalRefreshStatus.preflight.reasons.join("; ")}`
+      : null;
+  const clinicalRefreshMessage =
+    clinicalRefreshBlockedReason ??
+    (!clinicalRefreshStatus || clinicalRefreshStatus.status === "idle"
+      ? null
+      : clinicalRefreshStatus.status === "failed"
+      ? clinicalRefreshStatus.lastError ?? clinicalRefreshStatus.message
+      : clinicalRefreshStatus?.message ?? null);
 
   async function handleReferralIntakeStart(): Promise<void> {
     setIsStartingReferralIntake(true);
@@ -3160,6 +3209,42 @@ export default function PatientDetailPage() {
       setError(nextError instanceof Error ? nextError.message : "Failed to start referral file check.");
     } finally {
       setIsStartingReferralIntake(false);
+    }
+  }
+
+  async function handleClinicalRefreshStart(): Promise<void> {
+    setIsStartingClinicalRefresh(true);
+    setError(null);
+    try {
+      const fallbackOasisAssessmentId =
+        patient?.dashboardState.referralOasisSources?.defaultOasisAssessmentId ??
+        patient?.dashboardState.referralOasisSources?.oasisAssessments?.[0]?.id ??
+        null;
+      const targetOasisAssessmentId = selectedRefreshOasisAssessmentId ?? fallbackOasisAssessmentId;
+      const response = await startPatientClinicalRefresh(runId, patientId, {
+        assessmentId: targetOasisAssessmentId,
+      });
+      setClinicalRefreshStatus((existing) => ({
+        refreshId: response.refreshId,
+        targetOasisAssessmentId: response.targetOasisAssessmentId ?? targetOasisAssessmentId,
+        status: response.status,
+        acceptedAt: response.acceptedAt,
+        startedAt: existing?.startedAt ?? null,
+        completedAt: existing?.completedAt ?? null,
+        lastCheckedAt: existing?.lastCheckedAt ?? null,
+        lastError: null,
+        attemptOutputRoot: existing?.attemptOutputRoot ?? null,
+        promotedAt: existing?.promotedAt ?? null,
+        statusUrl: response.statusUrl,
+        message: response.message,
+        reuseSummary: existing?.reuseSummary ?? null,
+        preflight: response.preflight ?? existing?.preflight ?? null,
+      }));
+    } catch (nextError) {
+      console.error(nextError);
+      setError(nextError instanceof Error ? nextError.message : "Failed to start patient refresh.");
+    } finally {
+      setIsStartingClinicalRefresh(false);
     }
   }
 
@@ -3182,6 +3267,15 @@ export default function PatientDetailPage() {
           <Link className="link" href="/agency">Back to agency overview</Link>
         </div>
         <div className="actions">
+          <button
+            className="button"
+            disabled={!patient || clinicalRefreshRunning || Boolean(clinicalRefreshBlockedReason)}
+            onClick={() => void handleClinicalRefreshStart()}
+            type="button"
+            title={clinicalRefreshBlockedReason ?? undefined}
+          >
+            {clinicalRefreshRunning ? "Refreshing..." : "Refresh Patient"}
+          </button>
           <Link className="button secondary" href="/select-agency?change=1">
             Change Agency
           </Link>
@@ -3194,6 +3288,11 @@ export default function PatientDetailPage() {
       </div>
 
       {error ? <div className="badge danger">{error}</div> : null}
+      {clinicalRefreshMessage ? (
+        <div className={clinicalRefreshStatus?.status === "failed" ? "badge danger" : "badge"}>
+          {clinicalRefreshMessage}
+        </div>
+      ) : null}
       {!patient ? <div className="panel muted">Loading patient...</div> : null}
 
       {patient && workspace ? (
@@ -3218,6 +3317,7 @@ export default function PatientDetailPage() {
 
           {activeTab === "referral_vs_oasis" ? (
             <ReferralVsOasisTab
+              onOasisAssessmentSelectionChange={setSelectedRefreshOasisAssessmentId}
               onReferralIntakeStart={() => void handleReferralIntakeStart()}
               patient={patient}
               referralIntakeRunning={referralIntakeRunning}
@@ -3236,6 +3336,7 @@ export default function PatientDetailPage() {
           {activeTab === "oasis" ? (
             <OasisCheckPanel
               oasisCheckRunningAssessmentId={isStartingOasisCheckAssessmentId}
+              onOasisAssessmentSelectionChange={setSelectedRefreshOasisAssessmentId}
               onOasisCheckStart={(assessmentId) => void handleOasisCheckStart(assessmentId)}
               patient={patient}
             />

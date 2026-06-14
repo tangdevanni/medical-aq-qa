@@ -882,6 +882,46 @@ export interface ReferralIntakeStartResponse {
   message: string | null;
 }
 
+export interface PatientClinicalRefreshStatus {
+  refreshId: string | null;
+  targetOasisAssessmentId?: string | null;
+  status: string;
+  acceptedAt: string | null;
+  startedAt: string | null;
+  completedAt: string | null;
+  lastCheckedAt: string | null;
+  lastError: string | null;
+  attemptOutputRoot: string | null;
+  promotedAt: string | null;
+  statusUrl: string | null;
+  message: string | null;
+  reuseSummary: {
+    referral: string;
+    oasis: string;
+    planOfCare: string;
+    visitNotes: string;
+  } | null;
+  preflight: {
+    ok: boolean;
+    checkedAt: string;
+    reasons: string[];
+    portalCredentialsConfigured: boolean;
+    portalDashboardUrlConfigured: boolean;
+  } | null;
+}
+
+export interface ClinicalRefreshStartResponse {
+  batchId: string;
+  patientId: string;
+  refreshId: string | null;
+  targetOasisAssessmentId?: string | null;
+  status: string;
+  acceptedAt: string | null;
+  statusUrl: string | null;
+  message: string | null;
+  preflight?: PatientClinicalRefreshStatus["preflight"];
+}
+
 export interface PatientOasisCheckFinding {
   itemCode: string | null;
   itemLabel: string | null;
@@ -1094,6 +1134,10 @@ export interface PatientSummary {
   rerunEnabled: boolean;
   lastRunAt: string | null;
   nextScheduledRunAt: string | null;
+  lastWorkbookAcquiredAt?: string | null;
+  nextWorkbookIntakeAt?: string | null;
+  lastDeltaRunAt?: string | null;
+  nextDeltaRunAt?: string | null;
   codingWorkflow: WorkflowTrackSummary | null;
   qaWorkflow: WorkflowTrackSummary | null;
   qaPrefetch: QaPrefetchSummary | null;
@@ -1137,6 +1181,10 @@ export interface RunListItem {
   rerunEnabled: boolean;
   lastRunAt: string | null;
   nextScheduledRunAt: string | null;
+  lastWorkbookAcquiredAt?: string | null;
+  nextWorkbookIntakeAt?: string | null;
+  lastDeltaRunAt?: string | null;
+  nextDeltaRunAt?: string | null;
 }
 
 export interface RunDetail extends RunListItem {
@@ -1204,6 +1252,10 @@ export interface RunStatusResponse {
   rerunEnabled: boolean;
   lastRunAt: string | null;
   nextScheduledRunAt: string | null;
+  lastWorkbookAcquiredAt?: string | null;
+  nextWorkbookIntakeAt?: string | null;
+  lastDeltaRunAt?: string | null;
+  nextDeltaRunAt?: string | null;
 }
 
 export interface PatientStatusResponse {
@@ -1229,6 +1281,10 @@ export interface PatientStatusResponse {
   rerunEnabled: boolean;
   lastRunAt: string | null;
   nextScheduledRunAt: string | null;
+  lastWorkbookAcquiredAt?: string | null;
+  nextWorkbookIntakeAt?: string | null;
+  lastDeltaRunAt?: string | null;
+  nextDeltaRunAt?: string | null;
   lastUpdatedAt: string;
   codingWorkflow: WorkflowTrackSummary | null;
   qaWorkflow: WorkflowTrackSummary | null;

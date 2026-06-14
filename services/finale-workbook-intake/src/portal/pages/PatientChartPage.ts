@@ -2454,6 +2454,266 @@ export class PatientChartPage {
     };
   }
 
+  async captureOasisPrintPreviewDomForReview(input: {
+    chartUrl: string;
+    patientArtifactsDirectory: string;
+    assessmentType: string;
+    matchedAssessmentLabel?: string | null;
+    printProfileKey?: OasisPrintSectionProfileKey | null;
+  }): Promise<{
+    text: string;
+    assessmentType: string;
+    textPath: string;
+    extractionResultPath: string;
+    previewUrl: string | null;
+    qualityMarkers: {
+      textLength: number;
+      mItemCount: number;
+      icd10Count: number;
+      hasAdmin: boolean;
+      hasActiveDiagnoses: boolean;
+      hasVitals: boolean;
+      hasMeds: boolean;
+      hasPlanOfCare: boolean;
+      stableCheckCount: number;
+    };
+    warnings: string[];
+    stepLogs: AutomationStepLog[];
+  }> {
+    await waitForPortalPageSettled(this.page, this.options.debugConfig);
+    const stepLogs: AutomationStepLog[] = [];
+    const warnings: string[] = [];
+    const documentDirectory = path.join(input.patientArtifactsDirectory, "oasis-print-preview-dom");
+    await mkdir(documentDirectory, { recursive: true });
+    const textPath = path.join(documentDirectory, "extracted-text.txt");
+    const extractionResultPath = path.join(documentDirectory, "extraction-result.json");
+    const printProfile = getOasisPrintSectionProfile(
+      input.printProfileKey ?? DEFAULT_OASIS_PRINT_SECTION_PROFILE_KEY,
+    );
+    this.options.logger?.info({
+      step: "oasis_print_preview_dom_start",
+      chartUrl: input.chartUrl,
+      assessmentType: input.assessmentType,
+      matchedAssessmentLabel: input.matchedAssessmentLabel ?? null,
+      printProfileKey: printProfile.key,
+    }, "Starting OASIS Print Preview DOM acquisition.");
+
+    const printButtonCandidates = [
+      { strategy: "css", selector: "fin-button[title='Print Preview'] > button", description: "Print Preview nested button" },
+      { strategy: "css", selector: "fin-button[title*='Print'] > button", description: "Nested print button within titled fin-button" },
+      { strategy: "css", selector: "fin-button[icon='ft-printer'] > button", description: "Nested print button within printer-icon fin-button" },
+      { strategy: "css", selector: "button:has(.ft-printer)", description: "Button containing printer icon" },
+      { strategy: "css", selector: "button:has-text('Print')", description: "Visible button with Print text" },
+    ] satisfies PortalSelectorCandidate[];
+    const buttonResolution = await resolveVisibleLocatorList({
+      page: this.page,
+      candidates: printButtonCandidates,
+      step: "oasis_print_preview_entry_button",
+      logger: this.options.logger,
+      debugConfig: this.options.debugConfig,
+      maxItems: 6,
+    });
+    const printButton = buttonResolution.items[0]?.locator ?? null;
+    const printButtonSelectorUsed = buttonResolution.items[0]?.candidate.strategy === "css"
+      ? buttonResolution.items[0].candidate.selector
+      : buttonResolution.items[0]?.candidate.description ?? null;
+    if (!printButton) {
+      throw new Error("Print Preview DOM acquisition failed: print button could not be located.");
+    }
+    this.options.logger?.info({
+      step: "oasis_print_preview_button_found",
+      selectorUsed: printButtonSelectorUsed,
+    }, "Located OASIS Print Preview entry button.");
+
+    await clickReadOnlyTarget({
+      locator: printButton,
+      page: this.page,
+      debugConfig: this.options.debugConfig,
+    });
+
+    const modalResolution = await resolveVisibleModalLocator(this.page);
+    if (!modalResolution.locator) {
+      throw new Error("Print Preview DOM acquisition failed: print modal did not open.");
+    }
+    this.options.logger?.info({
+      step: "oasis_print_preview_modal_opened",
+      selectorUsed: modalResolution.selectorUsed,
+    }, "OASIS Print Preview modal opened.");
+
+    const modalSelection = await applyOasisPrintSectionProfile({
+      modal: modalResolution.locator,
+      page: this.page,
+      profile: printProfile,
+      debugConfig: this.options.debugConfig,
+    });
+    warnings.push(...modalSelection.warnings);
+    this.options.logger?.info({
+      step: "oasis_print_preview_modal_profile_applied",
+      selectedSectionCount: modalSelection.selectedSectionLabels.length,
+      selectedSectionLabels: modalSelection.selectedSectionLabels.slice(0, 12),
+      warnings,
+    }, "Applied OASIS print section profile.");
+
+    const previewSelectors = [
+      "button:has-text('Print Preview')",
+      "fin-button[title='Print Preview']",
+      "fin-button:has-text('Print Preview')",
+      "button:has-text('Preview')",
+    ];
+    let previewButton: Locator | null = null;
+    let previewSelectorUsed: string | null = null;
+    for (const selector of previewSelectors) {
+      const candidate = modalResolution.locator.locator(selector).first();
+      if (await candidate.count().catch(() => 0) > 0 && await candidate.isVisible().catch(() => false)) {
+        previewButton = candidate;
+        previewSelectorUsed = selector;
+        break;
+      }
+    }
+    if (!previewButton) {
+      throw new Error("Print Preview DOM acquisition failed: Print Preview button was not found in the modal.");
+    }
+    this.options.logger?.info({
+      step: "oasis_print_preview_confirm_found",
+      selectorUsed: previewSelectorUsed,
+    }, "Located OASIS Print Preview confirm button.");
+
+    const timeoutMs = resolveOasisPrintCaptureTimeoutMs(this.options.debugConfig);
+    const popupPromise = this.page.context().waitForEvent("page", { timeout: timeoutMs }).catch(() => null);
+    await clickReadOnlyTarget({
+      locator: previewButton,
+      page: this.page,
+      debugConfig: this.options.debugConfig,
+    });
+    const previewPage = await popupPromise;
+    if (!previewPage) {
+      throw new Error(`Print Preview DOM acquisition failed: preview tab did not open within ${timeoutMs}ms.`);
+    }
+    this.options.logger?.info({
+      step: "oasis_print_preview_popup_opened",
+      timeoutMs,
+    }, "OASIS Print Preview popup opened.");
+
+    await previewPage.waitForLoadState("domcontentloaded", { timeout: timeoutMs }).catch(() => undefined);
+    await previewPage.waitForURL(/\/review\/print/i, { timeout: Math.min(timeoutMs, 30_000) }).catch(() => undefined);
+    await previewPage.waitForLoadState("networkidle", { timeout: Math.min(timeoutMs, 30_000) }).catch(() => undefined);
+    this.options.logger?.info({
+      step: "oasis_print_preview_page_loaded",
+      previewUrl: previewPage.url(),
+    }, "OASIS Print Preview page load checks completed.");
+
+    let stableText = "";
+    let stableCheckCount = 0;
+    for (let attempt = 0; attempt < 12; attempt += 1) {
+      const before = await previewPage.locator("body").innerText({ timeout: 5_000 }).catch(() => "");
+      await previewPage.waitForTimeout(1_500).catch(() => undefined);
+      const after = await previewPage.locator("body").innerText({ timeout: 5_000 }).catch(() => "");
+      stableCheckCount = attempt + 1;
+      if (before === after && after.length > 50_000) {
+        stableText = after;
+        break;
+      }
+      stableText = after.length >= before.length ? after : before;
+      this.options.logger?.info({
+        step: "oasis_print_preview_text_stability_check",
+        attempt: attempt + 1,
+        beforeLength: before.length,
+        afterLength: after.length,
+        selectedLength: stableText.length,
+      }, "OASIS Print Preview text not stable/substantial yet.");
+    }
+
+    const previewUrl = previewPage.url();
+    await writeFile(textPath, `${stableText}\n`, "utf8");
+    const qualityMarkers = {
+      textLength: stableText.length,
+      mItemCount: new Set(Array.from(stableText.matchAll(/\b(?:M|GG|O)\d{4}[A-Z0-9]*\b/g), (match) => match[0])).size,
+      icd10Count: new Set(Array.from(stableText.matchAll(/\b[A-TV-Z][0-9][0-9A-Z](?:\.[0-9A-Z]{1,4})?\b/g), (match) => match[0])).size,
+      hasAdmin: /ADMINISTRATIVE INFORMATION|Patient INFO/i.test(stableText),
+      hasActiveDiagnoses: /ACTIVE DIAGNOSES|M1021|M1023|M1028/i.test(stableText),
+      hasVitals: /VITAL SIGNS|Pain Assessment/i.test(stableText),
+      hasMeds: /MEDICATION|High-Risk Drug Classes|Allerg/i.test(stableText),
+      hasPlanOfCare: /PLAN OF CARE|CARE PLAN|Goal|Intervention/i.test(stableText),
+      stableCheckCount,
+    };
+    if (stableText.length <= 50_000) {
+      warnings.push(`preview_text_length_below_expected:${stableText.length}`);
+    }
+    const inferredAssessmentType = inferOasisAssessmentType(stableText);
+    const requestedAssessmentType = input.assessmentType?.trim() || null;
+    const resolvedAssessmentType = requestedAssessmentType ?? (
+      inferredAssessmentType === "UNKNOWN" ? input.assessmentType : inferredAssessmentType
+    );
+
+    await writeFile(
+      extractionResultPath,
+      JSON.stringify({
+        acquisitionSource: "print_preview_dom",
+        assessmentType: resolvedAssessmentType,
+        requestedAssessmentType: input.assessmentType,
+        matchedAssessmentLabel: input.matchedAssessmentLabel ?? null,
+        printProfileKey: printProfile.key,
+        printProfileLabel: printProfile.label,
+        selectedSectionLabels: modalSelection.selectedSectionLabels,
+        chartUrl: input.chartUrl,
+        previewUrl,
+        textPath,
+        qualityMarkers,
+        warnings,
+        generatedAt: new Date().toISOString(),
+      }, null, 2),
+      "utf8",
+    );
+    this.options.logger?.info({
+      step: "oasis_print_preview_dom_text_persisted",
+      previewUrl,
+      textPath,
+      extractionResultPath,
+      qualityMarkers,
+      warnings,
+    }, "Persisted OASIS Print Preview DOM text.");
+
+    await previewPage.close().catch(() => undefined);
+    await this.page.bringToFront().catch(() => undefined);
+    await waitForPortalPageSettled(this.page, this.options.debugConfig);
+
+    stepLogs.push(createAutomationStepLog({
+      step: "oasis_print_preview_dom_capture",
+      message: "Captured OASIS Print Preview DOM text without downloading a PDF.",
+      urlBefore: input.chartUrl,
+      urlAfter: this.page.url(),
+      selectorUsed: printButtonSelectorUsed,
+      found: [
+        `previewSelector=${previewSelectorUsed ?? "unknown"}`,
+        `textLength=${qualityMarkers.textLength}`,
+        `mItemCount=${qualityMarkers.mItemCount}`,
+        `icd10Count=${qualityMarkers.icd10Count}`,
+        `stableCheckCount=${qualityMarkers.stableCheckCount}`,
+      ],
+      missing: qualityMarkers.textLength > 50_000 ? [] : ["stable full OASIS print preview text"],
+      openedDocumentLabel: input.matchedAssessmentLabel ?? `${input.assessmentType} OASIS`,
+      openedDocumentUrl: previewUrl,
+      evidence: [
+        `textPath=${textPath}`,
+        `extractionResultPath=${extractionResultPath}`,
+        `selectedSectionLabels=${modalSelection.selectedSectionLabels.join(" | ") || "none"}`,
+        `warnings=${warnings.join(" | ") || "none"}`,
+      ],
+      safeReadConfirmed: true,
+    }));
+
+    return {
+      text: stableText,
+      assessmentType: resolvedAssessmentType,
+      textPath,
+      extractionResultPath,
+      previewUrl,
+      qualityMarkers,
+      warnings,
+      stepLogs,
+    };
+  }
+
   async captureOasisPrintedNoteForReview(input: {
     chartUrl: string;
     evidenceDir: string;

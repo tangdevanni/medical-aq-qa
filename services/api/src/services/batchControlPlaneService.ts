@@ -17,6 +17,7 @@ import type {
   PatientRunLog,
   PatientRun,
   ReviewWindow,
+  SubsidiaryRuntimeConfig,
   SubsidiaryRecord,
   WorkbookSource,
 } from "@medical-ai-qa/shared-types";
@@ -54,7 +55,20 @@ import type { FilesystemScheduledRunRepository } from "../repositories/filesyste
 import type { BatchRecord } from "../types/batchControlPlane";
 import type { ScheduledRunRecord } from "../types/scheduledRun";
 import { writeJsonFile } from "../utils/jsonFile";
-import { isWorkbookRotationDue } from "../utils/workbookRotation";
+import {
+  DEFAULT_DELTA_RUN_WEEKDAYS,
+  DEFAULT_WORKBOOK_INTAKE_DAY,
+  DEFAULT_WORKBOOK_INTAKE_LOCAL_TIME,
+  calculateNextWeekdayDeltaRunAt,
+  calculateNextWorkbookIntakeAt,
+  earliestTimestamp,
+  type WeekdayName,
+} from "../utils/workbookSchedule";
+import {
+  WORK_ITEM_FINGERPRINT_SCHEMA_VERSION,
+  buildWorkItemFingerprint,
+  type WorkItemFingerprint,
+} from "../utils/workItemFingerprint";
 import {
   AmbiguousPatientMemoryIdentityError,
   type PatientMemoryService,
@@ -66,11 +80,51 @@ const DEFAULT_RERUN_INTERVAL_HOURS = 24;
 const SCHEDULE_POLL_INTERVAL_MS = 60_000;
 const DEFAULT_REFRESH_TIMEZONE = "Asia/Manila";
 const DEFAULT_REFRESH_LOCAL_TIMES = ["20:30"] as const;
+const DEFAULT_REQUIRED_MEMORY_ARTIFACTS = [
+  "patient-dashboard-state.json",
+  "qa-prefetch-result.json",
+  "patient-run-cache-summary.json",
+] as const;
+const WORK_ITEM_FINGERPRINT_FILE_NAME = "work-item-fingerprint.json";
+const REFERRAL_MEMORY_ARTIFACTS = [
+  path.join("referral-document-processing", "patient-qa-reference.json"),
+  path.join("referral-document-processing", "qa-document-summary.json"),
+  path.join("referral-document-processing", "field-map-snapshot.json"),
+  path.join("referral-document-processing", "extracted-facts.json"),
+] as const;
+const OASIS_MEMORY_ARTIFACTS = [
+  "printed-note-chart-values.json",
+  "oasis-printed-note-review.json",
+  "oasis-dom-extracted-state.json",
+  "oasis-dom-acquisition-state.json",
+  "oasis-clinical-fact-pack.json",
+] as const;
+const PLAN_VISIT_MEMORY_ARTIFACTS = [
+  "plan-of-care-review-draft.json",
+  "plan-of-care-review-summary.json",
+  "generated-plan-of-care.json",
+  "visit-notes-discovery.json",
+  "visit-note-processing-manifest.json",
+  "visit-note-fact-pack.json",
+  "visit-note-qa-review.json",
+] as const;
 const DASHBOARD_REVIEWER_STATUS_FILE_NAME = "dashboard-reviewer-statuses.json";
 const POST_BATCH_REFERRAL_INTAKE_SUMMARY_FILE_NAME = "post-batch-referral-intake-summary.json";
+const CLINICAL_REFRESH_STATE_FILE_NAME = "clinical-refresh-state.json";
 const PATIENT_PORTAL_STATUS_SNAPSHOT_TTL_MS = 10 * 60 * 1000;
 const REFERRAL_INTAKE_ACTIVE_PATIENT_WAIT_TIMEOUT_MS = 30 * 60 * 1000;
 const REFERRAL_INTAKE_ACTIVE_PATIENT_WAIT_INTERVAL_MS = 5_000;
+const CLINICAL_REFRESH_PROMOTION_EXCLUDED_PATHS = new Set([
+  "patient-dashboard-state.json",
+  CLINICAL_REFRESH_STATE_FILE_NAME,
+  "referral-intake-state.json",
+  "referral-source-documents-manifest.json",
+  "referral-document-results-manifest.json",
+  "oasis-check-state.json",
+]);
+const CLINICAL_REFRESH_PROMOTION_EXCLUDED_DIRECTORIES = new Set([
+  "referral-document-processing",
+]);
 
 type RunControlOptions = {
   mode?: "delta" | "full";
@@ -81,6 +135,7 @@ type RunControlOptions = {
 type ReferralIntakeStatus = "idle" | "pending" | "running" | "completed" | "failed";
 type ReferralIntakeExecutionTrigger = "manual" | "post_batch";
 type OasisCheckJobStatus = "idle" | "pending" | "running" | "completed" | "failed";
+type ClinicalRefreshStatus = "idle" | "pending" | "running" | "completed" | "failed";
 
 type ReferralSourceDocumentManifestEntry = {
   documentId: string;
@@ -198,6 +253,32 @@ export type PatientOasisCheckState = {
   checks: Record<string, PatientOasisCheckAssessmentState>;
 };
 
+export type PatientClinicalRefreshState = {
+  schemaVersion: "clinical-refresh-state.v1";
+  batchId: string;
+  patientId: string;
+  refreshId: string | null;
+  targetOasisAssessmentId: string | null;
+  status: ClinicalRefreshStatus;
+  acceptedAt: string | null;
+  startedAt: string | null;
+  completedAt: string | null;
+  lastCheckedAt: string | null;
+  lastError: string | null;
+  attemptOutputRoot: string | null;
+  promotedAt: string | null;
+  statusUrl: string;
+  message: string | null;
+  reuseSummary: PatientRunCacheSummary["reuseSummary"] | null;
+  preflight: {
+    ok: boolean;
+    checkedAt: string;
+    reasons: string[];
+    portalCredentialsConfigured: boolean;
+    portalDashboardUrlConfigured: boolean;
+  } | null;
+};
+
 type PostBatchReferralIntakePatientResult = {
   patientId: string;
   patientName: string;
@@ -230,6 +311,16 @@ type PostBatchReferralIntakeSummary = {
   results: PostBatchReferralIntakePatientResult[];
 };
 
+type ClinicalRefreshJobRunnerInput = {
+  batchId: string;
+  patientId: string;
+  targetOasisAssessmentId: string | null;
+  workItem: PatientEpisodeWorkItem;
+  attemptOutputRoot: string;
+  subsidiaryRuntimeConfig: SubsidiaryRuntimeConfig;
+  onPatientRunUpdate: (patientRun: PatientRun) => Promise<void> | void;
+};
+
 export class ReferralIntakeAlreadyRunningError extends Error {
   constructor(batchId: string, patientId: string) {
     super(`Referral intake is already running for patient ${patientId} in batch ${batchId}.`);
@@ -244,11 +335,21 @@ export class OasisCheckAlreadyRunningError extends Error {
   }
 }
 
+export class ClinicalRefreshAlreadyRunningError extends Error {
+  constructor(patientId: string) {
+    super(`Clinical refresh is already running for patient ${patientId}.`);
+    this.name = "ClinicalRefreshAlreadyRunningError";
+  }
+}
+
 type BatchControlPlaneOptions = {
   patientMemoryWriteEnabled?: boolean;
   deltaReuseEnabled?: boolean;
   autonomousMode?: "full" | "manual_only";
   scheduleLocalTimes?: readonly string[];
+  workbookIntakeDay?: WeekdayName;
+  workbookIntakeLocalTime?: string;
+  deltaRunWeekdays?: readonly WeekdayName[];
   referralIntakeJobRunner?: (input: {
     batchId: string;
     patientId: string;
@@ -256,6 +357,7 @@ type BatchControlPlaneOptions = {
     workItem: PatientEpisodeWorkItem;
     trigger: ReferralIntakeExecutionTrigger;
   }) => Promise<ReferralIntakeState | void>;
+  clinicalRefreshJobRunner?: (input: ClinicalRefreshJobRunnerInput) => Promise<PatientRun>;
 };
 
 type CreateBatchFromProviderParams = {
@@ -458,6 +560,10 @@ function buildOasisCheckStatusUrl(batchId: string, patientId: string, assessment
   return `/api/runs/${encodeURIComponent(batchId)}/patients/${encodeURIComponent(patientId)}/oasis-check/status?assessmentId=${encodeURIComponent(assessmentId)}`;
 }
 
+function buildClinicalRefreshStatusUrl(batchId: string, patientId: string): string {
+  return `/api/runs/${encodeURIComponent(batchId)}/patients/${encodeURIComponent(patientId)}/clinical-refresh/status`;
+}
+
 function getPatientArtifactsDirectory(batch: BatchRecord, patientId: string): string {
   return path.join(batch.storage.outputRoot, "patients", patientId);
 }
@@ -480,6 +586,48 @@ function getPatientPortalStatusSnapshotPath(patientArtifactsDirectory: string): 
 
 function getOasisCheckStatePath(patientArtifactsDirectory: string): string {
   return path.join(patientArtifactsDirectory, "oasis-check-state.json");
+}
+
+function getClinicalRefreshStatePath(patientArtifactsDirectory: string): string {
+  return path.join(patientArtifactsDirectory, CLINICAL_REFRESH_STATE_FILE_NAME);
+}
+
+function createClinicalRefreshState(input: {
+  batchId: string;
+  patientId: string;
+  targetOasisAssessmentId?: string | null;
+  refreshId?: string | null;
+  status: ClinicalRefreshStatus;
+  now: string;
+  existing?: Partial<PatientClinicalRefreshState> | null;
+  message?: string | null;
+  lastError?: string | null;
+  attemptOutputRoot?: string | null;
+  promotedAt?: string | null;
+  reuseSummary?: PatientRunCacheSummary["reuseSummary"] | null;
+  preflight?: PatientClinicalRefreshState["preflight"];
+}): PatientClinicalRefreshState {
+  return {
+    schemaVersion: "clinical-refresh-state.v1",
+    batchId: input.batchId,
+    patientId: input.patientId,
+    refreshId: input.refreshId ?? input.existing?.refreshId ?? null,
+    targetOasisAssessmentId: input.targetOasisAssessmentId ?? input.existing?.targetOasisAssessmentId ?? null,
+    status: input.status,
+    acceptedAt: input.status === "pending"
+      ? input.now
+      : input.existing?.acceptedAt ?? (input.status === "running" ? input.now : null),
+    startedAt: input.status === "running" ? input.now : input.existing?.startedAt ?? null,
+    completedAt: input.status === "completed" || input.status === "failed" ? input.now : null,
+    lastCheckedAt: input.status === "completed" || input.status === "failed" ? input.now : input.existing?.lastCheckedAt ?? null,
+    lastError: input.lastError ?? null,
+    attemptOutputRoot: input.attemptOutputRoot ?? input.existing?.attemptOutputRoot ?? null,
+    promotedAt: input.promotedAt ?? input.existing?.promotedAt ?? null,
+    statusUrl: buildClinicalRefreshStatusUrl(input.batchId, input.patientId),
+    message: input.message ?? null,
+    reuseSummary: input.reuseSummary ?? input.existing?.reuseSummary ?? null,
+    preflight: input.preflight ?? input.existing?.preflight ?? null,
+  };
 }
 
 function createOasisCheckAssessmentState(input: {
@@ -593,6 +741,82 @@ function createPendingPatientPortalStatusSnapshot(input: {
       ? null
       : "Patient portal status preflight is pending because this patient is actively being processed.",
   };
+}
+
+async function copyDirectoryContents(input: {
+  sourceDirectory: string;
+  targetDirectory: string;
+  shouldCopy?: (relativePath: string, entryName: string, isDirectory: boolean) => boolean;
+}): Promise<void> {
+  const entries = await readdir(input.sourceDirectory, { withFileTypes: true }).catch(() => []);
+  if (entries.length === 0) {
+    return;
+  }
+
+  await mkdir(input.targetDirectory, { recursive: true });
+  for (const entry of entries) {
+    const sourcePath = path.join(input.sourceDirectory, entry.name);
+    const targetPath = path.join(input.targetDirectory, entry.name);
+    const relativePath = entry.name;
+    if (entry.isDirectory()) {
+      if (input.shouldCopy && !input.shouldCopy(relativePath, entry.name, true)) {
+        continue;
+      }
+      await copyDirectoryContents({
+        sourceDirectory: sourcePath,
+        targetDirectory: targetPath,
+        shouldCopy: input.shouldCopy
+          ? (childRelativePath, childEntryName, isDirectory) =>
+              input.shouldCopy!(path.join(relativePath, childRelativePath), childEntryName, isDirectory)
+          : undefined,
+      });
+      continue;
+    }
+
+    if (!entry.isFile()) {
+      continue;
+    }
+
+    if (input.shouldCopy && !input.shouldCopy(relativePath, entry.name, false)) {
+      continue;
+    }
+    await mkdir(path.dirname(targetPath), { recursive: true });
+    await copyFile(sourcePath, targetPath);
+  }
+}
+
+function shouldPromoteClinicalRefreshPath(
+  relativePath: string,
+  entryName: string,
+  isDirectory: boolean,
+): boolean {
+  const normalized = relativePath.split(path.sep).join("/");
+  const topLevel = normalized.split("/")[0] ?? normalized;
+  if (isDirectory && CLINICAL_REFRESH_PROMOTION_EXCLUDED_DIRECTORIES.has(topLevel)) {
+    return false;
+  }
+  if (CLINICAL_REFRESH_PROMOTION_EXCLUDED_PATHS.has(normalized)) {
+    return false;
+  }
+  if (entryName === "oasis-check-result.json") {
+    return false;
+  }
+  return true;
+}
+
+function replacePathPrefix(value: string | null | undefined, fromRoot: string, toRoot: string): string | null {
+  if (!value) {
+    return value ?? null;
+  }
+  const resolvedValue = path.resolve(value);
+  const resolvedFromRoot = path.resolve(fromRoot);
+  if (resolvedValue === resolvedFromRoot) {
+    return toRoot;
+  }
+  if (!resolvedValue.startsWith(`${resolvedFromRoot}${path.sep}`)) {
+    return value;
+  }
+  return path.join(toRoot, path.relative(resolvedFromRoot, resolvedValue));
 }
 
 function markPatientPortalStatusSnapshotFreshness(
@@ -1279,8 +1503,17 @@ function deriveEffectiveDashboardReviewerStatus(input: {
 async function canReuseCompletedPatientRun(
   repository: FilesystemBatchRepository,
   patientRun: BatchRecord["patientRuns"][number] | undefined,
+  patientArtifactsDirectory: string,
+  workItem: PatientEpisodeWorkItem,
 ): Promise<boolean> {
   if (!patientRun || patientRun.processingStatus !== "COMPLETE" || !patientRun.bundleAvailable) {
+    return false;
+  }
+
+  const seededFingerprint = await repository.readJsonIfExists<WorkItemFingerprint>(
+    path.join(patientArtifactsDirectory, WORK_ITEM_FINGERPRINT_FILE_NAME),
+  );
+  if (!isSameWorkItemFingerprint(seededFingerprint, buildWorkItemFingerprint(workItem))) {
     return false;
   }
 
@@ -1462,88 +1695,45 @@ function createBatchSchedule(
   now: string,
   subsidiary: SubsidiaryRecord,
   localTimes: readonly string[] = DEFAULT_REFRESH_LOCAL_TIMES,
+  scheduler: {
+    workbookIntakeDay?: WeekdayName;
+    workbookIntakeLocalTime?: string;
+    deltaRunWeekdays?: readonly WeekdayName[];
+  } = {},
 ): BatchRecord["schedule"] {
+  const timezone = subsidiary.timezone || DEFAULT_REFRESH_TIMEZONE;
+  const intervalHours = subsidiary.rerunIntervalHours || DEFAULT_RERUN_INTERVAL_HOURS;
+  const nextWorkbookIntakeAt = subsidiary.rerunEnabled
+    ? calculateNextWorkbookIntakeAt({
+        fromIsoTimestamp: now,
+        timezone,
+        weekday: scheduler.workbookIntakeDay ?? DEFAULT_WORKBOOK_INTAKE_DAY,
+        localTime: scheduler.workbookIntakeLocalTime ?? DEFAULT_WORKBOOK_INTAKE_LOCAL_TIME,
+      })
+    : null;
+  const nextDeltaRunAt = subsidiary.rerunEnabled
+    ? calculateNextWeekdayDeltaRunAt({
+        fromIsoTimestamp: now,
+        timezone,
+        weekdays: scheduler.deltaRunWeekdays ?? DEFAULT_DELTA_RUN_WEEKDAYS,
+        localTimes,
+        intervalHours,
+      })
+    : null;
   return {
     scheduledRunId: null,
     active: subsidiary.rerunEnabled,
     rerunEnabled: subsidiary.rerunEnabled,
-    intervalHours: subsidiary.rerunIntervalHours || DEFAULT_RERUN_INTERVAL_HOURS,
-    timezone: subsidiary.timezone || DEFAULT_REFRESH_TIMEZONE,
+    intervalHours,
+    timezone,
     localTimes: [...localTimes],
     lastRunAt: null,
-    nextScheduledRunAt: subsidiary.rerunEnabled
-      ? calculateNextScheduledRunAt(
-          now,
-          subsidiary.timezone || DEFAULT_REFRESH_TIMEZONE,
-          [...localTimes],
-          subsidiary.rerunIntervalHours || DEFAULT_RERUN_INTERVAL_HOURS,
-        )
-      : null,
+    nextScheduledRunAt: earliestTimestamp(nextWorkbookIntakeAt, nextDeltaRunAt),
+    lastWorkbookAcquiredAt: null,
+    nextWorkbookIntakeAt,
+    lastDeltaRunAt: null,
+    nextDeltaRunAt,
   };
-}
-
-function formatManilaDateParts(value: Date): { year: number; month: number; day: number } {
-  const manila = new Date(value.getTime() + 8 * 60 * 60 * 1000);
-  return {
-    year: manila.getUTCFullYear(),
-    month: manila.getUTCMonth() + 1,
-    day: manila.getUTCDate(),
-  };
-}
-
-function buildManilaUtcCandidate(parts: {
-  year: number;
-  month: number;
-  day: number;
-  hour: number;
-  minute: number;
-}): Date {
-  return new Date(Date.UTC(parts.year, parts.month - 1, parts.day, parts.hour - 8, parts.minute, 0, 0));
-}
-
-function calculateNextFixedScheduleAt(fromIsoTimestamp: string, localTimes: readonly string[]): string {
-  const from = new Date(fromIsoTimestamp);
-  const base = formatManilaDateParts(from);
-
-  for (let dayOffset = 0; dayOffset <= 2; dayOffset += 1) {
-    const candidateDate = new Date(Date.UTC(base.year, base.month - 1, base.day + dayOffset, 0, 0, 0, 0));
-    const dateParts = {
-      year: candidateDate.getUTCFullYear(),
-      month: candidateDate.getUTCMonth() + 1,
-      day: candidateDate.getUTCDate(),
-    };
-
-    const candidates = [...localTimes]
-      .map((localTime) => {
-        const [hourText, minuteText] = localTime.split(":");
-        return buildManilaUtcCandidate({
-          ...dateParts,
-          hour: Number(hourText),
-          minute: Number(minuteText),
-        });
-      })
-      .sort((left, right) => left.getTime() - right.getTime());
-
-    const nextCandidate = candidates.find((candidate) => candidate.getTime() > from.getTime());
-    if (nextCandidate) {
-      return nextCandidate.toISOString();
-    }
-  }
-
-  return new Date(Date.parse(fromIsoTimestamp) + 24 * 60 * 60 * 1000).toISOString();
-}
-
-function calculateNextScheduledRunAt(
-  fromIsoTimestamp: string,
-  timezone: string,
-  localTimes: readonly string[],
-  intervalHours: number,
-): string {
-  if (timezone === DEFAULT_REFRESH_TIMEZONE && localTimes.length > 0) {
-    return calculateNextFixedScheduleAt(fromIsoTimestamp, localTimes);
-  }
-
-  return new Date(Date.parse(fromIsoTimestamp) + intervalHours * 60 * 60 * 1000).toISOString();
 }
 
 function mapWorkbookSourceKind(providerId: WorkbookAcquisitionProviderId): WorkbookSource["kind"] {
@@ -1578,6 +1768,70 @@ function createFallbackWorkbookSource(batch: BatchRecord): WorkbookSource {
     },
     verification: batch.sourceWorkbook.verification,
   };
+}
+
+function isSameWorkItemFingerprint(
+  left: WorkItemFingerprint | null | undefined,
+  right: WorkItemFingerprint | null | undefined,
+): boolean {
+  return Boolean(
+    left &&
+    right &&
+    left.schemaVersion === WORK_ITEM_FINGERPRINT_SCHEMA_VERSION &&
+    right.schemaVersion === WORK_ITEM_FINGERPRINT_SCHEMA_VERSION &&
+    left.hash === right.hash,
+  );
+}
+
+function asWorkItemFingerprint(input: unknown): WorkItemFingerprint | null {
+  const record = asRecord(input);
+  const componentHashes = asRecord(record?.componentHashes);
+  if (
+    !record ||
+    record.schemaVersion !== WORK_ITEM_FINGERPRINT_SCHEMA_VERSION ||
+    typeof record.hash !== "string" ||
+    !componentHashes
+  ) {
+    return null;
+  }
+  const parsedComponentHashes = Object.fromEntries(
+    Object.entries(componentHashes).filter((entry): entry is [string, string] => typeof entry[1] === "string"),
+  );
+  return {
+    schemaVersion: WORK_ITEM_FINGERPRINT_SCHEMA_VERSION,
+    hash: record.hash,
+    componentHashes: {
+      identity: parsedComponentHashes.identity ?? "",
+      referral: parsedComponentHashes.referral ?? "",
+      oasis: parsedComponentHashes.oasis ?? "",
+      planOfCare: parsedComponentHashes.planOfCare ?? "",
+    },
+  };
+}
+
+function selectSeedArtifactPathsForFingerprint(input: {
+  previous: WorkItemFingerprint | null | undefined;
+  current: WorkItemFingerprint;
+}): string[] | null {
+  if (isSameWorkItemFingerprint(input.previous, input.current)) {
+    return null;
+  }
+
+  if (!input.previous || input.previous.schemaVersion !== input.current.schemaVersion) {
+    return [];
+  }
+
+  const artifactPaths = new Set<string>();
+  if (input.previous.componentHashes.referral === input.current.componentHashes.referral) {
+    REFERRAL_MEMORY_ARTIFACTS.forEach((relativePath) => artifactPaths.add(relativePath));
+  }
+  if (input.previous.componentHashes.oasis === input.current.componentHashes.oasis) {
+    OASIS_MEMORY_ARTIFACTS.forEach((relativePath) => artifactPaths.add(relativePath));
+  }
+  if (input.previous.componentHashes.planOfCare === input.current.componentHashes.planOfCare) {
+    PLAN_VISIT_MEMORY_ARTIFACTS.forEach((relativePath) => artifactPaths.add(relativePath));
+  }
+  return [...artifactPaths];
 }
 
 function filterEligibleWorkItems(
@@ -1729,6 +1983,7 @@ async function mapWithConcurrency<T, U>(
 export class BatchControlPlaneService {
   private readonly activeBatchJobs = new Map<string, Promise<void>>();
   private readonly batchUpdateLocks = new Map<string, Promise<void>>();
+  private readonly activeClinicalRefreshJobs = new Map<string, Promise<void>>();
   private readonly activeReferralIntakeJobs = new Map<string, Promise<void>>();
   private readonly activeOasisCheckJobs = new Map<string, Promise<void>>();
   private rerunTimer: ReturnType<typeof setInterval> | null = null;
@@ -1742,6 +1997,79 @@ export class BatchControlPlaneService {
     private readonly logger: Logger,
     private readonly options: BatchControlPlaneOptions = {},
   ) {}
+
+  private get deltaRunWeekdays(): readonly WeekdayName[] {
+    return this.options.deltaRunWeekdays ?? DEFAULT_DELTA_RUN_WEEKDAYS;
+  }
+
+  private get workbookIntakeDay(): WeekdayName {
+    return this.options.workbookIntakeDay ?? DEFAULT_WORKBOOK_INTAKE_DAY;
+  }
+
+  private get workbookIntakeLocalTime(): string {
+    return this.options.workbookIntakeLocalTime ?? DEFAULT_WORKBOOK_INTAKE_LOCAL_TIME;
+  }
+
+  private ensureSchedulePointers(batch: BatchRecord, fromIsoTimestamp: string): void {
+    if (!batch.schedule.active || !batch.schedule.rerunEnabled) {
+      batch.schedule.nextWorkbookIntakeAt = null;
+      batch.schedule.nextDeltaRunAt = null;
+      batch.schedule.nextScheduledRunAt = null;
+      return;
+    }
+
+    batch.schedule.nextWorkbookIntakeAt =
+      batch.schedule.nextWorkbookIntakeAt ??
+      calculateNextWorkbookIntakeAt({
+        fromIsoTimestamp,
+        timezone: batch.schedule.timezone,
+        weekday: this.workbookIntakeDay,
+        localTime: this.workbookIntakeLocalTime,
+      });
+    batch.schedule.nextDeltaRunAt =
+      batch.schedule.nextDeltaRunAt ??
+      calculateNextWeekdayDeltaRunAt({
+        fromIsoTimestamp,
+        timezone: batch.schedule.timezone,
+        weekdays: this.deltaRunWeekdays,
+        localTimes: batch.schedule.localTimes,
+        intervalHours: batch.schedule.intervalHours,
+      });
+    batch.schedule.nextScheduledRunAt = earliestTimestamp(
+      batch.schedule.nextWorkbookIntakeAt,
+      batch.schedule.nextDeltaRunAt,
+    );
+  }
+
+  private markWorkbookIntakeAcquired(batch: BatchRecord, acquiredAt: string): void {
+    batch.schedule.lastWorkbookAcquiredAt = acquiredAt;
+    batch.schedule.nextWorkbookIntakeAt =
+      batch.schedule.active && batch.schedule.rerunEnabled
+        ? calculateNextWorkbookIntakeAt({
+            fromIsoTimestamp: acquiredAt,
+            timezone: batch.schedule.timezone,
+            weekday: this.workbookIntakeDay,
+            localTime: this.workbookIntakeLocalTime,
+          })
+        : null;
+    this.ensureSchedulePointers(batch, acquiredAt);
+  }
+
+  private markDeltaRunCompleted(batch: BatchRecord, completedAt: string): void {
+    batch.schedule.lastRunAt = completedAt;
+    batch.schedule.lastDeltaRunAt = completedAt;
+    batch.schedule.nextDeltaRunAt =
+      batch.schedule.active && batch.schedule.rerunEnabled
+        ? calculateNextWeekdayDeltaRunAt({
+            fromIsoTimestamp: completedAt,
+            timezone: batch.schedule.timezone,
+            weekdays: this.deltaRunWeekdays,
+            localTimes: batch.schedule.localTimes,
+            intervalHours: batch.schedule.intervalHours,
+          })
+        : null;
+    this.ensureSchedulePointers(batch, completedAt);
+  }
 
   async initialize(): Promise<void> {
     await this.repository.ensureReady();
@@ -1803,7 +2131,16 @@ export class BatchControlPlaneService {
       runMode: "read_only",
       billingPeriod: params.billingPeriod ?? null,
       status: "CREATED",
-      schedule: createBatchSchedule(now, subsidiary, this.options.scheduleLocalTimes ?? DEFAULT_REFRESH_LOCAL_TIMES),
+      schedule: createBatchSchedule(
+        now,
+        subsidiary,
+        this.options.scheduleLocalTimes ?? DEFAULT_REFRESH_LOCAL_TIMES,
+        {
+          workbookIntakeDay: this.options.workbookIntakeDay,
+          workbookIntakeLocalTime: this.options.workbookIntakeLocalTime,
+          deltaRunWeekdays: this.options.deltaRunWeekdays,
+        },
+      ),
       sourceWorkbook: {
         subsidiaryId: subsidiary.id,
         acquisitionProvider: params.providerId,
@@ -1872,6 +2209,9 @@ export class BatchControlPlaneService {
       batch.sourceWorkbook.storedPath = acquisition.storedPath;
       batch.sourceWorkbook.uploadedAt = acquisition.acquiredAt;
       batch.sourceWorkbook.verification = acquisition.verification ?? null;
+      if (params.providerId === "FINALE") {
+        this.markWorkbookIntakeAcquired(batch, acquisition.acquiredAt);
+      }
       await this.repository.saveBatch(batch);
 
       const scheduledRun = await this.createOrRefreshScheduledRun(batch, subsidiary, acquisition.acquiredAt);
@@ -2438,7 +2778,12 @@ export class BatchControlPlaneService {
         const reuseBatchLocal =
           options.mode !== "full" &&
           this.options.deltaReuseEnabled === true &&
-          (await canReuseCompletedPatientRun(this.repository, previous));
+          (await canReuseCompletedPatientRun(
+            this.repository,
+            previous,
+            path.join(batch.storage.outputRoot, "patients", workItem.id),
+            workItem,
+          ));
         const memoryBackedPatientRun =
           !reuseBatchLocal && options.mode !== "full" && this.options.deltaReuseEnabled === true
             ? await this.createMemoryBackedCompletedPatientRun(batch, workItem, previous)
@@ -2486,16 +2831,7 @@ export class BatchControlPlaneService {
       batch.run.completedAt = batch.updatedAt;
       batch.run.patientRunCount = countProcessedPatientRuns(batch);
       batch.run.lastError = deriveBatchErrorSummary(batch);
-      batch.schedule.lastRunAt = batch.updatedAt;
-      batch.schedule.nextScheduledRunAt =
-        batch.schedule.active && batch.schedule.rerunEnabled
-          ? calculateNextScheduledRunAt(
-              batch.updatedAt,
-              batch.schedule.timezone,
-              batch.schedule.localTimes,
-              batch.schedule.intervalHours,
-            )
-          : null;
+      this.markDeltaRunCompleted(batch, batch.updatedAt);
       await this.repository.saveBatch(batch);
       await this.syncScheduledRunForBatch(batch);
       this.logger.info(
@@ -2588,6 +2924,8 @@ export class BatchControlPlaneService {
     batch.schedule.active = false;
     batch.schedule.rerunEnabled = false;
     batch.schedule.nextScheduledRunAt = null;
+    batch.schedule.nextWorkbookIntakeAt = null;
+    batch.schedule.nextDeltaRunAt = null;
     await this.repository.saveBatch(batch);
     await this.syncScheduledRunForBatch(batch);
     this.logger.info(
@@ -2657,6 +2995,131 @@ export class BatchControlPlaneService {
       now: new Date().toISOString(),
       message: "Referral intake has not been run for this patient.",
     });
+  }
+
+  async getPatientClinicalRefreshStatus(batchId: string, patientId: string): Promise<PatientClinicalRefreshState> {
+    const batch = await this.mustGetBatch(batchId);
+    const workItems = await this.repository.readWorkItems(batch);
+    const workItem = workItems.find((item) => item.id === patientId);
+    if (!workItem) {
+      throw new Error(`Patient not found: ${patientId}`);
+    }
+
+    const patientArtifactsDirectory = getPatientArtifactsDirectory(batch, patientId);
+    const state = await this.repository.readJsonIfExists<PatientClinicalRefreshState>(
+      getClinicalRefreshStatePath(patientArtifactsDirectory),
+    );
+    const jobKey = this.buildClinicalRefreshJobKey(batch, patientId);
+    if (state) {
+      const preflight = state.preflight ?? await this.evaluateClinicalRefreshPreflight(batch);
+      return this.activeClinicalRefreshJobs.has(jobKey) && state.status !== "running"
+        ? { ...state, preflight, status: "running", message: state.message ?? "Patient refresh is running." }
+        : { ...state, preflight };
+    }
+
+    const preflight = await this.evaluateClinicalRefreshPreflight(batch);
+    return createClinicalRefreshState({
+      batchId,
+      patientId,
+      status: "idle",
+      now: new Date().toISOString(),
+      message: "Patient refresh has not been run.",
+      preflight,
+    });
+  }
+
+  async startPatientClinicalRefresh(
+    batchId: string,
+    patientId: string,
+    options: { targetOasisAssessmentId?: string | null } = {},
+  ): Promise<PatientClinicalRefreshState> {
+    const batch = await this.mustGetBatch(batchId);
+    const targetOasisAssessmentId = options.targetOasisAssessmentId?.trim() || null;
+    const workItems = await this.repository.readWorkItems(batch);
+    const workItem = workItems.find((item) => item.id === patientId);
+    if (!workItem) {
+      throw new Error(`Patient not found: ${patientId}`);
+    }
+
+    const jobKey = this.buildClinicalRefreshJobKey(batch, patientId);
+    if (this.activeClinicalRefreshJobs.has(jobKey)) {
+      throw new ClinicalRefreshAlreadyRunningError(patientId);
+    }
+    const activePatientRun = await this.findActivePatientChartWorkRunForSubsidiary(batch, patientId);
+    if (activePatientRun) {
+      throw new ClinicalRefreshAlreadyRunningError(patientId);
+    }
+
+    const now = new Date().toISOString();
+    const preflight = await this.evaluateClinicalRefreshPreflight(batch);
+    const patientArtifactsDirectory = getPatientArtifactsDirectory(batch, patientId);
+    const existing = await this.repository.readJsonIfExists<PatientClinicalRefreshState>(
+      getClinicalRefreshStatePath(patientArtifactsDirectory),
+    );
+    if (!preflight.ok) {
+      const blockedState = createClinicalRefreshState({
+        batchId,
+        patientId,
+        targetOasisAssessmentId,
+        status: "failed",
+        now,
+        existing,
+        preflight,
+        message: `Patient refresh is not available: ${preflight.reasons.join("; ")}`,
+        lastError: preflight.reasons.join("; "),
+      });
+      await this.writeClinicalRefreshState(patientArtifactsDirectory, blockedState);
+      return blockedState;
+    }
+    const refreshId = `clinical-refresh-${now.replace(/[:.]/g, "-")}-${randomUUID().slice(0, 8)}`;
+    const attemptOutputRoot = path.join(
+      batch.storage.outputRoot,
+      "clinical-refresh-attempts",
+      patientId,
+      refreshId,
+    );
+    const state = createClinicalRefreshState({
+      batchId,
+      patientId,
+      targetOasisAssessmentId,
+      refreshId,
+      status: "pending",
+      now,
+      existing,
+      preflight,
+      attemptOutputRoot,
+      message: targetOasisAssessmentId
+        ? "Patient refresh accepted and queued for the selected OASIS assessment."
+        : "Patient refresh accepted and queued.",
+    });
+    await this.writeClinicalRefreshState(patientArtifactsDirectory, state);
+
+    const task = this.executePatientClinicalRefreshJob({
+      batchId,
+      patientId,
+      targetOasisAssessmentId,
+      refreshId,
+      attemptOutputRoot,
+      workItem,
+    })
+      .catch((error: unknown) => {
+        this.logger.error(
+          {
+            batchId,
+            patientId,
+            refreshId,
+            errorMessage: error instanceof Error ? error.message : "Unknown patient refresh error.",
+          },
+          "patient clinical refresh job failed",
+        );
+      })
+      .finally(() => {
+        this.activeClinicalRefreshJobs.delete(jobKey);
+      });
+    this.activeClinicalRefreshJobs.set(jobKey, task);
+    void task;
+
+    return state;
   }
 
   async ensurePatientPortalStatusSnapshot(
@@ -3530,8 +3993,8 @@ export class BatchControlPlaneService {
         patientDashboardState,
         "patientPortalStatusSnapshot",
       ),
-      printedNoteChartValues: null,
-      printedNoteReview: null,
+      printedNoteChartValues: this.getPatientDashboardStateArtifactContent(patientDashboardState, "printedNoteChartValues"),
+      printedNoteReview: this.getPatientDashboardStateArtifactContent(patientDashboardState, "printedNoteReview"),
       oasisDomExtractedState: this.getPatientDashboardStateArtifactContent(patientDashboardState, "oasisDomExtractedState"),
       oasisDomAcquisitionState: this.getPatientDashboardStateArtifactContent(
         patientDashboardState,
@@ -3730,8 +4193,22 @@ export class BatchControlPlaneService {
             await this.readJsonIfExistsWithContext(context, getPatientPortalStatusSnapshotPath(patientArtifactsDirectory)) ??
             patientDashboardState.artifactContents.patientPortalStatusSnapshot ??
             null,
-          printedNoteChartValues: null,
-          printedNoteReview: null,
+          printedNoteChartValues:
+            await this.readJsonIfExistsWithContext(
+              context,
+              patientDashboardState.artifactPaths.printedNoteChartValues ??
+                path.join(patientArtifactsDirectory, "printed-note-chart-values.json"),
+            ) ??
+            patientDashboardState.artifactContents.printedNoteChartValues ??
+            null,
+          printedNoteReview:
+            await this.readJsonIfExistsWithContext(
+              context,
+              patientDashboardState.artifactPaths.printedNoteReview ??
+                path.join(patientArtifactsDirectory, "oasis-printed-note-review.json"),
+            ) ??
+            patientDashboardState.artifactContents.printedNoteReview ??
+            null,
           oasisDomExtractedState: await this.readJsonIfExistsWithContext(
             context,
             path.join(patientArtifactsDirectory, "oasis-dom-extracted-state.json"),
@@ -3917,8 +4394,8 @@ export class BatchControlPlaneService {
           context,
           artifactPaths.patientPortalStatusSnapshot,
         ),
-        printedNoteChartValues: null,
-        printedNoteReview: null,
+        printedNoteChartValues: await this.readJsonIfExistsWithContext(context, artifactPaths.printedNoteChartValues),
+        printedNoteReview: await this.readJsonIfExistsWithContext(context, artifactPaths.printedNoteReview),
         oasisDomExtractedState: await this.readJsonIfExistsWithContext(context, artifactPaths.oasisDomExtractedState),
         oasisDomAcquisitionState: await this.readJsonIfExistsWithContext(context, artifactPaths.oasisDomAcquisitionState),
         oasisDomComparison: await this.readJsonIfExistsWithContext(context, artifactPaths.oasisDomComparison),
@@ -3992,8 +4469,22 @@ export class BatchControlPlaneService {
           patientQaReference: patientDashboardState.artifactContents.patientQaReference ?? null,
           qaDocumentSummary: patientDashboardState.artifactContents.qaDocumentSummary ?? null,
           fieldMapSnapshot: patientDashboardState.artifactContents.fieldMapSnapshot ?? null,
-          printedNoteChartValues: null,
-          printedNoteReview: null,
+          printedNoteChartValues:
+            await this.readJsonIfExistsWithContext(
+              context,
+              patientDashboardState.artifactPaths.printedNoteChartValues ??
+                path.join(patientArtifactsDirectory, "printed-note-chart-values.json"),
+            ) ??
+            patientDashboardState.artifactContents.printedNoteChartValues ??
+            null,
+          printedNoteReview:
+            await this.readJsonIfExistsWithContext(
+              context,
+              patientDashboardState.artifactPaths.printedNoteReview ??
+                path.join(patientArtifactsDirectory, "oasis-printed-note-review.json"),
+            ) ??
+            patientDashboardState.artifactContents.printedNoteReview ??
+            null,
           oasisDomExtractedState: await this.readJsonIfExistsWithContext(
             context,
             path.join(patientArtifactsDirectory, "oasis-dom-extracted-state.json"),
@@ -4076,8 +4567,14 @@ export class BatchControlPlaneService {
             context,
             path.join(patientArtifactsDirectory, "referral-document-processing", "field-map-snapshot.json"),
           ),
-          printedNoteChartValues: null,
-          printedNoteReview: null,
+          printedNoteChartValues: await this.readJsonIfExistsWithContext(
+            context,
+            path.join(patientArtifactsDirectory, "printed-note-chart-values.json"),
+          ),
+          printedNoteReview: await this.readJsonIfExistsWithContext(
+            context,
+            path.join(patientArtifactsDirectory, "oasis-printed-note-review.json"),
+          ),
           oasisDomExtractedState: await this.readJsonIfExistsWithContext(
             context,
             path.join(patientArtifactsDirectory, "oasis-dom-extracted-state.json"),
@@ -4548,14 +5045,30 @@ export class BatchControlPlaneService {
           workItem,
           matchResult: previous?.matchResult ?? null,
         });
+        const currentFingerprint = buildWorkItemFingerprint(workItem);
+        const targetPatientArtifactsDirectory = path.join(batch.storage.outputRoot, "patients", workItem.id);
+        await mkdir(targetPatientArtifactsDirectory, { recursive: true });
+        await writeJsonFile(
+          path.join(targetPatientArtifactsDirectory, WORK_ITEM_FINGERPRINT_FILE_NAME),
+          currentFingerprint,
+        );
         if (!resolution.record.current) {
+          continue;
+        }
+
+        const artifactRelativePaths = selectSeedArtifactPathsForFingerprint({
+          previous: asWorkItemFingerprint(resolution.record.current.workItemFingerprint),
+          current: currentFingerprint,
+        });
+        if (artifactRelativePaths && artifactRelativePaths.length === 0) {
           continue;
         }
 
         await this.patientMemoryService.seedPatientArtifacts({
           agencySlug: batch.subsidiary.slug,
           patientMemoryId: resolution.patientMemoryId,
-          targetPatientArtifactsDirectory: path.join(batch.storage.outputRoot, "patients", workItem.id),
+          targetPatientArtifactsDirectory,
+          artifactRelativePaths: artifactRelativePaths ?? undefined,
           overwrite: options.overwrite,
         });
       } catch (error) {
@@ -4576,10 +5089,22 @@ export class BatchControlPlaneService {
     workItem: PatientEpisodeWorkItem,
     previous?: BatchRecord["patientRuns"][number],
   ): Promise<BatchRecord["patientRuns"][number] | null> {
+    const patientArtifactsDirectory = path.join(batch.storage.outputRoot, "patients", workItem.id);
+    const expectedFingerprint = buildWorkItemFingerprint(workItem);
+    const seededFingerprint = await this.repository.readJsonIfExists<WorkItemFingerprint>(
+      path.join(patientArtifactsDirectory, WORK_ITEM_FINGERPRINT_FILE_NAME),
+    );
+    if (!isSameWorkItemFingerprint(seededFingerprint, expectedFingerprint)) {
+      return null;
+    }
+    for (const relativePath of DEFAULT_REQUIRED_MEMORY_ARTIFACTS) {
+      if (!(await this.repository.fileExists(path.join(patientArtifactsDirectory, relativePath)))) {
+        return null;
+      }
+    }
+
     const patientDashboardStatePath = path.join(
-      batch.storage.outputRoot,
-      "patients",
-      workItem.id,
+      patientArtifactsDirectory,
       "patient-dashboard-state.json",
     );
     const patientDashboardState =
@@ -4698,16 +5223,7 @@ export class BatchControlPlaneService {
     batch.run.completedAt = now;
     batch.run.patientRunCount = countProcessedPatientRuns(batch);
     batch.run.lastError = deriveBatchErrorSummary(batch);
-    batch.schedule.lastRunAt = now;
-    batch.schedule.nextScheduledRunAt =
-      batch.schedule.active && batch.schedule.rerunEnabled
-        ? calculateNextScheduledRunAt(
-            now,
-            batch.schedule.timezone,
-            batch.schedule.localTimes,
-            batch.schedule.intervalHours,
-          )
-        : null;
+    this.markDeltaRunCompleted(batch, now);
     await this.repository.saveBatch(batch);
     await this.syncScheduledRunForBatch(batch);
     this.logger.info(
@@ -4740,6 +5256,321 @@ export class BatchControlPlaneService {
 
   private buildReferralIntakeJobKey(batchId: string, patientId: string): string {
     return `referral-intake:${batchId}:${patientId}`;
+  }
+
+  private buildClinicalRefreshJobKey(batch: BatchRecord, patientId: string): string {
+    return `clinical-refresh:${batch.subsidiary.id}:${patientId}`;
+  }
+
+  private async evaluateClinicalRefreshPreflight(
+    batch: BatchRecord,
+  ): Promise<NonNullable<PatientClinicalRefreshState["preflight"]>> {
+    const checkedAt = new Date().toISOString();
+    const reasons: string[] = [];
+    let portalCredentialsConfigured = false;
+    let portalDashboardUrlConfigured = false;
+    try {
+      const runtimeConfig = await this.subsidiaryConfigService.resolveRuntimeConfig(batch.subsidiary.id);
+      portalCredentialsConfigured = Boolean(runtimeConfig.credentials.username && runtimeConfig.credentials.password);
+      portalDashboardUrlConfigured = Boolean(runtimeConfig.portalDashboardUrl || runtimeConfig.portalBaseUrl);
+      if (!portalCredentialsConfigured) {
+        reasons.push("portal credentials are not configured");
+      }
+      if (!portalDashboardUrlConfigured) {
+        reasons.push("portal dashboard/base URL is not configured");
+      }
+    } catch (error) {
+      reasons.push(error instanceof Error ? error.message : "subsidiary portal runtime configuration is unavailable");
+    }
+    return {
+      ok: reasons.length === 0,
+      checkedAt,
+      reasons,
+      portalCredentialsConfigured,
+      portalDashboardUrlConfigured,
+    };
+  }
+
+  private async writeClinicalRefreshState(
+    patientArtifactsDirectory: string,
+    state: PatientClinicalRefreshState,
+  ): Promise<void> {
+    await writeJsonFile(getClinicalRefreshStatePath(patientArtifactsDirectory), state);
+  }
+
+  private async findActivePatientChartWorkRunForSubsidiary(
+    sourceBatch: BatchRecord,
+    patientId: string,
+  ): Promise<BatchRecord["patientRuns"][number] | null> {
+    const batches = await this.repository.listBatches();
+    for (const batch of batches) {
+      if (batch.subsidiary.id !== sourceBatch.subsidiary.id && batch.subsidiary.slug !== sourceBatch.subsidiary.slug) {
+        continue;
+      }
+      const activeRun = this.getActivePatientChartWorkRun(batch, patientId);
+      if (activeRun) {
+        return activeRun;
+      }
+    }
+    return null;
+  }
+
+  private async seedClinicalRefreshAttempt(input: {
+    batch: BatchRecord;
+    workItem: PatientEpisodeWorkItem;
+    attemptOutputRoot: string;
+  }): Promise<void> {
+    const sourcePatientArtifactsDirectory = getPatientArtifactsDirectory(input.batch, input.workItem.id);
+    const attemptPatientArtifactsDirectory = path.join(
+      input.attemptOutputRoot,
+      "patients",
+      input.workItem.id,
+    );
+    await copyDirectoryContents({
+      sourceDirectory: sourcePatientArtifactsDirectory,
+      targetDirectory: attemptPatientArtifactsDirectory,
+    });
+
+    try {
+      const previous = input.batch.patientRuns.find((patientRun) => patientRun.workItemId === input.workItem.id);
+      const resolution = await this.patientMemoryService.resolvePatientMemory({
+        agencySlug: input.batch.subsidiary.slug,
+        workItem: input.workItem,
+        matchResult: previous?.matchResult ?? null,
+      });
+      if (resolution.record.current) {
+        await this.patientMemoryService.seedPatientArtifacts({
+          agencySlug: input.batch.subsidiary.slug,
+          patientMemoryId: resolution.patientMemoryId,
+          targetPatientArtifactsDirectory: attemptPatientArtifactsDirectory,
+          overwrite: false,
+        });
+      }
+    } catch (error) {
+      this.logger.warn(
+        {
+          batchId: input.batch.id,
+          workItemId: input.workItem.id,
+          errorMessage: error instanceof Error ? error.message : "Unknown patient memory seed error.",
+        },
+        "patient clinical refresh memory seed skipped",
+      );
+    }
+  }
+
+  private async runClinicalRefreshPipeline(input: ClinicalRefreshJobRunnerInput): Promise<PatientRun> {
+    if (this.options.clinicalRefreshJobRunner) {
+      return this.options.clinicalRefreshJobRunner(input);
+    }
+
+    const [patientRun] = await executePatientWorkItems({
+      batchId: input.batchId,
+      workItems: [input.workItem],
+      outputDir: input.attemptOutputRoot,
+      workflowDomains: ["qa"],
+      targetOasisAssessmentId: input.targetOasisAssessmentId,
+      subsidiaryRuntimeConfig: input.subsidiaryRuntimeConfig,
+      logger: this.logger,
+      onPatientRunUpdate: input.onPatientRunUpdate,
+    });
+    if (!patientRun) {
+      throw new Error(`No patient run was produced for patient: ${input.patientId}`);
+    }
+    return patientRun;
+  }
+
+  private normalizeClinicalRefreshPatientRunPaths(input: {
+    patientRun: PatientRun;
+    attemptOutputRoot: string;
+    canonicalOutputRoot: string;
+  }): PatientRun {
+    const replace = (value: string | null | undefined) =>
+      replacePathPrefix(value, input.attemptOutputRoot, input.canonicalOutputRoot);
+    return {
+      ...input.patientRun,
+      resultBundlePath: replace(input.patientRun.resultBundlePath),
+      logPath: replace(input.patientRun.logPath),
+      artifacts: input.patientRun.artifacts.map((artifact) => ({
+        ...artifact,
+        downloadPath: replace(artifact.downloadPath),
+      })),
+      auditArtifacts: {
+        tracePath: replace(input.patientRun.auditArtifacts.tracePath),
+        screenshotPaths: input.patientRun.auditArtifacts.screenshotPaths.map((screenshotPath) =>
+          replace(screenshotPath) ?? screenshotPath),
+        downloadPaths: input.patientRun.auditArtifacts.downloadPaths.map((downloadPath) =>
+          replace(downloadPath) ?? downloadPath),
+      },
+      workflowRuns: input.patientRun.workflowRuns.map((workflowRun) => ({
+        ...workflowRun,
+        workflowResultPath: replace(workflowRun.workflowResultPath),
+        workflowLogPath: replace(workflowRun.workflowLogPath),
+      })),
+    };
+  }
+
+  private async promoteClinicalRefreshAttempt(input: {
+    batch: BatchRecord;
+    patientRun: PatientRun;
+    attemptOutputRoot: string;
+  }): Promise<{
+    patientRun: PatientRun;
+    reuseSummary: PatientRunCacheSummary["reuseSummary"] | null;
+  }> {
+    const patientId = input.patientRun.workItemId;
+    const attemptPatientArtifactsDirectory = path.join(input.attemptOutputRoot, "patients", patientId);
+    const canonicalPatientArtifactsDirectory = getPatientArtifactsDirectory(input.batch, patientId);
+    await copyDirectoryContents({
+      sourceDirectory: attemptPatientArtifactsDirectory,
+      targetDirectory: canonicalPatientArtifactsDirectory,
+      shouldCopy: shouldPromoteClinicalRefreshPath,
+    });
+    await copyDirectoryContents({
+      sourceDirectory: path.join(input.attemptOutputRoot, "evidence", patientId),
+      targetDirectory: path.join(input.batch.storage.evidenceDirectory, patientId),
+    });
+
+    const normalizedRun = this.normalizeClinicalRefreshPatientRunPaths({
+      patientRun: input.patientRun,
+      attemptOutputRoot: input.attemptOutputRoot,
+      canonicalOutputRoot: input.batch.storage.outputRoot,
+    });
+    normalizedRun.resultBundlePath = path.join(input.batch.storage.patientResultsDirectory, `${patientId}.json`);
+    normalizedRun.bundleAvailable = true;
+    normalizedRun.logPath =
+      normalizedRun.logPath ?? path.join(input.batch.storage.outputRoot, "logs", `${patientId}.json`);
+    if (input.patientRun.logPath && normalizedRun.logPath) {
+      await mkdir(path.dirname(normalizedRun.logPath), { recursive: true });
+      await copyFile(input.patientRun.logPath, normalizedRun.logPath).catch(() => undefined);
+    }
+    await writePatientDashboardState({
+      outputDirectory: input.batch.storage.outputRoot,
+      run: normalizedRun,
+    });
+    await mkdir(path.dirname(normalizedRun.resultBundlePath), { recursive: true });
+    await writeJsonFile(normalizedRun.resultBundlePath, normalizedRun);
+    const cacheSummary = await this.repository.readJsonIfExists<PatientRunCacheSummary>(
+      path.join(canonicalPatientArtifactsDirectory, "patient-run-cache-summary.json"),
+    );
+    await this.persistPatientRunUpdate(input.batch.id, normalizedRun);
+    return {
+      patientRun: normalizedRun,
+      reuseSummary: cacheSummary?.reuseSummary ?? null,
+    };
+  }
+
+  private async executePatientClinicalRefreshJob(input: {
+    batchId: string;
+    patientId: string;
+    targetOasisAssessmentId: string | null;
+    refreshId: string;
+    attemptOutputRoot: string;
+    workItem: PatientEpisodeWorkItem;
+  }): Promise<void> {
+    const batch = await this.mustGetBatch(input.batchId);
+    const patientArtifactsDirectory = getPatientArtifactsDirectory(batch, input.patientId);
+    let state = await this.repository.readJsonIfExists<PatientClinicalRefreshState>(
+      getClinicalRefreshStatePath(patientArtifactsDirectory),
+    );
+    const startedAt = new Date().toISOString();
+    state = createClinicalRefreshState({
+      batchId: input.batchId,
+      patientId: input.patientId,
+      targetOasisAssessmentId: input.targetOasisAssessmentId,
+      refreshId: input.refreshId,
+      status: "running",
+      now: startedAt,
+      existing: state,
+      attemptOutputRoot: input.attemptOutputRoot,
+      message: input.targetOasisAssessmentId
+        ? "Patient refresh is reprocessing the selected OASIS assessment, Plan of Care, and Visit Notes state."
+        : "Patient refresh is checking the current OASIS, Plan of Care, and Visit Notes state.",
+    });
+    await this.writeClinicalRefreshState(patientArtifactsDirectory, state);
+    try {
+      await this.seedClinicalRefreshAttempt({
+        batch,
+        workItem: input.workItem,
+        attemptOutputRoot: input.attemptOutputRoot,
+      });
+
+      const subsidiaryRuntimeConfig = await this.subsidiaryConfigService.resolveRuntimeConfig(batch.subsidiary.id);
+      const patientRun = await this.runClinicalRefreshPipeline({
+        batchId: input.batchId,
+        patientId: input.patientId,
+        targetOasisAssessmentId: input.targetOasisAssessmentId,
+        workItem: input.workItem,
+        attemptOutputRoot: input.attemptOutputRoot,
+        subsidiaryRuntimeConfig,
+        onPatientRunUpdate: async (updatedRun) => {
+          const now = new Date().toISOString();
+          state = createClinicalRefreshState({
+            batchId: input.batchId,
+            patientId: input.patientId,
+            targetOasisAssessmentId: input.targetOasisAssessmentId,
+            refreshId: input.refreshId,
+            status: "running",
+            now,
+            existing: state,
+            attemptOutputRoot: input.attemptOutputRoot,
+            message: `${updatedRun.processingStatus}: ${updatedRun.executionStep}`,
+          });
+          await this.writeClinicalRefreshState(patientArtifactsDirectory, state);
+        },
+      });
+
+      if (patientRun.processingStatus === "FAILED") {
+        const now = new Date().toISOString();
+        await this.writeClinicalRefreshState(patientArtifactsDirectory, createClinicalRefreshState({
+          batchId: input.batchId,
+          patientId: input.patientId,
+          targetOasisAssessmentId: input.targetOasisAssessmentId,
+          refreshId: input.refreshId,
+          status: "failed",
+          now,
+          existing: state,
+          attemptOutputRoot: input.attemptOutputRoot,
+          message: "Patient refresh failed; existing dashboard artifacts were left unchanged.",
+          lastError: patientRun.errorSummary ?? "Patient refresh failed.",
+        }));
+        return;
+      }
+
+      const promoted = await this.promoteClinicalRefreshAttempt({
+        batch,
+        patientRun,
+        attemptOutputRoot: input.attemptOutputRoot,
+      });
+      const now = new Date().toISOString();
+      await this.writeClinicalRefreshState(patientArtifactsDirectory, createClinicalRefreshState({
+        batchId: input.batchId,
+        patientId: input.patientId,
+        targetOasisAssessmentId: input.targetOasisAssessmentId,
+        refreshId: input.refreshId,
+        status: "completed",
+        now,
+        existing: state,
+        attemptOutputRoot: input.attemptOutputRoot,
+        promotedAt: now,
+        reuseSummary: promoted.reuseSummary,
+        message: `Patient refresh completed with status ${promoted.patientRun.processingStatus}.`,
+      }));
+    } catch (error) {
+      const now = new Date().toISOString();
+      await this.writeClinicalRefreshState(patientArtifactsDirectory, createClinicalRefreshState({
+        batchId: input.batchId,
+        patientId: input.patientId,
+        targetOasisAssessmentId: input.targetOasisAssessmentId,
+        refreshId: input.refreshId,
+        status: "failed",
+        now,
+        existing: state,
+        attemptOutputRoot: input.attemptOutputRoot,
+        message: "Patient refresh failed; existing dashboard artifacts were left unchanged.",
+        lastError: error instanceof Error ? error.message : "Unknown patient refresh error.",
+      }));
+      throw error;
+    }
   }
 
   private getPostBatchReferralIntakeSummaryPath(batch: BatchRecord): string {
@@ -6100,16 +6931,7 @@ export class BatchControlPlaneService {
       batch.run.completedAt = now;
       batch.run.patientRunCount = countProcessedPatientRuns(batch);
       batch.run.lastError = deriveBatchErrorSummary(batch);
-      batch.schedule.lastRunAt = now;
-      batch.schedule.nextScheduledRunAt =
-        batch.schedule.active && batch.schedule.rerunEnabled
-          ? calculateNextScheduledRunAt(
-              now,
-              batch.schedule.timezone,
-              batch.schedule.localTimes,
-              batch.schedule.intervalHours,
-            )
-          : null;
+      this.markDeltaRunCompleted(batch, now);
       await this.repository.saveBatch(batch);
       await this.syncScheduledRunForBatch(batch);
       this.logger.info(
@@ -6346,16 +7168,7 @@ export class BatchControlPlaneService {
     batch.run.completedAt = completedAt;
     batch.run.patientRunCount = countProcessedPatientRuns(batch);
     batch.run.lastError = deriveBatchErrorSummary(batch);
-    batch.schedule.lastRunAt = completedAt;
-    batch.schedule.nextScheduledRunAt =
-      batch.schedule.active && batch.schedule.rerunEnabled
-        ? calculateNextScheduledRunAt(
-            completedAt,
-            batch.schedule.timezone,
-            batch.schedule.localTimes,
-            batch.schedule.intervalHours,
-          )
-        : null;
+    this.markDeltaRunCompleted(batch, completedAt);
     await this.repository.saveBatch(batch);
     await this.syncScheduledRunForBatch(batch);
   }
@@ -6371,16 +7184,7 @@ export class BatchControlPlaneService {
     batch.run.completedAt = batch.updatedAt;
     batch.run.lastError =
       error instanceof Error ? error.message : `Unknown ${phase} error.`;
-    batch.schedule.lastRunAt = batch.updatedAt;
-    batch.schedule.nextScheduledRunAt =
-      batch.schedule.active && batch.schedule.rerunEnabled
-        ? calculateNextScheduledRunAt(
-            batch.updatedAt,
-            batch.schedule.timezone,
-            batch.schedule.localTimes,
-            batch.schedule.intervalHours,
-          )
-        : null;
+    this.markDeltaRunCompleted(batch, batch.updatedAt);
     await this.repository.saveBatch(batch);
     await this.syncScheduledRunForBatch(batch);
   }
@@ -6426,16 +7230,7 @@ export class BatchControlPlaneService {
           : patientRun,
       );
 
-      batch.schedule.lastRunAt = reconciledAt;
-      batch.schedule.nextScheduledRunAt =
-        batch.schedule.active && batch.schedule.rerunEnabled
-          ? calculateNextScheduledRunAt(
-              reconciledAt,
-              batch.schedule.timezone,
-              batch.schedule.localTimes,
-              batch.schedule.intervalHours,
-            )
-          : null;
+      this.markDeltaRunCompleted(batch, reconciledAt);
 
       await this.repository.saveBatch(batch);
       await this.syncScheduledRunForBatch(batch);
@@ -6467,8 +7262,10 @@ export class BatchControlPlaneService {
     }
 
     const schedules = (await this.scheduledRunRepository.listScheduledRuns()).sort((left, right) => {
-      const leftTime = left.nextScheduledRunAt ? Date.parse(left.nextScheduledRunAt) : Number.POSITIVE_INFINITY;
-      const rightTime = right.nextScheduledRunAt ? Date.parse(right.nextScheduledRunAt) : Number.POSITIVE_INFINITY;
+      const leftNext = earliestTimestamp(left.nextWorkbookIntakeAt, left.nextDeltaRunAt, left.nextScheduledRunAt);
+      const rightNext = earliestTimestamp(right.nextWorkbookIntakeAt, right.nextDeltaRunAt, right.nextScheduledRunAt);
+      const leftTime = leftNext ? Date.parse(leftNext) : Number.POSITIVE_INFINITY;
+      const rightTime = rightNext ? Date.parse(rightNext) : Number.POSITIVE_INFINITY;
       if (leftTime !== rightTime) {
         return leftTime - rightTime;
       }
@@ -6476,12 +7273,7 @@ export class BatchControlPlaneService {
     });
 
     for (const schedule of schedules) {
-      if (
-        !schedule.active ||
-        !schedule.rerunEnabled ||
-        !schedule.nextScheduledRunAt ||
-        Date.parse(schedule.nextScheduledRunAt) > now
-      ) {
+      if (!schedule.active || !schedule.rerunEnabled) {
         continue;
       }
 
@@ -6490,22 +7282,39 @@ export class BatchControlPlaneService {
         schedule.active = false;
         schedule.rerunEnabled = false;
         schedule.nextScheduledRunAt = null;
+        schedule.nextWorkbookIntakeAt = null;
+        schedule.nextDeltaRunAt = null;
         schedule.updatedAt = new Date().toISOString();
         await this.scheduledRunRepository.saveScheduledRun(schedule);
         continue;
       }
 
       try {
+        this.ensureSchedulePointers(batch, nowIso);
+        await this.repository.saveBatch(batch);
+        await this.syncScheduledRunForBatch(batch);
+
+        const workbookIntakeDue =
+          batch.schedule.nextWorkbookIntakeAt &&
+          Date.parse(batch.schedule.nextWorkbookIntakeAt) <= now;
+        const deltaRunDue =
+          !workbookIntakeDue &&
+          batch.schedule.nextDeltaRunAt &&
+          Date.parse(batch.schedule.nextDeltaRunAt) <= now;
+
+        if (!workbookIntakeDue && !deltaRunDue) {
+          continue;
+        }
+
         const workbookMissing = !(await this.repository.fileExists(batch.sourceWorkbook.storedPath));
-        const rotationDue =
-          batch.sourceWorkbook.acquisitionProvider === "FINALE" &&
-          isWorkbookRotationDue(batch.sourceWorkbook.uploadedAt, nowIso);
 
         if (workbookMissing && batch.sourceWorkbook.acquisitionProvider !== "FINALE") {
           batch.updatedAt = nowIso;
           batch.schedule.active = false;
           batch.schedule.rerunEnabled = false;
           batch.schedule.nextScheduledRunAt = null;
+          batch.schedule.nextWorkbookIntakeAt = null;
+          batch.schedule.nextDeltaRunAt = null;
           batch.run.lastError =
             batch.run.lastError ?? "Workbook source file is no longer available for scheduled rerun.";
           await this.repository.saveBatch(batch);
@@ -6517,9 +7326,19 @@ export class BatchControlPlaneService {
           continue;
         }
 
-        if (batch.sourceWorkbook.acquisitionProvider === "FINALE" && (workbookMissing || rotationDue)) {
-          await this.reacquireFinaleWorkbook(batch, nowIso, workbookMissing ? "missing" : "rotation_due");
-          await this.parseBatch(batch.id);
+        if (batch.sourceWorkbook.acquisitionProvider === "FINALE" && (workbookIntakeDue || workbookMissing)) {
+          this.logger.info(
+            {
+              batchId: batch.id,
+              subsidiaryId: batch.subsidiary.id,
+              scheduledRunId: schedule.id,
+              scheduledFor: batch.schedule.nextWorkbookIntakeAt,
+              workbookMissing,
+            },
+            "weekly Finale workbook intake started",
+          );
+          await this.startAgencyRefresh(batch.subsidiary.id);
+          return;
         }
 
         this.logger.info(
@@ -6527,11 +7346,10 @@ export class BatchControlPlaneService {
             batchId: batch.id,
             subsidiaryId: batch.subsidiary.id,
             scheduledRunId: schedule.id,
-            scheduledFor: schedule.nextScheduledRunAt,
-            workbookRotationDue: rotationDue,
+            scheduledFor: batch.schedule.nextDeltaRunAt,
             workbookMissing,
           },
-          "scheduled batch rerun started",
+          "weekday delta-all batch run started",
         );
         await this.startBatchRun(batch.id);
         if (this.activeBatchJobs.size > 0) {
@@ -6548,7 +7366,7 @@ export class BatchControlPlaneService {
                   Date.parse(candidate.nextScheduledRunAt) <= now,
               ).length,
             },
-            "scheduled batch rerun single-flight gate engaged",
+            "scheduled batch single-flight gate engaged",
           );
           return;
         }
@@ -6565,51 +7383,6 @@ export class BatchControlPlaneService {
         );
       }
     }
-  }
-
-  private async reacquireFinaleWorkbook(
-    batch: BatchRecord,
-    _triggeredAt: string,
-    reason: "missing" | "rotation_due",
-  ): Promise<void> {
-    const acquisition = await this.acquisitionService.acquireWorkbook({
-      batch,
-      billingPeriod: batch.billingPeriod,
-      providerId: "FINALE",
-      input: {
-        exportName: batch.sourceWorkbook.originalFileName,
-      },
-    });
-
-    batch.updatedAt = acquisition.acquiredAt;
-    batch.status = "CREATED";
-    batch.sourceWorkbook.acquisitionStatus = "ACQUIRED";
-    batch.sourceWorkbook.acquisitionReference = acquisition.acquisitionReference;
-    batch.sourceWorkbook.acquisitionNotes = acquisition.notes;
-    batch.sourceWorkbook.acquisitionMetadata = acquisition.acquisitionMetadata ?? null;
-    batch.sourceWorkbook.originalFileName = acquisition.originalFileName;
-    batch.sourceWorkbook.storedPath = acquisition.storedPath;
-    batch.sourceWorkbook.uploadedAt = acquisition.acquiredAt;
-    batch.sourceWorkbook.verification = acquisition.verification ?? null;
-    batch.parse.requestedAt = null;
-    batch.parse.completedAt = null;
-    batch.parse.lastError = null;
-    batch.run.requestedAt = null;
-    batch.run.completedAt = null;
-    batch.run.lastError = null;
-    await this.repository.saveBatch(batch);
-    await this.syncScheduledRunForBatch(batch);
-
-    this.logger.info(
-      {
-        batchId: batch.id,
-        subsidiaryId: batch.subsidiary.id,
-        acquisitionReference: acquisition.acquisitionReference,
-        originalFileName: acquisition.originalFileName,
-        reason,
-      },
-      "reacquired Finale workbook for scheduled refresh",
-    );
   }
 
   private async markScheduledRefreshFailure(
@@ -6631,16 +7404,7 @@ export class BatchControlPlaneService {
     batch.run.completedAt = updatedAt;
     batch.run.lastError =
       error instanceof Error ? error.message : "Unknown scheduled refresh error.";
-    batch.schedule.lastRunAt = updatedAt;
-    batch.schedule.nextScheduledRunAt =
-      batch.schedule.active && batch.schedule.rerunEnabled
-        ? calculateNextScheduledRunAt(
-            updatedAt,
-            batch.schedule.timezone,
-            batch.schedule.localTimes,
-            batch.schedule.intervalHours,
-          )
-        : null;
+    this.markDeltaRunCompleted(batch, updatedAt);
     await this.repository.saveBatch(batch);
     await this.syncScheduledRunForBatch(batch);
   }
@@ -6666,6 +7430,8 @@ export class BatchControlPlaneService {
       batch.schedule.active = false;
       batch.schedule.rerunEnabled = false;
       batch.schedule.nextScheduledRunAt = null;
+      batch.schedule.nextWorkbookIntakeAt = null;
+      batch.schedule.nextDeltaRunAt = null;
       await this.repository.saveBatch(batch);
       await this.syncScheduledRunForBatch(batch);
       this.logger.info(
@@ -6739,6 +7505,10 @@ export class BatchControlPlaneService {
       localTimes: batch.schedule.localTimes,
       lastRunAt: batch.schedule.lastRunAt,
       nextScheduledRunAt: batch.schedule.nextScheduledRunAt,
+      lastWorkbookAcquiredAt: batch.schedule.lastWorkbookAcquiredAt ?? batch.sourceWorkbook.uploadedAt ?? null,
+      nextWorkbookIntakeAt: batch.schedule.nextWorkbookIntakeAt ?? null,
+      lastDeltaRunAt: batch.schedule.lastDeltaRunAt ?? batch.schedule.lastRunAt,
+      nextDeltaRunAt: batch.schedule.nextDeltaRunAt ?? null,
       createdAt: batch.createdAt,
       updatedAt,
     };

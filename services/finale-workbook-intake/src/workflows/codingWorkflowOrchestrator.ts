@@ -10,7 +10,12 @@ import { createAutomationStepLog } from "../portal/utils/automationLog";
 import type { PatientPortalContext } from "../portal/context/patientPortalContext";
 import { evaluateDeterministicQa } from "../qa/deterministicQaEngine";
 import { buildOasisQaSummary, type DomFirstQaEvidence } from "../services/oasisQaEvaluator";
-import { writeCodingInputFile } from "../services/codingInputExportService";
+import {
+  mergeCanonicalWithSupplementalOasisDiagnoses,
+  writeCodingInputFile,
+  type SupplementalOasisDiagnosis,
+} from "../services/codingInputExportService";
+import { CANONICAL_OASIS_STRUCTURED_FILE_NAME } from "../artifacts/artifactNames";
 import {
   buildExtractionStepLogs,
   countCodingInputDiagnoses,
@@ -33,6 +38,85 @@ export interface CodingWorkflowOrchestratorParams {
 
 export interface CodingWorkflowOrchestratorResult {
   stepLogs: AutomationStepLog[];
+}
+
+type OasisAssessmentManifest = {
+  assessments?: Array<{
+    assessmentType?: unknown;
+    date?: unknown;
+    artifactDirectory?: unknown;
+  }>;
+};
+
+type CanonicalOasisStructuredForCoding = {
+  diagnoses?: Array<{
+    code?: unknown;
+    description?: unknown;
+    source?: unknown;
+  }>;
+};
+
+function parseAssessmentDate(value: unknown): number {
+  if (typeof value !== "string") {
+    return 0;
+  }
+  const match = value.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if (!match) {
+    const parsed = Date.parse(value);
+    return Number.isNaN(parsed) ? 0 : parsed;
+  }
+  const [, month, day, year] = match;
+  return Date.UTC(Number(year), Number(month) - 1, Number(day));
+}
+
+function normalizeAssessmentType(value: unknown): string {
+  return typeof value === "string" ? value.trim().toUpperCase() : "";
+}
+
+function isPlanOfCareAssessmentType(value: unknown): boolean {
+  return /^(SOC|ROC|RECERT)$/.test(normalizeAssessmentType(value));
+}
+
+async function readSupplementalOasisDiagnosesForCoding(input: {
+  outputDir: string;
+  patientId: string;
+}): Promise<SupplementalOasisDiagnosis[]> {
+  const patientDirectory = path.join(input.outputDir, "patients", input.patientId);
+  const manifestPath = path.join(patientDirectory, "oasis-assessment-processing-manifest.json");
+  let manifest: OasisAssessmentManifest;
+  try {
+    manifest = JSON.parse(await readFile(manifestPath, "utf8")) as OasisAssessmentManifest;
+  } catch {
+    return [];
+  }
+
+  const selectedAssessment = [...(manifest.assessments ?? [])]
+    .filter((assessment) => isPlanOfCareAssessmentType(assessment.assessmentType))
+    .filter((assessment) => typeof assessment.artifactDirectory === "string")
+    .sort((left, right) => parseAssessmentDate(right.date) - parseAssessmentDate(left.date))[0];
+
+  if (!selectedAssessment || typeof selectedAssessment.artifactDirectory !== "string") {
+    return [];
+  }
+
+  const structuredPath = path.join(selectedAssessment.artifactDirectory, CANONICAL_OASIS_STRUCTURED_FILE_NAME);
+  let structured: CanonicalOasisStructuredForCoding;
+  try {
+    structured = JSON.parse(await readFile(path.toNamespacedPath(structuredPath), "utf8")) as CanonicalOasisStructuredForCoding;
+  } catch {
+    return [];
+  }
+
+  const assessmentType = normalizeAssessmentType(selectedAssessment.assessmentType).toLowerCase();
+  return (structured.diagnoses ?? [])
+    .map((diagnosis) => ({
+      code: typeof diagnosis.code === "string" ? diagnosis.code : "",
+      description: typeof diagnosis.description === "string" ? diagnosis.description : "",
+      sourceLabel: typeof diagnosis.source === "string"
+        ? `${diagnosis.source}:${assessmentType}`
+        : `oasis_canonical_structured:${assessmentType}`,
+    }))
+    .filter((diagnosis) => diagnosis.description);
 }
 
 export async function runCodingWorkflowOrchestrator(
@@ -126,7 +210,17 @@ export async function runCodingWorkflowOrchestrator(
       extractedDocuments,
     }));
 
-    const codingContext = params.sharedEvidence.diagnosisCodingContext;
+    const supplementalOasisDiagnoses = await readSupplementalOasisDiagnosesForCoding({
+      outputDir: params.outputDir,
+      patientId: params.workItem.id,
+    });
+    const codingContext = {
+      ...params.sharedEvidence.diagnosisCodingContext,
+      canonical: mergeCanonicalWithSupplementalOasisDiagnoses({
+        canonical: params.sharedEvidence.diagnosisCodingContext.canonical,
+        diagnoses: supplementalOasisDiagnoses,
+      }),
+    };
 
     let codingInputExport: Awaited<ReturnType<typeof writeCodingInputFile>> | null = null;
     try {

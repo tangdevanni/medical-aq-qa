@@ -2,6 +2,13 @@ import path from "node:path";
 import { existsSync } from "node:fs";
 import { config as loadDotenv } from "dotenv";
 import { z } from "zod";
+import {
+  DEFAULT_DELTA_RUN_WEEKDAYS,
+  DEFAULT_WORKBOOK_INTAKE_DAY,
+  DEFAULT_WORKBOOK_INTAKE_LOCAL_TIME,
+  parseWeekdayList,
+  parseWeekdayName,
+} from "../utils/workbookSchedule";
 
 function findWorkspaceRoot(startDir: string): string | null {
   let currentDir = path.resolve(startDir);
@@ -23,6 +30,8 @@ function loadApiEnvFiles(): void {
   const apiPackageRoot = path.resolve(__dirname, "../..");
   const workspaceRoot = findWorkspaceRoot(apiPackageRoot) ?? findWorkspaceRoot(process.cwd());
   const candidatePaths = [
+    process.env.MEDICAL_AQ_QA_ENV_FILE ?? null,
+    process.env.API_ENV_FILE ?? null,
     workspaceRoot ? path.join(workspaceRoot, ".env") : null,
     workspaceRoot ? path.join(workspaceRoot, ".env.local") : null,
     path.join(apiPackageRoot, ".env"),
@@ -105,6 +114,18 @@ const envSchema = z.object({
     .transform((value) => value === "true"),
   DEFAULT_SUBSIDIARY_RERUN_INTERVAL_HOURS: z.coerce.number().int().positive().default(24),
   DEFAULT_SUBSIDIARY_RERUN_LOCAL_TIMES: z.string().default("20:30").transform(parseLocalTimes),
+  DEFAULT_SUBSIDIARY_WORKBOOK_INTAKE_DAY: z
+    .string()
+    .default(DEFAULT_WORKBOOK_INTAKE_DAY)
+    .transform(parseWeekdayName),
+  DEFAULT_SUBSIDIARY_WORKBOOK_INTAKE_LOCAL_TIME: z
+    .string()
+    .default(DEFAULT_WORKBOOK_INTAKE_LOCAL_TIME)
+    .refine((value) => /^(?:[01]\d|2[0-3]):[0-5]\d$/.test(value), "Expected HH:mm."),
+  DEFAULT_SUBSIDIARY_DELTA_RUN_WEEKDAYS: z
+    .string()
+    .default(DEFAULT_DELTA_RUN_WEEKDAYS.join(","))
+    .transform(parseWeekdayList),
   PORTAL_BASE_URL: z.string().url().optional(),
   PORTAL_DASHBOARD_URL: z.string().url().optional(),
   PORTAL_USERNAME: z.string().min(1).optional(),

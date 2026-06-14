@@ -13,6 +13,10 @@ export const scheduledRunRecordSchema = z.object({
   localTimes: z.array(z.string().min(1)).default(["20:30"]),
   lastRunAt: z.string().min(1).nullable().default(null),
   nextScheduledRunAt: z.string().min(1).nullable().default(null),
+  lastWorkbookAcquiredAt: z.string().min(1).nullable().optional(),
+  nextWorkbookIntakeAt: z.string().min(1).nullable().optional(),
+  lastDeltaRunAt: z.string().min(1).nullable().optional(),
+  nextDeltaRunAt: z.string().min(1).nullable().optional(),
   createdAt: z.string().min(1),
   updatedAt: z.string().min(1),
 });

@@ -1845,6 +1845,11 @@ function createDiagnosisSummary(
   };
 }
 
+function normalizedDiagnosisCodeKey(value: string | null | undefined): string | null {
+  const code = value?.trim().replace(/\.(?=\s*$)/, "").toUpperCase() ?? "";
+  return isValidDashboardIcdCode(code) ? code : null;
+}
+
 function diagnosisSummaryEntries(summary: DashboardDiagnosisSummary | null): DashboardDiagnosisEntry[] {
   if (!summary) {
     return [];
@@ -1863,6 +1868,184 @@ function deriveFactPackDiagnosisSummary(input: PatientViewInput) {
     normalizeDiagnosisList(asArray(factPack?.diagnoses)),
     "document_fact_pack",
   );
+}
+
+function addOasisDiagnosisDescriptionCandidate(
+  descriptionsByCode: Map<string, string>,
+  value: unknown,
+): void {
+  const entry = normalizeDiagnosisEntry(value);
+  const codeKey = normalizedDiagnosisCodeKey(entry?.code);
+  if (!codeKey || !entry?.description || descriptionsByCode.has(codeKey)) {
+    return;
+  }
+  if (!isPlausibleDashboardDiagnosisDescription(entry.description)) {
+    return;
+  }
+  descriptionsByCode.set(codeKey, entry.description);
+}
+
+function addOasisDiagnosisDescriptionCandidatesFromFactPack(
+  descriptionsByCode: Map<string, string>,
+  factPackValue: unknown,
+): void {
+  for (const diagnosis of normalizeFactPackDiagnoses(factPackValue)) {
+    addOasisDiagnosisDescriptionCandidate(descriptionsByCode, diagnosis);
+  }
+
+  const factPack = asRecord(factPackValue);
+  const facts = asArray(factPack?.facts).map(asRecord).filter((fact): fact is Record<string, unknown> => Boolean(fact));
+  for (const fact of facts) {
+    addOasisDiagnosisDescriptionCandidate(descriptionsByCode, asString(fact.rawValue));
+    addOasisDiagnosisDescriptionCandidate(descriptionsByCode, asString(fact.normalizedValue));
+    addOasisDiagnosisDescriptionCandidate(descriptionsByCode, asString(fact.label));
+    for (const evidence of asArray(fact.evidence).map(asRecord)) {
+      addOasisDiagnosisDescriptionCandidate(descriptionsByCode, asString(evidence?.snippet));
+    }
+  }
+}
+
+function addOasisDiagnosisDescriptionCandidatesFromPrintedChartValues(
+  descriptionsByCode: Map<string, string>,
+  printedNoteChartValues: unknown,
+): void {
+  const printed = asRecord(printedNoteChartValues);
+  const chartValues = asRecord(printed?.currentChartValues) ?? printed;
+  if (!chartValues) {
+    return;
+  }
+
+  addOasisDiagnosisDescriptionCandidate(descriptionsByCode, chartValues.primary_diagnosis);
+  addOasisDiagnosisDescriptionCandidate(descriptionsByCode, chartValues.primaryDiagnosis);
+  for (const value of asArray(chartValues.secondary_diagnoses)) {
+    addOasisDiagnosisDescriptionCandidate(descriptionsByCode, value);
+  }
+  for (const value of asArray(chartValues.secondaryDiagnoses)) {
+    addOasisDiagnosisDescriptionCandidate(descriptionsByCode, value);
+  }
+  for (const value of asArray(chartValues.other_diagnoses)) {
+    addOasisDiagnosisDescriptionCandidate(descriptionsByCode, value);
+  }
+  for (const value of asArray(chartValues.otherDiagnoses)) {
+    addOasisDiagnosisDescriptionCandidate(descriptionsByCode, value);
+  }
+  for (const value of asArray(chartValues.diagnoses)) {
+    addOasisDiagnosisDescriptionCandidate(descriptionsByCode, value);
+  }
+}
+
+function addOasisDiagnosisDescriptionCandidatesFromFieldMap(
+  descriptionsByCode: Map<string, string>,
+  fieldMapSnapshot: unknown,
+): void {
+  const snapshot = asRecord(fieldMapSnapshot);
+  for (const field of asArray(snapshot?.fields).map(asRecord)) {
+    const fieldKey = normalizeDashboardKey(asString(field?.fieldKey) ?? asString(field?.key) ?? "");
+    const label = normalizeDashboardKey(asString(field?.label) ?? "");
+    if (!fieldKey?.includes("diagnos") && !label?.includes("diagnos")) {
+      continue;
+    }
+    addOasisDiagnosisDescriptionCandidate(descriptionsByCode, field?.currentChartValue);
+    for (const value of asArray(field?.currentChartValue)) {
+      addOasisDiagnosisDescriptionCandidate(descriptionsByCode, value);
+    }
+  }
+}
+
+function addOasisDiagnosisDescriptionCandidatesFromComparisonRows(
+  descriptionsByCode: Map<string, string>,
+  comparisonRows: unknown,
+): void {
+  for (const row of asArray(comparisonRows).map(asRecord)) {
+    const fieldKey = normalizeDashboardKey(asString(row?.fieldKey) ?? asString(row?.key) ?? "");
+    const category = normalizeDashboardKey(asString(row?.category) ?? "");
+    if (!fieldKey?.includes("diagnos") && !category?.includes("diagnos")) {
+      continue;
+    }
+
+    addOasisDiagnosisDescriptionCandidate(descriptionsByCode, row?.oasisValue);
+    for (const value of asArray(row?.oasisValue)) {
+      addOasisDiagnosisDescriptionCandidate(descriptionsByCode, value);
+    }
+    for (const evidence of asArray(row?.oasisEvidence).map(asRecord)) {
+      addOasisDiagnosisDescriptionCandidate(descriptionsByCode, asString(evidence?.snippet));
+    }
+  }
+}
+
+function addOasisDiagnosisDescriptionCandidatesFromDomFields(
+  descriptionsByCode: Map<string, string>,
+  artifactContents: KnownArtifactContents,
+): void {
+  let pendingCode: string | null = null;
+
+  for (const field of getMeaningfulOasisDomFields(artifactContents)) {
+    const section = normalizeDashboardKey(`${field.sectionKey} ${field.sectionTitle}`) ?? "";
+    const label = normalizeDashboardKey(field.label) ?? "";
+    if (!field.sectionKey.startsWith("active_diagnoses") && !section.includes("diagnos") && !label.includes("diagnos")) {
+      continue;
+    }
+
+    const value = sanitizeDashboardClinicalValue(field.value);
+    if (!value) {
+      continue;
+    }
+
+    const code = normalizedDiagnosisCodeKey(value);
+    if (code) {
+      pendingCode = descriptionsByCode.has(code) ? null : code;
+      continue;
+    }
+
+    if (!pendingCode || isGenericOasisDiagnosisEvidenceText(value)) {
+      continue;
+    }
+    if (!isPlausibleDashboardDiagnosisDescription(value)) {
+      continue;
+    }
+
+    descriptionsByCode.set(pendingCode, value);
+    pendingCode = null;
+  }
+}
+
+function buildOasisDiagnosisDescriptionMap(artifactContents: KnownArtifactContents): Map<string, string> {
+  const descriptionsByCode = new Map<string, string>();
+  addOasisDiagnosisDescriptionCandidatesFromDomFields(descriptionsByCode, artifactContents);
+  addOasisDiagnosisDescriptionCandidatesFromFactPack(descriptionsByCode, artifactContents.oasisClinicalFactPack);
+  addOasisDiagnosisDescriptionCandidatesFromPrintedChartValues(descriptionsByCode, artifactContents.printedNoteChartValues);
+  addOasisDiagnosisDescriptionCandidatesFromFieldMap(descriptionsByCode, artifactContents.fieldMapSnapshot);
+  addOasisDiagnosisDescriptionCandidatesFromComparisonRows(descriptionsByCode, artifactContents.clinicalComparisonRows);
+  return descriptionsByCode;
+}
+
+function enrichOasisDiagnosisSummaryDescriptions(
+  input: PatientViewInput,
+  summary: DashboardDiagnosisSummary | null,
+): DashboardDiagnosisSummary | null {
+  if (!summary) {
+    return null;
+  }
+
+  const descriptionsByCode = buildOasisDiagnosisDescriptionMap(input.artifactContents);
+  if (descriptionsByCode.size === 0) {
+    return summary;
+  }
+
+  const enrichEntry = (entry: DashboardDiagnosisEntry): DashboardDiagnosisEntry => {
+    if (entry.description) {
+      return entry;
+    }
+    const codeKey = normalizedDiagnosisCodeKey(entry.code ?? entry.normalizedIcd10Code);
+    const description = codeKey ? descriptionsByCode.get(codeKey) : null;
+    return description ? { ...entry, description } : entry;
+  };
+
+  return {
+    ...summary,
+    primaryDiagnosis: summary.primaryDiagnosis ? enrichEntry(summary.primaryDiagnosis) : null,
+    otherDiagnoses: summary.otherDiagnoses.map(enrichEntry),
+  };
 }
 
 function getReferralExtractionUsabilityStatus(
@@ -2174,20 +2357,23 @@ function deriveReferralDiagnosisSummary(input: PatientViewInput): DashboardDiagn
 function deriveOasisDiagnosisSummary(input: PatientViewInput): DashboardDiagnosisSummary | null {
   const extractedDiagnosisSummary = deriveOasisExtractedDiagnosisSummary(input);
   if (extractedDiagnosisSummary) {
-    return extractedDiagnosisSummary;
+    return enrichOasisDiagnosisSummaryDescriptions(input, extractedDiagnosisSummary);
   }
 
   const domDiagnosisSummary = deriveOasisDomDiagnosisSummary(input);
   if (domDiagnosisSummary) {
-    return domDiagnosisSummary;
+    return enrichOasisDiagnosisSummaryDescriptions(input, domDiagnosisSummary);
   }
 
   const qaVisibleDiagnosisSummary = deriveQaVisibleDiagnosisSummary(input);
   if (qaVisibleDiagnosisSummary) {
-    return qaVisibleDiagnosisSummary;
+    return enrichOasisDiagnosisSummaryDescriptions(input, qaVisibleDiagnosisSummary);
   }
 
-  return deriveClinicalFactPackDiagnosisSummary(input.artifactContents.oasisClinicalFactPack, "oasis_clinical_fact_pack");
+  return enrichOasisDiagnosisSummaryDescriptions(
+    input,
+    deriveClinicalFactPackDiagnosisSummary(input.artifactContents.oasisClinicalFactPack, "oasis_clinical_fact_pack"),
+  );
 }
 
 function diagnosisEntryKey(entry: DashboardDiagnosisEntry): string {
@@ -6760,6 +6946,10 @@ export function toDashboardRunListItem(
     rerunEnabled: batch.schedule.rerunEnabled && batch.schedule.active,
     lastRunAt: batch.schedule.lastRunAt,
     nextScheduledRunAt: batch.schedule.nextScheduledRunAt,
+    lastWorkbookAcquiredAt: batch.schedule.lastWorkbookAcquiredAt ?? batch.sourceWorkbook.uploadedAt ?? null,
+    nextWorkbookIntakeAt: batch.schedule.nextWorkbookIntakeAt ?? null,
+    lastDeltaRunAt: batch.schedule.lastDeltaRunAt ?? batch.schedule.lastRunAt,
+    nextDeltaRunAt: batch.schedule.nextDeltaRunAt ?? null,
   };
 }
 
@@ -6833,6 +7023,10 @@ export function toDashboardPatientSummary(input: PatientViewInput) {
     rerunEnabled: input.batch.schedule.rerunEnabled && input.batch.schedule.active,
     lastRunAt: input.batch.schedule.lastRunAt,
     nextScheduledRunAt: input.batch.schedule.nextScheduledRunAt,
+    lastWorkbookAcquiredAt: input.batch.schedule.lastWorkbookAcquiredAt ?? input.batch.sourceWorkbook.uploadedAt ?? null,
+    nextWorkbookIntakeAt: input.batch.schedule.nextWorkbookIntakeAt ?? null,
+    lastDeltaRunAt: input.batch.schedule.lastDeltaRunAt ?? input.batch.schedule.lastRunAt,
+    nextDeltaRunAt: input.batch.schedule.nextDeltaRunAt ?? null,
     codingWorkflow,
     qaWorkflow,
     qaPrefetch,
@@ -6926,6 +7120,10 @@ export function toDashboardPatientStatus(input: PatientViewInput) {
     rerunEnabled: summary.rerunEnabled,
     lastRunAt: summary.lastRunAt,
     nextScheduledRunAt: summary.nextScheduledRunAt,
+    lastWorkbookAcquiredAt: summary.lastWorkbookAcquiredAt,
+    nextWorkbookIntakeAt: summary.nextWorkbookIntakeAt,
+    lastDeltaRunAt: summary.lastDeltaRunAt,
+    nextDeltaRunAt: summary.nextDeltaRunAt,
     lastUpdatedAt: summary.lastUpdatedAt,
     codingWorkflow: summary.codingWorkflow,
     qaWorkflow: summary.qaWorkflow,
@@ -6964,6 +7162,10 @@ export function toBatchSummaryResponse(batch: BatchRecord) {
     rerunEnabled: batch.schedule.rerunEnabled && batch.schedule.active,
     lastRunAt: batch.schedule.lastRunAt,
     nextScheduledRunAt: batch.schedule.nextScheduledRunAt,
+    lastWorkbookAcquiredAt: batch.schedule.lastWorkbookAcquiredAt ?? batch.sourceWorkbook.uploadedAt ?? null,
+    nextWorkbookIntakeAt: batch.schedule.nextWorkbookIntakeAt ?? null,
+    lastDeltaRunAt: batch.schedule.lastDeltaRunAt ?? batch.schedule.lastRunAt,
+    nextDeltaRunAt: batch.schedule.nextDeltaRunAt ?? null,
   };
 }
 

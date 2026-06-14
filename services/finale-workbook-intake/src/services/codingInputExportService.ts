@@ -35,6 +35,12 @@ export type CodingInputExportResult = {
   document: CodingInputDocument;
 };
 
+export type SupplementalOasisDiagnosis = {
+  code: string;
+  description: string;
+  sourceLabel?: string | null;
+};
+
 type DiagnosisCandidate = {
   code: string;
   description: string;
@@ -270,6 +276,55 @@ function buildNotes(input: {
   }
 
   return [...new Set(notes)].slice(0, 6);
+}
+
+function hasUsableDiagnosisPairs(canonical: CanonicalDiagnosisExtraction): boolean {
+  return canonical.diagnosis_code_pairs.some((pair) =>
+    Boolean(normalizeDiagnosisDescription(pair.diagnosis) && normalizeIcdCode(pair.code)),
+  );
+}
+
+export function mergeCanonicalWithSupplementalOasisDiagnoses(input: {
+  canonical: CanonicalDiagnosisExtraction;
+  diagnoses: SupplementalOasisDiagnosis[];
+}): CanonicalDiagnosisExtraction {
+  if (hasUsableDiagnosisPairs(input.canonical)) {
+    return input.canonical;
+  }
+
+  const supplementalPairs = input.diagnoses
+    .map((diagnosis) => ({
+      diagnosis: normalizeDiagnosisDescription(diagnosis.description),
+      code: normalizeIcdCode(diagnosis.code) || null,
+      code_source: diagnosis.sourceLabel ?? "oasis_canonical_structured",
+    }))
+    .filter((diagnosis) => Boolean(diagnosis.diagnosis));
+
+  if (supplementalPairs.length === 0) {
+    return input.canonical;
+  }
+
+  const supplementalCodes = supplementalPairs
+    .map((diagnosis) => diagnosis.code)
+    .filter((code): code is string => Boolean(code));
+
+  return {
+    ...input.canonical,
+    diagnosis_phrases: supplementalPairs.map((diagnosis) => diagnosis.diagnosis),
+    diagnosis_code_pairs: supplementalPairs,
+    icd10_codes_found_verbatim: [...new Set([
+      ...input.canonical.icd10_codes_found_verbatim,
+      ...supplementalCodes,
+    ])],
+    source_quotes: [...new Set([
+      ...input.canonical.source_quotes,
+      `Selected OASIS diagnoses: ${supplementalPairs
+        .map((diagnosis) => `${diagnosis.code ? `${diagnosis.code} - ` : ""}${diagnosis.diagnosis}`)
+        .join("; ")}`,
+    ])].slice(0, 8),
+    document_type: input.canonical.document_type ?? "oasis_canonical_structured",
+    extraction_confidence: input.canonical.extraction_confidence === "high" ? "high" : "medium",
+  };
 }
 
 export function buildOasisReadyDiagnosisDocument(

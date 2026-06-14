@@ -1820,6 +1820,92 @@ describe("dashboardRunViews", () => {
     assert.equal(detail.diagnosisComparisonStatus, "conflict");
   });
 
+  it("enriches code-only OASIS diagnoses from OASIS printed-note evidence", () => {
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        oasisDiagnosisExtraction: {
+          diagnoses: [
+            { code: "R13.10", onsetDate: "2026-02-27" },
+            { code: "I11.0", onsetDate: "2026-02-27" },
+            { code: "I50.9", onsetDate: "2026-02-27" },
+          ],
+        },
+        printedNoteChartValues: {
+          currentChartValues: {
+            primary_diagnosis: "R13.10 - Dysphagia, unspecified",
+            secondary_diagnoses: [
+              "I11.0 - Hypertensive heart disease with heart",
+              "I50.9 - Heart failure, unspecified",
+            ],
+          },
+        },
+        oasisClinicalFactPack: {
+          facts: [
+            {
+              category: "diagnosis",
+              rawValue: "R13.10 Dysphagia, unspecified",
+              normalizedValue: "Dysphagia, unspecified",
+              sourceType: "oasis",
+              evidence: [{ snippet: "R13.10 Dysphagia, unspecified" }],
+            },
+          ],
+        },
+      },
+    });
+
+    assert.equal(detail.oasisDiagnosisSummary.diagnosisSource, "qa_visible_diagnoses");
+    assert.equal(detail.oasisDiagnosisSummary.primaryDiagnosis?.code, "R13.10");
+    assert.equal(detail.oasisDiagnosisSummary.primaryDiagnosis?.description, "Dysphagia, unspecified");
+    assert.equal(detail.oasisDiagnosisSummary.primaryDiagnosis?.onsetDate, "2026-02-27");
+    assert.equal(detail.oasisDiagnosisSummary.otherDiagnoses[0]?.code, "I11.0");
+    assert.equal(
+      detail.oasisDiagnosisSummary.otherDiagnoses[0]?.description,
+      "Hypertensive heart disease with heart",
+    );
+    assert.equal(detail.oasisDiagnosisSummary.otherDiagnoses[1]?.code, "I50.9");
+    assert.equal(detail.oasisDiagnosisSummary.otherDiagnoses[1]?.description, "Heart failure, unspecified");
+  });
+
+  it("enriches code-only OASIS diagnoses from active diagnosis DOM description rows", () => {
+    const detail = toDashboardPatientDetail({
+      ...patientViewInput,
+      artifactContents: {
+        ...patientViewInput.artifactContents,
+        printedNoteChartValues: null,
+        oasisClinicalFactPack: null,
+        oasisDiagnosisExtraction: {
+          diagnoses: [
+            { code: "R13.10", onsetDate: "2026-02-27" },
+            { code: "I11.0", onsetDate: "2026-02-27" },
+          ],
+        },
+        oasisDomSectionOutputs: {
+          schemaVersion: "oasis-dom-section-outputs.v1",
+          sections: [{
+            sectionKey: "active_diagnoses",
+            label: "Active Diagnoses",
+            rows: [
+              { label: "(M1021) ICD-10 Code", value: "R13.10" },
+              { label: "(M1021/1023) Diagnoses and Symptom Control", value: "Dysphagia, unspecified" },
+              { label: "(M1023) ICD-10 Code", value: "I11.0" },
+              { label: "(M1021/1023) Diagnoses and Symptom Control", value: "Hypertensive heart disease with heart failure" },
+            ],
+          }],
+        },
+      },
+    });
+
+    assert.equal(detail.oasisDiagnosisSummary.primaryDiagnosis?.code, "R13.10");
+    assert.equal(detail.oasisDiagnosisSummary.primaryDiagnosis?.description, "Dysphagia, unspecified");
+    assert.equal(detail.oasisDiagnosisSummary.otherDiagnoses[0]?.code, "I11.0");
+    assert.equal(
+      detail.oasisDiagnosisSummary.otherDiagnoses[0]?.description,
+      "Hypertensive heart disease with heart failure",
+    );
+  });
+
   it("does not render portal page-state diagnostics as referral clinical evidence", () => {
     const badPortalText = "OASIS documents page false false false false false false 0 none 0 high:0 medium:0 low:0 false false true false true https://app.finalehealth.com/patient/documents /data/control-plane/batches/x";
     const detail = toDashboardPatientDetail({

@@ -30,6 +30,11 @@ export const patientMemoryCurrentMetadataSchema = z.object({
   runId: z.string().min(1).nullable(),
   workItemId: z.string().min(1).nullable(),
   sourcePatientArtifactsDirectory: z.string().min(1).nullable(),
+  workItemFingerprint: z.object({
+    schemaVersion: z.string().min(1),
+    hash: z.string().min(1),
+    componentHashes: z.record(z.string(), z.string().min(1)),
+  }).nullable().optional(),
   artifacts: z.record(z.string(), patientMemoryArtifactMetadataSchema),
 });
 
@@ -103,6 +108,11 @@ export const patientRunDeltaPlanSchema = z.object({
   patientMemoryId: z.string().min(1),
   workItem: patientEpisodeWorkItemSchema.nullable(),
   identityConfidence: identityConfidenceSchema,
+  workItemFingerprint: z.object({
+    schemaVersion: z.string().min(1),
+    hash: z.string().min(1),
+    componentHashes: z.record(z.string(), z.string().min(1)),
+  }).nullable().optional(),
   createdAt: z.string().min(1),
   sourcePatientArtifactsDirectory: z.string().min(1).nullable(),
   targetPatientArtifactsDirectory: z.string().min(1).nullable(),

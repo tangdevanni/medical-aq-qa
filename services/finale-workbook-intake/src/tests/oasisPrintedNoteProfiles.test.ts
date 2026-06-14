@@ -35,6 +35,28 @@ describe("oasisPrintedNoteProfiles", () => {
     ]);
   });
 
+  it("uses a non-SOC-specific full-document profile for print-preview DOM acquisition", () => {
+    const profile = getOasisPrintSectionProfile("full_document_v1");
+
+    const matched = findMatchingOasisPrintSectionLabels({
+      profile,
+      labels: [
+        "Administrative Information",
+        "Medication & Allergies (Injectables Medications)",
+        "Discharge Summary",
+        "Other Supplementals",
+      ],
+    });
+
+    expect(profile.label).toBe("Full OASIS document");
+    expect(matched).toEqual([
+      "Administrative Information",
+      "Medication & Allergies (Injectables Medications)",
+      "Discharge Summary",
+      "Other Supplementals",
+    ]);
+  });
+
   it("matches only the administrative-information label for the targeted print pass", () => {
     const profile = getOasisPrintSectionProfile("soc_administrative_information_v1");
 

@@ -2,16 +2,18 @@ import { NextResponse } from "next/server";
 import {
   BackendRequestError,
   createBackendRunSample,
+  getBackendPatientClinicalRefreshStatus,
   getLatestBackendPatient,
   getBackendPatientArtifacts,
   getBackendPatientOasisCheckStatus,
   getBackendPatientReferralIntakeStatus,
   getBackendRun,
   getBackendRunStatus,
+  startBackendPatientClinicalRefresh,
   startBackendPatientOasisCheck,
   startBackendPatientReferralIntake,
 } from "../../../../../lib/server/backendApi";
-import { agencyIdsMatch, requireSelectedAgencySession } from "../../../../../lib/auth/session";
+import { agencyIdsMatch, requireSelectedAgencySession, type DashboardSession } from "../../../../../lib/auth/session";
 
 type Params = {
   params: Promise<{
@@ -21,6 +23,18 @@ type Params = {
 
 function unauthorizedAgencyResponse() {
   return NextResponse.json({ message: "Selected agency does not match requested run." }, { status: 403 });
+}
+
+async function resolvePatientRouteSubsidiaryId(runId: string, session: DashboardSession): Promise<string | null> {
+  try {
+    const status = await getBackendRunStatus(runId);
+    return agencyIdsMatch(status.subsidiaryId, session.selectedAgencyId) ? status.subsidiaryId : null;
+  } catch (error) {
+    if (error instanceof BackendRequestError && error.status === 404) {
+      return session.selectedAgencyId;
+    }
+    throw error;
+  }
 }
 
 export async function GET(_request: Request, { params }: Params) {
@@ -45,46 +59,56 @@ export async function GET(_request: Request, { params }: Params) {
     }
 
     if (segments.length === 3 && segments[1] === "patients") {
-      const status = await getBackendRunStatus(segments[0]!);
-      if (!agencyIdsMatch(status.subsidiaryId, session.selectedAgencyId)) {
+      const subsidiaryId = await resolvePatientRouteSubsidiaryId(segments[0]!, session);
+      if (!subsidiaryId) {
         return unauthorizedAgencyResponse();
       }
-      const patient = await getLatestBackendPatient(status.subsidiaryId, segments[2]!);
+      const patient = await getLatestBackendPatient(subsidiaryId, segments[2]!);
       return NextResponse.json(patient);
     }
 
     if (segments.length === 4 && segments[1] === "patients" && segments[3] === "status") {
-      const status = await getBackendRunStatus(segments[0]!);
-      if (!agencyIdsMatch(status.subsidiaryId, session.selectedAgencyId)) {
+      const subsidiaryId = await resolvePatientRouteSubsidiaryId(segments[0]!, session);
+      if (!subsidiaryId) {
         return unauthorizedAgencyResponse();
       }
-      const patient = await getLatestBackendPatient(status.subsidiaryId, segments[2]!);
+      const patient = await getLatestBackendPatient(subsidiaryId, segments[2]!);
       return NextResponse.json(patient);
     }
 
     if (segments.length === 4 && segments[1] === "patients" && segments[3] === "artifacts") {
-      const status = await getBackendRunStatus(segments[0]!);
-      if (!agencyIdsMatch(status.subsidiaryId, session.selectedAgencyId)) {
+      const subsidiaryId = await resolvePatientRouteSubsidiaryId(segments[0]!, session);
+      if (!subsidiaryId) {
         return unauthorizedAgencyResponse();
       }
-      const patient = await getLatestBackendPatient(status.subsidiaryId, segments[2]!);
+      const patient = await getLatestBackendPatient(subsidiaryId, segments[2]!);
       const patientArtifacts = await getBackendPatientArtifacts(patient.batchId, patient.workItemId);
       return NextResponse.json(patientArtifacts);
     }
 
     if (segments.length === 5 && segments[1] === "patients" && segments[3] === "referral-intake" && segments[4] === "status") {
-      const runStatus = await getBackendRunStatus(segments[0]!);
-      if (!agencyIdsMatch(runStatus.subsidiaryId, session.selectedAgencyId)) {
+      const subsidiaryId = await resolvePatientRouteSubsidiaryId(segments[0]!, session);
+      if (!subsidiaryId) {
         return unauthorizedAgencyResponse();
       }
-      const patient = await getLatestBackendPatient(runStatus.subsidiaryId, segments[2]!);
+      const patient = await getLatestBackendPatient(subsidiaryId, segments[2]!);
       const intakeStatus = await getBackendPatientReferralIntakeStatus(patient.batchId, patient.workItemId);
       return NextResponse.json(intakeStatus);
     }
 
+    if (segments.length === 5 && segments[1] === "patients" && segments[3] === "clinical-refresh" && segments[4] === "status") {
+      const subsidiaryId = await resolvePatientRouteSubsidiaryId(segments[0]!, session);
+      if (!subsidiaryId) {
+        return unauthorizedAgencyResponse();
+      }
+      const patient = await getLatestBackendPatient(subsidiaryId, segments[2]!);
+      const refreshStatus = await getBackendPatientClinicalRefreshStatus(patient.batchId, patient.workItemId);
+      return NextResponse.json(refreshStatus);
+    }
+
     if (segments.length === 5 && segments[1] === "patients" && segments[3] === "oasis-check" && segments[4] === "status") {
-      const runStatus = await getBackendRunStatus(segments[0]!);
-      if (!agencyIdsMatch(runStatus.subsidiaryId, session.selectedAgencyId)) {
+      const subsidiaryId = await resolvePatientRouteSubsidiaryId(segments[0]!, session);
+      if (!subsidiaryId) {
         return unauthorizedAgencyResponse();
       }
       const url = new URL(_request.url);
@@ -92,7 +116,7 @@ export async function GET(_request: Request, { params }: Params) {
       if (!assessmentId) {
         return NextResponse.json({ message: "assessmentId is required." }, { status: 400 });
       }
-      const patient = await getLatestBackendPatient(runStatus.subsidiaryId, segments[2]!);
+      const patient = await getLatestBackendPatient(subsidiaryId, segments[2]!);
       const checkStatus = await getBackendPatientOasisCheckStatus(patient.batchId, patient.workItemId, assessmentId);
       return NextResponse.json(checkStatus);
     }
@@ -129,19 +153,33 @@ export async function POST(request: Request, { params }: Params) {
     }
 
     if (segments.length === 4 && segments[1] === "patients" && segments[3] === "referral-intake") {
-      const status = await getBackendRunStatus(segments[0]!);
-      if (!agencyIdsMatch(status.subsidiaryId, session.selectedAgencyId)) {
+      const subsidiaryId = await resolvePatientRouteSubsidiaryId(segments[0]!, session);
+      if (!subsidiaryId) {
         return unauthorizedAgencyResponse();
       }
 
-      const patient = await getLatestBackendPatient(status.subsidiaryId, segments[2]!);
+      const patient = await getLatestBackendPatient(subsidiaryId, segments[2]!);
       const response = await startBackendPatientReferralIntake(patient.batchId, patient.workItemId);
       return NextResponse.json(response, { status: 202 });
     }
 
+    if (segments.length === 4 && segments[1] === "patients" && segments[3] === "clinical-refresh") {
+      const subsidiaryId = await resolvePatientRouteSubsidiaryId(segments[0]!, session);
+      if (!subsidiaryId) {
+        return unauthorizedAgencyResponse();
+      }
+
+      const body = (await request.json().catch(() => ({}))) as { assessmentId?: string | null };
+      const patient = await getLatestBackendPatient(subsidiaryId, segments[2]!);
+      const response = await startBackendPatientClinicalRefresh(patient.batchId, patient.workItemId, {
+        assessmentId: body.assessmentId ?? null,
+      });
+      return NextResponse.json(response, { status: 202 });
+    }
+
     if (segments.length === 4 && segments[1] === "patients" && segments[3] === "oasis-check") {
-      const status = await getBackendRunStatus(segments[0]!);
-      if (!agencyIdsMatch(status.subsidiaryId, session.selectedAgencyId)) {
+      const subsidiaryId = await resolvePatientRouteSubsidiaryId(segments[0]!, session);
+      if (!subsidiaryId) {
         return unauthorizedAgencyResponse();
       }
 
@@ -149,7 +187,7 @@ export async function POST(request: Request, { params }: Params) {
       if (!body.assessmentId) {
         return NextResponse.json({ message: "assessmentId is required." }, { status: 400 });
       }
-      const patient = await getLatestBackendPatient(status.subsidiaryId, segments[2]!);
+      const patient = await getLatestBackendPatient(subsidiaryId, segments[2]!);
       const response = await startBackendPatientOasisCheck(patient.batchId, patient.workItemId, body.assessmentId);
       return NextResponse.json(response, { status: 202 });
     }

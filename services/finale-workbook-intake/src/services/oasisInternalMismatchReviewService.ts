@@ -14,6 +14,7 @@ import type {
   OasisMggFieldSnapshotArtifact,
   OasisMggFieldSnapshotField,
 } from "./oasisMggFieldSnapshotService";
+import { isDischargeComparableItemCode } from "./oasisMggFieldSnapshotService";
 
 export const OASIS_INTERNAL_MISMATCH_PROMPT_VERSION = "oasis-internal-mismatch-review.v2";
 
@@ -219,6 +220,18 @@ function snapshotFieldForPrompt(field: OasisMggFieldSnapshotField) {
   };
 }
 
+function snapshotFieldHasSelectedScore(field: OasisMggFieldSnapshotField): boolean {
+  const text = normalizeWhitespace([
+    field.selectedValue,
+    field.selectedOptionText,
+  ].filter(Boolean).join(" "));
+  return /^\s*\(?(\d{1,2}|88)\)?\.?/.test(text);
+}
+
+function isDischargeComparableSnapshotField(field: OasisMggFieldSnapshotField): boolean {
+  return isDischargeComparableItemCode(field.itemCode.toUpperCase()) && snapshotFieldHasSelectedScore(field);
+}
+
 function createUnavailableDischargeComparison(input: {
   assessmentId: string;
   assessmentType?: string | null;
@@ -296,12 +309,14 @@ function buildReviewInput(input: {
                 unavailableReason: input.baselineAssessment.unavailableReason ?? null,
                 fieldCount: input.baselineAssessment.mggSnapshot?.fieldCount ?? 0,
                 fields: (input.baselineAssessment.mggSnapshot?.fields ?? [])
+                  .filter(isDischargeComparableSnapshotField)
                   .map(snapshotFieldForPrompt)
                   .slice(0, 220),
               }
             : null,
           fieldCount: input.mggSnapshot?.fieldCount ?? 0,
           fields: (input.mggSnapshot?.fields ?? [])
+            .filter(isDischargeComparableSnapshotField)
             .map(snapshotFieldForPrompt)
             .slice(0, 220),
         }
@@ -426,7 +441,7 @@ function comparisonDirection(field: OasisMggPromptField): "lower_is_better" | "h
   if (field.fieldGroup === "M fields") {
     return "lower_is_better";
   }
-  return hasClearGgDirection(field) ? "higher_is_better" : null;
+  return field.itemCode.toUpperCase().startsWith("GG") || hasClearGgDirection(field) ? "higher_is_better" : null;
 }
 
 function scoreIsSpecialReviewCode(field: OasisMggPromptField, score: number): boolean {
@@ -453,6 +468,13 @@ function scoringInterpretationFor(direction: "lower_is_better" | "higher_is_bett
   return "Scoring direction was not clear from the captured option text.";
 }
 
+function isBestComparableScore(
+  direction: "lower_is_better" | "higher_is_better",
+  score: number,
+): boolean {
+  return direction === "lower_is_better" ? score === 0 : score === 6;
+}
+
 function dischargeFindingForPair(input: {
   baselineField: OasisMggPromptField;
   dischargeField: OasisMggPromptField;
@@ -465,8 +487,11 @@ function dischargeFindingForPair(input: {
   const baselineValue = comparisonValue(input.baselineField);
   const dischargeValue = comparisonValue(input.dischargeField);
 
-  if (baselineScore === null || dischargeScore === null || !direction ||
-    scoreIsSpecialReviewCode(input.dischargeField, dischargeScore) ||
+  if (baselineScore === null || dischargeScore === null || !direction) {
+    return null;
+  }
+
+  if (scoreIsSpecialReviewCode(input.dischargeField, dischargeScore) ||
     scoreIsSpecialReviewCode(input.baselineField, baselineScore)) {
     return {
       fieldGroup: input.dischargeField.fieldGroup,
@@ -485,6 +510,10 @@ function dischargeFindingForPair(input: {
   const delta = dischargeScore - baselineScore;
   const improved = direction === "lower_is_better" ? delta < 0 : delta > 0;
   if (improved) {
+    return null;
+  }
+
+  if (delta === 0 && isBestComparableScore(direction, baselineScore)) {
     return null;
   }
 
@@ -576,6 +605,9 @@ function buildPrompt(input: ReturnType<typeof buildReviewInput>): string {
     "You are reviewing one OASIS assessment for internal documentation discrepancies.",
     "Use only the supplied OASIS section rows. Do not use referral documents, Plan of Care, Visit Notes, outside clinical knowledge, or assumptions.",
     "Find direct contradictions within a section and across sections. Example: a diagnosis/condition implies the patient cannot ambulate, while Functional / Therapy states independent ambulation.",
+    "Only report contradictions when the supplied values cannot both be true at the same time.",
+    "Do not report compatible or unrelated statements as contradictions. For example, 'Independent' is compatible with 'No Problems Identified', and vaccination status is unrelated to GG self-care or mobility scores.",
+    "Do not report a diagnosis as contradicting functional independence unless the OASIS text explicitly states a limitation that conflicts with the functional score.",
     "Do not perform discharge improvement comparison. M/GG discharge comparison is handled by a separate deterministic snapshot comparison.",
     "Group each finding under the most relevant primary OASIS category, and name every contradicting section involved.",
     "Keep findings concise, specific, source-grounded, and clinically actionable. Do not include generic quality advice.",
@@ -715,6 +747,28 @@ function normalizeFinding(value: unknown, fallbackSectionLabel: string): OasisIn
   };
 }
 
+function isCompatibleNoProblemIndependenceFinding(finding: OasisInternalMismatchFinding): boolean {
+  const conflictText = finding.valuesInConflict.join(" ").toLowerCase();
+  const reasoningText = finding.reasoning.toLowerCase();
+  const hasIndependentFunction = /\bindependent\b/.test(conflictText);
+  const hasNoProblemFinding = /\bno problems? identified\b/.test(conflictText);
+  const isSpeculative = /\bcould imply\b|\bpotential\b|\bmay imply\b/.test(reasoningText);
+  return hasIndependentFunction && hasNoProblemFinding && isSpeculative;
+}
+
+function isUnrelatedFunctionalVaccinationFinding(finding: OasisInternalMismatchFinding): boolean {
+  const conflictText = finding.valuesInConflict.join(" ").toLowerCase();
+  const hasFunctionalIndependence = /\bindependent\b/.test(conflictText) &&
+    (finding.itemCode?.toUpperCase().startsWith("GG") ?? false);
+  const hasVaccinationText = /\bnot up to date\b|\bvaccination\b|\bvaccine\b/.test(conflictText);
+  return hasFunctionalIndependence && hasVaccinationText;
+}
+
+function isSupportedInternalMismatchFinding(finding: OasisInternalMismatchFinding): boolean {
+  return !isCompatibleNoProblemIndependenceFinding(finding) &&
+    !isUnrelatedFunctionalVaccinationFinding(finding);
+}
+
 function asRecordLike(value: unknown): Record<string, unknown> | null {
   return value && typeof value === "object" && !Array.isArray(value)
     ? value as Record<string, unknown>
@@ -743,6 +797,7 @@ function parseLlmReview(
     const discrepancies = (Array.isArray(sectionRecord.discrepancies) ? sectionRecord.discrepancies : [])
       .map((entry) => normalizeFinding(entry, sectionLabel))
       .filter((entry): entry is OasisInternalMismatchFinding => Boolean(entry))
+      .filter(isSupportedInternalMismatchFinding)
       .slice(0, 12);
     sectionsByKey.set(sectionKey, {
       sectionKey,
@@ -765,10 +820,10 @@ function parseLlmReview(
   const dischargeFindingCount = dischargeComparison?.findings.length ?? 0;
   return {
     status: discrepancyCount > 0 || dischargeFindingCount > 0 ? "discrepancies_found" : "clean",
-    summary: sanitizeText(parsed.summary, 220) ??
-      (discrepancyCount > 0 || dischargeFindingCount > 0
-        ? `${discrepancyCount + dischargeFindingCount} OASIS check finding${discrepancyCount + dischargeFindingCount === 1 ? "" : "s"} found.`
-        : "No internal OASIS discrepancies found."),
+    summary: discrepancyCount > 0 || dischargeFindingCount > 0
+      ? sanitizeText(parsed.summary, 220) ??
+        `${discrepancyCount + dischargeFindingCount} OASIS check finding${discrepancyCount + dischargeFindingCount === 1 ? "" : "s"} found.`
+      : "No internal OASIS discrepancies found.",
     sections,
     dischargeComparison,
   };

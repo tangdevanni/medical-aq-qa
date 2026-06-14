@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { buildOasisReadyDiagnosisDocument } from "../services/codingInputExportService";
+import {
+  buildOasisReadyDiagnosisDocument,
+  mergeCanonicalWithSupplementalOasisDiagnoses,
+} from "../services/codingInputExportService";
 import type { CanonicalDiagnosisExtraction } from "../services/diagnosisCodingExtractionService";
 
 describe("buildOasisReadyDiagnosisDocument", () => {
@@ -92,5 +95,84 @@ describe("buildOasisReadyDiagnosisDocument", () => {
         confidence: "high",
       },
     ]);
+  });
+});
+
+describe("mergeCanonicalWithSupplementalOasisDiagnoses", () => {
+  function emptyCanonical(): CanonicalDiagnosisExtraction {
+    return {
+      reason_for_admission: null,
+      diagnosis_phrases: [],
+      diagnosis_code_pairs: [],
+      icd10_codes_found_verbatim: [],
+      ordered_services: ["Physical Therapy"],
+      clinical_summary: null,
+      source_quotes: [],
+      uncertain_items: [],
+      document_type: null,
+      extraction_confidence: "low",
+    };
+  }
+
+  it("fills an empty coding context from selected OASIS diagnoses", () => {
+    const merged = mergeCanonicalWithSupplementalOasisDiagnoses({
+      canonical: emptyCanonical(),
+      diagnoses: [
+        {
+          code: "Z47.89",
+          description: "Encounter for other orthopedic aftercare",
+          sourceLabel: "print_preview_dom:soc",
+        },
+        {
+          code: "R53.1",
+          description: "Weakness",
+          sourceLabel: "print_preview_dom:soc",
+        },
+      ],
+    });
+
+    const document = buildOasisReadyDiagnosisDocument(merged);
+
+    expect(document.primaryDiagnosis).toEqual({
+      code: "Z47.89",
+      description: "Encounter for other orthopedic aftercare",
+      confidence: "high",
+    });
+    expect(document.otherDiagnoses[0]).toMatchObject({
+      code: "R53.1",
+      description: "Weakness",
+      confidence: "high",
+    });
+    expect(merged.source_quotes[0]).toContain("Selected OASIS diagnoses");
+  });
+
+  it("does not override existing usable coding diagnosis pairs", () => {
+    const canonical: CanonicalDiagnosisExtraction = {
+      ...emptyCanonical(),
+      diagnosis_phrases: ["PNEUMONIA, UNSPECIFIED ORGANISM"],
+      diagnosis_code_pairs: [
+        {
+          diagnosis: "PNEUMONIA, UNSPECIFIED ORGANISM",
+          code: "J18.9",
+          code_source: "referral",
+        },
+      ],
+      icd10_codes_found_verbatim: ["J18.9"],
+      extraction_confidence: "high",
+    };
+
+    const merged = mergeCanonicalWithSupplementalOasisDiagnoses({
+      canonical,
+      diagnoses: [
+        {
+          code: "Z47.89",
+          description: "Encounter for other orthopedic aftercare",
+          sourceLabel: "print_preview_dom:soc",
+        },
+      ],
+    });
+
+    expect(merged).toBe(canonical);
+    expect(buildOasisReadyDiagnosisDocument(merged).primaryDiagnosis.code).toBe("J18.9");
   });
 });

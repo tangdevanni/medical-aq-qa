@@ -122,6 +122,82 @@ describe("oasisMggFieldSnapshotService", () => {
     });
   });
 
+  it("excludes administrative M items from discharge-comparison snapshots", () => {
+    const snapshot = buildOasisMggFieldSnapshot({
+      state: state([
+        radioField({
+          itemCode: "M0063",
+          label: "(M0063) Medicare Number",
+          selectedValue: "4CW9DN1YW43",
+          selectedText: "4CW9DN1YW43",
+          optionTexts: [],
+        }),
+        radioField({
+          itemCode: "M0066",
+          label: "(M0066) Birth Date",
+          selectedValue: "08/07/1943",
+          selectedText: "08/07/1943",
+          optionTexts: [],
+        }),
+        radioField({
+          itemCode: "M1850",
+          label: "(M1850) Transferring",
+          selectedValue: "2",
+          selectedText: "2. Able to bear weight and pivot during the transfer process but unable to transfer self.",
+          optionTexts: [
+            "0. Able to independently transfer.",
+            "1. Able to transfer with minimal human assistance or with use of an assistive device.",
+            "2. Able to bear weight and pivot during the transfer process but unable to transfer self.",
+          ],
+        }),
+      ]),
+      assessmentId: "dc-1",
+      assessmentType: "DC",
+      title: "OASIS DC",
+      date: "2026-06-08",
+      generatedAt: "2026-06-09T08:00:00.000Z",
+    });
+
+    expect(snapshot.fields.map((field) => field.itemCode)).toEqual(["M1850"]);
+    expect(snapshot.fieldCount).toBe(1);
+  });
+
+  it("prioritizes explicit field item codes over broad evidence text", () => {
+    const field = radioField({
+      itemCode: "M2020",
+      label: "(M2020) Management of Oral Medications",
+      selectedValue: "1",
+      selectedText: "1. Able to take medication at the correct times if prepared in advance.",
+      optionTexts: [
+        "0. Able to independently take the correct oral medication(s) and proper dosage(s) at the correct times.",
+        "1. Able to take medication at the correct times if prepared in advance.",
+      ],
+    });
+    field.key = "m2020_management_of_oral_medications";
+    field.evidenceText = [
+      "(M0063) Medicare Number: 4CW9DN1YW43",
+      "(M0066) Birth Date: 08/07/1943",
+      "(M2020) Management of Oral Medications",
+      "Options: 0. Able to independently take medications | 1. Able if prepared in advance",
+    ].join("\n");
+
+    const snapshot = buildOasisMggFieldSnapshot({
+      state: state([field]),
+      assessmentId: "dc-1",
+      assessmentType: "DC",
+      title: "OASIS DC",
+      date: "2026-06-08",
+      generatedAt: "2026-06-09T08:00:00.000Z",
+    });
+
+    expect(snapshot.fields).toHaveLength(1);
+    expect(snapshot.fields[0]).toMatchObject({
+      itemCode: "M2020",
+      fieldGroup: "M fields",
+      selectedValue: "1",
+    });
+  });
+
   it("writes the snapshot while keeping dashboard section outputs stable for zero rows", async () => {
     const directory = await mkdtemp(path.join(os.tmpdir(), "oasis-mgg-snapshot-"));
     try {

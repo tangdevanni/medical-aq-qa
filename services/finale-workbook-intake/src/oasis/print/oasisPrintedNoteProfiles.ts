@@ -1,4 +1,5 @@
 export type OasisPrintSectionProfileKey =
+  | "full_document_v1"
   | "soc_full_document_v1"
   | "soc_administrative_information_v1"
   | "soc_foundation_sections_v1";
@@ -14,6 +15,34 @@ export const DEFAULT_OASIS_PRINT_SECTION_PROFILE_KEY: OasisPrintSectionProfileKe
   "soc_full_document_v1";
 
 const OASIS_PRINT_SECTION_PROFILES: Record<OasisPrintSectionProfileKey, OasisPrintSectionProfile> = {
+  full_document_v1: {
+    key: "full_document_v1",
+    label: "Full OASIS document",
+    modalSelectionPatterns: [
+      /.+/,
+    ],
+    reviewSectionKeys: [
+      "administrative_information",
+      "primary_reason_medical_necessity",
+      "vital_signs",
+      "neurological",
+      "eyes_ears",
+      "cardiovascular",
+      "respiratory",
+      "gastrointestinal",
+      "genitourinary",
+      "musculoskeletal_functional_status",
+      "integumentary",
+      "pain_assessment",
+      "emotional",
+      "diagnosis",
+      "medications_allergies",
+      "patient_coordination_care_plan",
+      "other_supplementals",
+      "care_plan",
+      "discharge_summary",
+    ],
+  },
   soc_full_document_v1: {
     key: "soc_full_document_v1",
     label: "Full OASIS document",

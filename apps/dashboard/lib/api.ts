@@ -1,6 +1,8 @@
 import type {
   PatientArtifactsResponse,
+  ClinicalRefreshStartResponse,
   PatientDetail,
+  PatientClinicalRefreshStatus,
   PatientOasisCheckState,
   PatientReferralIntakeStatus,
   PatientStatusResponse,
@@ -81,6 +83,35 @@ export function getPatientReferralIntakeStatus(
 ): Promise<PatientReferralIntakeStatus> {
   return fetchJson<PatientReferralIntakeStatus>(
     `/api/session/runs/${encodeURIComponent(runId)}/patients/${encodeURIComponent(patientId)}/referral-intake/status`,
+  );
+}
+
+export function startPatientClinicalRefresh(
+  runId: string,
+  patientId: string,
+  options: { assessmentId?: string | null } = {},
+): Promise<ClinicalRefreshStartResponse> {
+  const body = options.assessmentId ? JSON.stringify({ assessmentId: options.assessmentId }) : undefined;
+  return fetchJson<ClinicalRefreshStartResponse>(
+    `/api/session/runs/${encodeURIComponent(runId)}/patients/${encodeURIComponent(patientId)}/clinical-refresh`,
+    {
+      method: "POST",
+      ...(body
+        ? {
+            headers: { "content-type": "application/json" },
+            body,
+          }
+        : {}),
+    },
+  );
+}
+
+export function getPatientClinicalRefreshStatus(
+  runId: string,
+  patientId: string,
+): Promise<PatientClinicalRefreshStatus> {
+  return fetchJson<PatientClinicalRefreshStatus>(
+    `/api/session/runs/${encodeURIComponent(runId)}/patients/${encodeURIComponent(patientId)}/clinical-refresh/status`,
   );
 }
 

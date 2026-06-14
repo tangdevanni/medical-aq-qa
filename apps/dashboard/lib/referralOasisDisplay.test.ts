@@ -332,9 +332,9 @@ test("cleans generic medication and allergy fallback rows when summaries are una
   assert.equal(model.oasisItems[0]?.label, "No known drug allergies");
   assert.equal(model.oasisItems[0]?.value, "Allergy");
   assert.equal(model.oasisItems[0]?.meta, null);
-  assert.equal(model.oasisItems[1]?.label, "Tamsulosin (Oral Pill)");
+  assert.equal(model.oasisItems[1]?.label, "Tamsulosin");
   assert.equal(model.oasisItems[1]?.value, "Medication");
-  assert.equal(model.oasisItems[1]?.meta, null);
+  assert.equal(model.oasisItems[1]?.meta, "Oral Pill | Oral");
 });
 
 test("omits table header echoes from row fallback display", () => {
@@ -369,6 +369,74 @@ test("omits table header echoes from row fallback display", () => {
   assert.equal(model.oasisItems[0]?.label, "Oxycodone 5 mg Oral - Tablet");
 });
 
+test("splits Christine-style semicolon OASIS diagnoses into separate rows", () => {
+  const diagnosesGroup = REFERRAL_OASIS_GROUPS.find((group) => group.key === "diagnoses");
+  assert.ok(diagnosesGroup);
+
+  const model = buildReferralOasisCategoryModel({
+    group: diagnosesGroup,
+    referralRows: [],
+    oasisRows: [{
+      sectionKey: "active_diagnoses",
+      sourceSectionLabel: "Active Diagnoses",
+      fieldKey: "secondary_diagnoses",
+      fieldLabel: "Secondary Diagnoses",
+      sectionLabel: "Active Diagnoses",
+      displayReferralValue: "",
+      displayPortalValue: "I11.0 - Hypertensive heart disease with heart failure; I50.9 - Heart failure, unspecified; I48.20 - Chronic atrial fibrillation, unspecified",
+      portalSnippet: "I11.0 - Hypertensive heart disease with heart failure; I50.9 - Heart failure, unspecified; I48.20 - Chronic atrial fibrillation, unspecified",
+      valuePresence: { hasChartValue: true },
+    } as any],
+  });
+
+  assert.deepEqual(
+    model.oasisItems.map((item) => item.label),
+    [
+      "I11.0 - Hypertensive heart disease with heart failure",
+      "I50.9 - Heart failure, unspecified",
+      "I48.20 - Chronic atrial fibrillation, unspecified",
+    ],
+  );
+});
+
+test("compacts Christine-style medication rows and dedupes short/header entries", () => {
+  const medicationGroup = REFERRAL_OASIS_GROUPS.find((group) => group.key === "medications_allergies");
+  assert.ok(medicationGroup);
+
+  const model = buildReferralOasisCategoryModel({
+    group: medicationGroup,
+    referralRows: [],
+    oasisRows: [{
+      sectionKey: "medication_allergies_and_injectables",
+      sourceSectionLabel: "Medication & Allergies",
+      fieldKey: "allergy_list",
+      fieldLabel: "Allergies",
+      sectionLabel: "Medication & Allergies (Injectables Medications)",
+      displayReferralValue: "",
+      displayPortalValue: "No Known Allergies",
+      valuePresence: { hasChartValue: true },
+    } as any, {
+      sectionKey: "medication_allergies_and_injectables",
+      sourceSectionLabel: "Medication & Allergies",
+      fieldKey: "medication_list",
+      fieldLabel: "Medication List",
+      sectionLabel: "Medication & Allergies (Injectables Medications)",
+      displayReferralValue: "",
+      displayPortalValue: "Apixaban; Apixaban (Oral Pill) 1 Tab Once a day By mouth ANTICOAGULANTS / New 2.5 mg; Torsemide (Oral Pill) 1 Tab Once a day By mouth LOOP DIURETICS / New 20 mg",
+      valuePresence: { hasChartValue: true },
+    } as any],
+  });
+
+  assert.deepEqual(model.oasisItems.map((item) => item.label), [
+    "No Known Allergies",
+    "Apixaban",
+    "Torsemide",
+  ]);
+  assert.equal(model.oasisItems[1]?.value, "Medication");
+  assert.match(model.oasisItems[1]?.meta ?? "", /2\.5 mg/);
+  assert.match(model.oasisItems[1]?.meta ?? "", /ANTICOAGULANTS/);
+});
+
 test("keeps non-summary clinical rows compact without repeated section metadata", () => {
   const bodySystemsGroup = REFERRAL_OASIS_GROUPS.find((group) => group.key === "body_systems");
   assert.ok(bodySystemsGroup);
@@ -392,6 +460,29 @@ test("keeps non-summary clinical rows compact without repeated section metadata"
   assert.equal(model.oasisItems[0]?.label, "Pain");
   assert.equal(model.oasisItems[0]?.value, "Moderate pain in right shoulder");
   assert.equal(model.oasisItems[0]?.meta, null);
+});
+
+test("formats code status values for display", () => {
+  const safetyGroup = REFERRAL_OASIS_GROUPS.find((group) => group.key === "safety_social");
+  assert.ok(safetyGroup);
+
+  const model = buildReferralOasisCategoryModel({
+    group: safetyGroup,
+    referralRows: [],
+    oasisRows: [{
+      sectionKey: "safety_and_risk_assessment",
+      sourceSectionLabel: "Safety & Risk Assessment",
+      fieldKey: "code_status",
+      fieldLabel: "Code Status",
+      sectionLabel: "Safety & Risk Assessment",
+      displayReferralValue: "",
+      displayPortalValue: "full code",
+      valuePresence: { hasChartValue: true },
+    } as any],
+  });
+
+  assert.equal(model.oasisItems[0]?.label, "Code Status");
+  assert.equal(model.oasisItems[0]?.value, "Full Code");
 });
 
 test("selected source summaries produce different display rows for the same category", () => {

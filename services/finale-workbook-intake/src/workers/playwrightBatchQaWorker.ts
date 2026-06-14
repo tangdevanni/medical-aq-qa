@@ -72,6 +72,10 @@ import type { BillingPeriodCalendarSummary } from "../oasis/types/billingPeriodC
 import { parseBillingPeriodCalendar } from "../oasis/calendar/billingPeriodCalendarParser";
 import type { OasisPrintSectionProfileKey } from "../oasis/print/oasisPrintedNoteProfiles";
 import { deriveOasisAssessmentTypeFromWorkItem } from "../oasis/navigation/oasisAssessmentDocumentMatching";
+import {
+  buildCanonicalOasisFromText,
+  persistCanonicalOasisArtifacts,
+} from "../oasis/canonical/printPreviewCanonicalOasis";
 
 function hashString(value: string): string {
   return createHash("sha256").update(value).digest("hex");
@@ -384,6 +388,8 @@ export interface BatchPortalAutomationClient {
     workItem: PatientEpisodeWorkItem;
     outputDir: string;
     patientArtifactsDirectory?: string;
+    assessmentType?: string | null;
+    matchedAssessmentLabel?: string | null;
     thresholds?: {
       minFieldCount?: number;
       minNonEmptyFieldCount?: number;
@@ -1169,6 +1175,8 @@ export class PlaywrightBatchQaWorker implements BatchPortalAutomationClient {
     workItem: PatientEpisodeWorkItem;
     outputDir: string;
     patientArtifactsDirectory?: string;
+    assessmentType?: string | null;
+    matchedAssessmentLabel?: string | null;
     thresholds?: {
       minFieldCount?: number;
       minNonEmptyFieldCount?: number;
@@ -1186,16 +1194,129 @@ export class PlaywrightBatchQaWorker implements BatchPortalAutomationClient {
     if (!this.session) {
       throw new Error("Playwright batch worker was not initialized.");
     }
-    const extraction = await extractOasisDomStateFromPage({
-      page: this.session.page,
-      debugConfig: this.debugConfig,
-      thresholds: {
-        minFieldCount: input.thresholds?.minFieldCount,
-        minNonEmptyFieldCount: input.thresholds?.minNonEmptyFieldCount,
-      },
-    });
     const patientArtifactsDirectory = input.patientArtifactsDirectory ??
       path.join(input.outputDir, "patients", input.workItem.id);
+    if (this.env.OASIS_ACQUISITION_SOURCE === "print_preview_dom" ||
+      this.env.OASIS_ACQUISITION_SOURCE === "print_preview_dom_first") {
+      try {
+        const patientChartPage = new PatientChartPage(this.session.page, {
+          logger: this.logger,
+          debugConfig: this.debugConfig,
+          debugDir: this.currentDebugDir ?? path.join(patientArtifactsDirectory, "debug"),
+        });
+        const previewCapture = await withTimeout(
+          patientChartPage.captureOasisPrintPreviewDomForReview({
+            chartUrl: this.currentPatientChartUrl ?? input.context.chartUrl,
+            patientArtifactsDirectory,
+            assessmentType: input.assessmentType ?? deriveOasisAssessmentTypeFromWorkItem(input.workItem),
+            matchedAssessmentLabel: input.matchedAssessmentLabel ?? null,
+            printProfileKey: "full_document_v1",
+          }),
+          180_000,
+          "Print-preview OASIS DOM acquisition timed out before canonical artifacts could be created.",
+        );
+        const canonical = buildCanonicalOasisFromText({
+          rawText: previewCapture.text,
+          source: "print_preview_dom",
+          sourcePath: previewCapture.textPath,
+          sourceUrl: previewCapture.previewUrl,
+          assessmentType: previewCapture.assessmentType,
+        });
+        const canonicalPaths = await persistCanonicalOasisArtifacts({
+          patientArtifactsDirectory,
+          canonical,
+        });
+        if (!canonical.document.qualityGate.passed) {
+          const reason = `print_preview_quality_gate_failed:${canonical.document.qualityGate.warnings.join("|")}`;
+          if (this.env.OASIS_ACQUISITION_SOURCE === "print_preview_dom") {
+            throw new Error(reason);
+          }
+          this.logger.warn({
+            patientRunId: input.context.patientRunId,
+            patientId: input.workItem.id,
+            reason,
+            canonicalPaths,
+          }, "Print-preview OASIS capture failed quality gate; falling back to legacy DOM extraction.");
+        } else {
+          const previousAcquisitionState = await readOasisDomAcquisitionState(patientArtifactsDirectory);
+          const acquisitionState = mergeOasisDomAcquisitionState(previousAcquisitionState, canonical.portalDomState, {
+            patientRunId: input.context.patientRunId,
+            patientId: input.workItem.id,
+            sourceKey: `print_preview_dom:${canonical.document.normalizedTextHash}`,
+            ocrFallbackEnabled: false,
+            minFieldCount: input.thresholds?.minFieldCount,
+            minNonEmptyFieldCount: input.thresholds?.minNonEmptyFieldCount,
+          });
+          const persisted = await persistOasisDomAcquisitionArtifacts({
+            state: canonical.portalDomState,
+            patientArtifactsDirectory,
+            patientCase: input.context.patientRunId,
+          });
+          const acquisitionStatePath = await writeOasisDomAcquisitionState({
+            patientArtifactsDirectory,
+            state: acquisitionState,
+          });
+          const stepLogs = [
+            ...previewCapture.stepLogs,
+            createAutomationStepLog({
+              step: "oasis_print_preview_canonical_artifacts",
+              message: "Persisted canonical OASIS print-preview artifacts and legacy-compatible DOM state.",
+              patientName: input.workItem.patientIdentity.displayName,
+              urlBefore: input.context.chartUrl,
+              urlAfter: this.session.page.url(),
+              found: [
+                `source=print_preview_dom`,
+                `sectionCount=${canonical.sectionIndex.sections.length}`,
+                `diagnosisCount=${canonical.structured.diagnoses.length}`,
+                `mItemCount=${canonical.structured.mItems.length}`,
+                `qualityGatePassed=${canonical.document.qualityGate.passed}`,
+                `acquisitionStatus=${acquisitionState.acquisitionStatus}`,
+                `overallContentHash=${acquisitionState.overallContentHash}`,
+              ],
+              missing: [],
+              evidence: [
+                `canonicalDocumentPath=${canonicalPaths.documentPath}`,
+                `canonicalSectionIndexPath=${canonicalPaths.sectionIndexPath}`,
+                `canonicalSectionHashesPath=${canonicalPaths.sectionHashesPath}`,
+                `canonicalStructuredPath=${canonicalPaths.structuredPath}`,
+              ],
+              safeReadConfirmed: true,
+            }),
+          ];
+          return {
+            state: canonical.portalDomState,
+            acquisitionState,
+            domStatePath: persisted.domStatePath,
+            acquisitionStatePath,
+            bridgeTextPath: persisted.bridgeTextPath,
+            comparisonPath: persisted.comparisonPath,
+            recommendedDecision: persisted.comparison.recommendedDecision,
+            stepLogs,
+          };
+        }
+      } catch (error) {
+        if (this.env.OASIS_ACQUISITION_SOURCE === "print_preview_dom") {
+          throw error;
+        }
+        this.logger.warn({
+          patientRunId: input.context.patientRunId,
+          patientId: input.workItem.id,
+          error: error instanceof Error ? error.message : String(error),
+        }, "Print-preview OASIS acquisition failed; falling back to legacy DOM extraction.");
+      }
+    }
+    const extraction = await withTimeout(
+      extractOasisDomStateFromPage({
+        page: this.session.page,
+        debugConfig: this.debugConfig,
+        thresholds: {
+          minFieldCount: input.thresholds?.minFieldCount,
+          minNonEmptyFieldCount: input.thresholds?.minNonEmptyFieldCount,
+        },
+      }),
+      120_000,
+      "Legacy OASIS DOM extraction timed out after print-preview fallback.",
+    );
     const previousAcquisitionState = await readOasisDomAcquisitionState(patientArtifactsDirectory);
     const acquisitionState = mergeOasisDomAcquisitionState(previousAcquisitionState, extraction.state, {
       patientRunId: input.context.patientRunId,

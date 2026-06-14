@@ -49,11 +49,52 @@ function normalizeOasisItemCode(value: string | null | undefined): string | null
   return normalized.match(/\bM\d{4}/)?.[0] ?? null;
 }
 
+export const DISCHARGE_COMPARABLE_M_ITEM_CODES = new Set([
+  "M1033",
+  "M1242",
+  "M1400",
+  "M1600",
+  "M1610",
+  "M1620",
+  "M1630",
+  "M1700",
+  "M1710",
+  "M1720",
+  "M1740",
+  "M1745",
+  "M1800",
+  "M1810",
+  "M1820",
+  "M1830",
+  "M1840",
+  "M1845",
+  "M1850",
+  "M1860",
+  "M1870",
+  "M2020",
+  "M2030",
+]);
+
+export function isDischargeComparableItemCode(itemCode: string): boolean {
+  if (itemCode.startsWith("GG")) {
+    return /^GG0130[A-Z0-9]*$/.test(itemCode) || /^GG0170[A-P][A-Z0-9]*$/.test(itemCode);
+  }
+  return DISCHARGE_COMPARABLE_M_ITEM_CODES.has(itemCode);
+}
+
 function itemCodeForField(field: PortalDomExtractedField): string | null {
-  return normalizeOasisItemCode([
+  for (const candidate of [
     field.itemCode,
     field.key,
     field.label,
+  ]) {
+    const itemCode = normalizeOasisItemCode(candidate);
+    if (itemCode) {
+      return itemCode;
+    }
+  }
+
+  return normalizeOasisItemCode([
     field.evidenceText,
     ...(field.optionTexts ?? []),
   ].filter(Boolean).join(" "));
@@ -135,6 +176,9 @@ export function buildOasisMggFieldSnapshot(input: {
     for (const field of section.fields ?? []) {
       const itemCode = itemCodeForField(field);
       if (!itemCode) {
+        continue;
+      }
+      if (!isDischargeComparableItemCode(itemCode)) {
         continue;
       }
       const fieldGroup: OasisMggFieldGroup = itemCode.startsWith("GG") ? "GG fields" : "M fields";

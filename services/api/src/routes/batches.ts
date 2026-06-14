@@ -11,6 +11,7 @@ import {
   toBatchSummaryResponse,
 } from "../mappers/dashboardRunViews";
 import {
+  ClinicalRefreshAlreadyRunningError,
   OasisCheckAlreadyRunningError,
   ReferralIntakeAlreadyRunningError,
   type BatchControlPlaneService,
@@ -28,6 +29,10 @@ const batchPatientParamsSchema = z.object({
 const oasisCheckBodySchema = z.object({
   assessmentId: z.string().min(1),
   force: z.boolean().optional(),
+});
+
+const clinicalRefreshBodySchema = z.object({
+  assessmentId: z.string().min(1).optional().nullable(),
 });
 
 const oasisCheckStatusQuerySchema = z.object({
@@ -549,6 +554,41 @@ export async function registerBatchRoutes(
   app.get("/api/runs/:batchId/patients/:patientId/referral-intake/status", async (request, reply) => {
     const { batchId, patientId } = await getBatchPatientParams(request);
     const state = await service.getPatientReferralIntakeStatus(batchId, patientId);
+    reply.code(200);
+    return state;
+  });
+
+  app.post("/api/runs/:batchId/patients/:patientId/clinical-refresh", async (request, reply) => {
+    const { batchId, patientId } = await getBatchPatientParams(request);
+    const body = clinicalRefreshBodySchema.parse(request.body ?? {});
+    try {
+      const state = await service.startPatientClinicalRefresh(batchId, patientId, {
+        targetOasisAssessmentId: body.assessmentId ?? null,
+      });
+      reply.code(state.status === "failed" ? 409 : 202);
+      return {
+        batchId,
+        patientId,
+        refreshId: state.refreshId,
+        targetOasisAssessmentId: state.targetOasisAssessmentId ?? null,
+        status: state.status,
+        acceptedAt: state.acceptedAt,
+        statusUrl: state.statusUrl,
+        message: state.message,
+        preflight: state.preflight,
+      };
+    } catch (error) {
+      if (error instanceof ClinicalRefreshAlreadyRunningError) {
+        reply.code(409);
+        return { message: error.message };
+      }
+      throw error;
+    }
+  });
+
+  app.get("/api/runs/:batchId/patients/:patientId/clinical-refresh/status", async (request, reply) => {
+    const { batchId, patientId } = await getBatchPatientParams(request);
+    const state = await service.getPatientClinicalRefreshStatus(batchId, patientId);
     reply.code(200);
     return state;
   });

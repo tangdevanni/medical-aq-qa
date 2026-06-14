@@ -11,6 +11,7 @@ import type {
   PatientDashboardState,
   PatientEpisodeWorkItem,
   PatientQueueArtifact,
+  PatientRun,
 } from "@medical-ai-qa/shared-types";
 import { loadEnv } from "../config/env";
 import { FilesystemBatchRepository } from "../repositories/filesystemBatchRepository";
@@ -622,6 +623,82 @@ async function createPostBatchReferralBatch(
   }
   await fixture.repository.saveBatch(batch);
   return batch;
+}
+
+function createClinicalRefreshTestPatientRun(input: {
+  batchId: string;
+  workItem: PatientEpisodeWorkItem;
+  outputRoot: string;
+  status?: PatientRun["processingStatus"];
+  errorSummary?: string | null;
+}): PatientRun {
+  const now = new Date().toISOString();
+  const status = input.status ?? "COMPLETE";
+  return {
+    runId: `${input.batchId}-${input.workItem.id}`,
+    batchId: input.batchId,
+    subsidiaryId: input.workItem.subsidiaryId ?? "default",
+    workItemId: input.workItem.id,
+    patientName: input.workItem.patientIdentity.displayName,
+    processingStatus: status,
+    executionStep: status,
+    progressPercent: 100,
+    startedAt: now,
+    completedAt: now,
+    lastUpdatedAt: now,
+    matchResult: {
+      status: "EXACT",
+      searchQuery: input.workItem.patientIdentity.displayName,
+      portalPatientId: "portal-patient-1",
+      portalDisplayName: input.workItem.patientIdentity.displayName,
+      candidateNames: [input.workItem.patientIdentity.displayName],
+      note: null,
+    },
+    artifacts: [],
+    artifactCount: 0,
+    findings: [],
+    hasFindings: false,
+    qaOutcome: status === "FAILED" ? "PORTAL_MISMATCH" : "READY_FOR_BILLING_PREP",
+    oasisQaSummary: {
+      overallStatus: status === "FAILED" ? "BLOCKED" : "READY_FOR_BILLING",
+      urgency: "ON_TRACK",
+      daysInPeriod: 30,
+      daysLeft: 10,
+      sections: [],
+      blockers: [],
+    },
+    documentInventory: [],
+    resultBundlePath: path.join(input.outputRoot, "patient-results", `${input.workItem.id}.json`),
+    bundleAvailable: true,
+    logPath: path.join(input.outputRoot, "logs", `${input.workItem.id}.json`),
+    logAvailable: true,
+    retryEligible: false,
+    errorSummary: input.errorSummary ?? null,
+    auditArtifacts: {
+      tracePath: null,
+      screenshotPaths: [],
+      downloadPaths: [],
+    },
+    workflowRuns: [],
+    workItemSnapshot: input.workItem,
+    automationStepLogs: [{
+      timestamp: now,
+      step: "clinical_refresh_test_runner",
+      message: "Clinical refresh test runner completed.",
+      patientName: input.workItem.patientIdentity.displayName,
+      urlBefore: null,
+      urlAfter: null,
+      selectorUsed: null,
+      found: [],
+      missing: [],
+      openedDocumentLabel: null,
+      openedDocumentUrl: null,
+      evidence: [],
+      retryCount: 0,
+      safeReadConfirmed: true,
+    }],
+    notes: [],
+  };
 }
 
 function createReferralIntakeTestState(input: {
@@ -1585,6 +1662,297 @@ describe("BatchControlPlaneService scheduler metadata", () => {
     }
   });
 
+  it("patient clinical refresh processes a patient with no prior artifacts", async () => {
+    const fixture = createServiceFixture({
+      serviceOptions: {
+        async clinicalRefreshJobRunner(input) {
+          const patientDir = path.join(input.attemptOutputRoot, "patients", input.patientId);
+          await mkdir(patientDir, { recursive: true });
+          await writeFile(
+            path.join(patientDir, "plan-of-care-review-draft.json"),
+            JSON.stringify({ source: "new-refresh" }, null, 2),
+          );
+          await writeFile(
+            path.join(patientDir, "patient-run-cache-summary.json"),
+            JSON.stringify({
+              reuseSummary: {
+                referral: "not_available",
+                oasis: "rerun",
+                planOfCare: "rerun",
+                visitNotes: "not_available",
+              },
+            }, null, 2),
+          );
+          return createClinicalRefreshTestPatientRun({
+            batchId: input.batchId,
+            workItem: input.workItem,
+            outputRoot: input.attemptOutputRoot,
+          });
+        },
+      },
+    });
+
+    try {
+      await fixture.service.initialize();
+      const batchId = "batch-clinical-refresh-empty";
+      const storage = fixture.repository.createBatchPaths(batchId, "reference-workbook.xlsx");
+      const workItem = createPostBatchReferralWorkItem("patient-refresh-empty", "Refresh Empty");
+      await createPostBatchReferralBatch(fixture, {
+        batchId,
+        workItems: [workItem],
+        queueStatuses: { [workItem.id]: "eligible" },
+        patientRuns: [createPostBatchReferralPatientRun({ batchId, storage, workItem })],
+      });
+
+      const accepted = await fixture.service.startPatientClinicalRefresh(batchId, workItem.id);
+      assert.equal(accepted.status, "pending");
+
+      await waitForCondition(async () => {
+        const status = await fixture.service.getPatientClinicalRefreshStatus(batchId, workItem.id);
+        return status.status === "completed";
+      });
+
+      const patientDir = path.join(storage.outputRoot, "patients", workItem.id);
+      const promotedPoc = JSON.parse(
+        await readFile(path.join(patientDir, "plan-of-care-review-draft.json"), "utf8"),
+      ) as { source: string };
+      assert.equal(promotedPoc.source, "new-refresh");
+      const status = await fixture.service.getPatientClinicalRefreshStatus(batchId, workItem.id);
+      assert.deepEqual(status.reuseSummary, {
+        referral: "not_available",
+        oasis: "rerun",
+        planOfCare: "rerun",
+        visitNotes: "not_available",
+      });
+    } finally {
+      fixture.cleanup();
+    }
+  });
+
+  it("patient clinical refresh promotes delta artifacts while preserving referral and manual OASIS state", async () => {
+    const observedAttemptOutputRoots: string[] = [];
+    const observedTargetOasisAssessmentIds: Array<string | null> = [];
+    const fixture = createServiceFixture({
+      serviceOptions: {
+        async clinicalRefreshJobRunner(input) {
+          observedAttemptOutputRoots.push(input.attemptOutputRoot);
+          observedTargetOasisAssessmentIds.push(input.targetOasisAssessmentId);
+          const patientDir = path.join(input.attemptOutputRoot, "patients", input.patientId);
+          await mkdir(patientDir, { recursive: true });
+          await writeFile(
+            path.join(patientDir, "plan-of-care-review-draft.json"),
+            JSON.stringify({ source: "refreshed-clinical" }, null, 2),
+          );
+          await writeFile(
+            path.join(patientDir, "referral-intake-state.json"),
+            JSON.stringify({ message: "attempt referral state should not promote" }, null, 2),
+          );
+          await writeFile(
+            path.join(patientDir, "oasis-check-state.json"),
+            JSON.stringify({ message: "attempt oasis check should not promote" }, null, 2),
+          );
+          await writeFile(
+            path.join(patientDir, "patient-run-cache-summary.json"),
+            JSON.stringify({
+              reuseSummary: {
+                referral: "not_available",
+                oasis: "reused",
+                planOfCare: "rerun",
+                visitNotes: "reused",
+              },
+            }, null, 2),
+          );
+          return createClinicalRefreshTestPatientRun({
+            batchId: input.batchId,
+            workItem: input.workItem,
+            outputRoot: input.attemptOutputRoot,
+          });
+        },
+      },
+    });
+
+    try {
+      await fixture.service.initialize();
+      const batchId = "batch-clinical-refresh-promote";
+      const storage = fixture.repository.createBatchPaths(batchId, "reference-workbook.xlsx");
+      const workItem = createPostBatchReferralWorkItem("patient-refresh-promote", "Refresh Promote");
+      await createPostBatchReferralBatch(fixture, {
+        batchId,
+        workItems: [workItem],
+        queueStatuses: { [workItem.id]: "eligible" },
+        patientRuns: [createPostBatchReferralPatientRun({ batchId, storage, workItem })],
+      });
+      const patientDir = path.join(storage.outputRoot, "patients", workItem.id);
+      await mkdir(patientDir, { recursive: true });
+      await writeFile(
+        path.join(patientDir, "plan-of-care-review-draft.json"),
+        JSON.stringify({ source: "previous-clinical" }, null, 2),
+      );
+      await writeFile(
+        path.join(patientDir, "referral-intake-state.json"),
+        JSON.stringify({ message: "canonical referral state" }, null, 2),
+      );
+      await writeFile(
+        path.join(patientDir, "oasis-check-state.json"),
+        JSON.stringify({ message: "canonical oasis check state" }, null, 2),
+      );
+
+      await fixture.service.startPatientClinicalRefresh(batchId, workItem.id, {
+        targetOasisAssessmentId: "selected-oasis-20260327",
+      });
+      await waitForCondition(async () => {
+        const status = await fixture.service.getPatientClinicalRefreshStatus(batchId, workItem.id);
+        return status.status === "completed";
+      });
+
+      assert.ok(observedAttemptOutputRoots[0]?.includes("clinical-refresh-attempts"));
+      assert.deepEqual(observedTargetOasisAssessmentIds, ["selected-oasis-20260327"]);
+      const refreshStatus = await fixture.service.getPatientClinicalRefreshStatus(batchId, workItem.id);
+      assert.equal(refreshStatus.targetOasisAssessmentId, "selected-oasis-20260327");
+      const promotedPoc = JSON.parse(
+        await readFile(path.join(patientDir, "plan-of-care-review-draft.json"), "utf8"),
+      ) as { source: string };
+      assert.equal(promotedPoc.source, "refreshed-clinical");
+      const referralState = JSON.parse(
+        await readFile(path.join(patientDir, "referral-intake-state.json"), "utf8"),
+      ) as { message: string };
+      assert.equal(referralState.message, "canonical referral state");
+      const oasisCheckState = JSON.parse(
+        await readFile(path.join(patientDir, "oasis-check-state.json"), "utf8"),
+      ) as { message: string };
+      assert.equal(oasisCheckState.message, "canonical oasis check state");
+      const batches = await fixture.repository.listBatches();
+      assert.ok(batches.some((batch) => batch.id === batchId));
+      assert.equal(
+        batches.filter((batch) => batch.id !== batchId && batch.id.includes("clinical-refresh")).length,
+        0,
+      );
+    } finally {
+      fixture.cleanup();
+    }
+  });
+
+  it("patient clinical refresh failure leaves existing clinical artifacts unchanged", async () => {
+    const fixture = createServiceFixture({
+      serviceOptions: {
+        async clinicalRefreshJobRunner(input) {
+          const patientDir = path.join(input.attemptOutputRoot, "patients", input.patientId);
+          await mkdir(patientDir, { recursive: true });
+          await writeFile(
+            path.join(patientDir, "plan-of-care-review-draft.json"),
+            JSON.stringify({ source: "failed-attempt" }, null, 2),
+          );
+          return createClinicalRefreshTestPatientRun({
+            batchId: input.batchId,
+            workItem: input.workItem,
+            outputRoot: input.attemptOutputRoot,
+            status: "FAILED",
+            errorSummary: "Portal failed during refresh.",
+          });
+        },
+      },
+    });
+
+    try {
+      await fixture.service.initialize();
+      const batchId = "batch-clinical-refresh-failed";
+      const storage = fixture.repository.createBatchPaths(batchId, "reference-workbook.xlsx");
+      const workItem = createPostBatchReferralWorkItem("patient-refresh-failed", "Refresh Failed");
+      await createPostBatchReferralBatch(fixture, {
+        batchId,
+        workItems: [workItem],
+        queueStatuses: { [workItem.id]: "eligible" },
+        patientRuns: [createPostBatchReferralPatientRun({ batchId, storage, workItem })],
+      });
+      const patientDir = path.join(storage.outputRoot, "patients", workItem.id);
+      await mkdir(patientDir, { recursive: true });
+      await writeFile(
+        path.join(patientDir, "plan-of-care-review-draft.json"),
+        JSON.stringify({ source: "previous-clinical" }, null, 2),
+      );
+
+      await fixture.service.startPatientClinicalRefresh(batchId, workItem.id);
+      await waitForCondition(async () => {
+        const status = await fixture.service.getPatientClinicalRefreshStatus(batchId, workItem.id);
+        return status.status === "failed";
+      });
+
+      const preservedPoc = JSON.parse(
+        await readFile(path.join(patientDir, "plan-of-care-review-draft.json"), "utf8"),
+      ) as { source: string };
+      assert.equal(preservedPoc.source, "previous-clinical");
+      const state = await fixture.service.getPatientClinicalRefreshStatus(batchId, workItem.id);
+      assert.equal(state.lastError, "Portal failed during refresh.");
+    } finally {
+      fixture.cleanup();
+    }
+  });
+
+  it("patient clinical refresh conflicts only with active work for the same patient", async () => {
+    const fixture = createServiceFixture({
+      serviceOptions: {
+        async clinicalRefreshJobRunner(input) {
+          const patientDir = path.join(input.attemptOutputRoot, "patients", input.patientId);
+          await mkdir(patientDir, { recursive: true });
+          await writeFile(
+            path.join(patientDir, "patient-run-cache-summary.json"),
+            JSON.stringify({
+              reuseSummary: {
+                referral: "not_available",
+                oasis: "reused",
+                planOfCare: "reused",
+                visitNotes: "reused",
+              },
+            }, null, 2),
+          );
+          return createClinicalRefreshTestPatientRun({
+            batchId: input.batchId,
+            workItem: input.workItem,
+            outputRoot: input.attemptOutputRoot,
+          });
+        },
+      },
+    });
+
+    try {
+      await fixture.service.initialize();
+      const batchId = "batch-clinical-refresh-conflict";
+      const storage = fixture.repository.createBatchPaths(batchId, "reference-workbook.xlsx");
+      const activeWorkItem = createPostBatchReferralWorkItem("patient-refresh-active", "Refresh Active");
+      const otherWorkItem = createPostBatchReferralWorkItem("patient-refresh-other", "Refresh Other");
+      await createPostBatchReferralBatch(fixture, {
+        batchId,
+        workItems: [activeWorkItem, otherWorkItem],
+        queueStatuses: {
+          [activeWorkItem.id]: "eligible",
+          [otherWorkItem.id]: "eligible",
+        },
+        patientRuns: [
+          createPostBatchReferralPatientRun({
+            batchId,
+            storage,
+            workItem: activeWorkItem,
+            processingStatus: "RUNNING_QA",
+            executionStep: "RUNNING_QA",
+          }),
+          createPostBatchReferralPatientRun({ batchId, storage, workItem: otherWorkItem }),
+        ],
+      });
+
+      await assert.rejects(
+        () => fixture.service.startPatientClinicalRefresh(batchId, activeWorkItem.id),
+        /Clinical refresh is already running/,
+      );
+      await fixture.service.startPatientClinicalRefresh(batchId, otherWorkItem.id);
+      await waitForCondition(async () => {
+        const status = await fixture.service.getPatientClinicalRefreshStatus(batchId, otherWorkItem.id);
+        return status.status === "completed";
+      });
+    } finally {
+      fixture.cleanup();
+    }
+  });
+
   it("returns a refresh cycle snapshot even before workbook parsing has produced queue artifacts", async () => {
     const fixture = createServiceFixture();
 
@@ -2351,7 +2719,10 @@ describe("BatchControlPlaneService scheduler metadata", () => {
       assert.deepEqual(knownArtifacts.artifactContents.codingInput, dashboardState.artifactContents.codingInput);
       assert.deepEqual(knownArtifacts.artifactContents.patientQaReference, dashboardState.artifactContents.patientQaReference);
       assert.equal(knownArtifacts.artifactPaths.codingInput, dashboardState.artifactPaths.codingInput);
-      assert.equal(knownArtifacts.artifactContents.printedNoteReview, null);
+      assert.deepEqual(
+        knownArtifacts.artifactContents.printedNoteReview,
+        dashboardState.artifactContents.printedNoteReview,
+      );
       assert.equal(knownArtifacts.artifactPaths.printedNoteReview, dashboardState.artifactPaths.printedNoteReview);
 
       const memoryBatchId = "batch-memory-fallback";
@@ -3060,7 +3431,10 @@ describe("BatchControlPlaneService scheduler metadata", () => {
         knownArtifacts.artifactContents.documentText,
         verificationDashboardState.artifactContents.documentText,
       );
-      assert.equal(knownArtifacts.artifactContents.printedNoteChartValues, null);
+      assert.deepEqual(
+        knownArtifacts.artifactContents.printedNoteChartValues,
+        verificationDashboardState.artifactContents.printedNoteChartValues,
+      );
       assert.equal(
         knownArtifacts.artifactPaths.printedNoteChartValues,
         verificationDashboardState.artifactPaths.printedNoteChartValues,

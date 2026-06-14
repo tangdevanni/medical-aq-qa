@@ -98,6 +98,14 @@ export const VISIT_NOTES_CHILD_NAV_SELECTORS = [
   "button:has-text('Visit Notes')",
   "[role='menuitem']:has-text('Visit Notes')",
 ];
+export const VISIT_NOTES_DOCUMENTATION_MENU_SELECTORS = [
+  "fin-sidebar-menu-root span:text-is('Documentations')",
+  "fin-sidebar-menu span:text-is('Documentations')",
+  "fin-sidebar span:text-is('Documentations')",
+  "fin-sidebar-menu-root span:has-text('Documentations')",
+  "fin-sidebar-menu span:has-text('Documentations')",
+  "fin-sidebar span:has-text('Documentations')",
+];
 
 export type RawVisitNoteDiscoveryRow = {
   portalDocumentId?: string;
@@ -402,12 +410,7 @@ export async function discoverVisitNotesFromPage(input: {
   }
 
   if (!selectorUsed) {
-    documentationSelectorUsed = await clickFirstVisible(input.page, [
-      "fin-sidebar-menu-root span:has-text('Documentations')",
-      "fin-sidebar-menu span:has-text('Documentations')",
-      "span:has-text('Documentations')",
-      "span:has-text('Documents')",
-    ]).catch(() => null);
+    documentationSelectorUsed = await clickFirstVisible(input.page, VISIT_NOTES_DOCUMENTATION_MENU_SELECTORS).catch(() => null);
     if (documentationSelectorUsed) {
       await input.page.waitForTimeout(750).catch(() => undefined);
       selectorUsed = await clickFirstVisible(input.page, VISIT_NOTES_MENU_SELECTORS);

@@ -97,6 +97,7 @@ export interface ExecutePatientWorkItemsParams {
   outputDir: string;
   workflowDomains?: WorkflowDomain[];
   stopAfterSharedEvidence?: boolean;
+  targetOasisAssessmentId?: string | null;
   subsidiaryRuntimeConfig?: SubsidiaryRuntimeConfig;
   logger?: Logger;
   portalClient?: BatchPortalAutomationClient;
@@ -690,6 +691,10 @@ function hasReferralDocumentEvidence(input: {
 
 function canRetryPatientRun(run: PatientRun): boolean {
   return ["BLOCKED", "FAILED", "NEEDS_HUMAN_REVIEW"].includes(run.processingStatus);
+}
+
+function isTerminalProblemStatus(status: PatientRun["processingStatus"]): boolean {
+  return ["BLOCKED", "FAILED", "NEEDS_HUMAN_REVIEW"].includes(status);
 }
 
 function appendAutomationLogs(
@@ -1449,6 +1454,10 @@ async function executePatientWorkItemsSequential(
           const sharedEvidenceContext =
             sharedAccess.portalContexts.find((portalContext) => portalContext.workflowDomain === "coding") ??
             sharedAccess.portalContexts[0]!;
+          run.processingStatus = "COLLECTING_EVIDENCE";
+          run.executionStep = "COLLECTING_EVIDENCE";
+          run.progressPercent = Math.max(run.progressPercent, 35);
+          await emitPatientRunUpdate(run, params.outputDir, params.onPatientRunUpdate, env);
           const sharedEvidenceResult = await timing.time("shared_evidence", () => runSharedEvidenceWorkflow({
             context: sharedEvidenceContext,
             workItem,
@@ -1593,6 +1602,10 @@ async function executePatientWorkItemsSequential(
 
           const qaPortalContext = sharedAccess.portalContexts.find((portalContext) => portalContext.workflowDomain === "qa");
           if (qaPortalContext) {
+            run.processingStatus = "RUNNING_QA";
+            run.executionStep = "RUNNING_QA";
+            run.progressPercent = Math.max(run.progressPercent, 70);
+            await emitPatientRunUpdate(run, params.outputDir, params.onPatientRunUpdate, env);
             const qaResult = await timing.time("oasis_dom_and_qa", () => runQaWorkflowOrchestrator({
               context: qaPortalContext,
               run,
@@ -1602,6 +1615,7 @@ async function executePatientWorkItemsSequential(
               logger,
               portalClient,
               sharedEvidence: sharedEvidenceResult.sharedEvidence,
+              targetOasisAssessmentId: params.targetOasisAssessmentId ?? null,
             }));
             run.artifacts = replaceRunOasisArtifactWithPrintedNoteReview({
               artifacts: run.artifacts,
@@ -1814,8 +1828,7 @@ async function executePatientWorkItemsSequential(
 
           if (
             missingReferralDocumentReviewMessage &&
-            run.processingStatus !== "FAILED" &&
-            run.processingStatus !== "BLOCKED"
+            !isTerminalProblemStatus(run.processingStatus)
           ) {
             run.qaOutcome = "NEEDS_MANUAL_QA";
             run.processingStatus = "NEEDS_HUMAN_REVIEW";
@@ -1869,9 +1882,7 @@ async function executePatientWorkItemsSequential(
         if (
           !selectedWorkflowDomains.includes("coding") &&
           run.matchResult.status === "EXACT" &&
-          run.processingStatus !== "BLOCKED" &&
-          run.processingStatus !== "FAILED" &&
-          run.processingStatus !== "NEEDS_HUMAN_REVIEW"
+          !isTerminalProblemStatus(run.processingStatus)
         ) {
           run.processingStatus = "COMPLETE";
           run.executionStep = "OASIS_QA_ENTRY_COMPLETE";

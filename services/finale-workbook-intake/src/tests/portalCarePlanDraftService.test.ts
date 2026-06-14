@@ -52,6 +52,93 @@ function stateWithCarePlan(): PortalDomExtractedState {
   };
 }
 
+function stateWithPrintPreviewCarePlanSections(): PortalDomExtractedState {
+  return {
+    ...stateWithCarePlan(),
+    contentHash: "print-preview-sections",
+    sections: [
+      {
+        title: "CARE PLAN (PROBLEMS / GOALS / INTERVENTIONS)",
+        status: "success",
+        fields: [],
+        tables: [],
+        visibleTextDigest: "CARE PLAN (PROBLEMS / GOALS / INTERVENTIONS)",
+      },
+      {
+        title: "Functional Status",
+        status: "success",
+        fields: [],
+        tables: [],
+        visibleTextDigest: "Problem: PT Balance Training - The patient currently demonstrates a high risk for falls with all functional mobility, as demonstrated by TUG score of 16 secs",
+      },
+      {
+        title: "Goals:",
+        status: "success",
+        fields: [],
+        tables: [],
+        visibleTextDigest: "Goals:\nTarget Completion: 3 Week(s)\nTerm: Short-term\nStatus: Unmet\nImprove TUG score to 12 seconds or better to improve fall safety.",
+      },
+      {
+        title: "Interventions: Assigned Staff: PT",
+        status: "success",
+        fields: [],
+        tables: [],
+        visibleTextDigest: "Interventions: Assigned Staff: PT\nStanding balance exercises with narrow and wide BOS, walking sideways and front/back directions.",
+      },
+      {
+        title: "Progress Toward Goals:",
+        status: "success",
+        fields: [],
+        tables: [],
+        visibleTextDigest: "Progress Toward Goals:\nNo Progress Yet\nProblem: PT Transfer Training - The patient currently requires caregiver/standby assist for bed mobility, toilet transfers and car transfers",
+      },
+      {
+        title: "Goals:",
+        status: "success",
+        fields: [],
+        tables: [],
+        visibleTextDigest: "Goals:\nTarget Completion: 5 Week(s)\nTerm: Long-term\nStatus: Unmet\nPatient will safely transfer with caregiver standby assistance.",
+      },
+      {
+        title: "Interventions: Assigned Staff: PT",
+        status: "success",
+        fields: [],
+        tables: [],
+        visibleTextDigest: "Interventions: Assigned Staff: PT\nBed scooting, turning, and sliding safely with joint protection techniques.",
+      },
+    ],
+  };
+}
+
+async function writeOasisManifest(input: {
+  patientDir: string;
+  assessments: Array<{
+    assessmentId: string;
+    assessmentType: string;
+    title?: string;
+    date: string;
+    artifactDirectory: string;
+    isCurrent?: boolean;
+    processingStatus?: string;
+  }>;
+}): Promise<void> {
+  await writeFile(
+    path.join(input.patientDir, "oasis-assessment-processing-manifest.json"),
+    JSON.stringify({
+      schemaVersion: "oasis-assessment-processing-manifest.v1",
+      generatedAt: "2026-06-12T00:00:00.000Z",
+      assessments: input.assessments.map((assessment) => ({
+        ...assessment,
+        title: assessment.title ?? `${assessment.assessmentType} OASIS`,
+        domStatePath: path.join(assessment.artifactDirectory, "oasis-dom-extracted-state.json"),
+        sectionOutputsPath: path.join(assessment.artifactDirectory, "oasis-dom-section-outputs.json"),
+        processingStatus: assessment.processingStatus ?? "processed_scoped",
+      })),
+    }, null, 2),
+    "utf8",
+  );
+}
+
 describe("portal care plan draft service", () => {
   it("turns existing OASIS care plan DOM rows into review draft problem groups", () => {
     const draft = buildPortalCarePlanDraftFromOasisDomState({ state: stateWithCarePlan() });
@@ -199,43 +286,154 @@ describe("portal care plan draft service", () => {
     expect(draft?.carePlanProblemGroups?.[0]?.needsHumanReview).toBe(false);
   });
 
-  it("uses the root current OASIS care plan for the dashboard POC draft when older scoped OASIS artifacts exist", async () => {
-    const outputDir = await mkdtemp(path.join(tmpdir(), "portal-poc-current-"));
+  it("turns print-preview care plan problem/goal/intervention sections into review draft groups", () => {
+    const draft = buildPortalCarePlanDraftFromOasisDomState({ state: stateWithPrintPreviewCarePlanSections() });
+
+    expect(draft?.sourcePriorityUsed).toBe("oasis_snapshot");
+    expect(draft?.pocSource?.sourceHash).toBe("print-preview-sections");
+    expect(draft?.carePlanProblemGroups).toHaveLength(2);
+    expect(draft?.carePlanProblemGroups?.[0]?.problemTitle).toBe("PT Balance Training");
+    expect(draft?.carePlanProblemGroups?.[0]?.goals[0]?.text).toContain("12 seconds");
+    expect(draft?.carePlanProblemGroups?.[0]?.interventions[0]?.text).toContain("Standing balance");
+    expect(draft?.carePlanProblemGroups?.[1]?.problemTitle).toBe("PT Transfer Training");
+    expect(draft?.carePlanProblemGroups?.[1]?.goals[0]?.text).toContain("safely transfer");
+    expect(draft?.carePlanProblemGroups?.[1]?.interventions[0]?.text).toContain("Bed scooting");
+  });
+
+  it("can read a latest eligible scoped OASIS artifact whose path requires Windows namespace support", async () => {
+    const outputDir = await mkdtemp(path.join(tmpdir(), "portal-poc-long-path-"));
+    const workItem = {
+      id: "PATIENT_WITH_A_VERY_LONG_IDENTIFIER_FOR_WINDOWS_PATH_REGRESSION__1234567890abcdef1234567890abcdef",
+      patientName: "Long Path Patient",
+    };
+    const patientDir = path.join(outputDir, "patients", workItem.id);
+    const assessmentDir = path.join(
+      patientDir,
+      "oasis-assessments",
+      "soc-05092026-oasis-oasis-e2-pt-start-of-care-with-extra-long-readable-slug",
+    );
+
+    try {
+      await mkdir(assessmentDir, { recursive: true });
+      await writeFile(
+        path.toNamespacedPath(path.join(assessmentDir, "oasis-dom-extracted-state.json")),
+        JSON.stringify(stateWithPrintPreviewCarePlanSections(), null, 2),
+        "utf8",
+      );
+      await writeOasisManifest({
+        patientDir,
+        assessments: [{
+          assessmentId: "soc-20260509",
+          assessmentType: "SOC",
+          date: "05/09/2026",
+          artifactDirectory: assessmentDir,
+        }],
+      });
+
+      const draftPath = await writePortalCarePlanDraftFromOasisDom({ outputDir, workItem: workItem as never });
+      const draftRaw = await readFile(path.toNamespacedPath(draftPath ?? ""), "utf8");
+
+      expect(draftRaw).toContain("PT Balance Training");
+      expect(draftRaw).toContain("PT Transfer Training");
+      expect(draftRaw).toContain("print-preview-sections");
+    } finally {
+      await rm(outputDir, { recursive: true, force: true });
+    }
+  });
+
+  it("uses the latest SOC/ROC/RECERT OASIS care plan instead of current DC for the dashboard POC draft", async () => {
+    const outputDir = await mkdtemp(path.join(tmpdir(), "portal-poc-latest-non-dc-"));
     const workItem = {
       id: "patient-1",
       patientName: "Test Patient",
     };
     const patientDir = path.join(outputDir, "patients", workItem.id);
-    const olderAssessmentDir = path.join(patientDir, "oasis-assessments", "older-recert");
+    const socAssessmentDir = path.join(patientDir, "oasis-assessments", "soc-20260509");
+    const recertAssessmentDir = path.join(patientDir, "oasis-assessments", "recert-20260601");
+    const deathAtHomeAssessmentDir = path.join(patientDir, "oasis-assessments", "recert-death-at-home-20260610");
 
     try {
       const currentState = stateWithCarePlan();
-      currentState.contentHash = "current-oasis";
+      currentState.contentHash = "current-dc";
       currentState.sections[0]!.tables[0]!.rows[0]![1] =
-        "Latest OASIS POC - Skilled nursing wound care is active for the current OASIS.";
-      const olderState = stateWithCarePlan();
-      olderState.contentHash = "older-oasis";
-      olderState.sections[0]!.tables[0]!.rows[0]![1] =
-        "Older OASIS POC - Historical care plan from a previous OASIS.";
+        "Current DC POC - Discharge-only care plan should not feed visit-note alignment.";
+      const socState = stateWithCarePlan();
+      socState.contentHash = "soc-oasis";
+      socState.sections[0]!.tables[0]!.rows[0]![1] =
+        "SOC OASIS POC - Historical start of care plan.";
+      const recertState = stateWithCarePlan();
+      recertState.contentHash = "latest-recert-oasis";
+      recertState.sections[0]!.tables[0]!.rows[0]![1] =
+        "Latest RECERT OASIS POC - Active care plan for visit-note alignment.";
+      const deathAtHomeState = stateWithCarePlan();
+      deathAtHomeState.contentHash = "death-at-home";
+      deathAtHomeState.sections[0]!.tables[0]!.rows[0]![1] =
+        "Death at Home POC - terminal/discharge assessment should not feed visit-note alignment.";
 
       await mkdir(patientDir, { recursive: true });
-      await mkdir(olderAssessmentDir, { recursive: true });
+      await mkdir(socAssessmentDir, { recursive: true });
+      await mkdir(recertAssessmentDir, { recursive: true });
+      await mkdir(deathAtHomeAssessmentDir, { recursive: true });
       await writeFile(
         path.join(patientDir, "oasis-dom-extracted-state.json"),
         JSON.stringify(currentState, null, 2),
         "utf8",
       );
       await writeFile(
-        path.join(olderAssessmentDir, "oasis-dom-extracted-state.json"),
-        JSON.stringify(olderState, null, 2),
+        path.join(socAssessmentDir, "oasis-dom-extracted-state.json"),
+        JSON.stringify(socState, null, 2),
         "utf8",
       );
+      await writeFile(
+        path.join(recertAssessmentDir, "oasis-dom-extracted-state.json"),
+        JSON.stringify(recertState, null, 2),
+        "utf8",
+      );
+      await writeFile(
+        path.join(deathAtHomeAssessmentDir, "oasis-dom-extracted-state.json"),
+        JSON.stringify(deathAtHomeState, null, 2),
+        "utf8",
+      );
+      await writeOasisManifest({
+        patientDir,
+        assessments: [
+          {
+            assessmentId: "dc-20260610",
+            assessmentType: "DC",
+            date: "06/10/2026",
+            artifactDirectory: patientDir,
+            isCurrent: true,
+            processingStatus: "processed_root_current",
+          },
+          {
+            assessmentId: "soc-20260509",
+            assessmentType: "SOC",
+            date: "05/09/2026",
+            artifactDirectory: socAssessmentDir,
+          },
+          {
+            assessmentId: "recert-20260601",
+            assessmentType: "RECERT",
+            date: "06/01/2026",
+            artifactDirectory: recertAssessmentDir,
+          },
+          {
+            assessmentId: "death-at-home-20260610",
+            assessmentType: "RECERT",
+            title: "OASIS E1 - DEATH AT HOME (2026)",
+            date: "06/10/2026",
+            artifactDirectory: deathAtHomeAssessmentDir,
+          },
+        ],
+      });
 
       const draftPath = await writePortalCarePlanDraftFromOasisDom({ outputDir, workItem: workItem as never });
       const draftRaw = await readFile(draftPath ?? "", "utf8");
 
-      expect(draftRaw).toContain("Latest OASIS POC");
-      expect(draftRaw).not.toContain("Older OASIS POC");
+      expect(draftRaw).toContain("Latest RECERT OASIS POC");
+      expect(draftRaw).not.toContain("Current DC POC");
+      expect(draftRaw).not.toContain("Death at Home POC");
+      expect(draftRaw).not.toContain("SOC OASIS POC");
     } finally {
       await rm(outputDir, { recursive: true, force: true });
     }
@@ -249,6 +447,17 @@ describe("portal care plan draft service", () => {
     };
     const patientDir = path.join(outputDir, "patients", workItem.id);
     await mkdir(patientDir, { recursive: true });
+    await writeOasisManifest({
+      patientDir,
+      assessments: [{
+        assessmentId: "soc-20260509",
+        assessmentType: "SOC",
+        date: "05/09/2026",
+        artifactDirectory: patientDir,
+        isCurrent: true,
+        processingStatus: "processed_root_current",
+      }],
+    });
     await writeFile(
       path.join(patientDir, "oasis-dom-extracted-state.json"),
       JSON.stringify(stateWithCarePlan(), null, 2),

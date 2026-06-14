@@ -16,13 +16,16 @@ import {
   patientRunDeltaPlanSchema,
 } from "@medical-ai-qa/shared-types";
 import { readJsonFile, writeJsonFile } from "../utils/jsonFile";
+import { buildWorkItemFingerprint } from "../utils/workItemFingerprint";
 
 const PATIENT_MEMORY_INDEX_FILE_NAME = "patient-memory-index.json";
 const PATIENT_MEMORY_RECORD_FILE_NAME = "patient-memory-record.json";
 const PATIENT_RUN_DELTA_PLAN_FILE_NAME = "patient-run-delta-plan.json";
 const PATIENT_MEMORY_SEED_PLAN_FILE_NAME = "patient-memory-seed-plan.json";
+const WORK_ITEM_FINGERPRINT_FILE_NAME = "work-item-fingerprint.json";
 
 const DEFAULT_CURRENT_ARTIFACTS = [
+  WORK_ITEM_FINGERPRINT_FILE_NAME,
   "patient-dashboard-state.json",
   "coding-input.json",
   "document-text.json",
@@ -445,6 +448,7 @@ export class PatientMemoryService {
       });
     }
 
+    const workItemFingerprint = input.workItem ? buildWorkItemFingerprint(input.workItem) : existing.current?.workItemFingerprint ?? null;
     const nextRecord: PatientMemoryRecord = {
       ...existing,
       updatedAt: promotedAt,
@@ -472,6 +476,7 @@ export class PatientMemoryService {
         runId: input.runId ?? null,
         workItemId: input.workItem?.id ?? null,
         sourcePatientArtifactsDirectory: input.sourcePatientArtifactsDirectory,
+        workItemFingerprint,
         artifacts,
       },
       history: [
@@ -502,6 +507,7 @@ export class PatientMemoryService {
       patientMemoryId: input.patientMemoryId,
       workItem: input.workItem ?? null,
       identityConfidence: index.records[input.patientMemoryId].identity.identityConfidence,
+      workItemFingerprint,
       createdAt: promotedAt,
       sourcePatientArtifactsDirectory: input.sourcePatientArtifactsDirectory,
       targetPatientArtifactsDirectory: null,
@@ -577,6 +583,7 @@ export class PatientMemoryService {
       patientMemoryId: input.patientMemoryId,
       workItem: null,
       identityConfidence: record.identity.identityConfidence,
+      workItemFingerprint: record.current.workItemFingerprint ?? null,
       createdAt: seededAt,
       sourcePatientArtifactsDirectory: null,
       targetPatientArtifactsDirectory: input.targetPatientArtifactsDirectory,

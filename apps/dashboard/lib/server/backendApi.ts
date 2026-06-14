@@ -4,7 +4,9 @@ import type {
 } from "@medical-ai-qa/shared-types";
 import type {
   PatientArtifactsResponse,
+  ClinicalRefreshStartResponse,
   PatientDetail,
+  PatientClinicalRefreshStatus,
   PatientOasisCheckState,
   PatientReferralIntakeStatus,
   OasisCheckStartResponse,
@@ -190,6 +192,30 @@ export function getBackendPatientReferralIntakeStatus(
 ): Promise<PatientReferralIntakeStatus> {
   return fetchBackendJson<PatientReferralIntakeStatus>(
     `/runs/${encodeURIComponent(runId)}/patients/${encodeURIComponent(patientId)}/referral-intake/status`,
+  );
+}
+
+export async function getBackendVersion(): Promise<unknown> {
+  return fetchBackendJson<unknown>("/version");
+}
+
+export function startBackendPatientClinicalRefresh(
+  runId: string,
+  patientId: string,
+  options: { assessmentId?: string | null } = {},
+): Promise<ClinicalRefreshStartResponse> {
+  return postBackendJson<ClinicalRefreshStartResponse>(
+    `/runs/${encodeURIComponent(runId)}/patients/${encodeURIComponent(patientId)}/clinical-refresh`,
+    options.assessmentId ? { assessmentId: options.assessmentId } : undefined,
+  );
+}
+
+export function getBackendPatientClinicalRefreshStatus(
+  runId: string,
+  patientId: string,
+): Promise<PatientClinicalRefreshStatus> {
+  return fetchBackendJson<PatientClinicalRefreshStatus>(
+    `/runs/${encodeURIComponent(runId)}/patients/${encodeURIComponent(patientId)}/clinical-refresh/status`,
   );
 }
 

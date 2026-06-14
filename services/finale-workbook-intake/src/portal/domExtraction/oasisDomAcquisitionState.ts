@@ -90,6 +90,50 @@ function stableJson(value: unknown): string {
   return JSON.stringify(value);
 }
 
+function isCompletePrintPreviewDomState(input: {
+  state: Omit<OasisDomAcquisitionState, "acquisitionStatus" | "readinessReasons" | "missingRequiredSections" | "missingRequiredFields" | "fallbackReasons" | "lastCompletedAt">;
+  latestDomState?: PortalDomExtractedState;
+  minFieldCount: number;
+  minNonEmptyFieldCount: number;
+}): boolean {
+  if (input.latestDomState?.diagnostics.routePattern !== "print_preview_dom") {
+    return false;
+  }
+  if (input.latestDomState.coverage.fallbackRecommended) {
+    return false;
+  }
+
+  const totalFieldCount = input.state.sections.reduce((total, section) => total + section.fieldCount, 0);
+  const totalNonEmptyFieldCount = input.state.sections.reduce((total, section) => total + section.nonEmptyFieldCount, 0);
+  const capturedSectionCount = input.state.sections.filter((section) =>
+    section.status === "captured" || section.status === "degraded"
+  ).length;
+  const itemCodeCount = new Set(input.state.sections.flatMap((section) =>
+    section.fields.map((field) => field.oasisItemCode).filter(Boolean))).size;
+  const digest = [
+    input.latestDomState.textDigest,
+    ...input.state.sections.map((section) => section.title),
+    ...input.state.sections.flatMap((section) => section.fields.map((field) =>
+      `${field.oasisItemCode ?? ""} ${field.label ?? ""} ${field.normalizedValue}`
+    )),
+  ].join("\n");
+
+  const hasOasisStructure = /\bM\d{4}\b/i.test(digest) || /\bGG\d{4}[A-Z]?\b/i.test(digest);
+  const hasClinicalCoverage =
+    /administrative/i.test(digest) &&
+    /vital signs|pain assessment/i.test(digest) &&
+    /medication|allerg/i.test(digest) &&
+    /plan of care|care plan|discharge summary/i.test(digest) &&
+    /functional|mobility|self care|musculoskeletal/i.test(digest);
+
+  return capturedSectionCount >= 6 &&
+    totalFieldCount >= input.minFieldCount &&
+    totalNonEmptyFieldCount >= input.minNonEmptyFieldCount &&
+    itemCodeCount >= 8 &&
+    hasOasisStructure &&
+    hasClinicalCoverage;
+}
+
 function fieldValue(field: PortalDomExtractedField): string | number | boolean | string[] | undefined {
   if (field.selectedText !== undefined) {
     return field.selectedText;
@@ -297,6 +341,20 @@ export function evaluateOasisDomAcquisitionReadiness(input: {
   if (input.latestDomState?.coverage.fallbackRecommended) {
     readinessReasons.push("blocked_extraction_failed");
     fallbackReasons.push(...input.latestDomState.coverage.fallbackReasons);
+  }
+  if (readinessReasons.length === 0 && isCompletePrintPreviewDomState({
+    state: input.state,
+    latestDomState: input.latestDomState,
+    minFieldCount,
+    minNonEmptyFieldCount,
+  })) {
+    return {
+      status: "ready_for_qa",
+      readinessReasons: ["ready_for_qa"],
+      missingRequiredSections: [],
+      missingRequiredFields,
+      fallbackReasons: [],
+    };
   }
   if (missingRequiredSections.length > 0) {
     readinessReasons.push("pending_missing_required_sections");

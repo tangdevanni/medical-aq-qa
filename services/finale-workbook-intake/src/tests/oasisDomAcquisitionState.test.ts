@@ -58,6 +58,7 @@ function state(input: {
   fallbackRecommended?: boolean;
   fallbackReasons?: string[];
   hash?: string;
+  routePattern?: string;
 }): PortalDomExtractedState {
   const fields = input.sections.flatMap((entry) => entry.fields);
   return {
@@ -79,7 +80,8 @@ function state(input: {
       inputSource: input.fallbackRecommended ? "dom_state_plus_raw_fallback" : "dom_state_primary",
       ocrUsed: false,
       pdfCaptureUsed: false,
-      routePattern: "https://app.finalehealth.com/provider/<provider-id>/client/<client-id>/intake/<intake-id>/documents/note/<document-type>/<note-id>",
+      routePattern: input.routePattern ??
+        "https://app.finalehealth.com/provider/<provider-id>/client/<client-id>/intake/<intake-id>/documents/note/<document-type>/<note-id>",
     },
     contentHash: input.hash ?? "hash",
     textDigest: input.sections.map((entry) => entry.visibleTextDigest ?? entry.title).join("\n"),
@@ -222,6 +224,30 @@ describe("OASIS DOM acquisition state", () => {
 
     expect(merged.sections.find((entry) => entry.sectionKey.includes("care_plan"))?.status).toBe("deferred");
     expect(merged.acquisitionStatus).toBe("ready_for_qa");
+  });
+
+  it("treats complete print-preview DOM evidence as ready without requiring legacy tab section keys", () => {
+    const printPreviewState = state({
+      routePattern: "print_preview_dom",
+      sections: [
+        section("ADMINISTRATIVE INFORMATION", [field({ code: "M0010", label: "Agency" })]),
+        section("VITAL SIGNS & PAIN ASSESSMENT", [field({ code: "M1060", label: "Vitals" })]),
+        section("MEDICATION & ALLERGIES", [field({ code: "N0415", label: "Medication" })]),
+        section("FUNCTIONAL ASSESSMENT (MOBILITY & MUSCULOSKELETAL)", [field({ code: "GG0170", label: "Mobility" })]),
+        section("FUNCTIONAL ASSESSMENT (SELF CARE)", [field({ code: "GG0130", label: "Self care" })]),
+        section("CARDIOPULMONARY (CHEST & THORAX)", [field({ code: "M1400", label: "Cardiopulmonary" })]),
+        section("CARE PLAN (PROBLEMS / GOALS / INTERVENTIONS)", [field({ code: "M2200", label: "Plan of care" })]),
+        section("DISCHARGE SUMMARY", [field({ code: "M0906", label: "Discharge summary" })]),
+      ],
+    });
+    const merged = mergeOasisDomAcquisitionState(null, printPreviewState, {
+      minFieldCount: 8,
+      minNonEmptyFieldCount: 8,
+    });
+
+    expect(merged.acquisitionStatus).toBe("ready_for_qa");
+    expect(merged.readinessReasons).toEqual(["ready_for_qa"]);
+    expect(merged.missingRequiredSections).toEqual([]);
   });
 
   it("low DOM coverage routes to insufficient evidence without OCR fallback", () => {

@@ -345,11 +345,102 @@ function dedupeReferralOasisItems(items: ReferralOasisDisplayItem[]): ReferralOa
   return deduped;
 }
 
+function dedupeMedicationDisplayItems(items: ReferralOasisDisplayItem[]): ReferralOasisDisplayItem[] {
+  const byKey = new Map<string, ReferralOasisDisplayItem>();
+  for (const item of items) {
+    const normalizedLabel = normalizeLabelForComparison(item.label);
+    const normalizedValue = normalizeLabelForComparison(item.value);
+    const key = normalizedValue === "medication"
+      ? `medication:${normalizedLabel}`
+      : `${normalizedLabel}|${normalizedValue}`;
+    const existing = byKey.get(key);
+    if (!existing) {
+      byKey.set(key, item);
+      continue;
+    }
+    const existingDetailLength = `${existing.label} ${existing.meta ?? ""}`.length;
+    const nextDetailLength = `${item.label} ${item.meta ?? ""}`.length;
+    if (nextDetailLength > existingDetailLength) {
+      byKey.set(key, item);
+    }
+  }
+  return [...byKey.values()];
+}
+
 function splitDisplayListValue(value: string): string[] {
   return value
     .split(/\s*;\s*/)
     .map((entry) => entry.trim())
     .filter((entry) => hasVisiblePortalValue(entry));
+}
+
+function splitDiagnosisListValue(value: string): string[] {
+  const semicolonParts = splitDisplayListValue(value);
+  if (semicolonParts.length > 1) {
+    return semicolonParts;
+  }
+
+  const compacted = compactDisplayText(value);
+  const matches = [...compacted.matchAll(/\b[A-TV-Z][0-9][0-9A-Z](?:\.[0-9A-Z]{1,4})?\b/gi)];
+  if (matches.length <= 1) {
+    return compacted ? [compacted] : [];
+  }
+
+  return matches.map((match, index) => {
+    const start = match.index ?? 0;
+    const end = matches[index + 1]?.index ?? compacted.length;
+    return compacted.slice(start, end).replace(/[;,\s]+$/g, "").trim();
+  }).filter((entry) => hasVisiblePortalValue(entry));
+}
+
+function cleanMedicationName(value: string): string {
+  const compacted = compactDisplayText(value);
+  if (
+    !/\([^)]+\)/.test(compacted) &&
+    !/\b(Once a day|Twice a day|Three times a day|Four times a day|Daily|Every|As needed|PRN)\b/i.test(compacted) &&
+    !/\s\/\s*(?:New|Active|Changed|Current)\b/i.test(compacted)
+  ) {
+    return compacted;
+  }
+
+  return compacted
+    .replace(/\s*\((?:Oral|Injection|Injectable|Topical|Ophthalmic|Otic|Nasal|Inhalation)[^)]+\).*$/i, "")
+    .replace(/\s+\d+(?:\.\d+)?\s*(?:tab|tablet|capsule|cap|mg|mcg|ml|units?|puffs?)\b.*$/i, "")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+}
+
+function formatMedicationFallbackDisplay(label: string, value: string): { label: string; value: string; meta: string | null } {
+  const cleanedValue = compactDisplayText(value);
+  const isNegativeAllergyStatement = /\bno known\b.*\ballerg/i.test(cleanedValue);
+  const isAllergy = /\ballerg/i.test(label) || isNegativeAllergyStatement;
+  if (isAllergy) {
+    return {
+      label: isNegativeAllergyStatement || /^allerg/i.test(cleanedValue) ? cleanedValue : `Allergy: ${cleanedValue}`,
+      value: "Allergy",
+      meta: null,
+    };
+  }
+
+  const form = cleanedValue.match(/\(([^)]+)\)/)?.[1]?.trim() ?? null;
+  const strength =
+    cleanedValue.match(/\/\s*(?:New|Active|Changed|Current)\s+([0-9.]+\s*(?:mg|mcg|ml|units?|tab|tablet|capsule|cap)\b)/i)?.[1]?.trim() ??
+    cleanedValue.match(/\/\s*([0-9.]+\s*(?:mg|mcg|ml|units?|tab|tablet|capsule|cap)\b)/i)?.[1]?.trim() ??
+    null;
+  const route = cleanedValue.match(/\b(By mouth|Oral|Subcutaneous|Intramuscular|Intravenous|Topical|Inhalation|Nasal|Ophthalmic|Otic)\b/i)?.[1]?.trim() ?? null;
+  const frequency = cleanedValue.match(/\b(Once a day|Twice a day|Three times a day|Four times a day|Daily|Every [^/]+?|As needed|PRN)\b/i)?.[1]?.trim() ?? null;
+  const quantity = cleanedValue.match(/\b(\d+(?:\.\d+)?\s*(?:Tab|Tablet|Capsule|Cap|mL|units?|puffs?))\b/i)?.[1]?.trim() ?? null;
+  const classification = cleanedValue.match(/\b([A-Z][A-Z /-]{4,})\s*\/\s*(?:New|Active|Changed|Current)\b/)?.[1]?.replace(/\s{2,}/g, " ").trim() ?? null;
+  const status = cleanedValue.match(/\/\s*(New|Active|Changed|Current)\b/i)?.[1]?.trim() ?? null;
+  const name = cleanMedicationName(cleanedValue) || cleanedValue;
+  const meta = [form, strength, quantity, frequency, route, classification, status]
+    .filter((part): part is string => Boolean(part))
+    .join(" | ");
+  return {
+    label: name,
+    value: "Medication",
+    meta: meta || null,
+  };
 }
 
 function buildCleanRowDisplay(
@@ -383,10 +474,61 @@ function buildCleanRowDisplay(
     };
   }
 
+  if (normalizedLabel === "code status") {
+    return {
+      label: cleanedLabel,
+      value: formatStatusLabel(cleanedValue),
+    };
+  }
+
   return {
     label: cleanedLabel,
     value: cleanedValue,
   };
+}
+
+function buildMedicationRowDisplayItems(
+  row: FieldComparison,
+  display: { label: string; value: string },
+): ReferralOasisDisplayItem[] {
+  const normalizedContext = normalizeLabelForComparison(`${row.sectionKey} ${row.fieldKey} ${row.fieldLabel}`);
+  if (!/\bmedication|allerg|injectable\b/.test(normalizedContext)) {
+    return [{
+      label: display.label,
+      value: display.value,
+      meta: buildStructuredItemMeta(row, "oasis"),
+    }];
+  }
+
+  const formatted = formatMedicationFallbackDisplay(display.label, display.label);
+  return [{
+    ...formatted,
+    meta: formatted.meta,
+  }];
+}
+
+function buildRowDisplayItems(input: {
+  row: FieldComparison;
+  side: "referral" | "oasis";
+  display: { label: string; value: string };
+  changed: boolean;
+  changeReason: string | null;
+}): ReferralOasisDisplayItem[] {
+  const isMedicationContext =
+    normalizeLabelForComparison(`${input.row.sectionKey} ${input.row.fieldKey} ${input.row.fieldLabel}`)
+      .match(/\bmedication|allerg|injectable\b/) !== null;
+  const baseItems = input.side === "oasis" && isMedicationContext
+    ? buildMedicationRowDisplayItems(input.row, input.display)
+    : [{
+        label: input.display.label,
+        value: input.display.value,
+        meta: buildStructuredItemMeta(input.row, input.side),
+      }];
+  return baseItems.map((item) => ({
+    ...item,
+    changed: input.changed,
+    changeReason: input.changeReason,
+  }));
 }
 
 function findOasisChangeReason(row: FieldComparison, flags: ReferralOasisChangeFlag[]): string | null {
@@ -441,17 +583,21 @@ function buildDisplayItemsFromRows(
           return [];
         }
 
-        return [{
-          label: display.label,
-          value: display.value,
-          meta: buildStructuredItemMeta(row, side),
+        return buildRowDisplayItems({
+          row,
+          side,
+          display,
           changed: Boolean(changeReason),
           changeReason,
-        }];
+        });
       });
   });
 
-  return dedupeReferralOasisItems(items);
+  return rows.some((row) => /\bmedication|allerg|injectable\b/.test(
+    normalizeLabelForComparison(`${row.sectionKey} ${row.fieldKey} ${row.fieldLabel}`),
+  ))
+    ? dedupeReferralOasisItems(dedupeMedicationDisplayItems(items))
+    : dedupeReferralOasisItems(items);
 }
 
 function diagnosisCodeFromValue(value: string): string | null {
@@ -556,15 +702,16 @@ function buildDiagnosisItemsFromRows(
   }
 
   const items = diagnosisRows.flatMap((row, index): ReferralOasisDisplayItem[] => {
-    const value = compactDisplayText(getDiagnosisSideValue(row, side));
+    const values = splitDiagnosisListValue(getDiagnosisSideValue(row, side));
+    return values.flatMap((value, valueIndex): ReferralOasisDisplayItem[] => {
     const code = diagnosisCodeFromValue(value);
     if (!code) {
       return [];
     }
     const description = side === "oasis"
-      ? cleanOasisDiagnosisDescription(getDiagnosisSideSnippet(row, side), code) ??
+      ? cleanOasisDiagnosisDescription(splitDiagnosisListValue(getDiagnosisSideSnippet(row, side) ?? "")[valueIndex], code) ??
         cleanOasisDiagnosisDescription(value, code)
-      : cleanDiagnosisDescription(getDiagnosisSideSnippet(row, side), code) ??
+      : cleanDiagnosisDescription(splitDiagnosisListValue(getDiagnosisSideSnippet(row, side) ?? "")[valueIndex], code) ??
         cleanDiagnosisDescription(value, code);
     const onsetDate = onsetValues[index] ?? onsetValues[0] ?? null;
     const changeReason = side === "oasis" ? findOasisChangeReason(row, oasisChangeFlags) : null;
@@ -579,6 +726,7 @@ function buildDiagnosisItemsFromRows(
       changed: Boolean(changeReason),
       changeReason,
     }];
+    });
   });
 
   return dedupeReferralOasisItems(items);

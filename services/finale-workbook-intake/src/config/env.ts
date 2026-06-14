@@ -22,6 +22,8 @@ function findWorkspaceRoot(startDir: string): string | null {
 function loadFinaleEnvFiles(): void {
   const workspaceRoot = findWorkspaceRoot(__dirname) ?? findWorkspaceRoot(process.cwd());
   const candidatePaths = [
+    process.env.MEDICAL_AQ_QA_ENV_FILE ?? null,
+    process.env.FINALE_ENV_FILE ?? null,
     workspaceRoot ? path.join(workspaceRoot, ".env") : null,
     workspaceRoot ? path.join(workspaceRoot, ".env.local") : null,
     workspaceRoot ? path.join(workspaceRoot, "services", "finale-workbook-intake", ".env") : null,
@@ -102,6 +104,10 @@ const envSchema = z.object({
     .optional()
     .default("true")
     .transform((value) => value === "true"),
+  OASIS_ACQUISITION_SOURCE: z
+    .enum(["legacy_dom", "print_preview_dom", "print_preview_dom_first"])
+    .optional()
+    .default("legacy_dom"),
   VISIT_NOTES_DOM_EXTRACTION_ENABLED: z
     .enum(["true", "false"])
     .optional()

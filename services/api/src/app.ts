@@ -17,6 +17,7 @@ import { BatchControlPlaneService } from "./services/batchControlPlaneService";
 import { PatientMemoryService } from "./services/patientMemoryService";
 import { PortalCredentialProvider } from "./services/portalCredentialProvider";
 import { SubsidiaryConfigService } from "./services/subsidiaryConfigService";
+import { getApiRuntimeVersion } from "./runtimeVersion";
 
 export async function createApp() {
   const env = loadEnv();
@@ -71,11 +72,15 @@ export async function createApp() {
       deltaReuseEnabled: env.DELTA_REUSE_ENABLED,
       autonomousMode: env.API_AUTONOMOUS_MODE,
       scheduleLocalTimes: env.DEFAULT_SUBSIDIARY_RERUN_LOCAL_TIMES,
+      workbookIntakeDay: env.DEFAULT_SUBSIDIARY_WORKBOOK_INTAKE_DAY,
+      workbookIntakeLocalTime: env.DEFAULT_SUBSIDIARY_WORKBOOK_INTAKE_LOCAL_TIME,
+      deltaRunWeekdays: env.DEFAULT_SUBSIDIARY_DELTA_RUN_WEEKDAYS,
     },
   );
   await batchService.initialize();
 
   app.get("/health", async () => getHealthPayload());
+  app.get("/api/version", async () => getApiRuntimeVersion());
   await registerAgencyRoutes(app, batchService);
   await registerBatchRoutes(app, batchService);
   await registerPatientRunRoutes(app, batchService);

@@ -20,6 +20,10 @@ import {
 export const OASIS_DOM_SECTION_PROCESSING_MANIFEST_FILE_NAME = "oasis-dom-section-processing-manifest.json";
 export const OASIS_DOM_SECTION_OUTPUTS_FILE_NAME = "oasis-dom-section-outputs.json";
 export const OASIS_DOM_SECTION_PROMPT_VERSION = "oasis-dom-section-llm.v1";
+export const OASIS_DOM_SECTION_SCHEMA_VERSION = "oasis-dom-section-outputs.v1";
+export const OASIS_DOM_SECTIONER_VERSION = "oasis-dom-sectioner.v2";
+export const OASIS_DOM_SECTION_PARSER_VERSION = "oasis-dom-section-parser.v2";
+export const OASIS_DOM_SECTION_LLM_FORMATTER_VERSION = OASIS_DOM_SECTION_PROMPT_VERSION;
 
 export type OasisDomDashboardSectionKey =
   | "diagnoses"
@@ -51,6 +55,13 @@ export type OasisDomSectionOutputRow = {
   confidence: number | null;
   sourceSectionTitle: string | null;
   sourceItemCode: string | null;
+  source?: "print_preview_dom" | "legacy_dom";
+  sourceSection?: string | null;
+  sourceHash?: string | null;
+  evidenceSpan?: {
+    startOffset: number;
+    endOffset: number;
+  } | null;
 };
 
 export type OasisDomSectionResult = {
@@ -60,6 +71,12 @@ export type OasisDomSectionResult = {
   sectionContentHash: string;
   analysisInputHash: string;
   cacheKey: string;
+  source?: "print_preview_dom" | "legacy_dom";
+  normalizedTextHash?: string;
+  schemaVersion?: typeof OASIS_DOM_SECTION_SCHEMA_VERSION;
+  sectionerVersion?: typeof OASIS_DOM_SECTIONER_VERSION;
+  parserVersion?: typeof OASIS_DOM_SECTION_PARSER_VERSION;
+  llmFormatterVersion?: typeof OASIS_DOM_SECTION_LLM_FORMATTER_VERSION;
   promptVersion: string;
   modelId: string;
   processingMode: "dom_section_llm";
@@ -83,6 +100,7 @@ export type OasisDomSectionProcessingManifest = {
   promptVersion: string;
   modelId: string;
   domContentHash: string;
+  source?: "print_preview_dom" | "legacy_dom";
   sectionInputs: Array<{
     sectionKey: OasisDomDashboardSectionKey;
     label: string;
@@ -90,6 +108,11 @@ export type OasisDomSectionProcessingManifest = {
     sectionContentHash: string;
     analysisInputHash: string;
     cacheKey: string;
+    normalizedTextHash?: string;
+    schemaVersion?: typeof OASIS_DOM_SECTION_SCHEMA_VERSION;
+    sectionerVersion?: typeof OASIS_DOM_SECTIONER_VERSION;
+    parserVersion?: typeof OASIS_DOM_SECTION_PARSER_VERSION;
+    llmFormatterVersion?: typeof OASIS_DOM_SECTION_LLM_FORMATTER_VERSION;
     fieldCount: number;
     tableCount: number;
     llmAnalysisSource: OasisDomSectionProcessingSource;
@@ -115,6 +138,7 @@ export type OasisDomSectionOutputsArtifact = {
   promptVersion: string;
   modelId: string;
   domContentHash: string;
+  source?: "print_preview_dom" | "legacy_dom";
   sections: OasisDomSectionResult[];
   summary: OasisDomSectionProcessingManifest["summary"];
   warnings: string[];
@@ -142,6 +166,12 @@ type SectionWorkItem = {
   sectionContentHash: string;
   analysisInputHash: string;
   cacheKey: string;
+  source: "print_preview_dom" | "legacy_dom";
+  normalizedTextHash: string;
+  schemaVersion: typeof OASIS_DOM_SECTION_SCHEMA_VERSION;
+  sectionerVersion: typeof OASIS_DOM_SECTIONER_VERSION;
+  parserVersion: typeof OASIS_DOM_SECTION_PARSER_VERSION;
+  llmFormatterVersion: typeof OASIS_DOM_SECTION_LLM_FORMATTER_VERSION;
   fieldCount: number;
   tableCount: number;
 };
@@ -184,6 +214,8 @@ const SECTION_DEFINITIONS: SectionDefinition[] = [
   },
 ];
 
+const VISIBLE_TEXT_PROMPT_LIMIT = 12_000;
+
 const bedrockClientByRegion = new Map<string, BedrockRuntimeClient>();
 
 function getBedrockClient(region: string): BedrockRuntimeClient {
@@ -209,6 +241,10 @@ function normalizeKey(value: string): string {
 
 function sha256(value: string): string {
   return createHash("sha256").update(value, "utf8").digest("hex");
+}
+
+function sourceForState(state: PortalDomExtractedState): "print_preview_dom" | "legacy_dom" {
+  return state.diagnostics.routePattern === "print_preview_dom" ? "print_preview_dom" : "legacy_dom";
 }
 
 function stableJson(value: unknown): string {
@@ -372,7 +408,7 @@ function buildSectionContent(section: PortalDomExtractedSection): string {
   }
   const digest = normalizeWhitespace(section.visibleTextDigest);
   if (digest) {
-    lines.push(`Visible text: ${digest.slice(0, 2_500)}`);
+    lines.push(`Visible text: ${digest.slice(0, VISIBLE_TEXT_PROMPT_LIMIT)}`);
   }
   return lines.join("\n").trim();
 }
@@ -384,6 +420,7 @@ export function buildOasisDomSectionWorkItems(input: {
   modelId: string;
 }): SectionWorkItem[] {
   const promptVersion = input.promptVersion ?? OASIS_DOM_SECTION_PROMPT_VERSION;
+  const source = sourceForState(input.state);
   const sectionsByKey = new Map<OasisDomDashboardSectionKey, PortalDomExtractedSection[]>();
   for (const section of input.state.sections) {
     if (section.status === "skipped_duplicate") {
@@ -405,13 +442,20 @@ export function buildOasisDomSectionWorkItems(input: {
       .trim();
     const sectionContentHash = sha256(stableJson({
       sectionKey: definition.key,
+      source,
       sourceSectionTitles,
       normalizedContent,
     }));
+    const normalizedTextHash = sha256(normalizedContent.toLowerCase());
     const analysisInputHash = sha256(stableJson({
       patientId: input.patientId,
       sectionKey: definition.key,
       sectionContentHash,
+      normalizedTextHash,
+      schemaVersion: OASIS_DOM_SECTION_SCHEMA_VERSION,
+      sectionerVersion: OASIS_DOM_SECTIONER_VERSION,
+      parserVersion: OASIS_DOM_SECTION_PARSER_VERSION,
+      llmFormatterVersion: OASIS_DOM_SECTION_LLM_FORMATTER_VERSION,
       promptVersion,
       modelId: input.modelId,
       processingMode: "dom_section_llm",
@@ -420,6 +464,11 @@ export function buildOasisDomSectionWorkItems(input: {
       patientId: input.patientId,
       sectionKey: definition.key,
       sectionContentHash,
+      normalizedTextHash,
+      schemaVersion: OASIS_DOM_SECTION_SCHEMA_VERSION,
+      sectionerVersion: OASIS_DOM_SECTIONER_VERSION,
+      parserVersion: OASIS_DOM_SECTION_PARSER_VERSION,
+      llmFormatterVersion: OASIS_DOM_SECTION_LLM_FORMATTER_VERSION,
       promptVersion,
       modelId: input.modelId,
       processingMode: "dom_section_llm",
@@ -433,6 +482,12 @@ export function buildOasisDomSectionWorkItems(input: {
       sectionContentHash,
       analysisInputHash,
       cacheKey,
+      source,
+      normalizedTextHash,
+      schemaVersion: OASIS_DOM_SECTION_SCHEMA_VERSION,
+      sectionerVersion: OASIS_DOM_SECTIONER_VERSION,
+      parserVersion: OASIS_DOM_SECTION_PARSER_VERSION,
+      llmFormatterVersion: OASIS_DOM_SECTION_LLM_FORMATTER_VERSION,
       fieldCount: sourceSections.reduce((total, section) => total + usefulSectionFields(section).length, 0),
       tableCount: sourceSections.reduce((total, section) => total + section.tables.length, 0),
     };
@@ -697,6 +752,13 @@ function resultBase(input: {
   rows: OasisDomSectionOutputRow[];
   warnings?: string[];
 }): OasisDomSectionResult {
+  const rows = input.rows.map((row) => ({
+    ...row,
+    source: row.source ?? input.workItem.source,
+    sourceSection: row.sourceSection ?? row.sourceSectionTitle,
+    sourceHash: row.sourceHash ?? input.workItem.sectionContentHash,
+    evidenceSpan: row.evidenceSpan ?? null,
+  }));
   return {
     sectionKey: input.workItem.sectionKey,
     label: input.workItem.label,
@@ -704,6 +766,12 @@ function resultBase(input: {
     sectionContentHash: input.workItem.sectionContentHash,
     analysisInputHash: input.workItem.analysisInputHash,
     cacheKey: input.workItem.cacheKey,
+    source: input.workItem.source,
+    normalizedTextHash: input.workItem.normalizedTextHash,
+    schemaVersion: input.workItem.schemaVersion,
+    sectionerVersion: input.workItem.sectionerVersion,
+    parserVersion: input.workItem.parserVersion,
+    llmFormatterVersion: input.workItem.llmFormatterVersion,
     promptVersion: OASIS_DOM_SECTION_PROMPT_VERSION,
     modelId: input.modelId,
     processingMode: "dom_section_llm",
@@ -712,8 +780,8 @@ function resultBase(input: {
     rerunReason: input.rerunReason,
     fieldCount: input.workItem.fieldCount,
     tableCount: input.workItem.tableCount,
-    evidenceRowCount: input.rows.length,
-    rows: input.rows,
+    evidenceRowCount: rows.length,
+    rows,
     warnings: input.warnings ?? [],
     processedAt: input.generatedAt,
   };
@@ -760,6 +828,19 @@ export async function processOasisDomSections(input: {
       if (cached) {
         return {
           ...cached,
+          source: workItem.source,
+          normalizedTextHash: workItem.normalizedTextHash,
+          schemaVersion: workItem.schemaVersion,
+          sectionerVersion: workItem.sectionerVersion,
+          parserVersion: workItem.parserVersion,
+          llmFormatterVersion: workItem.llmFormatterVersion,
+          rows: cached.rows.map((row) => ({
+            ...row,
+            source: row.source ?? workItem.source,
+            sourceSection: row.sourceSection ?? row.sourceSectionTitle,
+            sourceHash: row.sourceHash ?? workItem.sectionContentHash,
+            evidenceSpan: row.evidenceSpan ?? null,
+          })),
           processingSource: "cache",
           analysisStatus: "cache",
           processedAt: generatedAt,
@@ -847,6 +928,7 @@ export async function processOasisDomSections(input: {
     promptVersion: OASIS_DOM_SECTION_PROMPT_VERSION,
     modelId,
     domContentHash: input.state.contentHash,
+    source: sourceForState(input.state),
     sectionInputs: sections.map((section) => ({
       sectionKey: section.sectionKey,
       label: section.label,
@@ -854,6 +936,11 @@ export async function processOasisDomSections(input: {
       sectionContentHash: section.sectionContentHash,
       analysisInputHash: section.analysisInputHash,
       cacheKey: section.cacheKey,
+      normalizedTextHash: section.normalizedTextHash,
+      schemaVersion: section.schemaVersion,
+      sectionerVersion: section.sectionerVersion,
+      parserVersion: section.parserVersion,
+      llmFormatterVersion: section.llmFormatterVersion,
       fieldCount: section.fieldCount,
       tableCount: section.tableCount,
       llmAnalysisSource: section.processingSource,
@@ -871,6 +958,7 @@ export async function processOasisDomSections(input: {
     promptVersion: OASIS_DOM_SECTION_PROMPT_VERSION,
     modelId,
     domContentHash: input.state.contentHash,
+    source: sourceForState(input.state),
     sections,
     summary,
     warnings: Array.from(new Set(sections.flatMap((section) => section.warnings))),

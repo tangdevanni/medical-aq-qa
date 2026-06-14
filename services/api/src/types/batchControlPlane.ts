@@ -38,6 +38,10 @@ export const batchRecordSchema = z.object({
     localTimes: z.array(z.string().min(1)).default(["20:30"]),
     lastRunAt: z.string().min(1).nullable(),
     nextScheduledRunAt: z.string().min(1).nullable(),
+    lastWorkbookAcquiredAt: z.string().min(1).nullable().optional(),
+    nextWorkbookIntakeAt: z.string().min(1).nullable().optional(),
+    lastDeltaRunAt: z.string().min(1).nullable().optional(),
+    nextDeltaRunAt: z.string().min(1).nullable().optional(),
   }).default({
     scheduledRunId: null,
     active: true,
@@ -47,6 +51,10 @@ export const batchRecordSchema = z.object({
     localTimes: ["20:30"],
     lastRunAt: null,
     nextScheduledRunAt: null,
+    lastWorkbookAcquiredAt: null,
+    nextWorkbookIntakeAt: null,
+    lastDeltaRunAt: null,
+    nextDeltaRunAt: null,
   }),
   sourceWorkbook: z.object({
     subsidiaryId: z.string().min(1).default("default"),

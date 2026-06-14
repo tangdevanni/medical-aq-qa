@@ -28,13 +28,13 @@ function field(input: {
   };
 }
 
-function section(title: string, fields: PortalDomExtractedField[]): PortalDomExtractedSection {
+function section(title: string, fields: PortalDomExtractedField[], visibleTextDigest?: string): PortalDomExtractedSection {
   return {
     title,
     status: "success",
     fields,
     tables: [],
-    visibleTextDigest: fields.map((entry) => `${entry.label}: ${entry.value}`).join("\n"),
+    visibleTextDigest: visibleTextDigest ?? fields.map((entry) => `${entry.label}: ${entry.value}`).join("\n"),
     fallbackReasons: [],
   };
 }
@@ -71,6 +71,7 @@ describe("oasisDomSectionProcessingService", () => {
       state: state([
         section("Administrative Information", [field({ itemCode: "M0030", label: "Start Of Care Date", value: "2026-05-09" })]),
         section("Safety Risk Assessment", [field({ label: "Living Situation", value: "Lives alone" })]),
+        section("Plan of Care", [], `Plan begins. ${"x".repeat(5_000)} Late plan detail: skilled teaching continues.`),
       ]),
       patientId: "patient-1",
       modelId: "test-model",
@@ -89,6 +90,9 @@ describe("oasisDomSectionProcessingService", () => {
       "Administrative Information",
     ]);
     expect(workItems.find((entry) => entry.sectionKey === "safety_social_support")?.fieldCount).toBe(1);
+    expect(workItems.find((entry) => entry.sectionKey === "plan_of_care")?.normalizedContent).toContain(
+      "Late plan detail: skilled teaching continues.",
+    );
   });
 
   it("runs LLM for new section content and reuses unchanged section hashes", async () => {

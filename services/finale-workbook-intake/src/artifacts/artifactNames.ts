@@ -13,6 +13,10 @@ export const REFERRAL_EXTRACTED_FACTS_FILE_NAME = "extracted-facts.json";
 
 export const PRINTED_NOTE_CHART_VALUES_FILE_NAME = "printed-note-chart-values.json";
 export const OASIS_PRINTED_NOTE_REVIEW_FILE_NAME = "oasis-printed-note-review.json";
+export const CANONICAL_OASIS_DOCUMENT_FILE_NAME = "canonical-oasis-document.json";
+export const CANONICAL_OASIS_SECTION_INDEX_FILE_NAME = "canonical-oasis-section-index.json";
+export const CANONICAL_OASIS_SECTION_HASHES_FILE_NAME = "canonical-oasis-section-hashes.json";
+export const CANONICAL_OASIS_STRUCTURED_FILE_NAME = "canonical-oasis-structured.json";
 export const OASIS_DIAGNOSIS_EXTRACTION_FILE_NAME = "oasis-diagnosis-extraction.json";
 export const REFERRAL_DIAGNOSIS_EXTRACTION_FILE_NAME = "referral-diagnosis-extraction.json";
 export const DIAGNOSIS_RECONCILIATION_FILE_NAME = "diagnosis-reconciliation.json";

@@ -7,6 +7,9 @@ import {
   buildQaWorkflowPatientPortalStatusSnapshot,
   buildOasisAssessmentSelectionForTarget,
   getSupplementalOasisAssessmentTargets,
+  getTargetedSupplementalOasisAssessmentTargets,
+  mergeTargetedOasisAssessmentManifestEntries,
+  resolveSelectedOasisAssessmentTarget,
 } from "../workflows/qaWorkflowOrchestrator";
 
 function makeAssessment(
@@ -138,6 +141,74 @@ describe("qaWorkflowOrchestrator OASIS assessment selection", () => {
       "discharge",
       "older-soc",
     ]);
+  });
+
+  it("does not add supplemental OASIS work when manual refresh targets the current assessment", () => {
+    const selectedTarget = resolveSelectedOasisAssessmentTarget({
+      snapshot: makeSnapshot([
+        makeAssessment({ id: "current-recert", assessmentType: "RECERT", date: "05/19/2026" }),
+        makeAssessment({ id: "selected-soc", assessmentType: "SOC", date: "04/01/2026" }),
+        makeAssessment({ id: "older-dc", assessmentType: "DC", date: "03/01/2026" }),
+      ]),
+      targetOasisAssessmentId: "selected-soc",
+    });
+    const supplementalTargets = getTargetedSupplementalOasisAssessmentTargets({
+      selectedTarget,
+      currentAssessmentId: "selected-soc",
+    });
+
+    expect(supplementalTargets?.map((assessment) => assessment.id)).toEqual([]);
+  });
+
+  it("keeps the current OASIS as root and returns the selected older OASIS as the only supplemental target", () => {
+    const snapshot = makeSnapshot([
+      makeAssessment({ id: "current-recert", assessmentType: "RECERT", date: "05/19/2026" }),
+      makeAssessment({ id: "selected-soc", assessmentType: "SOC", date: "04/01/2026" }),
+      makeAssessment({ id: "older-dc", assessmentType: "DC", date: "03/01/2026" }),
+    ]);
+
+    const resolved = resolveSelectedOasisAssessmentTarget({
+      snapshot,
+      targetOasisAssessmentId: "selected-soc",
+    });
+
+    expect(resolved.targeted).toBe(true);
+    expect(resolved.targetAssessment?.id).toBe("selected-soc");
+    expect(resolved.targetAssessment?.assessmentType).toBe("SOC");
+    expect(getTargetedSupplementalOasisAssessmentTargets({
+      selectedTarget: resolved,
+      currentAssessmentId: snapshot.currentOasisAssessmentId,
+    })?.map((assessment) => assessment.id)).toEqual(["selected-soc"]);
+  });
+
+  it("preserves non-target OASIS manifest entries when replacing the selected assessment entry", () => {
+    const merged = mergeTargetedOasisAssessmentManifestEntries({
+      existing: [
+        { assessmentId: "current-recert", processingStatus: "processed_root_current" },
+        { assessmentId: "selected-soc", processingStatus: "processed_scoped" },
+        { assessmentId: "older-dc", processingStatus: "processed_scoped" },
+      ],
+      replacements: [
+        { assessmentId: "selected-soc", processingStatus: "processed_root_targeted" },
+      ],
+    });
+
+    expect(merged).toEqual([
+      { assessmentId: "selected-soc", processingStatus: "processed_root_targeted" },
+      { assessmentId: "current-recert", processingStatus: "processed_root_current" },
+      { assessmentId: "older-dc", processingStatus: "processed_scoped" },
+    ]);
+  });
+
+  it("fails clearly when a selected OASIS assessment is not present in the portal list", () => {
+    expect(() =>
+      resolveSelectedOasisAssessmentTarget({
+        snapshot: makeSnapshot([
+          makeAssessment({ id: "current-recert", assessmentType: "RECERT", date: "05/19/2026" }),
+        ]),
+        targetOasisAssessmentId: "missing-soc",
+      }),
+    ).toThrow("Selected OASIS assessment was not found");
   });
 
   it("selects the portal current OASIS type for the monitored pass", () => {

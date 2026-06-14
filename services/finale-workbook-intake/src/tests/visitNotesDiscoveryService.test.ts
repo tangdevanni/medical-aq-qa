@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   buildVisitNotesDiscoveryArtifactForTest,
   VISIT_NOTES_CHILD_NAV_SELECTORS,
+  VISIT_NOTES_DOCUMENTATION_MENU_SELECTORS,
   VISIT_NOTES_DISCOVERY_CELL_SELECTOR,
   VISIT_NOTES_DISCOVERY_LINK_SELECTOR,
   VISIT_NOTES_DISCOVERY_ROW_SELECTOR,
@@ -101,6 +102,14 @@ describe("visit notes discovery artifact", () => {
     expect(VISIT_NOTES_MENU_SELECTORS.some((selector) => selector.includes("ft-plus-square"))).toBe(true);
     expect(VISIT_NOTES_MENU_SELECTORS.every((selector) => selector !== "#documents")).toBe(true);
     expect(VISIT_NOTES_CHILD_NAV_SELECTORS).toContain("a[href*='visit-notes']");
+  });
+
+  it("does not use provider-wide Documents as a Visit Notes parent-menu fallback", () => {
+    expect(VISIT_NOTES_DOCUMENTATION_MENU_SELECTORS.length).toBeGreaterThan(0);
+    expect(VISIT_NOTES_DOCUMENTATION_MENU_SELECTORS).toContain("fin-sidebar-menu span:text-is('Documentations')");
+    expect(VISIT_NOTES_DOCUMENTATION_MENU_SELECTORS.every((selector) => selector.includes("fin-sidebar"))).toBe(true);
+    expect(VISIT_NOTES_DOCUMENTATION_MENU_SELECTORS.some((selector) => /Documents['")]/.test(selector))).toBe(false);
+    expect(VISIT_NOTES_DOCUMENTATION_MENU_SELECTORS).not.toContain("span:has-text('Documents')");
   });
 
   it("treats tb-link visit note labels as safe openable clinical notes", () => {

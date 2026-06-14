@@ -181,6 +181,65 @@ function mggSnapshot(input: {
   };
 }
 
+function mggSnapshotWithAdminFields(input: Parameters<typeof mggSnapshot>[0]): OasisMggFieldSnapshotArtifact {
+  const base = mggSnapshot(input);
+  const adminFields = [
+    {
+      fieldKey: "GG0170Q",
+      fieldGroup: "GG fields" as const,
+      itemCode: "GG0170Q",
+      itemLabel: "Does patient use a wheelchair and/or scooter?",
+      sectionTitle: "Functional Status",
+      selectedValue: "0. No",
+      selectedOptionText: "0. No",
+      optionTexts: ["0. No", "1. Yes"],
+      confidence: "high" as const,
+      sourceEvidenceText: "GG0170Q wheelchair follow-up row",
+    },
+    {
+      fieldKey: "stale-special-treatments",
+      fieldGroup: "M fields" as const,
+      itemCode: "M1400",
+      itemLabel: "Special Treatments, Procedures, and Programs",
+      sectionTitle: "Special Treatments, Procedures, and Programs",
+      selectedValue: "Check all of the following treatments, procedures, and programs that apply at discharge.",
+      selectedOptionText: "Check all of the following treatments, procedures, and programs that apply at discharge.",
+      optionTexts: [],
+      confidence: "low" as const,
+      sourceEvidenceText: "Stale broad evidence text contaminated with M1400",
+    },
+    {
+      fieldKey: "M0063",
+      fieldGroup: "M fields" as const,
+      itemCode: "M0063",
+      itemLabel: "Medicare Number",
+      sectionTitle: "Administrative Information",
+      selectedValue: "4TU5VR3YN83",
+      selectedOptionText: "4TU5VR3YN83",
+      optionTexts: [],
+      confidence: "high" as const,
+      sourceEvidenceText: "M0063 Medicare Number",
+    },
+    {
+      fieldKey: "M0066",
+      fieldGroup: "M fields" as const,
+      itemCode: "M0066",
+      itemLabel: "Birth Date",
+      sectionTitle: "Administrative Information",
+      selectedValue: "02/19/1961",
+      selectedOptionText: "02/19/1961",
+      optionTexts: [],
+      confidence: "high" as const,
+      sourceEvidenceText: "M0066 Birth Date",
+    },
+  ];
+  return {
+    ...base,
+    fieldCount: base.fields.length + adminFields.length,
+    fields: [...adminFields, ...base.fields],
+  };
+}
+
 describe("oasisInternalMismatchReviewService", () => {
   it("produces concise section-grouped cross-section discrepancies", async () => {
     const result = await buildOasisInternalMismatchReview({
@@ -237,6 +296,73 @@ describe("oasisInternalMismatchReviewService", () => {
 
     expect(result.status).toBe("clean");
     expect(result.sections.reduce((total, section) => total + section.discrepancies.length, 0)).toBe(0);
+  });
+
+  it("drops speculative independence versus no-problems-identified LLM false positives", async () => {
+    const result = await buildOasisInternalMismatchReview({
+      assessmentId: "dc-20260608",
+      assessmentType: "DC",
+      title: "OASIS DC",
+      sectionOutputs: sectionOutputs(),
+      env: loadEnv({}),
+      invokeText: async () => JSON.stringify({
+        summary: "Discrepancies found in functional status and mobility assessments.",
+        sections: [{
+          sectionKey: "functional_therapy",
+          sectionLabel: "Functional / Therapy",
+          discrepancies: [{
+            itemCode: "GG0130A",
+            itemLabel: "A. Eating:",
+            primarySection: "Functional / Therapy",
+            contradictingSections: ["Body Systems"],
+            valuesInConflict: [
+              "Functional / Therapy says Independent",
+              "Body Systems says No Problems Identified",
+            ],
+            reasoning: "Functional / Therapy indicates independence in eating, while Body Systems reports no problems identified, which could imply potential issues.",
+            confidence: "medium",
+            reviewerAction: "Verify the patient's actual ability to eat independently and resolve the discrepancy.",
+          }],
+        }],
+      }),
+    });
+
+    expect(result.status).toBe("clean");
+    expect(result.sections.find((section) => section.sectionKey === "functional_therapy")?.discrepancies).toHaveLength(0);
+  });
+
+  it("drops unrelated functional independence versus vaccination text LLM false positives", async () => {
+    const result = await buildOasisInternalMismatchReview({
+      assessmentId: "dc-20260608",
+      assessmentType: "DC",
+      title: "OASIS DC",
+      sectionOutputs: sectionOutputs(),
+      env: loadEnv({}),
+      invokeText: async () => JSON.stringify({
+        summary: "Discrepancies found between functional independence and mobility assessments.",
+        sections: [{
+          sectionKey: "functional_therapy",
+          sectionLabel: "Functional / Therapy",
+          discrepancies: [{
+            itemCode: "GG0130A",
+            itemLabel: "Eating",
+            primarySection: "Functional / Therapy",
+            contradictingSections: ["Plan of Care"],
+            valuesInConflict: [
+              "Functional / Therapy says 'Independent'",
+              "Plan of Care says 'No, patient is not up to date'",
+            ],
+            reasoning: "The plan of care vaccination statement conflicts with the functional independence score.",
+            confidence: "medium",
+            reviewerAction: "Verify the patient's functional status.",
+          }],
+        }],
+      }),
+    });
+
+    expect(result.status).toBe("clean");
+    expect(result.summary).toBe("No internal OASIS discrepancies found.");
+    expect(result.sections.find((section) => section.sectionKey === "functional_therapy")?.discrepancies).toHaveLength(0);
   });
 
   it("marks invalid non-JSON LLM output failed without displaying raw prose", async () => {
@@ -305,6 +431,56 @@ describe("oasisInternalMismatchReviewService", () => {
     expect(result.dischargeComparison?.outcome).toBe("worsened");
     expect(result.dischargeComparison?.baselineAssessment?.assessmentId).toBe("soc-20260401");
     expect(result.dischargeComparison?.findings[0]?.fieldGroup).toBe("M fields");
+  });
+
+  it("filters stale non-clinical and unscored M-fields out of discharge comparisons", async () => {
+    let capturedPrompt = "";
+    const result = await buildOasisInternalMismatchReview({
+      assessmentId: "dc-20260608",
+      assessmentType: "DC",
+      title: "OASIS DC",
+      date: "2026-06-08",
+      sectionOutputs: dischargeSectionOutputs({
+        m1850Value: "1 - Able to transfer with minimal assistance",
+      }),
+      mggSnapshot: mggSnapshotWithAdminFields({
+        assessmentId: "dc-20260608",
+        assessmentType: "DC",
+        m1850Value: "1",
+        m1850Text: "1. Able to transfer with minimal human assistance or with use of an assistive device.",
+      }),
+      baselineAssessment: {
+        assessmentId: "soc-20260401",
+        assessmentType: "SOC",
+        title: "OASIS SOC",
+        date: "2026-04-01",
+        selectionReason: "soc_assessment_type",
+        mggSnapshot: mggSnapshotWithAdminFields({
+          assessmentId: "soc-20260401",
+          assessmentType: "SOC",
+          m1850Value: "3",
+          m1850Text: "3. Unable to transfer self and is unable to bear weight or pivot.",
+        }),
+      },
+      env: loadEnv({}),
+      invokeText: async ({ prompt }) => {
+        capturedPrompt = prompt;
+        return JSON.stringify({
+          summary: "No internal OASIS discrepancies found.",
+          sections: [],
+        });
+      },
+    });
+
+    expect(capturedPrompt).not.toContain("M0063");
+    expect(capturedPrompt).not.toContain("M0066");
+    expect(capturedPrompt).not.toContain("GG0170Q");
+    expect(capturedPrompt).not.toContain("Special Treatments, Procedures, and Programs");
+    expect(result.dischargeComparison?.findings.some((finding) => finding.itemCode === "M0063")).toBe(false);
+    expect(result.dischargeComparison?.findings.some((finding) => finding.itemCode === "M0066")).toBe(false);
+    expect(result.dischargeComparison?.findings.some((finding) => finding.itemCode === "GG0170Q")).toBe(false);
+    expect(result.dischargeComparison?.findings.some((finding) => finding.itemLabel === "Special Treatments, Procedures, and Programs")).toBe(false);
+    expect(result.dischargeComparison?.reviewedItemCount).toBe(2);
   });
 
   it("keeps a discharged OASIS clean when snapshots show clear improvement", async () => {
@@ -393,7 +569,7 @@ describe("oasisInternalMismatchReviewService", () => {
     expect(result.dischargeComparison?.findings[0]?.scoringInterpretation).toContain("Higher score");
   });
 
-  it("marks ambiguous GG snapshot scoring as needs_review instead of guessing", async () => {
+  it("uses standardized higher-is-better scoring for GG snapshots even when options are incomplete", async () => {
     const result = await buildOasisInternalMismatchReview({
       assessmentId: "dc-20260608",
       assessmentType: "DC",
@@ -406,8 +582,8 @@ describe("oasisInternalMismatchReviewService", () => {
         assessmentType: "DC",
         m1850Value: "1",
         m1850Text: "1. Able to transfer with minimal human assistance or with use of an assistive device.",
-        gg0170Value: "04",
-        gg0170Text: "04. Captured GG option without scale context",
+        gg0170Value: "02",
+        gg0170Text: "02. Captured GG option without scale context",
         ggOptions: ["02. Captured option", "04. Captured option"],
       }),
       baselineAssessment: {
@@ -434,8 +610,8 @@ describe("oasisInternalMismatchReviewService", () => {
     });
 
     const ggFinding = result.dischargeComparison?.findings.find((finding) => finding.itemCode === "GG0170C");
-    expect(ggFinding?.result).toBe("needs_review");
-    expect(ggFinding?.confidence).toBe("low");
+    expect(ggFinding?.result).toBe("worsened");
+    expect(ggFinding?.confidence).toBe("high");
   });
 
   it("marks discharge comparison unavailable when no baseline is available", async () => {

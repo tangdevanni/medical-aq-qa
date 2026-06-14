@@ -28,6 +28,7 @@ export interface QaWorkflowOrchestratorParams {
   logger: Logger;
   portalClient: BatchPortalAutomationClient;
   sharedEvidence: SharedEvidenceBundle;
+  targetOasisAssessmentId?: string | null;
 }
 
 export interface QaWorkflowOrchestratorResult {
@@ -149,7 +150,11 @@ function isProcessableOasisAssessmentType(value: string): boolean {
 export function getSupplementalOasisAssessmentTargets(input: {
   snapshot: PatientPortalStatusSnapshot | null;
   currentAssessmentId: string | null;
+  disabled?: boolean;
 }): PatientPortalStatusOasisAssessment[] {
+  if (input.disabled) {
+    return [];
+  }
   return (input.snapshot?.oasisAssessments ?? [])
     .filter((assessment) =>
       isProcessableOasisAssessmentType(assessment.assessmentType) &&
@@ -157,6 +162,49 @@ export function getSupplementalOasisAssessmentTargets(input: {
       assessment.processingEligible !== false
     )
     .sort((left, right) => parseAssessmentDate(right.date) - parseAssessmentDate(left.date));
+}
+
+export function resolveSelectedOasisAssessmentTarget(input: {
+  snapshot: PatientPortalStatusSnapshot | null;
+  targetOasisAssessmentId?: string | null;
+}): {
+  targetAssessment: PatientPortalStatusOasisAssessment | null;
+  targeted: boolean;
+} {
+  const requestedId = input.targetOasisAssessmentId?.trim() || null;
+  if (!requestedId) {
+    return {
+      targetAssessment: null,
+      targeted: false,
+    };
+  }
+
+  const target = input.snapshot?.oasisAssessments.find((assessment) => assessment.id === requestedId) ?? null;
+  if (!target) {
+    throw new Error(`Selected OASIS assessment was not found in the portal assessment list: ${requestedId}`);
+  }
+  if (!isProcessableOasisAssessmentType(target.assessmentType) || target.processingEligible === false) {
+    throw new Error(`Selected OASIS assessment is not eligible for refresh: ${requestedId}`);
+  }
+
+  return {
+    targetAssessment: target,
+    targeted: true,
+  };
+}
+
+export function getTargetedSupplementalOasisAssessmentTargets(input: {
+  selectedTarget: ReturnType<typeof resolveSelectedOasisAssessmentTarget>;
+  currentAssessmentId: string | null;
+}): PatientPortalStatusOasisAssessment[] | null {
+  if (!input.selectedTarget.targeted) {
+    return null;
+  }
+  const target = input.selectedTarget.targetAssessment;
+  if (!target || target.id === input.currentAssessmentId) {
+    return [];
+  }
+  return [target];
 }
 
 export function buildOasisAssessmentSelectionForTarget(input: {
@@ -202,6 +250,36 @@ function parseAssessmentDate(value: string | null | undefined): number {
   return 0;
 }
 
+function normalizeAssessmentMatchValue(value: string | null | undefined): string {
+  return (value ?? "")
+    .toUpperCase()
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function findMatchingRefreshedAssessment(
+  target: PatientPortalStatusOasisAssessment,
+  refreshedAssessments: PatientPortalStatusOasisAssessment[],
+): PatientPortalStatusOasisAssessment | null {
+  const exactIdMatch = refreshedAssessments.find((assessment) => assessment.id === target.id);
+  if (exactIdMatch) {
+    return exactIdMatch;
+  }
+
+  const targetTitle = normalizeAssessmentMatchValue(target.title);
+  const targetDate = normalizeAssessmentMatchValue(target.date);
+
+  return refreshedAssessments.find((assessment) =>
+    assessment.assessmentType === target.assessmentType &&
+    normalizeAssessmentMatchValue(assessment.date) === targetDate &&
+    (
+      !targetTitle ||
+      normalizeAssessmentMatchValue(assessment.title) === targetTitle ||
+      normalizeAssessmentMatchValue(assessment.sourceRowText).includes(targetTitle)
+    )
+  ) ?? null;
+}
+
 async function writeOasisAssessmentProcessingManifest(input: {
   patientArtifactsDirectory: string;
   generatedAt: string;
@@ -215,6 +293,38 @@ async function writeOasisAssessmentProcessingManifest(input: {
     assessments: input.assessments,
   }, null, 2), "utf8");
   return manifestPath;
+}
+
+async function readOasisAssessmentProcessingManifestEntries(
+  patientArtifactsDirectory: string,
+): Promise<Array<Record<string, unknown>>> {
+  try {
+    const manifest = JSON.parse(
+      await readFile(path.join(patientArtifactsDirectory, "oasis-assessment-processing-manifest.json"), "utf8"),
+    ) as { assessments?: unknown[] };
+    return Array.isArray(manifest.assessments)
+      ? manifest.assessments.filter((entry): entry is Record<string, unknown> =>
+          Boolean(entry) && typeof entry === "object" && !Array.isArray(entry))
+      : [];
+  } catch {
+    return [];
+  }
+}
+
+export function mergeTargetedOasisAssessmentManifestEntries(input: {
+  existing: Array<Record<string, unknown>>;
+  replacements: Array<Record<string, unknown>>;
+}): Array<Record<string, unknown>> {
+  const replacementIds = new Set(
+    input.replacements
+      .map((entry) => typeof entry.assessmentId === "string" ? entry.assessmentId : null)
+      .filter((entry): entry is string => Boolean(entry)),
+  );
+  return [
+    ...input.replacements,
+    ...input.existing.filter((entry) =>
+      typeof entry.assessmentId !== "string" || !replacementIds.has(entry.assessmentId)),
+  ];
 }
 
 export async function runQaWorkflowOrchestrator(
@@ -302,9 +412,35 @@ export async function runQaWorkflowOrchestrator(
       safeReadConfirmed: true,
     }));
   }
+  const selectedOasisTarget = resolveSelectedOasisAssessmentTarget({
+    snapshot: portalStatusSnapshot,
+    targetOasisAssessmentId: params.targetOasisAssessmentId,
+  });
   const currentOasisAssessmentId = portalStatusSnapshot?.currentOasisAssessmentId ?? null;
   const currentOasisAssessmentTarget =
     portalStatusSnapshot?.oasisAssessments.find((assessment) => assessment.id === currentOasisAssessmentId) ?? null;
+  if (selectedOasisTarget.targeted) {
+    const selectedAssessment = selectedOasisTarget.targetAssessment;
+    const selectedIsCurrent = selectedAssessment?.id === currentOasisAssessmentId;
+    stepLogs.push(createAutomationStepLog({
+      step: "targeted_oasis_assessment_refresh",
+      message: selectedIsCurrent
+        ? "Manual patient refresh is scoped to the selected current OASIS assessment."
+        : "Manual patient refresh will keep the current OASIS as the root Plan of Care and Visit Notes source, then reprocess only the selected older OASIS as a scoped supplemental assessment.",
+      patientName: params.workItem.patientIdentity.displayName,
+      urlBefore: params.context.chartUrl,
+      urlAfter: oasisMenu.result.currentUrl,
+      found: [
+        `selectedAssessmentId=${selectedAssessment?.id ?? "none"}`,
+        `selectedAssessmentType=${selectedAssessment?.assessmentType ?? "UNKNOWN"}`,
+        `selectedAssessmentDate=${selectedAssessment?.date ?? "none"}`,
+        `currentOasisAssessmentId=${currentOasisAssessmentId ?? "none"}`,
+        `selectedIsCurrent=${selectedIsCurrent}`,
+      ],
+      evidence: selectedAssessment?.sourceRowText ? [selectedAssessment.sourceRowText] : [],
+      safeReadConfirmed: true,
+    }));
+  }
   const snapshotAssessmentTypes = preflightAssessmentTypes(portalStatusSnapshot);
   const oasisMenuForSelection = snapshotAssessmentTypes.length > 0
     ? {
@@ -372,6 +508,8 @@ export async function runQaWorkflowOrchestrator(
         context: params.context,
         workItem: params.workItem,
         outputDir: params.outputDir,
+        assessmentType: currentAssessmentSelection.selectedAssessmentType,
+        matchedAssessmentLabel: assessmentNote.result.matchedAssessmentLabel,
         thresholds: {
           minFieldCount: env.DOM_EXTRACTION_MIN_FIELD_COUNT,
           minNonEmptyFieldCount: env.DOM_EXTRACTION_MIN_NONEMPTY_FIELD_COUNT,
@@ -512,7 +650,11 @@ export async function runQaWorkflowOrchestrator(
   }
 
   const patientArtifactsDirectory = path.join(params.outputDir, "patients", params.run.workItemId);
-  const supplementalAssessmentTargets = getSupplementalOasisAssessmentTargets({
+  const targetedSupplementalAssessmentTargets = getTargetedSupplementalOasisAssessmentTargets({
+    selectedTarget: selectedOasisTarget,
+    currentAssessmentId: currentOasisAssessmentId,
+  });
+  const supplementalAssessmentTargets = targetedSupplementalAssessmentTargets ?? getSupplementalOasisAssessmentTargets({
     snapshot: portalStatusSnapshot,
     currentAssessmentId: currentOasisAssessmentId,
   });
@@ -522,9 +664,15 @@ export async function runQaWorkflowOrchestrator(
       assessmentType: currentAssessmentSelection.selectedAssessmentType,
       title: currentOasisAssessmentTarget?.title ?? null,
       date: currentOasisAssessmentTarget?.date ?? null,
-      isCurrent: true,
+      isCurrent: currentOasisAssessmentId === portalStatusSnapshot?.currentOasisAssessmentId,
       isMonitored: true,
-      processingStatus: oasisDomExtraction ? "processed_root_current" : "not_processed",
+      refreshTargeted:
+        selectedOasisTarget.targeted && selectedOasisTarget.targetAssessment?.id === currentOasisAssessmentId,
+      processingStatus: oasisDomExtraction
+        ? selectedOasisTarget.targeted && selectedOasisTarget.targetAssessment?.id === currentOasisAssessmentId
+          ? "processed_root_targeted"
+          : "processed_root_current"
+        : "not_processed",
       artifactDirectory: patientArtifactsDirectory,
       domStatePath: oasisDomExtraction?.domStatePath ?? null,
       acquisitionStatePath: oasisDomExtraction?.acquisitionStatePath ?? null,
@@ -537,18 +685,93 @@ export async function runQaWorkflowOrchestrator(
     },
   ];
 
-  for (const target of supplementalAssessmentTargets) {
+  for (const originalTarget of supplementalAssessmentTargets) {
+    let target = originalTarget;
     const assessmentDirectory = path.join(
       patientArtifactsDirectory,
       "oasis-assessments",
       safeAssessmentArtifactKey(target.id),
     );
-    const targetSelection = buildOasisAssessmentSelectionForTarget({
-      baseSelection: assessmentSelection.result,
-      targetAssessment: target,
-      purpose: "supplemental_once",
-    });
     try {
+      const supplementalMenu = await openOasisMenu({
+        context: params.context,
+        workItem: params.workItem,
+        evidenceDir: params.evidenceDir,
+        logger: params.logger,
+        portalClient: params.portalClient,
+      });
+      stepLogs.push(...supplementalMenu.stepLogs);
+      stepLogs.push(createAutomationStepLog({
+        step: "supplemental_oasis_menu_reopened",
+        message: `Returned to the OASIS assessment list before processing supplemental ${target.assessmentType}.`,
+        patientName: params.workItem.patientIdentity.displayName,
+        urlBefore: params.context.chartUrl,
+        urlAfter: supplementalMenu.result.currentUrl,
+        found: [
+          `requestedAssessmentId=${target.id}`,
+          `requestedAssessmentType=${target.assessmentType}`,
+          `visibleAssessmentCount=${supplementalMenu.result.oasisAssessments?.length ?? 0}`,
+        ],
+        evidence: buildOasisAssessmentDocumentTableSignals(supplementalMenu.result.oasisAssessments ?? []).slice(0, 8),
+        safeReadConfirmed: true,
+      }));
+      if (!supplementalMenu.result.opened) {
+        const reason = supplementalMenu.result.warnings[0] ?? "OASIS assessment list could not be reopened before supplemental capture.";
+        domWarnings.push(`supplemental_oasis_menu_reopen_failed:${target.id}:${reason}`);
+        assessmentManifestEntries.push({
+          assessmentId: target.id,
+          assessmentType: target.assessmentType,
+          title: target.title,
+          date: target.date,
+          isCurrent: false,
+          isMonitored: false,
+          processingStatus: "skipped",
+          artifactDirectory: assessmentDirectory,
+          reason,
+        });
+        continue;
+      }
+
+      const refreshedTarget = findMatchingRefreshedAssessment(
+        target,
+        supplementalMenu.result.oasisAssessments ?? [],
+      );
+      if (!refreshedTarget) {
+        const reason = "Requested supplemental OASIS assessment was not present after reopening the OASIS list.";
+        domWarnings.push(`supplemental_oasis_assessment_missing_after_menu_reopen:${target.id}:${reason}`);
+        assessmentManifestEntries.push({
+          assessmentId: target.id,
+          assessmentType: target.assessmentType,
+          title: target.title,
+          date: target.date,
+          isCurrent: false,
+          isMonitored: false,
+          processingStatus: "skipped",
+          artifactDirectory: assessmentDirectory,
+          reason,
+        });
+        stepLogs.push(createAutomationStepLog({
+          step: "supplemental_oasis_assessment_missing_after_menu_reopen",
+          message: "Skipped supplemental OASIS extraction because the requested assessment was not visible after returning to the OASIS list.",
+          patientName: params.workItem.patientIdentity.displayName,
+          urlBefore: params.context.chartUrl,
+          urlAfter: supplementalMenu.result.currentUrl,
+          missing: [`supplemental_oasis_assessment:${target.id}`],
+          evidence: [
+            `requestedAssessmentType=${target.assessmentType}`,
+            `requestedAssessmentDate=${target.date ?? "none"}`,
+            ...buildOasisAssessmentDocumentTableSignals(supplementalMenu.result.oasisAssessments ?? []).slice(0, 8),
+          ],
+          safeReadConfirmed: true,
+        }));
+        continue;
+      }
+      target = refreshedTarget;
+      const targetSelection = buildOasisAssessmentSelectionForTarget({
+        baseSelection: assessmentSelection.result,
+        targetAssessment: target,
+        purpose: "supplemental_once",
+      });
       const supplementalAssessmentNote = await openAssessmentNote({
         context: params.context,
         workItem: params.workItem,
@@ -559,6 +782,39 @@ export async function runQaWorkflowOrchestrator(
         portalClient: params.portalClient,
       });
       stepLogs.push(...supplementalAssessmentNote.stepLogs);
+      if (!supplementalAssessmentNote.result.matchedRequestedAssessment) {
+        const reason =
+          supplementalAssessmentNote.result.warnings[0] ??
+          "Requested supplemental OASIS assessment was not opened; refusing to capture the currently loaded page into the wrong assessment artifact directory.";
+        domWarnings.push(`supplemental_oasis_assessment_navigation_unmatched:${target.id}:${reason}`);
+        assessmentManifestEntries.push({
+          assessmentId: target.id,
+          assessmentType: target.assessmentType,
+          title: target.title,
+          date: target.date,
+          isCurrent: false,
+          isMonitored: false,
+          processingStatus: "skipped",
+          artifactDirectory: assessmentDirectory,
+          reason,
+        });
+        stepLogs.push(createAutomationStepLog({
+          step: "supplemental_oasis_assessment_navigation_unmatched",
+          message:
+            "Skipped supplemental OASIS extraction because the requested assessment was not confirmed open.",
+          patientName: params.workItem.patientIdentity.displayName,
+          urlBefore: params.context.chartUrl,
+          urlAfter: supplementalAssessmentNote.result.currentUrl,
+          missing: [`supplemental_oasis_assessment:${target.id}`],
+          evidence: [
+            `requestedAssessmentType=${target.assessmentType}`,
+            `matchedAssessmentLabel=${supplementalAssessmentNote.result.matchedAssessmentLabel ?? "none"}`,
+            `reason=${reason}`,
+          ],
+          safeReadConfirmed: true,
+        }));
+        continue;
+      }
       const supplementalShouldCapture =
         supplementalAssessmentNote.result.oasisAssessmentStatus?.decision !== "SKIP" &&
         env.PORTAL_DOM_EXTRACTION_ENABLED &&
@@ -584,6 +840,8 @@ export async function runQaWorkflowOrchestrator(
         workItem: params.workItem,
         outputDir: params.outputDir,
         patientArtifactsDirectory: assessmentDirectory,
+        assessmentType: target.assessmentType,
+        matchedAssessmentLabel: target.title,
         thresholds: {
           minFieldCount: env.DOM_EXTRACTION_MIN_FIELD_COUNT,
           minNonEmptyFieldCount: env.DOM_EXTRACTION_MIN_NONEMPTY_FIELD_COUNT,
@@ -670,10 +928,17 @@ export async function runQaWorkflowOrchestrator(
     }
   }
 
+  const persistedAssessmentManifestEntries = selectedOasisTarget.targeted
+    ? mergeTargetedOasisAssessmentManifestEntries({
+        existing: await readOasisAssessmentProcessingManifestEntries(patientArtifactsDirectory),
+        replacements: assessmentManifestEntries,
+      })
+    : assessmentManifestEntries;
+
   const assessmentManifestPath = await writeOasisAssessmentProcessingManifest({
     patientArtifactsDirectory,
     generatedAt: new Date().toISOString(),
-    assessments: assessmentManifestEntries,
+    assessments: persistedAssessmentManifestEntries,
   });
   if (supplementalAssessmentTargets.length > 0) {
     stepLogs.push(createAutomationStepLog({
