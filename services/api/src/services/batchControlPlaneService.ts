@@ -97,6 +97,15 @@ const OASIS_MEMORY_ARTIFACTS = [
   "oasis-printed-note-review.json",
   "oasis-dom-extracted-state.json",
   "oasis-dom-acquisition-state.json",
+  "oasis-dom-vs-existing-extraction-comparison.json",
+  "oasis-dom-section-processing-manifest.json",
+  "oasis-dom-section-outputs.json",
+  "oasis-assessment-processing-manifest.json",
+  "oasis-mgg-field-snapshot.json",
+  "canonical-oasis-document.json",
+  "canonical-oasis-section-index.json",
+  "canonical-oasis-section-hashes.json",
+  "canonical-oasis-structured.json",
   "oasis-clinical-fact-pack.json",
 ] as const;
 const PLAN_VISIT_MEMORY_ARTIFACTS = [
@@ -372,6 +381,16 @@ type BatchRunStartOptions = {
   allowActiveJob?: boolean;
 };
 
+type ReusablePatientRunOutcome = {
+  processingStatus?: string | null;
+  executionStep?: string | null;
+  errorSummary?: string | null;
+  qaOutcome?: string | null;
+  matchResult?: {
+    status?: string | null;
+  } | null;
+};
+
 function isVisitNotesArtifactReprocessRequest(options: RunControlOptions): boolean {
   const forceStages = new Set(options.forceStages ?? []);
   return (
@@ -402,7 +421,7 @@ function isStatusOnlyQueueStatus(status: PatientQueueArtifact["entries"][number]
   return status === "skipped_pending" || status === "skipped_non_admit";
 }
 
-function isStatusOnlyExcludedPatientRun(patientRun: BatchRecord["patientRuns"][number] | undefined): boolean {
+function isStatusOnlyExcludedPatientRun(patientRun: ReusablePatientRunOutcome | undefined): boolean {
   if (!patientRun) {
     return false;
   }
@@ -410,6 +429,24 @@ function isStatusOnlyExcludedPatientRun(patientRun: BatchRecord["patientRuns"][n
     return true;
   }
   return /Portal patient status '\s*(?:Pending|Non[-\s]?Admit)/i.test(patientRun.errorSummary ?? "");
+}
+
+function isReusableNoMatchPatientRun(patientRun: ReusablePatientRunOutcome | undefined): boolean {
+  return Boolean(
+    patientRun &&
+    patientRun.matchResult?.status === "NOT_FOUND" &&
+    patientRun.qaOutcome === "PORTAL_NOT_FOUND" &&
+    patientRun.processingStatus === "BLOCKED",
+  );
+}
+
+function isReusablePatientRunOutcome(patientRun: ReusablePatientRunOutcome | undefined): boolean {
+  return Boolean(
+    patientRun &&
+    (patientRun.processingStatus === "COMPLETE" ||
+      isStatusOnlyExcludedPatientRun(patientRun) ||
+      isReusableNoMatchPatientRun(patientRun)),
+  );
 }
 
 function createBatchId(subsidiarySlug?: string): string {
@@ -1506,7 +1543,7 @@ async function canReuseCompletedPatientRun(
   patientArtifactsDirectory: string,
   workItem: PatientEpisodeWorkItem,
 ): Promise<boolean> {
-  if (!patientRun || patientRun.processingStatus !== "COMPLETE" || !patientRun.bundleAvailable) {
+  if (!isReusablePatientRunOutcome(patientRun) || !patientRun?.bundleAvailable) {
     return false;
   }
 
@@ -5110,7 +5147,7 @@ export class BatchControlPlaneService {
     const patientDashboardState =
       await this.repository.readJsonIfExists<PatientDashboardState>(patientDashboardStatePath);
 
-    if (!patientDashboardState || patientDashboardState.processingStatus !== "COMPLETE") {
+    if (!patientDashboardState || !isReusablePatientRunOutcome(patientDashboardState)) {
       return null;
     }
 
@@ -5134,11 +5171,13 @@ export class BatchControlPlaneService {
         workItemId: workItem.id,
         patientName: patientDashboardState.patientName || workItem.patientIdentity.displayName,
         reusedFromPatientMemory: true,
+        reusedOutcome: patientDashboardState.processingStatus,
+        reusedExecutionStep: patientDashboardState.executionStep,
         priorRuntimeMs: patientRunCacheSummary?.totalRuntimeMs ?? null,
         estimatedSavedTimeMs: patientRunCacheSummary?.totalRuntimeMs ?? null,
         reuseSummary: patientRunCacheSummary?.reuseSummary ?? null,
       },
-      "patient run skipped because completed memory-backed artifacts were reused",
+      "patient run skipped because reusable memory-backed artifacts were reused",
     );
 
     return {
@@ -5146,8 +5185,8 @@ export class BatchControlPlaneService {
       subsidiaryId: workItem.subsidiaryId ?? batch.subsidiary.id,
       workItemId: workItem.id,
       patientName: patientDashboardState.patientName || workItem.patientIdentity.displayName,
-      processingStatus: "COMPLETE",
-      executionStep: "COMPLETE",
+      processingStatus: patientDashboardState.processingStatus,
+      executionStep: patientDashboardState.executionStep ?? patientDashboardState.processingStatus,
       progressPercent: 100,
       startedAt: patientDashboardState.startedAt ?? patientDashboardState.generatedAt,
       completedAt: patientDashboardState.completedAt ?? patientDashboardState.generatedAt,

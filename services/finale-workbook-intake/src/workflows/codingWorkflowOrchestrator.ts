@@ -361,15 +361,19 @@ export async function runCodingWorkflowOrchestrator(
 
     updateCodingWorkflowRun({
       status:
-        params.run.processingStatus === "COMPLETE"
+        codingInputExport
+          ? "COMPLETED"
+          : params.run.processingStatus === "COMPLETE"
           ? "COMPLETED"
           : params.run.processingStatus === "NEEDS_HUMAN_REVIEW"
             ? "NEEDS_HUMAN_REVIEW"
             : params.run.processingStatus === "BLOCKED"
             ? "BLOCKED"
             : "FAILED",
-      stepName: params.run.executionStep,
-      message: params.run.errorSummary ?? "Coding workflow completed successfully.",
+      stepName: codingInputExport ? "CODING_INPUT_EXPORTED" : params.run.executionStep,
+      message: codingInputExport
+        ? "Coding input exported successfully."
+        : params.run.errorSummary ?? "Coding workflow completed successfully.",
       completedAt: new Date().toISOString(),
       workflowResultPath: codingInputExport?.filePath ?? null,
     });

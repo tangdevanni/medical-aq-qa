@@ -1301,7 +1301,7 @@ describe("runFinaleBatch", () => {
       expect(result.patientRuns[0]?.resultBundlePath).toMatch(/patient-results/);
       expect(result.patientRuns[0]?.logPath).toMatch(/logs/);
       expect(result.patientRuns[0]?.logAvailable).toBe(true);
-      expect(result.patientRuns[0]?.workflowRuns.find((workflowRun) => workflowRun.workflowDomain === "coding")?.status).toBe("NEEDS_HUMAN_REVIEW");
+      expect(result.patientRuns[0]?.workflowRuns.find((workflowRun) => workflowRun.workflowDomain === "coding")?.status).toBe("COMPLETED");
       expect(result.patientRuns[0]?.workflowRuns.find((workflowRun) => workflowRun.workflowDomain === "qa")?.status).toBe("COMPLETED");
       expect(portalClient.oasisExecutionCalls).toBe(0);
       expect(portalClient.discoverArtifactsCalls).toBe(1);
@@ -1364,7 +1364,7 @@ describe("runFinaleBatch", () => {
       expect(patientRun.documentInventory.length).toBeGreaterThan(0);
       expect(patientRun.logPath).toBeTruthy();
       expect(existsSync(patientRun.logPath!)).toBe(true);
-      expect(patientRun.workflowRuns.find((workflowRun) => workflowRun.workflowDomain === "coding")?.status).toBe("NEEDS_HUMAN_REVIEW");
+      expect(patientRun.workflowRuns.find((workflowRun) => workflowRun.workflowDomain === "coding")?.status).toBe("COMPLETED");
 
       const logPayload = JSON.parse(readFileSync(patientRun.logPath!, "utf8")) as {
         workItemId: string;
@@ -1717,7 +1717,7 @@ describe("runFinaleBatch", () => {
       const codingWorkflow = patientRun.workflowRuns.find((workflowRun) => workflowRun.workflowDomain === "coding");
       const qaWorkflow = patientRun.workflowRuns.find((workflowRun) => workflowRun.workflowDomain === "qa");
 
-      expect(codingWorkflow?.status).toBe("NEEDS_HUMAN_REVIEW");
+      expect(codingWorkflow?.status).toBe("COMPLETED");
       expect(qaWorkflow?.status).toBe("COMPLETED");
       expect(codingWorkflow?.workflowResultPath).toMatch(/coding-input\.json$/);
       expect(qaWorkflow?.workflowResultPath).toMatch(/qa-prefetch-result\.json$/);
@@ -1748,7 +1748,7 @@ describe("runFinaleBatch", () => {
       const codingWorkflow = patientRun.workflowRuns.find((workflowRun) => workflowRun.workflowDomain === "coding");
       const qaWorkflow = patientRun.workflowRuns.find((workflowRun) => workflowRun.workflowDomain === "qa");
 
-      expect(codingWorkflow?.status).toBe("NEEDS_HUMAN_REVIEW");
+      expect(codingWorkflow?.status).toBe("COMPLETED");
       expect(qaWorkflow?.status).toBe("COMPLETED");
       expect(qaWorkflow?.workflowResultPath).toMatch(/qa-prefetch-result\.json$/);
       expect(patientRun.notes.some((note) => note.includes("QA prefetch result persisted:"))).toBe(true);

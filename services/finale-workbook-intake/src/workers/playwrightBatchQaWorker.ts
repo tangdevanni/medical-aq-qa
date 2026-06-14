@@ -1886,6 +1886,23 @@ export class PlaywrightBatchQaWorker implements BatchPortalAutomationClient {
     }
 
     if (!dashboardReady) {
+      if (dashboardUrl) {
+        const finalRecovery = await this.runFallbackDashboardReset({
+          patientSearchPage: input.patientSearchPage,
+          workItem: input.workItem,
+          dashboardUrl,
+          currentUrlBeforePatientLookup: this.session.page.url(),
+          globalSearchAvailableInCurrentContext: false,
+          fallbackReason: "dashboard_ready_signal_missing_final_recovery",
+        });
+        stepLogs.push(...finalRecovery.stepLogs);
+        dashboardReady = finalRecovery.ready;
+        fallbackDashboardResetRequired = true;
+        patientLookupEntryContext = "dashboard_reset_then_global_search";
+      }
+    }
+
+    if (!dashboardReady) {
       return {
         ready: false,
         dashboardUrl,
