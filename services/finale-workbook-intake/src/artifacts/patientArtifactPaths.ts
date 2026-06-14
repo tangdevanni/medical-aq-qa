@@ -24,6 +24,7 @@ import {
   OASIS_GATE_RESULT_FILE_NAME,
   OASIS_PRINTED_NOTE_REVIEW_FILE_NAME,
   OASIS_VALIDATION_RESULT_FILE_NAME,
+  PATIENT_COST_SUMMARY_FILE_NAME,
   PATIENT_DASHBOARD_STATE_FILE_NAME,
   PATIENT_QA_REFERENCE_FILE_NAME,
   PLAN_OF_CARE_CANDIDATES_FILE_NAME,
@@ -141,6 +142,7 @@ export function buildPatientDashboardArtifactPaths(input: {
     referralOasisConsistency: getPatientArtifactPath(patientArtifactsDirectory, REFERRAL_OASIS_CONSISTENCY_FILE_NAME),
     oasisGate: getPatientArtifactPath(patientArtifactsDirectory, OASIS_GATE_RESULT_FILE_NAME),
     generatedPlanOfCare: getPatientArtifactPath(patientArtifactsDirectory, GENERATED_PLAN_OF_CARE_FILE_NAME),
+    patientCostSummary: getPatientArtifactPath(patientArtifactsDirectory, PATIENT_COST_SUMMARY_FILE_NAME),
   };
 }
 

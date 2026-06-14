@@ -658,6 +658,7 @@ export async function writePatientDashboardState(params: {
   );
   const oasisAssessmentArtifacts = await readOasisAssessmentArtifacts(oasisAssessmentProcessingManifest);
   const patientRunCacheSummary = await readJsonIfExists(artifactPaths.patientRunCacheSummary ?? null);
+  const patientCostSummary = await readJsonIfExists(artifactPaths.patientCostSummary ?? null);
   let visitNoteQaReview = await readJsonIfExists(artifactPaths.visitNoteQaReview ?? null);
   if (visitNotesDiscovery && artifactPaths.visitNoteQaReview) {
     const factPack = await buildVisitNoteFactPackFromCapturedText({
@@ -731,6 +732,7 @@ export async function writePatientDashboardState(params: {
       oasisAssessmentProcessingManifest,
       oasisAssessmentArtifacts,
       patientRunCacheSummary,
+      patientCostSummary,
     },
   };
 

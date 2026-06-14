@@ -51,6 +51,7 @@ export const patientDashboardArtifactPathsSchema = z.object({
   oasisDomSectionOutputs: z.string().min(1).nullable().default(null).optional(),
   oasisAssessmentProcessingManifest: z.string().min(1).nullable().default(null).optional(),
   patientRunCacheSummary: z.string().min(1).nullable().default(null).optional(),
+  patientCostSummary: z.string().min(1).nullable().default(null).optional(),
 });
 
 export type PatientDashboardArtifactPaths = z.infer<typeof patientDashboardArtifactPathsSchema>;
@@ -100,6 +101,7 @@ export const patientDashboardArtifactContentsSchema = z.object({
   oasisAssessmentProcessingManifest: z.unknown().nullable().default(null).optional(),
   oasisAssessmentArtifacts: z.unknown().nullable().default(null).optional(),
   patientRunCacheSummary: z.unknown().nullable().default(null).optional(),
+  patientCostSummary: z.unknown().nullable().default(null).optional(),
 });
 
 export type PatientDashboardArtifactContents = z.infer<typeof patientDashboardArtifactContentsSchema>;

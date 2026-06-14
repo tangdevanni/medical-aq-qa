@@ -49,6 +49,10 @@ import {
   formatPatientRunTimingSummary,
   writePatientRunCacheSummary,
 } from "./patientRunReuseSummaryService";
+import {
+  writePatientCostSummary,
+  writeRunCostSummary,
+} from "./costSummaryService";
 import { intakeWorkbook } from "./workbookIntakeService";
 import { extractCurrentChartValuesFromPrintedNote } from "../oasis/print/printedNoteChartValueExtractionService";
 import type { OasisPrintedNoteReviewResult } from "../oasis/types/oasisPrintedNoteReview";
@@ -109,6 +113,31 @@ type IndexedWorkItem = {
   index: number;
   workItem: PatientEpisodeWorkItem;
 };
+
+function resolvePortalPatientWorkerCount(params: ExecutePatientWorkItemsParams, env: ReturnType<typeof loadEnv>): number {
+  if (params.portalClient) {
+    return 1;
+  }
+
+  const configuredCount = Math.min(env.PORTAL_PATIENT_WORKER_COUNT, Math.max(1, params.workItems.length));
+  const agencyName = [
+    params.subsidiaryRuntimeConfig?.subsidiaryId,
+    params.subsidiaryRuntimeConfig?.subsidiaryName,
+    params.workItems[0]?.subsidiaryId,
+  ].filter(Boolean).join(" ").toLowerCase();
+
+  if (params.workItems.length <= 3) {
+    return Math.min(configuredCount, 2);
+  }
+  if (agencyName.includes("star")) {
+    return Math.min(configuredCount, 3);
+  }
+  if (agencyName.includes("aplus") || agencyName.includes("a plus")) {
+    return Math.min(configuredCount, 5);
+  }
+
+  return configuredCount;
+}
 
 export interface RunQaForPatientParams {
   batchId: string;
@@ -1195,9 +1224,7 @@ async function executePatientWorkItemsSequential(
     }
   }
 
-  const portalPatientWorkerCount = params.portalClient
-    ? 1
-    : Math.min(env.PORTAL_PATIENT_WORKER_COUNT, Math.max(1, params.workItems.length));
+  const portalPatientWorkerCount = resolvePortalPatientWorkerCount(params, env);
   if (portalPatientWorkerCount > 1) {
     const partitions = partitionWorkItemsForPortalWorkers(params.workItems, portalPatientWorkerCount);
     logger.info(
@@ -2038,6 +2065,45 @@ async function executePatientWorkItemsSequential(
             safeReadConfirmed: true,
           })]);
         }
+        try {
+          const patientArtifactsDirectory = path.join(params.outputDir, "patients", run.workItemId);
+          const { filePath: costSummaryPath, summary: costSummary } = await writePatientCostSummary({
+            patientArtifactsDirectory,
+            run,
+            stageTimings: timing.stageTimings,
+            planningDecision: "needs_portal_acquisition",
+            planningReason: "patient entered portal worker execution",
+          });
+          run.notes.push(
+            `Patient cost summary written: ${costSummaryPath}; ` +
+            `portalMs=${costSummary.portal.browserActiveMs}; ` +
+            `llmCalls=${costSummary.llm.callCount}; ` +
+            `textractJobs=${costSummary.textract.ocrJobs}`,
+          );
+          appendAutomationLogs(run, [createAutomationStepLog({
+            step: "patient_cost_summary",
+            message: "Patient cost and runtime summary written.",
+            patientName: run.patientName,
+            found: [
+              `costSummaryPath=${costSummaryPath}`,
+              `portalMs=${costSummary.portal.browserActiveMs}`,
+              `llmCalls=${costSummary.llm.callCount}`,
+              `textractJobs=${costSummary.textract.ocrJobs}`,
+            ],
+            safeReadConfirmed: true,
+          })]);
+        } catch (error) {
+          const costSummaryError = error instanceof Error ? error.message : String(error);
+          run.notes.push(`Patient cost summary failed: ${costSummaryError}`);
+          appendAutomationLogs(run, [createAutomationStepLog({
+            step: "patient_cost_summary",
+            message: "Patient cost and runtime summary failed.",
+            patientName: run.patientName,
+            missing: ["patient-cost-summary.json"],
+            evidence: [costSummaryError],
+            safeReadConfirmed: true,
+          })]);
+        }
         run.resultBundlePath = await writePatientResultBundle(params.outputDir, run);
         run.bundleAvailable = true;
         run.workflowRuns = run.workflowRuns.map((workflowRun) =>
@@ -2158,6 +2224,11 @@ export async function runBatchQA(
     completedAt,
   });
   const batchSummaryPath = await persistBatchSummary(params.outputDir, batchSummary);
+  await writeRunCostSummary({
+    outputDirectory: params.outputDir,
+    batchId: params.batchId,
+    patientIds: patientRuns.map((patientRun) => patientRun.workItemId),
+  });
 
   return {
     manifest,
@@ -2226,6 +2297,11 @@ export async function runFinaleBatch(
     completedAt,
   });
   const batchSummaryPath = await persistBatchSummary(outputDirectory, batchSummary);
+  await writeRunCostSummary({
+    outputDirectory,
+    batchId: intake.manifest.batchId,
+    patientIds: patientRuns.map((patientRun) => patientRun.workItemId),
+  });
 
   logger.info(
     {

@@ -5,6 +5,7 @@ export * from "./batch-pipeline";
 export * from "./clinical-comparison-row";
 export * from "./clinical-contradiction-analysis";
 export * from "./clinical-fact-pack";
+export * from "./cost-summary";
 export * from "./cross-document-qa";
 export * from "./document-inventory";
 export * from "./document-extraction";

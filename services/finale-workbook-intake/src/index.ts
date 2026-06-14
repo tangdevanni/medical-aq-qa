@@ -7,6 +7,7 @@ export * from "./services/oasisMggFieldSnapshotService";
 export * from "./services/oasisInternalMismatchReviewService";
 export * from "./services/visitNoteExtractor";
 export * from "./services/batchRunService";
+export * from "./services/costSummaryService";
 export * from "./services/patientDashboardStateWriter";
 export * from "./services/patientPortalStatusPreflightService";
 export * from "./services/referralFilePortalCaptureService";

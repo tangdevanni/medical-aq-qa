@@ -5,10 +5,12 @@ import type {
   PlanOfCareReviewDraftArtifact,
   PatientQaReference,
   PatientEpisodeWorkItem,
+  PatientCostSummary,
   PatientRunCacheSummary,
 } from "@medical-ai-qa/shared-types";
 import {
   extractPortalPatientLookupContext,
+  patientCostSummarySchema,
   patientRunCacheSummarySchema,
 } from "@medical-ai-qa/shared-types";
 import type { BatchRecord } from "../types/batchControlPlane";
@@ -69,6 +71,7 @@ type KnownArtifactContents = {
   oasisAssessmentProcessingManifest?: unknown | null;
   oasisAssessmentArtifacts?: unknown | null;
   patientRunCacheSummary?: unknown | null;
+  patientCostSummary?: unknown | null;
 };
 
 type DashboardDiscrepancyRating = "green" | "yellow" | "red";
@@ -6827,6 +6830,11 @@ function parsePatientRunCacheSummary(value: unknown): PatientRunCacheSummary | n
   return result.success ? result.data : null;
 }
 
+function parsePatientCostSummary(value: unknown): PatientCostSummary | null {
+  const result = patientCostSummarySchema.safeParse(value);
+  return result.success ? result.data : null;
+}
+
 function toPatientRunReuseSummary(value: PatientRunCacheSummary | null) {
   if (!value) {
     return null;
@@ -6918,6 +6926,67 @@ function aggregateRunReuseSummary(patients: ReturnType<typeof toDashboardPatient
   };
 }
 
+function aggregateRunCostSummary(patients: ReturnType<typeof toDashboardPatientSummary>[]) {
+  const costSummaries = patients
+    .map((patient) => patient.patientCostSummary)
+    .filter((summary): summary is NonNullable<typeof summary> => summary !== null);
+  const planningDecisionCounts = costSummaries.reduce<Record<string, number>>((counts, summary) => {
+    const decision = summary.planningDecision ?? "unknown";
+    counts[decision] = (counts[decision] ?? 0) + 1;
+    return counts;
+  }, {});
+  const llmStages = new Map<string, {
+    stage: string;
+    callCount: number;
+    inputTokens: number;
+    outputTokens: number;
+    totalTokens: number;
+  }>();
+
+  for (const summary of costSummaries) {
+    for (const stage of summary.llm.stages) {
+      const current = llmStages.get(stage.stage) ?? {
+        stage: stage.stage,
+        callCount: 0,
+        inputTokens: 0,
+        outputTokens: 0,
+        totalTokens: 0,
+      };
+      current.callCount += stage.callCount;
+      current.inputTokens += stage.inputTokens;
+      current.outputTokens += stage.outputTokens;
+      current.totalTokens += stage.totalTokens;
+      llmStages.set(stage.stage, current);
+    }
+  }
+
+  return {
+    patientCount: costSummaries.length,
+    planningDecisionCounts,
+    totalRuntimeMs: costSummaries.reduce((sum, summary) => sum + (summary.totalRuntimeMs ?? 0), 0),
+    portalBrowserActiveMs: costSummaries.reduce((sum, summary) => sum + summary.portal.browserActiveMs, 0),
+    patientSearchAttempts: costSummaries.reduce((sum, summary) => sum + summary.portal.patientSearchAttempts, 0),
+    dashboardResetAttempts: costSummaries.reduce((sum, summary) => sum + summary.portal.dashboardResetAttempts, 0),
+    retrySignals: costSummaries.reduce((sum, summary) => sum + summary.portal.retrySignals, 0),
+    printPreviewAcceptedCount: costSummaries.filter((summary) => summary.oasis.printPreviewAccepted).length,
+    legacyFallbackCount: costSummaries.reduce((sum, summary) => sum + summary.oasis.legacyFallbacks, 0),
+    llmCallCount: costSummaries.reduce((sum, summary) => sum + summary.llm.callCount, 0),
+    llmInputTokens: costSummaries.reduce((sum, summary) => sum + summary.llm.inputTokens, 0),
+    llmOutputTokens: costSummaries.reduce((sum, summary) => sum + summary.llm.outputTokens, 0),
+    llmTotalTokens: costSummaries.reduce((sum, summary) => sum + summary.llm.totalTokens, 0),
+    llmStages: Array.from(llmStages.values()).sort((left, right) => left.stage.localeCompare(right.stage)),
+    textractOcrJobs: costSummaries.reduce((sum, summary) => sum + summary.textract.ocrJobs, 0),
+    ocrAvoidedByHtml: costSummaries.reduce((sum, summary) => sum + summary.textract.ocrAvoidedByHtml, 0),
+    ocrAvoidedByNativeText: costSummaries.reduce((sum, summary) => sum + summary.textract.ocrAvoidedByNativeText, 0),
+    cacheHits: costSummaries.reduce((sum, summary) => sum + summary.cache.hits, 0),
+    cacheMisses: costSummaries.reduce((sum, summary) => sum + summary.cache.misses, 0),
+    reusedOasisSections: costSummaries.reduce((sum, summary) => sum + summary.cache.reusedOasisSections, 0),
+    processedOasisSections: costSummaries.reduce((sum, summary) => sum + summary.cache.processedOasisSections, 0),
+    reusedVisitNotes: costSummaries.reduce((sum, summary) => sum + summary.cache.reusedVisitNotes, 0),
+    processedVisitNotes: costSummaries.reduce((sum, summary) => sum + summary.cache.processedVisitNotes, 0),
+  };
+}
+
 export function toDashboardRunListItem(
   batch: BatchRecord,
   resolvedPatients?: Array<{ status: string; errorSummary: string | null }>,
@@ -6953,8 +7022,28 @@ export function toDashboardRunListItem(
   };
 }
 
+function toPatientCostSummary(value: PatientCostSummary | null) {
+  if (!value) {
+    return null;
+  }
+
+  return {
+    planningDecision: value.planningDecision,
+    planningReason: value.planningReason,
+    totalRuntimeMs: value.totalRuntimeMs,
+    portal: value.portal,
+    oasis: value.oasis,
+    llm: value.llm,
+    textract: value.textract,
+    cache: value.cache,
+    failure: value.failure,
+    stageTimings: value.stageTimings,
+  };
+}
+
 export function toDashboardPatientSummary(input: PatientViewInput) {
   const patientRunCacheSummary = parsePatientRunCacheSummary(input.artifactContents.patientRunCacheSummary);
+  const patientCostSummary = parsePatientCostSummary(input.artifactContents.patientCostSummary);
   const diagnosisSummary = deriveDiagnosisSummary(input);
   const referralMedicationSummary = deriveReferralMedicationSummary(input);
   const oasisMedicationSummary = deriveOasisMedicationSummary(input);
@@ -7046,6 +7135,7 @@ export function toDashboardPatientSummary(input: PatientViewInput) {
     referralQa,
     dashboardReview,
     patientRunCacheSummary: toPatientRunReuseSummary(patientRunCacheSummary),
+    patientCostSummary: toPatientCostSummary(patientCostSummary),
     changeSummary: input.changeSummary ?? null,
   };
 }
@@ -7071,6 +7161,7 @@ export function toDashboardRunDetail(input: {
       inProgress: counts.currentlyRunningCount,
     },
     runReuseSummary: aggregateRunReuseSummary(patients),
+    runCostSummary: aggregateRunCostSummary(patients),
     patients,
   };
 }

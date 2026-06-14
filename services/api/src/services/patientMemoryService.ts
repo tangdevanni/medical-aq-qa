@@ -60,6 +60,7 @@ const DEFAULT_CURRENT_ARTIFACTS = [
   "visit-note-fact-pack.json",
   "visit-note-qa-review.json",
   "patient-run-cache-summary.json",
+  "patient-cost-summary.json",
 ] as const;
 
 export class AmbiguousPatientMemoryIdentityError extends Error {

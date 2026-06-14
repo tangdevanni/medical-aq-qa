@@ -21,7 +21,7 @@ export async function createPortalSession(env: FinaleBatchEnv): Promise<{
   page: Page;
 }> {
   const headless = env.PLAYWRIGHT_HEADLESS ?? env.PORTAL_HEADLESS ?? false;
-  const slowMo = env.PLAYWRIGHT_SLOW_MO_MS ?? 500;
+  const slowMo = env.PLAYWRIGHT_SLOW_MO_MS ?? 0;
   const browser = await chromium.launch({
     headless,
     slowMo,

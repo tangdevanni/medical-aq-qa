@@ -7,6 +7,7 @@ import type {
   BatchManifest,
   BatchSummary,
   ConciseQaIssue,
+  CostPlanningDecision,
   DashboardPatientRecord,
   PatientDashboardState,
   ParserException,
@@ -34,9 +35,13 @@ import {
   capturePatientReferralFiles,
   capturePatientPortalStatusSnapshot,
   buildOasisInternalMismatchReview,
+  buildPreWorkerRunPlan,
   REFERRAL_DIRECT_DOCUMENT_SCHEMA_VERSION,
   runReferralDocumentProcessingPipeline,
+  writePatientCostSummary,
   writePatientDashboardState,
+  writePreWorkerRunPlan,
+  writeRunCostSummary,
   type ChartSnapshotValueSource,
   type OasisDomSectionOutputsArtifact,
   type OasisInternalMismatchReviewResult,
@@ -85,6 +90,13 @@ const DEFAULT_REQUIRED_MEMORY_ARTIFACTS = [
   "qa-prefetch-result.json",
   "patient-run-cache-summary.json",
 ] as const;
+type PlannedBatchRun = {
+  workItem: PatientEpisodeWorkItem;
+  patientRun: BatchRecord["patientRuns"][number];
+  reuseExisting: boolean;
+  decision: CostPlanningDecision;
+  reason: string;
+};
 const WORK_ITEM_FINGERPRINT_FILE_NAME = "work-item-fingerprint.json";
 const REFERRAL_MEMORY_ARTIFACTS = [
   path.join("referral-document-processing", "patient-qa-reference.json"),
@@ -1954,6 +1966,7 @@ type KnownPatientArtifacts = {
     oasisDomSectionOutputs?: string | null;
     oasisAssessmentProcessingManifest?: string | null;
     patientRunCacheSummary?: string | null;
+    patientCostSummary?: string | null;
   };
   artifactContents: {
     codingInput: unknown | null;
@@ -1987,6 +2000,7 @@ type KnownPatientArtifacts = {
     oasisAssessmentProcessingManifest?: unknown | null;
     oasisAssessmentArtifacts?: unknown | null;
     patientRunCacheSummary?: unknown | null;
+    patientCostSummary?: unknown | null;
   };
 };
 
@@ -2809,7 +2823,7 @@ export class BatchControlPlaneService {
       return batch;
     }
 
-    const plannedRuns = await Promise.all(
+    const plannedRuns: PlannedBatchRun[] = await Promise.all(
       workItems.map(async (workItem) => {
         const previous = batch.patientRuns.find((patientRun) => patientRun.workItemId === workItem.id);
         const reuseBatchLocal =
@@ -2826,12 +2840,28 @@ export class BatchControlPlaneService {
             ? await this.createMemoryBackedCompletedPatientRun(batch, workItem, previous)
             : null;
         const reuseExisting = reuseBatchLocal || memoryBackedPatientRun !== null;
+        const patientRun = reuseBatchLocal && previous
+          ? previous
+          : memoryBackedPatientRun ?? createPendingPatientRunState(batch, workItem, previous);
+        const terminalReuse =
+          reuseExisting &&
+          ["SKIPPED_PENDING", "SKIPPED_NON_ADMIT", "NO_PORTAL_MATCH", "NEEDS_HUMAN_REVIEW"].includes(
+            patientRun.processingStatus,
+          );
         return {
           workItem,
-          patientRun: reuseBatchLocal && previous
-            ? previous
-            : memoryBackedPatientRun ?? createPendingPatientRunState(batch, workItem, previous),
+          patientRun,
           reuseExisting,
+          decision: reuseExisting
+            ? terminalReuse
+              ? "reuse_terminal_exclusion"
+              : "reuse_complete"
+            : "needs_portal_acquisition",
+          reason: reuseExisting
+            ? reuseBatchLocal
+              ? "unchanged fingerprint with valid local batch artifacts"
+              : "unchanged fingerprint with reusable patient-memory artifacts"
+            : "patient requires portal acquisition because no valid reusable artifacts were available",
         };
       }),
     );
@@ -2839,6 +2869,24 @@ export class BatchControlPlaneService {
     const workItemsToRun = plannedRuns
       .filter((plannedRun) => !plannedRun.reuseExisting)
       .map((plannedRun) => plannedRun.workItem);
+
+    const preWorkerPlan = buildPreWorkerRunPlan({
+      batchId: batch.id,
+      mode: options.mode ?? "delta",
+      deltaReuseEnabled: this.options.deltaReuseEnabled === true,
+      patients: plannedRuns.map((plannedRun) => ({
+        workItemId: plannedRun.workItem.id,
+        patientName: plannedRun.workItem.patientIdentity.displayName,
+        decision: plannedRun.decision,
+        reason: plannedRun.reason,
+        priorRunId: plannedRun.patientRun.runId ?? null,
+        willOpenPortalWorker: plannedRun.decision === "needs_portal_acquisition",
+      })),
+    });
+    const preWorkerPlanPath = await writePreWorkerRunPlan({
+      outputDirectory: batch.storage.outputRoot,
+      plan: preWorkerPlan,
+    });
 
     this.logger.info(
       {
@@ -2849,9 +2897,47 @@ export class BatchControlPlaneService {
         totalPatients: plannedRuns.length,
         reusedPatients: plannedRuns.length - workItemsToRun.length,
         patientsToProcess: workItemsToRun.length,
+        preWorkerPlanPath,
+        decisionCounts: preWorkerPlan.decisionCounts,
       },
       "batch delta run plan prepared",
     );
+
+    await Promise.all(plannedRuns
+      .filter((plannedRun) => plannedRun.reuseExisting)
+      .map(async (plannedRun) => {
+        try {
+          const patientArtifactsDirectory = path.join(batch.storage.outputRoot, "patients", plannedRun.workItem.id);
+          await mkdir(patientArtifactsDirectory, { recursive: true });
+          const now = new Date().toISOString();
+          await writePatientCostSummary({
+            patientArtifactsDirectory,
+            run: {
+              batchId: batch.id,
+              runId: plannedRun.patientRun.runId,
+              workItemId: plannedRun.workItem.id,
+              patientName: plannedRun.patientRun.patientName,
+              startedAt: plannedRun.patientRun.startedAt ?? now,
+              completedAt: plannedRun.patientRun.completedAt ?? now,
+              retryEligible: plannedRun.patientRun.retryEligible,
+              errorSummary: plannedRun.patientRun.errorSummary,
+              automationStepLogs: [],
+            },
+            stageTimings: [],
+            planningDecision: plannedRun.decision,
+            planningReason: plannedRun.reason,
+          });
+        } catch (error) {
+          this.logger.warn(
+            {
+              batchId: batch.id,
+              patientId: plannedRun.workItem.id,
+              error: error instanceof Error ? error.message : String(error),
+            },
+            "failed to write reused patient cost summary",
+          );
+        }
+      }));
 
     batch.patientRuns = plannedRuns.map((plannedRun) => plannedRun.patientRun);
     batch.status = "RUNNING";
@@ -2871,6 +2957,11 @@ export class BatchControlPlaneService {
       this.markDeltaRunCompleted(batch, batch.updatedAt);
       await this.repository.saveBatch(batch);
       await this.syncScheduledRunForBatch(batch);
+      await writeRunCostSummary({
+        outputDirectory: batch.storage.outputRoot,
+        batchId: batch.id,
+        patientIds: workItems.map((workItem) => workItem.id),
+      });
       this.logger.info(
         {
           batchId: batch.id,
@@ -3999,6 +4090,8 @@ export class BatchControlPlaneService {
         path.join(patientArtifactsDirectory, "oasis-assessment-processing-manifest.json"),
       patientRunCacheSummary:
         artifactPaths?.patientRunCacheSummary ?? path.join(patientArtifactsDirectory, "patient-run-cache-summary.json"),
+      patientCostSummary:
+        artifactPaths?.patientCostSummary ?? path.join(patientArtifactsDirectory, "patient-cost-summary.json"),
     };
   }
 
@@ -4064,6 +4157,7 @@ export class BatchControlPlaneService {
         "oasisAssessmentArtifacts",
       ),
       patientRunCacheSummary: this.getPatientDashboardStateArtifactContent(patientDashboardState, "patientRunCacheSummary"),
+      patientCostSummary: this.getPatientDashboardStateArtifactContent(patientDashboardState, "patientCostSummary"),
     };
   }
 
@@ -4199,6 +4293,7 @@ export class BatchControlPlaneService {
           oasisDomSectionOutputs: path.join(patientArtifactsDirectory, "oasis-dom-section-outputs.json"),
           oasisAssessmentProcessingManifest: path.join(patientArtifactsDirectory, "oasis-assessment-processing-manifest.json"),
           patientRunCacheSummary: path.join(patientArtifactsDirectory, "patient-run-cache-summary.json"),
+          patientCostSummary: path.join(patientArtifactsDirectory, "patient-cost-summary.json"),
         },
         artifactContents: {
           codingInput: patientDashboardState.artifactContents.codingInput ?? null,
@@ -4315,6 +4410,13 @@ export class BatchControlPlaneService {
             context,
             path.join(patientArtifactsDirectory, "patient-run-cache-summary.json"),
           ),
+          patientCostSummary:
+            await this.readJsonIfExistsWithContext(
+              context,
+              path.join(patientArtifactsDirectory, "patient-cost-summary.json"),
+            ) ??
+            patientDashboardState.artifactContents.patientCostSummary ??
+            null,
         },
       };
     }
@@ -4398,6 +4500,7 @@ export class BatchControlPlaneService {
       oasisDomSectionOutputs: path.join(patientArtifactsDirectory, "oasis-dom-section-outputs.json"),
       oasisAssessmentProcessingManifest: path.join(patientArtifactsDirectory, "oasis-assessment-processing-manifest.json"),
       patientRunCacheSummary: path.join(patientArtifactsDirectory, "patient-run-cache-summary.json"),
+      patientCostSummary: path.join(patientArtifactsDirectory, "patient-cost-summary.json"),
     };
 
     return {
@@ -4456,6 +4559,7 @@ export class BatchControlPlaneService {
         ),
         oasisAssessmentArtifacts: null,
         patientRunCacheSummary: await this.readJsonIfExistsWithContext(context, artifactPaths.patientRunCacheSummary),
+        patientCostSummary: await this.readJsonIfExistsWithContext(context, artifactPaths.patientCostSummary),
       },
     };
   }
@@ -5061,6 +5165,11 @@ export class BatchControlPlaneService {
       });
 
       await this.finalizeBatchExecution(batch.id, manifest, parserExceptions);
+      await writeRunCostSummary({
+        outputDirectory: batch.storage.outputRoot,
+        batchId: batch.id,
+        patientIds: workItems.map((workItem) => workItem.id),
+      });
       await this.runPostBatchReferralIntakePhaseSafely(batch.id, "batch_run_completed");
       this.logger.info({ batchId }, "batch run completed");
     } catch (error) {
